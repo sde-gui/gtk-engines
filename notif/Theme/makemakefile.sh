@@ -1,6 +1,6 @@
 #!/bin/sh
 
-THEME="Motif"
+THEME="Notif"
 FILES="ICON.png README.html"
 SUBDIRS="gtk"
 

@@ -1,3 +1,7 @@
+Wed Dec 16 12:52:55 EST 1998 The Rasterman <raster@redhat.com>
+	* removed win95 and Motif themes - replace with Notif and Redmond95 
+	  - otherwise the same.
+
 1998-11-07  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in: Unify all subdir `configure.in's here.

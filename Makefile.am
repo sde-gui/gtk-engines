@@ -1,2 +1,2 @@
-SUBDIRS = pixmap win95 motif metal
+SUBDIRS = pixmap redmond95 notif metal
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-THEME="Win95"
+THEME="Redmond95"
 FILES="ICON.png README.html"
 SUBDIRS="gtk"
 

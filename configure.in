@@ -43,12 +43,12 @@ pixmap/Theme/gtk/Makefile
 metal/Makefile
 metal/Theme/Makefile
 metal/Theme/gtk/Makefile
-motif/Makefile
-motif/Theme/Makefile
-motif/Theme/gtk/Makefile
-win95/Makefile
-win95/Theme/Makefile
-win95/Theme/gtk/Makefile
+notif/Makefile
+notif/Theme/Makefile
+notif/Theme/gtk/Makefile
+redmond95/Makefile
+redmond95/Theme/Makefile
+redmond95/Theme/gtk/Makefile
 ])
 
 

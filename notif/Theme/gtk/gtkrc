@@ -22,7 +22,7 @@ style "default"
   font = "-*-helvetica-medium-r-normal--10-*-*-*-*-*-*-*"
   bg[NORMAL] = { 0.75, 0.75, 0.75 }
   bg[PRELIGHT] = { 0.75, 0.75, 0.75 }
-  engine "motif" 
+  engine "notif" 
   {
   }
 }

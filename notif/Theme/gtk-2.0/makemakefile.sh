@@ -1,6 +1,6 @@
 #!/bin/sh
 
-THEME="Motif"
+THEME="Notif"
 FILES="gtkrc"
 
 echo    'EXTRA_DIST = makemakefile.sh'                    >  Makefile.am

@@ -17,8 +17,8 @@ Docdir: %{prefix}/doc
 These are the graphical engines for the various GTK+ toolkit themes.
 Included themes are:
 
-  - Motif
-  - win95
+  - Notif
+  - redmond95
   - Pixmap
   - Metal (Java swing-like)
 
@@ -67,5 +67,5 @@ make exec_prefix=$RPM_BUILD_ROOT/%{prefix} prefix=$RPM_BUILD_ROOT/%{prefix} inst
 %{prefix}/lib/gtk/themes/engines/*
 %{prefix}/share/themes/Pixmap/*
 %{prefix}/share/themes/Metal/*
-%{prefix}/share/themes/Motif/*
-%{prefix}/share/themes/Win95/*
+%{prefix}/share/themes/Notif/*
+%{prefix}/share/themes/Redmond95/*
