@@ -1408,12 +1408,11 @@ smooth_draw_slider(GtkStyle * style,
 {
 	SmoothCanvas da;
 
-	/*g_return_if_fail(sanitize_parameters(style, window, &width, &height));*/
-
+	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
         GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
-	do_smooth_draw_box(da, style, state_type, shadow_type, widget, detail, x, y, width, height, orientation == GTK_ORIENTATION_HORIZONTAL);
+	do_smooth_draw_box(da, style, state_type, shadow_type, widget, "slider", x, y, width, height, orientation == GTK_ORIENTATION_HORIZONTAL);
 
 	GDKFinalizeCanvas(&da);
 }

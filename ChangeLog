@@ -1,5 +1,14 @@
 2004-12-16  Andrew Johnson <ajgenius@ajgenius.us>
 
+	* COPYING:
+	add initial list of engine to license
+	
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(smooth_draw_slider):
+	fix scales slider
+
+2004-12-16  Andrew Johnson <ajgenius@ajgenius.us>
+
 	* README:
 	Initial README updates for new release
 
