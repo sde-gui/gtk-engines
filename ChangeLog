@@ -1,3 +1,9 @@
+Fri Sep  6 16:40:42 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* README: Added some text describing how to install
+	gtk-engines into a different prefix than GTK+.
+	(#84727, Piotr Sawuk)
+
 2002-08-18  Havoc Pennington  <hp@pobox.com>
 
 	* autogen.sh: hardcode aclocal-1.4/automake-1.4 so that users with
