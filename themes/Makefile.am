@@ -1,1 +1,1 @@
-SUBDIRS = Crux Industrial Metal Redmond
+SUBDIRS = Crux Industrial LighthouseBlue Metal Mist Redmond

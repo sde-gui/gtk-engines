@@ -48,8 +48,12 @@ themes/Crux/Makefile
 themes/Crux/gtk-2.0/Makefile
 themes/Industrial/Makefile
 themes/Industrial/gtk-2.0/Makefile
+themes/LighthouseBlue/Makefile
+themes/LighthouseBlue/gtk-2.0/Makefile
 themes/Metal/Makefile
 themes/Metal/gtk-2.0/Makefile
+themes/Mist/Makefile
+themes/Mist/gtk-2.0/Makefile
 themes/Redmond/Makefile
 themes/Redmond/gtk/Makefile
 themes/Redmond/gtk-2.0/Makefile
