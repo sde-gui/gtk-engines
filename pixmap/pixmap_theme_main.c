@@ -1080,9 +1080,20 @@ theme_duplicate_style(GtkStyle * dest,
 {
   ThemeData     *src_data = src->engine_data;
   ThemeData     *dest_data;
+  GList		*tmp_list1;
 
   dest_data = g_new(ThemeData, 1);
-  dest_data->img_list = src_data->img_list;
+
+  tmp_list1 = src_data->img_list;
+      
+  while (tmp_list1)
+    {
+      dest_data->img_list = g_list_prepend (dest_data->img_list, tmp_list1->data);
+      theme_data_ref (tmp_list1->data);
+      tmp_list1 = tmp_list1->next;
+    }
+
+  dest_data->img_list = g_list_reverse (dest_data->img_list);
 
   dest->klass = &pixmap_default_class;
   dest->engine_data = dest_data;
