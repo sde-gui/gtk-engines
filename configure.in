@@ -29,15 +29,13 @@ dnl Initialize libtool
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-# Checks for programs.
-AM_PATH_GTK(1.2.9, , 
-	AC_MSG_ERROR([*** GTK+-1.2.9 not installed - please install first ***]))
-AM_PATH_GDK_IMLIB(1.8, ,
-        AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***]))
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 1.3.12,,
+                  AC_MSG_ERROR([GTK+-2.0 is required to compile gtk-engines]))
 
-AC_CHECK_LIB(gtk, gtk_style_set_prop_experimental, :,
-	     AC_MSG_ERROR([*** gtk_style_set_prop_experimental() not found; perhaps you have an old CVS version of GTK+ ***]),
-             $GTK_LIBS)
+GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-2.0`
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
+AC_SUBST(GTK_VERSION)
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -45,29 +43,17 @@ AC_HEADER_STDC
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 
-# Checks for endianness (needed by GdkRgb).
-AC_C_BIGENDIAN
-
-# Checks for library functions.
-AC_TYPE_SIGNAL
-AC_FUNC_MMAP
+# Save ACLOCAL_FLAGS
+ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
 
 AC_OUTPUT([
 gtk-engines.spec
 Makefile
-pixmap/Makefile
-pixmap/Theme/Makefile
-pixmap/Theme/gtk/Makefile
 metal/Makefile
 metal/Theme/Makefile
-metal/Theme/gtk/Makefile
-notif/Makefile
-notif/Theme/Makefile
-notif/Theme/gtk/Makefile
-raleigh/Makefile
-raleigh/Theme/Makefile
-raleigh/Theme/gtk/Makefile
+metal/Theme/gtk-2.0/Makefile
+pixbuf/Makefile
 redmond95/Makefile
 redmond95/Theme/Makefile
-redmond95/Theme/gtk/Makefile
+redmond95/Theme/gtk-2.0/Makefile
 ])

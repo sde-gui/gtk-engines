@@ -1,5 +1,5 @@
 dummy =
-SUBDIRS = gtk
+SUBDIRS = gtk-2.0
 themedir = $(datadir)/themes/Notif
 theme_DATA = ICON.png README.html  
 

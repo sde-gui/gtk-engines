@@ -1,4 +1,4 @@
-SUBDIRS = pixmap redmond95 notif metal raleigh
+SUBDIRS = pixbuf redmond95 metal
 
 EXTRA_DIST = gtk-engines.spec.in makefile.cygwin makefile.msc README.win32
 

@@ -1,3 +1,22 @@
+Sat Jan 19 20:42:11 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* raleigh/**: Remove engine, it's now the GTK+ default.
+
+	* pixmap/**: Remove engine, replaced by pixbuf
+
+	* pixbuf/**: Replacement for pixmap-engine, compatible
+	RC file format, sane code.
+
+	* metal,notif,redmond95/Theme/gtk{-2.0}: Rename theme
+	directories to gtk-2.0.
+
+	* Makefile.am (SUBDIRS): Remove pixmap and raleigh,
+	temporarily remove
+
+	* ltmain.sh ltconfig acinclude.m4: Remove from CVS
+
+	* configure.in: Update for GTK+-2.0 and pkg-config.
+
 Thu Mar 15 02:07:25 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (cflags_set): Release 0.12
