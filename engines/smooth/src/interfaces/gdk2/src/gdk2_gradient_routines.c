@@ -135,7 +135,7 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
 						SmoothColor To,
 						SmoothBool QuadraticGradientRange)
 {
-	SmoothInt i, j, max_block, half_width;
+	SmoothInt i, j, max_block, last_block;
 	long r, g, b, a, dr, dg, db, da;
 	SmoothImageBuffer buffer;
 	
@@ -168,7 +168,7 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
 	db = ((bf-b0)<<16)/(int)Height;
 	da = ((af-a0)<<16)/(int)Height;
 
-	half_width = (Width - (Width % 2))/2;
+	max_block = Width/2;
 
 	for (i=0; i<Height; i++)
 	{
@@ -182,17 +182,22 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
   
 		if (Width > 1)
 		{
+			last_block = 0;
+
 			for (j=1; j <= max_block; j *= 2)
 			{
-				memcpy (&(ptr[j*3]), &(ptr[0]), j*3);
+				memcpy (&(ptr[j*3]), ptr, j*3);
 
 				if ((j*2) >= max_block)
 				{
-					max_block = j;
+					last_block = j*2;
 				}
 			}
 
-			memcpy (&(ptr[6*max_block]), &(ptr[0]), (Width - 2*max_block)*3);
+			if (last_block < Width) && (last_block > 0)
+			{
+				memcpy (&(ptr[last_block*3]), ptr, (Width - last_block)*3);
+			}
 		}
 
 		if (QuadraticGradientRange) 

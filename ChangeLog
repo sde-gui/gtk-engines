@@ -1,3 +1,10 @@
+2005-03-13  Andrew Johnson <ajgenius@ajgenius.us>
+
+	* engines/smooth/src/interfaces/gdk2/src/gdk2_gradient_routines.c:
+	(internal_create_vertical_gradient_image_buffer):
+	* engines/smooth/src/utils/draw_arrows.c: (SmoothFreeArrowStyles):
+
+	try and work around potential memcpy overlap
 2005-03-11  Andrew Johnson  <ajgenius@ajgenius.us>
 
 	* engines/crux/src/config.h.in:

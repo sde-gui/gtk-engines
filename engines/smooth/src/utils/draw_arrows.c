@@ -672,7 +672,7 @@ SmoothDrawArrow(SmoothCanvas *Canvas,
 
 void SmoothFreeArrowStyles(SmoothArrowPart *arrow)
 {
-	if ((arrow) && (!arrow->StylesFreed))
+	if (arrow)
 	{
 		gint i;
 
@@ -702,7 +702,5 @@ void SmoothFreeArrowStyles(SmoothArrowPart *arrow)
 				arrow->Styles[i] = NULL;
 			}
 		}
-
-		arrow->StylesFreed = TRUE;
 	}
 }
