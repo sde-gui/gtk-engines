@@ -1,3 +1,7 @@
+Fri Jun 11 Peter Wainwright <prw@wainpr.demon.co.uk>
+       * metal_theme_main.c: Make sure event handlers are restored
+       on theme_exit().
+
 Wed Feb 24 20:11:50 1999  Tor Lillqvist  <tml@iki.fi>
 
 	* metal_theme_draw.c: Declare fuzzy_match before use. Make it

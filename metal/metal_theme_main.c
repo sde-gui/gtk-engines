@@ -15,6 +15,8 @@
 *
 *
 **************************************************************************/
+#undef G_LOG_DOMAIN
+#define G_LOG_DOMAIN "Metal-Theme"
 
 #define DEBUG 0
 
@@ -250,6 +252,16 @@ theme_destroy_style(GtkStyle * style)
 {
 }
 
+typedef gint (*GtkExposeEventFunc)(GtkWidget *widget,
+                                  GdkEventExpose *event);
+static GtkExposeEventFunc range_expose_event;
+static gint range_slider_width;
+static gint range_min_slider_size;
+static gint range_stepper_size;
+static gint range_stepper_slider_spacing;
+static GtkExposeEventFunc scale_expose_event;
+static gint scale_slider_length;
+
 /******************************************************************/
 void
 theme_init(GtkThemeEngine * engine)
@@ -283,6 +295,10 @@ theme_init(GtkThemeEngine * engine)
 
    /* Make scrollbars wider */
    rangeclass = (GtkRangeClass *)gtk_type_class(gtk_range_get_type());
+   range_slider_width = rangeclass->slider_width;
+   range_min_slider_size = rangeclass->min_slider_size;
+   range_stepper_size = rangeclass->stepper_size;
+   range_stepper_slider_spacing = rangeclass->stepper_slider_spacing;
    rangeclass->slider_width    = SCROLLBAR_WIDTH;
    rangeclass->min_slider_size = SCROLLBAR_WIDTH;
    rangeclass->stepper_size    = SCROLLBAR_WIDTH;
@@ -290,13 +306,16 @@ theme_init(GtkThemeEngine * engine)
 
    /* Make scale slider smaller */
    scaleclass = (GtkScaleClass *)gtk_type_class(gtk_scale_get_type());
+   scale_slider_length = scaleclass->slider_length;
    scaleclass->slider_length   = SCALE_WIDTH;
 
    /* A bunch of hacks to workaround GTK problems */
    widget_class = (GtkWidgetClass *)rangeclass;
+   range_expose_event = widget_class->expose_event;
    widget_class->expose_event = gtk_range_expose_metal;
 
    widget_class = (GtkWidgetClass *)scaleclass;
+   scale_expose_event = widget_class->expose_event;
    widget_class->expose_event = gtk_range_expose_metal;
 
    /* Some useful GCs for coloring (based on shades of style->white) */
@@ -332,9 +351,57 @@ theme_init(GtkThemeEngine * engine)
                                     &values, GDK_GC_FOREGROUND);
 }
 /*****************************************************************/
+
+static void
+restore_expose_events(GtkObjectClass *klass,
+                     GtkExposeEventFunc find_event,
+                     GtkExposeEventFunc replace_event)
+{
+  GList *child_list, *child;
+  g_message("Restoring expose events for %s",
+           gtk_type_name(klass->type));
+  if (!GTK_IS_WIDGET_CLASS(klass)) {
+    g_error("Warning: restore expose events for non-widget");
+  }
+  else {
+    GtkWidgetClass *widget_klass = GTK_WIDGET_CLASS(klass);
+    if (widget_klass->expose_event == find_event)
+      widget_klass->expose_event = replace_event;
+  }
+  child_list = gtk_type_children_types(klass->type);
+  for (child = child_list; child; child = child->next) {
+    gpointer child_class = gtk_type_class(GPOINTER_TO_UINT(child->data));
+    restore_expose_events(GTK_OBJECT_CLASS(child_class),
+                         find_event, replace_event);
+  }
+}
+
+
 void
 theme_exit(void)
 {
+   GtkRangeClass *rangeclass;
+   GtkScaleClass *scaleclass;
+
+   rangeclass = (GtkRangeClass *)gtk_type_class(gtk_range_get_type());
+   scaleclass = (GtkScaleClass *)gtk_type_class(gtk_scale_get_type());
+
+   rangeclass->slider_width = range_slider_width;
+   rangeclass->min_slider_size = range_min_slider_size;
+   rangeclass->stepper_size = range_stepper_size;
+   rangeclass->stepper_slider_spacing = range_stepper_slider_spacing;
+
+   scaleclass->slider_length = scale_slider_length;
+
+   /* This is nasty: the expose events we installed in init() may have
+      been copied into subclasses. */
+   restore_expose_events(GTK_OBJECT_CLASS(rangeclass),
+                        GTK_WIDGET_CLASS(rangeclass)->expose_event,
+                        range_expose_event);
+   restore_expose_events(GTK_OBJECT_CLASS(scaleclass),
+                        GTK_WIDGET_CLASS(scaleclass)->expose_event,
+                        scale_expose_event);
+
 #if DEBUG
   printf("Metal Theme Exit\n* Need to add memory deallocation code here *\n");
 #endif
