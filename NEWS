@@ -1,4 +1,9 @@
-Overview of Changes in 2.6.0 (since 2.2.0)
+Overview of Changes in 2.6.2 (since 2.6.2)
+==========================================
+* Fix bugs #167389 and #163370 [ Andrew Johnson ]
+
+
+Overview of Changes in 2.6.1 (since 2.6.0)
 ==========================================
 * Fix bugs 162131, 163099 [ Thomas Wood ]
 * Smooth updates [ Andrew Johnson ]

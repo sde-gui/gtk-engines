@@ -1,3 +1,10 @@
+2005-03-07  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+
+	Update for 2.6.2 release
+
 2005-02-19  Andrew Johnson <ajgenius@ajgenius.us>
 	* engines/smooth/src/engine/smooth_gtk2_drawing.c
 	* engines/smooth/src/engine/smooth_gtk2_rc.c:
