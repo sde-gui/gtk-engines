@@ -1,10 +1,12 @@
 *.lo
 *.la
+autom4te.cache
 Makefile
 Makefile.in
 config.log
 config.h
 libtool
+ltmain.sh
 config.status
 aclocal.m4
 configure
