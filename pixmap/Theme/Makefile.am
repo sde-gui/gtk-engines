@@ -1,5 +1,6 @@
-EXTRA_DIST = makemakefile.sh
 dummy =
 SUBDIRS = gtk
 themedir = $(datadir)/themes/Pixmap
 theme_DATA = ICON.png README.html  
+
+EXTRA_DIST = makemakefile.sh $(theme_DATA)
