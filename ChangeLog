@@ -1,3 +1,8 @@
+Mon Oct 19 12:11:28 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* Add in ltconfig and ltmain.sh with correct shldeps
+	patches.
+
 1998-10-17    <jrb@aware-of-vacuity.labs.redhat.com>
 
 	* (theme)/configure.in: changed AC_INIT field.
