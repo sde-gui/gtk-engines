@@ -1,63 +1,52 @@
-AC_INIT([gtk-engines], [2.2.0])
+AC_INIT([gtk-engines], [2.5.0])
 AC_CONFIG_SRCDIR([README])
-# Save this value here, since automake will set cflags later
-cflags_set=${CFLAGS+set}
 
 AM_INIT_AUTOMAKE
 
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
 
-AC_SUBST([ACLOCAL_AMFLAGS], [\${ACLOCAL_FLAGS}])
-
 AC_PROG_CC
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
-
-changequote(,)dnl
-if test "x$GCC" = "xyes"; then
-  case " $CFLAGS " in
-  *[\ \	]-Wall[\ \	]*) ;;
-  *) CFLAGS="$CFLAGS -Wall" ;;
-  esac
-fi
-changequote([,])dnl
 
 dnl Initialize libtool
 AM_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
-AC_MSG_CHECKING([for Win32])
-case "$host" in
-  *-*-mingw*)
-    os_win32=yes
-    ;;
-  *)
-    os_win32=no
-    ;;
-esac
-AC_MSG_RESULT([$os_win32])
-AM_CONDITIONAL(OS_WIN32, test "$os_win32" = "yes")
-
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 1.3.12,,
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4.0,,
                   AC_MSG_ERROR([GTK+-2.0 is required to compile gtk-engines]))
+
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
 
 GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-2.0`
 AC_SUBST(GTK_VERSION)
 
+AM_CONFIG_HEADER([
+	engines/crux/src/config.h
+])
+
 AC_CONFIG_FILES([
-gtk-engines.spec
 Makefile
+engines/Makefile
+engines/crux/Makefile
+engines/crux/pixmaps/Makefile
+engines/hc/Makefile
+engines/industrial/Makefile
+engines/lighthouseblue/Makefile
+engines/mist/Makefile
+engines/thinice/Makefile
 metal/Makefile
 metal/Theme/Makefile
 metal/Theme/gtk-2.0/Makefile
-pixbuf/Makefile
 redmond95/Makefile
 redmond95/Theme/Makefile
 redmond95/Theme/gtk-2.0/Makefile
 gtk-engines-2.pc
+gtk-engines.spec
 ])
 
 AC_OUTPUT

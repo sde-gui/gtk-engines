@@ -1,8 +1,3 @@
-if OS_WIN32
-no_undefined = -no-undefined
-gtk_libs = $(GTK_LIBS)
-endif
-
 SUBDIRS = Theme
 INCLUDES = $(GTK_CFLAGS)
 
@@ -18,6 +13,6 @@ libredmond95_la_SOURCES = \
 	redmond_style.h		\
 	redmond_theme_main.c
 
-libredmond95_la_LDFLAGS = -module -avoid-version $(no_undefined)
-libredmond95_la_LIBADD = $(gtk_libs)
+libredmond95_la_LDFLAGS = -module -avoid-version -no-undefined
+libredmond95_la_LIBADD = $(GTK_LIBS)
 

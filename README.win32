@@ -1,6 +1,0 @@
-The makefile.msc file is very much outdated. Back in the year 2000 it
-was possible to build with Microsoft's tools, using nmake -f makefile.msc.
-
-Building with auto* tools and libtool works fine.
-
---tml@iki.fi

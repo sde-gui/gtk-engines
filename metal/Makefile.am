@@ -1,8 +1,3 @@
-if OS_WIN32
-no_undefined = -no-undefined
-gtk_libs = $(GTK_LIBS)
-endif
-
 SUBDIRS = Theme
 INCLUDES = $(GTK_CFLAGS)
 
@@ -18,6 +13,6 @@ libmetal_la_SOURCES = 		\
 	metal_style.h		\
 	metal_theme_main.c
 
-libmetal_la_LDFLAGS = -module -avoid-version $(no_undefined)
-libmetal_la_LIBADD = $(gtk_libs)
+libmetal_la_LDFLAGS = -module -avoid-version -no-undefined
+libmetal_la_LIBADD = $(GTK_LIBS)
 

@@ -1,3 +1,11 @@
+2004-12-01  Thomas Wood <thos@gnome.org>, Andrew Johnson <ajgenius@ajgenius.us>
+
+	* Update version to 2.5
+	* Remove pixbuf and notif engines, and misc other files
+	* Move crux, hc, industrial, mist, thinice engines over from 
+	  gnome-themes and gnome-themes-extras
+	* Replace configure.in with configure.ac
+
 2004-11-02  James Henstridge  <james@jamesh.id.au>
 
 	From bug #156666:

@@ -1,0 +1,13 @@
+aclocal.m4
+Makefile.in
+configure
+config.log
+.deps
+config.cache
+libtool
+config.status
+.libs
+Makefile
+*.lo
+*.la
+test
