@@ -1,3 +1,7 @@
+Fri Feb 26 20:38:53 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Up version number to 0.5
+
 Thu Feb 11 23:09:55 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (cflags_set): Up version number to 0.4.
