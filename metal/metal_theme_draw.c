@@ -2789,22 +2789,6 @@ draw_handle(GtkStyle * style,
       blackgc = style->black_gc;
    }
 
-   /* Set Clip Region */
-   if (area) {
-      gdk_gc_set_clip_rectangle(lightgc, area);
-      gdk_gc_set_clip_rectangle(midgc,   area);
-      gdk_gc_set_clip_rectangle(darkgc,  area);
-      gdk_gc_set_clip_rectangle(whitegc, area);
-      gdk_gc_set_clip_rectangle(blackgc, area);
-   }
-
-   /* Draw backgound */
-   gdk_draw_rectangle(window, lightgc, TRUE, x, y, width, height);
-
-   /* Draw border */
-   gdk_draw_rectangle(window, whitegc, FALSE, x+1, y+1, width-2, height-2);
-   gdk_draw_rectangle(window, darkgc,  FALSE, x+0, y+0, width-2, height-2);
-
    /* Draw textured surface */
    gdk_window_get_geometry(window, NULL, NULL, NULL, NULL, &depth);
 
@@ -2821,10 +2805,27 @@ draw_handle(GtkStyle * style,
    values.ts_y_origin = 2;/*3; */
    fillgc = gdk_gc_new_with_values(window, &values, 
                     GDK_GC_FILL | GDK_GC_TS_X_ORIGIN | GDK_GC_TS_Y_ORIGIN);
+
+   /* Set Clip Region */
+   if (area) {
+      gdk_gc_set_clip_rectangle(lightgc, area);
+      gdk_gc_set_clip_rectangle(midgc,   area);
+      gdk_gc_set_clip_rectangle(darkgc,  area);
+      gdk_gc_set_clip_rectangle(whitegc, area);
+      gdk_gc_set_clip_rectangle(blackgc, area);
+   }
+
+   /* Draw backgound */
+   gdk_draw_rectangle(window, lightgc, TRUE, x, y, width, height);
+
+   /* Draw border */
+   gdk_draw_rectangle(window, whitegc, FALSE, x+1, y+1, width-2, height-2);
+   gdk_draw_rectangle(window, darkgc,  FALSE, x+0, y+0, width-2, height-2);
+
    if (area) gdk_gc_set_clip_rectangle(fillgc, area);
    gdk_gc_set_tile(fillgc, pm);
    gdk_draw_rectangle(window, fillgc, TRUE, x+2, y+2, width-4, height-4);
-
+  
    gdk_gc_unref(fillgc);
    gdk_pixmap_unref(pm);
 
