@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 # replace these 2 "pixmap" prefixes with whatever you're theme is
-AC_INIT(pixmap_theme.h)
+AC_INIT(pixmap_theme_draw.c)
 THEME="pixmap"
 
 # Save this value here, since automake will set cflags later

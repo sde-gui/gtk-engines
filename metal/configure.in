@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 # replace these 2 "metal" prefixes with whatever you're theme is
-AC_INIT(metal_theme.h)
+AC_INIT(metal_theme_draw.c)
 THEME="metal"
 
 # Save this value here, since automake will set cflags later

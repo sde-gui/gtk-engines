@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 # replace these 2 "win95" prefixes with whatever you're theme is
-AC_INIT(win95_theme.h)
+AC_INIT(win95_theme_draw.c)
 THEME="win95"
 
 # Save this value here, since automake will set cflags later
