@@ -1,3 +1,8 @@
+1999-02-03  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Theme/gtk/Makefile.am.in: New file.  Theme/gtk/Makefile.am is
+	generated from this file when new *.png files are added.
+
 1999-01-23  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* pixmap_theme_main.c (theme_init): Turn on pixmap cache. 
