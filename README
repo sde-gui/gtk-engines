@@ -50,7 +50,7 @@ Then you'd set:
 
 This will allow GTK+ to find the newly installed theme
 engines. To use the sample themes (installed into 
-$prefix/share/themes), you'll need to copy copy or link them 
+$prefix/share/themes), you'll need to copy or link them 
 into your  ~/.theme directory.
 
 Further Information
