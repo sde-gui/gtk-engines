@@ -37,7 +37,7 @@ automake --add-missing
 autoconf
 cd $THEDIR
 
-$srcdir/configure "$@"
+$srcdir/configure --enable-maintainer-mode "$@"
 
 echo 
 echo "Now type 'make' to compile themes"

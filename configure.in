@@ -7,26 +7,20 @@ AM_INIT_AUTOMAKE(gtk-engines, 0.2)
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
 
+ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+
 AC_CANONICAL_HOST
 
-dnl proper defaults for gmodule based stuff
-if test "x$enable_static" != "xyes"; then
-  enable_static=no
-fi
-
-if test "x$enable_shared" != "xno"; then
-  enable_shared=yes
-fi
-
-# Checks for programs.
 AC_PROG_CC
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
 dnl Initialize libtool
+AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
+# Checks for programs.
 AM_PATH_GTK(1.1.13, , 
 	AC_MSG_ERROR([*** GTK 1.1 not installed - please install first ***]))
 AM_PATH_GDK_IMLIB(1.8, ,

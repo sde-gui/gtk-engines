@@ -1,3 +1,18 @@
+Tue Feb  2 05:16:12 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4
+	* config.guess
+	* config.sub
+	* ltconfig
+	* ltmain.sh: use CVS libtool 1.2e. Tell me what breaks.
+
+	* pixmap/Makefile.am
+	* metal/Makefile.am
+	* notif/Makefile.am
+	* redmond95/Makefile.am: use -module and -avoid-version flags
+
+	* configure.in: minor clean ups
+
 Wed Jan 27 21:14:54 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4: new file, to go with libtool
