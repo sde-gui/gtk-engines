@@ -27,6 +27,7 @@ AC_SUBST(GTK_VERSION)
 
 AM_CONFIG_HEADER([
 	engines/crux/src/config.h
+	engines/smooth/src/config.h
 ])
 
 AC_CONFIG_FILES([
@@ -39,6 +40,7 @@ engines/industrial/Makefile
 engines/lighthouseblue/Makefile
 engines/mist/Makefile
 engines/redmond/Makefile
+engines/smooth/Makefile
 engines/thinice/Makefile
 metal/Makefile
 metal/Theme/Makefile
