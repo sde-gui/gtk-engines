@@ -1,10 +1,10 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
-pixmap/autogen.sh $@
-motif/autogen.sh $@
-win95/autogen.sh $@
-metal/autogen.sh $@
+cd pixmap; ./autogen.sh $@; cd ..
+cd motif; ./autogen.sh $@; cd ..
+cd win95; ./autogen.sh $@; cd ..
+cd metal; ./autogen.sh $@; cd ..
 
 DIE=0
 
