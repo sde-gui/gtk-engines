@@ -1070,8 +1070,6 @@ theme_rc_style_to_style(GtkStyle * style,
   style->klass = &pixmap_default_class;
   style->engine_data = data;
   theme_data_ref (data);
-
-  g_print("Theme theme: Creating style\n");
 }
 
 static void
@@ -1087,40 +1085,28 @@ theme_duplicate_style(GtkStyle * dest,
   dest->klass = &pixmap_default_class;
   dest->engine_data = dest_data;
   theme_data_ref (dest_data);
-
-  g_print("Theme theme: Duplicated style\n");
 }
 
 static void
 theme_realize_style(GtkStyle * style)
 {
-/*  ThemeStyleData     *data = style->engine_data;*/
-
-  g_print("Theme theme: Realizing style\n");
 }
 
 static void
 theme_unrealize_style(GtkStyle * style)
 {
-/*  ThemeStyleData     *data = style->engine_data;*/
-
-  g_print("Theme theme: Unrealizing style\n");
 }
 
 static void
 theme_destroy_rc_style(GtkRcStyle * rc_style)
 {
   theme_data_unref (rc_style->engine_data);
-
-  g_print("Theme theme: Destroying rc style for \n");
 }
 
 static void
 theme_destroy_style(GtkStyle * style)
 {
   theme_data_unref (style->engine_data);
-
-  g_print("Theme theme: Destroying style for \n");
 }
 
 static void

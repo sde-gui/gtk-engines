@@ -1,3 +1,15 @@
+Fri Nov  6 17:26:12 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* pixmap_theme_main.c: Removed some debugging 
+	printf's. 
+
+	* Theme/gtk/notebook1.c Theme/gtk/menubar.png: new
+	bigger pixmaps to reduce pixelation.
+
+	* Theme/gtk/gtkrc: Reorganized to use several styles
+	instead of one huge style. Change clist backgrounds
+	to be prettier.
+
 Thu Nov  5 10:23:46 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* pixmap_theme_draw.c (draw_shadow_gap): Fixed hard-coded
