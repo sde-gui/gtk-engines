@@ -2769,8 +2769,8 @@ smooth_draw_flat_box (GtkStyle * style,
       (CHECK_DETAIL(detail, "cell_odd")) || (CHECK_DETAIL(detail, "cell_even_ruled")) || (CHECK_DETAIL(detail, "cell_odd_ruled")) || (CHECK_DETAIL(detail, "cell_even_sorted")) ||
       (CHECK_DETAIL(detail, "cell_odd_sorted")) || (CHECK_DETAIL(detail, "cell_even_ruled_sorted")) || (CHECK_DETAIL(detail, "cell_odd_ruled_sorted"))))
    {
-     parent_class->draw_flat_box (style, window, state_type, shadow_type,
-			          area, widget, detail, x, y, width, height);
+     smooth_theme_parent_class->draw_flat_box (style, window, state_type, shadow_type,
+                                               area, widget, detail, x, y, width, height);
    } 
    else {
         GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0,&COLOR_CUBE(style));

@@ -1,3 +1,10 @@
+2005-02-03  William Jon McCann  <mccann@jhu.edu>
+
+	* engines/smooth/src/engine/smooth_gtk2_engine.h: 
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c (smooth_draw_flat_box): 
+	* engines/smooth/src/engine/smooth_gtk2_engine.c (smooth_style_class_init):
+	Namespace parent_class var (Fixes #166201).
+
 2005-02-03  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* engines/smooth/src/engine/smooth_gtk2_engine.c:

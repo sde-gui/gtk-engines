@@ -38,7 +38,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 extern GType smooth_type_style;
-extern GtkStyleClass *parent_class;
+extern GtkStyleClass *smooth_theme_parent_class;
 extern GType smooth_type_rc_style;
 
 #define SMOOTH_TYPE_STYLE              smooth_type_style

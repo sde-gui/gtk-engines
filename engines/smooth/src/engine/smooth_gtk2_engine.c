@@ -242,14 +242,14 @@ static void smooth_rc_style_register_type (GTypeModule *module)
 /* Register & Initialize Drawing Style */
 /***************************************/
 GType smooth_type_style = 0;
-GtkStyleClass *parent_class;
+GtkStyleClass *smooth_theme_parent_class;
 
 static void
 smooth_style_class_init (SmoothStyleClass *klass)
 {
   GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
+  smooth_theme_parent_class = g_type_class_peek_parent (klass);
 
   style_class->draw_hline = smooth_draw_hline;
   style_class->draw_vline = smooth_draw_vline;
