@@ -1,3 +1,8 @@
+2005-03-17  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (draw_box), (draw_focus),
+	(crux_draw_style_class_init): Fixes menuitems and focus indicators
+
 2005-03-14  Thomas Wood  <thos@gnome.org>
 
 	* NEWS: Corrected

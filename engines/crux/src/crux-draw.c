@@ -16,6 +16,7 @@
 /* Focus change hooks */
 #define WINDOW_FOCUS_DATA_KEY "eazel-engine-focus-data"
 static GQuark window_focus_data_key;
+GtkStyleClass *parent_style_class;
 
 typedef struct focus_change_data_struct focus_change_data;
 struct focus_change_data_struct {
@@ -1395,14 +1396,14 @@ draw_box (GtkStyle *style,
 	    eazel_engine_gradient *gradient = theme_data->gradients[state_type];
 	    add_shadow = (shadow_type != GTK_SHADOW_NONE);
 
-	    if (DETAIL ("button") && widget != 0
-		&& GTK_WIDGET_HAS_FOCUS (widget)
-		&& GTK_WIDGET_CAN_DEFAULT (widget))
-	    {
-		x -= 1;
-		y -= 1;
-		width += 2;
-		height += 2;
+		if (DETAIL ("button") && widget != 0 && GTK_WIDGET_HAS_FOCUS (widget))
+		{
+			/* Make the button smaller to allow for focus indicator */
+			/* (-1 because the indicator has a 1px rounded inside */
+			x += theme_data->focus_thickness -1;
+			y += theme_data->focus_thickness -1;
+			width -= theme_data->focus_thickness * 2 -2;
+			height -= theme_data->focus_thickness * 2 -2;
 	    }
 
 	    full.x = x;
@@ -1410,11 +1411,14 @@ draw_box (GtkStyle *style,
 	    full.width = width;
 	    full.height = height;
 
-	    if (DETAIL ("menuitem"))
-	    {
-		full.x++; full.y++;
-		full.width -= 2; full.height -= 2;
-	    }
+	   if (DETAIL ("menuitem"))
+	   {
+			full.x +=3; full.y+=2;
+			full.width -= 6; full.height -= 4;
+			paint_menuitem_shadow (window, style, x, y, width, height);
+			eazel_engine_draw_gradient (window, style->bg_gc[state_type], &full,
+		                                &full, theme_data->gradients[state_type]);
+	   }
 
 	    if (gradient != NULL && gradient->direction != GRADIENT_NONE)
 	    {
@@ -1464,7 +1468,15 @@ draw_box (GtkStyle *style,
 
 		if (GTK_WIDGET_HAS_FOCUS (widget))
 		    fun = paint_focus_box;
-
+		else
+		{
+			/* Make button smaller to allow for default indicator */
+			/* (-1 because the indicator has a 1px rounded inside */
+			x += theme_data->default_thickness -1;
+			y += theme_data->default_thickness -1;
+			width -= theme_data->default_thickness * 2 -1,
+			height -= theme_data->default_thickness * 2 -1;
+		}	
 		fun (theme_data, window, style->black_gc, TRUE, TRUE,
 		     theme_data->default_thickness,
 		     x - (theme_data->default_thickness),
@@ -2414,10 +2426,9 @@ draw_focus (GtkStyle *style,
     if ((DETAIL ("button") && widget != 0
 	 && GTK_IS_BUTTON (widget) && GTK_WIDGET_HAS_DEFAULT (widget))
 	|| DETAIL ("checkbutton") || DETAIL ("option") || DETAIL ("slider")
-	|| (widget != 0 && GTK_IS_SCALE (widget))
-	/* XXX reenable me */
-	|| DETAIL ("tab"))
+	|| (widget != 0 && GTK_IS_SCALE (widget)))
     {
+		/* these widgets draw their own focus indicator when they need to */
 	return;
     }
 
@@ -2428,25 +2439,30 @@ draw_focus (GtkStyle *style,
     else if (height == -1)
 	gdk_window_get_size (window, NULL, &height);
 
-    if (area)
-	gdk_gc_set_clip_rectangle (style->black_gc, area);
 
-    if (DETAIL ("button"))
-    {
-	x--; y--;
-	width += 2; height += 2;
-    }
-    else if (DETAIL ("text") || DETAIL ("entry"))
-    {
-	rounded_inner = FALSE;
-    }
-
-    paint_focus_box (theme_data, window, style->black_gc,
+	if (DETAIL ("button") || DETAIL ("text") || DETAIL ("entry"))
+	{
+		if (area)
+			gdk_gc_set_clip_rectangle (style->black_gc, area);
+		if (DETAIL ("button"))
+		{
+			//x -= theme_data->focus_thickness; y -= theme_data->focus_thickness;
+			//width += theme_data->focus_thickness * 2; height += theme_data->focus_thickness * 2;
+		}
+		else if (DETAIL ("text") || DETAIL ("entry"))
+		{
+			rounded_inner = FALSE;
+		}
+		paint_focus_box (theme_data, window, style->black_gc,
 		     rounded, rounded_inner, theme_data->focus_thickness,
 		     x, y, width, height);
-
-    if (area)
-	gdk_gc_set_clip_rectangle (style->black_gc, NULL);
+		if (area)
+			gdk_gc_set_clip_rectangle (style->black_gc, NULL);
+		return;
+	}
+	/* Make sure no widget is without a focus indicator! */
+	parent_style_class->draw_focus(style, window, state_type, area, widget, 
+	                               detail, x, y, width, height);
 }
 
 static void
@@ -2641,6 +2657,9 @@ draw_handle (GtkStyle *style,
 void
 crux_draw_style_class_init (GtkStyleClass *style_class)
 {
+
+  parent_style_class = g_type_class_peek_parent(style_class);
+
   style_class->draw_hline = draw_hline;
   style_class->draw_vline = draw_vline;
   style_class->draw_shadow = draw_shadow;
