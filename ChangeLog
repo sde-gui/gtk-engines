@@ -1,3 +1,8 @@
+Tue Jan 25 10:58:11 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Up version, make a 0.10 release including
+	workaround hack for pixmap eventbox backgrounds.
+
 1999-05-30  James Henstridge  <james@daa.com.au>
 
 	* configure.in, */Makefile.am: make the theme engines link against
