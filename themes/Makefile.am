@@ -1,1 +1,1 @@
-SUBDIRS = Redmond
+SUBDIRS = Redmond Crux

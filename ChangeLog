@@ -1,3 +1,13 @@
+2004-12-06  Thomas Wood  <thos@gnome.org>
+
+	* configure.ac:
+	* themes/Crux/Makefile.am:
+	* themes/Crux/gtk-2.0/Makefile.am:
+	* themes/Crux/gtk-2.0/gtkrc:
+	* themes/Makefile.am:
+
+	Added Crux gtkrc
+
 2004-12-05  Thomas Wood <thos@gnome.org>, Andrew Johnson <ajgenius@ajgenius.us>
 
 	* engines/redmond/src/redmond_gtk2_drawing.c:

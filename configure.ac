@@ -46,6 +46,8 @@ metal/Theme/gtk-2.0/Makefile
 themes/Makefile
 themes/Redmond/Makefile
 themes/Redmond/gtk-2.0/Makefile
+themes/Crux/Makefile
+themes/Crux/gtk-2.0/Makefile
 gtk-engines-2.pc
 gtk-engines.spec
 ])
