@@ -17,3 +17,4 @@ config.sub
 .libs
 gtk-engines.spec
 autom4te.cache
+gtk-engines-2.pc
