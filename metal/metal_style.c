@@ -255,6 +255,10 @@ static void         draw_handle(GtkStyle * style,
 				gint height,
 				GtkOrientation orientation);
 
+static int          fuzzy_match(int i,
+				int j,
+				int fudge);
+
 static void
 metal_arrow(GdkWindow *window, 
             GtkWidget *widget, 
@@ -2107,7 +2111,7 @@ get_tab_status(GtkNotebook *notebook,
    *position = pos;
    *selected = sel;
 }
-int
+static int
 fuzzy_match(int i, int j, int fudge)
 {
    if (i>j) return(i-j <= fudge);
