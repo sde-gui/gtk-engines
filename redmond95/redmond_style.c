@@ -152,7 +152,7 @@ draw_check(GtkStyle      *style,
   x -= (1 + PART_SIZE - width) / 2;
   y -= (1 + PART_SIZE - height) / 2;
       
-  if (strcmp (detail, "check") == 0)	/* Menu item */
+  if (detail && strcmp (detail, "check") == 0)	/* Menu item */
     {
       if (shadow == GTK_SHADOW_IN)
 	{
@@ -192,7 +192,7 @@ draw_option(GtkStyle      *style,
   x -= (1 + PART_SIZE - width) / 2;
   y -= (1 + PART_SIZE - height) / 2;
       
-  if (strcmp (detail, "option") == 0)	/* Menu item */
+  if (detail && strcmp (detail, "option") == 0)	/* Menu item */
     {
       if (shadow == GTK_SHADOW_IN)
 	draw_part (window, style->fg_gc[state], area, x, y, RADIO_TEXT);
