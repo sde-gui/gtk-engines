@@ -1,23 +1,34 @@
 gtk-engines
 ===========
 
-This package provides three sample theme engines for GTK+:
+gtk-engines provides a central location for commonly used GTK+ engines. 
 
- Pixmap: A generic engine that renders using pixmaps.
-   One theme using this theme engine is included.
+It currently supplies several engines and default themes for those which have one.
 
- Metal: A fairly complete theme engine that looks like the
-   Java-Metal look of Swing.
+1.) Crux - The engine created for the once popular theme by Eazel, Inc. Unfortunately long without maintainence it is no longer as popular or considered as useable as it once was.
 
- Redmond95: A simple theme engine that looks a bit like 
-   Microsoft Windows 95.
+2.) HC - The High Contrast engine is primarily targeted at Usability Themes, such as the GNOME a11y themes HighContrast HighContrastLarge etc.
+
+3.) Industrial - developed by Ximian, Inc. as the default apearance for its Desktop. Industrial is a highly popular look which provides a simple, consistant, and highly cohesive appearance for applications. 
+
+4.) LighthouseBlue - Developed by Jan Rosczak out of critques by Eugenia Loli-Queru over the BlueCurve theme Copyright RedHat Inc. LightHouseBlue Engine and theme experiments with certain concepts of usability such as Bold fonts on current notebook tabs. etc.
+
+5.) Metal - An engine and theme designed to mimic the Java Swing Metal apearance
+
+6.) Mist - A minimalist engine designed to provide simple UI experiance.
+
+7.) Redmond - An engine and theme designed to mimic the appearance of another OS
+
+8.) Thinice - A once highly popular engine with thin edges and theme of Icy Colors, providing a simple mostly clean apearance many find satisfying.
+
+9.) Smooth - An engine currently gaining in popularity for its ability to configure common theme elements with a high degree of flexibility, without sacrificing too much in terms of speed or theme footprint size.
 
 Requirements
 ============
 
 To compile this package, you must have:
 
- GTK+, version 1.3.12 or better
+ GTK+, version 2.6.0 or better
 
    http://www.gtk.org/
    ftp://ftp.gtk.org/pub/gtk/
@@ -49,27 +60,23 @@ Then you'd set:
  export GTK_PATH
 
 This will allow GTK+ to find the newly installed theme
-engines. To use the sample themes (installed into 
+engines. To use the default themes (installed into 
 $prefix/share/themes), you'll need to copy or link them 
 into your  ~/.themes directory.
 
-Further Information
-===================
+Purpose
+=======
 
-Questions about this package should be directed to the
-GTK+ mailing lists. See:
+gtk-engines exists currently to -
 
-  http://www.gtk.org/mailinglists.html
+1.) Provide a central place to maintain usefull but otherwise unmaintained engines
+2.) Provide a common point of dependency for desktop theme packages
+3.) Encourage the seperation of commonly used engines from themes
+4.) Provide a common way to get said engines seperate from any desktop
+5.) Ensure engine dependencies are simple so themes "Just Work" for the user
 
+It does NOT propose to always be synced with every engine maintained elsewhere, though it should be to a degree, it is instead up to package maintainers to ensure that where applicable gtk-engines depends on the latest packages of the official engines and skips included versions.
 
 ====
-Owen Taylor <otaylor@redhat.com>
-The Rasterman <raster@redhat.com>
-18 Jan 1999
-
-Owen Taylor <otaylor@redhat.com>
-23 Jan 2002
-
-All software in this package is Copyright (C) 1999-2002 Red Hat Software and
-Randy Gordon and is distributed under the LGPL License (same as gtk+)
-
+Andrew Johnson <ajgenius@ajgenius.us>
+Thomas Wood <thos@gnome.org>
