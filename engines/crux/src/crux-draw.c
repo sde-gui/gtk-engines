@@ -2041,6 +2041,8 @@ paint_check (GtkStyle *style,
 	       XXX checked, and checked-and-clicked states.. */
 	    if (active && state_type == GTK_STATE_ACTIVE)
 		state_type = GTK_STATE_NORMAL;
+	    else if (!has_focus && !active && state_type == GTK_STATE_ACTIVE)
+		state_type = GTK_STATE_NORMAL;
 	}
     }
 

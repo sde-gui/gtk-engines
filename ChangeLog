@@ -1,3 +1,8 @@
+2005-03-14  Thomas Wood  <thos@gnome.org>
+
+	* NEWS: Corrected
+	* engines/crux/src/crux-draw.c: (paint_check): fixes bug 170113
+
 2005-03-14  Andrew Johnson <ajgenius@ajgenius.us>
 
 	* COPYING:
@@ -29,6 +34,7 @@
 	* engines/smooth/src/utils/draw_arrows.c: (SmoothFreeArrowStyles):
 
 	try and work around potential memcpy overlap
+
 2005-03-11  Andrew Johnson  <ajgenius@ajgenius.us>
 
 	* engines/crux/src/config.h.in:
@@ -51,7 +57,7 @@
 	enabled dither pixbuf gradients by default for vertical/horizontal
 	gradients and use exponential memcpy's in block sizes of 2^n to
 	optimize number of steps used to draw vertical gradient lines.
-	
+
 2005-03-07  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:
@@ -66,6 +72,10 @@
 	
 	Sync with with latest smooth 0.6.0 fixes, closes bugs #167389 and
 	#163370
+
+2005-02-08  Thomas Wood  <thos@gnome.org>
+
+	* NEWS: Update for 2.6.1
 
 2005-02-03  William Jon McCann  <mccann@jhu.edu>
 
