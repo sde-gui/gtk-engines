@@ -1,9 +1,12 @@
 2000-02-13  Tor Lillqvist  <tml@iki.fi>
 
-	* makefile.cygwin: New file, for building on Windows without auto*
-	and libtool.
+	* makefile.cygwin: New file, for building with gcc on Windows
+	without auto* and libtool.
+	* makefile.msc: New file, for building with MSVC.
 
-	* Makefile.am (EXTRA_DIST): Distribute it.
+	* README.win32: New file.
+
+	* Makefile.am (EXTRA_DIST): Distribute the new files.
 
 Thu Feb  3 15:05:57 PST 2000 Manish Singh <yosh@gimp.org>
 
