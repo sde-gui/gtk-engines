@@ -2,7 +2,7 @@ AC_INIT(README)
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
 
-AM_INIT_AUTOMAKE(gtk-engines, 0.1)
+AM_INIT_AUTOMAKE(gtk-engines, 0.2)
 
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
@@ -27,7 +27,7 @@ AC_PROG_MAKE_SET
 dnl Initialize libtool
 AM_PROG_LIBTOOL
 
-AM_PATH_GTK(1.1.5, , 
+AM_PATH_GTK(1.1.13, , 
 	AC_MSG_ERROR([*** GTK 1.1 not installed - please install first ***]))
 AM_PATH_GDK_IMLIB(1.8, ,
         AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***]))

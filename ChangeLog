@@ -1,3 +1,7 @@
+Mon Jan 18 13:46:41 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Up version for an 0.2 release.
+
 Mon Jan 18 11:25:25 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Remove -lgdk, -lgtk, and -lglib from GDK_IMLIB_LIBS.
