@@ -2096,12 +2096,10 @@ get_tab_status (GtkNotebook *notebook,
 		int         *selected)
 {
   GtkWidget *label;
-  GList *list;
   int pos = 0;
   int border;
   int n_pages = g_list_length (notebook->children);
 
-  list = notebook->children;
   border = GTK_CONTAINER (notebook)->border_width;
 
   /* Find tab in notebook based on (x,y) position
@@ -2114,9 +2112,6 @@ get_tab_status (GtkNotebook *notebook,
       if (fuzzy_match (x, label->allocation.x, 5) &&
 	  fuzzy_match (y, label->allocation.y, 5))
 	break;
-
-      list = list->next;
-      pos++;
     }
 
   if (pos == n_pages)

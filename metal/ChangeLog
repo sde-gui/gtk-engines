@@ -1,5 +1,7 @@
 2002-04-19  jacob berkman  <jacob@ximian.com>
 
+	* metal_style.c (get_tab_status): cleanup a little to really fix
+	
 	* metal_style.c (get_tab_status): assign a variable before we use
 	it
 
