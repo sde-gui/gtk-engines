@@ -1780,18 +1780,23 @@ real_draw_box (GtkStyle      *style,
     GdkGC *fg_gc = get_gc (style, &style->bg[state_type], &style->fg[state_type], STANDARD_BORDER_SHADE);
     GdkColor *fg_color = get_color (style, &style->bg[state_type], &style->fg[state_type], STANDARD_BORDER_SHADE);
     GdkGC *corner_gc = get_gc (style, &style->bg[state_type], fg_color, SHADE_HALF);
-    int indicator_width;
+    int indicator_width, vline_x;
 
     draw_rounded_rect_two_pixel (window, bg_gc, fg_gc, corner_gc,
 				 area, x, y, width, height);
 
     indicator_width = option_menu_get_indicator_width (widget);
 
+    if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
+      vline_x = x + width - indicator_width - GET_XTHICKNESS(style) + 1;
+    else
+      vline_x = x + indicator_width + GET_XTHICKNESS(style) - 1;
+      
     gtk_paint_vline (style, window, state_type, area, widget,
 		     detail,
 		     y + GET_YTHICKNESS (style) + 4,
 		     y + height - GET_YTHICKNESS(style) - 4,
-		     x + width - indicator_width - GET_XTHICKNESS(style) + 1);
+		     vline_x);
   } else /* if (DETAIL("slider") ||
 	     DETAIL("stepper") ||
 	     DETAIL("vscrollbar") ||

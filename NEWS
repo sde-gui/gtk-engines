@@ -1,3 +1,22 @@
+Overview of Changes in 2.6.0 (since 2.2.0)
+==========================================
+* Autogen.sh updates [ James Henstridge ]
+* Pixbuf Engine Moved to GTK+ 2.6 [ Matthias Clasen ]
+* Remove old Pixbuf, and Notif Sources [ Thomas Wood ]
+* Add COPYING.GPL/COPYING.LGPL [ Thomas ]
+* Rewrite/Cleanup Redmond95 Engine [ Andrew Johnson ]
+* Replace Redmond95 Theme with Redmond Theme [ Andrew ]
+* Revise Engine/Theme Build Layout [ Andrew/Thomas ]
+* Add Crux Engine and Theme [ Andrew, Thomas ]
+* Add HC Engine [ Andrew, Thomas ]
+* Add Industrial Engine and Theme [ Andrew, Thomas]
+* Add LightHouseBlue Engine and Theme [ Andrew, Thomas ]
+* Add Mist Engine and Theme [ Andrew, Thomas ]
+* Add Smooth Engine [ Andrew, Thomas ]
+* Add ThinIce Engine and Theme [ Andrew, Thomas ]
+* Improve Smooth/Redmond/Industrial Engines for RTL Locales [ Andrew ]
+* Update README, add COPYING list of licences [ Andrew ]
+
 Overview of Changes in 2.2.0 (since 1.9.0)
 ==========================================
 * Add a .pc file [Seth Nickell]

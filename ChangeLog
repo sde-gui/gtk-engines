@@ -1,3 +1,17 @@
+2004-12-17  Andrew Johnson <ajgenius@ajgenius.us>
+
+	* AUTHORS:
+	Point to individual engines
+	
+	* MAINTAINERS:
+	Add initial Maintainers list
+	
+	* NEWS:
+	Add 2.6 News
+	
+	* engines/industrial/src/industrial_style.c: (real_draw_box):
+	Fix OptionMenu vertical line for RTL
+
 2004-12-16  Thomas Wood  <thos@gnome.org>
 
 	* themes/Industrial/gtk-2.0/gtkrc:
