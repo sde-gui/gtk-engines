@@ -1,6 +1,6 @@
 SUBDIRS = pixmaps
 
-INCLUDES = $(GTK_CFLAGS) -DDATADIR=\"$(datadir)/eazel-engine\"
+INCLUDES = $(GTK_CFLAGS) -DDATADIR=\"$(datadir)/themes/Crux/pixmaps\"
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 

@@ -109,9 +109,3 @@ crux_rc_style_create_style (GtkRcStyle *rc_style)
 {
   return GTK_STYLE (g_object_new (CRUX_TYPE_STYLE, NULL));
 }
-    
-
-
-
-
-

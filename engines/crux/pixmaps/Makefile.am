@@ -1,4 +1,4 @@
-imgdir = $(datadir)/eazel-engine
+imgdir = $(datadir)/themes/Crux/pixmaps
 
 img_DATA = \
 	arrow_down-spinner.png \
