@@ -19,7 +19,7 @@ pixmap_path ".:/home/raster/themes"
 
 style "default"
 {
-  font = "-*-helvetica-medium-r-normal--10-*-*-*-*-*-*-*"
+  font = "-*-helvetica-medium-r-normal--*-120-*-*-*-*-*-*"
   bg[NORMAL] = "#c0c0c0"
   bg[PRELIGHT] = "#c0c0c0"
   engine "redmond95" 

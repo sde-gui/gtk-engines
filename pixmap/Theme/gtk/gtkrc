@@ -478,7 +478,7 @@ class "GtkCurve" style "curve"
 
 style "default"
 {
-  font = "-*-helvetica-medium-r-normal--10-*-*-*-*-*-*-*"
+  font = "-*-helvetica-medium-r-normal--*-120-*-*-*-*-*-*"
   fg[NORMAL]      = { 0.00, 0.00, 0.00 }
   fg[PRELIGHT]    = { 0.25, 0.25, 0.25 }
   fg[ACTIVE]      = { 0.00, 0.00, 0.00 }
