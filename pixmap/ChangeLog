@@ -1,3 +1,8 @@
+1999-02-14  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Theme/gtk/Makefile.am.in (Makefile.am): Handle the case when
+	files are deleted.
+
 Thu Feb 11 21:16:53 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* pixmap_theme_main.c (theme_data_unref): Free the
