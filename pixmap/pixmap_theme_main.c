@@ -17,263 +17,74 @@ static struct
   }
 theme_symbols[] =
 {
-  {
-    "image", TOKEN_IMAGE
-  }
-  ,
-  {
-    "function", TOKEN_FUNCTION
-  }
-  ,
-  {
-    "file", TOKEN_FILE
-  }
-  ,
-  {
-    "stretch", TOKEN_STRETCH
-  }
-  ,
-  {
-    "recolorable", TOKEN_RECOLORABLE
-  }
-  ,
-  {
-    "border", TOKEN_BORDER
-  }
-  ,
-  {
-    "detail", TOKEN_DETAIL
-  }
-  ,
-  {
-    "state", TOKEN_STATE
-  }
-  ,
-  {
-    "shadow", TOKEN_SHADOW
-  }
-  ,
-  {
-    "gap_side", TOKEN_GAP_SIDE
-  }
-  ,
-  {
-    "gap_file", TOKEN_GAP_FILE
-  }
-  ,
-  {
-    "gap_border", TOKEN_GAP_BORDER
-  }
-  ,
-  {
-    "gap_start_file", TOKEN_GAP_START_FILE
-  }
-  ,
-  {
-    "gap_start_border", TOKEN_GAP_START_BORDER
-  }
-  ,
-  {
-    "gap_end_file", TOKEN_GAP_END_FILE
-  }
-  ,
-  {
-    "gap_end_border", TOKEN_GAP_END_BORDER
-  }
-  ,
-  {
-    "overlay_file", TOKEN_OVERLAY_FILE
-  }
-  ,
-  {
-    "overlay_border", TOKEN_OVERLAY_BORDER
-  }
-  ,
-  {
-    "overlay_stretch", TOKEN_OVERLAY_STRETCH
-  }
-  ,
-  {
-    "arrow_direction", TOKEN_ARROW_DIRECTION
-  }
-  ,
-  {
-    "orientation", TOKEN_ORIENTATION
-  }
-  ,
+  { "image", 		TOKEN_IMAGE  },
+  { "function", 	TOKEN_FUNCTION },
+  { "file", 		TOKEN_FILE },
+  { "stretch", 		TOKEN_STRETCH },
+  { "recolorable", 	TOKEN_RECOLORABLE },
+  { "border", 		TOKEN_BORDER },
+  { "detail", 		TOKEN_DETAIL },
+  { "state", 		TOKEN_STATE },
+  { "shadow", 		TOKEN_SHADOW },
+  { "gap_side", 	TOKEN_GAP_SIDE },
+  { "gap_file", 	TOKEN_GAP_FILE },
+  { "gap_border", 	TOKEN_GAP_BORDER },
+  { "gap_start_file", 	TOKEN_GAP_START_FILE },
+  { "gap_start_border", TOKEN_GAP_START_BORDER },
+  { "gap_end_file", 	TOKEN_GAP_END_FILE },
+  { "gap_end_border", 	TOKEN_GAP_END_BORDER },
+  { "overlay_file", 	TOKEN_OVERLAY_FILE },
+  { "overlay_border", 	TOKEN_OVERLAY_BORDER },
+  { "overlay_stretch", 	TOKEN_OVERLAY_STRETCH },
+  { "arrow_direction", 	TOKEN_ARROW_DIRECTION },
+  { "orientation", 	TOKEN_ORIENTATION },
 
-  {
-    "HLINE", TOKEN_D_HLINE
-  }
-  ,
-  {
-    "VLINE", TOKEN_D_VLINE
-  }
-  ,
-  {
-    "SHADOW", TOKEN_D_SHADOW
-  }
-  ,
-  {
-    "POLYGON", TOKEN_D_POLYGON
-  }
-  ,
-  {
-    "ARROW", TOKEN_D_ARROW
-  }
-  ,
-  {
-    "DIAMOND", TOKEN_D_DIAMOND
-  }
-  ,
-  {
-    "OVAL", TOKEN_D_OVAL
-  }
-  ,
-  {
-    "STRING", TOKEN_D_STRING
-  }
-  ,
-  {
-    "BOX", TOKEN_D_BOX
-  }
-  ,
-  {
-    "FLAT_BOX", TOKEN_D_FLAT_BOX
-  }
-  ,
-  {
-    "CHECK", TOKEN_D_CHECK
-  }
-  ,
-  {
-    "OPTION", TOKEN_D_OPTION
-  }
-  ,
-  {
-    "CROSS", TOKEN_D_CROSS
-  }
-  ,
-  {
-    "RAMP", TOKEN_D_RAMP
-  }
-  ,
-  {
-    "TAB", TOKEN_D_TAB
-  }
-  ,
-  {
-    "SHADOW_GAP", TOKEN_D_SHADOW_GAP
-  }
-  ,
-  {
-    "BOX_GAP", TOKEN_D_BOX_GAP
-  }
-  ,
-  {
-    "EXTENSION", TOKEN_D_EXTENSION
-  }
-  ,
-  {
-    "FOCUS", TOKEN_D_FOCUS
-  }
-  ,
-  {
-    "SLIDER", TOKEN_D_SLIDER
-  }
-  ,
-  {
-    "ENTRY", TOKEN_D_ENTRY
-  }
-  ,
-  {
-    "HANDLE", TOKEN_D_HANDLE
-  }
-  ,
+  { "HLINE", 		TOKEN_D_HLINE },
+  { "VLINE",		TOKEN_D_VLINE },
+  { "SHADOW",		TOKEN_D_SHADOW },
+  { "POLYGON",		TOKEN_D_POLYGON },
+  { "ARROW",		TOKEN_D_ARROW },
+  { "DIAMOND",		TOKEN_D_DIAMOND },
+  { "OVAL",		TOKEN_D_OVAL },
+  { "STRING",		TOKEN_D_STRING },
+  { "BOX",		TOKEN_D_BOX },
+  { "FLAT_BOX",		TOKEN_D_FLAT_BOX },
+  { "CHECK",		TOKEN_D_CHECK },
+  { "OPTION",		TOKEN_D_OPTION },
+  { "CROSS",		TOKEN_D_CROSS },
+  { "RAMP",		TOKEN_D_RAMP },
+  { "TAB",		TOKEN_D_TAB },
+  { "SHADOW_GAP",	TOKEN_D_SHADOW_GAP },
+  { "BOX_GAP",		TOKEN_D_BOX_GAP },
+  { "EXTENSION",	TOKEN_D_EXTENSION },
+  { "FOCUS",		TOKEN_D_FOCUS },
+  { "SLIDER",		TOKEN_D_SLIDER },
+  { "ENTRY",		TOKEN_D_ENTRY },
+  { "HANDLE",		TOKEN_D_HANDLE },
 
-  {
-    "TRUE", TOKEN_TRUE
-  }
-  ,
-  {
-    "FALSE", TOKEN_FALSE
-  }
-  ,
+  { "TRUE",		TOKEN_TRUE },
+  { "FALSE",		TOKEN_FALSE },
 
-  {
-    "TOP", TOKEN_TOP
-  }
-  ,
-  {
-    "UP", TOKEN_UP
-  }
-  ,
-  {
-    "BOTTOM", TOKEN_BOTTOM
-  }
-  ,
-  {
-    "DOWN", TOKEN_DOWN
-  }
-  ,
-  {
-    "LEFT", TOKEN_LEFT
-  }
-  ,
-  {
-    "RIGHT", TOKEN_RIGHT
-  }
-  ,
+  { "TOP",		TOKEN_TOP },
+  { "UP",		TOKEN_UP },
+  { "BOTTOM",		TOKEN_BOTTOM },
+  { "DOWN",		TOKEN_DOWN },
+  { "LEFT",		TOKEN_LEFT },
+  { "RIGHT",		TOKEN_RIGHT },
 
-  {
-    "NORMAL", TOKEN_NORMAL
-  }
-  ,
-  {
-    "ACTIVE", TOKEN_ACTIVE
-  }
-  ,
-  {
-    "PRELIGHT", TOKEN_PRELIGHT
-  }
-  ,
-  {
-    "SELECTED", TOKEN_SELECTED
-  }
-  ,
-  {
-    "INSENSITIVE", TOKEN_INSENSITIVE
-  }
-  ,
+  { "NORMAL",		TOKEN_NORMAL },
+  { "ACTIVE",		TOKEN_ACTIVE },
+  { "PRELIGHT",		TOKEN_PRELIGHT },
+  { "SELECTED",		TOKEN_SELECTED },
+  { "INSENSITIVE",	TOKEN_INSENSITIVE },
 
-  {
-    "NONE", TOKEN_NONE
-  }
-  ,
-  {
-    "IN", TOKEN_IN
-  }
-  ,
-  {
-    "OUT", TOKEN_OUT
-  }
-  ,
-  {
-    "ETCHED_IN", TOKEN_ETCHED_IN
-  }
-  ,
-  {
-    "ETCHED_OUT", TOKEN_ETCHED_OUT
-  }
-  ,
-  {
-    "HORIZONTAL", TOKEN_HORIZONTAL
-  }
-  ,
-  {
-    "VERTICAL", TOKEN_VERTICAL
-  }
-  ,
+  { "NONE",		TOKEN_NONE },
+  { "IN",		TOKEN_IN },
+  { "OUT",		TOKEN_OUT },
+  { "ETCHED_IN",	TOKEN_ETCHED_IN },
+  { "ETCHED_OUT",	TOKEN_ETCHED_OUT },
+  { "HORIZONTAL",	TOKEN_HORIZONTAL },
+  { "VERTICAL",		TOKEN_VERTICAL },
 };
 
 static guint        n_theme_symbols = sizeof(theme_symbols) / sizeof(theme_symbols[0]);
@@ -888,13 +699,13 @@ theme_parse_gap_side(GScanner * scanner,
   token = g_scanner_get_next_token(scanner);
 
   if (token == TOKEN_TOP)
-    data->gap_side = 0;
+    data->gap_side = GTK_POS_TOP;
   else if (token == TOKEN_BOTTOM)
-    data->gap_side = 1;
+    data->gap_side = GTK_POS_BOTTOM;
   else if (token == TOKEN_LEFT)
-    data->gap_side = 2;
+    data->gap_side = GTK_POS_LEFT;
   else if (token == TOKEN_RIGHT)
-    data->gap_side = 3;
+    data->gap_side = GTK_POS_RIGHT;
   else
     return TOKEN_TOP;
 
@@ -1209,10 +1020,9 @@ static void
 theme_merge_rc_style(GtkRcStyle * dest,
 		     GtkRcStyle * src)
 {
-  GList *dest_images;
-  
   ThemeData        *src_data = src->engine_data;
   ThemeData        *dest_data = dest->engine_data;
+  GList *tmp_list1, *tmp_list2;
 
   if (!dest_data)
     {
@@ -1224,28 +1034,30 @@ theme_merge_rc_style(GtkRcStyle * dest,
 
   if (src_data->img_list)
     {
-      GList *tmp_list1, *tmp_list2;
-      GList *dest_images = dest_data->img_list;
-      
-      /* Copy src image list and prepend to dest image list */
+      /* Copy src image list and append to dest image list */
 
-      dest_data->img_list = g_list_append (NULL, src_data->img_list->data);
-      theme_data_ref (src_data->img_list->data);
-      tmp_list2 = dest_data->img_list;
-      tmp_list1 = src_data->img_list->next;
+      tmp_list2 = g_list_last (dest_data->img_list);
+      tmp_list1 = src_data->img_list;
       
       while (tmp_list1)
 	{
- 	  tmp_list2->next = g_list_alloc();
-	  tmp_list2->next->data = tmp_list1->data;
-	  theme_data_ref (tmp_list1->data);
-	  tmp_list2->next->prev = tmp_list2;
+	  if (tmp_list2)
+	    {
+	      tmp_list2->next = g_list_alloc();
+	      tmp_list2->next->data = tmp_list1->data;
+	      tmp_list2->next->prev = tmp_list2;
 
-	  tmp_list2 = tmp_list2->next;
+	      tmp_list2 = tmp_list2->next;
+	    }
+	  else
+	    {
+	      dest_data->img_list = g_list_append (NULL, tmp_list1->data);
+	      tmp_list2 = dest_data->img_list;
+	    }
+	  
+	  theme_data_ref (tmp_list1->data);
 	  tmp_list1 = tmp_list1->next;
 	}
-
-      tmp_list2->next = dest_images;
     }
 }
 

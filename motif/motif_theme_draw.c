@@ -176,7 +176,7 @@ static void         draw_shadow_gap(GtkStyle * style,
 				    gint y,
 				    gint width,
 				    gint height,
-				    gint gap_side,
+				    GtkPositionType gap_side,
 				    gint gap_x,
 				    gint gap_width);
 static void         draw_box_gap(GtkStyle * style,
@@ -190,7 +190,7 @@ static void         draw_box_gap(GtkStyle * style,
 				 gint y,
 				 gint width,
 				 gint height,
-				 gint gap_side,
+				 GtkPositionType gap_side,
 				 gint gap_x,
 				 gint gap_width);
 static void         draw_extension(GtkStyle * style,
@@ -204,7 +204,7 @@ static void         draw_extension(GtkStyle * style,
 				   gint y,
 				   gint width,
 				   gint height,
-				   gint gap_side);
+				   GtkPositionType gap_side);
 static void         draw_focus(GtkStyle * style,
 			       GdkWindow * window,
 			       GdkRectangle * area,
@@ -226,16 +226,6 @@ static void         draw_slider(GtkStyle * style,
 				gint width,
 				gint height,
 				GtkOrientation orientation);
-static void         draw_entry(GtkStyle * style,
-			       GdkWindow * window,
-			       GtkStateType state_type,
-			       GdkRectangle * area,
-			       GtkWidget * widget,
-			       gchar * detail,
-			       gint x,
-			       gint y,
-			       gint width,
-			       gint height);
 static void         draw_handle(GtkStyle * style,
 				GdkWindow * window,
 				GtkStateType state_type,
@@ -275,7 +265,6 @@ GtkStyleClass       motif_default_class =
   draw_extension,
   draw_focus,
   draw_slider,
-  draw_entry,
   draw_handle
 };
 
@@ -1280,8 +1269,6 @@ draw_flat_box(GtkStyle * style,
 
   gc1 = style->bg_gc[state_type];
 
-  if ((detail) && (!strcmp("selected", detail)))
-    gc1 = style->bg_gc[GTK_STATE_SELECTED];
   if ((detail) && (!strcmp("text", detail)) && (state_type == GTK_STATE_SELECTED))
     gc1 = style->bg_gc[GTK_STATE_SELECTED];
   else if ((detail) && (!strcmp("viewportbin", detail)))
@@ -1408,7 +1395,7 @@ draw_shadow_gap(GtkStyle * style,
 		gint y,
 		gint width,
 		gint height,
-		gint gap_side,
+		GtkPositionType gap_side,
 		gint gap_x,
 		gint gap_width)
 {
@@ -1420,37 +1407,32 @@ draw_shadow_gap(GtkStyle * style,
   gtk_paint_shadow(style, window, state_type, shadow_type, area, widget, detail,
 		   x, y, width, height);
 
-  if (gap_side == 0)
-    /* top */
+  switch (gap_side)
     {
+    case GTK_POS_TOP:
       rect.x = x + gap_x;
       rect.y = y;
       rect.width = gap_width;
       rect.height = 2;
-    }
-  else if (gap_side == 1)
-    /* bottom */
-    {
+      break;
+    case GTK_POS_BOTTOM:
       rect.x = x + gap_x;
       rect.y = y + height - 2;
       rect.width = gap_width;
       rect.height = 2;
-    }
-  else if (gap_side == 2)
-    /* left */
-    {
+      break;
+    case GTK_POS_LEFT:
       rect.x = x;
       rect.y = y + gap_x;
       rect.width = 2;
       rect.height = gap_width;
-    }
-  else if (gap_side == 3)
-    /* right */
-    {
+      break;
+    case GTK_POS_RIGHT:
       rect.x = x + width - 2;
       rect.y = y + gap_x;
       rect.width = 2;
       rect.height = gap_width;
+      break;
     }
 
   gtk_style_apply_default_pixmap(style, window, state_type, area,
@@ -1469,7 +1451,7 @@ draw_box_gap(GtkStyle * style,
 	     gint y,
 	     gint width,
 	     gint height,
-	     gint gap_side,
+	     GtkPositionType gap_side,
 	     gint gap_x,
 	     gint gap_width)
 {
@@ -1481,37 +1463,32 @@ draw_box_gap(GtkStyle * style,
   gtk_paint_box(style, window, state_type, shadow_type, area, widget, detail,
 		x, y, width, height);
 
-  if (gap_side == 0)
-    /* top */
+  switch (gap_side)
     {
+    case GTK_POS_TOP:
       rect.x = x + gap_x;
       rect.y = y;
       rect.width = gap_width;
       rect.height = 2;
-    }
-  else if (gap_side == 1)
-    /* bottom */
-    {
+      break;
+    case GTK_POS_BOTTOM:
       rect.x = x + gap_x;
       rect.y = y + height - 2;
       rect.width = gap_width;
       rect.height = 2;
-    }
-  else if (gap_side == 2)
-    /* left */
-    {
+      break;
+    case GTK_POS_LEFT:
       rect.x = x;
       rect.y = y + gap_x;
       rect.width = 2;
       rect.height = gap_width;
-    }
-  else if (gap_side == 3)
-    /* right */
-    {
+      break;
+    case GTK_POS_RIGHT:
       rect.x = x + width - 2;
       rect.y = y + gap_x;
       rect.width = 2;
       rect.height = gap_width;
+      break;
     }
 
   gtk_style_apply_default_pixmap(style, window, state_type, area,
@@ -1530,7 +1507,7 @@ draw_extension(GtkStyle * style,
 	       gint y,
 	       gint width,
 	       gint height,
-	       gint gap_side)
+	       GtkPositionType gap_side)
 {
   GdkRectangle        rect;
 
@@ -1540,37 +1517,32 @@ draw_extension(GtkStyle * style,
   gtk_paint_box(style, window, state_type, shadow_type, area, widget, detail,
 		x, y, width, height);
 
-  if (gap_side == 0)
-    /* top */
+  switch (gap_side)
     {
+    case GTK_POS_TOP:
       rect.x = x + style->klass->xthickness;
       rect.y = y;
       rect.width = width - style->klass->xthickness * 2;
       rect.height = style->klass->ythickness;
-    }
-  else if (gap_side == 1)
-    /* bottom */
-    {
+      break;
+    case GTK_POS_BOTTOM:
       rect.x = x + style->klass->xthickness;
       rect.y = y + height - style->klass->ythickness;
       rect.width = width - style->klass->xthickness * 2;
       rect.height = style->klass->ythickness;
-    }
-  else if (gap_side == 2)
-    /* left */
-    {
+      break;
+    case GTK_POS_LEFT:
       rect.x = x;
       rect.y = y + style->klass->ythickness;
       rect.width = style->klass->xthickness;
       rect.height = height - style->klass->ythickness * 2;
-    }
-  else if (gap_side == 3)
-    /* right */
-    {
+      break;
+    case GTK_POS_RIGHT:
       rect.x = x + width - style->klass->xthickness;
       rect.y = y + style->klass->ythickness;
       rect.width = style->klass->xthickness;
       rect.height = height - style->klass->ythickness * 2;
+      break;
     }
 
   gtk_style_apply_default_pixmap(style, window, state_type, area,
@@ -1654,54 +1626,6 @@ draw_slider(GtkStyle * style,
     draw_hline(style, window, state_type, area, widget, detail,
 	       style->klass->xthickness,
 	       width - style->klass->xthickness - 1, height / 2);
-}
-
-static void
-draw_entry(GtkStyle * style,
-	   GdkWindow * window,
-	   GtkStateType state_type,
-	   GdkRectangle * area,
-	   GtkWidget * widget,
-	   gchar * detail,
-	   gint x,
-	   gint y,
-	   gint width,
-	   gint height)
-{
-  g_return_if_fail(style != NULL);
-  g_return_if_fail(window != NULL);
-
-  if ((width == -1) && (height == -1))
-    gdk_window_get_size(window, &width, &height);
-  else if (width == -1)
-    gdk_window_get_size(window, &width, NULL);
-  else if (height == -1)
-    gdk_window_get_size(window, NULL, &height);
-
-  if (area)
-    gdk_gc_set_clip_rectangle(style->base_gc[state_type], area);
-  if (!strcmp("selected", detail))
-    {
-      gdk_draw_rectangle(window,
-			 style->bg_gc[state_type],
-			 TRUE,
-			 x, y,
-			 width,
-			 height);
-    }
-  else
-    {
-      if (area)
-	gdk_gc_set_clip_rectangle(style->base_gc[state_type], area);
-      gdk_draw_rectangle(window,
-			 style->base_gc[state_type],
-			 TRUE,
-			 x, y,
-			 width,
-			 height);
-      if (area)
-	gdk_gc_set_clip_rectangle(style->base_gc[state_type], NULL);
-    }
 }
 
 static void

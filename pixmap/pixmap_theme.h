@@ -99,7 +99,7 @@ struct theme_image
     GdkImlibBorder      gap_end_border;
     
     gchar               __gap_side;
-    gint                gap_side;
+    GtkPositionType     gap_side;
     gchar               __orientation;
     GtkOrientation      orientation;
     gchar               __state;

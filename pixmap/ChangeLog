@@ -1,0 +1,16 @@
+Thu Nov  5 10:23:46 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* pixmap_theme_draw.c (draw_shadow_gap): Fixed hard-coded
+	gap_side of '0'.
+
+Mon Nov  2 14:46:02 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* pixmap_theme_draw.c (apply_theme_image_shadow_gap): Removed
+	several hundred lines of duplicated code with a bit of
+	reoriganization.
+
+Wed Oct 28 16:18:04 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* pixmap_theme_main.c (theme_symbols): Removed lots
+	and lots of white space.
+

@@ -1,5 +1,5 @@
 SUBDIRS = Theme
-CFLAGS = $(GTK_CFLAGS) $(GDK_IMLIB_CFLAGS)
+INCLUDES = $(GTK_CFLAGS) $(GDK_IMLIB_CFLAGS)
 LIBS = $(GTK_LIBS) $(GDK_IMLIB_LIBS)
 enginedir = $(libdir)/gtk/themes/engines
 
