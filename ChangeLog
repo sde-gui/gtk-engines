@@ -1,3 +1,7 @@
+Sun Apr 21 09:52:54 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Version 1.9.0
+
 Sat Jan 19 20:42:11 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* raleigh/**: Remove engine, it's now the GTK+ default.
