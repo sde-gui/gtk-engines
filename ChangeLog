@@ -1,3 +1,8 @@
+2005-01-29  Thomas Wood  <thos@gnome.org>
+
+	* NEWS: Updated
+	* configure.ac: Change version to 2.6.1
+
 2005-01-28  Thomas Wood  <thos@gnome.org>
 
 	* engines/smooth/Makefile.am: Fix bug 162131 (Enable building outside of srcdir)

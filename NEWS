@@ -1,5 +1,11 @@
 Overview of Changes in 2.6.0 (since 2.2.0)
 ==========================================
+* Fix bugs 162131, 163099 [ Thomas Wood ]
+* Smooth updates [ Andrew Johnson ]
+
+
+Overview of Changes in 2.6.0 (since 2.2.0)
+==========================================
 * Autogen.sh updates [ James Henstridge ]
 * Pixbuf Engine Moved to GTK+ 2.6 [ Matthias Clasen ]
 * Remove old Pixbuf, and Notif Sources [ Thomas Wood ]
