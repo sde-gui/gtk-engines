@@ -1490,20 +1490,20 @@ metal_scale_trough (GtkStyle * style,
   if (GTK_CHECK_TYPE (widget, gtk_hscale_get_type ()))
     {
       /* Draw backgound */
-      gdk_draw_rectangle (window, midgc, TRUE, x, y + 4, width - 2, 9);
+      gdk_draw_rectangle (window, midgc, TRUE, x, y + 3, width - 2, 9);
 
       /* Draw border */
-      gdk_draw_rectangle (window, darkgc, FALSE, x, y + 4, width - 2, 7);
-      gdk_draw_rectangle (window, whitegc, FALSE, x + 1, y + 5, width - 2, 7);
+      gdk_draw_rectangle (window, darkgc, FALSE, x, y + 3, width - 2, 7);
+      gdk_draw_rectangle (window, whitegc, FALSE, x + 1, y + 4, width - 2, 7);
     }
   else
     {
       /* Draw backgound */
-      gdk_draw_rectangle (window, midgc, TRUE, x + 4, y, 9, height - 2);
+      gdk_draw_rectangle (window, midgc, TRUE, x + 3, y, 9, height - 2);
 
       /* Draw border */
-      gdk_draw_rectangle (window, darkgc, FALSE, x + 4, y, 7, height - 2);
-      gdk_draw_rectangle (window, whitegc, FALSE, x + 5, y + 1, 7, height - 2);
+      gdk_draw_rectangle (window, darkgc, FALSE, x + 3, y, 7, height - 2);
+      gdk_draw_rectangle (window, whitegc, FALSE, x + 4, y + 1, 7, height - 2);
     }
 
   /* Reset Clip Region */
@@ -1530,7 +1530,6 @@ metal_scale_slider (GtkStyle * style,
 		    gint height,
 		    GtkOrientation orientation)
 {
-  MetalStyle *metal_style = METAL_STYLE (style);
   GdkPixmap *pm;
   GdkGC *fillgc;
   GdkGCValues values;
@@ -1544,6 +1543,18 @@ metal_scale_slider (GtkStyle * style,
   whitegc = style->white_gc;
   blackgc = style->black_gc;
 
+#if 1
+  /* Create pixmap for drawing textured surface; we need to do this before
+   * setting the clip.
+   */
+  pm = gdk_pixmap_new (window, 4, 4, -1);
+  
+  gdk_draw_rectangle (pm, midgc, TRUE, 0, 0, 4, 4);
+  gdk_draw_point (pm, darkgc, 0, 0);
+  gdk_draw_point (pm, lightgc, 1, 1);
+  gdk_draw_point (pm, darkgc, 2, 2);
+  gdk_draw_point (pm, lightgc, 3, 3);
+
   /* Set Clip Region */
   if (area)
     {
@@ -1551,19 +1562,18 @@ metal_scale_slider (GtkStyle * style,
       gdk_gc_set_clip_rectangle (midgc, area);
       gdk_gc_set_clip_rectangle (darkgc, area);
       gdk_gc_set_clip_rectangle (whitegc, area);
+#if 0      
       gdk_gc_set_clip_rectangle (blackgc, area);
       gdk_gc_set_clip_rectangle (metal_style->light_gray_gc, area);
+#endif
     }
 
-#if 1
   /* Draw backgound */
   gdk_draw_rectangle (window, midgc, TRUE, x, y, width, height);
 
   /* Draw border */
-  gdk_draw_rectangle (window, lightgc, FALSE, x + 1, y + 1, x + width - 2, y
-		      + height - 2);
-  gdk_draw_rectangle (window, darkgc, FALSE, x + 0, y + 0, x + width - 2, y
-		      + height - 2);
+  gdk_draw_rectangle (window, lightgc, FALSE, x + 1, y + 1, width - 2, height - 2);
+  gdk_draw_rectangle (window, darkgc, FALSE, x + 0, y + 0,  width - 2, height - 2);
   if (GTK_CHECK_TYPE (widget, gtk_hscale_get_type ()))
     {
       gdk_draw_line (window, whitegc, x + 0, y + height - 1, x + width - 1,
@@ -1578,16 +1588,7 @@ metal_scale_slider (GtkStyle * style,
       gdk_draw_line (window, midgc, x + 0, y + height - 1, x + width - 2, y
 		     + height - 1);
     }
-
   /* Draw textured surface */
-  pm = gdk_pixmap_new (window, 4, 4, -1);
-
-  gdk_draw_rectangle (pm, midgc, TRUE, 0, 0, 4, 4);
-  gdk_draw_point (pm, darkgc, 0, 0);
-  gdk_draw_point (pm, lightgc, 1, 1);
-  gdk_draw_point (pm, darkgc, 2, 2);
-  gdk_draw_point (pm, lightgc, 3, 3);
-
   values.fill = GDK_TILED;
   values.ts_x_origin = x + 5;
   values.ts_y_origin = y + 3;
@@ -1792,8 +1793,10 @@ metal_scale_slider (GtkStyle * style,
       gdk_gc_set_clip_rectangle (midgc, NULL);
       gdk_gc_set_clip_rectangle (darkgc, NULL);
       gdk_gc_set_clip_rectangle (whitegc, NULL);
+#if 0      
       gdk_gc_set_clip_rectangle (blackgc, NULL);
       gdk_gc_set_clip_rectangle (metal_style->light_gray_gc, NULL);
+#endif      
     }
 }
 /**************************************************************************/

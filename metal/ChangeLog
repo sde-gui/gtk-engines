@@ -1,3 +1,11 @@
+Wed Mar 17 16:23:30 2004  Owen Taylor  <otaylor@redhat.com>
+
+	* metal_style.c (metal_scale_slider): Fix problem with
+	clipping when creating the tile pixmap. (#107340)
+
+	* metal_style.c (metal_scale_trough): Center the "slot"
+	better.
+
 2004-01-21  Anders Carlsson  <andersca@gnome.org>
 
 	* Theme/gtk-2.0/gtkrc: Remove font from gtkrc,
