@@ -1,4 +1,4 @@
-SUBDIRS = engines metal themes
+SUBDIRS = engines themes
 
 EXTRA_DIST = \
 	autogen.sh	\
@@ -6,9 +6,7 @@ EXTRA_DIST = \
 	COPYING.LGPL	\
 	gtk-engines-2.pc.in \
 	gtk-engines.spec.in \
-	gtk-engines.spec \
-	makefile.msc \
-	README.win32
+	gtk-engines.spec
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = gtk-engines-2.pc

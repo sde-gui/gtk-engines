@@ -19,30 +19,60 @@
  * Written by Owen Taylor <otaylor@redhat.com>
  */
 
-#include <gtk/gtkrc.h>
-
-typedef struct _MetalRcStyle MetalRcStyle;
-typedef struct _MetalRcStyleClass MetalRcStyleClass;
-
+#include <gmodule.h>
+#include <gtk/gtk.h>
+ 
+/*****************************/
+/* RC Style Declaration      */
+/*****************************/
 extern GType metal_type_rc_style;
-
+ 
 #define METAL_TYPE_RC_STYLE              metal_type_rc_style
 #define METAL_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), METAL_TYPE_RC_STYLE, MetalRcStyle))
 #define METAL_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), METAL_TYPE_RC_STYLE, MetalRcStyleClass))
 #define METAL_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), METAL_TYPE_RC_STYLE))
 #define METAL_IS_RC_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), METAL_TYPE_RC_STYLE))
 #define METAL_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), METAL_TYPE_RC_STYLE, MetalRcStyleClass))
-
-struct _MetalRcStyle
+ 
+typedef struct
 {
   GtkRcStyle parent_instance;
-  
+ 
   GList *img_list;
-};
-
-struct _MetalRcStyleClass
+} MetalRcStyle;
+ 
+typedef struct
 {
   GtkRcStyleClass parent_class;
-};
+} MetalRcStyleClass;
+ 
+/*****************************/
+/* Drawing Style Declaration */
+/*****************************/
+extern GType metal_type_style;
+extern GtkStyleClass *parent_class;
+ 
+#define METAL_TYPE_STYLE              metal_type_style
+#define METAL_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), METAL_TYPE_STYLE, MetalStyle))
+#define METAL_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), METAL_TYPE_STYLE, MetalStyleClass))
+#define METAL_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), METAL_TYPE_STYLE))
+#define METAL_IS_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), METAL_TYPE_STYLE))
+#define METAL_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), METAL_TYPE_STYLE, MetalStyleClass))
+ 
+typedef struct
+{
+  GtkStyle parent_instance;
 
-void metal_rc_style_register_type (GTypeModule *module);
+  GdkColor light_gray;
+  GdkColor mid_gray;
+  GdkColor dark_gray;
+  
+  GdkGC *light_gray_gc;
+  GdkGC *mid_gray_gc;
+  GdkGC *dark_gray_gc;
+} MetalStyle;
+ 
+typedef struct
+{
+  GtkStyleClass parent_class;
+} MetalStyleClass;

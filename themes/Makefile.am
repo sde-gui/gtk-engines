@@ -1,1 +1,1 @@
-SUBDIRS = Redmond Crux
+SUBDIRS = Crux Industrial Metal Redmond

@@ -1,10 +1,6 @@
-#include <math.h>
-#include <string.h>
-#include <gtk/gtk.h>
-#include "metal_style.h"
-
-
-#define DETAIL(xx)   ((detail) && (!strcmp(xx, detail)))
+#include "metal_gtk2_engine.h"
+#include "metal_gtk2_drawing.h"
+#include "metal_gtk2_misc.h"
 
 /**************************************************************************
 * GTK Metal Theme
@@ -22,156 +18,8 @@
 *
 **************************************************************************/
 
-static void draw_box               (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static gboolean sanitize_size      (GdkWindow      *window,
-				    gint           *width,
-				    gint           *height);
-static void metal_arrow            (GdkWindow      *window,
-				    GtkWidget      *widget,
-				    GdkGC          *gc,
-				    GtkArrowType    arrow_type,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static void metal_scrollbar_trough (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static void metal_scrollbar_slider (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static void metal_scale_trough     (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static void metal_scale_slider     (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height,
-				    GtkOrientation  orientation);
-static void metal_menu             (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static void metal_menu_item        (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static void metal_notebook         (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static void metal_tab              (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-static gboolean is_first_tab       (GtkNotebook    *notebook,
-				    gint             x,
-				    gint             y);
-static void metal_button           (GtkStyle       *style,
-				    GdkWindow      *window,
-				    GtkStateType    state_type,
-				    GtkShadowType   shadow_type,
-				    GdkRectangle   *area,
-				    GtkWidget      *widget,
-				    const gchar    *detail,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
-
-static GtkStyleClass *parent_class;
-
-static gboolean 
-sanitize_size (GdkWindow      *window,
-	       gint           *width,
-	       gint           *height)
-{
-  gboolean set_bg = FALSE;
-
-  if ((*width == -1) && (*height == -1))
-    {
-      set_bg = GDK_IS_WINDOW (window);
-      gdk_window_get_size (window, width, height);
-    }
-  else if (*width == -1)
-    gdk_window_get_size (window, width, NULL);
-  else if (*height == -1)
-    gdk_window_get_size (window, NULL, height);
-
-  return set_bg;
-}
-
-static void
-draw_hline (GtkStyle * style,
+void
+metal_draw_hline (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
 	    GdkRectangle * area,
@@ -186,8 +34,7 @@ draw_hline (GtkStyle * style,
   gint i;
   GdkGC *lightgc, *darkgc;
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
 
   thickness_light = style->ythickness / 2;
   thickness_dark = style->ythickness - thickness_light;
@@ -223,8 +70,8 @@ draw_hline (GtkStyle * style,
     }
 }
 /**************************************************************************/
-static void
-draw_vline (GtkStyle * style,
+void
+metal_draw_vline (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
 	    GdkRectangle * area,
@@ -239,8 +86,7 @@ draw_vline (GtkStyle * style,
   gint i;
   GdkGC *lightgc, *darkgc;
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
 
   thickness_light = style->xthickness / 2;
   thickness_dark = style->xthickness - thickness_light;
@@ -277,8 +123,8 @@ draw_vline (GtkStyle * style,
     }
 }
 /**************************************************************************/
-static void
-draw_shadow (GtkStyle     *style,
+void
+metal_draw_shadow (GtkStyle     *style,
 	     GdkWindow    *window,
 	     GtkStateType  state_type,
 	     GtkShadowType shadow_type,
@@ -299,35 +145,27 @@ draw_shadow (GtkStyle     *style,
   gint thickness_dark;
   gint i;
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
 /* return; */
 #if DEBUG
-  printf ("draw_shadow: %p %p %s %i %i %i %i\n", widget, window, detail, x,
+  printf ("metal_draw_shadow: %p %p %s %i %i %i %i\n", widget, window, detail, x,
 	  y, width, height);
 #endif
 
   if (shadow_type == GTK_SHADOW_NONE)
     return;
 
-  if ((width == -1) && (height == -1))
-    gdk_window_get_size (window, &width, &height);
-  else if (width == -1)
-    gdk_window_get_size (window, &width, NULL);
-  else if (height == -1)
-    gdk_window_get_size (window, NULL, &height);
-
   /* Override shadow-type for Metal button */
-  if (DETAIL ("button") || DETAIL ("buttondefault"))
+  if (CHECK_DETAIL(detail, "button") || CHECK_DETAIL(detail, "buttondefault"))
     shadow_type = GTK_SHADOW_ETCHED_IN;
-  if (DETAIL ("optionmenu"))
+  if (CHECK_DETAIL(detail, "optionmenu"))
     shadow_type = GTK_SHADOW_ETCHED_IN;
-  if (DETAIL ("handlebox_bin"))
+  if (CHECK_DETAIL(detail, "handlebox_bin"))
     shadow_type = GTK_SHADOW_ETCHED_IN;
 
   /* Short-circuit some metal styles for now */
-  if (DETAIL ("frame"))
+  if (CHECK_DETAIL(detail, "frame"))
     {
       gc1 = style->dark_gc[state_type];
       if (area)
@@ -337,7 +175,7 @@ draw_shadow (GtkStyle     *style,
 	gdk_gc_set_clip_rectangle (gc1, NULL);
       return;			/* tbd */
     }
-  if (DETAIL ("optionmenutab"))
+  if (CHECK_DETAIL(detail, "optionmenutab"))
     {
       gc1 = style->black_gc;
       if (area)
@@ -494,8 +332,8 @@ draw_shadow (GtkStyle     *style,
     }
 }
 /**************************************************************************/
-static void
-draw_polygon (GtkStyle * style,
+void
+metal_draw_polygon (GtkStyle * style,
 	      GdkWindow * window,
 	      GtkStateType state_type,
 	      GtkShadowType shadow_type,
@@ -506,15 +344,7 @@ draw_polygon (GtkStyle * style,
 	      gint npoints,
 	      gint fill)
 {
-#ifndef M_PI
-#define M_PI    3.14159265358979323846
-#endif /* M_PI */
-#ifndef M_PI_4
-#define M_PI_4  0.78539816339744830962
-#endif /* M_PI_4 */
-
-  static const gdouble pi_over_4 = M_PI_4;
-  static const gdouble pi_3_over_4 = M_PI_4 * 3;
+  static const gdouble pi_3_over_4 = G_PI_4 * 3;
 
   GdkGC *gc1;
   GdkGC *gc2;
@@ -525,12 +355,11 @@ draw_polygon (GtkStyle * style,
   gint yadjust;
   gint i;
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
   g_return_if_fail (points != NULL);
 
 #if DEBUG
-  printf ("draw_polygon: %p %p %s\n", widget, window, detail);
+  printf ("metal_draw_polygon: %p %p %s\n", widget, window, detail);
 #endif
 
   switch (shadow_type)
@@ -589,9 +418,9 @@ draw_polygon (GtkStyle * style,
 			 points[i + 1].x - points[i].x);
 	}
 
-      if ((angle > -pi_3_over_4) && (angle < pi_over_4))
+      if ((angle > -pi_3_over_4) && (angle < M_PI_4))
 	{
-	  if (angle > -pi_over_4)
+	  if (angle > -M_PI_4)
 	    {
 	      xadjust = 0;
 	      yadjust = 1;
@@ -639,7 +468,7 @@ draw_polygon (GtkStyle * style,
     }
 }
 
-static void
+void
 scrollbar_stepper (GtkStyle     *style,
 		   GdkWindow    *window,
 		   GtkStateType  state_type,
@@ -706,53 +535,9 @@ scrollbar_stepper (GtkStyle     *style,
   gdk_gc_set_clip_rectangle (style->white_gc, NULL);
 }
 
-/* This function makes up for some brokeness in gtkrange.c
- * where we never get the full arrow of the stepper button
- * and the type of button in a single drawing function.
- *
- * It doesn't work correctly when the scrollbar is squished
- * to the point we don't have room for full-sized steppers.
- */
-static void
-reverse_engineer_stepper_box (GtkWidget    *range,
-			      GtkArrowType  arrow_type,
-			      gint         *x,
-			      gint         *y,
-			      gint         *width,
-			      gint         *height)
-{
-  gint slider_width = 17, stepper_size = 15;
-  gint box_width;
-  gint box_height;
-  
-  if (range)
-    {
-      gtk_widget_style_get (range,
-			    "slider_width", &slider_width,
-			    "stepper_size", &stepper_size,
-			    NULL);
-    }
-	
-  if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
-    {
-      box_width = slider_width;
-      box_height = stepper_size;
-    }
-  else
-    {
-      box_width = stepper_size;
-      box_height = slider_width;
-    }
-
-  *x = *x - (box_width - *width) / 2;
-  *y = *y - (box_height - *height) / 2;
-  *width = box_width;
-  *height = box_height;
-}
-
 /**************************************************************************/
-static void
-draw_arrow (GtkStyle * style,
+void
+metal_draw_arrow (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
 	    GtkShadowType shadow_type,
@@ -767,19 +552,15 @@ draw_arrow (GtkStyle * style,
 	    gint height)
 {
   GdkGC *gc;
-  gboolean set_bg;
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
-
-  set_bg = sanitize_size (window, &width, &height);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
   
   gc = style->black_gc;
 
-  if (DETAIL ("menuitem"))
+  if (CHECK_DETAIL(detail, "menuitem"))
     gc = style->fg_gc[state_type];
 
-  if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar"))
+  if (CHECK_DETAIL(detail, "hscrollbar") || CHECK_DETAIL(detail, "vscrollbar"))
     {
       /* We need to restore the full area of the entire box,
        * not just the restricted area of the stepper.
@@ -796,7 +577,7 @@ draw_arrow (GtkStyle * style,
       width -= 9;
       height -= 9;
     }
-  else if (DETAIL ("spinbutton"))
+  else if (CHECK_DETAIL(detail, "spinbutton"))
     {
       x += 2;
       width -= 4;
@@ -805,86 +586,14 @@ draw_arrow (GtkStyle * style,
   if (area)
     gdk_gc_set_clip_rectangle (gc, area);
 
-  metal_arrow (window, widget, gc, arrow_type, x, y, width, height);
+  do_metal_draw_arrow (window, widget, gc, arrow_type, x, y, width, height);
 
   if (area)
     gdk_gc_set_clip_rectangle (gc, NULL);
 }
 /**************************************************************************/
-static void
-metal_arrow (GdkWindow * window, GtkWidget * widget, GdkGC * gc,
-	     GtkArrowType arrow_type,
-	     gint x, gint y, gint width, gint height)
-{
-  int base, span, xoffset, yoffset;
-  int i;
-
-  switch (arrow_type)
-    {
-    case GTK_ARROW_UP:
-      base = width;
-      // if (base % 2 == 0)
-      //	base--;
-      xoffset = (width - base) / 2;
-      span = (base + 1) / 2;
-      yoffset = (height + span) / 2 - 1;
-      for (i = 0; i < span; i++)
-	{
-	  gdk_draw_line (window, gc, x + xoffset + i, y + yoffset - i,
-			 x + xoffset + base - 1 - i, y + yoffset - i);
-	}
-      break;
-    case GTK_ARROW_DOWN:
-      base = width;
-      // if (base % 2 == 0)
-      // base--;
-      xoffset = (width - base) / 2;
-      span = (base + 1) / 2;
-      yoffset = (height - span) / 2;
-      for (i = 0; i < span; i++)
-	{
-	  gdk_draw_line (window, gc, x + xoffset + i, y + yoffset + i,
-			 x + xoffset + base - 1 - i, y + yoffset + i);
-	}
-      break;
-    case GTK_ARROW_RIGHT:
-      if (GTK_CHECK_TYPE (widget, gtk_menu_item_get_type ()))
-	{
-	  base = 7;
-	}
-      else
-	{
-	  base = height;
-	  // if (base % 2 == 0)
-	  // 	    base--;
-	}
-      yoffset = (height - base) / 2;
-      span = (base + 1) / 2;
-      xoffset = (width - span) / 2;
-      for (i = 0; i < span; i++)
-	{
-	  gdk_draw_line (window, gc, x + xoffset + i, y + yoffset + i,
-			 x + xoffset + i, y + yoffset + base - 1 - i);
-	}
-      break;
-    case GTK_ARROW_LEFT:
-      base = height;
-      //      if (base % 2 == 0)
-      //	base--;
-      yoffset = (height - base) / 2;
-      span = (base + 1) / 2;
-      xoffset = (width + span) / 2 - 1;
-      for (i = 0; i < span; i++)
-	{
-	  gdk_draw_line (window, gc, x + xoffset - i, y + yoffset + i,
-			 x + xoffset - i, y + yoffset + base - 1 - i);
-	}
-      break;
-    }
-}
-/**************************************************************************/
-static void
-draw_diamond (GtkStyle * style,
+void
+metal_draw_diamond (GtkStyle * style,
 	      GdkWindow * window,
 	      GtkStateType state_type,
 	      GtkShadowType shadow_type,
@@ -899,10 +608,7 @@ draw_diamond (GtkStyle * style,
   gint half_width;
   gint half_height;
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
-
-  sanitize_size (window, &width, &height);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
   half_width = width / 2;
   half_height = height / 2;
@@ -1008,8 +714,8 @@ draw_diamond (GtkStyle * style,
     }
 }
 /**************************************************************************/
-static void
-draw_string (GtkStyle * style,
+void
+metal_draw_string (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
 	     GdkRectangle * area,
@@ -1022,14 +728,13 @@ draw_string (GtkStyle * style,
   GdkGC *fggc, *whitegc, *midgc;
   MetalStyle *metal_style = METAL_STYLE (style);
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
 
 #if DEBUG
-  printf ("draw_string: %p %p %s %i %i\n", widget, window, detail, x, y);
+  printf ("metal_draw_string: %p %p %s %i %i\n", widget, window, detail, x, y);
 #endif
 
-  if (DETAIL ("label"))
+  if (CHECK_DETAIL(detail, "label"))
     {
       fggc = style->black_gc;
       whitegc = style->white_gc;
@@ -1069,8 +774,8 @@ draw_string (GtkStyle * style,
 }
 
 /**************************************************************************/
-static void
-draw_box (GtkStyle      *style,
+void
+metal_draw_box (GtkStyle      *style,
 	  GdkWindow     *window,
 	  GtkStateType   state_type,
 	  GtkShadowType  shadow_type,
@@ -1082,24 +787,16 @@ draw_box (GtkStyle      *style,
 	  gint           width,
 	  gint           height)
 {
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
-
-  if ((width == -1) && (height == -1))
-    gdk_window_get_size (window, &width, &height);
-  else if (width == -1)
-    gdk_window_get_size (window, &width, NULL);
-  else if (height == -1)
-    gdk_window_get_size (window, NULL, &height);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
 #if DEBUG
-  printf ("draw_box: %p %p %s %i %i %i %i\n", widget, window, detail, x, y,
+  printf ("metal_draw_box: %p %p %s %i %i %i %i\n", widget, window, detail, x, y,
 	  width, height);
 #endif
 
   /* ===================================================================== */
 
-  if (widget && DETAIL ("trough"))
+  if (widget && CHECK_DETAIL(detail, "trough"))
     {
 
       if (GTK_IS_PROGRESS_BAR (widget))
@@ -1110,18 +807,18 @@ draw_box (GtkStyle      *style,
 			      TRUE, x, y, width, height);
 	  if (area)
 	    gdk_gc_set_clip_rectangle (style->light_gc[GTK_STATE_NORMAL], NULL);
-	  gtk_paint_shadow (style, window, state_type, shadow_type, area,
+	  metal_draw_shadow (style, window, state_type, shadow_type, area,
 			    widget, detail,
 			    x, y, width, height);
 	}
       else if (GTK_IS_SCROLLBAR (widget))
 	{
-	  metal_scrollbar_trough (style, window, state_type, shadow_type,
+	  do_metal_draw_scrollbar_trough (style, window, state_type, shadow_type,
 				  area, widget, detail, x, y, width, height);
 	}
       else if (GTK_IS_SCALE (widget))
 	{
-	  metal_scale_trough (style, window, state_type, shadow_type,
+	 do_metal_draw_scale_trough (style, window, state_type, shadow_type,
 			      area, widget, detail, x, y, width, height);
 	}
       else
@@ -1147,17 +844,17 @@ draw_box (GtkStyle      *style,
 #endif /* 0 */
 	}
     }
-  else if (DETAIL ("menu"))
+  else if (CHECK_DETAIL(detail, "menu"))
     {
-      metal_menu (style, window, state_type, shadow_type,
+      do_metal_draw_menu (style, window, state_type, shadow_type,
 		  area, widget, detail, x, y, width, height);
     }
-  else if (DETAIL ("menuitem"))
+  else if (CHECK_DETAIL(detail, "menuitem"))
     {
-      metal_menu_item (style, window, state_type, shadow_type,
+      do_metal_draw_menu_item (style, window, state_type, shadow_type,
 		       area, widget, detail, x, y, width, height);
     }
-  else if (DETAIL ("bar"))
+  else if (CHECK_DETAIL(detail, "bar"))
     {
       if (area)
 	gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_SELECTED], area);
@@ -1166,7 +863,7 @@ draw_box (GtkStyle      *style,
       if (area)
 	gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_SELECTED], NULL);
     }
-  else if (DETAIL ("menubar"))
+  else if (CHECK_DETAIL(detail, "menubar"))
     {
       if (area)
 	gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
@@ -1175,27 +872,27 @@ draw_box (GtkStyle      *style,
       if (area)
 	gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
     }
-  else if (DETAIL ("notebook"))
+  else if (CHECK_DETAIL(detail, "notebook"))
     {
-      metal_notebook (style, window, state_type, shadow_type,
+      do_metal_draw_notebook (style, window, state_type, shadow_type,
 		      area, widget, detail, x, y, width, height);
     }
-  else if (DETAIL ("tab"))
+  else if (CHECK_DETAIL(detail, "tab"))
     {
-      metal_tab (style, window, state_type, shadow_type,
+      do_metal_draw_notebook_tab (style, window, state_type, shadow_type,
 		 area, widget, detail, x, y, width, height);
     }
-  else if (DETAIL ("button") || DETAIL ("togglebutton"))
+  else if (CHECK_DETAIL(detail, "button") || CHECK_DETAIL(detail, "togglebutton"))
     {
-      metal_button (style, window, state_type, shadow_type,
+      do_metal_draw_button (style, window, state_type, shadow_type,
 		    area, widget, detail, x, y, width, height);
     }
-  else if (DETAIL ("buttondefault"))
+  else if (CHECK_DETAIL(detail, "buttondefault"))
     {
     }
-  else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar"))
+  else if (CHECK_DETAIL(detail, "hscrollbar") || CHECK_DETAIL(detail, "vscrollbar"))
     {
-      /* We do all the drawing in draw_arrow () */
+      /* We do all the drawing in metal_draw_arrow () */
     }
   else
     {
@@ -1213,110 +910,13 @@ draw_box (GtkStyle      *style,
 	  gtk_style_apply_default_pixmap (style, window, state_type, area,
 					  x, y, width, height);
 	}
-      gtk_paint_shadow (style, window, state_type, shadow_type, area,
+      metal_draw_shadow (style, window, state_type, shadow_type, area,
 			widget, detail,
 			x, y, width, height);
     }
 }
 /**************************************************************************/
-static void
-metal_scrollbar_trough (GtkStyle     *style,
-			GdkWindow    *window,
-			GtkStateType  state_type,
-			GtkShadowType shadow_type,
-			GdkRectangle *area,
-			GtkWidget    *widget,
-			const char   *detail,
-			gint          x,
-			gint          y,
-			gint          width,
-			gint          height)
-{
-  MetalStyle *metal_style = METAL_STYLE (style);
-  GdkGC *lightgc, *midgc, *darkgc, *whitegc;
-  gint stepper_size = 15;
-
-  if (widget && GTK_IS_RANGE (widget))
-    gtk_widget_style_get (widget, "stepper_size", &stepper_size, NULL);
-
-  stepper_size += 2;
-
-  /* Get colors */
-  lightgc = metal_style->light_gray_gc;
-  midgc = metal_style->mid_gray_gc;
-  darkgc = metal_style->dark_gray_gc;
-  whitegc = style->white_gc;
-
-  /* Set Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (lightgc, area);
-      gdk_gc_set_clip_rectangle (midgc, area);
-      gdk_gc_set_clip_rectangle (darkgc, area);
-      gdk_gc_set_clip_rectangle (whitegc, area);
-    }
-
-  /* Draw backgound */
-  gdk_draw_rectangle (window, lightgc, TRUE, x, y, width, height);
-
-  /* Draw border */
-  gdk_draw_rectangle (window, darkgc, FALSE, x, y, width - 2, height - 2);
-  
-  /* Draw inset shadow */
-  if (GTK_CHECK_TYPE (widget, gtk_hscrollbar_get_type ()))
-    {
-      gdk_draw_line (window, whitegc, 
-		     x + 1,         y + height - 1,
-		     x + width - 1, y + height - 1);
-      gdk_draw_line (window, darkgc, 
-		     x + stepper_size - 2, y + 2, 
-		     x + stepper_size - 2, y + height - 2);      
-      gdk_draw_line (window, midgc, 
-		     x + stepper_size - 1,         y + 1, 
-		     x + width - stepper_size - 1, y + 1);
-      gdk_draw_line (window, darkgc, 
-		     x + width - stepper_size, y + 2, 
-		     x + width - stepper_size, y + height - 2);
-      gdk_draw_line (window, whitegc, 
-		     x + width - stepper_size + 1, y + 1, 
-		     x + width - stepper_size + 1, y + height - 2);
-      gdk_draw_line (window, midgc,
-		     x + stepper_size - 1, y + 1, 
-		     x + stepper_size - 1, y + height - 3);
-    }
-  else
-    {
-      gdk_draw_line (window, whitegc, 
-		     x + width - 1, y + 1,
-		     x + width - 1, y + height - 1);
-      gdk_draw_line (window, darkgc, 
-		     x + 2,         y + stepper_size - 2, 
-		     x + width - 2, y + stepper_size - 2);      
-      gdk_draw_line (window, midgc, 
-		     x + 1, y + stepper_size - 1, 
-		     x + 1, y + height - stepper_size - 1);
-      gdk_draw_line (window, darkgc, 
-		     x + 2,         y + height - stepper_size, 
-		     x + width - 2, y + height - stepper_size);
-      gdk_draw_line (window, whitegc, 
-		     x + 1,         y + height - stepper_size + 1, 
-		     x + width - 2, y + height - stepper_size + 1);
-      gdk_draw_line (window, midgc,
-		     x + 1,         y + stepper_size - 1, 
-		     x + width - 3, y + stepper_size - 1);
-    }
-
-  /* Reset Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (lightgc, NULL);
-      gdk_gc_set_clip_rectangle (midgc, NULL);
-      gdk_gc_set_clip_rectangle (darkgc, NULL);
-      gdk_gc_set_clip_rectangle (whitegc, NULL);
-    }
-}
-/**************************************************************************/
-static void
+void
 metal_scrollbar_slider (GtkStyle * style,
 			GdkWindow * window,
 			GtkStateType state_type,
@@ -1456,67 +1056,7 @@ metal_scrollbar_slider (GtkStyle * style,
     }
 }
 /**************************************************************************/
-static void
-metal_scale_trough (GtkStyle * style,
-		    GdkWindow * window,
-		    GtkStateType state_type,
-		    GtkShadowType shadow_type,
-		    GdkRectangle * area,
-		    GtkWidget * widget,
-		    const gchar * detail,
-		    gint x,
-		    gint y,
-		    gint width,
-		    gint height)
-{
-  MetalStyle *metal_style = METAL_STYLE (style);
-  GdkGC *lightgc, *midgc, *darkgc, *whitegc;
-
-  /* Get colors */
-  lightgc = metal_style->light_gray_gc;
-  midgc = style->bg_gc[GTK_STATE_SELECTED];
-  darkgc = metal_style->mid_gray_gc;
-  whitegc = style->white_gc;
-
-  /* Set Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (lightgc, area);
-      gdk_gc_set_clip_rectangle (midgc, area);
-      gdk_gc_set_clip_rectangle (darkgc, area);
-      gdk_gc_set_clip_rectangle (whitegc, area);
-    }
-
-  if (GTK_CHECK_TYPE (widget, gtk_hscale_get_type ()))
-    {
-      /* Draw backgound */
-      gdk_draw_rectangle (window, midgc, TRUE, x, y + 3, width - 2, 9);
-
-      /* Draw border */
-      gdk_draw_rectangle (window, darkgc, FALSE, x, y + 3, width - 2, 7);
-      gdk_draw_rectangle (window, whitegc, FALSE, x + 1, y + 4, width - 2, 7);
-    }
-  else
-    {
-      /* Draw backgound */
-      gdk_draw_rectangle (window, midgc, TRUE, x + 3, y, 9, height - 2);
-
-      /* Draw border */
-      gdk_draw_rectangle (window, darkgc, FALSE, x + 3, y, 7, height - 2);
-      gdk_draw_rectangle (window, whitegc, FALSE, x + 4, y + 1, 7, height - 2);
-    }
-
-  /* Reset Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (lightgc, NULL);
-      gdk_gc_set_clip_rectangle (midgc, NULL);
-      gdk_gc_set_clip_rectangle (darkgc, NULL);
-      gdk_gc_set_clip_rectangle (whitegc, NULL);
-    }
-}
-/**************************************************************************/
-static void
+void
 metal_scale_slider (GtkStyle * style,
 		    GdkWindow * window,
 		    GtkStateType state_type,
@@ -1800,525 +1340,8 @@ metal_scale_slider (GtkStyle * style,
     }
 }
 /**************************************************************************/
-static void
-metal_menu (GtkStyle * style,
-	    GdkWindow * window,
-	    GtkStateType state_type,
-	    GtkShadowType shadow_type,
-	    GdkRectangle * area,
-	    GtkWidget * widget,
-	    const gchar * detail,
-	    gint x,
-	    gint y,
-	    gint width,
-	    gint height)
-{
-  GdkGC *midgc, *whitegc;
-
-  midgc = style->bg_gc[GTK_STATE_SELECTED];
-  whitegc = style->white_gc;
-
-  /* Set Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (midgc, area);
-      gdk_gc_set_clip_rectangle (whitegc, area);
-    }
-
-  gdk_draw_rectangle (window, whitegc, FALSE, x + 1, y + 1, width - 2,
-		      height - 2);
-  gdk_draw_rectangle (window, midgc, FALSE, x, y, width - 1, height - 1);
-
-  /* Reset Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (midgc, NULL);
-      gdk_gc_set_clip_rectangle (whitegc, NULL);
-    }
-}
-/**************************************************************************/
-static void
-metal_menu_item (GtkStyle * style,
-		 GdkWindow * window,
-		 GtkStateType state_type,
-		 GtkShadowType shadow_type,
-		 GdkRectangle * area,
-		 GtkWidget * widget,
-		 const gchar * detail,
-		 gint x,
-		 gint y,
-		 gint width,
-		 gint height)
-{
-  /* Set Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_SELECTED], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[GTK_STATE_SELECTED], area);
-      gdk_gc_set_clip_rectangle (style->light_gc[GTK_STATE_SELECTED], area);
-    }
-
-  gdk_draw_rectangle (window, style->bg_gc[GTK_STATE_SELECTED], TRUE, x, y,
-		      width, height);
-  gdk_draw_line (window, style->dark_gc[GTK_STATE_SELECTED], x, y, x +
-		 width, y);
-  gdk_draw_line (window, style->light_gc[GTK_STATE_SELECTED], x, y + height
-		 - 1, x + width, y + height - 1);
-
-  /* Reset Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_SELECTED], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[GTK_STATE_SELECTED], NULL);
-      gdk_gc_set_clip_rectangle (style->light_gc[GTK_STATE_SELECTED], NULL);
-    }
-}
-/**************************************************************************/
-static void
-metal_notebook (GtkStyle * style,
-		GdkWindow * window,
-		GtkStateType state_type,
-		GtkShadowType shadow_type,
-		GdkRectangle * area,
-		GtkWidget * widget,
-		const gchar * detail,
-		gint x,
-		gint y,
-		gint width,
-		gint height)
-{
-  MetalStyle *metal_style = METAL_STYLE (style);
-  GdkGC *lightgc, *midgc, *darkgc, *whitegc;
-
-  /* Get colors */
-  if (state_type == GTK_STATE_PRELIGHT)
-    {
-      lightgc = style->bg_gc[GTK_STATE_PRELIGHT];
-      midgc = style->bg_gc[GTK_STATE_SELECTED];
-      darkgc = style->fg_gc[GTK_STATE_PRELIGHT];
-      whitegc = style->white_gc;
-    }
-  else
-    {
-      lightgc = metal_style->light_gray_gc;
-      midgc = metal_style->mid_gray_gc;
-      darkgc = metal_style->mid_gray_gc;
-      whitegc = style->white_gc;
-    }
-
-  /* Set Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (lightgc, area);
-      gdk_gc_set_clip_rectangle (midgc, area);
-      gdk_gc_set_clip_rectangle (darkgc, area);
-      gdk_gc_set_clip_rectangle (whitegc, area);
-    }
-
-  /* Draw backgound */
-  gdk_draw_rectangle (window, lightgc, TRUE, x, y, width, height);
-
-  /* Draw border */
-  gdk_draw_rectangle (window, darkgc, FALSE, x, y, width - 2, height - 2);
-  gdk_draw_rectangle (window, style->white_gc, FALSE, x + 1, y + 1, width -
-		      2, height - 2);
-
-  /* Reset Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (lightgc, NULL);
-      gdk_gc_set_clip_rectangle (midgc, NULL);
-      gdk_gc_set_clip_rectangle (darkgc, NULL);
-      gdk_gc_set_clip_rectangle (whitegc, NULL);
-    }
-}
-/**************************************************************************/
-static void
-adjust_notebook_tab_size (GtkPositionType tab_pos,
-			  gint           *width,
-			  gint           *height)
-{
-  /* The default overlap is two pixels, but we only want a one pixel overlap
-   */
-  switch (tab_pos)
-    {
-    case GTK_POS_TOP:
-    case GTK_POS_BOTTOM:
-      *width -= 1;
-      break;
-    case GTK_POS_LEFT:
-    case GTK_POS_RIGHT:
-      *height -= 1;
-      break;
-    }
-}
-
-static void
-metal_tab (GtkStyle * style,
-	   GdkWindow * window,
-	   GtkStateType state_type,
-	   GtkShadowType shadow_type,
-	   GdkRectangle * area,
-	   GtkWidget * widget,
-	   const gchar * detail,
-	   gint x,
-	   gint y,
-	   gint width,
-	   gint height)
-{
-  MetalStyle *metal_style = METAL_STYLE (style);
-  GtkNotebook *notebook;
-  GdkGC *lightgc, *midgc, *darkgc, *brightgc, *bggc;
-  GdkPoint points[5];
-  int orientation;
-  gboolean is_first, selected;
-
-  notebook = GTK_NOTEBOOK (widget);
-  orientation = notebook->tab_pos;
-
-  is_first = is_first_tab (notebook, x, y);
-  selected = state_type == GTK_STATE_NORMAL;
-
-  lightgc = metal_style->light_gray_gc;
-  midgc = metal_style->mid_gray_gc;
-  brightgc = style->white_gc;
-  bggc = metal_style->light_gray_gc;
-
-  if (selected)
-    {
-      brightgc = style->white_gc;
-      darkgc = metal_style->mid_gray_gc;
-    }
-  else
-    {
-      brightgc = metal_style->light_gray_gc;
-      darkgc = metal_style->dark_gray_gc;
-    }
-
-  /* Set Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (lightgc, area);
-      gdk_gc_set_clip_rectangle (midgc, area);
-      gdk_gc_set_clip_rectangle (darkgc, area);
-      gdk_gc_set_clip_rectangle (brightgc, area);
-      gdk_gc_set_clip_rectangle (bggc, area);
-    }
-
-  adjust_notebook_tab_size (orientation, &width, &height);
-
-  /* Fill area */
-  gdk_draw_rectangle (window, bggc, TRUE, x + 0, y + 0, width, height);
-
-  switch (orientation)
-    {
-    case GTK_POS_TOP:
-      /* Draw background */
-      points[0].x = x + 2;
-      points[0].y = y + height;
-      points[1].x = x + 2;
-      points[1].y = y + 6;
-      points[2].x = x + 6;
-      points[2].y = y + 2;
-      points[3].x = x + width - 1;
-      points[3].y = y + 2;
-      points[4].x = x + width - 1;
-      points[4].y = y + height;
-      if (selected)
-	gdk_draw_polygon (window, lightgc, TRUE, points, 5);
-      else
-	gdk_draw_polygon (window, midgc, TRUE, points, 5);
-
-      /* Draw border */
-      if (is_first)
-	gdk_draw_line (window, darkgc, x + 0, y + 6, x + 0, y + height + 1);
-      else if (selected)
-	gdk_draw_line (window, darkgc, x + 0, y + 6, x + 0, y + height - 1);
-      gdk_draw_line (window, darkgc, x + 0, y + 6, x + 6, y + 0);
-      gdk_draw_line (window, darkgc, x + 6, y + 0, x + width - 2, y + 0);
-      gdk_draw_line (window, darkgc, x + width - 1, y + 1, x + width - 1, y
-		     + height - 1);
-
-      if (is_first)
-	gdk_draw_line (window, brightgc, x + 1, y + 6, x + 1, y + height + 1);
-      else
-	gdk_draw_line (window, brightgc, x + 1, y + 6, x + 1, y + height - 1);
-      gdk_draw_line (window, brightgc, x + 1, y + 6, x + 6, y + 1);
-      gdk_draw_line (window, brightgc, x + 6, y + 1, x + width - 2, y + 1);
-      break;
-    case GTK_POS_LEFT:
-      /* Draw background */
-      points[0].x = x + 2;
-      points[0].y = y + height;
-      points[1].x = x + 2;
-      points[1].y = y + 6;
-      points[2].x = x + 6;
-      points[2].y = y + 2;
-      points[3].x = x + width - 1;
-      points[3].y = y + 2;
-      points[4].x = x + width - 1;
-      points[4].y = y + height;
-      if (selected)
-	gdk_draw_polygon (window, lightgc, TRUE, points, 5);
-      else
-	gdk_draw_polygon (window, midgc, TRUE, points, 5);
-
-      /* Draw border */
-      gdk_draw_line (window, darkgc, x + 0, y + 6, x + 0, y + height - 1);
-      gdk_draw_line (window, darkgc, x + 0, y + 6, x + 6, y + 0);
-      if (is_first)
-	gdk_draw_line (window, darkgc, x + 6, y + 0, x + width + 1, y + 0);
-      else
-	gdk_draw_line (window, darkgc, x + 6, y + 0, x + width - 1, y + 0);
-      gdk_draw_line (window, darkgc, x + 0, y + height - 1, x + width - 1, y
-		     + height - 1);
-
-      gdk_draw_line (window, brightgc, x + 1, y + 6, x + 6, y + 1);
-      if (is_first)
-	gdk_draw_line (window, brightgc, x + 6, y + 1, x + width + 1, y + 1);
-      else
-	gdk_draw_line (window, brightgc, x + 6, y + 1, x + width - 1, y + 1);
-      break;
-    case GTK_POS_RIGHT:
-      /* Draw background */
-      points[0].x = x + width - 2;
-      points[0].y = y + height - 1;
-      points[1].x = x + width - 2;
-      points[1].y = y + 6;
-      points[2].x = x + width - 6;
-      points[2].y = y + 2;
-      points[3].x = x - 1;
-      points[3].y = y + 2;
-      points[4].x = x - 1;
-      points[4].y = y + height - 1;
-      if (selected)
-	gdk_draw_polygon (window, lightgc, TRUE, points, 5);
-      else
-	gdk_draw_polygon (window, midgc, TRUE, points, 5);
-
-      /* Draw border */
-      gdk_draw_line (window, darkgc, x + width - 1, y + 6, x + width - 1, y
-		     + height - 1);
-      gdk_draw_line (window, darkgc, x + width - 1, y + 6, x + width - 7, y
-		     + 0);
-      if (is_first)
-	gdk_draw_line (window, darkgc, x - 2, y + 0, x + width - 7, y + 0);
-      else
-	gdk_draw_line (window, darkgc, x - 1, y + 0, x + width - 7, y + 0);
-      gdk_draw_line (window, darkgc, x - 1, y + height - 1, x + width - 1, y
-		     + height - 1);
-
-      gdk_draw_line (window, brightgc, x + width - 2, y + 6, x + width - 7, y
-		     + 1);
-      if (is_first)
-	gdk_draw_line (window, brightgc, x + width - 7, y + 1, x - 2, y + 1);
-      else
-	gdk_draw_line (window, brightgc, x + width - 7, y + 1, x - 1, y + 1);
-      break;
-    case GTK_POS_BOTTOM:
-      /* Draw background */
-      points[0].x = x + 2;
-      points[0].y = y + 0;
-      points[1].x = x + 2;
-      points[1].y = y + height - 6;
-      points[2].x = x + 6;
-      points[2].y = y + height - 2;
-      points[3].x = x + width - 1;
-      points[3].y = y + height - 2;
-      points[4].x = x + width - 1;
-      points[4].y = y + 0;
-      if (selected)
-	gdk_draw_polygon (window, lightgc, TRUE, points, 5);
-      else
-	gdk_draw_polygon (window, midgc, TRUE, points, 5);
-
-      /* Draw border */
-      if (is_first)
-	gdk_draw_line (window, darkgc, x + 0, y + height - 6, x + 0, y - 2);
-      else if (selected)
-	gdk_draw_line (window, darkgc, x + 0, y + height - 6, x + 0, y - 1);
-      gdk_draw_line (window, darkgc, x + 0, y + height - 6, x + 6, y + height);
-      gdk_draw_line (window, darkgc, x + 5, y + height - 1, x + width - 2, y
-		     + height - 1);
-      gdk_draw_line (window, darkgc, x + width - 1, y + height - 1, x +
-		     width - 1, y - 1);
-
-      if (is_first)
-	gdk_draw_line (window, brightgc, x + 1, y + height - 6, x + 1, y - 2);
-      else
-	gdk_draw_line (window, brightgc, x + 1, y + height - 6, x + 1, y - 1);
-      gdk_draw_line (window, brightgc, x + 1, y + height - 6, x + 5, y +
-		     height - 2);
-      break;
-    }
-
-  /* Reset Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (lightgc, NULL);
-      gdk_gc_set_clip_rectangle (midgc, NULL);
-      gdk_gc_set_clip_rectangle (darkgc, NULL);
-      gdk_gc_set_clip_rectangle (brightgc, NULL);
-      gdk_gc_set_clip_rectangle (bggc, NULL);
-    }
-}
-/**************************************************************************/
-static gboolean
-is_first_tab (GtkNotebook *notebook,
-	      int          x,
-	      int          y)
-{
-  GtkWidget *widget = GTK_WIDGET (notebook);
-  int border_width = GTK_CONTAINER (notebook)->border_width;
-
-  switch (notebook->tab_pos)
-    {
-    case GTK_POS_TOP:
-    case GTK_POS_BOTTOM:
-      return x == widget->allocation.x + border_width;
-    case GTK_POS_LEFT:
-    case GTK_POS_RIGHT:
-      return y == widget->allocation.y + border_width;
-    }
-
-  return FALSE;
-}
-/**************************************************************************/
-static void
-metal_button (GtkStyle * style,
-	      GdkWindow * window,
-	      GtkStateType state_type,
-	      GtkShadowType shadow_type,
-	      GdkRectangle * area,
-	      GtkWidget * widget,
-	      const gchar * detail,
-	      gint x,
-	      gint y,
-	      gint width,
-	      gint height)
-{
-  MetalStyle *metal_style = METAL_STYLE (style);
-  GdkGC *dark_gc, *medium_gc, *light_gc;
-  gboolean active_toggle = FALSE;
-
-  /* Set Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_PRELIGHT], area);
-      gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_SELECTED], area);
-      gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_NORMAL], area);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-    }
-
-  if (widget && GTK_IS_TOGGLE_BUTTON (widget) &&
-      GTK_TOGGLE_BUTTON (widget)->active)
-    {
-      active_toggle = TRUE;
-      gdk_draw_rectangle (window, metal_style->mid_gray_gc, TRUE, x, y,
-			  width, height);
-    }
-  else if (state_type == GTK_STATE_ACTIVE)
-    {
-      gdk_draw_rectangle (window, metal_style->mid_gray_gc, TRUE, x, y,
-			  width, height);
-    }
-  else
-    {
-      gdk_draw_rectangle (window, metal_style->light_gray_gc, TRUE, x, y,
-			  width, height);
-    }
-
-  dark_gc = (state_type == GTK_STATE_INSENSITIVE) ? metal_style->mid_gray_gc : metal_style->dark_gray_gc;
-  medium_gc = metal_style->light_gray_gc;
-  light_gc = style->white_gc;
-
-  gdk_draw_rectangle (window, dark_gc, FALSE, x, y, width
-		      - 2, height - 2);
-
-  if (state_type == GTK_STATE_INSENSITIVE)
-    {
-      /* Nothing */
-    }
-  else if (widget && GTK_WIDGET_HAS_DEFAULT (widget))
-    {
-      if (state_type == GTK_STATE_ACTIVE || active_toggle)
-	{
-	  if (active_toggle)
-	    {
-	      gdk_draw_line (window, medium_gc,
-			     x + 2,     y + 2,
-			     x + 2,     y + height);
-	      gdk_draw_line (window, medium_gc,
-			     x + 2,     y + 2,
-			     x + width, y + 2);
-	    }
-
-	  gdk_draw_line (window, light_gc,
-			 x + 2,     y + height,
-			 x + width, y + height);
-	  gdk_draw_line (window, light_gc,
-			 x + width, y + 2,
-			 x + width, y + height);
-	}
-      else
-	{
-	  gdk_draw_rectangle (window, light_gc, FALSE, x + 2, y + 2,
-			      width - 2, height - 2);
-	}
-      
-      gdk_draw_rectangle (window, dark_gc, FALSE, x + 1, y + 1, width
-			  - 2, height - 2);
-      
-      gdk_draw_point (window, medium_gc, x + 2, y + height - 2);
-      gdk_draw_point (window, medium_gc, x + width - 2, y + 2);
-      gdk_draw_point (window, dark_gc, x, y + height - 1);
-      gdk_draw_point (window, dark_gc, x + width - 1, y);
-    }
-  else
-    {
-      if (state_type == GTK_STATE_ACTIVE || active_toggle)
-	{
-	  if (active_toggle)
-	    {
-	      gdk_draw_line (window, medium_gc,
-			     x + 1, y + 1,
-			     x + 1, y + height - 1);
-	      gdk_draw_line (window, medium_gc,
-			     x + 1,         y + 1,
-			     x + width - 1, y + 1);
-	    }
-
-	  gdk_draw_line (window, light_gc,
-			 x + 1,     y + height - 1,
-			 x + width, y + height - 1);
-	  gdk_draw_line (window, light_gc,
-			 x + width - 1, y + 1,
-			 x + width - 1, y + height);
-	}
-      else
-	gdk_draw_rectangle (window, light_gc, FALSE, x + 1, y + 1,
-			    width - 2, height - 2);
-
-      gdk_draw_point (window, medium_gc, x + 1, y + height - 2);
-      gdk_draw_point (window, medium_gc, x + width - 2, y + 1);
-    }
-
-  /* Reset Clip Region */
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_PRELIGHT], NULL);
-      gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_SELECTED], NULL);
-      gdk_gc_set_clip_rectangle (style->bg_gc[GTK_STATE_NORMAL], NULL);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL); 
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-    }
-}
-/**************************************************************************/
-static void
-draw_check (GtkStyle * style,
+void
+metal_draw_check (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
 	    GtkShadowType shadow_type,
@@ -2332,10 +1355,12 @@ draw_check (GtkStyle * style,
 {
   GdkGC *gc1, *gc2, *gc3, *gc4;
 
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+
   /* Fixed size only */
 
 #if DEBUG
-  printf ("draw_check: %p %p %s %i %i %i %i\n", widget, window, detail, x,
+  printf ("metal_draw_check: %p %p %s %i %i %i %i\n", widget, window, detail, x,
 	  y, width, height);
 #endif
 
@@ -2391,8 +1416,8 @@ draw_check (GtkStyle * style,
     }
 }
 /**************************************************************************/
-static void
-draw_option (GtkStyle * style,
+void
+metal_draw_option (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
 	     GtkShadowType shadow_type,
@@ -2409,6 +1434,8 @@ draw_option (GtkStyle * style,
   GdkGC *gc2;
   GdkGC *gc3;
   GdkGC *gc4;
+
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
   x -= 1;
   y -= 1;
@@ -2518,8 +1545,8 @@ draw_option (GtkStyle * style,
     }
 }
 /**************************************************************************/
-static void
-draw_tab (GtkStyle * style,
+void
+metal_draw_tab (GtkStyle * style,
 	  GdkWindow * window,
 	  GtkStateType state_type,
 	  GtkShadowType shadow_type,
@@ -2531,20 +1558,19 @@ draw_tab (GtkStyle * style,
 	  gint width,
 	  gint height)
 {
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
 #if DEBUG
-  printf ("draw_tab: %p %s %i %i\n", detail, detail, width, height);
+  printf ("metal_draw_tab: %p %s %i %i\n", detail, detail, width, height);
 #endif
 
-  gtk_paint_box (style, window, state_type, shadow_type, area, widget, detail,
+  metal_draw_box (style, window, state_type, shadow_type, area, widget, detail,
 		 x, y, width, height);
 }
 
 /**************************************************************************/
-static void
-draw_shadow_gap (GtkStyle * style,
+void
+metal_draw_shadow_gap (GtkStyle * style,
 		 GdkWindow * window,
 		 GtkStateType state_type,
 		 GtkShadowType shadow_type,
@@ -2561,17 +1587,16 @@ draw_shadow_gap (GtkStyle * style,
 {
   GdkRectangle rect;
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
 #if DEBUG
-  printf ("draw_shadow_gap: %p %p %s %i %i %i %i\n", widget, window, detail,
+  printf ("metal_draw_shadow_gap: %p %p %s %i %i %i %i\n", widget, window, detail,
 	  x, y, width, height);
 #endif
 
   gap_width -= 1;
 
-  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail,
+  metal_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
 		    x, y, width, height);
 
   switch (gap_side)
@@ -2606,8 +1631,8 @@ draw_shadow_gap (GtkStyle * style,
 				  rect.x, rect.y, rect.width, rect.height);
 }
 /**************************************************************************/
-static void
-draw_box_gap (GtkStyle       *style,
+void
+metal_draw_box_gap (GtkStyle       *style,
 	      GdkWindow      *window,
 	      GtkStateType    state_type,
 	      GtkShadowType   shadow_type,
@@ -2624,15 +1649,14 @@ draw_box_gap (GtkStyle       *style,
 {
   GdkRectangle rect;
 
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
 #if DEBUG
-  printf ("draw_box_gap: %p %p %s %i %i %i %i\n", widget, window, detail, x,
+  printf ("metal_draw_box_gap: %p %p %s %i %i %i %i\n", widget, window, detail, x,
 	  y, width, height);
 #endif
 
-  gtk_paint_box (style, window, state_type, shadow_type, area, widget, detail,
+  metal_draw_box (style, window, state_type, shadow_type, area, widget, detail,
 		 x, y, width, height);
 
   /* The default overlap is two pixels, but we only want a one pixel overlap
@@ -2671,8 +1695,8 @@ draw_box_gap (GtkStyle       *style,
 				  rect.x, rect.y, rect.width, rect.height);
 }
 /**************************************************************************/
-static void
-draw_extension (GtkStyle * style,
+void
+metal_draw_extension (GtkStyle * style,
 		GdkWindow * window,
 		GtkStateType state_type,
 		GtkShadowType shadow_type,
@@ -2685,20 +1709,19 @@ draw_extension (GtkStyle * style,
 		gint height,
 		GtkPositionType gap_side)
 {
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
 #if DEBUG
-  printf ("draw_extension: %p %p %s %i %i %i %i\n", widget, window, detail,
+  printf ("metal_draw_extension: %p %p %s %i %i %i %i\n", widget, window, detail,
 	  x, y, width, height);
 #endif
 
-  gtk_paint_box (style, window, state_type, shadow_type, area, widget, detail,
+  metal_draw_box (style, window, state_type, shadow_type, area, widget, detail,
 		 x, y, width, height);
 }
 /**************************************************************************/
-static void
-draw_notebook_focus (GtkWidget *widget,
+void
+metal_draw_notebook_focus (GtkWidget *widget,
 		     GdkWindow *window,
 		     GdkGC     *gc,
 		     gint       x,
@@ -2765,8 +1788,8 @@ draw_notebook_focus (GtkWidget *widget,
   gdk_draw_polygon (window, gc, FALSE, points, 6);
 }
 
-static void
-draw_focus (GtkStyle * style,
+void
+metal_draw_focus (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
 	    GdkRectangle * area,
@@ -2778,9 +1801,11 @@ draw_focus (GtkStyle * style,
 	    gint height)
 {
   GdkGC *focusgc;
+
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
   
 #if DEBUG
-  printf ("draw_focus: %p %p %s %i %i %i %i\n", widget, window, detail, x,
+  printf ("metal_draw_focus: %p %p %s %i %i %i %i\n", widget, window, detail, x,
 	  y, width, height);
 #endif
 
@@ -2790,20 +1815,13 @@ draw_focus (GtkStyle * style,
       return;
     }
 
-  if (width == -1 && height == -1)
-    gdk_window_get_size (window, &width, &height);
-  else if (width == -1)
-    gdk_window_get_size (window, &width, NULL);
-  else if (height == -1)
-    gdk_window_get_size (window, NULL, &height);
-
   focusgc = style->bg_gc[GTK_STATE_SELECTED];
 
   if (area)
     gdk_gc_set_clip_rectangle (focusgc, area);
 
-  if (DETAIL ("tab"))
-    draw_notebook_focus (widget, window, focusgc, x, y, width, height);
+  if (CHECK_DETAIL(detail, "tab"))
+    metal_draw_notebook_focus (widget, window, focusgc, x, y, width, height);
   else
     gdk_draw_rectangle (window, focusgc, FALSE, x, y, width - 1, height - 1);
 
@@ -2811,8 +1829,8 @@ draw_focus (GtkStyle * style,
     gdk_gc_set_clip_rectangle (focusgc, NULL);
 }
 /**************************************************************************/
-static void
-draw_slider (GtkStyle * style,
+void
+metal_draw_slider (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
 	     GtkShadowType shadow_type,
@@ -2825,17 +1843,9 @@ draw_slider (GtkStyle * style,
 	     gint height,
 	     GtkOrientation orientation)
 {
-  g_return_if_fail (style != NULL);
-  g_return_if_fail (window != NULL);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
-  if ((width == -1) && (height == -1))
-    gdk_window_get_size (window, &width, &height);
-  else if (width == -1)
-    gdk_window_get_size (window, &width, NULL);
-  else if (height == -1)
-    gdk_window_get_size (window, NULL, &height);
-
-  if (DETAIL ("slider"))
+  if (CHECK_DETAIL(detail, "slider"))
     metal_scrollbar_slider (style, window, state_type, shadow_type,
 			    area, widget, detail, x, y, width, height);
   else
@@ -2843,8 +1853,8 @@ draw_slider (GtkStyle * style,
 			area, widget, detail, x, y, width, height, orientation);
 }
 /**************************************************************************/
-static void
-draw_paned_handle (GtkStyle      *style,
+void
+metal_draw_paned_handle (GtkStyle      *style,
 		   GdkWindow     *window,
 		   GtkStateType   state_type,
 		   GtkShadowType  shadow_type,
@@ -2902,8 +1912,8 @@ draw_paned_handle (GtkStyle      *style,
   gdk_pixmap_unref (pm);
 }
 /**************************************************************************/
-static void
-draw_handle (GtkStyle      *style,
+void
+metal_draw_handle (GtkStyle      *style,
 	     GdkWindow     *window,
 	     GtkStateType   state_type,
 	     GtkShadowType  shadow_type,
@@ -2922,11 +1932,11 @@ draw_handle (GtkStyle      *style,
   GdkGCValues values;
   GdkGC *lightgc, *midgc, *darkgc, *whitegc, *blackgc;
 
-  sanitize_size (window, &width, &height);
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
-  if (DETAIL ("paned"))
+  if (CHECK_DETAIL(detail, "paned"))
     {
-      draw_paned_handle (style, window, state_type, shadow_type,
+      metal_draw_paned_handle (style, window, state_type, shadow_type,
 			 area, widget, x, y, width, height,
 			 orientation);
       return;
@@ -3002,129 +2012,4 @@ draw_handle (GtkStyle      *style,
       gdk_gc_set_clip_rectangle (whitegc, NULL);
       gdk_gc_set_clip_rectangle (blackgc, NULL);
     }
-}
-
-static void
-shade (GdkColor * oldcolor, GdkColor * newcolor, float mult)
-{
-  newcolor->red = oldcolor->red * mult;
-  newcolor->green = oldcolor->green * mult;
-  newcolor->blue = oldcolor->blue * mult;
-}
-
-static void
-metal_style_init_from_rc (GtkStyle * style,
-			  GtkRcStyle * rc_style)
-{
-  MetalStyle *metal_style = METAL_STYLE (style);
-
-  parent_class->init_from_rc (style, rc_style);
-
-  /* Light Gray */
-  shade (&style->white, &metal_style->light_gray, 0.8);
-  shade (&style->white, &metal_style->mid_gray, 0.6);
-  shade (&style->white, &metal_style->dark_gray, 0.4);
-}
-
-static GdkGC *
-realize_color (GtkStyle * style,
-	       GdkColor * color)
-{
-  GdkGCValues gc_values;
-
-  gdk_colormap_alloc_color (style->colormap, color,
-			    FALSE, TRUE);
-
-  gc_values.foreground = *color;
-
-  return gtk_gc_get (style->depth, style->colormap,
-		     &gc_values, GDK_GC_FOREGROUND);
-}
-
-static void
-metal_style_realize (GtkStyle * style)
-{
-  MetalStyle *metal_style = METAL_STYLE (style);
-
-  parent_class->realize (style);
-
-  metal_style->light_gray_gc = realize_color (style, &metal_style->light_gray);
-  metal_style->mid_gray_gc = realize_color (style, &metal_style->mid_gray);
-  metal_style->dark_gray_gc = realize_color (style, &metal_style->dark_gray);
-}
-
-static void
-metal_style_unrealize (GtkStyle * style)
-{
-  MetalStyle *metal_style = METAL_STYLE (style);
-
-  /* We don't free the colors, because we don't know if
-   * gtk_gc_release() actually freed the GC. FIXME - need
-   * a way of ref'ing colors explicitely so GtkGC can
-   * handle things properly.
-   */
-  gtk_gc_release (metal_style->light_gray_gc);
-  gtk_gc_release (metal_style->mid_gray_gc);
-  gtk_gc_release (metal_style->dark_gray_gc);
-
-  parent_class->unrealize (style);
-}
-
-static void
-metal_style_init (MetalStyle * style)
-{
-}
-
-static void
-metal_style_class_init (MetalStyleClass * klass)
-{
-  GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
-
-  style_class->realize = metal_style_realize;
-  style_class->unrealize = metal_style_unrealize;
-  style_class->init_from_rc = metal_style_init_from_rc;
-
-  style_class->draw_hline = draw_hline;
-  style_class->draw_vline = draw_vline;
-  style_class->draw_shadow = draw_shadow;
-  style_class->draw_polygon = draw_polygon;
-  style_class->draw_arrow = draw_arrow;
-  style_class->draw_diamond = draw_diamond;
-  style_class->draw_string = draw_string;
-  style_class->draw_box = draw_box;
-  style_class->draw_check = draw_check;
-  style_class->draw_option = draw_option;
-  style_class->draw_tab = draw_tab;
-  style_class->draw_shadow_gap = draw_shadow_gap;
-  style_class->draw_box_gap = draw_box_gap;
-  style_class->draw_extension = draw_extension;
-  style_class->draw_focus = draw_focus;
-  style_class->draw_slider = draw_slider;
-  style_class->draw_handle = draw_handle;
-}
-
-GType metal_type_style = 0;
-
-void
-metal_style_register_type (GTypeModule * module)
-{
-  static const GTypeInfo object_info =
-  {
-    sizeof (MetalStyleClass),
-    (GBaseInitFunc) NULL,
-    (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) metal_style_class_init,
-    NULL,			/* class_finalize */
-    NULL,			/* class_data */
-    sizeof (MetalStyle),
-    0,				/* n_preallocs */
-    (GInstanceInitFunc) metal_style_init,
-  };
-
-  metal_type_style = g_type_module_register_type (module,
-						  GTK_TYPE_STYLE,
-						  "MetalStyle",
-						  &object_info, 0);
 }

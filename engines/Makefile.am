@@ -1,1 +1,1 @@
-SUBDIRS = crux hc industrial lighthouseblue mist redmond smooth thinice
+SUBDIRS = crux hc industrial lighthouseblue metal mist redmond smooth thinice

@@ -1,3 +1,55 @@
+2004-12-14  Andrew Johnson <ajgenius@ajgenius.us>
+
+	* configure.ac:
+	* Makefile.am:
+	* engines/Makefile.am:	
+	* engines/metal/AUTHORS:
+	* engines/metal/Makefile.am:
+	* engines/metal/src/metal_gtk2_drawing.c:
+	* engines/metal/src/metal_gtk2_drawing.h:
+	* engines/metal/src/metal_gtk2_engine.c:
+	* engines/metal/src/metal_gtk2_engine.h:
+	* engines/metal/src/metal_gtk2_misc.c: 
+	* engines/metal/src/metal_gtk2_misc.h: 
+	
+	add new metal engine
+
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c: 
+	
+	fix embed combo	button redraw
+	
+	* metal/.cvsignore:
+	* metal/ChangeLog:
+	* metal/Makefile.am:
+	* metal/Theme/.cvsignore:
+	* metal/Theme/Makefile.am:
+	* metal/Theme/README.html:
+	* metal/Theme/gtk-2.0/.cvsignore:
+	* metal/Theme/gtk-2.0/Makefile.am:
+	* metal/Theme/gtk-2.0/gtkrc:
+	* metal/metal_rc_style.c:
+	* metal/metal_rc_style.h:
+	* metal/metal_style.c:
+	* metal/metal_style.h:
+	* metal/metal_theme_main.c: 
+	
+	remove old metal
+	
+	* themes/Makefile.am:
+	* themes/Industrial/Makefile.am:
+	* themes/Industrial/gtk-2.0/Makefile.am:
+	* themes/Industrial/gtk-2.0/gtkrc:
+	* themes/Metal/Makefile.am:
+	* themes/Metal/gtk-2.0/Makefile.am:
+	* themes/Metal/gtk-2.0/gtkrc:
+	* themes/Redmond/Makefile.am:
+	* themes/Redmond/gtk/Makefile.am:
+	* themes/Redmond/gtk/gtkrc: 
+	
+	Add Industrial theme
+	Add Metal theme
+	Add Redmond GTK 1 gtkrc
+	
 2004-12-13  Thomas Wood  <thos@gnome.org>
 
 	* configure.ac:

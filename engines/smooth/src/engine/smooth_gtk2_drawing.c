@@ -377,7 +377,8 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 
 		if (GTK_IS_WIDGET(button))
 		{
-			gtk_widget_queue_draw_area(button, 0, 0, -1, -1);
+			gtk_widget_queue_draw_area(button, button->allocation.x, button->allocation.y, 
+							button->allocation.width, button->allocation.height);
 		}
 	}
         else if (CHECK_DETAIL(detail, "spinbutton_up"))
@@ -1169,7 +1170,8 @@ smooth_draw_shadow(GtkStyle * style,
 
 		if (GTK_IS_WIDGET(button))
 		{
-			 gtk_widget_queue_draw_area(button, 0, 0, -1, -1);
+			gtk_widget_queue_draw_area(button, button->allocation.x, button->allocation.y, 
+							button->allocation.width, button->allocation.height);
 		}
 	}
 
