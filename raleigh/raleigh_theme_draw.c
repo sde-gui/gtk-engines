@@ -370,6 +370,7 @@ draw_arrow (GtkStyle      *style,
     }
 }
 
+void
 draw_thin_shadow (GtkStyle      *style,
 		  GdkWindow     *window,
 		  GtkStateType   state,
@@ -414,6 +415,7 @@ draw_thin_shadow (GtkStyle      *style,
     }
 }
 
+void
 draw_spin_entry_shadow (GtkStyle      *style,
 			GdkWindow     *window,
 			GtkStateType   state,

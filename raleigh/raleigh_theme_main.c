@@ -114,7 +114,6 @@ theme_realize_style(GtkStyle * style)
   for (i = 0; i < 5; i++)
     {
       GdkGCValues gc_values;
-      GdkGCValuesMask gc_values_mask;
 
       gdk_colormap_alloc_color (style->colormap, &engine_data->aa[i],
 				FALSE, TRUE);

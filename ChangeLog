@@ -1,3 +1,16 @@
+Thu Mar 15 02:07:25 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (cflags_set): Release 0.12
+
+	* configure.in: Suppress the default action when
+	checking for gtk_style_set_prop_experimental
+	to avoid messing up $LIBS. (#51989)
+
+	* configure.in: Add -Wall for GCC.
+
+	* raleigh/raleigh_theme_{draw,main}.c: Couple of 
+	trivial warning cleanups.
+
 Thu Feb 15 23:32:27 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (cflags_set): Release 0.11.
