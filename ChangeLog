@@ -1,3 +1,11 @@
+Mon Mar 29 21:13:13 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4
+	* config.guess
+	* config.sub
+	* ltconfig
+	* ltmain.sh: libtool 1.2f
+
 Fri Feb 26 20:38:53 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Up version number to 0.5
