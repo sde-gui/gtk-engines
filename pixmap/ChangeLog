@@ -1,3 +1,9 @@
+1998-11-07  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Theme/gtk/Makefile.am (theme_DATA): 
+	Update to new directory contents.
+	* configure.in: Remove.
+
 Fri Nov  6 17:26:12 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* pixmap_theme_main.c: Removed some debugging 
