@@ -45,15 +45,21 @@ fi
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 
-#
-# makefile is broken, sets exec_prefix explicitely.
-#
-make exec_prefix=$RPM_BUILD_ROOT/%{prefix} prefix=$RPM_BUILD_ROOT/%{prefix} install 
+%makeinstall
+# Clean out files that should not be part of the rpm.
+# This is the recommended way of dealing with it for RH8
+rm -f $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.0.0/engines/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/gtk-2.0/2.0.0/engines/*.a
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Oct 22 2002 Christian F.K. Schaller <Uraeus@gnome.org>
+- Update SPEC file to include latest stuff 
+- work on RH8
 
 * Fri Nov 20 1998 Michael Fulbright <drmike@redhat.com>
 
@@ -62,8 +68,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 %doc COPYING README ChangeLog
-%{prefix}/lib/gtk/themes/engines/*
-%{prefix}/share/themes/Pixmap/*
-%{prefix}/share/themes/Metal/*
-%{prefix}/share/themes/Notif/*
-%{prefix}/share/themes/Redmond95/*
+%{_datadir}/themes/Metal/*
+%{_datadir}/themes/Redmond95/*
+%{_libdir}/gtk-2.0/2.0.0/engines/*.so
