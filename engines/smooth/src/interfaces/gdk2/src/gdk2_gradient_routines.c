@@ -192,7 +192,7 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
 				}
 			}
 
-			if (last_block < Width) && (last_block > 0)
+			if ((last_block < Width) && (last_block > 0))
 			{
 				memcpy (&(ptr[last_block*3]), ptr, (Width - last_block)*3);
 			}
