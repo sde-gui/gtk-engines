@@ -1,3 +1,10 @@
+Wed Jan 27 21:14:54 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* acinclude.m4: new file, to go with libtool
+
+	* ltmain.sh
+	* ltconfig: better file magic regexp for Linux libs
+
 Mon Jan 18 14:08:14 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* README:  Wrote one
