@@ -178,8 +178,6 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
 		ptr[1] = g>>16;
 		ptr[2] = b>>16;
 		
-		max_block = half_width;
-  
 		if (Width > 1)
 		{
 			last_block = 0;
