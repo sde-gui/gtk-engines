@@ -343,6 +343,9 @@ apply_theme_image(GdkWindow *window, struct theme_image *img, gchar setbg,
   GdkPixmap          *p, *m;
   GdkRectangle       rect0, rect;
   gchar              haverect = 1;
+
+  if (gdk_window_get_type (window) == GDK_WINDOW_PIXMAP)
+    setbg = FALSE;
   
   if (img->file)
     {

@@ -1,3 +1,8 @@
+Tue Oct  5 15:13:29 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* pixmap_theme_draw.c (apply_theme_image): Don't set
+	background pixmap on pixmaps.
+
 1999-02-14  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Theme/gtk/Makefile.am.in (Makefile.am): Handle the case when
