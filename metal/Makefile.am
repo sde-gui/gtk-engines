@@ -12,3 +12,5 @@ libmetal_la_SOURCES = \
 	metal_theme_main.c
 
 libmetal_la_LDFLAGS = -module -avoid-version
+libmetal_la_LIBADD = $(GTK_LIBS)
+

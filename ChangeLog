@@ -1,3 +1,8 @@
+1999-05-30  James Henstridge  <james@daa.com.au>
+
+	* configure.in, */Makefile.am: make the theme engines link against
+	gtk.
+
 Sat May  1 12:11:33 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4

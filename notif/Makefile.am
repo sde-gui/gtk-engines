@@ -10,3 +10,5 @@ libnotif_la_SOURCES = \
 	notif_theme_main.c
 
 libnotif_la_LDFLAGS = -module -avoid-version
+libnotif_la_LIBADD = $(GTK_LIBS)
+

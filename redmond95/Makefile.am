@@ -11,3 +11,5 @@ libredmond95_la_SOURCES = \
 	redmond95_theme_main.c
 
 libredmond95_la_LDFLAGS = -module -avoid-version
+libredmond95_la_LIBADD = $(GTK_LIBS)
+
