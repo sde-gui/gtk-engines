@@ -2705,42 +2705,55 @@ draw_notebook_focus (GtkWidget *widget,
 {
   GtkPositionType tab_position = GTK_POS_TOP;
   GdkPoint points[6];
+  gint tab_hborder = 2;
+  gint tab_vborder = 2;
 
   if (widget && GTK_IS_NOTEBOOK (widget))
-    tab_position = gtk_notebook_get_tab_pos (GTK_NOTEBOOK (widget));
+    {
+      GtkNotebook *notebook = GTK_NOTEBOOK (widget);
+      
+      tab_hborder = notebook->tab_hborder;
+      tab_vborder = notebook->tab_vborder;
+      tab_position = gtk_notebook_get_tab_pos (notebook);
+    }
 
   adjust_notebook_tab_size (tab_position, &width, &height);
+
+  x -= tab_hborder;
+  y -= tab_vborder;
+  width += 2 * tab_hborder;
+  height += 2 * tab_vborder;
 
   switch (tab_position)
     {
     default:
     case GTK_POS_TOP:
-      points[0].x = x + 2;          points[0].y = y - 2;
-      points[1].x = x + width + 1;  points[1].y = y - 2;
-      points[2].x = x + width + 1;  points[2].y = y + height + 2;
-      points[3].x = x - 2;          points[3].y = y + height + 2;
-      points[4].x = x - 2;          points[4].y = y + 2;
+      points[0].x = x + 4;          points[0].y = y;
+      points[1].x = x + width - 1;  points[1].y = y;
+      points[2].x = x + width - 1;  points[2].y = y + height;
+      points[3].x = x;              points[3].y = y + height;
+      points[4].x = x;              points[4].y = y + 4;
       break;
     case GTK_POS_LEFT:
-      points[0].x = x + 2;          points[0].y = y - 3;
-      points[1].x = x + width + 1;  points[1].y = y - 3;
-      points[2].x = x + width + 1;  points[2].y = y + height + 2;
-      points[3].x = x - 2;          points[3].y = y + height + 2;
-      points[4].x = x - 2;          points[4].y = y + 1;
+      points[0].x = x + 4;          points[0].y = y - 1;
+      points[1].x = x + width - 1;  points[1].y = y - 1;
+      points[2].x = x + width - 1;  points[2].y = y + height;
+      points[3].x = x;              points[3].y = y + height;
+      points[4].x = x;              points[4].y = y + 3;
       break;
     case GTK_POS_RIGHT:
-      points[0].x = x - 2;          points[0].y = y - 3;
-      points[1].x = x + width - 3;  points[1].y = y - 3;
-      points[2].x = x + width + 1;  points[2].y = y + 1;
-      points[3].x = x + width + 1;  points[3].y = y + height + 2;
-      points[4].x = x - 2;          points[4].y = y + height + 2;
+      points[0].x = x;              points[0].y = y - 1;
+      points[1].x = x + width - 5;  points[1].y = y - 1;
+      points[2].x = x + width - 1;  points[2].y = y + 3;
+      points[3].x = x + width - 1;  points[3].y = y + height;
+      points[4].x = x;              points[4].y = y + height;
       break;
     case GTK_POS_BOTTOM:
-      points[0].x = x - 2;          points[0].y = y - 2;
-      points[1].x = x + width + 1;  points[1].y = y - 2;
-      points[2].x = x + width + 1;  points[2].y = y + height + 1;
-      points[3].x = x + 2;          points[3].y = y + height + 1;
-      points[4].x = x - 2;          points[4].y = y + height - 3;
+      points[0].x = x;              points[0].y = y;
+      points[1].x = x + width - 1;  points[1].y = y;
+      points[2].x = x + width - 1;  points[2].y = y + height - 1;
+      points[3].x = x + 4;          points[3].y = y + height - 1;
+      points[4].x = x;              points[4].y = y + height - 5;
       break;
     }
 
