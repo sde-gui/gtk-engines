@@ -1,1 +1,1 @@
-SUBDIRS = Crux Industrial LighthouseBlue Metal Mist Redmond
+SUBDIRS = $(BUILD_THEMES)

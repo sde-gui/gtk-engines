@@ -1,3 +1,18 @@
+2004-12-21  Andrew Johnson <ajgenius@ajgenius.us>
+
+	* README:
+	* configure.ac:
+	* engines/Makefile.am:
+	* themes/Makefile.am:
+	
+	add --disable args to configure
+	version bump to 2.6.0
+
+	* themes/ThinIce/Makefile.am:
+	* themes/ThinIce/gtk-2.0/Makefile.am:
+	* themes/ThinIce/gtk-2.0/gtkrc:
+	add ThinIce theme
+
 2004-12-17  Andrew Johnson <ajgenius@ajgenius.us>
 
 	* AUTHORS:

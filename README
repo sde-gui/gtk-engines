@@ -64,6 +64,10 @@ engines. To use the default themes (installed into
 $prefix/share/themes), you'll need to copy or link them 
 into your  ~/.themes directory.
 
+If you need to skip an engine/theme (for example if installed by another package on which this should depend) configure with --disable-<engine>. 
+
+To skip all default themes pass --disable-themes
+
 Purpose
 =======
 
