@@ -1,6 +1,6 @@
 AC_INIT(README)
 
-AM_INIT_AUTOMAKE(raleigh, 0.1)
+AM_INIT_AUTOMAKE(raleigh, 0.2)
 
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE

@@ -58,16 +58,17 @@ theme_merge_rc_style(GtkRcStyle * dest,
 static void
 set_props (GtkStyle *style)
 {
-  gtk_style_set_prop_experimental (style, "GtkCheckButton::indicator_size", 13);
   gtk_style_set_prop_experimental (style, "GtkButton::default_spacing", 6);
-  gtk_style_set_prop_experimental (style, "GtkSpinButton::shadow_type", GTK_SHADOW_IN);
+  gtk_style_set_prop_experimental (style, "GtkCheckButton::indicator_size", 13);
+  gtk_style_set_prop_experimental (style, "GtkOptionMenu::indicator_width", OPTION_INDICATOR_WIDTH);
+  gtk_style_set_prop_experimental (style, "GtkOptionMenu::indicator_left_spacing", OPTION_INDICATOR_LEFT_SPACING);
+  gtk_style_set_prop_experimental (style, "GtkOptionMenu::indicator_right_spacing", OPTION_INDICATOR_RIGHT_SPACING);
+  gtk_style_set_prop_experimental (style, "GtkPaned::handle_full_size", 1);
   gtk_style_set_prop_experimental (style, "GtkRange::trough_border", 1);
   gtk_style_set_prop_experimental (style, "GtkRange::slider_width", 14);
   gtk_style_set_prop_experimental (style, "GtkRange::stepper_size", 14);
   gtk_style_set_prop_experimental (style, "GtkRange::stepper_spacing", 0);
-  gtk_style_set_prop_experimental (style, "GtkOptionMenu::indicator_width", OPTION_INDICATOR_WIDTH);
-  gtk_style_set_prop_experimental (style, "GtkOptionMenu::indicator_left_spacing", OPTION_INDICATOR_LEFT_SPACING);
-  gtk_style_set_prop_experimental (style, "GtkOptionMenu::indicator_right_spacing", OPTION_INDICATOR_RIGHT_SPACING);
+  gtk_style_set_prop_experimental (style, "GtkSpinButton::shadow_type", GTK_SHADOW_IN);
 }
 
 static void
