@@ -7,7 +7,9 @@ style "redmond95-default"
   GtkOptionMenu::indicator_spacing = { 7, 5, 2, 2 }
   GtkSpinButton::shadow-type = in
 
-  font = "-*-helvetica-medium-r-normal--*-120-*-*-*-*-*-*"
+  GtkButton::child_displacement_x = 1
+  GtkButton::child_displacement_y = 1
+
   bg[NORMAL] = "#c0c0c0"
   bg[PRELIGHT] = "#c0c0c0"
   engine "redmond95" 
@@ -19,7 +21,7 @@ class "GtkWidget" style "redmond95-default"
 
 style "redmond95-menu"
 {
-  bg[PRELIGHT] = { 0.0, 0.0, 0.6 }
+  bg[PRELIGHT] = { 0.0, 0.0, 0.5 }
   fg[PRELIGHT] = { 1.0, 1.0, 1.0 }
 }
 
