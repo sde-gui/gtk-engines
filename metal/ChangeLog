@@ -1,3 +1,10 @@
+Fri Jan 17 18:26:12 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* Theme/gtk-2.0/gtkrc: Make MenuItem pattern more
+	comprehensive to catch all types of Menu item with
+	the metal-black-fg pattern. (#85632). Apply
+	metal-black-fg to option menus.
+
 Fri Jan 17 18:18:52 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* metal_style.c (draw_notebook_focus): Account for
