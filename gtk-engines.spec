@@ -1,4 +1,4 @@
-%define  ver     0.1
+%define  ver     0.2
 %define  rel     SNAP
 %define  prefix  /usr
 
