@@ -91,10 +91,7 @@ if test $thinice = "y"; then
 	fi
 fi
 
-AC_SUBST(BUILD_ENGINES)
-AC_SUBST(BUILD_THEMES)
-
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4.0,,
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.6.0,,
                   AC_MSG_ERROR([GTK+-2.0 is required to compile gtk-engines]))
 
 AC_SUBST(GTK_CFLAGS)
@@ -103,10 +100,11 @@ AC_SUBST(GTK_LIBS)
 GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-2.0`
 AC_SUBST(GTK_VERSION)
 
-AM_CONFIG_HEADER([
-	engines/crux/src/config.h
-	engines/smooth/src/config.h
-])
+AC_SUBST(BUILD_ENGINES)
+AC_SUBST(BUILD_THEMES)
+
+AM_CONFIG_HEADER([engines/crux/src/config.h])
+AM_CONFIG_HEADER([engines/smooth/src/config.h])
 
 AC_CONFIG_FILES([
 Makefile
@@ -139,7 +137,7 @@ themes/ThinIce/Makefile
 themes/ThinIce/gtk-2.0/Makefile
 gtk-engines-2.pc
 gtk-engines.spec
-])
+]) 
 
 AC_OUTPUT
 
@@ -235,3 +233,5 @@ if test "$thinice" = "y"; then
 else
 	echo "Skipping"
 fi
+
+echo ""
