@@ -50,6 +50,48 @@ GdkGC *metal_light_gray_gc;
 GdkGC *metal_mid_gray_gc;
 GdkGC *metal_dark_gray_gc;
 
+/* Information about a single RC style
+ */
+typedef struct
+  {
+    guint refcount;
+    gint  thickness;
+  }
+ThemeData;
+
+
+enum
+  {
+    TOKEN_THICKNESS = G_TOKEN_LAST + 1
+  };
+
+static struct
+  {
+    gchar              *name;
+    guint               token;
+  }
+theme_symbols[] =
+{
+  { "thickness",		TOKEN_THICKNESS  },
+};
+
+static guint        n_theme_symbols = sizeof(theme_symbols) / sizeof(theme_symbols[0]);
+
+static void
+theme_data_ref (ThemeData *theme_data)
+{
+  theme_data->refcount++;
+}
+
+static void
+theme_data_unref (ThemeData *theme_data)
+{
+  theme_data->refcount--;
+  if (theme_data->refcount == 0)
+    {
+      g_free (theme_data);
+    }
+}
 
 /* external theme functions called */
 
@@ -57,13 +99,69 @@ static guint
 theme_parse_rc_style(GScanner * scanner,
 		     GtkRcStyle * rc_style)
 {
+  static GQuark       scope_id = 0;
+  guint               old_scope;
   guint               token;
+  ThemeData          *theme_data;
+  gint i;
+
+  /* Set up a new scope in this scanner. */
+
+  if (!scope_id)
+    scope_id = g_quark_from_string("theme_engine");
+
+  /* If we bail out due to errors, we *don't* reset the scope, so the
+   * error messaging code can make sense of our tokens.
+   */
+  old_scope = g_scanner_set_scope(scanner, scope_id);
+
+  /* Now check if we already added our symbols to this scope
+   * (in some previous call to theme_parse_rc_style for the
+   * same scanner.
+   */
+
+  if (!g_scanner_lookup_symbol(scanner, theme_symbols[0].name))
+    {
+      g_scanner_freeze_symbol_table(scanner);
+      for (i = 0; i < n_theme_symbols; i++)
+	g_scanner_scope_add_symbol(scanner, scope_id,
+				   theme_symbols[i].name,
+				   GINT_TO_POINTER(theme_symbols[i].token));
+      g_scanner_thaw_symbol_table(scanner);
+    }
+
+  /* We're ready to go, now parse the top level */
+
+  theme_data = g_new(ThemeData, 1);
+  theme_data->thickness = 2;
+  theme_data->refcount = 1;
 
   token = g_scanner_peek_next_token(scanner);
   while (token != G_TOKEN_RIGHT_CURLY)
     {
       switch (token)
 	{
+	case TOKEN_THICKNESS:
+	  token = g_scanner_get_next_token(scanner);
+
+	  token = g_scanner_get_next_token(scanner);
+	  if (token != G_TOKEN_EQUAL_SIGN)
+	    {
+	      token = G_TOKEN_EQUAL_SIGN;
+	      break;
+	    }
+
+	  token = g_scanner_get_next_token(scanner);
+	  if (token != G_TOKEN_INT)
+	    {
+	      token = G_TOKEN_INT;
+	      break;
+	    }
+
+	  theme_data->thickness = scanner->value.v_int;
+	  token = G_TOKEN_NONE;
+	  break;
+
 	default:
 	  g_scanner_get_next_token(scanner);
 	  token = G_TOKEN_RIGHT_CURLY;
@@ -71,14 +169,18 @@ theme_parse_rc_style(GScanner * scanner,
 	}
 
       if (token != G_TOKEN_NONE)
-	return token;
+	{
+	  g_free (theme_data);
+	  return token;
+	}
 
       token = g_scanner_peek_next_token(scanner);
     }
 
   g_scanner_get_next_token(scanner);
 
-  rc_style->engine_data = NULL;
+  rc_style->engine_data = theme_data;
+  g_scanner_set_scope(scanner, old_scope);
 
   return G_TOKEN_NONE;
 }
@@ -87,19 +189,44 @@ static void
 theme_merge_rc_style(GtkRcStyle * dest,
 		     GtkRcStyle * src)
 {
+  ThemeData        *src_data = src->engine_data;
+
+  if (!dest->engine_data)
+    {
+      if (src_data)
+	{
+	  theme_data_ref (src_data);
+	  dest->engine_data = src_data;
+	}
+    }
 }
 
 static void
 theme_rc_style_to_style(GtkStyle * style,
 			GtkRcStyle * rc_style)
 {
-  style->klass = &metal_default_class;
+  ThemeData        *data = rc_style->engine_data;
+
+  switch (data->thickness)
+    {
+    case 1:
+      style->klass = &metal_special_class;
+      break;
+    case 2:
+      style->klass = &metal_default_class;
+      break;
+    default:
+      style->klass = &metal_default_class;
+      g_warning ("metal theme: Invalid thickness %d in RC file\n",
+		 data->thickness);
+    }
 }
 
 static void
 theme_duplicate_style(GtkStyle * dest,
 		      GtkStyle * src)
 {
+  dest->klass = src->klass;
 }
 
 static void
@@ -115,6 +242,7 @@ theme_unrealize_style(GtkStyle * style)
 static void
 theme_destroy_rc_style(GtkRcStyle * rc_style)
 {
+  theme_data_unref (rc_style->engine_data);
 }
 
 static void
@@ -133,11 +261,11 @@ theme_init(GtkThemeEngine * engine)
    GtkWidgetClass *widget_class;
    GtkStyle *style;
    GtkVScrollbar *scrollbar;
-   GdkColor white;
+   GdkColor white = { 0, 0xffff, 0xffff, 0xffff };
    GdkColor gray;
    GdkGCValues values;
    GdkColormap *colormap;
-   gint x, y, width, height, depth;
+   gint depth;
 
 #if DEBUG
   printf("Metal Theme Init\n");
@@ -171,15 +299,9 @@ theme_init(GtkThemeEngine * engine)
    widget_class = (GtkWidgetClass *)scaleclass;
    widget_class->expose_event = gtk_range_expose_metal;
 
-   scrollbar = (GtkVScrollbar *)gtk_vscrollbar_new(NULL);
-   GTK_WIDGET(scrollbar)->style->klass = &metal_special_class;
-
-
    /* Some useful GCs for coloring (based on shades of style->white) */
-   style = GTK_WIDGET(scrollbar)->style;
-   white = style->white;
-   colormap = gdk_window_get_colormap(GDK_ROOT_PARENT());
-   gdk_window_get_geometry(GDK_ROOT_PARENT(), &x, &y, &width, &height, &depth);
+   colormap = gdk_colormap_get_system();
+   depth = gdk_visual_get_system()->depth;
 
    /* Light Gray */
    shade(&white, &gray, 0.8);

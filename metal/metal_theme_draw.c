@@ -554,6 +554,9 @@ draw_shadow(GtkStyle * style,
   printf("draw_shadow: %p %p %s %i %i %i %i\n", widget, window, detail, x, y, width, height);
 #endif
 
+   if (shadow_type == GTK_SHADOW_NONE)
+     return;
+
    if ((width == -1) && (height == -1)) gdk_window_get_size(window, &width, &height);
    else if (width == -1)                gdk_window_get_size(window, &width, NULL);
    else if (height == -1)               gdk_window_get_size(window, NULL, &height);
@@ -589,12 +592,7 @@ draw_shadow(GtkStyle * style,
 
    switch (shadow_type) {
    case GTK_SHADOW_NONE:
-      gc1 = NULL;
-      gc2 = NULL;
-      gc3 = NULL;
-      gc4 = NULL;
-      return;
-      break;
+     /* Handled above */
    case GTK_SHADOW_IN:
    case GTK_SHADOW_ETCHED_IN:
       gc1 = style->light_gc[state_type];
@@ -1188,7 +1186,6 @@ draw_box(GtkStyle * style,
 
    g_return_if_fail(style != NULL);
    g_return_if_fail(window != NULL);
-   g_return_if_fail(widget != NULL);
 
    if ((width == -1) && (height == -1)) gdk_window_get_size(window, &width, &height);
    else if (width == -1)                gdk_window_get_size(window, &width, NULL);
@@ -1198,26 +1195,13 @@ draw_box(GtkStyle * style,
   printf("draw_box: %p %p %s %i %i %i %i\n", widget, window, detail, x, y, width, height);
 #endif
 
-   //============= Special Hack to Change style for Scrollbar ========
-   if (GTK_CHECK_TYPE(widget, gtk_hscrollbar_get_type()) ||
-       GTK_CHECK_TYPE(widget, gtk_vscrollbar_get_type()) ||
-       GTK_CHECK_TYPE(widget, gtk_hscale_get_type()) ||
-       GTK_CHECK_TYPE(widget, gtk_vscale_get_type()))  {
-//      if (DETAIL("trough") && (widget->style->klass != &th_special_class)) {
-      if (widget->style->klass != &metal_special_class) {
-         widget->style->klass = &metal_special_class;
-//         gtk_widget_size_allocate(widget->parent, &widget->parent->allocation);
-         parent = gtk_widget_get_toplevel(widget);
-         gtk_widget_size_allocate(parent, &parent->allocation);
-      }
-   }
    //=====================================================================
 
-   if (DETAIL("trough")) {
+   if (widget && DETAIL("trough")) {
       GdkPixmap          *pm;
       gint                depth;
 
-      if (GTK_CHECK_TYPE(widget, gtk_progress_bar_get_type())) {
+      if (GTK_IS_PROGRESS_BAR (widget)) {
 	  if (area) gdk_gc_set_clip_rectangle(style->light_gc[GTK_STATE_NORMAL], area);
 	  gdk_draw_rectangle(window, style->light_gc[GTK_STATE_NORMAL],
 			     TRUE, x, y, width, height);
@@ -1225,13 +1209,11 @@ draw_box(GtkStyle * style,
 	  gtk_paint_shadow(style, window, state_type, shadow_type, area, widget, detail,
 			   x, y, width, height);
       }
-      else if (GTK_CHECK_TYPE(widget, gtk_hscrollbar_get_type()) ||
-               GTK_CHECK_TYPE(widget, gtk_vscrollbar_get_type()))  {
+      else if (GTK_IS_SCROLLBAR (widget))  {
            metal_scrollbar_trough(style, window, state_type, shadow_type,
                        area, widget, detail, x, y, width, height);
       }
-      else if (GTK_CHECK_TYPE(widget, gtk_hscale_get_type()) ||
-               GTK_CHECK_TYPE(widget, gtk_vscale_get_type()))  {
+      else if (GTK_IS_SCALE (widget))  {
            metal_scale_trough(style, window, state_type, shadow_type,
                        area, widget, detail, x, y, width, height);
       }

@@ -779,6 +779,7 @@ theme_data_unref (ThemeData *theme_data)
     {
       g_list_foreach (theme_data->img_list, (GFunc) theme_image_unref, NULL);
       g_list_free (theme_data->img_list);
+      g_free (theme_data);
     }
 }
 

@@ -1,3 +1,18 @@
+Thu Feb 11 22:36:38 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* metal_theme_draw.c (draw_box): Draw some box
+	if widget == NULL.
+
+	* metal_theme_draw.c (draw_shadow): Fix handling
+	of frames with SHADOW_NONE;
+
+	* Theme/gtk/gtkrc: Remove cruft, introduce separate
+	 style for scrollbars with thickness = 1.
+
+	* metal_theme_main.c metal_theme_draw.c: Remove
+	 hack to set border thickness by introducing
+	 a thickness parameter.
+
 Wed Dec 16 11:51:19 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* metal_theme_main.c: Removed C++ comments.

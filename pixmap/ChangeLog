@@ -1,3 +1,8 @@
+Thu Feb 11 21:16:53 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* pixmap_theme_main.c (theme_data_unref): Free the
+	theme data structure as well as the contents.
+
 1999-02-03  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Theme/gtk/Makefile.am.in: New file.  Theme/gtk/Makefile.am is
