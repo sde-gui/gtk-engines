@@ -104,6 +104,8 @@ smooth_rc_style_parse (GtkRcStyle *rc_style,
       token = g_scanner_peek_next_token (scanner);
     }
 
+  smooth_gtkrc_ensure_arrows(&SMOOTH_RC_DATA(smooth_style)->arrow);
+
   g_scanner_get_next_token(scanner);
       
   g_scanner_set_scope (scanner, old_scope);
@@ -146,6 +148,8 @@ static void smooth_rc_style_real_dispose (GObject *rc_style)
         part_finalize(THEME_PART(&data->tabs));
         part_finalize(&data->tabs.active_tab);
         
+	SmoothFreeArrowStyles(&data->arrow);
+
         GDKFinalizeColorCube(&data->colors);
 
         g_free(data);

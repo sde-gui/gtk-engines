@@ -497,4 +497,7 @@ smooth_style_get_arrow(SmoothArrowPart *Part,
 				GtkArrowType ArrowType,
 				SmoothArrow *Arrow);
 
+void
+smooth_gtkrc_ensure_arrows(SmoothArrowPart *Part);
+
 #endif /*SMOOTH_GTK_RC*/

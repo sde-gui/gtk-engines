@@ -135,11 +135,12 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
 						SmoothColor To,
 						SmoothBool QuadraticGradientRange)
 {
-	SmoothInt i, j;
+	SmoothInt i, j, max_block, half_width;
 	long r, g, b, a, dr, dg, db, da;
 	SmoothImageBuffer buffer;
+	
 	SmoothUChar *ptr;
-	SmoothUChar rr, gg, bb, aa;
+	SmoothUChar point[4];
 
 	SmoothUChar r0, g0, b0, a0;
 	SmoothUChar rf, gf, bf, af;
@@ -167,38 +168,33 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
 	db = ((bf-b0)<<16)/(int)Height;
 	da = ((af-a0)<<16)/(int)Height;
 
+	half_width = (Width - (Width % 2))/2;
+
 	for (i=0; i<Height; i++)
 	{
 		ptr = pixels + i * rowstride;
       
-		rr = r>>16;
-		gg = g>>16;
-		bb = b>>16;
-		aa = a>>16;
-
-		for (j=0; j<Width/8; j++)
-		{
-			*(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			*(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			*(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			*(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			*(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			*(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			*(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			*(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-		}
-
-		switch (Width%8)
-		{
-			case 7: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			case 6: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			case 5: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			case 4: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			case 3: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			case 2: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-			case 1: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb; /* *(ptr++) = aa; */
-		}
+		ptr[0] = r>>16;
+		ptr[1] = g>>16;
+		ptr[2] = b>>16;
 		
+		max_block = half_width;
+  
+		if (Width > 1)
+		{
+			for (j=1; j <= max_block; j *= 2)
+			{
+				memcpy (&(ptr[j*3]), &(ptr[0]), j*3);
+
+				if ((j*2) >= max_block)
+				{
+					max_block = j;
+				}
+			}
+
+			memcpy (&(ptr[6*max_block]), &(ptr[0]), (Width - 2*max_block)*3);
+		}
+
 		if (QuadraticGradientRange) 
 		{
 			SmoothDouble delta, tmp_a, tmp_b, tmp_c;
@@ -320,7 +316,11 @@ GDK2CanvasRenderGradient(SmoothCanvas Canvas,
 	SmoothInt depth = GDKPrivateCanvas->Depth;
 	SmoothInt ditherdepth = GDKPrivateCanvas->DitherDepth;
 	
+	#ifdef ALWAYSDITHER
+	SmoothBool dither = (!diagonal);
+	#else
 	SmoothBool dither = (((depth > 0) && (depth <= ditherdepth)) && (!diagonal));
+	#endif
 	
 	if (SmoothRectangleSetValues(&clip, X, Y, Width, Height)
 		&& SmoothCanvasClipUseIntersectingRectangle(Canvas, clip))

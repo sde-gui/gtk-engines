@@ -1,3 +1,26 @@
+2005-03-11  Andrew Johnson  <ajgenius@ajgenius.us>
+
+	* engines/crux/src/config.h.in:
+		re-empty crux config template (tsk's thos)
+
+	(merging changes from smooth cvs)
+	
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.h:
+	* engines/smooth/src/engine/smooth_gtk2_engine.c:
+        * engines/smooth/src/utils/draw_arrows.c:
+	* engines/smooth/src/utils/draw_arrows.h:
+
+	ensure composite arrows immediately after parse i
+	(to try and prevent memleaks on arrowless apps)
+	
+	* engines/smooth/src/interfaces/gdk2/src/gdk2_gradient_routines.c:
+	* engines/smooth/src/interfaces/gdk2/src/gdk2_gradient_routines.h:
+
+	enabled dither pixbuf gradients by default for vertical/horizontal
+	gradients and use exponential memcpy's in block sizes of 2^n to
+	optimize number of steps used to draw vertical gradient lines.
+	
 2005-03-07  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

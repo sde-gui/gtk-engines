@@ -20,6 +20,8 @@
 /*                                                                            */
 /* Author(s): Andrew Johnson <ajgenius@ajgenius.us>                           */
 /******************************************************************************/
+#define ALWAYSDITHER
+
 static SmoothBool
 GDK2CanvasRenderGradient(SmoothCanvas Canvas,
 				SmoothGradient Gradient,

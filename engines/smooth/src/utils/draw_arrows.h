@@ -110,4 +110,7 @@ SmoothDrawArrow(SmoothCanvas *Canvas,
 			SmoothColor Background,
 			SmoothColor Foreground);
 
+void 
+SmoothFreeArrowStyles(SmoothArrowPart *arrow);
+
 #endif /* DRAW_ARROWS_H */

@@ -2456,8 +2456,6 @@ smooth_style_get_arrow(SmoothArrowPart *Part,
 		{
 			SmoothArrow dummy;
 
-			Part->StylesFreed = SmoothTrue;
-
 			for (State = 0; State < 5; State++)
 			{
 				for (type = 0; type < SMOOTH_ARROW_TYPE_COUNT; type++)
@@ -2465,31 +2463,18 @@ smooth_style_get_arrow(SmoothArrowPart *Part,
 					if (!Part->CompositeArrowsSet[State][type])
 						smooth_style_get_arrow(Part, State, type, &dummy);
 				}
-
-				if (Part->Styles[State])
-				{
-					g_free(Part->Styles[State]);
-					Part->Styles[State] = NULL;
-				}
 			}
 
-			if (Part->DefaultStyle)
-			{
-				g_free(Part->DefaultStyle);
-				Part->DefaultStyle = NULL;
-			}
-	
-			if (Part->DefaultStateStyles)
-			{
-				g_free(Part->DefaultStateStyles);
-				Part->DefaultStateStyles = NULL;
-			}
-	
-			if (Part->DefaultTypeStyles)
-			{
-				g_free(Part->DefaultTypeStyles);
-				Part->DefaultTypeStyles = NULL;
-			}
+			SmoothFreeArrowStyles(Part);
 		}
 	}
 }	
+
+/* Ensure Composite/Inherited Parts here to cleanup extra memory */
+void
+smooth_gtkrc_ensure_arrows(SmoothArrowPart *Part)
+{
+	SmoothArrow dummy;
+
+	smooth_style_get_arrow(Part, 0, 0, &dummy);
+}

@@ -668,3 +668,41 @@ SmoothDrawArrow(SmoothCanvas *Canvas,
 		SmoothCanvasUnCacheColor(Canvas, &border);	
 	}
 }
+
+
+void SmoothFreeArrowStyles(SmoothArrowPart *arrow)
+{
+	if ((arrow) && (!arrow->StylesFreed))
+	{
+		gint i;
+
+		if (arrow->DefaultStyle)
+		{
+			g_free(arrow->DefaultStyle);
+			arrow->DefaultStyle = NULL;
+		}
+
+		if (arrow->DefaultStateStyles)
+		{			
+			g_free(arrow->DefaultStateStyles);
+			arrow->DefaultStateStyles = NULL;
+		}
+
+		if (arrow->DefaultTypeStyles)
+		{
+			g_free(arrow->DefaultTypeStyles);
+			arrow->DefaultTypeStyles = NULL;
+		}
+
+		for (i=0; i < 5; i++) 
+		{
+			if (arrow->Styles[i])
+			{
+				g_free(arrow->Styles[i]);
+				arrow->Styles[i] = NULL;
+			}
+		}
+
+		arrow->StylesFreed = TRUE;
+	}
+}
