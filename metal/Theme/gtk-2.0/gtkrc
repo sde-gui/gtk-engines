@@ -6,7 +6,6 @@ style "metal-default"
   GtkOptionMenu::indicator_size = { 11, 6 }
   GtkOptionMenu::indicator_spacing = { 4, 5, 2, 2 }
 
-  font = "-b&h-lucida-bold-r-normal-sans-12-*-*-*-p-*-iso8859-1"
   bg[NORMAL]      = { 0.80, 0.80, 0.80 }
   fg[NORMAL]      = { 0.40, 0.40, 0.60 }
   bg[PRELIGHT]    = { 0.80, 0.80, 1.00 }

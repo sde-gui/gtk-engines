@@ -1,3 +1,8 @@
+2004-01-21  Anders Carlsson  <andersca@gnome.org>
+
+	* Theme/gtk-2.0/gtkrc: Remove font from gtkrc,
+	(#104082, reported by Roland Smith.)
+
 2003-03-02  Tor Lillqvist  <tml@iki.fi>
 
 	* Makefile.am: Use -no-undefined, and do use GTK_LIBS on Windows.
