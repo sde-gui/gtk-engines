@@ -1014,11 +1014,11 @@ void nm_test_func(){}
 main(){nm_test_var='a';nm_test_func();return(0);}
 EOF
 
-echo "$progname:1017: checking if global_symbol_pipe works" >&5
-if { (eval echo $progname:1018: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
+echo "$progname:1013: checking if global_symbol_pipe works" >&5
+if { (eval echo $progname:1014: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
   # Now try to grab the symbols.
   nlist=conftest.nm
-  if { echo "$progname:1021: eval \"$NM conftest.o | $global_symbol_pipe > $nlist\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > $nlist 2>&5"; } && test -s "$nlist"; then
+  if { echo "$progname:1017: eval \"$NM conftest.o | $global_symbol_pipe > $nlist\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > $nlist 2>&5"; } && test -s "$nlist"; then
 
     # Try sorting and uniquifying the output.
     if sort "$nlist" | uniq > "$nlist"T; then
@@ -1076,7 +1076,7 @@ EOF
 	save_CFLAGS="$CFLAGS"
         LIBS='conftestm.o'
 	CFLAGS="$CFLAGS$no_builtin_flag"
-        if { (eval echo $progname:1079: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+        if { (eval echo $progname:1075: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
           pipe_works=yes
         else
           echo "$progname: failed program was:" >&5

@@ -11,3 +11,5 @@ configure
 config.cache
 .deps
 .libs
+config.guess
+config.sub
