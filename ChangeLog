@@ -1,5 +1,13 @@
 2004-12-14  Andrew Johnson <ajgenius@ajgenius.us>
 
+	* themes/Industrial/Makefile.am:
+	* themes/Metal/gtk-2.0/Makefile.am:
+	* themes/Redmond/gtk/Makefile.am:
+
+	commit missing Makefile.am's
+
+2004-12-14  Andrew Johnson <ajgenius@ajgenius.us>
+
 	* configure.ac:
 	* Makefile.am:
 	* engines/Makefile.am:	
