@@ -977,7 +977,7 @@ theme_parse_rc_style(GScanner * scanner,
 
   /* We're ready to go, now parse the top level */
 
-  theme_data = g_new(ThemeData, 1);
+  theme_data = g_new0(ThemeData, 1);
   theme_data->img_list = NULL;
   theme_data->refcount = 1;
 
@@ -1028,7 +1028,7 @@ theme_merge_rc_style(GtkRcStyle * dest,
 
   if (!dest_data)
     {
-      dest_data = g_new(ThemeData, 1);
+      dest_data = g_new0(ThemeData, 1);
       dest_data->img_list = NULL;
       dest_data->refcount = 1;
       dest->engine_data = dest_data;
@@ -1082,7 +1082,7 @@ theme_duplicate_style(GtkStyle * dest,
   ThemeData     *dest_data;
   GList		*tmp_list1;
 
-  dest_data = g_new(ThemeData, 1);
+  dest_data = g_new0(ThemeData, 1);
 
   tmp_list1 = src_data->img_list;
       
