@@ -1,3 +1,27 @@
+2005-03-14  Andrew Johnson <ajgenius@ajgenius.us>
+
+	* COPYING:
+	* configure.ac:
+	* engines/clearlooks/AUTHORS:
+	* engines/clearlooks/CREDITS:
+	* engines/clearlooks/Makefile.am:
+	* engines/clearlooks/src/bits.c:
+	* engines/clearlooks/src/clearlooks_draw.c: 
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/clearlooks_theme_main.c: 
+	* engines/clearlooks/src/support.c:
+	* engines/clearlooks/src/support.h:
+
+	add clearlooks engine
+	
+	* engines/smooth/src/interfaces/gdk2/src/gdk2_gradient_routines.c:
+
+	check for empty width/height in gradient routine
+
 2005-03-13  Andrew Johnson <ajgenius@ajgenius.us>
 
 	* engines/smooth/src/interfaces/gdk2/src/gdk2_gradient_routines.c:

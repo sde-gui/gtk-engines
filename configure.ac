@@ -19,6 +19,7 @@ AM_PROG_LIBTOOL
 enableval="n"
 disableval="y"
 
+AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks		skip ClearLooks engine], 		[clearlooks=$enableval], 	[clearlooks=$disableval])
 AC_ARG_ENABLE(crux, 		[  --disable-crux		skip Crux engine/theme], 		[crux=$enableval], 		[crux=$disableval])
 AC_ARG_ENABLE(hc,		[  --disable-hc 		skip HC(high contrast) engine], 	[hc=$enableval], 		[hc=$disableval])
 AC_ARG_ENABLE(industrial, 	[  --disable-industrial		skip Industrial engine/theme], 		[industrial=$enableval], 	[industrial=$disableval])
@@ -33,6 +34,10 @@ AC_ARG_ENABLE(themes, 		[  --disable-themes		skip installing default themes], 	[
 
 BUILD_ENGINES=""
 BUILD_THEMES=""
+
+if test $clearlooks = "y"; then
+	BUILD_ENGINES="$BUILD_ENGINES clearlooks"
+fi
 
 if test $crux = "y"; then
 	BUILD_ENGINES="$BUILD_ENGINES crux"
@@ -109,6 +114,7 @@ AM_CONFIG_HEADER([engines/smooth/src/config.h])
 AC_CONFIG_FILES([
 Makefile
 engines/Makefile
+engines/clearlooks/Makefile
 engines/crux/Makefile
 engines/crux/pixmaps/Makefile
 engines/hc/Makefile
@@ -142,6 +148,13 @@ gtk-engines.spec
 AC_OUTPUT
 
 echo -e "\nEngines and Themes:"
+
+echo -n "      ClearLooks - "
+if test "$clearlooks" = "y"; then
+        echo "Including"
+else
+        echo "Skipping"
+fi
 
 echo -n "      Crux - "
 if test "$crux" = "y"; then
