@@ -1,3 +1,7 @@
+1998-11-07  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in: Removed.
+
 Fri Nov  6 11:20:21 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* motif_theme_draw.c: Changed gap_side to GtkPositionType,
