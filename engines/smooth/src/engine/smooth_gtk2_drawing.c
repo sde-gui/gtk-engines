@@ -309,7 +309,7 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 
 		SmoothCanvasSetPenValues(Canvas, color, line_width, 
 						dash_pattern.Pattern[0] ? GDK_LINE_ON_OFF_DASH : GDK_LINE_SOLID,
-						GDK_JOIN_MITER, GDK_CAP_BUTT);
+						GDK_JOIN_MITER, GDK_CAP_NOT_LAST);
 	}
 
 	dash_pattern.Length = strlen(dash_pattern.Pattern);

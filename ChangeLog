@@ -1,3 +1,28 @@
+2005-01-04  Andrew Johnson <ajgenius@ajgenius.us>
+
+	* engines/smooth/src/engine/smooth_gtk2_misc.c:
+	(reverse_engineer_spin_button):
+	
+	improve spin button up arrow offset when embedded
+	
+	* engines/smooth/src/interfaces/gdk2/gdk2_drawing_interface.c:
+	(internal_image_buffer_new), (GDK2CanvasStore), (GDK2CanvasRender),
+	(GDK2CanvasDrawLine), (GDK2CanvasDrawLines), (GDK2CanvasDrawArc),
+	(GDK2CanvasFrameRectangle), (GDK2CanvasFrameChord),
+	(GDK2CanvasFillRectangle), (GDK2CanvasFillChord),
+	(GDKInitializeCanvas), (GDKFinalizeCanvas),
+	(_DrawingInterfaceInitialize), (_DrawingInterfaceFinalize):
+        * engines/smooth/src/interfaces/gdk2/gdk2_private_drawing_interface.h:
+
+	Remove unused experimental Cairo/Xrender, Bezier, & Blur Cruft
+	
+        * engines/smooth/src/interfaces/gdk2/gdk2_drawing_interface.c:
+        (GDK2CanvasFrameRectangle):
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(do_smooth_draw_focus):
+
+	fix solid focus where thickness > 1
+
 2004-12-21  Andrew Johnson <ajgenius@ajgenius.us>
 
 	* configure.ac:

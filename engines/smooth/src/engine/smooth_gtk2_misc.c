@@ -407,7 +407,7 @@ reverse_engineer_spin_button (GtkWidget    *widget,
   realwidth += 1;
 
   *x += ((*width - realwidth) / 2);
-  *y += ((*height - realheight) / 2) + (arrow_type==GTK_ARROW_DOWN?(ENTRY_BUTTON_EMBED(widget->style)?0:1):-1);
+  *y += ((*height - realheight) / 2) + (arrow_type==GTK_ARROW_DOWN?(ENTRY_BUTTON_EMBED(widget->style)?0:1):(ENTRY_BUTTON_EMBED(widget->style)?0:-1));
   *width = realwidth;
   *height = realheight;
 
