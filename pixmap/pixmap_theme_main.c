@@ -1153,6 +1153,8 @@ theme_init(GtkThemeEngine * engine)
   engine->set_background = theme_set_background;
 
   gdk_imlib_init();
+  gtk_widget_push_visual(gdk_imlib_get_visual());
+  gtk_widget_push_colormap(gdk_imlib_get_colormap());
 }
 
 void
