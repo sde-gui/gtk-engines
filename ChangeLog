@@ -1,3 +1,14 @@
+Fri Jan 17 19:02:02 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* === Released 2.2.0 ===
+
+	* Makefile.am: Make dist fixes.
+
+	* gtk-engines.spec: Some updates to bring into a
+	resemblence of workingness.
+
+	* NEWS: Updated.
+
 Fri Jan 17 18:32:34 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in Makefile.am gtk-engines-2.pc.in: Patch
