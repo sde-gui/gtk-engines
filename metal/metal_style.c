@@ -153,7 +153,7 @@ static void metal_button           (GtkStyle       *style,
 				    gint            width,
 				    gint            height);
 
-GtkStyleClass *parent_class;
+static GtkStyleClass *parent_class;
 
 static gboolean 
 sanitize_size (GdkWindow      *window,

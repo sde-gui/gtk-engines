@@ -1,3 +1,8 @@
+Fri Jan 17 14:41:05 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* metal_style.c: Make parent_class static. (#94047,
+	 Shivaram Upadhyayula)
+
 2002-09-12  Havoc Pennington  <hp@redhat.com>
 
 	* Theme/Makefile.am (theme_DATA): update Makefile to remove 
