@@ -42,7 +42,7 @@ SmoothInt modula(SmoothFloat number, SmoothInt divisor)
 
 /* This function is taken for the most part from Xenophilia */
 void 
-do_draw_broken_bars(SmoothCanvas *Canvas,
+do_smooth_draw_broken_bars(SmoothCanvas *Canvas,
 
 			SmoothColor Highlight,
 			SmoothColor Shadow,
@@ -91,7 +91,7 @@ do_draw_broken_bars(SmoothCanvas *Canvas,
 
 /* This function is based for the most part on XFCE (xfce_draw_handlers), and EnGradient*/
 void
-do_draw_lines(SmoothGripObjects *GripObjects,
+do_smooth_draw_lines(SmoothGripObjects *GripObjects,
 		SmoothCanvas *Canvas,
 		SmoothColor Highlight,
 		SmoothColor Shadow,
@@ -177,8 +177,8 @@ do_draw_lines(SmoothGripObjects *GripObjects,
 }
 
 /* This function is taken for the most part from CleanIce */
-void
-internal_draw_dot(SmoothCanvas *Canvas,
+static void
+internal_smooth_draw_dot(SmoothCanvas *Canvas,
 
 			SmoothInt Size,
 			
@@ -245,7 +245,7 @@ internal_draw_dot(SmoothCanvas *Canvas,
 }
 
 void
-do_draw_dots(SmoothGripObjects *GripObjects,
+do_smooth_draw_dots(SmoothGripObjects *GripObjects,
 		SmoothCanvas *Canvas,
 		SmoothColor Highlight,
 		SmoothColor Shadow,
@@ -275,14 +275,14 @@ do_draw_dots(SmoothGripObjects *GripObjects,
 			dot_y = i + delta;
 		}
 
-		internal_draw_dot(Canvas, GripObjects->Size, Highlight, Shadow, MidPoint, dot_x, dot_y, X, Y, Width, Height, GripObjects->CutOff, GripObjects->CutOff, Horizontal);
+		internal_smooth_draw_dot(Canvas, GripObjects->Size, Highlight, Shadow, MidPoint, dot_x, dot_y, X, Y, Width, Height, GripObjects->CutOff, GripObjects->CutOff, Horizontal);
 	}
 }
 
 /* This function is taken for the most part from Xenophilia */
 
 void 
-do_draw_buds(SmoothCanvas *Canvas,
+do_smooth_draw_buds(SmoothCanvas *Canvas,
 		SmoothColor Highlight,
 		SmoothColor Shadow,
 		SmoothColor MidPoint,
@@ -306,7 +306,7 @@ do_draw_buds(SmoothCanvas *Canvas,
 		{
 			for (dot_x = X; dot_x < X + Width - 1; dot_x += 6) 
 			{
-				internal_draw_dot(Canvas, 2,
+				internal_smooth_draw_dot(Canvas, 2,
 							Highlight, Shadow, MidPoint, 
 							dot_x, dot_y, 
 							X, Y, Width, Height, 
@@ -319,7 +319,7 @@ do_draw_buds(SmoothCanvas *Canvas,
 		{
 			for (dot_x = X + 3; dot_x < X + Width-1; dot_x += 6) 
 			{
-				internal_draw_dot(Canvas, 2,
+				internal_smooth_draw_dot(Canvas, 2,
 							Highlight, Shadow, MidPoint, 
 							dot_x, dot_y, 
 							X, Y, Width, Height, 
@@ -338,7 +338,7 @@ do_draw_buds(SmoothCanvas *Canvas,
 		{
 			for (dot_x = X; dot_x < X + Width - 1; dot_x += 3) 
 			{
-				internal_draw_dot(Canvas, 2,
+				internal_smooth_draw_dot(Canvas, 2,
 							Highlight, Shadow, MidPoint, 
 							dot_x, dot_y, 
 							X, Y, Width, Height, 

@@ -71,7 +71,7 @@ typedef struct
 } SmoothGripObjects;
 
 void 
-do_draw_broken_bars(SmoothCanvas *Canvas,
+do_smooth_draw_broken_bars(SmoothCanvas *Canvas,
 
 			SmoothColor Highlight,
 			SmoothColor Shadow,
@@ -85,7 +85,7 @@ do_draw_broken_bars(SmoothCanvas *Canvas,
 			SmoothBool Horizontal);
 
 void
-do_draw_lines(SmoothGripObjects *GripObjects,
+do_smooth_draw_lines(SmoothGripObjects *GripObjects,
 		SmoothCanvas *Canvas,
 		SmoothColor Highlight,
 		SmoothColor Shadow,
@@ -96,7 +96,7 @@ do_draw_lines(SmoothGripObjects *GripObjects,
 		SmoothBool Horizontal);
 
 void
-do_draw_dots(SmoothGripObjects *GripObjects,
+do_smooth_draw_dots(SmoothGripObjects *GripObjects,
 		SmoothCanvas *Canvas,
 		SmoothColor Highlight,
 		SmoothColor Shadow,
@@ -108,7 +108,7 @@ do_draw_dots(SmoothGripObjects *GripObjects,
 		SmoothBool Horizontal);
 
 void 
-do_draw_buds(SmoothCanvas *Canvas,
+do_smooth_draw_buds(SmoothCanvas *Canvas,
 		SmoothColor Highlight,
 		SmoothColor Shadow,
 		SmoothColor MidPoint,

@@ -1,5 +1,19 @@
 2004-12-15  Andrew Johnson <ajgenius@ajgenius.us>
 
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_drawing.c:
+	(smooth_draw_grip):
+	* engines/smooth/src/utils/calc_colors.c:
+	* engines/smooth/src/utils/calc_colors.h:
+	* engines/smooth/src/utils/draw_grips.c:
+	(do_smooth_draw_broken_bars), (do_smooth_draw_lines),
+	(internal_smooth_draw_dot), (do_smooth_draw_dots),
+	(do_smooth_draw_buds):
+	* engines/smooth/src/utils/draw_grips.h:
+
+	ensure "smooth" "namespace" on old grip functions
+
+2004-12-15  Andrew Johnson <ajgenius@ajgenius.us>
+
 	* engines/smooth/src/utils/draw_checkmark.c:
 	(SmoothDrawMinusCheckMark):
 

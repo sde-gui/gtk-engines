@@ -91,7 +91,7 @@
 /*	3.)Names changed to normal standards			*/
 /*	4.)Code modified to use MAX/MIN macros for readability.	*/
 /****************************************************************/ 
-void
+static void
 color_get_hsb_from_rgb (SmoothDouble Red, 
 				SmoothDouble Green, 
 				SmoothDouble Blue,
@@ -192,7 +192,7 @@ color_get_hsb_from_rgb (SmoothDouble Red,
 /*		values, etc.					*/
 /****************************************************************/ 
 #define MODULA(number, divisor) (((SmoothInt)number % divisor) + (number - (SmoothInt)number));
-void
+static void
 color_get_rgb_from_hsb (SmoothDouble Hue, 
 				SmoothDouble Saturation,
 				SmoothDouble Brightness, 

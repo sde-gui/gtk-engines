@@ -29,24 +29,6 @@
 #define CALC_COLORS_H
 
 void
-color_extract_hsb_from_rgb (SmoothDouble Red, 
-				SmoothDouble Green, 
-				SmoothDouble Blue,
-				
-				SmoothDouble *Hue, 
-				SmoothDouble *Saturation,
-				SmoothDouble *Brightness);
-
-void
-color_extract_rgb_from_hsb (SmoothDouble Hue, 
-				SmoothDouble Saturation,
-				SmoothDouble Brightness, 
-			
-				SmoothDouble *Red, 
-				SmoothDouble *Green, 
-				SmoothDouble *Blue);
-
-void
 SmoothCompositeColorShade(SmoothColor *Original, 
 			  SmoothDouble ShadeRatio,
 			  SmoothColor *Composite);

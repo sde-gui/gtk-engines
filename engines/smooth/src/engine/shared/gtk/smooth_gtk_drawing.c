@@ -25,7 +25,7 @@
 /*   Spencer Kimball <spencer@xcf.berkeley.edu>                               */
 /*   Josh MacDonald <jmacd@xcf.berkeley.edu>                                  */
 /*                                                                            */
-/* Portions Based on the EnGradient Engine                  e                  */
+/* Portions Based on the EnGradient Engine                                    */
 /*   Andrew Cattau                                                            */
 /*                                                                            */
 /* Portions Based on the IceGradient Engine                                   */
@@ -307,7 +307,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
 				color1 = tmp;
 			}
 	
-			do_draw_broken_bars(Canvas, color1, color2, color3, X + 2, Y + 2, Width - 4, Height - 4, Horizontal);
+			do_smooth_draw_broken_bars(Canvas, color1, color2, color3, X + 2, Y + 2, Width - 4, Height - 4, Horizontal);
 		}		
 		break; 
 
@@ -369,7 +369,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
 				color1 = tmp;
 			}
 		
-			do_draw_lines(&sgo, Canvas, color1, color2, X, Y, Width, Height, Horizontal);   
+			do_smooth_draw_lines(&sgo, Canvas, color1, color2, X, Y, Width, Height, Horizontal);   
 		}   
 		break; 
 
@@ -451,7 +451,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
 					X -= 1;
 			}
 		
-			do_draw_dots(&sgo, Canvas, color1, color2, color3, X, Y, Width, Height, Horizontal);   
+			do_smooth_draw_dots(&sgo, Canvas, color1, color2, color3, X, Y, Width, Height, Horizontal);   
 		}   
 		break; 
 
@@ -509,7 +509,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
 			}
 			
 
-			do_draw_buds(Canvas, color1, color2, color3,
+			do_smooth_draw_buds(Canvas, color1, color2, color3,
 		
 					X, Y, Width, Height,
 				
