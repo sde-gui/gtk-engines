@@ -1,3 +1,12 @@
+Sun Jan  3 14:13:28 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* configure.in: don't try to build static libs by default, it
+	doesn't make much sense
+
+	* redmond95/Makefile.am
+	* notif/Makefile.am
+	* metal/Makefile.am: don't link to $GDK_IMLIB_LIBS
+
 Wed Dec 16 12:52:55 EST 1998 The Rasterman <raster@redhat.com>
 	* removed win95 and Motif themes - replace with Notif and Redmond95 
 	  - otherwise the same.

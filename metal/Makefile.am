@@ -1,6 +1,6 @@
 SUBDIRS = Theme
-INCLUDES = $(GTK_CFLAGS) $(GDK_IMLIB_CFLAGS)
-LIBS = $(GTK_LIBS) $(GDK_IMLIB_LIBS)
+INCLUDES = $(GTK_CFLAGS)
+LIBS = $(GTK_LIBS)
 enginedir = $(libdir)/gtk/themes/engines
 
 # replace the "metal" prefix with whatever you're using
