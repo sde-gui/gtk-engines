@@ -1154,6 +1154,13 @@ theme_init(GtkThemeEngine * engine)
   engine->set_background = theme_set_background;
 
   gdk_imlib_init();
+
+  /*
+   * We enable the caches unconditionally (the -1 is used
+   * to inform gnome-libs to ignore its setting for the
+   * cache
+   */
+  gdk_imlib_set_cache_info (-1, -1);
   gtk_widget_push_visual(gdk_imlib_get_visual());
   gtk_widget_push_colormap(gdk_imlib_get_colormap());
 }
