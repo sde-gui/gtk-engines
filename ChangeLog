@@ -1,3 +1,12 @@
+Thu Feb 15 23:32:27 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (cflags_set): Release 0.11.
+
+Mon Feb 12 17:43:57 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am raleigh/*: Import of new theme that using GTK+-1.2.9
+	features to look better.
+
 Wed Jan 17 13:40:08 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* {notif,redmond95}/Theme/gtk/gtkrc: Remove references to

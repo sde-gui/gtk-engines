@@ -2,7 +2,7 @@ AC_INIT(README)
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
 
-AM_INIT_AUTOMAKE(gtk-engines, 0.10)
+AM_INIT_AUTOMAKE(gtk-engines, 0.11)
 
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
@@ -21,10 +21,14 @@ AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
 # Checks for programs.
-AM_PATH_GTK(1.1.13, , 
-	AC_MSG_ERROR([*** GTK 1.1 not installed - please install first ***]))
+AM_PATH_GTK(1.2.9, , 
+	AC_MSG_ERROR([*** GTK+-1.2.9 not installed - please install first ***]))
 AM_PATH_GDK_IMLIB(1.8, ,
         AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***]))
+
+AC_CHECK_LIB(gtk, gtk_style_set_prop_experimental, ,
+	     AC_MSG_ERROR([*** gtk_style_set_prop_experimental() not found; perhaps you have an old CVS version of GTK+ ***]),
+             $GTK_LIBS)
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -51,6 +55,9 @@ metal/Theme/gtk/Makefile
 notif/Makefile
 notif/Theme/Makefile
 notif/Theme/gtk/Makefile
+raleigh/Makefile
+raleigh/Theme/Makefile
+raleigh/Theme/gtk/Makefile
 redmond95/Makefile
 redmond95/Theme/Makefile
 redmond95/Theme/gtk/Makefile
