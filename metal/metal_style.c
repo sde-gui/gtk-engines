@@ -1,8 +1,6 @@
 #include <gtk/gtk.h>
 
-extern GtkStyleClass th_default_class;
-extern GdkFont     *default_font;
-extern GSList      *unattached_styles;
+extern GtkStyleClass metal_default_class;
 
 /*
  * Java Metal Theme
@@ -10,17 +8,8 @@ extern GSList      *unattached_styles;
  * A work in progress...
  */
 
-/* Theme functions to export */
-GtkStyle           *
-                    gtk_style_new(void);
-void
-                    gtk_style_set_background(GtkStyle * style,
-					     GdkWindow * window,
-					     GtkStateType state_type);
-
 /* internal functions */
-void
-                    draw_hline(GtkStyle * style,
+static void         draw_hline(GtkStyle * style,
 			       GdkWindow * window,
 			       GtkStateType state_type,
 			       GdkRectangle * area,
@@ -29,8 +18,7 @@ void
 			       gint x1,
 			       gint x2,
 			       gint y);
-void
-                    draw_vline(GtkStyle * style,
+static void         draw_vline(GtkStyle * style,
 			       GdkWindow * window,
 			       GtkStateType state_type,
 			       GdkRectangle * area,
@@ -39,8 +27,7 @@ void
 			       gint y1,
 			       gint y2,
 			       gint x);
-void
-                    draw_shadow(GtkStyle * style,
+static void         draw_shadow(GtkStyle * style,
 				GdkWindow * window,
 				GtkStateType state_type,
 				GtkShadowType shadow_type,
@@ -52,8 +39,7 @@ void
 				gint width,
 				gint height);
 
-void
-                    draw_polygon(GtkStyle * style,
+static void         draw_polygon(GtkStyle * style,
 				 GdkWindow * window,
 				 GtkStateType state_type,
 				 GtkShadowType shadow_type,
@@ -63,8 +49,7 @@ void
 				 GdkPoint * point,
 				 gint npoints,
 				 gint fill);
-void
-                    draw_arrow(GtkStyle * style,
+static void         draw_arrow(GtkStyle * style,
 			       GdkWindow * window,
 			       GtkStateType state_type,
 			       GtkShadowType shadow_type,
@@ -77,8 +62,7 @@ void
 			       gint y,
 			       gint width,
 			       gint height);
-void
-                    draw_diamond(GtkStyle * style,
+static void         draw_diamond(GtkStyle * style,
 				 GdkWindow * window,
 				 GtkStateType state_type,
 				 GtkShadowType shadow_type,
@@ -89,8 +73,7 @@ void
 				 gint y,
 				 gint width,
 				 gint height);
-void
-                    draw_oval(GtkStyle * style,
+static void         draw_oval(GtkStyle * style,
 			      GdkWindow * window,
 			      GtkStateType state_type,
 			      GtkShadowType shadow_type,
@@ -101,8 +84,7 @@ void
 			      gint y,
 			      gint width,
 			      gint height);
-void
-                    draw_string(GtkStyle * style,
+static void         draw_string(GtkStyle * style,
 				GdkWindow * window,
 				GtkStateType state_type,
 				GdkRectangle * area,
@@ -111,8 +93,7 @@ void
 				gint x,
 				gint y,
 				const gchar * string);
-void
-                    draw_box(GtkStyle * style,
+static void         draw_box(GtkStyle * style,
 			     GdkWindow * window,
 			     GtkStateType state_type,
 			     GtkShadowType shadow_type,
@@ -123,8 +104,7 @@ void
 			     gint y,
 			     gint width,
 			     gint height);
-void
-                    draw_flat_box(GtkStyle * style,
+static void         draw_flat_box(GtkStyle * style,
 				  GdkWindow * window,
 				  GtkStateType state_type,
 				  GtkShadowType shadow_type,
@@ -135,8 +115,7 @@ void
 				  gint y,
 				  gint width,
 				  gint height);
-void
-                    draw_check(GtkStyle * style,
+static void         draw_check(GtkStyle * style,
 			       GdkWindow * window,
 			       GtkStateType state_type,
 			       GtkShadowType shadow_type,
@@ -147,8 +126,7 @@ void
 			       gint y,
 			       gint width,
 			       gint height);
-void
-                    draw_option(GtkStyle * style,
+static void         draw_option(GtkStyle * style,
 				GdkWindow * window,
 				GtkStateType state_type,
 				GtkShadowType shadow_type,
@@ -159,8 +137,7 @@ void
 				gint y,
 				gint width,
 				gint height);
-void
-                    draw_cross(GtkStyle * style,
+static void         draw_cross(GtkStyle * style,
 			       GdkWindow * window,
 			       GtkStateType state_type,
 			       GtkShadowType shadow_type,
@@ -171,8 +148,7 @@ void
 			       gint y,
 			       gint width,
 			       gint height);
-void
-                    draw_ramp(GtkStyle * style,
+static void         draw_ramp(GtkStyle * style,
 			      GdkWindow * window,
 			      GtkStateType state_type,
 			      GtkShadowType shadow_type,
@@ -184,8 +160,7 @@ void
 			      gint y,
 			      gint width,
 			      gint height);
-void
-                    draw_tab(GtkStyle * style,
+static void         draw_tab(GtkStyle * style,
 			     GdkWindow * window,
 			     GtkStateType state_type,
 			     GtkShadowType shadow_type,
@@ -196,8 +171,7 @@ void
 			     gint y,
 			     gint width,
 			     gint height);
-void
-                    draw_shadow_gap(GtkStyle * style,
+static void         draw_shadow_gap(GtkStyle * style,
 				    GdkWindow * window,
 				    GtkStateType state_type,
 				    GtkShadowType shadow_type,
@@ -211,8 +185,7 @@ void
 				    gint gap_side,
 				    gint gap_x,
 				    gint gap_width);
-void
-                    draw_box_gap(GtkStyle * style,
+static void         draw_box_gap(GtkStyle * style,
 				 GdkWindow * window,
 				 GtkStateType state_type,
 				 GtkShadowType shadow_type,
@@ -226,8 +199,7 @@ void
 				 gint gap_side,
 				 gint gap_x,
 				 gint gap_width);
-void
-                    draw_extension(GtkStyle * style,
+static void         draw_extension(GtkStyle * style,
 				   GdkWindow * window,
 				   GtkStateType state_type,
 				   GtkShadowType shadow_type,
@@ -239,8 +211,7 @@ void
 				   gint width,
 				   gint height,
 				   gint gap_side);
-void
-                    draw_focus(GtkStyle * style,
+static void         draw_focus(GtkStyle * style,
 			       GdkWindow * window,
 			       GdkRectangle * area,
 			       GtkWidget * widget,
@@ -249,8 +220,7 @@ void
 			       gint y,
 			       gint width,
 			       gint height);
-void
-                    draw_slider(GtkStyle * style,
+static void         draw_slider(GtkStyle * style,
 				GdkWindow * window,
 				GtkStateType state_type,
 				GtkShadowType shadow_type,
@@ -262,8 +232,7 @@ void
 				gint width,
 				gint height,
 				GtkOrientation orientation);
-void
-                    draw_entry(GtkStyle * style,
+static void         draw_entry(GtkStyle * style,
 			       GdkWindow * window,
 			       GtkStateType state_type,
 			       GdkRectangle * area,
@@ -273,8 +242,7 @@ void
 			       gint y,
 			       gint width,
 			       gint height);
-void
-                    draw_handle(GtkStyle * style,
+static void         draw_handle(GtkStyle * style,
 				GdkWindow * window,
 				GtkStateType state_type,
 				GtkShadowType shadow_type,
@@ -289,7 +257,7 @@ void
 
 /* internal data structs */
 
-GtkStyleClass       th_default_class =
+GtkStyleClass       metal_default_class =
 {
   2,
   2,
@@ -318,7 +286,7 @@ GtkStyleClass       th_default_class =
 };
 
 /**************************************************************************/
-void
+static void
 draw_hline(GtkStyle * style,
 	   GdkWindow * window,
 	   GtkStateType state_type,
@@ -364,7 +332,7 @@ draw_hline(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_vline(GtkStyle * style,
 	   GdkWindow * window,
 	   GtkStateType state_type,
@@ -410,7 +378,7 @@ draw_vline(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_shadow(GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
@@ -469,9 +437,7 @@ printf("DETAIL = %s\n", detail);
   switch (shadow_type)
     {
     case GTK_SHADOW_NONE:
-      gc1 = NULL;
-      gc2 = NULL;
-      break;
+      return;
     case GTK_SHADOW_IN:
     case GTK_SHADOW_ETCHED_IN:
       gc1 = style->light_gc[state_type];
@@ -620,7 +586,7 @@ printf("DETAIL = %s\n", detail);
 }
 
 /**************************************************************************/
-void
+static void
 draw_polygon(GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -762,7 +728,7 @@ draw_polygon(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_arrow(GtkStyle * style,
 	   GdkWindow * window,
 	   GtkStateType state_type,
@@ -889,7 +855,7 @@ draw_arrow(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_diamond(GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -1018,7 +984,7 @@ draw_diamond(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_oval(GtkStyle * style,
 	  GdkWindow * window,
 	  GtkStateType state_type,
@@ -1036,7 +1002,7 @@ draw_oval(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_string(GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
@@ -1066,7 +1032,7 @@ draw_string(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_box(GtkStyle * style,
 	 GdkWindow * window,
 	 GtkStateType state_type,
@@ -1199,7 +1165,7 @@ draw_box(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_flat_box(GtkStyle * style,
 	      GdkWindow * window,
 	      GtkStateType state_type,
@@ -1254,7 +1220,7 @@ draw_flat_box(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_check(GtkStyle * style,
 	   GdkWindow * window,
 	   GtkStateType state_type,
@@ -1348,7 +1314,7 @@ draw_check(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_option(GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
@@ -1459,7 +1425,7 @@ draw_option(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_cross(GtkStyle * style,
 	   GdkWindow * window,
 	   GtkStateType state_type,
@@ -1477,7 +1443,7 @@ draw_cross(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_ramp(GtkStyle * style,
 	  GdkWindow * window,
 	  GtkStateType state_type,
@@ -1496,7 +1462,7 @@ draw_ramp(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_tab(GtkStyle * style,
 	 GdkWindow * window,
 	 GtkStateType state_type,
@@ -1517,7 +1483,7 @@ draw_tab(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_shadow_gap(GtkStyle * style,
 		GdkWindow * window,
 		GtkStateType state_type,
@@ -1579,7 +1545,7 @@ draw_shadow_gap(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_box_gap(GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -1641,7 +1607,7 @@ draw_box_gap(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_extension(GtkStyle * style,
 	       GdkWindow * window,
 	       GtkStateType state_type,
@@ -1701,7 +1667,7 @@ draw_extension(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_focus(GtkStyle * style,
 	   GdkWindow * window,
 	   GdkRectangle * area,
@@ -1748,7 +1714,7 @@ draw_focus(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_slider(GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
@@ -1785,7 +1751,7 @@ draw_slider(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_entry(GtkStyle * style,
 	   GdkWindow * window,
 	   GtkStateType state_type,
@@ -1833,7 +1799,7 @@ draw_entry(GtkStyle * style,
 }
 
 /**************************************************************************/
-void
+static void
 draw_handle(GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,

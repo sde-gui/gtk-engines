@@ -1,3 +1,12 @@
+Sat Oct 17 00:35:10 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* */*.[ch]: Removed unused code for handling
+	RC data, made functions	static to reduce damage from g_module's
+	RTLD_GLOBAL. Removed theme_set_background functions
+	which were just cut 'n paste code from GTK+.
+
+	* */*.h: Removed unused, obsolete header files.
+	
 Tue Sep  1 00:12:12 CDT 1998  Frank Belew <frb@umr.edu>
 
 	* Makefile.am: added support for new imlib.m4

@@ -6,7 +6,7 @@ void                theme_exit(void);
 
 /* Exported vtable from th_draw */
 
-extern GtkStyleClass th_default_class;
+extern GtkStyleClass pixmap_default_class;
 
 /* external theme functions called */
 
@@ -278,7 +278,7 @@ theme_symbols[] =
 
 static guint        n_theme_symbols = sizeof(theme_symbols) / sizeof(theme_symbols[0]);
 
-guint
+static guint
 theme_parse_function(GScanner * scanner,
 		     struct theme_image *data)
 {
@@ -299,7 +299,7 @@ theme_parse_function(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_file(GScanner * scanner,
 		 struct theme_image * data)
 {
@@ -321,7 +321,7 @@ theme_parse_file(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_recolorable(GScanner * scanner,
 			struct theme_image * data)
 {
@@ -346,7 +346,7 @@ theme_parse_recolorable(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_border(GScanner * scanner,
 		   GdkImlibBorder * border)
 {
@@ -400,7 +400,7 @@ theme_parse_border(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_detail(GScanner * scanner,
 		   struct theme_image * data)
 {
@@ -423,7 +423,7 @@ theme_parse_detail(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_state(GScanner * scanner,
 		  struct theme_image * data)
 {
@@ -455,7 +455,7 @@ theme_parse_state(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_shadow(GScanner * scanner,
 		   struct theme_image * data)
 {
@@ -487,7 +487,7 @@ theme_parse_shadow(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_stretch(GScanner * scanner,
 		    struct theme_image * data)
 {
@@ -512,7 +512,7 @@ theme_parse_stretch(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_overlay_stretch(GScanner * scanner,
 			    struct theme_image * data)
 {
@@ -537,7 +537,7 @@ theme_parse_overlay_stretch(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_overlay_border(GScanner * scanner,
 			   GdkImlibBorder * border)
 {
@@ -591,7 +591,7 @@ theme_parse_overlay_border(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_gap_border(GScanner * scanner,
 		       GdkImlibBorder * border)
 {
@@ -645,7 +645,7 @@ theme_parse_gap_border(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_gap_start_border(GScanner * scanner,
 			     GdkImlibBorder * border)
 {
@@ -699,7 +699,7 @@ theme_parse_gap_start_border(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_gap_end_border(GScanner * scanner,
 			   GdkImlibBorder * border)
 {
@@ -753,7 +753,7 @@ theme_parse_gap_end_border(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_overlay_file(GScanner * scanner,
 			 struct theme_image * data)
 {
@@ -775,7 +775,7 @@ theme_parse_overlay_file(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_gap_file(GScanner * scanner,
 		     struct theme_image * data)
 {
@@ -797,7 +797,7 @@ theme_parse_gap_file(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_gap_start_file(GScanner * scanner,
 			   struct theme_image * data)
 {
@@ -819,7 +819,7 @@ theme_parse_gap_start_file(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_gap_end_file(GScanner * scanner,
 			 struct theme_image * data)
 {
@@ -841,7 +841,7 @@ theme_parse_gap_end_file(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_arrow_direction(GScanner * scanner,
 			    struct theme_image * data)
 {
@@ -871,7 +871,7 @@ theme_parse_arrow_direction(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_gap_side(GScanner * scanner,
 		     struct theme_image * data)
 {
@@ -902,7 +902,7 @@ theme_parse_gap_side(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_orientation(GScanner * scanner,
 			struct theme_image * data)
 {
@@ -929,13 +929,13 @@ theme_parse_orientation(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-void
+static void
 theme_image_ref (struct theme_image *data)
 {
   data->refcount++;
 }
 
-void
+static void
 theme_image_unref (struct theme_image *data)
 {
   data->refcount--;
@@ -953,13 +953,13 @@ theme_image_unref (struct theme_image *data)
     }
 }
 
-void
+static void
 theme_data_ref (ThemeData *theme_data)
 {
   theme_data->refcount++;
 }
 
-void
+static void
 theme_data_unref (ThemeData *theme_data)
 {
   theme_data->refcount--;
@@ -970,7 +970,7 @@ theme_data_unref (ThemeData *theme_data)
     }
 }
 
-guint
+static guint
 theme_parse_image(GScanner *scanner,
 		  ThemeData *theme_data,
 		  struct theme_image **data_return)
@@ -1126,7 +1126,7 @@ theme_parse_image(GScanner *scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+static guint
 theme_parse_rc_style(GScanner * scanner,
 		     GtkRcStyle * rc_style)
 {
@@ -1205,7 +1205,7 @@ theme_parse_rc_style(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-void
+static void
 theme_merge_rc_style(GtkRcStyle * dest,
 		     GtkRcStyle * src)
 {
@@ -1249,20 +1249,20 @@ theme_merge_rc_style(GtkRcStyle * dest,
     }
 }
 
-void
+static void
 theme_rc_style_to_style(GtkStyle * style,
 			GtkRcStyle * rc_style)
 {
   ThemeData        *data = rc_style->engine_data;
 
-  style->klass = &th_default_class;
+  style->klass = &pixmap_default_class;
   style->engine_data = data;
   theme_data_ref (data);
 
   g_print("Theme theme: Creating style\n");
 }
 
-void
+static void
 theme_duplicate_style(GtkStyle * dest,
 		      GtkStyle * src)
 {
@@ -1272,14 +1272,14 @@ theme_duplicate_style(GtkStyle * dest,
   dest_data = g_new(ThemeData, 1);
   dest_data->img_list = src_data->img_list;
 
-  dest->klass = &th_default_class;
+  dest->klass = &pixmap_default_class;
   dest->engine_data = dest_data;
   theme_data_ref (dest_data);
 
   g_print("Theme theme: Duplicated style\n");
 }
 
-void
+static void
 theme_realize_style(GtkStyle * style)
 {
 /*  ThemeStyleData     *data = style->engine_data;*/
@@ -1287,7 +1287,7 @@ theme_realize_style(GtkStyle * style)
   g_print("Theme theme: Realizing style\n");
 }
 
-void
+static void
 theme_unrealize_style(GtkStyle * style)
 {
 /*  ThemeStyleData     *data = style->engine_data;*/
@@ -1295,7 +1295,7 @@ theme_unrealize_style(GtkStyle * style)
   g_print("Theme theme: Unrealizing style\n");
 }
 
-void
+static void
 theme_destroy_rc_style(GtkRcStyle * rc_style)
 {
   theme_data_unref (rc_style->engine_data);
@@ -1303,7 +1303,7 @@ theme_destroy_rc_style(GtkRcStyle * rc_style)
   g_print("Theme theme: Destroying rc style for \n");
 }
 
-void
+static void
 theme_destroy_style(GtkStyle * style)
 {
   theme_data_unref (style->engine_data);
@@ -1311,7 +1311,7 @@ theme_destroy_style(GtkStyle * style)
   g_print("Theme theme: Destroying style for \n");
 }
 
-void
+static void
 theme_set_background(GtkStyle * style,
 		     GdkWindow * window,
 		     GtkStateType state_type)
