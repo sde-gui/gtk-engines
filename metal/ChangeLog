@@ -1,3 +1,9 @@
+Tue Dec 15 23:42:52 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* metal_theme_draw.c metal_theme_main.h metal_theme.h: 
+	Integrated in changes newer version from Randy Gordon (v 0.9).
+	Much spiffier scrollbars, and ranges.
+
 1998-11-09  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* metal_theme_draw.c: #include <math.h>
