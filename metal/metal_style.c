@@ -2101,6 +2101,7 @@ get_tab_status (GtkNotebook *notebook,
   int border;
   int n_pages = g_list_length (notebook->children);
 
+  list = notebook->children;
   border = GTK_CONTAINER (notebook)->border_width;
 
   /* Find tab in notebook based on (x,y) position

@@ -1,3 +1,8 @@
+2002-04-19  jacob berkman  <jacob@ximian.com>
+
+	* metal_style.c (get_tab_status): assign a variable before we use
+	it
+
 Sat Jan 19 20:56:26 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* *.[ch]: Rework using code from Raleigh and the capabilities
