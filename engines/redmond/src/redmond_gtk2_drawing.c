@@ -341,7 +341,7 @@ redmond_draw_arrow (GtkStyle * style,
 	  if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 	    x -= 1;
 	}
-      else if (is_in_combo_box (widget) && ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) || (state == GTK_STATE_INSENSITIVE)))
+      else if (is_in_combo_box (widget) && ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)))
 	{
 	    x += 1;
 	}
@@ -1126,15 +1126,12 @@ redmond_draw_box (GtkStyle * style,
 	    {
 	      case GTK_POS_LEFT:
                 left_cutoff = (!widget) || (gtk_widget_get_direction (widget->parent) == GTK_TEXT_DIR_LTR);
-                right_cutoff= !left_cutoff;
-                x -= 2;
-                width += 2;
+                right_cutoff= !left_cutoff;		
               break;
  
 	      case GTK_POS_RIGHT:
                 left_cutoff = (widget) && (gtk_widget_get_direction (widget->parent) == GTK_TEXT_DIR_RTL);
 	        right_cutoff = !left_cutoff;
-                width += 2;
 	      break;
  
 	      case GTK_POS_TOP:
@@ -1148,6 +1145,16 @@ redmond_draw_box (GtkStyle * style,
                 height += 2;
 	      break;
 	    }      
+
+          if (left_cutoff)
+            {
+               x -= 2;
+               width += 2;
+	    }
+          else
+            {
+               width += 2;
+  	    }
         }
   
       do_redmond_draw_default_fill (style, window,
@@ -1728,12 +1735,21 @@ redmond_draw_handle (GtkStyle * style,
             }  
              
           if (!skip_shadow)
-	    gtk_paint_shadow (style, window, state_type, GTK_SHADOW_ETCHED_IN,
-			      &clip, widget, detail, 
-                              x - 1 - 2*left_cutoff, 
-                              y - 1 - 2*top_cutoff, 
-                              width + 2 + 2*right_cutoff,
-			      height + 2 + 2*bottom_cutoff);
+            {
+               gdk_gc_set_clip_rectangle(style->light_gc[state_type], &clip);
+               gdk_gc_set_clip_rectangle(style->dark_gc[state_type], &clip);
+          
+	       do_redmond_draw_shadow (window, style->light_gc[state_type],
+		 	               style->dark_gc[state_type],
+                                       x - 2*left_cutoff, 
+                                       y - 2*top_cutoff, 
+                                       width + 2*left_cutoff + 2*right_cutoff,
+			               height + 2*top_cutoff + 2*bottom_cutoff,
+			               FALSE);
+			          
+               gdk_gc_set_clip_rectangle(style->light_gc[state_type], NULL);
+               gdk_gc_set_clip_rectangle(style->dark_gc[state_type], NULL);
+            }
 	}
     }
 }

@@ -1,5 +1,27 @@
 2004-12-15  Andrew Johnson <ajgenius@ajgenius.us>
 
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_arrow),
+	(redmond_draw_box), (redmond_draw_handle):
+
+	fix comboboxentry insensitive arrow
+	fix RTL toolbar handles
+	
+	* engines/redmond/src/redmond_gtk2_misc.c: (is_combo_box),
+	(is_in_combo_box):
+
+	fix redmond comboboxentry check
+	
+	* engines/smooth/src/utils/draw_arrows.c: (SmoothDrawDirtyArrow),
+	(SmoothDrawArrow):
+	
+	fix Etched Dirty Arrow offset
+	
+	* themes/Redmond/gtk-2.0/gtkrc:
+	
+	use white for progress bar prelight text
+
+2004-12-15  Andrew Johnson <ajgenius@ajgenius.us>
+
 	* engines/smooth/src/engine/shared/gtk/smooth_gtk_drawing.c:
 	(smooth_draw_grip):
 	* engines/smooth/src/utils/calc_colors.c:

@@ -286,10 +286,7 @@ SmoothDrawDirtyArrow(SmoothCanvas *Canvas,
 
 	SmoothRectangleGetValues(&Target, &x, &y, &width, &height);
 
-	width += width % 2 - 1;
-	height += height % 2 - 1;
-  
-	size = MIN(width, height);  
+	size = MIN(width + (width % 2 - 1), height + (height % 2 - 1));  
 	half_size = size / 2;
 
 	x += (width - size)/2;
@@ -603,8 +600,6 @@ SmoothDrawArrow(SmoothCanvas *Canvas,
 
 				if (Arrow.Etched)
 				{					
-					X -= 1;
-					Y -= 1;
 					Width -= 1;
 					Height -= 1;
 

@@ -124,7 +124,12 @@ is_combo_box (GtkWidget * widget, gboolean as_list)
   if ((widget) && (widget->parent))
     {
       if (IS_COMBO_BOX (widget->parent))
-	result = ((!as_list) || combo_box_is_using_list(widget->parent));
+        {
+          if (as_list)
+            result = (combo_box_is_using_list(widget));
+          else
+            result = (!combo_box_is_using_list(widget));
+        }
       else
 	result = is_combo_box (widget->parent, as_list);
     }
@@ -149,7 +154,7 @@ is_combo (GtkWidget * widget)
 gboolean
 is_in_combo_box (GtkWidget * widget)
 {
-  return ((is_combo (widget) || is_combo_box (widget, TRUE) || is_combo_box_entry (widget)) && (!is_combo_box (widget, FALSE)));
+  return ((is_combo (widget) || is_combo_box (widget, TRUE) || is_combo_box_entry (widget)));
 }
  
 gboolean
@@ -299,7 +304,7 @@ option_menu_get_props (GtkWidget * widget,
  *
  *   Taken from Smooth but originated in GTK+
  ***********************************************/
-void
+static void
 color_get_hsb_from_rgb (gdouble red, 
                         gdouble green, 
                         gdouble blue,	
@@ -357,7 +362,7 @@ color_get_hsb_from_rgb (gdouble red,
  *   Taken from Smooth but originated in GTK+
  ***********************************************/
 #define MODULA(number, divisor) (((gint)number % divisor) + (number - (gint)number))
-void
+static void
 color_get_rgb_from_hsb (gdouble hue, 
                         gdouble saturation,
                         gdouble brightness, 

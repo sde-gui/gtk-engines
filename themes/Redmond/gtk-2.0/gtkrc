@@ -91,3 +91,7 @@ style "standard-option-menu"
 
 class "GtkOptionMenu" style "standard-option-menu"
 
+style "standard-progressbar" {
+  fg[PRELIGHT] = { 1.0, 1.0, 1.0 }
+} 
+class "GtkProgressBar" style "standard-progressbar"
