@@ -149,7 +149,7 @@ is_combo (GtkWidget * widget)
 gboolean
 is_in_combo_box (GtkWidget * widget)
 {
-  return (is_combo (widget) || is_combo_box (widget, TRUE) || is_combo_box_entry (widget));
+  return ((is_combo (widget) || is_combo_box (widget, TRUE) || is_combo_box_entry (widget)) && (!is_combo_box (widget, FALSE)));
 }
  
 gboolean
@@ -911,9 +911,11 @@ gtk_menu_shell_leave(GtkWidget *widget,
 	      if ((child->data) && IS_MENU_ITEM(child->data) && 
                   (GTK_WIDGET_STATE(GTK_WIDGET(child->data)) != GTK_STATE_INSENSITIVE))
 	        {
-	          if ((!GTK_MENU_ITEM(child->data)->submenu) || 
+                  if ((!GTK_IS_MENU(GTK_MENU_ITEM(child->data)->submenu)) || 
                       (!(GTK_WIDGET_REALIZED(GTK_MENU_ITEM(child->data)->submenu) && 
-                      GTK_WIDGET_VISIBLE(GTK_MENU_ITEM(child->data)->submenu))))
+                         GTK_WIDGET_VISIBLE(GTK_MENU_ITEM(child->data)->submenu) &&
+                         GTK_WIDGET_REALIZED(GTK_MENU(GTK_MENU_ITEM(child->data)->submenu)->toplevel) &&
+                         GTK_WIDGET_VISIBLE(GTK_MENU(GTK_MENU_ITEM(child->data)->submenu)->toplevel))))
 	          {
                     gtk_widget_set_state (GTK_WIDGET(child->data), GTK_STATE_NORMAL);
                   }

@@ -325,25 +325,23 @@ redmond_draw_arrow (GtkStyle * style,
     return;
  
   g_return_if_fail(sanitize_parameters(style, window, &width, &height));
- 
+
   if ((CHECK_DETAIL (detail, "spinbutton"))
       || (CHECK_DETAIL (detail, "vscrollbar"))
       || (CHECK_DETAIL (detail, "hscrollbar"))
+      || (CHECK_DETAIL (detail, "optionmenu"))
+      || IS_SCROLLBAR(widget)
       || (is_in_combo_box (widget)))
     {
       if (state != GTK_STATE_INSENSITIVE)
         state = GTK_STATE_NORMAL;
- 
-      /* The Combo/ComboBoxEntry button and SpinButton steppers should apear
-       * to be inset into the entry, as opposed to next to it, so we 
-       * need to offset/resize arrows as needed to accomodate this.
-       */
-      if (CHECK_DETAIL (detail, "spinbutton"))
+
+      if (CHECK_DETAIL (detail, "spinbutton") || CHECK_DETAIL (detail, "optionmenu"))
 	{
-	  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
+	  if ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 	    x -= 1;
 	}
-      else if (is_in_combo_box (widget) && (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL))
+      else if (is_in_combo_box (widget) && ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) || (state == GTK_STATE_INSENSITIVE)))
 	{
 	    x += 1;
 	}
@@ -358,15 +356,12 @@ redmond_draw_arrow (GtkStyle * style,
 	  width -= 2;
 	  height -= 2;
 	}
-      else
-	/* SpinButton & Scrollbar Arrows offset down/right on button press */
-      if (button_in)
+      else if (button_in)
 	{
+  	  /* SpinButton & Scrollbar Arrows offset down/right on button press */
 	  x += child_offset_x;
 	  y += child_offset_y;
 	}
- 
-      do_redmond_draw_arrow (window, style->fg_gc[state], arrow_type, x, y, width, height);
     }
   else
     {
@@ -374,9 +369,15 @@ redmond_draw_arrow (GtkStyle * style,
           x -= 1;
       else if (state != GTK_STATE_INSENSITIVE)
         state = GTK_STATE_NORMAL;
+    }
  
+  if (state == GTK_STATE_INSENSITIVE)
+    {
+      do_redmond_draw_arrow (window, style->light_gc[state], arrow_type, x+1, y+1, width, height);
       do_redmond_draw_arrow (window, style->fg_gc[state], arrow_type, x, y, width, height);
     }
+  else
+    do_redmond_draw_arrow (window, style->fg_gc[state], arrow_type, x, y, width, height);
 }
  
 /***********************************************
@@ -810,7 +811,7 @@ redmond_draw_spinbutton_stepper (GtkStyle * style,
  * redmond_draw_box -
  *  
  *   Function used to draw the box portion of 
- *   general widgets(buttons, entries.
+ *   general widgets (buttons, entries).
  *
  *  In general this is the same as calling
  *  apply background and then draw shadow,
@@ -1013,7 +1014,7 @@ redmond_draw_box (GtkStyle * style,
 	      break;
 	    }      
         }
-      else if (IS_HANDLE_BOX_ITEM(widget))
+      else if (IS_HANDLE_BOX_ITEM(widget) && GTK_WIDGET_REALIZED(widget->parent) && GTK_WIDGET_VISIBLE(widget->parent))
         {
 	  switch (gtk_handle_box_get_handle_position
 		  (GTK_HANDLE_BOX (widget->parent)))
@@ -1084,10 +1085,8 @@ redmond_draw_box (GtkStyle * style,
 	   && IS_MENU_BAR (widget->parent))
     {
       /* Primary Menu Items on Menu bars are drawn with 
-       * a thin inset border on select/active, technically
-       * they should have a thin outset border on prelight,
-       * but at this point that would require a dynamic 
-       * runtime function change hack - so skip it.
+       * a thin inset border on select/active,
+       * and a thin outset border on prelight
        */
       GdkGC *top, *bottom;
       gboolean pressed = FALSE;
@@ -1099,10 +1098,12 @@ redmond_draw_box (GtkStyle * style,
 					  state_type, area, x, y, width,
 					  height);
 		 			  
-      if ((!GTK_MENU_ITEM(widget)->submenu) || 
+      if ((!GTK_IS_MENU(GTK_MENU_ITEM(widget)->submenu)) || 
           (!(GTK_WIDGET_REALIZED(GTK_MENU_ITEM(widget)->submenu) && 
-             GTK_WIDGET_VISIBLE(GTK_MENU_ITEM(widget)->submenu))))
-        { 
+             GTK_WIDGET_VISIBLE(GTK_MENU_ITEM(widget)->submenu) &&
+             GTK_WIDGET_REALIZED(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel) &&
+             GTK_WIDGET_VISIBLE(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel))))
+        {  
           top = style->light_gc[state_type];
           bottom = style->dark_gc[state_type];
         }
@@ -1147,6 +1148,31 @@ redmond_draw_box (GtkStyle * style,
       redmond_draw_spinbutton_stepper (style, window, state_type, shadow_type, area,
 			       widget, detail, x, y, width, height);
     }
+  else if (IS_TOGGLE_BUTTON(widget) && (TOGGLE_BUTTON(widget)->active))
+    {
+      gint pointer_x, pointer_y;
+      GdkModifierType pointer_mask;
+
+      gdk_window_get_pointer(widget->window, &pointer_x, &pointer_y, &pointer_mask);
+	    
+      if ((pointer_x >= widget->allocation.x) && 
+	  (pointer_y >= widget->allocation.y) &&
+	  (pointer_x < (widget->allocation.x + 
+	                widget->allocation.width)) && 
+	  (pointer_y < (widget->allocation.y +
+	                widget->allocation.height)))
+        {
+          do_redmond_draw_default_fill (style, window,
+                                        state_type, area, x, y, width,
+                                        height);
+        }
+      else 
+        do_redmond_draw_cross_hatch_fill (style, window, GTK_STATE_NORMAL, 
+                                          area, RADIO_NONE, x, y, width, height);
+
+      redmond_draw_shadow (style, window, state_type, shadow_type, area,
+			widget, detail, x, y, width, height);
+    }
   else
     {
       /* default box apearance */
@@ -1189,8 +1215,8 @@ redmond_draw_box (GtkStyle * style,
       width = indicator_size.width;
       height = indicator_size.height;
  
-      do_redmond_draw_arrow (window, style->fg_gc[state_type], GTK_ARROW_DOWN, 
-                             x, y, width, height);
+      redmond_draw_arrow (style, window, state_type, shadow_type, area, NULL, "optionmenu", 
+	                      GTK_ARROW_DOWN, TRUE,  x,  y,  width,  height);
    }
 }
  

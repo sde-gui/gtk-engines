@@ -1,3 +1,13 @@
+2004-12-05  Thomas Wood <thos@gnome.org>, Andrew Johnson <ajgenius@ajgenius.us>
+
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	* engines/redmond/src/redmond_gtk2_misc.c:
+
+	- Menu prelight fix (open menu check)
+	- Fixed insensitive arrows
+	- Use stippled background for toggle buttons in "on" state
+	- Fixed Firefox toolbar
+
 2004-12-03  Thomas Wood <thos@gnome.org>, Andrew Johnson <ajgenius@ajgenius.us>
 
 	* Makefile.am:
