@@ -29,18 +29,18 @@ style "industrial-default"
   xthickness = 1
   ythickness = 1
   
-  bg[NORMAL]      = "#f6f6f6"
-  bg[PRELIGHT]	   = "#ffffff"
-  fg[PRELIGHT]    = "#202020"
-  bg[ACTIVE]	   = "#d9d9d9"
-  bg[INSENSITIVE] = "#d9d9d9"
-  bg[SELECTED]    = "#99a6bf"
+  bg[NORMAL]        = "#f6f6f6"
+  bg[PRELIGHT]	    = "#ffffff"
+  fg[PRELIGHT]      = "#202020"
+  bg[ACTIVE]	    = "#d9d9d9"
+  bg[INSENSITIVE]   = "#d9d9d9"
+  bg[SELECTED]      = "#99a6bf"
 
-  base[SELECTED]  = "#6484a4"
-  text[SELECTED]  = "#ffffff"
+  base[SELECTED]    = "#6484a4"
+  text[SELECTED]    = "#ffffff"
 	#this is selected item without focus:
-  base[ACTIVE]  = "#b6c9cf"
-  text[INSENSITIVE]  = "#ffffff"
+  base[ACTIVE]      = "#b6c9cf"
+  text[INSENSITIVE] = "#757575"
 	
 	#defaults 
   #base[NORMAL]  = "#b6c9cf"

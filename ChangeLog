@@ -1,3 +1,12 @@
+2004-12-16  Thomas Wood  <thos@gnome.org>
+
+	* themes/Industrial/gtk-2.0/gtkrc:
+	Fixed invisible text in insensitive entry widgets
+
+	* themes/Redmond/gtk-2.0/gtkrc:
+	* themes/Redmond/gtk/gtkrc:
+	Corrected background colour of insensitive entry widgets
+
 2004-12-16  Andrew Johnson <ajgenius@ajgenius.us>
 
 	* COPYING:

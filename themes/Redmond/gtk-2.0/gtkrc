@@ -22,13 +22,13 @@ style "standard-default"
   bg[SELECTED]      = { 0.04, 0.14, 0.41 }
 
   base[ACTIVE]      = { 0.04, 0.14, 0.41 }
-  base[INSENSITIVE] = { 1.0, 1.0, 1.0 }
+  base[INSENSITIVE] = { 0.83, 0.81, 0.78 }
   base[NORMAL]      = { 1.0, 1.0, 1.0 }
   base[PRELIGHT]    = { 0.04, 0.14, 0.41 }
   base[SELECTED]    = { 0.04, 0.14, 0.41 }
 
   text[ACTIVE]      = { 1.0, 1.0, 1.0 }
-  text[INSENSITIVE] = { 0.0, 0.0, 0.0 }
+  text[INSENSITIVE] = { 0.5, 0.5, 0.5 }
   text[NORMAL]      = { 0.0, 0.0, 0.0 }
   text[PRELIGHT]    = { 1.0, 1.0, 1.0 }
   text[SELECTED]    = { 1.0, 1.0, 1.0 }
