@@ -711,6 +711,50 @@ scrollbar_stepper (GtkStyle     *style,
   gdk_gc_set_clip_rectangle (style->white_gc, NULL);
 }
 
+/* This function makes up for some brokeness in gtkrange.c
+ * where we never get the full arrow of the stepper button
+ * and the type of button in a single drawing function.
+ *
+ * It doesn't work correctly when the scrollbar is squished
+ * to the point we don't have room for full-sized steppers.
+ */
+static void
+reverse_engineer_stepper_box (GtkWidget    *range,
+			      GtkArrowType  arrow_type,
+			      gint         *x,
+			      gint         *y,
+			      gint         *width,
+			      gint         *height)
+{
+  gint slider_width = 17, stepper_size = 15;
+  gint box_width;
+  gint box_height;
+  
+  if (range)
+    {
+      gtk_widget_style_get (range,
+			    "slider_width", &slider_width,
+			    "stepper_size", &stepper_size,
+			    NULL);
+    }
+	
+  if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
+    {
+      box_width = slider_width;
+      box_height = stepper_size;
+    }
+  else
+    {
+      box_width = stepper_size;
+      box_height = slider_width;
+    }
+
+  *x = *x - (box_width - *width) / 2;
+  *y = *y - (box_height - *height) / 2;
+  *width = box_width;
+  *height = box_height;
+}
+
 /**************************************************************************/
 static void
 draw_arrow (GtkStyle * style,
@@ -742,6 +786,12 @@ draw_arrow (GtkStyle * style,
 
   if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar"))
     {
+      /* We need to restore the full area of the entire box,
+       * not just the restricted area of the stepper.
+       */
+      reverse_engineer_stepper_box (widget, arrow_type,
+				    &x, &y, &width, &height);
+      
       scrollbar_stepper (style, window, state_type, area,
 			 widget, detail, arrow_type,
 			 x, y, width, height);
@@ -1147,6 +1197,10 @@ draw_box (GtkStyle      *style,
     }
   else if (DETAIL ("buttondefault"))
     {
+    }
+  else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar"))
+    {
+      /* We do all the drawing in draw_arrow () */
     }
   else
     {

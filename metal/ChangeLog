@@ -1,3 +1,8 @@
+Sun Apr 21 14:08:59 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* metal_style.c (reverse_engineer_stepper_box): Add a workaround
+	for gtkrange brokeness with regards to drawing the stepper arrows.
+
 2002-04-19  jacob berkman  <jacob@ximian.com>
 
 	* metal_style.c (get_tab_status): cleanup a little to really fix
