@@ -551,6 +551,9 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 	smooth_part_style *part = NULL;
 	SmoothDouble roundness = 0.0;
 
+	if (shadow_type == GTK_SHADOW_NONE)
+		return;
+
  	base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
 	
 	if (CHECK_DETAIL(detail, "smooth_trough"))

@@ -1,3 +1,11 @@
+2005-02-19  Andrew Johnson <ajgenius@ajgenius.us>
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c
+	* engines/smooth/src/engine/smooth_gtk2_rc.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_drawing.c:
+	
+	Sync with with latest smooth 0.6.0 fixes, closes bugs #167389 and
+	#163370
+
 2005-02-03  William Jon McCann  <mccann@jhu.edu>
 
 	* engines/smooth/src/engine/smooth_gtk2_engine.h: 

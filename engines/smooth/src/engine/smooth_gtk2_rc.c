@@ -42,6 +42,8 @@ void smooth_rc_style_init_data (SmoothRcStyleData *style)
   gint i;
 
   style->real_sliders    = DEFAULT_REAL_SLIDERS;
+  style->resize_grip     = DEFAULT_RESIZE_GRIP;
+
   style->line.style      = SMOOTH_BEVEL_STYLE_DEFAULT;
   style->line.thickness  = DEFAULT_LINETHICKNESS;
 
@@ -345,6 +347,7 @@ smooth_gtkrc_style_merge (SmoothRcStyleData *dest_data,
       gint i;
 
       dest_data->real_sliders = src_data->real_sliders;
+      dest_data->resize_grip = src_data->resize_grip;
       dest_data->line.style = src_data->line.style;
       dest_data->line.thickness = src_data->line.thickness;
 

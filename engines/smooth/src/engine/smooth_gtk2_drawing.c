@@ -250,7 +250,7 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 
 	SmoothLinePattern dash_pattern;  
 	SmoothInt line_width = 1;
-	SmoothBool interior_focus = FALSE;
+	SmoothBool interior_focus = TRUE;
 
 	/* Setup Pen Color, Line Pattern, & Width */
 	{
@@ -317,7 +317,10 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 	if (dash_pattern.Pattern[0])
 		SmoothCanvasSetPenPattern(Canvas, dash_pattern);
 	
-	gtk_widget_get_focus_props (widget, NULL, NULL, &interior_focus);
+	if (widget)
+	{
+		gtk_widget_get_focus_props (widget, NULL, NULL, &interior_focus);
+	}
 
  	if (CHECK_DETAIL(detail, "button") && (is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style))))
 	{
@@ -757,7 +760,8 @@ smooth_draw_spinbutton_stepper (SmoothCanvas Canvas,
    * more complicated because we can only do half for each stepper.
    */
 
-  GtkStateType parent_state = GTK_WIDGET_STATE(widget);
+  SmoothWidgetState parent_smooth_state = SMOOTH_STATE_DEFAULT;
+  GtkStateType parent_state = GTK_STATE_NORMAL;
   SmoothRectangle spin_area;
   smooth_part_style *part = NULL;
   SmoothInt thick = 2;
@@ -767,8 +771,11 @@ smooth_draw_spinbutton_stepper (SmoothCanvas Canvas,
 
   SmoothRectangleSetValues(&spin_area, x, y, width, height); 
 
-  if (parent_state != GTK_STATE_INSENSITIVE)
-    parent_state = GTK_STATE_NORMAL;
+  if (GTK_WIDGET_STATE(widget) == GTK_STATE_INSENSITIVE)
+  {
+	parent_smooth_state = SMOOTH_STATE_DISABLED;
+	parent_state = GTK_STATE_INSENSITIVE;
+  }
 
   part = THEME_PART(STEPPER_PART(style));
 
@@ -797,7 +804,7 @@ smooth_draw_spinbutton_stepper (SmoothCanvas Canvas,
 	{
           SmoothCanvasSetClipRectangle(Canvas, spin_area);
 
-          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[GDKSmoothWidgetState(parent_state)].Background));
+          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[parent_smooth_state].Background));
           SmoothCanvasFillRectangle(Canvas, x - thick, y + focus, width + thick - focus, height - focus*2);
 
           do_smooth_draw_shadow(Canvas, style, parent_state, GTK_SHADOW_IN, widget, "spinentry", 
@@ -824,7 +831,7 @@ smooth_draw_spinbutton_stepper (SmoothCanvas Canvas,
 	{
           SmoothCanvasSetClipRectangle(Canvas, spin_area);
 
-          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[GDKSmoothWidgetState(parent_state)].Background));
+          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[parent_smooth_state].Background));
           SmoothCanvasFillRectangle(Canvas, x - thick, y, width + thick - focus, height - focus);
 
           do_smooth_draw_shadow(Canvas, style, parent_state, GTK_SHADOW_IN, widget, "spinentry", 
@@ -854,7 +861,7 @@ smooth_draw_spinbutton_stepper (SmoothCanvas Canvas,
 	{
           SmoothCanvasSetClipRectangle(Canvas, spin_area);
 
-          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[GDKSmoothWidgetState(parent_state)].Background));
+          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[parent_smooth_state].Background));
           SmoothCanvasFillRectangle(Canvas, x + focus, y + focus, width + thick*2 - focus, height - focus);
 
           do_smooth_draw_shadow(Canvas, style, parent_state, GTK_SHADOW_IN, widget, "spinentry", 
@@ -881,7 +888,7 @@ smooth_draw_spinbutton_stepper (SmoothCanvas Canvas,
 	{
           SmoothCanvasSetClipRectangle(Canvas, spin_area);
 
-          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[GDKSmoothWidgetState(parent_state)].Background));
+          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[parent_smooth_state].Background));
           SmoothCanvasFillRectangle(Canvas, x + focus, y, width + thick*2 - focus, height - focus);
 
           do_smooth_draw_shadow(Canvas, style, parent_state, GTK_SHADOW_IN, widget, "spinentry", 
@@ -2487,248 +2494,15 @@ smooth_draw_resize_grip (GtkStyle       *style,
                               gint            width,
                               gint            height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (window != NULL);
+	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
   
-  if (widget && GTK_IS_STATUSBAR(widget) && !RESIZE_GRIP(style)) {
-    gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(widget), FALSE);
-    return;
-  }
- 
+	if (widget && GTK_IS_STATUSBAR(widget) && !RESIZE_GRIP(style)) 
+	{
+		//gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(widget), FALSE);
+		return;
+	}
 
-   
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
-    }
-  
-  switch (edge)
-    {
-    case GDK_WINDOW_EDGE_WEST:
-    case GDK_WINDOW_EDGE_EAST:
-      {
-	gint xi;
-
-        if (edge==GDK_WINDOW_EDGE_WEST) 
-          make_square(&height, &width); 
-        else 
-          make_square_offset(&height, &width, &x);
-	
-	xi = x;
-
-	while (xi < x + width)
-	  {
-	    gdk_draw_line (window,
-			   style->light_gc[state_type],
-			   xi, y,
-			   xi, y + height);
-
-	    xi++;
-	    gdk_draw_line (window,
-			   style->dark_gc[state_type],
-			   xi, y,
-			   xi, y + height);
-
-	    xi += 2;
-	  }
-      }
-      break;
-    case GDK_WINDOW_EDGE_NORTH:
-    case GDK_WINDOW_EDGE_SOUTH:
-      {
-	gint yi;
-
-        if (edge==GDK_WINDOW_EDGE_NORTH) 
-          make_square(&width, &height); 
-        else 
-          make_square_offset(&width, &height, &y);
-
-	yi = y;
-
-	while (yi < y + height)
-	  {
-	    gdk_draw_line (window,
-			   style->light_gc[state_type],
-			   x, yi,
-			   x + width, yi);
-
-	    yi++;
-	    gdk_draw_line (window,
-			   style->dark_gc[state_type],
-			   x, yi,
-			   x + width, yi);
-
-	    yi+= 2;
-	  }
-      }
-      break;
-    case GDK_WINDOW_EDGE_NORTH_WEST:
-      {
-	gint xi, yi;
-
-        make_square(&width, &height);
-        make_square(&height, &width);
-	
-	xi = x + width;
-	yi = y + height;
-
-	while (xi > x + 3)
-	  {
-	    gdk_draw_line (window,
-			   style->dark_gc[state_type],
-			   xi, y,
-			   x, yi);
-
-	    --xi;
-	    --yi;
-
-	    gdk_draw_line (window,
-			   style->dark_gc[state_type],
-			   xi, y,
-			   x, yi);
-
-	    --xi;
-	    --yi;
-
-	    gdk_draw_line (window,
-			   style->light_gc[state_type],
-			   xi, y,
-			   x, yi);
-
-	    xi -= 3;
-	    yi -= 3;
-	    
-	  }
-      }
-      break;
-    case GDK_WINDOW_EDGE_NORTH_EAST:
-      {
-        gint xi, yi;
-
-        make_square(&width, &height);
-        make_square_offset(&height, &width, &x);
-
-        xi = x;
-        yi = y + height;
-
-        while (xi < (x + width - 3))
-          {
-            gdk_draw_line (window,
-                           style->light_gc[state_type],
-                           xi, y,
-                           x + width, yi);                           
-
-            ++xi;
-            --yi;
-            
-            gdk_draw_line (window,
-                           style->dark_gc[state_type],
-                           xi, y,
-                           x + width, yi);                           
-
-            ++xi;
-            --yi;
-            
-            gdk_draw_line (window,
-                           style->dark_gc[state_type],
-                           xi, y,
-                           x + width, yi);
-
-            xi += 3;
-            yi -= 3;
-          }
-      }
-      break;
-    case GDK_WINDOW_EDGE_SOUTH_WEST:
-      {
-	gint xi, yi;
-
-        make_square_offset(&width, &height, &y);
-        make_square(&height, &width);
-	
-	xi = x + width;
-	yi = y;
-
-	while (xi > x + 3)
-	  {
-	    gdk_draw_line (window,
-			   style->dark_gc[state_type],
-			   x, yi,
-			   xi, y + height);
-
-	    --xi;
-	    ++yi;
-
-	    gdk_draw_line (window,
-			   style->dark_gc[state_type],
-			   x, yi,
-			   xi, y + height);
-
-	    --xi;
-	    ++yi;
-
-	    gdk_draw_line (window,
-			   style->light_gc[state_type],
-			   x, yi,
-			   xi, y + height);
-
-	    xi -= 3;
-	    yi += 3;
-	    
-	  }
-      }
-      break;
-    case GDK_WINDOW_EDGE_SOUTH_EAST:
-      {
-        gint xi, yi;
-
-        make_square_offset(&width, &height, &y);
-        make_square_offset(&height, &width, &x);
-     
-        xi = x;
-        yi = y;
-
-        while (xi < (x + width - 3))
-          {
-            gdk_draw_line (window,
-                           style->light_gc[state_type],
-                           xi, y + height,
-                           x + width, yi);                           
-
-            ++xi;
-            ++yi;
-            
-            gdk_draw_line (window,
-                           style->dark_gc[state_type],
-                           xi, y + height,
-                           x + width, yi);                           
-
-            ++xi;
-            ++yi;
-            
-            gdk_draw_line (window,
-                           style->dark_gc[state_type],
-                           xi, y + height,
-                           x + width, yi);
-
-            xi += 3;
-            yi += 3;
-          }
-      }
-      break;
-    default:
-      return;
-      break;
-    }
-  
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
-    }
+	smooth_theme_parent_class->draw_resize_grip (style, window, state_type, area, widget, detail, edge, x, y, width, height);
 }
 
 void
@@ -2760,8 +2534,6 @@ smooth_draw_flat_box (GtkStyle * style,
 	SmoothCanvas da;
 
    g_return_if_fail(sanitize_parameters(style, window, &width, &height));
-
-
 
    /* we always want call to the default for treeviews and such */  
  
