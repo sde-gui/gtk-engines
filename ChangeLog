@@ -1,3 +1,8 @@
+Wed Jan 13 16:30:45 PST 1999 Manish Singh <yosh@gimp.org>
+
+	* ltconfig
+	* ltmain.sh: House! Techno! Libtool! (do the 1.2d dance baby)
+
 Sun Jan  3 14:13:28 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* configure.in: don't try to build static libs by default, it
