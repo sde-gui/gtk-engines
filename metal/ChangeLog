@@ -1,3 +1,8 @@
+1998-11-09  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* metal_theme_draw.c: #include <math.h>
+	(draw_check): Remove a couple of unused variables.
+
 1998-11-07  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in: Removed.

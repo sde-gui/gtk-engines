@@ -1,3 +1,4 @@
+#include <math.h>
 #include <gtk/gtk.h>
 
 extern GtkStyleClass motif_default_class;

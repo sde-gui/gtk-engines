@@ -1,4 +1,4 @@
-
+#include <math.h>
 #include "pixmap_theme.h"
 
 extern GtkStyleClass pixmap_default_class;

@@ -1,3 +1,4 @@
+#include <math.h>
 #include <gtk/gtk.h>
 
 extern GtkStyleClass win95_default_class;

@@ -1,3 +1,4 @@
+#include <math.h>
 #include <gtk/gtk.h>
 
 extern GtkStyleClass metal_default_class;
@@ -1224,7 +1225,7 @@ draw_check(GtkStyle * style,
 {
   GdkGC              *gc1;
   GdkGC              *gc2;
-  gint                xx, yy, ww, hh;
+  gint                xx, yy;
 
   // Fixed size only
 
