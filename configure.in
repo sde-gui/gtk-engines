@@ -44,6 +44,7 @@ AC_TYPE_SIGNAL
 AC_FUNC_MMAP
 
 AC_OUTPUT([
+gtk-engines.spec
 Makefile
 pixmap/Makefile
 pixmap/Theme/Makefile
