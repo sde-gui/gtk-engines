@@ -11,6 +11,9 @@ config.status
 aclocal.m4
 configure
 config.cache
+config.guess
+config.sub
 .deps
 .libs
 gtk-engines.spec
+autom4te.cache
