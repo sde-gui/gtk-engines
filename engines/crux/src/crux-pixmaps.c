@@ -329,7 +329,6 @@ recolor_pixbuf (GdkPixbuf *pixbuf, eazel_engine_gradient *gradient)
 static GdkPixbuf *
 load_image (const char *file)
 {
-	printf("%s\n", file);	
     GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file (file, NULL);
     if (pixbuf != 0)
       return pixbuf;

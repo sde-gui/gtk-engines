@@ -20,9 +20,10 @@ GtkRcStyleClass *rc_parent_class;
 static void
 crux_rc_style_init (CruxRcStyle *style)
 {
+  gchar *path;
   style->theme_data = NULL;
   
-  gchar *path = g_malloc (strlen (DATADIR) + 15);
+  path = g_malloc (strlen (DATADIR) + 15);
   sprintf (path, "pixmap_path \"%s\"", DATADIR);
 
   gtk_rc_parse_string (path);

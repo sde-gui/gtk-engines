@@ -1581,9 +1581,9 @@ redmond_draw_handle (GtkStyle * style,
              gint height, 
              GtkOrientation orientation)
 {
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
-  
   gboolean left_cutoff = FALSE, right_cutoff = FALSE, top_cutoff = FALSE, bottom_cutoff = FALSE;
+
+  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
   
   if (IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
      (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) && 
