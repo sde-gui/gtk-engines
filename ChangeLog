@@ -1,3 +1,7 @@
+2005-01-28  Thomas Wood  <thos@gnome.org>
+
+	* engines/smooth/Makefile.am: Fix bug 162131 (Enable building outside of srcdir)
+
 2005-01-06  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-pixmaps.c: (load_image):

@@ -1,4 +1,5 @@
 INCLUDES = 								\
+	-I$(top_srcdir)/engines/smooth/src				\
 	$(GTK_CFLAGS)							\
 	-DINTERFACE_DEFINES="<interfaces/gdk2/gdk2_type_defines.h>" 	\
 	-DENGINE_HEADER="<engine/smooth_gtk2_engine.h>"			\
