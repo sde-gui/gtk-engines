@@ -1,3 +1,10 @@
+Fri Jan 17 18:32:34 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in Makefile.am gtk-engines-2.pc.in: Patch
+	from Seth Nickell to add a .pc file so that things use
+	one of the gtk-engines engines can check for it's
+	presence.
+
 Thu Oct 31 18:56:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Remove some useless checks.

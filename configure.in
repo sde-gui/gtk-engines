@@ -48,4 +48,5 @@ pixbuf/Makefile
 redmond95/Makefile
 redmond95/Theme/Makefile
 redmond95/Theme/gtk-2.0/Makefile
+gtk-engines-2.pc
 ])
