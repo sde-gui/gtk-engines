@@ -24,7 +24,7 @@ Included themes are:
 
 
 %prep
-%setup -n
+%setup 
 
 %build
 ./configure --prefix=%prefix
