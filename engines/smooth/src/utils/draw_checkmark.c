@@ -149,11 +149,13 @@ SmoothDrawMinusCheckMark(SmoothCanvas *Canvas,
 
 	SmoothCanvasSetBrushColor(Canvas, Color);
 
+	/* Rough logic, just make  thickness 1/3 height */
 	line_width = ceil((height + 1)/3);
 
-	line_width -= !(line_width % 2);
+	/* Force Thickness Even */
+	line_width -= (line_width % 2);
 
-        SmoothCanvasFillRectangle(Canvas, x + 1, y + (height - line_width)/2, width - 2, line_width);
+        SmoothCanvasFillRectangle(Canvas, x + 1, y + ((height - line_width)/2), width - 2, line_width + ((height % 2)?1:0));
 }
 
 static void

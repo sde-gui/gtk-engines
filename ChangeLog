@@ -1,3 +1,10 @@
+2004-12-15  Andrew Johnson <ajgenius@ajgenius.us>
+
+	* engines/smooth/src/utils/draw_checkmark.c:
+	(SmoothDrawMinusCheckMark):
+
+	improve size/center logic for inconsistant 'Minus' check
+
 2004-12-14  Andrew Johnson <ajgenius@ajgenius.us>
 
 	* themes/Industrial/Makefile.am:
