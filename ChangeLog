@@ -1,3 +1,10 @@
+Thu Feb 11 23:09:55 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (cflags_set): Up version number to 0.4.
+
+	* **/Makefile.am: Removed all references to
+	 makemakefile.sh
+
 Tue Feb  2 05:16:12 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4
