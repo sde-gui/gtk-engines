@@ -1,6 +1,5 @@
 SUBDIRS = Theme
 INCLUDES = $(GTK_CFLAGS)
-LIBS = $(GTK_LIBS)
 enginedir = $(libdir)/gtk/themes/engines
 
 # replace the "redmond95" prefix with whatever you're using

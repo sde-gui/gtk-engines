@@ -73,6 +73,8 @@ class "GtkToggleButton" style "togglebutton"
 
 style "button"
 {
+  bg[NORMAL] = "#909090"
+
   engine "pixmap" 
     {
     image 

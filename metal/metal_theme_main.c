@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
+#include <gmodule.h>
 
 /**************************************************************************
 * GTK Metal Theme
@@ -121,7 +122,7 @@ theme_destroy_style(GtkStyle * style)
 {
 }
 
-//*****************************************************************
+/******************************************************************/
 void
 theme_init(GtkThemeEngine * engine)
 {
@@ -152,18 +153,18 @@ theme_init(GtkThemeEngine * engine)
    engine->destroy_style = theme_destroy_style;
    engine->set_background = NULL;
 
-   // Make scrollbars wider
+   /* Make scrollbars wider */
    rangeclass = (GtkRangeClass *)gtk_type_class(gtk_range_get_type());
    rangeclass->slider_width    = SCROLLBAR_WIDTH;
    rangeclass->min_slider_size = SCROLLBAR_WIDTH;
    rangeclass->stepper_size    = SCROLLBAR_WIDTH;
    rangeclass->stepper_slider_spacing = 0;
 
-   // Make scale slider smaller
+   /* Make scale slider smaller */
    scaleclass = (GtkScaleClass *)gtk_type_class(gtk_scale_get_type());
    scaleclass->slider_length   = SCALE_WIDTH;
 
-   // A bunch of hacks to workaround GTK problems
+   /* A bunch of hacks to workaround GTK problems */
    widget_class = (GtkWidgetClass *)rangeclass;
    widget_class->expose_event = gtk_range_expose_metal;
 
@@ -174,13 +175,13 @@ theme_init(GtkThemeEngine * engine)
    GTK_WIDGET(scrollbar)->style->klass = &metal_special_class;
 
 
-   // Some useful GCs for coloring (based on shades of style->white)
+   /* Some useful GCs for coloring (based on shades of style->white) */
    style = GTK_WIDGET(scrollbar)->style;
    white = style->white;
    colormap = gdk_window_get_colormap(GDK_ROOT_PARENT());
    gdk_window_get_geometry(GDK_ROOT_PARENT(), &x, &y, &width, &height, &depth);
 
-   // Light Gray
+   /* Light Gray */
    shade(&white, &gray, 0.8);
    if (!gdk_color_alloc (colormap, &gray)) {
         g_warning ("unable to allocate color: ( %d %d %d )",
@@ -189,7 +190,7 @@ theme_init(GtkThemeEngine * engine)
    values.foreground = gray;
    metal_light_gray_gc = gtk_gc_get(depth, colormap, 
                                     &values, GDK_GC_FOREGROUND);
-   // Mid Gray
+   /* Mid Gray */
    shade(&white, &gray, 0.6);
    if (!gdk_color_alloc (colormap, &gray)) {
         g_warning ("unable to allocate color: ( %d %d %d )",
@@ -198,7 +199,7 @@ theme_init(GtkThemeEngine * engine)
    values.foreground = gray;
    metal_mid_gray_gc = gtk_gc_get(depth, colormap, 
                                     &values, GDK_GC_FOREGROUND);
-   // Dark Gray
+   /* Dark Gray */
    shade(&white, &gray, 0.5);
    if (!gdk_color_alloc (colormap, &gray)) {
         g_warning ("unable to allocate color: ( %d %d %d )",
@@ -208,7 +209,7 @@ theme_init(GtkThemeEngine * engine)
    metal_dark_gray_gc = gtk_gc_get(depth, colormap, 
                                     &values, GDK_GC_FOREGROUND);
 }
-//*****************************************************************
+/*****************************************************************/
 void
 theme_exit(void)
 {
@@ -216,16 +217,16 @@ theme_exit(void)
   printf("Metal Theme Exit\n* Need to add memory deallocation code here *\n");
 #endif
 }
-//*****************************************************************
+/****************************************************************/
 static gint
 gtk_range_expose_metal (GtkWidget      *widget,
                        GdkEventExpose *event)
 {
   GtkRange *range;
 
-  // The version of this method in gtkrange.c doesn't work
-  // when the slider is as wide as the trough.
-
+  /* The version of this method in gtkrange.c doesn't work
+   * when the slider is as wide as the trough.
+   */
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_RANGE (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
@@ -254,7 +255,7 @@ gtk_range_expose_metal (GtkWidget      *widget,
     }
   return FALSE;
 }
-//*****************************************************************
+/******************************************************************/
 static void
 shade(GdkColor *oldcolor, GdkColor *newcolor, float mult)
 {
@@ -263,3 +264,15 @@ shade(GdkColor *oldcolor, GdkColor *newcolor, float mult)
    newcolor->blue  = oldcolor->blue  * mult;
 } 
 
+/* The following function will be called by GTK+ when the module
+ * is loaded and checks to see if we are compatible with the
+ * version of GTK+ that loads us.
+ */
+G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
+const gchar*
+g_module_check_init (GModule *module)
+{
+  return gtk_check_version (GTK_MAJOR_VERSION,
+			    GTK_MINOR_VERSION,
+			    GTK_MICRO_VERSION - GTK_INTERFACE_AGE);
+}

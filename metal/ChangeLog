@@ -1,3 +1,7 @@
+Wed Dec 16 11:51:19 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* metal_theme_main.c: Removed C++ comments.
+
 Tue Dec 15 23:42:52 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* metal_theme_draw.c metal_theme_main.h metal_theme.h: 

@@ -1,3 +1,9 @@
+Mon Jan 18 13:37:23 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* Theme/gtk/gtkrc: Give buttons a gray background
+	color so they look a little less funny when initially
+	drawing.
+
 Wed Jan 13 18:58:25 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* pixmap_theme_draw.c: Fixed pervasive mis-bracketing

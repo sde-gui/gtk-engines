@@ -1,4 +1,5 @@
 #include "pixmap_theme.h"
+#include <gmodule.h>
 
 /* Theme functions to export */
 void                theme_init(GtkThemeEngine * engine);
@@ -1160,4 +1161,17 @@ theme_init(GtkThemeEngine * engine)
 void
 theme_exit(void)
 {
+}
+
+/* The following function will be called by GTK+ when the module
+ * is loaded and checks to see if we are compatible with the
+ * version of GTK+ that loads us.
+ */
+G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
+const gchar*
+g_module_check_init (GModule *module)
+{
+  return gtk_check_version (GTK_MAJOR_VERSION,
+			    GTK_MINOR_VERSION,
+			    GTK_MICRO_VERSION - GTK_INTERFACE_AGE);
 }

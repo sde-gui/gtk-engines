@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <gmodule.h>
 
 /* Theme functions to export */
 void                theme_init(GtkThemeEngine * engine);
@@ -84,8 +85,6 @@ theme_destroy_style(GtkStyle * style)
 void
 theme_init(GtkThemeEngine * engine)
 {
-  printf("Win95 Theme Init\n");
-
   engine->parse_rc_style = theme_parse_rc_style;
   engine->merge_rc_style = theme_merge_rc_style;
   engine->rc_style_to_style = theme_rc_style_to_style;
@@ -100,5 +99,18 @@ theme_init(GtkThemeEngine * engine)
 void
 theme_exit(void)
 {
-  printf("Win95 Theme Exit\n* Need to add memory deallocation code here *\n");
 }
+
+/* The following function will be called by GTK+ when the module
+ * is loaded and checks to see if we are compatible with the
+ * version of GTK+ that loads us.
+ */
+G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
+const gchar*
+g_module_check_init (GModule *module)
+{
+  return gtk_check_version (GTK_MAJOR_VERSION,
+			    GTK_MINOR_VERSION,
+			    GTK_MICRO_VERSION - GTK_INTERFACE_AGE);
+}
+

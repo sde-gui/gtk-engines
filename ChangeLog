@@ -1,3 +1,15 @@
+Mon Jan 18 11:25:25 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Remove -lgdk, -lgtk, and -lglib from GDK_IMLIB_LIBS.
+
+	* redmond95/Makefile.am notif/Makefile.am metal/Makefile.am
+	  pixmap/Makefile.am: Don't link to GTK_LIBS, since we 
+	  want to use the main programs copy of GTK+.
+
+	* */*_theme_main.c: Add a gtk_module_check_init() function to
+	  check if we are compatible with the version of GTK+ of the
+	  main executable. Removed some debugging printf's.
+	
 Wed Jan 13 16:30:45 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* ltconfig
