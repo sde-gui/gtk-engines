@@ -1,4 +1,5 @@
 Tue Sep  1 00:12:12 CDT 1998  Frank Belew <frb@umr.edu>
+
 	* Makefile.am: added support for new imlib.m4
 	* configure.in: added support for new imlib.m4
 
@@ -6,6 +7,12 @@ Fri Aug 21 19:08:25 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am: Added support for metal theme. 
 	  Install/distribute gtkrc's for each theme.
+
+Thu Aug 20 18:25:07 EDT 1998 The Rasterman <raster@redhat.com>
+	
+	* added metal theme, fixed pixmap theme now to use pixmap path -
+	  and removed lots of annoying print's, added gtkr's for each
+	  theme data.. now all your rc needs to do is include these rc's.
 
 Mon Aug 17 20:32:53 1998  Owen Taylor  <otaylor@redhat.com>
 
@@ -17,3 +24,21 @@ Mon Aug 17 20:32:53 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* Started ChangeLog.
 
+Thu Jul 30 14:51:34 EDT 1998 The Rasterman <raster@redhat.com>
+	
+	* Moved all the themes to install cleanly the engine *.so's in
+	  $(exec_prefix)/lib/gtk/themes/engines/ .
+	  All the data for themes is now installed in 
+	  $(exec_prefix)/share/gtk/themes/theme_name/
+	  All things build using GNU configure and autoconf and libtool now.
+	  I have created a win95, motif and pixmap theme setup - i have to
+	  work on the motif and win95 ones - pixmap theme also need work - 
+	  it partially parses a gtkrc for itself. This is goign to be a good
+	  sample base to work from if you wish to write your own theme engines.
+			  
+
+Thu Jul 30 19:10:42 EDT 1998 The Rasterman <raster@redhat.com>
+
+	* Fixed the win95/motif drawing functions to NOT clobber the original
+	  GTK bg pixmap style stuff.... :)
+			  
