@@ -1,3 +1,11 @@
+2004-11-02  James Henstridge  <james@jamesh.id.au>
+
+	From bug #156666:
+
+	* configure.in: modernise the configure script a bit.
+
+	* autogen.sh: use automake 1.9, 1.8 or 1.7 instead of 1.4.
+
 Wed May 28 10:26:48 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* README: Fix typo of ~/.theme for ~/.themes
