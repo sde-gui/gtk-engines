@@ -57,3 +57,7 @@ GTK+ mailing lists. See:
 Owen Taylor <otaylor@redhat.com>
 The Rasterman <raster@redhat.com>
 18 Jan 1999
+
+All software in this package is Copyright (C) 1999 Red Hat Software and
+Randy Gordon and is distributed under the LGPL License (same as gtk+)
+
