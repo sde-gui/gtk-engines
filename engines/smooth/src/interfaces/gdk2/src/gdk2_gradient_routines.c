@@ -325,7 +325,11 @@ GDK2CanvasRenderGradient(SmoothCanvas Canvas,
 	SmoothBool dither = (((depth > 0) && (depth <= ditherdepth)) && (!diagonal));
 	#endif
 	
-	if (SmoothRectangleSetValues(&clip, X, Y, Width, Height)
+	if ((Width <= 0) || (Height <= 0))
+	{
+		result = SmoothFalse;
+	}
+	else if (SmoothRectangleSetValues(&clip, X, Y, Width, Height)
 		&& SmoothCanvasClipUseIntersectingRectangle(Canvas, clip))
 	{		
 		if (dither)
