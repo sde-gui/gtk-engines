@@ -1,5 +1,6 @@
 %define  ver     @VERSION@
-%define  rel     SNAP
+%define  RELEASE SNAP
+%define  rel     %{?CUSTOM_RELEASE} %{!?CUSTOM_RELEASE:%RELEASE}
 %define  prefix  /usr
 
 Summary: Default GTK+ theme engines
@@ -36,8 +37,7 @@ fi
 
 
 if [ "$SMP" != "" ]; then
-  (make "MAKE=make -k -j $SMP"; exit 0)
-  make
+  make -j$SMP "MAKE=make -j$SMP"
 else
   make
 fi
