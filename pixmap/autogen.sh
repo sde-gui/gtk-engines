@@ -1,11 +1,6 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
-pixmap/autogen.sh $@
-motif/autogen.sh $@
-win95/autogen.sh $@
-metal/autogen.sh $@
-
 DIE=0
 
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
