@@ -1,3 +1,16 @@
+2005-02-03  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* engines/smooth/src/engine/smooth_gtk2_engine.c:
+	(smooth_rc_style_parse): Use g_quark_from_string() instead
+	of g_quark_from_static_string() since the latter will cause
+	problems when used in modules that are dynamically loaded
+	and unloaded. This should solve a ton of crashes related
+	to changing themes. Closes bug #165942, bug #166018,
+	bug #160803, and is also related to other theme related
+	crashes all the way back to 1.4.x. Theme engine authors
+	should be made aware of this so we can get external theme
+	engines fixed.
+
 2005-01-29  Thomas Wood  <thos@gnome.org>
 
 	* NEWS: Updated

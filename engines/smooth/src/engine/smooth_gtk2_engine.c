@@ -62,7 +62,6 @@ smooth_rc_style_parse (GtkRcStyle *rc_style,
                        GtkSettings  *settings,
 		       GScanner   *scanner)
 {
-  static gchar scope_id_name[] = "smooth_theme_engine";
   static GQuark scope_id = 0;
   SmoothRcStyle *smooth_style = SMOOTH_RC_STYLE(rc_style);
   
@@ -73,7 +72,7 @@ smooth_rc_style_parse (GtkRcStyle *rc_style,
   /* Set up a new scope in this scanner */
   if (!scope_id)
     {
-      scope_id = g_quark_from_static_string  (scope_id_name);
+      scope_id = g_quark_from_string  ("smooth_theme_engine");
     }
 
   /* If we bail out due to errors, we don't reset the scope, so the
