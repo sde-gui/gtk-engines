@@ -13,5 +13,5 @@ libredmond95_la_SOURCES = \
 	./src/redmond_gtk2_engine.h
 
 libredmond95_la_LDFLAGS = -module -avoid-version -no-undefined
-libredmond95_la_LIBADD = $(gtk_libs)
+libredmond95_la_LIBADD = $(GTK_LIBS)
 

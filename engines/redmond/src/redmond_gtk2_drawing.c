@@ -338,7 +338,7 @@ redmond_draw_arrow (GtkStyle * style,
 
       if (CHECK_DETAIL (detail, "spinbutton") || CHECK_DETAIL (detail, "optionmenu"))
 	{
-	  if ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
+	  if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 	    x -= 1;
 	}
       else if (is_in_combo_box (widget) && ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) || (state == GTK_STATE_INSENSITIVE)))
@@ -471,7 +471,7 @@ redmond_draw_shadow (GtkStyle * style,
 	   * edge, which will be drawn by the buttons.
 	   */
  
-	  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
+	  if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 	    {
 	      do_redmond_draw_shadow (window, style->dark_gc[state_type],
 			      style->light_gc[state_type], x, y, width + 2,
@@ -593,16 +593,31 @@ redmond_draw_combobox_button (GtkStyle * style,
    * and so left( or right) edge doesn't actually get drawn on screen;
    * and THEN draw the button, but essentially 4 pixels smaller.
    */
-  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
+  GtkStyle * parent_style = style;
+  GtkStateType parent_state = state_type;
+
+  if ((!(widget)) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
     {
       if (is_combo_box_entry (widget)
           || is_combo_box (widget, TRUE))
         {
           if (!is_combo_box_entry (widget))
-	    gdk_draw_rectangle (window,
-	    	                widget->parent->style->
-	 		        base_gc[GTK_WIDGET_STATE (widget->parent)],
-			        TRUE, x - 2, y, width + 2, height);
+            {
+              if ((widget->parent))
+                {
+                  gtk_widget_ensure_style(widget->parent);
+
+                  parent_style = widget->parent->style;
+                  parent_state = widget->parent->state;
+                }
+
+	      if (parent_state != GTK_STATE_INSENSITIVE)
+                parent_state = GTK_STATE_NORMAL;
+
+	      gdk_draw_rectangle (window,
+	      	                  parent_style->base_gc[parent_state],
+			          TRUE, x - 2, y, width + 2, height);
+            }
           else
             gtk_paint_flat_box (style, window, state_type,
 			        GTK_SHADOW_NONE, area, widget, "entry_bg", x - 2,
@@ -613,13 +628,48 @@ redmond_draw_combobox_button (GtkStyle * style,
         }
       else if (is_combo(widget))
         {
-          GtkWidget *entry = GTK_COMBO (widget->parent)->entry;
+          GtkWidget *entry = widget;
+
+	  if (GTK_IS_WIDGET(widget) && GTK_IS_WIDGET(widget->parent) && GTK_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
+            {
+               entry = GTK_COMBO (widget->parent)->entry;
+               gtk_widget_ensure_style(entry);
+
+               parent_style = entry->style;
+               parent_state = entry->state;
+             }
+          else if (GTK_IS_WIDGET(widget->parent))
+            {
+               entry = widget->parent;
+               gtk_widget_ensure_style(entry);
+
+               parent_style = entry->style;
+               parent_state = entry->state;
+            }
  
-          gtk_paint_flat_box (entry->style, window, entry->state,
+	  if (parent_state != GTK_STATE_INSENSITIVE)
+            parent_state = GTK_STATE_NORMAL;
+
+          gtk_paint_flat_box (parent_style, window, parent_state,
 	 		      GTK_SHADOW_NONE, area, entry, "entry_bg", x - 2,
 			      y, width + 2, height);
-          gtk_paint_shadow (entry->style, window, entry->state, GTK_SHADOW_IN,
-			    area, entry, "entry", x - 2, y, width, height);
+
+          {
+            GdkRectangle shadow, clip;
+          
+            shadow.x = x - 2;
+            shadow.y = y;
+            shadow.width = width + 2;
+            shadow.height = height;
+          
+           if (area)
+              gdk_rectangle_intersect(area, &shadow, &clip);
+            else
+              clip = shadow;
+
+            gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+	 	              &clip, entry, "entry", x - 4, y, width + 2, height);
+          }
         }
       else
         {
@@ -628,10 +678,21 @@ redmond_draw_combobox_button (GtkStyle * style,
           if (widget->parent)
             parent = widget->parent;
         
-          gtk_paint_flat_box (parent->style, window, parent->state,
+          if ((parent))
+            {
+              gtk_widget_ensure_style(parent);
+
+              parent_style = parent->style;
+              parent_state = parent->state;
+            }
+
+          if (parent_state != GTK_STATE_INSENSITIVE)
+            parent_state = GTK_STATE_NORMAL;
+
+          gtk_paint_flat_box (parent_style, window, parent_state,
 			      GTK_SHADOW_NONE, area, parent, "entry_bg", x - 2,
 			      y, width + 2, height);
-          gtk_paint_shadow (parent->style, window, parent->state, GTK_SHADOW_IN,
+          gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 		   	    area, parent, "entry", x - 2, y, width, height);
         }
  
@@ -651,10 +712,23 @@ redmond_draw_combobox_button (GtkStyle * style,
           || is_combo_box (widget, TRUE))
         {
           if (!is_combo_box_entry (widget))
-	    gdk_draw_rectangle (window,
-			        widget->parent->style->
-			        base_gc[GTK_WIDGET_STATE (widget->parent)],
-			        TRUE, x + 2, y, width + 2, height);
+            {
+              if ((widget->parent))
+                {
+                  gtk_widget_ensure_style(widget->parent);
+
+                  parent_style = widget->parent->style;
+                  parent_state = widget->parent->state;
+                }
+
+              if (parent_state != GTK_STATE_INSENSITIVE)
+                parent_state = GTK_STATE_NORMAL;
+
+	      gdk_draw_rectangle (window,
+		  	          widget->parent->style->
+			          base_gc[GTK_WIDGET_STATE (widget->parent)],
+			          TRUE, x + 2, y, width + 2, height);
+            }
           else
             gtk_paint_flat_box (style, window, state_type,
 	  	                GTK_SHADOW_NONE, area, widget, "entry_bg", x + 2,
@@ -665,25 +739,56 @@ redmond_draw_combobox_button (GtkStyle * style,
         }
       else if (is_combo(widget))
         {
-           GtkWidget *entry = GTK_COMBO (widget->parent)->entry;
- 
-           gtk_paint_flat_box (entry->style, window, entry->state,
+          GtkWidget *entry = widget;
+
+	  if (GTK_IS_WIDGET(widget) && GTK_IS_WIDGET(widget->parent) && GTK_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
+            {
+               entry = GTK_COMBO (widget->parent)->entry;
+               gtk_widget_ensure_style(entry);
+
+               parent_style = entry->style;
+               parent_state = entry->state;
+             }
+          else if (GTK_IS_WIDGET(widget->parent))
+            {
+               entry = widget->parent;
+               gtk_widget_ensure_style(entry);
+
+               parent_style = entry->style;
+               parent_state = entry->state;
+            }
+  
+           if (parent_state != GTK_STATE_INSENSITIVE)
+             parent_state = GTK_STATE_NORMAL;
+
+           gtk_paint_flat_box (parent_style, window, parent_state,
 			       GTK_SHADOW_NONE, area, entry, "entry_bg", x + 2,
                                y, width + 2, height);
-           gtk_paint_shadow (entry->style, window, entry->state, GTK_SHADOW_IN,
+           gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 			     area, entry, "entry", x + 2, y, width, height);
         }
       else
         {
           GtkWidget *parent = widget;
-       
+      
           if (widget->parent)
             parent = widget->parent;
-           
-          gtk_paint_flat_box (parent->style, window, parent->state,
+        
+          if ((parent))
+            {
+              gtk_widget_ensure_style(parent);
+
+              parent_style = parent->style;
+              parent_state = parent->state;
+            }
+
+          if (parent_state != GTK_STATE_INSENSITIVE)
+            parent_state = GTK_STATE_NORMAL;
+
+          gtk_paint_flat_box (parent_style, window, parent_state,
 			      GTK_SHADOW_NONE, area, parent, "entry_bg", x + 2,
 			      y, width + 2, height);
-          gtk_paint_shadow (parent->style, window, parent->state, GTK_SHADOW_IN,
+          gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 		   	    area, parent, "entry", x + 2, y, width, height);
         }
  
@@ -739,7 +844,7 @@ redmond_draw_spinbutton_stepper (GtkStyle * style,
   if (state_type != GTK_STATE_INSENSITIVE)
     state_type = GTK_STATE_NORMAL;
  
-  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
+  if ((!(widget)) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
     {
       if (CHECK_DETAIL (detail, "spinbutton_up"))
 	{
@@ -918,7 +1023,7 @@ redmond_draw_box (GtkStyle * style,
 	    
 	  has_grip = IS_CONTAINER(dockitem);
 	  
-	  ltr = (gtk_widget_get_direction (dockitem) == GTK_TEXT_DIR_LTR);
+	  ltr = (!widget) || (gtk_widget_get_direction (dockitem) == GTK_TEXT_DIR_LTR);
 	  
 	  if (has_grip)
 	  {
@@ -996,12 +1101,12 @@ redmond_draw_box (GtkStyle * style,
 		  (GTK_HANDLE_BOX (widget)))
 	    {
 	      case GTK_POS_LEFT:
-                left_cutoff = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR);
+                left_cutoff = (!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR);
 	        right_cutoff = !left_cutoff;
               break;
  
 	      case GTK_POS_RIGHT:
-                left_cutoff = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL);
+                left_cutoff = (widget) && (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL);
 	        right_cutoff = !left_cutoff;
 	      break;
  
@@ -1020,14 +1125,14 @@ redmond_draw_box (GtkStyle * style,
 		  (GTK_HANDLE_BOX (widget->parent)))
 	    {
 	      case GTK_POS_LEFT:
-                left_cutoff = (gtk_widget_get_direction (widget->parent) == GTK_TEXT_DIR_LTR);
+                left_cutoff = (!widget) || (gtk_widget_get_direction (widget->parent) == GTK_TEXT_DIR_LTR);
                 right_cutoff= !left_cutoff;
                 x -= 2;
                 width += 2;
               break;
  
 	      case GTK_POS_RIGHT:
-                left_cutoff = (gtk_widget_get_direction (widget->parent) == GTK_TEXT_DIR_RTL);
+                left_cutoff = (widget) && (gtk_widget_get_direction (widget->parent) == GTK_TEXT_DIR_RTL);
 	        right_cutoff = !left_cutoff;
                 width += 2;
 	      break;
@@ -1195,7 +1300,7 @@ redmond_draw_box (GtkStyle * style,
  
       option_menu_get_props (widget, &indicator_size, &indicator_spacing);
  
-      if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+      if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL))
 	vline_x = x + indicator_size.width + indicator_spacing.left + indicator_spacing.right;
       else
 	vline_x = x + width - (indicator_size.width + indicator_spacing.left + 
@@ -1205,7 +1310,7 @@ redmond_draw_box (GtkStyle * style,
                            area, y + style->ythickness + 1, y + height - style->ythickness - 2, 
                            vline_x, FALSE);
  
-      if (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL) 
+      if ((widget) && (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL))
          x +=  indicator_spacing.right + style->xthickness;
       else
          x += width - indicator_size.width - indicator_spacing.right - style->xthickness;
@@ -1553,7 +1658,7 @@ redmond_draw_handle (GtkStyle * style,
         }
       else
         {
-          right_cutoff = (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR);
+          right_cutoff = (!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR);
           left_cutoff = !right_cutoff;
  
 	  do_redmond_draw_shadow (window, style->light_gc[state_type],

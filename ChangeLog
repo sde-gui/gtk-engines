@@ -1,3 +1,15 @@
+2004-12-08  Andrew Johnson <ajgenius@ajgenius.us>
+
+	* engines/redmond/Makefile.am: Fix Makefile.am libs
+
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_arrow),
+	(redmond_draw_shadow), (redmond_draw_combobox_button),
+	(redmond_draw_spinbutton_stepper), (redmond_draw_box),
+	(redmond_draw_handle):
+
+	Ensure widget isn't null when testing RTL/LTR
+	Ensure valid style is used for combo widget
+
 2004-12-06  Thomas Wood  <thos@gnome.org>
 
 	* configure.ac:
