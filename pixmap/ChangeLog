@@ -1,3 +1,11 @@
+Wed Jan 13 18:58:25 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* pixmap_theme_draw.c: Fixed pervasive mis-bracketing
+	that was causing drawing if the drawn region and
+	clipping region did NOT intersect, and a couple
+	of errors in computing source and destination 
+	regions.
+
 1998-11-09  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* pixmap_theme_draw.c: #include <math.h>

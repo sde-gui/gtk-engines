@@ -512,11 +512,14 @@ apply_theme_image_border(GdkWindow *window, struct theme_image *img, gchar setbg
 	      rect0.y = rect.y;
 	      rect0.width = width;
 	      rect0.height = im->border.top;
-	      if ((area) && (gdk_rectangle_intersect(&rect0, area, &rect1)))
-		  gdk_draw_pixmap(window, gc, p,
-				  rect1.x - rect0.x, rect1.y - rect0.y,
-				  rect1.x, rect1.y,
-				  rect1.width, rect1.height);
+	      if (area)
+		{
+		  if (gdk_rectangle_intersect(&rect0, area, &rect1))
+		    gdk_draw_pixmap(window, gc, p,
+				    rect1.x - rect0.x, rect1.y - rect0.y,
+				    rect1.x, rect1.y,
+				    rect1.width, rect1.height);
+		}
 	      else
 		gdk_draw_pixmap(window, gc, p,
 				0, 0,
@@ -527,12 +530,15 @@ apply_theme_image_border(GdkWindow *window, struct theme_image *img, gchar setbg
 	      rect0.y = rect.y + height - im->border.bottom;
 	      rect0.width = width;
 	      rect0.height = im->border.bottom;
-	      if ((area) && (gdk_rectangle_intersect(&rect0, area, &rect1)))
-		gdk_draw_pixmap(window, gc, p,
-				rect1.x - rect0.x, rect1.y - rect0.y +
-				height - im->border.bottom,
-				rect1.x, rect1.y,
-				rect1.width, rect1.height);
+	      if (area)
+		{ 
+		  if (gdk_rectangle_intersect(&rect0, area, &rect1))
+		    gdk_draw_pixmap(window, gc, p,
+				    rect1.x - rect0.x, rect1.y - rect0.y +
+				    height - im->border.bottom,
+				    rect1.x, rect1.y,
+				    rect1.width, rect1.height);
+		}
 	      else
 		gdk_draw_pixmap(window, gc, p,
 				0, height - im->border.bottom,
@@ -543,12 +549,15 @@ apply_theme_image_border(GdkWindow *window, struct theme_image *img, gchar setbg
 	      rect0.y = rect.y + im->border.top;
 	      rect0.width = im->border.left;
 	      rect0.height = height - (im->border.top + im->border.bottom);
-	      if ((area) && (gdk_rectangle_intersect(&rect0, area, &rect1)))
-		gdk_draw_pixmap(window, gc, p,
-				rect1.x - rect0.x, rect1.y - rect0.y +
-				im->border.top,
-				rect1.x, rect1.y,
-				rect1.width, rect1.height);
+	      if (area)
+		{
+		  if (gdk_rectangle_intersect(&rect0, area, &rect1))
+		    gdk_draw_pixmap(window, gc, p,
+				    rect1.x - rect0.x, rect1.y - rect0.y +
+				    im->border.top,
+				    rect1.x, rect1.y,
+				    rect1.width, rect1.height);
+		}
 	      else
 		gdk_draw_pixmap(window, gc, p,
 				0, im->border.top,
@@ -559,12 +568,15 @@ apply_theme_image_border(GdkWindow *window, struct theme_image *img, gchar setbg
 	      rect0.y = rect.y + im->border.top;
 	      rect0.width = im->border.right;
 	      rect0.height = height - (im->border.top + im->border.bottom);
-	      if ((area) && (gdk_rectangle_intersect(&rect0, area, &rect1)))
-		gdk_draw_pixmap(window, gc, p,
-				rect1.x - rect0.x + width - im->border.right, 
-				rect1.y - rect0.y + im->border.top,
-				rect1.x, rect1.y,
-				rect1.width, rect1.height);
+	      if (area)
+		{
+		  if (gdk_rectangle_intersect(&rect0, area, &rect1))
+		    gdk_draw_pixmap(window, gc, p,
+				    rect1.x - rect0.x + width - im->border.right, 
+				    rect1.y - rect0.y + im->border.top,
+				    rect1.x, rect1.y,
+				    rect1.width, rect1.height);
+		}
 	      else
 		gdk_draw_pixmap(window, gc, p,
 				width - im->border.right, im->border.top,
@@ -697,17 +709,19 @@ apply_theme_image_shadow_gap(GdkWindow *window,
 		  rect0.y = r1.y;
 		  rect0.width = r1.width;
 		  rect0.height = r1.height;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p1,
-				      rect1.x - rect0.x, rect1.y - rect0.y,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p1,
-				      0, 0,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p1,
+					rect1.x - rect0.x, rect1.y - rect0.y,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p1,
+				    0, 0,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 		}
 
 	      if (m2)
@@ -727,17 +741,19 @@ apply_theme_image_shadow_gap(GdkWindow *window,
 		  rect0.y = r2.y;
 		  rect0.width = r2.width;
 		  rect0.height = r2.height;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p2,
-				      rect1.x - rect0.x, rect1.y - rect0.y,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p2,
-				      0, 0,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p2,
+					rect1.x - rect0.x, rect1.y - rect0.y,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p2,
+				    0, 0,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 		}
 
 	      if (m)
@@ -758,35 +774,39 @@ apply_theme_image_shadow_gap(GdkWindow *window,
 		  rect0.y = rect.y + height - im->border.bottom;
 		  rect0.width = width;
 		  rect0.height = im->border.bottom;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p,
-				      rect1.x - rect0.x, rect1.y - rect0.y +
-				      height - im->border.bottom,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p,
-				      0, height - im->border.bottom,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p,
+					rect1.x - rect0.x, rect1.y - rect0.y +
+					height - im->border.bottom,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p,
+				    0, height - im->border.bottom,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 		  
 		  rect0.x = rect.x;
 		  rect0.y = rect.y + im->border.top;
 		  rect0.width = im->border.left;
 		  rect0.height = height - (im->border.top + im->border.bottom);
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p,
-				      rect1.x - rect0.x,
-				      rect1.y - rect0.y + im->border.top,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p,
-				      0, im->border.top,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p,
+					rect1.x - rect0.x,
+					rect1.y - rect0.y + im->border.top,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p,
+				    0, im->border.top,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 		  break;
 		case GTK_POS_BOTTOM:
 		  rect0.x = rect.x;
@@ -794,34 +814,38 @@ apply_theme_image_shadow_gap(GdkWindow *window,
 		  rect0.width = width;
 		  rect0.height = im->border.top;
 
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p,
-				      rect1.x - rect0.x, rect1.y - rect0.y,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p,
-				      0, 0,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p,
+					rect1.x - rect0.x, rect1.y - rect0.y,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p,
+				    0, 0,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 
 		  rect0.x = rect.x;
 		  rect0.y = rect.y + im->border.top;
 		  rect0.width = im->border.left;
 		  rect0.height = height - (im->border.top + im->border.bottom);
 		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p,
-				      rect1.x - rect0.x,
-				      rect1.y - rect0.y + im->border.top,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p,
-				      0, im->border.top,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p,
+					rect1.x - rect0.x,
+					rect1.y - rect0.y + im->border.top,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p,
+				    0, im->border.top,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 		  
 		  break;
 		case GTK_POS_LEFT:
@@ -830,34 +854,38 @@ apply_theme_image_shadow_gap(GdkWindow *window,
 		  rect0.y = rect.y;
 		  rect0.width = width;
 		  rect0.height = im->border.top;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p,
-				      rect1.x - rect0.x, rect1.y - rect0.y,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p,
-				      0, 0,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p,
+					rect1.x - rect0.x, rect1.y - rect0.y,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p,
+				    0, 0,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 
 		  rect0.x = rect.x;
 		  rect0.y = rect.y + height - im->border.bottom;
 		  rect0.width = width;
 		  rect0.height = im->border.bottom;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p,
-				      rect1.x - rect0.x, rect1.y - rect0.y +
-				      height - im->border.bottom,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p,
-				      0, height - im->border.bottom,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p,
+					rect1.x - rect0.x, rect1.y - rect0.y +
+					height - im->border.bottom,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p,
+				    0, height - im->border.bottom,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 		  break;
 
 		case GTK_POS_RIGHT:
@@ -865,34 +893,38 @@ apply_theme_image_shadow_gap(GdkWindow *window,
 		  rect0.y = rect.y;
 		  rect0.width = width;
 		  rect0.height = im->border.top;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p,
-				      rect1.x - rect0.x, rect1.y - rect0.y,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p,
-				      0, 0,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p,
+					rect1.x - rect0.x, rect1.y - rect0.y,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p,
+				    0, 0,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 		  
 		  rect0.x = rect.x;
 		  rect0.y = rect.y + height - im->border.bottom;
 		  rect0.width = width;
 		  rect0.height = im->border.bottom;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p,
-				      rect1.x - rect0.x, rect1.y - rect0.y +
-				      height - im->border.bottom,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
-		    else
-		      gdk_draw_pixmap(window, gc, p,
-				      0, height - im->border.bottom,
-				      rect0.x, rect0.y,
-				      rect0.width, rect0.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p,
+					rect1.x - rect0.x, rect1.y - rect0.y +
+					height - im->border.bottom,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
+		  else
+		    gdk_draw_pixmap(window, gc, p,
+				    0, height - im->border.bottom,
+				    rect0.x, rect0.y,
+				    rect0.width, rect0.height);
 		  break;
 		}
 	      
@@ -901,18 +933,20 @@ apply_theme_image_shadow_gap(GdkWindow *window,
 	      rect0.width = im->border.right;
 	      rect0.height = height - (im->border.top + im->border.bottom);
 	      if (area)
-		if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		  gdk_draw_pixmap(window, gc, p,
-				  rect1.x - rect0.x + width - im->border.right, 
-				  rect1.y - rect0.y + im->border.top,
-				  rect1.x, rect1.y,
-				  rect1.width, rect1.height);
-		else
-		  gdk_draw_pixmap(window, gc, p,
-				  width - im->border.right, 
-				  im->border.top,
-				  rect0.x, rect0.y,
-				  rect0.width, rect0.height);
+		{
+		  if (gdk_rectangle_intersect(&rect0, area, &rect1))
+		    gdk_draw_pixmap(window, gc, p,
+				    rect1.x - rect0.x + width - im->border.right, 
+				    rect1.y - rect0.y + im->border.top,
+				    rect1.x, rect1.y,
+				    rect1.width, rect1.height);
+		}
+	      else
+		gdk_draw_pixmap(window, gc, p,
+				width - im->border.right, 
+				im->border.top,
+				rect0.x, rect0.y,
+				rect0.width, rect0.height);
 	      
 	      if (m)
 		{
@@ -1057,12 +1091,14 @@ apply_theme_image_box_gap(GdkWindow *window, struct theme_image *img, gchar setb
 	      rect0.y = rect.y;
 	      rect0.width = width;
 	      rect0.height = height;
-	      if (area) 
-		if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		  gdk_draw_pixmap(window, gc, p,
-				  rect1.x - rect0.x, rect1.y - rect0.y,
-				  rect1.x, rect1.y,
-				  rect1.width, rect1.height);
+	      if (area)
+		{
+		  if (gdk_rectangle_intersect(&rect0, area, &rect1))
+		    gdk_draw_pixmap(window, gc, p,
+				    rect1.x - rect0.x, rect1.y - rect0.y,
+				    rect1.x, rect1.y,
+				    rect1.width, rect1.height);
+		}
 	      else
 		gdk_draw_pixmap(window, gc, p,
 				0, 0,
@@ -1084,12 +1120,14 @@ apply_theme_image_box_gap(GdkWindow *window, struct theme_image *img, gchar setb
 		  rect0.y = r1.y;
 		  rect0.width = r1.width;
 		  rect0.height = r1.height;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p1,
-				      rect1.x - rect0.x, rect1.y - rect0.y,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p1,
+					rect1.x - rect0.x, rect1.y - rect0.y,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
 		  else
 		    gdk_draw_pixmap(window, gc, p1,
 				    0, 0,
@@ -1112,16 +1150,18 @@ apply_theme_image_box_gap(GdkWindow *window, struct theme_image *img, gchar setb
 		  rect0.y = r2.y;
 		  rect0.width = r2.width;
 		  rect0.height = r2.height;
-		  if (area) 
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p2,
-				      rect1.x - rect0.x, rect1.y - rect0.y,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
+		  if (area)
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p2,
+					rect1.x - rect0.x, rect1.y - rect0.y,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
 		  else
 		    gdk_draw_pixmap(window, gc, p2,
-				    rect0.x - x, rect0.y - y,
 				    0, 0,
+				    rect0.x, rect0.y,
 				    rect0.width, rect0.height);
 		}
 	      if (m3)
@@ -1141,15 +1181,17 @@ apply_theme_image_box_gap(GdkWindow *window, struct theme_image *img, gchar setb
 		  rect0.width = r3.width;
 		  rect0.height = r3.height;
 		  if (area)
-		    if (gdk_rectangle_intersect(&rect0, area, &rect1))
-		      gdk_draw_pixmap(window, gc, p3,
-				      rect1.x - rect0.x, rect1.y - rect0.y,
-				      rect1.x, rect1.y,
-				      rect1.width, rect1.height);
+		    {
+		      if (gdk_rectangle_intersect(&rect0, area, &rect1))
+			gdk_draw_pixmap(window, gc, p3,
+					rect1.x - rect0.x, rect1.y - rect0.y,
+					rect1.x, rect1.y,
+					rect1.width, rect1.height);
+		    }
 		  else
 		    gdk_draw_pixmap(window, gc, p3,
-				    rect0.x - x, rect0.y - y,
 				    0, 0,
+				    rect0.x, rect0.y,
 				    rect0.width, rect0.height);
 		}
 	      if (m3)
