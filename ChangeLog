@@ -1,3 +1,8 @@
+Thu Oct 31 18:56:56 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Remove some useless checks.
+	(Red Hat bugzilla, #64061)
+
 2002-09-12  Havoc Pennington  <hp@redhat.com>
 
 	* notif/Theme/ICON.png, metal/Theme/ICON.png,
