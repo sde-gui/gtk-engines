@@ -13,10 +13,6 @@
 # testgtkrc2 sets all the buttons in the main window to blue by default
 #include "testgtkrc2"
 
-#module_path ".:/home/raster/themes"
-
-pixmap_path ".:/home/raster/themes"
-
 style "default"
 {
   font = "-*-helvetica-medium-r-normal--*-120-*-*-*-*-*-*"
