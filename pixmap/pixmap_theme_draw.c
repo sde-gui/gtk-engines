@@ -1696,6 +1696,9 @@ draw_flat_box(GtkStyle * style,
       gc = style->bg_gc[state_type];
       apply_theme_image(window, img, setbg, gc, area, x, y, width, height);
     }
+  else
+    gtk_style_apply_default_background (style, window, setbg, state_type,
+					area, x, y, width, height);
 }
 
 static void
