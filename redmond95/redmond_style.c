@@ -437,6 +437,9 @@ draw_box (GtkStyle      *style,
 	  gint           width,
 	  gint           height)
 {
+  if (detail && strcmp (detail, "menuitem") == 0) 
+    shadow_type = GTK_SHADOW_NONE;
+  
   if ((detail && strcmp (detail, "trough") == 0) &&
       !(widget && GTK_IS_PROGRESS_BAR (widget)))
     {
