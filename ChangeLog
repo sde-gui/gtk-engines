@@ -1,3 +1,7 @@
+1998-11-07  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in: Unify all subdir `configure.in's here.
+
 Mon Oct 19 12:11:28 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* Add in ltconfig and ltmain.sh with correct shldeps
