@@ -1,4 +1,4 @@
-SUBDIRS = engines metal redmond95
+SUBDIRS = engines metal themes
 
 EXTRA_DIST = \
 	autogen.sh	\

@@ -1,3 +1,28 @@
+2004-12-03  Thomas Wood <thos@gnome.org>, Andrew Johnson <ajgenius@ajgenius.us>
+
+	* Makefile.am:
+	* configure.ac:
+	* engines/Makefile.am:
+	* engines/redmond/*:
+
+	New redmond engine added
+
+	* redmond95/Theme/.cvsignore:
+	* redmond95/Theme/Makefile.am:
+	* redmond95/Theme/README.html:
+	* redmond95/Theme/gtk-2.0/.cvsignore:
+	* redmond95/Theme/gtk-2.0/Makefile.am:
+	* redmond95/Theme/gtk-2.0/gtkrc:
+	
+	Old redmond engine removed
+
+	* themes/Makefile.am:
+	* themes/Redmond/Makefile.am:
+	* themes/Redmond/gtk-2.0/Makefile.am:
+	* themes/Redmond/gtk-2.0/gtkrc:
+
+	Theme files for new redmond engine
+
 2004-12-01  Thomas Wood <thos@gnome.org>, Andrew Johnson <ajgenius@ajgenius.us>
 
 	* Update version to 2.5

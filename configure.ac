@@ -38,13 +38,14 @@ engines/hc/Makefile
 engines/industrial/Makefile
 engines/lighthouseblue/Makefile
 engines/mist/Makefile
+engines/redmond/Makefile
 engines/thinice/Makefile
 metal/Makefile
 metal/Theme/Makefile
 metal/Theme/gtk-2.0/Makefile
-redmond95/Makefile
-redmond95/Theme/Makefile
-redmond95/Theme/gtk-2.0/Makefile
+themes/Makefile
+themes/Redmond/Makefile
+themes/Redmond/gtk-2.0/Makefile
 gtk-engines-2.pc
 gtk-engines.spec
 ])
