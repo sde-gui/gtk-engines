@@ -1,6 +1,6 @@
-To build with Microsoft's tools, say nmake -f makefile.msc.
+The makefile.msc file is very much outdated. Back in the year 2000 it
+was possible to build with Microsoft's tools, using nmake -f makefile.msc.
 
-To build with gcc (read GLib's README.win32 for instructions on
-compiler version and configuration), build with make -f makefile.cygwin.
+Building with auto* tools and libtool works fine.
 
 --tml@iki.fi
