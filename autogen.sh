@@ -1,7 +1,12 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
+srcdir=`dirname $0`
+test -z "$srcdir" && srcdir=.
 DIE=0
+
+THEDIR=`pwd`
+cd $srcdir
 
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
 	echo
@@ -30,7 +35,9 @@ fi
 aclocal $ACLOCAL_FLAGS
 automake --add-missing
 autoconf
-./configure "$@"
+cd $THEDIR
+
+$srcdir/configure "$@"
 
 echo 
 echo "Now type 'make' to compile themes"
