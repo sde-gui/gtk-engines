@@ -1,3 +1,23 @@
+Fri Jan 17 17:55:48 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* metal_style.c (is_first_tab): Redo the computation
+	of whether a tab is the first tab to avoid segfaults
+	if the tab label isn't available, and also fix some
+	bugs with pack-end tabs. (#79936, Peter Zelezny)
+
+	* metal_style.c (draw_notebook_focus): Draw the
+	notebook tab focus in a style similar to the way
+	that the Java metal L&F does it ... use a polygon
+	rather than a square.
+
+	* metal_style.c (draw_extension): Remove code that
+	was drawing a weird mid-gray box in the middle
+	of the tab.
+
+	* metal_style.c (metal_tab): Tweak to look less like
+	something the cat dragged in, even if not exactly
+	like the Java metal tabs.
+
 Fri Jan 17 14:41:05 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* metal_style.c: Make parent_class static. (#94047,
