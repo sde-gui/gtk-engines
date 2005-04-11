@@ -78,6 +78,7 @@ industrial_style_class_init (IndustrialStyleClass * klass)
   style_class->draw_shadow_gap = draw_shadow_gap;
   style_class->draw_extension = draw_extension;
   style_class->draw_option = draw_option;
+  style_class->render_icon = render_icon;
 }
 
 GType industrial_type_style = 0;

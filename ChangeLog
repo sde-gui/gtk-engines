@@ -1,3 +1,13 @@
+2005-04-11  Thomas Wood  <thos@gnome.org>
+
+	* configure.ac: Get ready for 2.6.3 release
+	* engines/industrial/src/industrial_style.c: (set_transparency),
+	(scale_or_ref), (render_icon):
+	* engines/industrial/src/industrial_style_versioned_code.h:
+
+	Patch from Michele Cella <michele.cella@gmail.com> to render better
+	looking insensitive icons
+
 2005-03-17  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (draw_box), (draw_focus),
