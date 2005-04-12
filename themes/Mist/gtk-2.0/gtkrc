@@ -64,8 +64,9 @@ style "menu"
 
 class "GtkWidget" style "default"
 class "GtkMenu" style "menu"
+class "*MenuItem*" style "menuitem"
 
-widget_class "*.GtkMenuItem.*" style "menuitem"
+widget_class "*MenuItem*" style "menuitem"
 widget_class "*.GtkImageMenuItem.*" style "menuitem"
 widget_class "*.GtkAccelMenuItem.*" style "menuitem"
 widget_class "*.GtkRadioMenuItem.*" style "menuitem"

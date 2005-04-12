@@ -11,7 +11,7 @@
 #include "support.h"
 #include "config.h"
 
-//#define DEBUG 1
+/* #define DEBUG 1 */
 
 #define SCALE_SIZE 5
 
@@ -244,7 +244,69 @@ clearlooks_draw_arrow (GtkStyle      *style,
 }
 
 
+static void
+draw_flat_box (DRAW_ARGS)
+{
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 
+	g_return_if_fail (GTK_IS_STYLE (style));
+	g_return_if_fail (window != NULL);
+
+	sanitize_size (window, &width, &height);
+
+	if (detail && 	
+	    clearlooks_style->listviewitemstyle == 1 && 
+	    state_type == GTK_STATE_SELECTED && (
+	    !strncmp ("cell_even", detail, strlen ("cell_even")) ||
+	    !strncmp ("cell_odd", detail, strlen ("cell_odd"))))
+	{
+		GdkGC    *gc;
+		GdkColor  lower_color;
+		GdkColor *upper_color;
+
+		if (GTK_WIDGET_HAS_FOCUS (widget))
+		{
+			gc = style->base_gc[state_type];
+			upper_color = &style->base[state_type];
+		}
+		else
+		{
+			gc = style->base_gc[GTK_STATE_ACTIVE];
+			upper_color = &style->base[GTK_STATE_ACTIVE];
+		}
+		
+		if (GTK_IS_TREE_VIEW (widget) && 0)
+		{
+			GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+
+			if (gtk_tree_selection_count_selected_rows (sel) > 1)
+			{
+				parent_class->draw_flat_box (style, window, state_type, shadow_type,
+				                             area, widget, detail,
+				                             x, y, width, height);
+				return;
+			}
+		}
+		
+		shade (upper_color, &lower_color, 0.8);
+
+		if (area)
+			gdk_gc_set_clip_rectangle (gc, area);
+		
+		draw_hgradient (window, gc, style,
+				x, y, width, height, upper_color, &lower_color);
+
+		if (area)
+			gdk_gc_set_clip_rectangle (gc, NULL);
+	}
+	else
+	{
+		parent_class->draw_flat_box (style, window, state_type,
+				             shadow_type,
+			                     area, widget, detail,
+			                     x, y, width, height);
+	}
+}
 /**************************************************************************/
 
 static void
@@ -541,7 +603,7 @@ draw_box_gap (DRAW_ARGS,
 	gdk_gc_set_clip_region (r.topleft,     NULL);
 	gdk_gc_set_clip_region (r.bottomright, NULL);
 	
-	// it's a semi hack
+	/* it's a semi hack */
 	gdk_draw_line (window, style->light_gc[state_type],
 	               light_rect.x, light_rect.y,
 	               light_rect.width, light_rect.height);
@@ -573,7 +635,7 @@ draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 	{
 		GdkRectangle new_area;
 		GdkColor tmp_color;
-	
+
 		cl_rectangle_set_button (&r, style, state_type, FALSE,
 								CL_CORNER_ROUND, CL_CORNER_ROUND,
 								CL_CORNER_ROUND, CL_CORNER_ROUND);
@@ -885,15 +947,15 @@ draw_box (DRAW_ARGS)
 		printf("No widget to draw?!\n");
 		return;
 	}
-	
+
 	if (widget && DETAIL ("button") && widget->parent &&
-	         (GTK_IS_TREE_VIEW(widget->parent) || GTK_IS_CLIST (widget->parent))) // headers
+	         (GTK_IS_TREE_VIEW(widget->parent) || GTK_IS_CLIST (widget->parent))) /* listview headers */
 	{
 		gint columns = 0, column_index = 0, nwidth;
 
 		if ( width < 2 || height < 2 )
 			return;
-			
+		
 		if (GTK_IS_TREE_VIEW (widget->parent))
 			gtk_treeview_get_header_index (widget->parent, widget, &column_index, &columns);
 		
@@ -1008,7 +1070,7 @@ draw_box (DRAW_ARGS)
 		cl_draw_shadow (window, widget, style, x, y, width, height, &r);
 		cl_rectangle_reset_clip_rectangle (&r);	
 
-		// DRAW FILL		
+		/* DRAW FILL */
 		shade (&upper_color, &lower_color, 1.3);
 		
 		r.bordergc = clearlooks_style->spot3_gc;
@@ -1181,7 +1243,7 @@ draw_box (DRAW_ARGS)
 		cl_draw_shadow (window, widget, style, x, y, width, height, &r);
 		cl_rectangle_reset_clip_rectangle (&r);	
 	}
-	else if (detail && !strcmp (detail, "optionmenu")) // supporting deprecated
+	else if (detail && !strcmp (detail, "optionmenu")) /* supporting deprecated */
 	{
 		GtkRequisition indicator_size;
 		GtkBorder indicator_spacing;
@@ -1218,19 +1280,25 @@ draw_box (DRAW_ARGS)
 			cl_draw_menuitem_flat (window, widget, style, area, state_type,
 			                       x, y, width, height, &r);			
 		}
+		else if (clearlooks_style->menuitemstyle == 1)
+		{
+			cl_draw_menuitem_gradient (window, widget, style, area, state_type,
+			                           x, y, width, height, &r);
+		}
 		else
 		{
 			cl_draw_menuitem_button (window, widget, style, area, state_type,
 			                         x, y, width, height, &r);
 		}
 	}
-	else if (DETAIL ("menubar") && clearlooks_style->sunkenmenubar)
+	else if (DETAIL ("menubar") && (clearlooks_style->sunkenmenubar || clearlooks_style->menubarstyle > 0))
 	{
 		GdkGC *dark = clearlooks_style->shade_gc[2];
 		GdkColor upper_color, lower_color;
 		
-		// don't draw sunken menubar on gnome panel
-		//IT'S A HACK! HORRIBLE HACK! HIDEOUS HACK! BUT IT WORKS FOR ME(tm)!
+		/* don't draw sunken menubar on gnome panel
+		   IT'S A HACK! HORRIBLE HACK! HIDEOUS HACK!
+		   BUT IT WORKS FOR ME(tm)! */
 		if (widget->parent &&
 			strcmp(G_OBJECT_TYPE_NAME (widget->parent), "PanelWidget") == 0)
 			return;
@@ -1249,6 +1317,12 @@ draw_box (DRAW_ARGS)
 		                                               &clearlooks_style->shade[3]);
 		cl_rectangle_set_gradient (&r.fill_gradient, &upper_color, &lower_color);
 		
+		/* make vertical and top borders invisible for style 2 */
+		if (clearlooks_style->menubarstyle == 2) {
+			x--; width+=2;
+			y--; height+=1;
+		}
+		
 		cl_rectangle_set_clip_rectangle (&r, area);
 		cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
 		cl_rectangle_reset_clip_rectangle (&r);
@@ -1263,7 +1337,7 @@ draw_box (DRAW_ARGS)
 		r.topleft     = style->light_gc[state_type];
 		r.bottomright = clearlooks_style->shade_gc[1];
 		
-		cl_rectangle_set_clip_rectangle (&r, area);	
+		cl_rectangle_set_clip_rectangle (&r, area);
 		cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
 		cl_draw_shadow (window, widget, style, x, y, width, height, &r);
 		cl_rectangle_reset_clip_rectangle (&r);	
@@ -1324,14 +1398,14 @@ draw_box (DRAW_ARGS)
 				widget && !GTK_WIDGET_NO_WINDOW (widget),
 				state_type, area, x, y, width, height);
 		
-		// we only want the borders on horizontal toolbars
+		/* we only want the borders on horizontal toolbars */
 		if ( DETAIL ("menubar") || height < 2*width ) { 
 			if (!DETAIL ("menubar"))
 				gdk_draw_line (window, clearlooks_style->shade_gc[0],
-				               x, y, x + width, y); // top
+				               x, y, x + width, y); /* top */
 							
 			gdk_draw_line (window, clearlooks_style->shade_gc[3],
-			               x, y + height - 1, x + width, y + height - 1); // bottom
+			               x, y + height - 1, x + width, y + height - 1); /* bottom */
 		}
 		
 		if (area)
@@ -1672,7 +1746,7 @@ draw_shadow_gap (DRAW_ARGS,
                  gint            gap_x,
                  gint            gap_width)
 {
-	// I need to improve this function.
+	/* I need to improve this function. */
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	CLRectangle r;
 	GdkRegion *area_region = NULL, 
@@ -1810,7 +1884,7 @@ draw_hline (GtkStyle     *style,
 	{
 		gdk_draw_line (window, clearlooks_style->shade_gc[2], x1, y, x2, y);
 		
-		//if (DETAIL ("menuitem"))
+		/* if (DETAIL ("menuitem")) */
 		gdk_draw_line (window, clearlooks_style->shade_gc[0], x1, y+1, x2, y+1);
 	}
 	
@@ -2289,8 +2363,10 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	contrast = CLEARLOOKS_RC_STYLE (rc_style)->contrast;
 	
 	clearlooks_style->sunkenmenubar = CLEARLOOKS_RC_STYLE (rc_style)->sunkenmenubar;
-	clearlooks_style->flatprogressbar = CLEARLOOKS_RC_STYLE (rc_style)->flatprogressbar;
+	clearlooks_style->progressbarstyle = CLEARLOOKS_RC_STYLE (rc_style)->progressbarstyle;
+	clearlooks_style->menubarstyle = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->menuitemstyle = CLEARLOOKS_RC_STYLE (rc_style)->menuitemstyle;
+	clearlooks_style->listviewitemstyle = CLEARLOOKS_RC_STYLE (rc_style)->listviewitemstyle;
 	
 	/* Lighter to darker */
 	for (i = 0; i < 8; i++)
@@ -2302,9 +2378,9 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	spot_color = clearlooks_get_spot_color (CLEARLOOKS_RC_STYLE (rc_style));
 	
 	clearlooks_style->spot_color = *spot_color;
-	shade (&clearlooks_style->spot_color, &clearlooks_style->spot1, 1.82);
+	shade (&clearlooks_style->spot_color, &clearlooks_style->spot1, 1.42);
 	shade (&clearlooks_style->spot_color, &clearlooks_style->spot2, 1.05);
-	shade (&clearlooks_style->spot_color, &clearlooks_style->spot3, 0.72);
+	shade (&clearlooks_style->spot_color, &clearlooks_style->spot3, 0.65);
 
 	shade (&style->bg[GTK_STATE_NORMAL], &clearlooks_style->border[CL_BORDER_UPPER],        0.5);
 	shade (&style->bg[GTK_STATE_NORMAL], &clearlooks_style->border[CL_BORDER_LOWER],        0.62);
@@ -2570,6 +2646,7 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_option = draw_option;
 	style_class->draw_layout = draw_layout;	
 	style_class->render_icon = render_icon;
+	style_class->draw_flat_box = draw_flat_box;
 }
 
 GType clearlooks_type_style = 0;

@@ -19,7 +19,7 @@ AM_PROG_LIBTOOL
 enableval="n"
 disableval="y"
 
-AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks		skip ClearLooks engine], 		[clearlooks=$enableval], 	[clearlooks=$disableval])
+AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks		skip ClearLooks engine/theme], 		[clearlooks=$enableval], 	[clearlooks=$disableval])
 AC_ARG_ENABLE(crux, 		[  --disable-crux		skip Crux engine/theme], 		[crux=$enableval], 		[crux=$disableval])
 AC_ARG_ENABLE(hc,		[  --disable-hc 		skip HC(high contrast) engine], 	[hc=$enableval], 		[hc=$disableval])
 AC_ARG_ENABLE(industrial, 	[  --disable-industrial		skip Industrial engine/theme], 		[industrial=$enableval], 	[industrial=$disableval])
@@ -37,6 +37,9 @@ BUILD_THEMES=""
 
 if test $clearlooks = "y"; then
 	BUILD_ENGINES="$BUILD_ENGINES clearlooks"
+	if test $themes = "y"; then
+		BUILD_THEMES="$BUILD_THEMES Clearlooks"
+	fi
 fi
 
 if test $crux = "y"; then
@@ -126,6 +129,8 @@ engines/redmond/Makefile
 engines/smooth/Makefile
 engines/thinice/Makefile
 themes/Makefile
+themes/Clearlooks/Makefile
+themes/Clearlooks/gtk-2.0/Makefile
 themes/Crux/Makefile
 themes/Crux/gtk-2.0/Makefile
 themes/Industrial/Makefile

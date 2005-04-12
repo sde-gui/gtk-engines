@@ -115,11 +115,12 @@ class "GtkButton" style "button"
 class "GtkFrame" style "frame"
 class "GtkMenuItem" style "menuitem"
 class "GtkToggleButton" style "togglebutton"
+class "MenuItem" style "menuitem"
 
 class "MetaFrames" style "metacity-frame"
 
 widget_class "*.GtkButton.*" style "button"
-widget_class "*.GtkMenuItem.*" style "menuitem"
+widget_class "*MenuItem*" style "menuitem"
 widget_class "*.GtkAccelMenuItem.*" style "menuitem"
 widget_class "*.GtkRadioMenuItem.*" style "menuitem"
 widget_class "*.GtkCheckMenuItem.*" style "menuitem"

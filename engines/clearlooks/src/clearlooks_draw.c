@@ -72,7 +72,7 @@ void cl_draw_borders (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 	if (r->bordergc == NULL)
 		return;
 
-	for ( i=0; i<4; i++) // draw all four borders + corners
+	for ( i=0; i<4; i++) /* draw all four borders + corners */
 	{
 		cl_get_coords (i, x, y, width, height, r, &x1, &y1, &x2, &y2);
 		cl_draw_line (window, widget, style, x1, y1, x2, y2, i, r);
@@ -99,13 +99,13 @@ static void cl_draw_line (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 	}
 	else if (r->gradient_type == CL_GRADIENT_HORIZONTAL && (border == CL_BORDER_TOP || border == CL_BORDER_BOTTOM))
 	{
-		draw_vgradient (window, r->bordergc, style->colormap,
+		draw_vgradient (window, r->bordergc, style,
 		                x1, y1, x2-x1+1, 1,
 		                r->border_gradient.from, r->border_gradient.to);
 	}
 	else if (r->gradient_type == CL_GRADIENT_VERTICAL && (border == CL_BORDER_LEFT || border == CL_BORDER_RIGHT))
 	{
-		draw_hgradient (window, r->bordergc, style->colormap,
+		draw_hgradient (window, r->bordergc, style,
 		                x1, y1, 1, y2-y1+1,
 		                r->border_gradient.from, r->border_gradient.to);
 	}
@@ -128,7 +128,7 @@ static void cl_draw_line (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 static GdkColor *cl_get_gradient_corner_color (CLRectangle *r, CLCornerSide corner)
 {
 	GdkColor *color;
-	
+
 	if (r->border_gradient.from == NULL || r->border_gradient.to == NULL)
 	{
 		color = NULL;
@@ -138,7 +138,7 @@ static GdkColor *cl_get_gradient_corner_color (CLRectangle *r, CLCornerSide corn
 	{
 		color = r->border_gradient.from;
 	}
-	else // no gradient or other corner
+	else /* no gradient or other corner */
 	{
 		color = r->border_gradient.to;
 	}
@@ -151,10 +151,10 @@ static void cl_draw_corner (GdkWindow *window, GtkWidget *widget, GtkStyle *styl
                      CLRectangle *r, CLCornerSide corner)
 {
 	GdkColor    *color;
-	GdkColor     aacolor; // anti-aliasing color
+	GdkColor     aacolor; /* anti-aliasing color */
 	GdkGCValues  values;
 	GdkColor     tmp;
-	
+
 	int x1;
 	int y1;
 
@@ -163,7 +163,7 @@ static void cl_draw_corner (GdkWindow *window, GtkWidget *widget, GtkStyle *styl
 	
 	color = cl_get_gradient_corner_color (r, corner);
 	gdk_gc_get_values (r->bordergc, &values);
-	
+
 	if (color == NULL)
 	{
 		tmp = values.foreground;
@@ -172,7 +172,7 @@ static void cl_draw_corner (GdkWindow *window, GtkWidget *widget, GtkStyle *styl
 	}
 	
 	blend (style->colormap, get_parent_bgcolor(widget), color, &aacolor, 70);
-	
+
 	if (r->corners[corner] == CL_CORNER_ROUND)
 	{
 		x1 = (corner == CL_CORNER_TOPLEFT ||
@@ -193,14 +193,15 @@ static void cl_draw_corner (GdkWindow *window, GtkWidget *widget, GtkStyle *styl
 		      corner == CL_CORNER_TOPRIGHT) ? y : y+height-1;		
 		
 		gdk_draw_point (window, r->bordergc, x1, y1);
-		
+
 		x1 = (corner == CL_CORNER_TOPLEFT ||
 		      corner == CL_CORNER_BOTTOMLEFT) ? x : x+width-1;
 
 		y1 = (corner == CL_CORNER_TOPLEFT ||
 		      corner == CL_CORNER_TOPRIGHT) ? y+1 : y+height-2;
-		
+
 		gdk_draw_point (window, r->bordergc, x1, y1);
+								
 	}
 	else if (r->corners[corner] == CL_CORNER_NARROW)
 	{
@@ -228,13 +229,13 @@ static void cl_draw_fill (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 	}
 	else if (r->gradient_type == CL_GRADIENT_HORIZONTAL)
 	{
-		draw_vgradient (window, r->fillgc, gtk_widget_get_colormap(widget),
+		draw_vgradient (window, r->fillgc, gtk_widget_get_style(widget),
 		                x+1, y+1, width-2, height-2,
 		                r->fill_gradient.from, r->fill_gradient.to);
 	}
 	else if (r->gradient_type == CL_GRADIENT_VERTICAL)
 	{
-		draw_hgradient (window, r->fillgc, gtk_widget_get_colormap(widget),
+		draw_hgradient (window, r->fillgc, gtk_widget_get_style(widget),
 		                x+1, y+1, width-2, height-2,
 		                r->fill_gradient.from, r->fill_gradient.to);
 	}
@@ -501,11 +502,11 @@ GdkPixmap* cl_progressbar_tile_new (GdkDrawable *drawable, GtkWidget *widget,
 	shade (&clearlooks_style->spot2, &tmp_color, 0.90);
 	
 	if (is_horizontal)
-		draw_hgradient (tmp, style->black_gc, style->colormap, 0, 0, width, height,
+		draw_hgradient (tmp, style->black_gc, style, 0, 0, width, height,
 	    	            &clearlooks_style->spot2, &tmp_color );
 	else
-		draw_vgradient (tmp, style->black_gc, style->colormap, 0, 0, width, height,
-	    	            &tmp_color, &clearlooks_style->spot2); //TODO: swap for RTL
+		draw_vgradient (tmp, style->black_gc, style, 0, 0, width, height,
+	    	            &tmp_color, &clearlooks_style->spot2); /* TODO: swap for RTL */
 	                
 	if (orientation == GTK_PROGRESS_RIGHT_TO_LEFT || 
 	    orientation == GTK_PROGRESS_BOTTOM_TO_TOP)
@@ -519,17 +520,17 @@ GdkPixmap* cl_progressbar_tile_new (GdkDrawable *drawable, GtkWidget *widget,
 	
 	if (is_horizontal)
 	{
-		points[0] = (GdkPoint){xdir*(topright - stripe_width - topright_div_2), 0};  // topleft
-		points[1] = (GdkPoint){xdir*(topright - topright_div_2), 0};                 // topright
-		points[2] = (GdkPoint){xdir*(stripe_width - topright_div_2), height};        // bottomright
-		points[3] = (GdkPoint){xdir*(-topright_div_2), height};                      // bottomleft
+		points[0] = (GdkPoint){xdir*(topright - stripe_width - topright_div_2), 0};  /* topleft */
+		points[1] = (GdkPoint){xdir*(topright - topright_div_2), 0};                 /* topright */
+		points[2] = (GdkPoint){xdir*(stripe_width - topright_div_2), height};        /* bottomright */
+		points[3] = (GdkPoint){xdir*(-topright_div_2), height};                      /* bottomleft */
 	}
 	else
 	{
-		points[0] = (GdkPoint){height, xdir*(topright - stripe_width - topright_div_2)};  // topleft
-		points[1] = (GdkPoint){height, xdir*(topright - topright_div_2)};                 // topright
-		points[2] = (GdkPoint){0, xdir*(stripe_width - topright_div_2)};        // bottomright
-		points[3] = (GdkPoint){0, xdir*(-topright_div_2)};                      // bottomleft
+		points[0] = (GdkPoint){height, xdir*(topright - stripe_width - topright_div_2)};  /* topleft */
+		points[1] = (GdkPoint){height, xdir*(topright - topright_div_2)};                 /* topright */
+		points[2] = (GdkPoint){0, xdir*(stripe_width - topright_div_2)};        /* bottomright */
+		points[3] = (GdkPoint){0, xdir*(-topright_div_2)};                      /* bottomleft */
 	}
 						 
 	
@@ -553,7 +554,7 @@ GdkPixmap* cl_progressbar_tile_new (GdkDrawable *drawable, GtkWidget *widget,
 	return tmp;
 }
 
-// could be improved, I think.
+/* could be improved, I think. */
 void cl_progressbar_fill (GdkDrawable *drawable, GtkWidget *widget,
                           GtkStyle *style, GdkGC *gc,
                           gint x, gint y,
@@ -655,10 +656,9 @@ void cl_draw_menuitem_button (GdkDrawable *window, GtkWidget *widget, GtkStyle *
 	ClearlooksStyle *clearlooks_style = (ClearlooksStyle*)style;
 	gboolean menubar  = (widget->parent && GTK_IS_MENU_BAR(widget->parent)) ? TRUE : FALSE;
 	int corner        = CL_CORNER_NARROW;
-	gboolean flatmenu = FALSE;
-	GdkColor inner_lower;
+	GdkColor lower_color;
 
-	shade (&style->base[GTK_STATE_SELECTED], &inner_lower, 1.3);
+	shade (&style->base[GTK_STATE_SELECTED], &lower_color, 0.85);
 	
 	if (menubar)
 	{
@@ -671,29 +671,19 @@ void cl_draw_menuitem_button (GdkDrawable *window, GtkWidget *widget, GtkStyle *
 		r->bordergc    = clearlooks_style->spot3_gc;
 	}
 	
-	cl_rectangle_set_corners (r, corner, corner,
-								  corner, corner);
+	cl_rectangle_set_corners (r, corner, corner, corner, corner);
 	
-	if (!flatmenu) {
-		cl_rectangle_set_gradient (&r->fill_gradient, &inner_lower,
-													 &clearlooks_style->spot2);
-		r->gradient_type = CL_GRADIENT_VERTICAL;
-	}
+	cl_rectangle_set_gradient (&r->fill_gradient,
+	                           &style->base[GTK_STATE_SELECTED], &lower_color);
+
+	r->gradient_type = CL_GRADIENT_VERTICAL;
 	
-	if (!flatmenu)
-		r->fillgc  = style->bg_gc[state_type];
-	else
-		r->fillgc  = clearlooks_style->spot2_gc;
-		
-	r->topleft     = clearlooks_style->spot1_gc;
+	r->fillgc  = clearlooks_style->spot2_gc;
+	r->topleft = clearlooks_style->spot1_gc;
 	
 	cl_rectangle_set_clip_rectangle (r, area);
-	
 	cl_draw_rectangle (window, widget, style, x, y, width, height, r);
-	
-	if (!flatmenu || menubar)
-		cl_draw_shadow (window, widget, style, x, y, width, height, r);
-
+	cl_draw_shadow (window, widget, style, x, y, width, height, r);
 	cl_rectangle_reset_clip_rectangle (r);
 }
 
@@ -709,10 +699,10 @@ void cl_draw_menuitem_flat (GdkDrawable *window, GtkWidget *widget, GtkStyle *st
 	                             CL_CORNER_NARROW, CL_CORNER_NARROW);
 	
 	tmp = cl_gc_set_fg_color_shade (style->black_gc, style->colormap,
-                                   &clearlooks_style->spot2, 1.2);
-	
-	r->bordergc = clearlooks_style->spot2_gc;
-	r->fillgc = style->black_gc;
+	                                &style->base[GTK_STATE_PRELIGHT], 0.8);
+
+	r->bordergc = style->black_gc;
+	r->fillgc = style->base_gc[GTK_STATE_PRELIGHT];
 	
 	if (menubar) height++;
 
@@ -722,3 +712,38 @@ void cl_draw_menuitem_flat (GdkDrawable *window, GtkWidget *widget, GtkStyle *st
 	
 	gdk_gc_set_foreground (style->black_gc, &tmp);
 }
+
+void cl_draw_menuitem_gradient (GdkDrawable *window, GtkWidget *widget, GtkStyle *style,
+                                GdkRectangle *area, GtkStateType state_type, 
+                                int x, int y, int width, int height, CLRectangle *r)
+{
+	ClearlooksStyle *clearlooks_style = (ClearlooksStyle*)style;
+	gboolean menubar  = (widget->parent && GTK_IS_MENU_BAR(widget->parent)) ? TRUE : FALSE;
+	GdkColor tmp;
+	GdkColor lower_color;
+	
+	shade (&style->base[GTK_STATE_SELECTED], &lower_color, 0.8);
+	
+	cl_rectangle_set_corners (r, CL_CORNER_NARROW, CL_CORNER_NARROW,
+	                             CL_CORNER_NARROW, CL_CORNER_NARROW);
+	                             
+	cl_rectangle_set_gradient (&r->fill_gradient,
+	                           &style->base[GTK_STATE_SELECTED], &lower_color);
+
+	r->gradient_type = CL_GRADIENT_VERTICAL;
+	
+	tmp = cl_gc_set_fg_color_shade (style->black_gc, style->colormap,
+	                                &style->base[GTK_STATE_PRELIGHT], 0.8);
+
+	r->bordergc = style->black_gc;
+	r->fillgc = style->base_gc[GTK_STATE_PRELIGHT];
+	
+	if (menubar) height++;
+
+	cl_rectangle_set_clip_rectangle (r, area);
+	cl_draw_rectangle (window, widget, style, x, y, width, height, r);
+	cl_rectangle_reset_clip_rectangle (r);
+	
+	gdk_gc_set_foreground (style->black_gc, &tmp);
+}
+

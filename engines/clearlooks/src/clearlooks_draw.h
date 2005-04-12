@@ -29,13 +29,13 @@ typedef struct
 
 	guint8          corners[4];
 	
-	GdkGC          *topleft;		// top + left shadow
-	GdkGC          *bottomright;	// bottom + right shadow
+	GdkGC          *topleft;		/* top + left shadow */
+	GdkGC          *bottomright;	/* bottom + right shadow */
 	
-	GdkColor        tmp_color;		// used for gradient
+	GdkColor        tmp_color;		/* used for gradient */
 } CLRectangle;
 
-typedef enum // DON'T CHANGE THE ORDER!
+typedef enum /* DON'T CHANGE THE ORDER! */
 {
 	CL_CORNER_TOPRIGHT,
 	CL_CORNER_BOTTOMRIGHT,
@@ -43,7 +43,7 @@ typedef enum // DON'T CHANGE THE ORDER!
 	CL_CORNER_TOPLEFT,
 } CLCornerSide;
 
-typedef enum // DON'T CHANGE THE ORDER!
+typedef enum /* DON'T CHANGE THE ORDER! */
 {
 	CL_BORDER_TOP,
 	CL_BORDER_RIGHT,
@@ -115,5 +115,10 @@ void cl_draw_menuitem_button (GdkDrawable *window, GtkWidget *widget, GtkStyle *
 void cl_draw_menuitem_flat (GdkDrawable *window, GtkWidget *widget, GtkStyle *style,
                             GdkRectangle *area, GtkStateType state_type, 
                             int x, int y, int wiidth, int height, CLRectangle *r);
+                            
+void cl_draw_menuitem_gradient (GdkDrawable *window, GtkWidget *widget, GtkStyle *style,
+                                GdkRectangle *area, GtkStateType state_type, 
+                                int x, int y, int wiidth, int height, CLRectangle *r);
 							  
-#endif // CLEARLOOKS_DRAW_H
+#endif /* CLEARLOOKS_DRAW_H */
+

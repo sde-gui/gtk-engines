@@ -1,6 +1,16 @@
+Overview of Changes in 2.6.3 (since 2.6.2)
+==========================================
+* Added Clearlooks engine and theme [Andrew Johnson, Thomas Wood ]
+* Fixed various Crux bugs, and bug 170113 [ Thomas ]
+* Memory and other fixes for Smooth engine [ Andrew ]
+* Better looking insensitive icons for Industrial [ Michele Cella ]
+* Work arounds for GNOME "Places" and "Desktop" menu bar applet item colours in
+  Industrial, LighthouseBlue, Mist and ThinIce themes [ Thomas ]
+
 Overview of Changes in 2.6.2 (since 2.6.1)
 ==========================================
 * Fix bugs #167389 and #163370 [ Andrew Johnson ]
+
 
 Overview of Changes in 2.6.1 (since 2.6.0)
 ==========================================
@@ -28,6 +38,7 @@ Overview of Changes in 2.6.0 (since 2.2.0)
 * Add ThinIce Engine and Theme [ Andrew, Thomas ]
 * Improve Smooth/Redmond/Industrial Engines for RTL Locales [ Andrew ]
 * Update README, add COPYING list of licences [ Andrew ]
+
 
 Overview of Changes in 2.2.0 (since 1.9.0)
 ==========================================

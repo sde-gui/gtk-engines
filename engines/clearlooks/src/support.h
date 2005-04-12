@@ -47,12 +47,12 @@ void
 shade (GdkColor * a, GdkColor * b, float k);
 
 void
-draw_hgradient (GdkDrawable *drawable, GdkGC *gc, GdkColormap *colormap,
+draw_hgradient (GdkDrawable *drawable, GdkGC *gc, GtkStyle *style,
                 int x, int y, int width, int height,
                 GdkColor *top_color, GdkColor *bottom_color);
 
 void
-draw_vgradient (GdkDrawable *drawable, GdkGC *gc, GdkColormap *colormap,
+draw_vgradient (GdkDrawable *drawable, GdkGC *gc, GtkStyle *style,
                 int x, int y, int width, int height,
                 GdkColor *left_color, GdkColor *right_color);
 

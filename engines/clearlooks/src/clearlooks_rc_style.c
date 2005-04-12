@@ -43,8 +43,10 @@ enum
   TOKEN_SPOTCOLOR = G_TOKEN_LAST + 1,
   TOKEN_CONTRAST,
   TOKEN_SUNKENMENU,
-  TOKEN_FLATPROGRESSBAR,
-  TOKEN_MENUITEMSTYLE
+  TOKEN_PROGRESSBARSTYLE,
+  TOKEN_MENUBARSTYLE,
+  TOKEN_MENUITEMSTYLE,
+  TOKEN_LISTVIEWITEMSTYLE
 };
 
 static struct
@@ -57,8 +59,10 @@ theme_symbols[] =
   { "spotcolor", 		TOKEN_SPOTCOLOR  },
   { "contrast", 		TOKEN_CONTRAST  },
   { "sunkenmenubar",    TOKEN_SUNKENMENU },
-  { "flatprogressbar",  TOKEN_FLATPROGRESSBAR },
+  { "progressbarstyle",  TOKEN_PROGRESSBARSTYLE },
+  { "menubarstyle",     TOKEN_MENUBARSTYLE },
   { "menuitemstyle",    TOKEN_MENUITEMSTYLE },
+  { "listviewitemstyle", TOKEN_LISTVIEWITEMSTYLE }
 };
 
 
@@ -91,8 +95,10 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
   clearlooks_rc->has_spot_color = FALSE;
   clearlooks_rc->contrast = 1.0;
   clearlooks_rc->sunkenmenubar = 1;
-  clearlooks_rc->flatprogressbar = 0;
-  clearlooks_rc->menuitemstyle = 0;
+  clearlooks_rc->progressbarstyle = 0;
+  clearlooks_rc->menubarstyle = 0;
+  clearlooks_rc->menuitemstyle = 1;
+  clearlooks_rc->listviewitemstyle = 1;
 }
 
 static void
@@ -171,9 +177,9 @@ theme_parse_sunkenmenubar(GtkSettings  *settings,
 }
 
 static guint
-theme_parse_flatprogressbar(GtkSettings  *settings,
+theme_parse_progressbarstyle(GtkSettings  *settings,
 		     GScanner     *scanner,
-		     guint8       *flatprogressbar)
+		     guint8       *progressbarstyle)
 {
   guint token;
 
@@ -188,7 +194,30 @@ theme_parse_flatprogressbar(GtkSettings  *settings,
   if (token != G_TOKEN_INT)
     return G_TOKEN_INT;
 
-  *flatprogressbar = scanner->value.v_int;
+  *progressbarstyle = scanner->value.v_int;
+  
+  return G_TOKEN_NONE;
+}
+
+static guint
+theme_parse_menubarstyle(GtkSettings  *settings,
+		     GScanner     *scanner,
+		     guint8       *menubarstyle)
+{
+  guint token;
+
+  /* Skip 'menubarstyle' */
+  token = g_scanner_get_next_token(scanner);
+
+  token = g_scanner_get_next_token(scanner);
+  if (token != G_TOKEN_EQUAL_SIGN)
+    return G_TOKEN_EQUAL_SIGN;
+
+  token = g_scanner_get_next_token(scanner);
+  if (token != G_TOKEN_INT)
+    return G_TOKEN_INT;
+
+  *menubarstyle = scanner->value.v_int;
   
   return G_TOKEN_NONE;
 }
@@ -215,6 +244,29 @@ theme_parse_menuitemstyle(GtkSettings  *settings,
   
   return G_TOKEN_NONE;
 }
+
+static guint
+theme_parse_listviewitemstyle(GtkSettings  *settings,
+                          GScanner     *scanner,
+                          guint8       *listviewitemstyle)
+{         
+  guint token;
+	            
+  token = g_scanner_get_next_token(scanner);
+	              
+  token = g_scanner_get_next_token(scanner);
+
+  if (token != G_TOKEN_EQUAL_SIGN)
+     return G_TOKEN_EQUAL_SIGN;
+		          
+  token = g_scanner_get_next_token(scanner);
+  if (token != G_TOKEN_INT)
+    return G_TOKEN_INT;
+		            
+  *listviewitemstyle = scanner->value.v_int;
+	                
+  return G_TOKEN_NONE;
+}         
 
 static guint
 clearlooks_rc_style_parse (GtkRcStyle *rc_style,
@@ -271,11 +323,17 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	case TOKEN_SUNKENMENU:
 	  token = theme_parse_sunkenmenubar(settings, scanner, &clearlooks_style->sunkenmenubar);
 	  break;
-	case TOKEN_FLATPROGRESSBAR:
-	  token = theme_parse_flatprogressbar(settings, scanner, &clearlooks_style->flatprogressbar);
+	case TOKEN_PROGRESSBARSTYLE:
+	  token = theme_parse_progressbarstyle(settings, scanner, &clearlooks_style->progressbarstyle);
+	  break;
+	case TOKEN_MENUBARSTYLE:
+	  token = theme_parse_menubarstyle(settings, scanner, &clearlooks_style->menubarstyle);
 	  break;
 	case TOKEN_MENUITEMSTYLE:
 	  token = theme_parse_menuitemstyle(settings, scanner, &clearlooks_style->menuitemstyle);
+	  break;
+	case TOKEN_LISTVIEWITEMSTYLE:
+	  token = theme_parse_listviewitemstyle(settings, scanner, &clearlooks_style->listviewitemstyle);
 	  break;
 	default:
 	  g_scanner_get_next_token(scanner);
@@ -312,8 +370,10 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 	
 	dest_w->contrast = src_w->contrast;
 	dest_w->sunkenmenubar = src_w->sunkenmenubar;
-	dest_w->flatprogressbar = src_w->flatprogressbar;
+	dest_w->progressbarstyle = src_w->progressbarstyle;
+	dest_w->menubarstyle = src_w->menubarstyle;
 	dest_w->menuitemstyle = src_w->menuitemstyle;
+	dest_w->listviewitemstyle = src_w->listviewitemstyle;
 
 	if (src_w->has_spot_color)
 	{

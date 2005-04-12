@@ -1,5 +1,7 @@
 #include "support.h"
 
+/* #define ALWAYS_DITHER_GRADIENTS */
+
 GtkTextDirection
 get_direction (GtkWidget *widget)
 {
@@ -591,47 +593,187 @@ GtkWidget *special_get_ancestor(GtkWidget * widget,
 	return widget;
 }
 
-void
-draw_hgradient (GdkDrawable *drawable, GdkGC *gc, GdkColormap *colormap,
-                int x, int y, int width, int height,
-                GdkColor *top_color, GdkColor *bottom_color)
+/* Dithered Gradient Buffers */
+static void
+internel_image_buffer_free_pixels (guchar *pixels, gpointer data)
 {
-	int i;
-	GdkColor col;
-	int dr, dg, db;
-	GdkGCValues old_values;
-	
-	gdk_gc_get_values (gc, &old_values);
+	g_free (pixels);
+}
 
-	col = *top_color;
-	dr = (bottom_color->red - top_color->red) / height;
-	dg = (bottom_color->green - top_color->green) / height;
-	db = (bottom_color->blue - top_color->blue) / height;
-	
-	for (i = 0; i < height; i++)
+static GdkPixbuf*
+internal_image_buffer_new (gint width, gint height)
+{
+	guchar *buf;
+	int rowstride;
+
+	g_return_val_if_fail (width > 0, NULL);
+	g_return_val_if_fail (height > 0, NULL);
+
+	rowstride = width * 3;
+
+	buf = g_try_malloc (height * rowstride);
+
+	if (!buf)
+		return NULL;
+
+	return gdk_pixbuf_new_from_data(buf, GDK_COLORSPACE_RGB,
+					FALSE, 8,
+					width, height, rowstride,
+					internel_image_buffer_free_pixels, NULL);
+}
+
+static void 
+internal_color_get_as_uchars(GdkColor *color, 
+				guchar *red, 
+				guchar *green, 
+				guchar *blue)
+{
+	*red = (guchar) (color->red / 256.0);
+	*green = (guchar) (color->green / 256.0);
+	*blue = (guchar) (color->blue / 256.0);
+}				
+
+static GdkPixbuf*
+internal_create_horizontal_gradient_image_buffer (gint width, gint height,
+							GdkColor *from,
+							GdkColor *to)
+{    
+	int i;
+	long r, g, b, dr, dg, db;
+	GdkPixbuf* buffer;
+	guchar *ptr;
+	guchar *pixels;
+	guchar r0, g0, b0;
+	guchar rf, gf, bf;
+	int rowstride;
+
+	buffer = internal_image_buffer_new (width, height);
+
+	if (buffer == NULL)
+		return NULL;
+    
+	pixels = gdk_pixbuf_get_pixels (buffer);
+	ptr = pixels;
+	rowstride = gdk_pixbuf_get_rowstride (buffer);
+  
+	internal_color_get_as_uchars(from, &r0, &g0, &b0);
+	internal_color_get_as_uchars(to, &rf, &gf, &bf);
+  
+	r = r0 << 16;
+	g = g0 << 16;
+	b = b0 << 16;
+    
+	dr = ((rf-r0)<<16)/width;
+	dg = ((gf-g0)<<16)/width;
+	db = ((bf-b0)<<16)/width;
+
+	/* render the first line */
+	for (i=0; i<width; i++)
 	{
-		gdk_rgb_find_color (colormap, &col);
-	
-		gdk_gc_set_foreground (gc, &col);
-		gdk_draw_line (drawable, gc, x, y + i, x + width - 1, y + i);
-		
-		col.red += dr;
-		col.green += dg;
-		col.blue += db;
+		*(ptr++) = (guchar)(r>>16);
+		*(ptr++) = (guchar)(g>>16);
+		*(ptr++) = (guchar)(b>>16);
+
+		r += dr;
+		g += dg;
+		b += db;
 	}
 
-	gdk_gc_set_foreground (gc, &old_values.foreground);
+	/* copy the first line to the other lines */
+	for (i=1; i<height; i++)
+	{
+		memcpy (&(pixels[i*rowstride]), pixels, rowstride);
+	}
+    
+	return buffer;
+}
+
+static GdkPixbuf*
+internal_create_vertical_gradient_image_buffer (gint width, gint height,
+						GdkColor *from,
+						GdkColor *to)
+{
+	gint i, j, max_block, last_block;
+	long r, g, b, dr, dg, db;
+	GdkPixbuf *buffer;
+	
+	guchar *ptr;
+	guchar point[4];
+
+	guchar r0, g0, b0;
+	guchar rf, gf, bf;
+
+	gint rowstride;
+	guchar *pixels;
+  
+	buffer = internal_image_buffer_new (width, height);
+
+	if (buffer == NULL)
+		return NULL;
+    
+	pixels = gdk_pixbuf_get_pixels (buffer);
+	rowstride = gdk_pixbuf_get_rowstride (buffer);
+  
+	internal_color_get_as_uchars(from, &r0, &g0, &b0);
+	internal_color_get_as_uchars(to, &rf, &gf, &bf);
+
+	r = r0<<16;
+	g = g0<<16;
+	b = b0<<16;
+
+	dr = ((rf-r0)<<16)/height;
+	dg = ((gf-g0)<<16)/height;
+	db = ((bf-b0)<<16)/height;
+
+	max_block = width/2;
+
+	for (i=0; i < height; i++)
+	{
+		ptr = pixels + i * rowstride;
+      
+		ptr[0] = r>>16;
+		ptr[1] = g>>16;
+		ptr[2] = b>>16;
+		
+		if (width > 1)
+		{
+			last_block = 0;
+
+			for (j=1; j <= max_block; j *= 2)
+			{
+				memcpy (&(ptr[j*3]), ptr, j*3);
+
+				if ((j*2) >= max_block)
+				{
+					last_block = j*2;
+				}
+			}
+
+			if ((last_block < width) && (last_block > 0))
+			{
+				memcpy (&(ptr[last_block*3]), ptr, (width - last_block)*3);
+			}
+		}
+
+		r += dr;
+		g += dg;
+		b += db;
+	}
+	
+	return buffer;
 }
 
 void
-draw_vgradient (GdkDrawable *drawable, GdkGC *gc, GdkColormap *colormap,
+draw_vgradient (GdkDrawable *drawable, GdkGC *gc, GtkStyle *style,
                 int x, int y, int width, int height,
                 GdkColor *left_color, GdkColor *right_color)
 {
-	int i;
-	GdkColor col;
-	int dr, dg, db;
-	GdkGCValues old_values;
+	#ifndef ALWAYS_DITHER_GRADIENTS
+	gboolean dither = ((style->depth > 0) && (style->depth <= 16));
+	#endif
+
+	if ((width <= 0) || (height <= 0))
+		return;
 
 	if ( left_color == NULL || right_color == NULL )
 	{
@@ -639,36 +781,130 @@ draw_vgradient (GdkDrawable *drawable, GdkGC *gc, GdkColormap *colormap,
 		return;
 	}
 
-	gdk_gc_get_values (gc, &old_values);
-	
-	if (left_color == right_color )
+	#ifndef ALWAYS_DITHER_GRADIENTS
+	if (dither)
+	#endif
 	{
+		GdkPixbuf *image_buffer = NULL;
+				
+		image_buffer = internal_create_horizontal_gradient_image_buffer (width, height, left_color, right_color);
+	
+		if (image_buffer)
+		{
+			gdk_draw_pixbuf(drawable, gc, image_buffer, 0, 0, x, y, width, height, GDK_RGB_DITHER_MAX, 0, 0);
+
+			g_object_unref(image_buffer);
+		}	
+	}
+	#ifndef ALWAYS_DITHER_GRADIENTS
+	else
+	{
+		int i;
+		GdkColor col;
+		int dr, dg, db;
+		GdkGCValues old_values;
+
+		gdk_gc_get_values (gc, &old_values);
+	
+		if (left_color == right_color )
+		{
+			col = *left_color;
+			gdk_rgb_find_color (style->colormap, &col);
+			gdk_gc_set_foreground (gc, &col);
+			gdk_draw_rectangle (drawable, gc, TRUE, x, y, width, height);
+			gdk_gc_set_foreground (gc, &old_values.foreground);
+			return;
+		}
+	
 		col = *left_color;
-		gdk_rgb_find_color (colormap, &col);
-		gdk_gc_set_foreground (gc, &col);
-		gdk_draw_rectangle (drawable, gc, TRUE, x, y, width, height);
-		gdk_gc_set_foreground (gc, &old_values.foreground);
-		return;
-	}
-	
-	col = *left_color;
-	dr = (right_color->red - left_color->red) / width;
-	dg = (right_color->green - left_color->green) / width;
-	db = (right_color->blue - left_color->blue) / width;
+		dr = (right_color->red - left_color->red) / width;
+		dg = (right_color->green - left_color->green) / width;
+		db = (right_color->blue - left_color->blue) / width;
 
-	for (i = 0; i < width; i++)
-	{
-		gdk_rgb_find_color (colormap, &col);
+		for (i = 0; i < width; i++)
+		{
+			gdk_rgb_find_color (style->colormap, &col);
 	
-		gdk_gc_set_foreground (gc, &col);
-		gdk_draw_line (drawable, gc, x + i, y, x + i, y + height - 1);
+			gdk_gc_set_foreground (gc, &col);
+			gdk_draw_line (drawable, gc, x + i, y, x + i, y + height - 1);
 		
-		col.red += dr;
-		col.green += dg;
-		col.blue += db;
-	}
+			col.red += dr;
+			col.green += dg;
+			col.blue += db;
+		}
 
-	gdk_gc_set_foreground (gc, &old_values.foreground);
+		gdk_gc_set_foreground (gc, &old_values.foreground);
+	}
+	#endif
+}
+
+void
+draw_hgradient (GdkDrawable *drawable, GdkGC *gc, GtkStyle *style,
+                int x, int y, int width, int height,
+                GdkColor *top_color, GdkColor *bottom_color)
+{	
+	#ifndef ALWAYS_DITHER_GRADIENTS
+	gboolean dither = ((style->depth > 0) && (style->depth <= 16));
+	#endif
+	
+	if ((width <= 0) || (height <= 0))
+		return;
+
+	#ifndef ALWAYS_DITHER_GRADIENTS
+	if (dither)
+	#endif
+	{
+		GdkPixbuf *image_buffer = NULL;
+				
+		image_buffer = internal_create_vertical_gradient_image_buffer (width, height, top_color, bottom_color);
+	
+		if (image_buffer)
+		{
+			gdk_draw_pixbuf(drawable, gc, image_buffer, 0, 0, x, y, width, height, GDK_RGB_DITHER_MAX, 0, 0);
+
+			g_object_unref(image_buffer);
+		}	
+	}
+	#ifndef ALWAYS_DITHER_GRADIENTS
+	else
+	{
+		int i;
+		GdkColor col;
+		int dr, dg, db;
+		GdkGCValues old_values;
+	
+		gdk_gc_get_values (gc, &old_values);
+
+                if (top_color == bottom_color )
+                {
+                        col = *top_color;
+                        gdk_rgb_find_color (style->colormap, &col);
+                        gdk_gc_set_foreground (gc, &col);
+                        gdk_draw_rectangle (drawable, gc, TRUE, x, y, width, height);
+                        gdk_gc_set_foreground (gc, &old_values.foreground);
+                        return;
+                }
+
+		col = *top_color;
+		dr = (bottom_color->red - top_color->red) / height;
+		dg = (bottom_color->green - top_color->green) / height;
+		db = (bottom_color->blue - top_color->blue) / height;
+	
+		for (i = 0; i < height; i++)
+		{
+			gdk_rgb_find_color (style->colormap, &col);
+	
+			gdk_gc_set_foreground (gc, &col);
+			gdk_draw_line (drawable, gc, x, y + i, x + width - 1, y + i);
+		
+			col.red += dr;
+			col.green += dg;
+			col.blue += db;
+		}
+
+		gdk_gc_set_foreground (gc, &old_values.foreground);
+	}
+	#endif
 }
 
 void blend (GdkColormap *colormap,

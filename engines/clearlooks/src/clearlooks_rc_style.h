@@ -43,8 +43,10 @@ struct _ClearlooksRcStyle
   gboolean has_spot_color;
   double contrast;
   guint8 sunkenmenubar;
-  guint8 flatprogressbar;
+  guint8 progressbarstyle;
+  guint8 menubarstyle;
   guint8 menuitemstyle;
+  guint8 listviewitemstyle;
 };
 
 struct _ClearlooksRcStyleClass

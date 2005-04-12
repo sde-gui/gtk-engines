@@ -83,9 +83,11 @@ struct _ClearlooksStyle
 	GdkPixmap *check_pixmap_inconsistent[5];
 	
 	gboolean sunkenmenubar:1;
-	gboolean flatprogressbar:1;
-	
+
+	guint8   progressbarstyle;
+	guint8   menubarstyle;
 	guint8   menuitemstyle;
+	guint8   listviewitemstyle;
 };
 
 struct _ClearlooksStyleClass

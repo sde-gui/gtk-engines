@@ -244,7 +244,7 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
            SmoothInt height)
 {
 	gboolean free_dash_list = FALSE;
-	gint8 *dash_list = NULL;
+	gint8 *dash_list = "";
 
 	SmoothColor color;
 

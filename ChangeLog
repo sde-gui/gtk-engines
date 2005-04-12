@@ -1,3 +1,52 @@
+2005-04-12  Thomas Wood  <thos@gnome.org>
+
+	* NEWS: Updated for 2.6.3
+	* configure.ac:
+	* engines/clearlooks/Makefile.am:
+	* engines/clearlooks/src/clearlooks_draw.c: (cl_draw_borders),
+	(cl_draw_line), (cl_get_gradient_corner_color), (cl_draw_corner),
+	(cl_draw_fill), (cl_progressbar_tile_new),
+	(cl_draw_menuitem_button), (cl_draw_menuitem_flat),
+	(cl_draw_menuitem_gradient):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init), (theme_parse_progressbarstyle),
+	(theme_parse_menubarstyle), (theme_parse_listviewitemstyle),
+	(clearlooks_rc_style_parse), (clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c: (draw_flat_box),
+	(draw_box_gap), (draw_extension), (draw_box), (draw_shadow_gap),
+	(draw_hline), (clearlooks_style_init_from_rc),
+	(clearlooks_style_class_init):
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/support.c:
+	(internel_image_buffer_free_pixels), (internal_image_buffer_new),
+	(internal_color_get_as_uchars),
+	(internal_create_horizontal_gradient_image_buffer),
+	(internal_create_vertical_gradient_image_buffer), (draw_vgradient),
+	(draw_hgradient):
+	* engines/clearlooks/src/support.h:
+
+	Updated clearlooks engine
+
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(do_smooth_draw_focus): Patch from Andrew Johnson that should fix the Firefox
+	print dialog bug (bug 167389)
+
+	* themes/Clearlooks/Makefile.am:
+	* themes/Clearlooks/gtk-2.0/Makefile.am:
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Updated clearlooks engine and added Clearlooks themes
+
+	* themes/Industrial/gtk-2.0/gtkrc:
+	* themes/LighthouseBlue/gtk-2.0/gtkrc:
+	* themes/Mist/gtk-2.0/gtkrc:
+	* themes/ThinIce/gtk-2.0/gtkrc:
+
+	Work around for GNOME "Places" and "Desktop" menu bar applet item text
+	colours
+
 2005-04-11  Thomas Wood  <thos@gnome.org>
 
 	* configure.ac: Get ready for 2.6.3 release
