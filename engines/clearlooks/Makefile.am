@@ -1,6 +1,6 @@
 INCLUDES = $(GTK_CFLAGS)
 
-enginedir = $(libdir)/gtk-2.0/$(GTK2_VERSION)/engines
+enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libclearlooks.la
 
 libclearlooks_la_SOURCES =		\
