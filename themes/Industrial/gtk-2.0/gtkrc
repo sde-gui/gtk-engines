@@ -125,10 +125,10 @@ style "industrial-tree" = "industrial-default"
   ythickness = 2
 }
 
-style "industrial-frame-title" = "industrial-default"
-{
-  fg[NORMAL] = "#4d4466"
-}
+#style "industrial-frame-title" = "industrial-default"
+#{
+#  fg[NORMAL] = "#4d4466"
+#}
 
 style "industrial-panel" = "industrial-default"
 {
@@ -191,8 +191,8 @@ widget_class "*MenuItem*" style "industrial-menu"
 widget_class "*.GtkSeparatorMenuItem.*" style "industrial-menu-separator"
 class "GtkEntry" style "industrial-wide"
 widget_class "*.tooltips.*.GtkToggleButton" style "industrial-tasklist"
-widget_class "*.GtkFrame.GtkLabel" style "industrial-frame-title"
-widget_class "*.GtkFrame.GtkCheckButton.GtkLabel" style "industrial-frame-title"
+#widget_class "*.GtkFrame.GtkLabel" style "industrial-frame-title"
+#widget_class "*.GtkFrame.GtkCheckButton.GtkLabel" style "industrial-frame-title"
 widget_class "*GnomeDruidPage*" style "industrial-druid"
 
 class "MetaFrames" style "metacity-frame"

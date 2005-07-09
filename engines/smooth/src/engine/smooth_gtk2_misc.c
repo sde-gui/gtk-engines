@@ -521,7 +521,12 @@ gtk_button_get_props (GtkWidget *widget,
 
   if (default_border)
     {
-      gtk_widget_style_get (widget, "default_border", &tmp_border, NULL);
+      if( GTK_IS_BUTTON(widget) )
+        {
+          gtk_widget_style_get (widget, "default_border", &tmp_border, NULL);
+        }
+      else
+        tmp_border = NULL;
 
       if (tmp_border)
 	{
@@ -534,7 +539,12 @@ gtk_button_get_props (GtkWidget *widget,
 
   if (default_outside_border)
     {
-      gtk_widget_style_get (widget, "default_outside_border", &tmp_border, NULL);
+      if( GTK_IS_BUTTON(widget) )
+        {
+          gtk_widget_style_get (widget, "default_outside_border", &tmp_border, NULL);
+        }
+      else
+        tmp_border = NULL;
 
       if (tmp_border)
 	{

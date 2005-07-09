@@ -970,7 +970,6 @@ do_smooth_draw_box(SmoothCanvas Canvas,
     } else if (CHECK_DETAIL(detail, "trough")) {
         if (GTK_IS_SCALE (widget) && REAL_SLIDERS(style)) {
 		SmoothLineBevel line_bevel;
-		SmoothColor base;
 
 	  if (!part) part = THEME_PART(BACKGROUND_PART(style));
 
@@ -1795,7 +1794,8 @@ smooth_draw_box(GtkStyle * style,
 		smooth_part_style *part = NULL;
 		SmoothDouble roundness = 0.0;
 
-		fill =  COLOR_CUBE(style).Input[GDKSmoothWidgetState(state_type)].Background;	
+		fill =  COLOR_CUBE(style).Input[GDKSmoothWidgetState(state_type)].Background;
+		base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
 
 		GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 

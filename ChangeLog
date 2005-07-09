@@ -1,3 +1,13 @@
+2005-07-09  Thomas Wood  <thos@gnome.org>
+
+	* configure.ac: Update for 2.6.4
+	* engines/lighthouseblue/src/lighthouseblue_style.c: (draw_option): Fixes bug 303112
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(do_smooth_draw_box), (smooth_draw_box): Fixes bug 308551
+	* engines/smooth/src/engine/smooth_gtk2_misc.c:
+	(gtk_button_get_props): Fixes bug 305432
+	* themes/Industrial/gtk-2.0/gtkrc: Fixes bug 170824
+
 2005-05-14  Glynn Foster  <glynn.foster@sun.com>
 
 	* engines/clearlooks/Makefile.am: Install into the correct

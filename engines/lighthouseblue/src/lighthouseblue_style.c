@@ -810,7 +810,8 @@ static void draw_option (GtkStyle *style,
 	{
 		
 		gdk_draw_arc(window, style->text_gc[state_type], FALSE, x, y, width, height, 0, 360 * 64);
-		gdk_draw_arc(window, style->text_gc[state_type], TRUE, x + 2, y + 2, width - 4, height - 4, 0, 360 * 64);
+			if (shadow_type == GTK_SHADOW_IN)
+				gdk_draw_arc(window, style->text_gc[state_type], TRUE, x + 2, y + 2, width - 4, height - 4, 0, 360 * 64);
 		
 		return;
 	}
