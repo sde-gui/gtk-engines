@@ -59,6 +59,7 @@ struct pixmap_cache_node_struct {
     pixmap_cache_node *newer, *older;
     eazel_engine_image *im;
     int width, height;
+    GdkScreen *screen;
     GdkPixmap *p1;
     GdkBitmap *p2;
     int ref_count;
@@ -143,12 +144,12 @@ delete_node (pixmap_cache_node *n, gboolean dealloc)
 
 static gboolean
 pixmap_cache_ref (eazel_engine_image *im, int width, int height,
-		  GdkPixmap **p1, GdkBitmap **p2)
+		  GdkScreen *screen, GdkPixmap **p1, GdkBitmap **p2)
 {
     pixmap_cache_node *n;
     for (n = im->pixmap_first; n != 0; n = n->next)
     {
-	if (n->width == width && n->height == height)
+	if (n->width == width && n->height == height && n->screen == screen)
 	{
 	    remove_from_image (n);
 	    prepend_to_image (n);
@@ -186,7 +187,7 @@ pixmap_cache_unref (eazel_engine_image *im, GdkPixmap *p1, GdkBitmap *p2)
 
 static void
 pixmap_cache_set (eazel_engine_image *im, int width, int height,
-		  GdkPixmap *p1, GdkBitmap *p2)
+		  GdkScreen *screen, GdkPixmap *p1, GdkBitmap *p2)
 {
     int pixel_count = width * height;
     pixmap_cache_node *n = NULL;
@@ -210,6 +211,7 @@ pixmap_cache_set (eazel_engine_image *im, int width, int height,
     n->im = im;
     n->width = width;
     n->height = height;
+    n->screen = screen;
     n->p1 = p1;
     n->p2 = p2;
     n->ref_count = 1;
@@ -394,10 +396,11 @@ do_scale (GdkPixbuf *src, int src_x, int src_y, int src_w, int src_h,
 
 static void
 eazel_engine_image_render (eazel_engine_image *image, int width, int height,
-			   GdkPixmap **pixmap, GdkBitmap **mask)
+			   GdkScreen *screen, GdkPixmap **pixmap, GdkBitmap **mask)
 {
     GdkPixbuf *im = eazel_engine_image_get_pixbuf (image);
     GdkPixbuf *scaled = im;
+    GdkColormap *colormap = 0;
     gboolean need_to_unref = FALSE;
     int im_width = gdk_pixbuf_get_width (im);
     int im_height = gdk_pixbuf_get_height (im);
@@ -406,7 +409,7 @@ eazel_engine_image_render (eazel_engine_image *image, int width, int height,
     g_return_if_fail (width > 0);
     g_return_if_fail (height > 0);
 
-    if (pixmap_cache_ref (image, width, height, pixmap, mask))
+    if (pixmap_cache_ref (image, width, height, screen, pixmap, mask))
 	return;
 
     /* XXX handle cases where combined image borders are larger
@@ -521,11 +524,13 @@ eazel_engine_image_render (eazel_engine_image *image, int width, int height,
 	}
     }
 
-    gdk_pixbuf_render_pixmap_and_mask (scaled, pixmap, mask, 128);
+    colormap = gdk_screen_get_rgb_colormap (screen);
+    gdk_pixbuf_render_pixmap_and_mask_for_colormap (scaled, colormap, pixmap, 
+		    				    mask, 128);
     if (need_to_unref)
 	gdk_pixbuf_unref (scaled);
 
-    pixmap_cache_set (image, width, height, *pixmap, *mask);
+    pixmap_cache_set (image, width, height, screen, *pixmap, *mask);
 }
 
 static void
@@ -576,23 +581,25 @@ void
 eazel_engine_stock_pixmap_and_mask_scaled (eazel_engine_stock_table *table,
 					   eazel_engine_stock_image type,
 					   int width, int height,
-					   GdkPixmap **image, GdkBitmap **mask)
+					   GdkScreen *screen, GdkPixmap **image, 
+					   GdkBitmap **mask)
 {
     eazel_engine_image *img = get_stock_image (table, type);
-    eazel_engine_image_render (img, width, height, image, mask);
+    eazel_engine_image_render (img, width, height, screen, image, mask);
 }
 
 void
 eazel_engine_stock_pixmap_and_mask (eazel_engine_stock_table *table,
 				    eazel_engine_stock_image type,
-				    GdkPixmap **image, GdkBitmap **mask)
+				    GdkScreen *screen, GdkPixmap **image, 
+				    GdkBitmap **mask)
 {
     eazel_engine_image *img = get_stock_image (table, type);
     GdkPixbuf *pixbuf = eazel_engine_image_get_pixbuf (img);
 
     eazel_engine_image_render (img, gdk_pixbuf_get_width (pixbuf),
 			       gdk_pixbuf_get_height (pixbuf),
-			       image, mask);
+			       screen, image, mask);
 }
 
 void

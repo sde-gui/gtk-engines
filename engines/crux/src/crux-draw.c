@@ -443,10 +443,12 @@ paint_stock_image (eazel_theme_data *theme_data,
     {
 	eazel_engine_stock_pixmap_and_mask_scaled (theme_data->stock, type,
 						   width, height,
+						   gdk_drawable_get_screen (window),
 						   &pixmap, &mask);
     }
     else
 	eazel_engine_stock_pixmap_and_mask (theme_data->stock, type,
+					    gdk_drawable_get_screen (window),
 					    &pixmap, &mask);
 
     /* FIXME GNOME2

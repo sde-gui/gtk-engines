@@ -1,3 +1,14 @@
+2005-07-24  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (paint_stock_image):
+	* engines/crux/src/crux-pixmaps.c: (pixmap_cache_ref),
+	(pixmap_cache_set), (eazel_engine_image_render),
+	(eazel_engine_stock_pixmap_and_mask_scaled),
+	(eazel_engine_stock_pixmap_and_mask):
+	* engines/crux/src/crux-pixmaps.h:
+
+	Patch applied from (and fixes) bug 161960
+
 2005-07-24  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
