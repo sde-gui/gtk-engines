@@ -72,6 +72,16 @@ struct _ClearlooksStyle
 	GdkGC *spot1_gc;
 	GdkGC *spot2_gc;
 	GdkGC *spot3_gc;
+	
+	GdkColor inset_light[5];
+	GdkColor inset_dark[5];
+	
+	GdkColor button_g1[5];
+	GdkColor button_g2[5];
+	GdkColor button_g3[5];
+	GdkColor button_g4[5];
+	
+	GdkColor listview_bg[5];
 
 	GdkPixmap *radio_pixmap_nonactive[5];
 	GdkPixmap *radio_pixmap_active[5];

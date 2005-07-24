@@ -6,6 +6,9 @@
 #ifndef GTK_IS_COMBO_BOX_ENTRY
 	#define GTK_IS_COMBO_BOX_ENTRY(x) 0
 #endif
+#ifndef GTK_IS_COMBO_BOX
+	#define GTK_IS_COMBO_BOX(x) 0
+#endif
 
 #define RADIO_SIZE 13
 #define CHECK_SIZE 13
@@ -102,3 +105,6 @@ GdkColor *get_parent_bgcolor (GtkWidget *widget);
 gboolean is_combo_box (GtkWidget * widget);
 
 GtkWidget *find_combo_box_widget (GtkWidget * widget);
+
+void gtk_clist_get_header_index (GtkCList *clist, GtkWidget *button,
+                                 gint *column_index, gint *columns);

@@ -506,21 +506,41 @@ calculate_arrow_geometry (GtkArrowType  arrow_type,
 }
 
 
-void gtk_treeview_get_header_index (GtkWidget *tv, GtkWidget *header,
-                                           gint *column_index, gint *columns)
+void gtk_treeview_get_header_index (GtkTreeView *tv, GtkWidget *header,
+                                           gint *column_index, gint *columns,
+gboolean *resizable)
 {
 	GList *list;
 	*column_index = *columns = 0;
-	list = gtk_tree_view_get_columns (GTK_TREE_VIEW (tv));
+	list = gtk_tree_view_get_columns (tv);
 
 	do
 	{
 		GtkTreeViewColumn *column = GTK_TREE_VIEW_COLUMN(list->data);
 		if ( column->button == header )
+		{
 			*column_index = *columns;
+			*resizable = column->resizable;
+		}
 		if ( column->visible )
 			(*columns)++;
 	} while ((list = g_list_next(list)));
+}
+
+void gtk_clist_get_header_index (GtkCList *clist, GtkWidget *button,
+                                 gint *column_index, gint *columns)
+{
+	int i;
+	*columns = clist->columns;
+	
+	for (i=0; i<*columns; i++)
+	{
+		if (clist->column[i].button == button)
+		{
+			*column_index = i;
+			break;
+		}
+	}
 }
 
 gboolean
@@ -875,15 +895,15 @@ draw_hgradient (GdkDrawable *drawable, GdkGC *gc, GtkStyle *style,
 	
 		gdk_gc_get_values (gc, &old_values);
 
-                if (top_color == bottom_color )
-                {
-                        col = *top_color;
-                        gdk_rgb_find_color (style->colormap, &col);
-                        gdk_gc_set_foreground (gc, &col);
-                        gdk_draw_rectangle (drawable, gc, TRUE, x, y, width, height);
-                        gdk_gc_set_foreground (gc, &old_values.foreground);
-                        return;
-                }
+		if (top_color == bottom_color )
+		{
+				col = *top_color;
+				gdk_rgb_find_color (style->colormap, &col);
+				gdk_gc_set_foreground (gc, &col);
+				gdk_draw_rectangle (drawable, gc, TRUE, x, y, width, height);
+				gdk_gc_set_foreground (gc, &old_values.foreground);
+				return;
+		}
 
 		col = *top_color;
 		dr = (bottom_color->red - top_color->red) / height;

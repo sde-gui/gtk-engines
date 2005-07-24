@@ -1,3 +1,14 @@
+2005-07-24  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/support.c:
+	* engines/clearlooks/src/support.h:
+
+	Updated clearlooks engine
+
 2005-07-09  Thomas Wood  <thos@gnome.org>
 
 	* configure.ac: Update for 2.6.4
