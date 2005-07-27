@@ -613,12 +613,6 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 		else
 			SmoothDrawBorderWithGap(&border, Canvas, base, x, y-thick, width, height+thick, GTK_POS_TOP, 0, width);
 	}
-	else if (CHECK_DETAIL(detail, "trough"))
-	{
-			SmoothDrawBorderWithGap(&border, Canvas, base, x+PART_XPADDING(part), y+PART_YPADDING(part), 
-						width-PART_XPADDING(part)*2, height-PART_YPADDING(part)*2, 0, 0, 0);
-						
-	}
 	else 
 		SmoothDrawBorderWithGap(&border, Canvas, base, x, y, width, height, 0, 0, 0);
 }

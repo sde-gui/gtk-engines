@@ -1,3 +1,17 @@
+Overview of Changes in 2.6.4 (since 2.6.3)
+==========================================
+* Fixed bugs: 
+	#305374 - Smooth makes d4x crash
+	#161960 - Panel on 2nd screen crashes when using crux
+	#303112 - [lighthouseblue] Radio buttons appear all checked in GtkTreeView
+	#308551 - uninitialized variables in the smooth engine
+	#305432 - smooth theme queries GtkButton style properties for all kind of widgets
+	#170824 - Industrial labels are purple
+	#300530 - clearlooks engine is installed in a different directory than the other engines
+
+* Updated clearlooks engine
+
+
 Overview of Changes in 2.6.3 (since 2.6.2)
 ==========================================
 * Added Clearlooks engine and theme [Andrew Johnson, Thomas Wood ]

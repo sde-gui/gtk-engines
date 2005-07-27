@@ -1,3 +1,9 @@
+2005-07-27  Thomas Wood  <thos@gnome.org>
+
+	* NEWS: Updated for 2.6.4 release
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_drawing.c:
+	(do_smooth_draw_shadow): Fixes bug 305374
+
 2005-07-27  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
