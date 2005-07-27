@@ -1073,18 +1073,19 @@ draw_box (DRAW_ARGS)
 		
 		cl_rectangle_init (&r, inner, outer, CL_CORNER_NONE, CL_CORNER_NONE, 
 		                                     CL_CORNER_NONE, CL_CORNER_NONE );
-		
-		if (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_VERTICAL)
+		if (GTK_IS_RANGE (widget))
 		{
-			y+=1;
-			height-=2;
+			if (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_VERTICAL)
+			{
+				y+=1;
+				height-=2;
+			}
+			else
+			{
+				x+=1;
+				width-=2;
+			}
 		}
-		else
-		{
-			x+=1;
-			width-=2;
-		}
-		
 		cl_rectangle_set_clip_rectangle (&r, area);
 		cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
 		cl_rectangle_reset_clip_rectangle (&r);

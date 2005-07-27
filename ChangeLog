@@ -1,3 +1,9 @@
+2005-07-27  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
+
+	Fixed #1244760 (clearlooks sf.net bugtracker).
+
 2005-07-24  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (paint_stock_image):
