@@ -1,3 +1,11 @@
+2005-07-30  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	
+	Using latest engine features. Using the more vibrant selection color
+	from Shaun McCance.
+	
+
 2005-07-27  Thomas Wood  <thos@gnome.org>
 
 	* NEWS: Updated for 2.6.4 release
