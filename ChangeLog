@@ -1,3 +1,8 @@
+2005-08-02  Chris Lahey  <clahey@ximian.com>
+
+	* engines/industrial/src/industrial_style.c (draw_check)
+	(draw_option): Center these pixmaps properly.
+
 2005-07-30  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:

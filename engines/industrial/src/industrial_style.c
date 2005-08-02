@@ -2381,11 +2381,20 @@ draw_check (GtkStyle		*style,
 
   gdk_window_get_size (pixmap, &src_width, &src_height);
 
+  if (width >= src_width) {
+    x = x + (width - src_width) / 2;
+    width = src_width;
+  }
+  if (height >= src_height) {
+    y = y + (height - src_height) / 2;
+    height = src_height;
+  }
+
   if (area)
     gdk_gc_set_clip_rectangle (gc, area);
   gdk_gc_set_clip_mask (gc, get_mask (style, window, bg, fg, which + decode_shadow (shadow_type)));
   gdk_gc_set_clip_origin (gc, x, y);
-  gdk_draw_pixmap (window, gc, pixmap, 0, 0, x, y, MIN (width, src_width), MIN (height, src_height));
+  gdk_draw_pixmap (window, gc, pixmap, 0, 0, x, y, width, height);
   gdk_gc_set_clip_mask (gc, NULL);
   gdk_gc_set_clip_origin (gc, 0, 0);
   if (area)
@@ -2439,11 +2448,20 @@ draw_option (GtkStyle		*style,
 
   gdk_window_get_size (pixmap, &src_width, &src_height);
 
+  if (width >= src_width) {
+    x = x + (width - src_width) / 2;
+    width = src_width;
+  }
+  if (height >= src_height) {
+    y = y + (height - src_height) / 2;
+    height = src_height;
+  }
+  
   if (area)
     gdk_gc_set_clip_rectangle (gc, area);
   gdk_gc_set_clip_mask (gc, get_mask (style, window, bg, fg, which + decode_shadow (shadow_type)));
   gdk_gc_set_clip_origin (gc, x, y);
-  gdk_draw_pixmap (window, gc, pixmap, 0, 0, x, y, MIN (width, src_width), MIN (height, src_height));
+  gdk_draw_pixmap (window, gc, pixmap, 0, 0, x, y, width, height);
   gdk_gc_set_clip_mask (gc, NULL);
   gdk_gc_set_clip_origin (gc, 0, 0);
   if (area)
