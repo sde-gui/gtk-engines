@@ -1,3 +1,9 @@
+2005-08-05  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow_gap):
+
+	Fixed a memory leak.
+
 2005-08-02  Chris Lahey  <clahey@ximian.com>
 
 	* engines/industrial/src/industrial_style.c (draw_check)

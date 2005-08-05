@@ -1784,6 +1784,9 @@ draw_shadow_gap (DRAW_ARGS,
 
 	if (area_region)
 		gdk_region_destroy (area_region);
+
+	if (gap_region)
+		gdk_region_destroy (gap_region);
 }
 
 /**************************************************************************/
