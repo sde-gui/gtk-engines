@@ -1423,7 +1423,7 @@ cl_draw_progressbar2_trough(GdkDrawable *window, GtkWidget *widget,
 	cl_rectangle_reset_clip_rectangle (&r);
 }
 
-static gboolean
+static void
 cl_progressbar2_set_four_points(GtkWidget *widget, GdkPoint *points, int size)
 {
 	GtkProgressBarOrientation orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));

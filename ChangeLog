@@ -1,3 +1,9 @@
+2005-08-13  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+
 2005-08-05  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow_gap):
