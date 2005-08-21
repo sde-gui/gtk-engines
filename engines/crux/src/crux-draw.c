@@ -1415,6 +1415,8 @@ draw_box (GtkStyle *style,
 
 	   if (DETAIL ("menuitem"))
 	   {
+			if (state_type == GTK_STATE_INSENSITIVE) /* Catch for OpenOffice 2 */
+				return;
 			full.x +=3; full.y+=2;
 			full.width -= 6; full.height -= 4;
 			paint_menuitem_shadow (window, style, x, y, width, height);
@@ -2331,6 +2333,21 @@ draw_extension (GtkStyle *style,
     debug ("draw_extension: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
+	/* Get x relative to parent widget, not window */
+	GtkWidget* parent_widget;
+	gint relative_x;
+	if (widget != NULL)
+	{
+		parent_widget = gtk_widget_get_parent(widget);
+		relative_x = x - parent_widget->allocation.x;
+		if (GTK_IS_CONTAINER(widget))
+			relative_x = relative_x - gtk_container_get_border_width((GtkContainer*)widget);
+	}
+	else
+	{
+		relative_x = x;
+	}
+
 
     if (DETAIL ("tab"))
     {
@@ -2340,14 +2357,14 @@ draw_extension (GtkStyle *style,
 	case GTK_POS_TOP:
 	    type = ((state_type != GTK_STATE_ACTIVE)
 		    ? EAZEL_ENGINE_TAB_BOTTOM_ACTIVE
-		    : (x < 10) ? EAZEL_ENGINE_TAB_BOTTOM_LEFT
+		    : (relative_x < style->xthickness*2) ? EAZEL_ENGINE_TAB_BOTTOM_LEFT
 		    : EAZEL_ENGINE_TAB_BOTTOM);
 	    break;
 
 	case GTK_POS_BOTTOM:
 	    type = ((state_type != GTK_STATE_ACTIVE)
 		    ? EAZEL_ENGINE_TAB_TOP_ACTIVE
-		    : (x < 10) ? EAZEL_ENGINE_TAB_TOP_LEFT
+		    : (relative_x < style->xthickness*2) ? EAZEL_ENGINE_TAB_TOP_LEFT
 		    : EAZEL_ENGINE_TAB_TOP);
 	    break;
 

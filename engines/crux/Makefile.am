@@ -27,8 +27,7 @@ libcrux_engine_la_SOURCES = \
 	./src/debug.h                 \
 	./src/crux-gradient.c         \
 	./src/crux-gradient.h         \
-	./src/eazel-theme.h           \
-	./src/eazel-theme-hacks.c
+	./src/eazel-theme.h
 
 libcrux_engine_la_LDFLAGS = -module -avoid-version -no-undefined
 libcrux_engine_la_LIBADD = $(GTK_LIBS)

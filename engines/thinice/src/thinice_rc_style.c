@@ -398,7 +398,5 @@ thinice_rc_style_merge (GtkRcStyle * dest,
 static GtkStyle *
 thinice_rc_style_create_style (GtkRcStyle *rc_style)
 {
-  void *ptr;
-  ptr = GTK_STYLE (g_object_new (THINICE_TYPE_STYLE, NULL));
-  return (GtkStyle *)ptr;
+  return GTK_STYLE (g_object_new (THINICE_TYPE_STYLE, NULL));
 }

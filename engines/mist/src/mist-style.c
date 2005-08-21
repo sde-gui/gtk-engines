@@ -201,7 +201,7 @@ draw_rect (GtkStyle *style,
 	   int width, 
 	   int height)
 {
-	if (fill_gc) {
+	if (fill_gc && width > 1 && height > 1) {
 		gdk_draw_rectangle (window, fill_gc, TRUE, x + 1, y + 1, 
 				    width - 2, height - 2);
 	}

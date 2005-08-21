@@ -376,8 +376,5 @@ extern void eazel_engine_stock_get_size (eazel_engine_stock_table *table,
 					 eazel_engine_stock_image type,
 					 int *width, int *height);
 
-/* from eazel-theme-hacks.c */
-extern void eazel_engine_install_hacks (void);
-extern void eazel_engine_remove_hacks (void);
 
 #endif /* EAZEL_THEME_H */
