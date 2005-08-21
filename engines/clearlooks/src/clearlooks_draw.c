@@ -811,91 +811,40 @@ clearlooks_draw_menubar (cairo_t *cr,
 	cairo_stroke          (cr);
 }
 
-void
-clearlooks_draw_tab2 (cairo_t *cr,
-                     const ClearlooksColors *colors,
-                     const WidgetParameters *params,
-                     int x, int y, int width, int height)
-{
-	#define RADIUS 3.0
-	CairoColor      *border = (CairoColor*)&colors->shade[5];
-	CairoColor      *fill   = (CairoColor*)&colors->bg[params->state_type];
-	CairoColor      *bg     = (CairoColor*)&params->parentbg;
-	cairo_pattern_t *pattern;
-	
-	cairo_translate      (cr, x+0.5, y+0.5);
-	cairo_set_line_width (cr, 1.0);
-	
-	clearlooks_rounded_rectectangle (cr, 0, 0, width, height, RADIUS, CL_CORNER_ALL);
-	
-	if (params->active) 
-		bg = fill; /* Fill the active (actually, inactive) tab opaque */
-	
-	/* Fill the tab */
-	pattern = cairo_pattern_create_linear (0, 0, 0, height);
-	cairo_pattern_add_color_stop_rgb (pattern, params->active ? 1.0 : 0.0, fill->r, fill->g, fill->b);
-	cairo_pattern_add_color_stop_rgb (pattern, params->active ? 0.0 : 1.0, bg->r,   bg->g,   bg->b);
-	cairo_set_source      (cr, pattern);
-	cairo_fill_preserve   (cr);
-	cairo_pattern_destroy (pattern);
-	
-	/* Add an extra highligh */
-	pattern = cairo_pattern_create_linear (0, 0, 0, height/2);
-	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 1.0, 1.0, 1.0, 0.5);
-	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 1.0, 1.0, 1.0, 0.0);
-	cairo_set_source      (cr, pattern);
-	cairo_fill_preserve   (cr);
-	cairo_pattern_destroy (pattern);
-	
-	
-	/* Draw the border */
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);	
-	cairo_stroke         (cr);
-	
-	/* Draw right shadow */
-	cairo_move_to (cr, width - 1, params->ythickness);
-	cairo_line_to (cr, width - 1, height - params->ythickness - 1);
-	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.05);
-	cairo_stroke (cr);
-
-	/* Draw topleft shadow */
-	clearlooks_draw_top_left_highlight (cr, params, width, height, RADIUS);
-}
-
 static void
 clearlooks_get_frame_gap_clip (int x, int y, int width, int height, 
                                FrameParameters     *frame,
                                ClearlooksRectangle *bevel,
                                ClearlooksRectangle *border)
 {
-		if (frame->gap_side == CL_GAP_TOP)
-		{
-			CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  -0.5,
-												 frame->gap_width - 3, 2.0);
-			CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  -0.5,
-												 frame->gap_width - 2, 1.0);
-		}
-		else if (frame->gap_side == CL_GAP_BOTTOM)
-		{
-			CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  height - 2.5,
-												 frame->gap_width - 3, 2.0);
-			CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  height - 1.5,
-												 frame->gap_width - 2, 1.0);		
-		}
-		else if (frame->gap_side == CL_GAP_LEFT)
-		{
-			CLEARLOOKS_RECTANGLE_SET ((*bevel),  -0.5, 1.5 + frame->gap_x,
-												 2.0, frame->gap_width - 3);
-			CLEARLOOKS_RECTANGLE_SET ((*border), -0.5, 0.5 + frame->gap_x,
-												 1.0, frame->gap_width - 2);			
-		}
-		else if (frame->gap_side == CL_GAP_RIGHT)
-		{
-			CLEARLOOKS_RECTANGLE_SET ((*bevel),  width - 2.5, 1.5 + frame->gap_x,
-												 2.0, frame->gap_width - 3);
-			CLEARLOOKS_RECTANGLE_SET ((*border), width - 1.5, 0.5 + frame->gap_x,
-												 1.0, frame->gap_width - 2);			
-		}
+	if (frame->gap_side == CL_GAP_TOP)
+	{
+		CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  -0.5,
+											 frame->gap_width - 3, 2.0);
+		CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  -0.5,
+											 frame->gap_width - 2, 1.0);
+	}
+	else if (frame->gap_side == CL_GAP_BOTTOM)
+	{
+		CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  height - 2.5,
+											 frame->gap_width - 3, 2.0);
+		CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  height - 1.5,
+											 frame->gap_width - 2, 1.0);		
+	}
+	else if (frame->gap_side == CL_GAP_LEFT)
+	{
+		CLEARLOOKS_RECTANGLE_SET ((*bevel),  -0.5, 1.5 + frame->gap_x,
+											 2.0, frame->gap_width - 3);
+		CLEARLOOKS_RECTANGLE_SET ((*border), -0.5, 0.5 + frame->gap_x,
+											 1.0, frame->gap_width - 2);			
+	}
+	else if (frame->gap_side == CL_GAP_RIGHT)
+	{
+		CLEARLOOKS_RECTANGLE_SET ((*bevel),  width - 2.5, 1.5 + frame->gap_x,
+											 2.0, frame->gap_width - 3);
+		CLEARLOOKS_RECTANGLE_SET ((*border), width - 1.5, 0.5 + frame->gap_x,
+											 1.0, frame->gap_width - 2);			
+	}
 }
 
 void
@@ -1050,8 +999,10 @@ clearlooks_draw_tab (cairo_t *cr,
 	
 	if (params->active)
 	{
-		cairo_pattern_add_color_stop_rgba (pattern, 0.0, 1.0, 1.0, 1.0, 0.5);
-		cairo_pattern_add_color_stop_rgba (pattern, 0.3, 1.0, 1.0, 1.0, 0.0);
+		double c = (tab->gap_side == CL_GAP_BOTTOM || tab->gap_side == CL_GAP_RIGHT) ? 1.0 : 0.0;
+		double a = (tab->gap_side == CL_GAP_BOTTOM || tab->gap_side == CL_GAP_RIGHT) ? 0.5 : 0.1;
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, c, c, c, a);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.3, c, c, c, 0.0);
 	}
 	else
 	{
@@ -1085,5 +1036,44 @@ clearlooks_draw_tab (cairo_t *cr,
 		cairo_set_source (cr, pattern);
 		cairo_stroke (cr);
 		cairo_pattern_destroy (pattern);
+	}
+}
+
+void
+clearlooks_draw_separator (cairo_t *cr,
+                           const ClearlooksColors     *colors,
+                           const WidgetParameters     *widget,
+                           const SeparatorParameters  *separator,
+                           int x, int y, int width, int height)
+{
+	if (separator->horizontal)
+	{
+		cairo_set_line_width  (cr, 1.0);
+		cairo_translate       (cr, x, y+0.5);
+		
+		cairo_move_to         (cr, 0.0,     0.0);
+		cairo_line_to         (cr, width+1, 0.0);
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+		cairo_stroke          (cr);
+		
+		cairo_move_to         (cr, 0.0,   1.0);
+		cairo_line_to         (cr, width, 1.0);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
+		cairo_stroke          (cr);				
+	}
+	else
+	{
+		cairo_set_line_width  (cr, 1.0);
+		cairo_translate       (cr, x+0.5, y);
+		
+		cairo_move_to         (cr, 0.0, 0.0);
+		cairo_line_to         (cr, 0.0, height+1);
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+		cairo_stroke          (cr);
+		
+		cairo_move_to         (cr, 1.0, 0.0);
+		cairo_line_to         (cr, 1.0, height);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
+		cairo_stroke          (cr);		
 	}
 }

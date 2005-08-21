@@ -111,6 +111,14 @@ draw_shadow (DRAW_ARGS)
 		clearlooks_draw_entry (cr, &clearlooks_style->colors, &params,
 		                       x, y, width, height);
 	}
+	else if (DETAIL ("frame") && widget && GTK_IS_STATUSBAR (widget->parent))
+	{
+		SeparatorParameters separator;
+		separator.horizontal = TRUE;
+		
+		clearlooks_draw_separator (cr, NULL, NULL, &separator,
+		                           x, y, width, height);
+	}
 	else if (DETAIL ("frame"))
 	{
 		WidgetParameters params;
@@ -124,7 +132,7 @@ draw_shadow (DRAW_ARGS)
 	}
 	else
 	{
-	//	printf("%s %s\n", detail, G_OBJECT_TYPE_NAME (widget));
+		printf("draw_shadow: %s %s\n", detail, G_OBJECT_TYPE_NAME (widget));
 		parent_class->draw_shadow (style, window, state_type, shadow_type,
 		                           area, widget, detail,
 		                           x, y, width, height);
@@ -179,12 +187,9 @@ draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 {
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
-	GdkRectangle      new_area;
 	cairo_t          *cr;
-	
-	new_area = *area;
-	
-	cr = clearlooks_begin_paint (window, NULL);
+
+	cr = clearlooks_begin_paint (window, area);
 	
 	if (DETAIL ("tab"))
 	{
@@ -481,24 +486,44 @@ draw_vline                      (GtkStyle               *style,
                                  gint                    x)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	SeparatorParameters separator = { FALSE };
 	cairo_t *cr;
-	
-	cr = clearlooks_begin_paint (window, NULL);
 
-	if (DETAIL ("vseparator"))
+	cr = clearlooks_begin_paint (window, area);
+	
+	clearlooks_draw_separator (cr, NULL, NULL, &separator,
+	                           x, y1, 2, y2-y1);
+	
+	cairo_destroy (cr);
+}
+
+static void
+draw_hline                      (GtkStyle               *style,
+                                 GdkWindow              *window,
+                                 GtkStateType            state_type,
+                                 GdkRectangle           *area,
+                                 GtkWidget              *widget,
+                                 const gchar            *detail,
+                                 gint                    x1,
+                                 gint                    x2,
+                                 gint                    y)
+{
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	SeparatorParameters separator;
+	cairo_t *cr;
+
+	cr = clearlooks_begin_paint (window, area);
+	
+	if (DETAIL ("label")) // wtf?
 	{
-		cairo_set_line_width  (cr, 1.0);
-		cairo_translate       (cr, x+0.5, y1);
+		printf("draw_vline: label. ermm....?\n");
+	}
+	else
+	{
+		separator.horizontal = TRUE;
 		
-		cairo_move_to         (cr, 0.0, 0.0);
-		cairo_line_to         (cr, 0.0, y2-y1+1);
-		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
-		cairo_stroke          (cr);
-		
-		cairo_move_to         (cr, 1.0, 0.0);
-		cairo_line_to         (cr, 1.0, y2-y1+1);
-		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
-		cairo_stroke          (cr);
+		clearlooks_draw_separator (cr, NULL, NULL, &separator,
+		                           x1, y, x2-x1, 2);
 	}
 	
 	cairo_destroy (cr);
@@ -545,7 +570,21 @@ draw_shadow_gap (DRAW_ARGS,
 	cairo_destroy (cr);
 }
 
-
+static void
+draw_resize_grip (GtkStyle       *style,
+                  GdkWindow      *window,
+                  GtkStateType    state_type,
+                  GdkRectangle   *area,
+                  GtkWidget      *widget,
+                  const gchar    *detail,
+                  GdkWindowEdge   edge,
+                  gint            x,
+                  gint            y,
+                  gint            width,
+                  gint            height)
+{
+	return;
+}
 
 
 static void
@@ -641,20 +680,22 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	
 	parent_class = g_type_class_peek_parent (klass);
 
-	style_class->unrealize = clearlooks_style_unrealize;
-	style_class->init_from_rc = clearlooks_style_init_from_rc;
-	style_class->draw_handle = draw_handle;
-	style_class->draw_slider = draw_slider;
-	style_class->draw_shadow_gap = draw_shadow_gap;
-	style_class->draw_focus = draw_focus;
-	style_class->draw_box = draw_box;
-	style_class->draw_shadow = draw_shadow;
-	style_class->draw_box_gap = draw_box_gap;
-	style_class->draw_extension = draw_extension;
-	style_class->draw_option = draw_option;
-	style_class->draw_flat_box = draw_flat_box;
-	style_class->draw_tab = draw_tab;
-	style_class->draw_vline = draw_vline;
+	style_class->unrealize        = clearlooks_style_unrealize;
+	style_class->init_from_rc     = clearlooks_style_init_from_rc;
+	style_class->draw_handle      = draw_handle;
+	style_class->draw_slider      = draw_slider;
+	style_class->draw_shadow_gap  = draw_shadow_gap;
+	style_class->draw_focus       = draw_focus;
+	style_class->draw_box         = draw_box;
+	style_class->draw_shadow      = draw_shadow;
+	style_class->draw_box_gap     = draw_box_gap;
+	style_class->draw_extension   = draw_extension;
+	style_class->draw_option      = draw_option;
+	style_class->draw_flat_box    = draw_flat_box;
+	style_class->draw_tab         = draw_tab;
+	style_class->draw_vline       = draw_vline;
+	style_class->draw_hline       = draw_hline;
+	style_class->draw_resize_grip = draw_resize_grip;
 }
 
 GType clearlooks_type_style = 0;

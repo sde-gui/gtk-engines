@@ -79,4 +79,10 @@ void clearlooks_draw_frame            (cairo_t *cr,
                                        const FrameParameters      *frame,
                                        int x, int y, int width, int height);
 
+void clearlooks_draw_separator        (cairo_t *cr,
+                                       const ClearlooksColors     *colors,
+                                       const WidgetParameters     *widget,
+                                       const SeparatorParameters  *separator,
+                                       int x, int y, int width, int height);
+
 #endif /* CLEARLOOKS_DRAW_H */

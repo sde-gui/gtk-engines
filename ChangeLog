@@ -1,3 +1,17 @@
+2005-08-22  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_get_frame_gap_clip), (clearlooks_draw_tab),
+	(clearlooks_draw_separator):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow),
+	(draw_extension), (draw_vline), (draw_hline), (draw_resize_grip),
+	(clearlooks_style_class_init):
+	* engines/clearlooks/src/clearlooks_types.h:
+
+	Implemented the statusbar. Improved tabs. Added Separator functions
+	and type. Disabled the resize grip for now.
+
 2005-08-21  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/Makefile.am:
