@@ -1,8 +1,42 @@
-2005-08-13  Richard A. Stellingwerff  <remenic@gmail.com>
+2005-08-21  Richard A. Stellingwerff  <remenic@gmail.com>
 
-	reviewed by: <delete if not using a buddy>
+	* configure.ac: Depend on GTK+ 2.8, changed version number.
 
 	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_rounded_rectectangle), (rotate_mirror_translate),
+	(clearlooks_draw_inset), (clearlooks_draw_shadow),
+	(clearlooks_draw_top_left_highlight),
+	(clearlooks_draw_highlight_and_shade), (clearlooks_draw_button),
+	(clearlooks_draw_entry), (clearlooks_draw_spinbutton),
+	(clearlooks_draw_spinbutton_down),
+	(clearlooks_scale_draw_gradient), (clearlooks_draw_scale_trough),
+	(clearlooks_draw_slider_button),
+	(clearlooks_draw_progressbar_trough),
+	(clearlooks_draw_progressbar_fill), (clearlooks_draw_optionmenu),
+	(clearlooks_draw_menubar), (clearlooks_draw_tab2),
+	(clearlooks_get_frame_gap_clip), (clearlooks_draw_frame),
+	(clearlooks_draw_tab):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_begin_paint), (clearlooks_set_widget_parameters),
+	(draw_flat_box), (draw_shadow), (draw_box_gap), (draw_extension),
+	(draw_handle), (combo_box_get_seperator_pos), (draw_box),
+	(draw_slider), (draw_option), (draw_tab), (draw_vline),
+	(draw_shadow_gap), (clearlooks_style_init_from_rc),
+	(realize_color), (draw_focus), (clearlooks_style_unrealize),
+	(clearlooks_style_class_init):
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/support.c: (shade), (is_combo_box),
+	(clearlooks_gdk_color_to_rgb), (clearlooks_get_parent_bg):
+	* engines/clearlooks/src/support.h:
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Initial import of Clearlooks port to cairo.
+
+2005-08-13  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c: Changed return type from
+	gboolean to void in cl_progressbar2_set_four_points.
 
 2005-08-05  Richard A. Stellingwerff  <remenic@gmail.com>
 

@@ -2,6 +2,8 @@
 #include <math.h>
 #include <string.h>
 
+#include "clearlooks_types.h"
+
 /* GTK 2.2 compatibility */
 #ifndef GTK_IS_COMBO_BOX_ENTRY
 	#define GTK_IS_COMBO_BOX_ENTRY(x) 0
@@ -47,7 +49,7 @@ hls_to_rgb (gdouble *h,
             gdouble *s);
 
 void
-shade (GdkColor * a, GdkColor * b, float k);
+shade (const CairoColor * a, CairoColor * b, float k);
 
 void
 draw_hgradient (GdkDrawable *drawable, GdkGC *gc, GtkStyle *style,
@@ -106,5 +108,10 @@ gboolean is_combo_box (GtkWidget * widget);
 
 GtkWidget *find_combo_box_widget (GtkWidget * widget);
 
+void
+clearlooks_gdk_color_to_rgb (GdkColor *c, double *r, double *g, double *b);
+
 void gtk_clist_get_header_index (GtkCList *clist, GtkWidget *button,
                                  gint *column_index, gint *columns);
+
+void clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color);

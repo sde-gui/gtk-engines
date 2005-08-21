@@ -1,4 +1,4 @@
-AC_INIT([gtk-engines], [2.6.4])
+AC_INIT([gtk-engines], [2.8.0])
 AC_CONFIG_SRCDIR([README])
 
 AM_INIT_AUTOMAKE
@@ -99,8 +99,8 @@ if test $thinice = "y"; then
 	fi
 fi
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.6.0,,
-                  AC_MSG_ERROR([GTK+-2.0 is required to compile gtk-engines]))
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8.0,,
+                  AC_MSG_ERROR([GTK+-2.8 is required to compile gtk-engines]))
 
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)

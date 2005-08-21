@@ -1,6 +1,3 @@
-# Based on Bluecurve
-# Created by Richard Stellingwerff, Emil Jacobs and Daniel Borgmann.
-
 style "clearlooks-default"
 {
   GtkButton      ::default_border    = { 0, 0, 0, 0 }
@@ -13,41 +10,45 @@ style "clearlooks-default"
   GtkMenuBar     ::internal-padding  = 0
   GtkTreeView    ::expander_size     = 14
   GtkExpander    ::expander_size     = 16
+  GtkScale       ::slider-length     = 27
+#  GtkToolbar     ::button-relief     = GTK_RELIEF_NORMAL
 
   xthickness = 1
   ythickness = 1
 
-  fg[NORMAL]        = "#101010" # very dark gray #101010
-  fg[PRELIGHT]      = "#101010" # dark grey
+  fg[NORMAL]        = "#000000" # black
+  fg[PRELIGHT]      = "#000000" # black
+  fg[SELECTED]      = "#ffffff" # white 
   fg[ACTIVE]        = "#000000" # black
-  fg[SELECTED]      = "#ffffff" # white
-  fg[INSENSITIVE]   = "#b5b3ac" # dark beige / grey
+  fg[INSENSITIVE]   = "#b5b3ac" # dark beige
 
-  bg[NORMAL]        = "#efebe7" # light beige / grey
-  bg[PRELIGHT]      = "#f5f3f0" # very light beige
-  bg[ACTIVE]        = "#d4cfca" # mid beige / grey
-  bg[SELECTED]      = "#628cb2" # blueish
-  bg[INSENSITIVE]   = "#efebe7" # light beige / grey
-	
-  base[NORMAL]      = "#ffffff" # white
-  base[PRELIGHT]    = "#628cb2" # blueish
-  base[ACTIVE]      = "#a29e8e" # dark beige / grey
-  base[SELECTED]    = "#628cb2" # blueish
-  base[INSENSITIVE] = "#efebe7" #light beige / grey
-	
+  bg[NORMAL]	    = "#e8e5de" # light beige
+  bg[PRELIGHT]      = "#f9f7f3" # very light beige
+  bg[SELECTED]	    = "#5598d7" # deepsky
+  bg[INSENSITIVE]   = "#f1efeb" # beige
+  bg[ACTIVE]        = "#d7d3ca" # dark beige
+
+  base[NORMAL]      = "#ffffff" # white 
+  base[PRELIGHT]    = "#5f8ec4" # dark beige
+  base[ACTIVE]      = "#a69f91" # darker deepsky
+  base[SELECTED]    = "#5598d7" # deepsky
+  base[INSENSITIVE] = "#e8e5de" # beige
+
   text[NORMAL]      = "#000000" # black
   text[PRELIGHT]    = "#000000" # black
   text[ACTIVE]      = "#ffffff" # white
   text[SELECTED]    = "#ffffff" # white
-  text[INSENSITIVE] = "#b5b3ac" # dark beige / grey
+  text[INSENSITIVE] = "#b5b3ac" # dark beige
 
-  engine "clearlooks"  {
+  engine "clearlooks" 
+  {
     menubarstyle      = 2       # 0 = flat, 1 = sunken, 2 = flat gradient
     menuitemstyle     = 1       # 0 = flat, 1 = 3d-ish (gradient), 2 = 3d-ish (button)
     listviewitemstyle = 1       # 0 = flat, 1 = 3d-ish (gradient)
-    progressbarstyle  = 0       # 0 = candy bar, 1 = flat
+    progressbarstyle  = 1       # 0 = candy bar, 1 = fancy candy bar, 2 = flat
   }
 }
+
 
 style "clearlooks-wide" = "clearlooks-default"
 {
@@ -55,22 +56,25 @@ style "clearlooks-wide" = "clearlooks-default"
   ythickness = 2
 }
 
-style "clearlooks-button" = "clearlooks-default"
+style "clearlooks-wider" = "clearlooks-default"
 {
   xthickness = 3
   ythickness = 3
 }
 
-style "clearlooks-check" = "clearlooks-button"
+style "clearlooks-button" = "clearlooks-wider"
 {
-  text[NORMAL] = "#2f3941" # blueish
-  text[PRELIGHT] = "#3c4a53" # blueish
+  bg[NORMAL]        = "#f1efeb" # light beige
+  bg[PRELIGHT]      = "#f9f7f3" # very light beige
 }
 
 style "clearlooks-notebook" = "clearlooks-wide"
 {
-  bg[NORMAL] = "#eae4df"
-  bg[INSENSITIVE] = "#eae4df"
+  bg[NORMAL]      = "#e8e5de"
+  bg[INSENSITIVE] = "#e8e5de"
+  
+#  bg[NORMAL] = "#efede9"
+#  bg[INSENSITIVE] = "#efede9"
 }
 
 style "clearlooks-tasklist" = "clearlooks-default"
@@ -83,7 +87,7 @@ style "clearlooks-menu" = "clearlooks-default"
 {
   xthickness = 2
   ythickness = 1
-  bg[NORMAL] = "#f8f5f2"
+  bg[NORMAL] = "#f9f7f3"
 }
 
 style "clearlooks-menu-item" = "clearlooks-default"
@@ -94,12 +98,6 @@ style "clearlooks-menu-item" = "clearlooks-default"
   text[PRELIGHT] = "#ffffff"
 }
 
-style "clearlooks-menu-itembar" = "clearlooks-default"
-{
-  xthickness = 3
-  ythickness = 3
-}
-
 style "clearlooks-tree" = "clearlooks-default"
 {
   xthickness = 2
@@ -108,7 +106,7 @@ style "clearlooks-tree" = "clearlooks-default"
 
 style "clearlooks-frame-title" = "clearlooks-default"
 {
-  fg[NORMAL] = "#2a2a2a"
+  fg[NORMAL] = "#404040"
 }
 
 style "clearlooks-tooltips" = "clearlooks-default"
@@ -118,34 +116,37 @@ style "clearlooks-tooltips" = "clearlooks-default"
   bg[NORMAL] = { 1.0,1.0,0.75 }
 }
 
-style "clearlooks-progressbar" = "clearlooks-default"
+style "clearlooks-progressbar" = "clearlooks-wide"
 {
   xthickness = 1
   ythickness = 1
-
   fg[PRELIGHT]  = "#ffffff"
 }
 
-style "clearlooks-combo" = "clearlooks-default"
+style "clearlooks-combo" = "clearlooks-button"
 {
-  xthickness = 2
-  ythickness = 3
 }
+
+style "clearlooks-menubar" = "blackrock-default"
+{
+  bg[NORMAL]   = "#bacedb"
+}
+	
 
 # widget styles
 class "GtkWidget" style "clearlooks-default"
 class "GtkButton" style "clearlooks-button"
+class "GtkScale"  style "clearlooks-button"
 class "GtkCombo"  style "clearlooks-button"
 class "GtkRange"  style "clearlooks-wide"
 class "GtkFrame"  style "clearlooks-wide"
 class "GtkMenu"   style "clearlooks-menu"
-class "GtkEntry"  style "clearlooks-button"
+class "GtkEntry"  style "clearlooks-wider"
 class "GtkMenuItem"    style "clearlooks-menu-item"
 class "GtkStatusbar"   style "clearlooks-wide"
 class "GtkNotebook"    style "clearlooks-notebook"
 class "GtkProgressBar" style "clearlooks-progressbar"
-class "GtkCheckButton" style "clearlooks-check"
-class "GtkRadioButton" style "clearlooks-check"
+#class "GtkMenuBar" style "clearlooks-menubar"
 
 widget_class "*MenuItem.*" style "clearlooks-menu-item"
 

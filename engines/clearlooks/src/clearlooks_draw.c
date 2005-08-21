@@ -1,1707 +1,1089 @@
 #include "clearlooks_draw.h"
 #include "clearlooks_style.h"
+#include "clearlooks_types.h"
 
 #include "support.h"
 
-/** WANTED:
-    FASTER GRADIENT FILL FUNCTION, POSSIBLY USING XRENDER. **/
+#include <cairo.h>
 
-static void cl_draw_borders (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                      int x, int y, int width, int height, CLRectangle *r);
-
-static void cl_draw_line (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                   int x1, int y1, int x2, int y2, CLBorderType border,
-                   CLRectangle *r);
-				   
-static void cl_draw_corner (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                     int x, int y, int width, int height,
-                     CLRectangle *r, CLCornerSide corner);
-					 
-static void cl_draw_fill (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                   int x, int y, int width, int height, CLRectangle *r);
-
-void cl_draw_rectangle (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                        int x, int y, int width, int height, CLRectangle *r)
+void
+clearlooks_rounded_rectectangle (cairo_t *cr,
+                                 double x, double y, double w, double h,
+                                 double radius, uint8 corners)
 {
-	if (r->fillgc)
+	if (corners & CL_CORNER_TOPLEFT)
+		cairo_move_to (cr, x+radius, y);
+	else
+		cairo_move_to (cr, x, y);
+	
+	if (corners & CL_CORNER_TOPRIGHT)
+		cairo_arc (cr, x+w-radius, y+radius, radius, M_PI + M_PI*0.5, M_PI*2);
+	else
+		cairo_line_to (cr, x+w, y);
+	
+	if (corners & CL_CORNER_BOTTOMRIGHT)
+		cairo_arc (cr, x+w-radius, y+h-radius, radius, 0, M_PI/2);
+	else
+		cairo_line_to (cr, x+w, y+h);
+	
+	if (corners & CL_CORNER_BOTTOMLEFT)
+		cairo_arc (cr, x+radius,   y+h-radius, radius, M_PI/2, M_PI);
+	else
+		cairo_line_to (cr, x, y+h);
+	
+	if (corners & CL_CORNER_TOPLEFT)
+		cairo_arc (cr, x+radius,   y+radius,   radius, M_PI, 270*(M_PI/180));
+	else
+		cairo_line_to (cr, x, y);
+}
+
+
+/* KEEP IN MIND, MIRROR TAKES PLACE BEFORE ROTATION */
+/* ROTATES ANTI-CLOCKWISE, I THINK :P */
+/* TODO: Do I really need THREE matrices? */
+static void
+rotate_mirror_translate (cairo_t *cr, double radius, double x, double y,
+                         boolean mirror_horizontally, boolean mirror_vertically)
+{
+	cairo_matrix_t matrix_rotate;
+	cairo_matrix_t matrix_mirror;
+	cairo_matrix_t matrix_result;
+	
+	double r_cos = cos(radius);
+	double r_sin = sin(radius);
+	
+	cairo_matrix_init (&matrix_rotate, r_cos,
+	                                   r_sin,
+	                                   r_sin,
+	                                   r_cos,
+	                                   x, y);
+	
+	cairo_matrix_init (&matrix_mirror, mirror_horizontally ? -1 : 1,
+	                                   0,
+	                                   0,
+	                                   mirror_vertically ? -1 : 1,
+									   0, 0);
+
+	cairo_matrix_multiply (&matrix_result, &matrix_mirror, &matrix_rotate);
+
+	cairo_set_matrix (cr, &matrix_result);
+}
+
+void
+clearlooks_draw_inset (cairo_t *cr, int width, int height,
+                       double radius, uint8 corners)
+{
+	double top_x1 = 0, top_x2 = width, bot_x1 = 0, bot_x2 = width;
+	
+	if (corners & CL_CORNER_TOPLEFT)
+		top_x1 = radius;
+	
+	if (corners & CL_CORNER_TOPRIGHT)
+		top_x2 = width-radius;
+	
+	if (corners & CL_CORNER_BOTTOMLEFT)
+		bot_x1 = radius;
+	
+	if (corners & CL_CORNER_BOTTOMRIGHT)
+		bot_x2 = width-radius;
+	
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.03);
+	cairo_move_to (cr, top_x1+0.5, 0.0);
+	cairo_line_to (cr, top_x2-0.5, 0.0);
+	cairo_stroke (cr);
+	
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+	cairo_move_to (cr, bot_x1+0.5,       height);
+	cairo_line_to (cr, bot_x2-0.5, height);
+	cairo_stroke (cr);
+}
+
+static void
+clearlooks_draw_shadow (cairo_t *cr, int width, int height)
+{
+	cairo_set_line_width (cr, 1.0);
+	
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.1);
+	
+	cairo_move_to (cr, width, 3.0);
+	cairo_arc (cr, width-4.0, height-4.0, 4.0, 0, M_PI/2);
+	cairo_line_to (cr, 3.0, height);
+
+	cairo_stroke (cr);
+}
+
+static void
+clearlooks_draw_top_left_highlight (cairo_t *cr,
+                                    const WidgetParameters *params,
+                                    int width, int height, gdouble radius)
+{
+	double light_y1 = params->ythickness-1,
+	       light_y2 = height - params->ythickness - 1,
+	       light_x1 = params->xthickness-1,
+	       light_x2 = width - params->xthickness - 1;
+
+	cairo_move_to         (cr, light_x1, light_y2);
+	
+	if (params->corners & CL_CORNER_TOPLEFT)
+		cairo_arc         (cr, light_x1+radius, light_y1+radius, radius, M_PI, 270*(M_PI/180)); // 150
+	else
+		cairo_line_to     (cr, light_x1, light_y1);
+	
+	cairo_line_to         (cr, light_x2, light_y1);
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
+	cairo_stroke          (cr);
+}
+
+static void
+clearlooks_draw_highlight_and_shade (cairo_t *cr,
+                                     const ShadowParameters *params,
+                                     int width, int height, gdouble radius)
+{
+	uint8 corners = params->corners;
+	double x = 1.0;
+	double y = 1.0;
+	
+	width  -= 3;
+	height -= 3;
+	
+	cairo_save (cr);
+	
+	/* Draw top/left */
+	if (corners & CL_CORNER_BOTTOMLEFT)
+		cairo_move_to (cr, x, y+height-radius);
+	else
+		cairo_move_to (cr, x, y+height);
+	
+	if (corners & CL_CORNER_TOPLEFT)
+		cairo_arc (cr, x+radius, y+radius, radius, M_PI, 270*(M_PI/180));
+	else
+		cairo_line_to (cr, x, y);
+	
+	if (corners & CL_CORNER_TOPRIGHT)
+		cairo_line_to (cr, x+width-radius, y);
+	else
+		cairo_line_to (cr, x+width, y);
+	
+	if (params->shadow & CL_SHADOW_OUT)
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5);
+	else
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.05);
+		
+	cairo_stroke (cr);
+	
+	/* Drop bottom/right */
+	
+	if (corners & CL_CORNER_TOPRIGHT)
 	{
-		cl_draw_fill(window, widget, style, x, y, width, height, r);
+		cairo_move_to (cr, x+width-radius, y);
+		cairo_arc (cr, x+width-radius, y+radius, radius, M_PI + M_PI*0.5, M_PI*2);
+	}
+	else
+		cairo_move_to (cr, x+width, y);
+	
+	if (corners & CL_CORNER_BOTTOMRIGHT)
+		cairo_arc (cr, x+width-radius, y+height-radius, radius, 0, M_PI/2);
+	else
+		cairo_line_to (cr, x+width, y+height);
+	
+	if (corners & CL_CORNER_BOTTOMLEFT)
+		cairo_arc (cr, x+radius, y+height-radius, radius, M_PI/2, M_PI);
+	else
+		cairo_line_to (cr, x, y+height);
+	
+	if (params->shadow & CL_SHADOW_OUT)
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.05);
+	else
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5);
+	
+	cairo_stroke (cr);
+	
+	cairo_restore (cr);
+}
+
+void
+clearlooks_draw_button (cairo_t *cr,
+                        const ClearlooksColors *colors,
+                        const WidgetParameters *params,
+                        int x, int y, int width, int height)
+{
+#define RADIUS 3.0
+	double r, g, b;
+	double xoffset = 0, yoffset = 0;
+	const CairoColor *fill            = &colors->bg[params->state_type];
+	const CairoColor *border_normal   = &colors->shade[7];
+	const CairoColor *border_disabled = &colors->shade[4];
+	const CairoColor *gradient_bottom = &colors->shade[3];
+	
+	cairo_translate (cr, x+0.5, y+0.5);
+
+	if (params->xthickness == 3 || params->ythickness == 3)
+	{
+		clearlooks_draw_inset (cr, width-1, height-1, RADIUS, params->corners);
+		if (params->xthickness == 3)
+			xoffset = 1;
+		if (params->ythickness == 3)
+			yoffset = 1;
 	}
 	
-	if (r->bordergc)
+	cairo_set_line_width (cr, 1.0);
+	
+	clearlooks_rounded_rectectangle (cr, xoffset, yoffset,
+	                                     width-1-(xoffset*2),
+	                                     height-1-(yoffset*2),
+	                                     3.0, params->corners);
+
+	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
+	
+	cairo_fill_preserve (cr);
+	
+	if (!params->active)
 	{
-		cl_draw_borders(window, widget, style, x, y, width, height, r);
-	}	
-}
+		cairo_pattern_t *pattern;
+		
+/* TODO: Convert these three gradients into one. Calculate how much percent
+		6 pixels is from height and use that as a stop value */
+		
+		pattern	= cairo_pattern_create_linear (0, 0, 0, height);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, 1., 1., 1., 0.1);
+		
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, 
+										   gradient_bottom->r,
+										   gradient_bottom->g,
+										   gradient_bottom->b,
+										   0.3);
+		
+		cairo_set_source (cr, pattern);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (pattern);
 
+		pattern	= cairo_pattern_create_linear (0, 0, 0, 6);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, 1.0, 1.0, 1.0, 1.0);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, 1.0, 1.0, 1.0, 0.0);
+		cairo_set_source (cr, pattern);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (pattern);
 
-static void cl_get_coords ( CLBorderType border,
-                     int x, int y, int width, int height,
-                     CLRectangle *r, int *x1, int *y1, int *x2, int *y2)
-{
-	switch (border)
-	{
-		case CL_BORDER_TOP:
-			*x1 = x + r->corners[CL_CORNER_TOPLEFT];
-			*x2 = *x1 + width - r->corners[CL_CORNER_TOPLEFT] - r->corners[CL_CORNER_TOPRIGHT] - 1;
-			*y1 = *y2 = y;
-			break;
-		case CL_BORDER_BOTTOM:
-			*x1 = x + r->corners[CL_CORNER_BOTTOMLEFT];
-			*x2 = *x1 + width - r->corners[CL_CORNER_BOTTOMLEFT] - r->corners[CL_CORNER_BOTTOMRIGHT] - 1;
-			*y1 = *y2 = y + height - 1;
-			break;
-		case CL_BORDER_LEFT:
-			*x1 = *x2 = x;
-			*y1 = y + r->corners[CL_CORNER_TOPLEFT];
-			*y2 = *y1 + height - r->corners[CL_CORNER_TOPLEFT] - r->corners[CL_CORNER_BOTTOMLEFT] - 1;
-			break;
-		case CL_BORDER_RIGHT:
-			*x1 = *x2 = x + width - 1;
-			*y1 = y + r->corners[CL_CORNER_TOPRIGHT];
-			*y2 = *y1 + height - r->corners[CL_CORNER_TOPRIGHT] - r->corners[CL_CORNER_BOTTOMRIGHT] - 1;
-			break;
-	}
-}
-
-void cl_draw_borders (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                      int x, int y, int width, int height, CLRectangle *r)
-{
-	int x1, y1, x2, y2, i;
-
-	if (r->bordergc == NULL)
-		return;
-
-	for ( i=0; i<4; i++) /* draw all four borders + corners */
-	{
-		cl_get_coords (i, x, y, width, height, r, &x1, &y1, &x2, &y2);
-		cl_draw_line (window, widget, style, x1, y1, x2, y2, i, r);
-		cl_draw_corner (window, widget, style, x, y, width, height, r, i );
-	}
-}
-
-
-static GdkColor cl_gc_get_foreground(GdkGC *gc)
-{
-	GdkGCValues values;
-	gdk_gc_get_values (gc, &values);
-	return values.foreground;
-}
-
-static void cl_draw_line (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                   int x1, int y1, int x2, int y2, CLBorderType border,
-                   CLRectangle *r)
-{
-	if (r->gradient_type == CL_GRADIENT_NONE ||
-		r->border_gradient.from == NULL || r->border_gradient.to == NULL )
-	{
-		gdk_draw_line (window, r->bordergc, x1, y1, x2, y2);
-	}
-	else if (r->gradient_type == CL_GRADIENT_HORIZONTAL && (border == CL_BORDER_TOP || border == CL_BORDER_BOTTOM))
-	{
-		draw_vgradient (window, r->bordergc, style,
-		                x1, y1, x2-x1+1, 1,
-		                r->border_gradient.from, r->border_gradient.to);
-	}
-	else if (r->gradient_type == CL_GRADIENT_VERTICAL && (border == CL_BORDER_LEFT || border == CL_BORDER_RIGHT))
-	{
-		draw_hgradient (window, r->bordergc, style,
-		                x1, y1, 1, y2-y1+1,
-		                r->border_gradient.from, r->border_gradient.to);
+		pattern	= cairo_pattern_create_linear (0, height-6, 0, height);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0.0, 0.0, 0.0, 0.0);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0.0, 0.0, 0.0, 0.1);
+		cairo_set_source (cr, pattern);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (pattern);
 	}
 	else
 	{
-		GdkColor tmp_color = cl_gc_get_foreground (r->bordergc);
+		cairo_pattern_t *pattern;
 
-		if (r->gradient_type == CL_GRADIENT_HORIZONTAL && border == CL_BORDER_LEFT ||
-			r->gradient_type == CL_GRADIENT_VERTICAL && border == CL_BORDER_TOP)
-			gdk_gc_set_foreground (r->bordergc, r->border_gradient.from);
-		else
-			gdk_gc_set_foreground (r->bordergc, r->border_gradient.to);				
+		pattern	= cairo_pattern_create_linear (0, yoffset, 0, 2+yoffset);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0.0, 0.0, 0.0, params->disabled ? 0.1 : 0.2);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0.0, 0.0, 0.0, 0.0);
+		cairo_set_source (cr, pattern);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (pattern);
 
-		gdk_draw_line (window, r->bordergc, x1, y1, x2, y2);
-		
-		gdk_gc_set_foreground (r->bordergc, &tmp_color);
-	}
-}
-
-static GdkColor *cl_get_gradient_corner_color (CLRectangle *r, CLCornerSide corner)
-{
-	GdkColor *color;
-
-	if (r->border_gradient.from == NULL || r->border_gradient.to == NULL)
-	{
-		color = NULL;
-	}
-	else if ((r->gradient_type == CL_GRADIENT_HORIZONTAL && (corner == CL_CORNER_TOPLEFT || corner == CL_CORNER_BOTTOMLEFT)) ||
-	    (r->gradient_type == CL_GRADIENT_VERTICAL && (corner == CL_CORNER_TOPLEFT || corner == CL_CORNER_TOPRIGHT)))
-	{
-		color = r->border_gradient.from;
-	}
-	else /* no gradient or other corner */
-	{
-		color = r->border_gradient.to;
-	}
-	
-	return color;
-}
-
-static void cl_draw_corner (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                     int x, int y, int width, int height,
-                     CLRectangle *r, CLCornerSide corner)
-{
-	GdkColor    *color;
-	GdkColor     aacolor; /* anti-aliasing color */
-	GdkGCValues  values;
-	GdkColor     tmp;
-	GdkColor    *bgcolor;
-
-	int x1;
-	int y1;
-
-	if (r->corners[corner] == CL_CORNER_NONE)
-		return;
-	
-	color = cl_get_gradient_corner_color (r, corner);
-	gdk_gc_get_values (r->bordergc, &values);
-
-	if (color == NULL)
-	{
-		tmp = values.foreground;
-		gdk_colormap_query_color (gtk_widget_get_colormap(widget), values.foreground.pixel, &tmp);
-		color = &tmp;
+		pattern	= cairo_pattern_create_linear (xoffset, 0, 2+xoffset, 0);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0.0, 0.0, 0.0, params->disabled ? 0.1 : 0.2);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0.0, 0.0, 0.0, 0.0);
+		cairo_set_source (cr, pattern);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (pattern);
 	}
 
-	bgcolor = get_parent_bgcolor(widget);
-
-	if (bgcolor == NULL)
+	if (params->disabled)
 	{
-		bgcolor = color;
-	}
-
-	blend (style->colormap, bgcolor, color, &aacolor, 70);
-
-	if (r->corners[corner] == CL_CORNER_ROUND)
-	{
-		x1 = (corner == CL_CORNER_TOPLEFT ||
-		      corner == CL_CORNER_BOTTOMLEFT) ? x+1 : x+width - 2;
-		
-		y1 = (corner == CL_CORNER_TOPLEFT ||
-		      corner == CL_CORNER_TOPRIGHT) ? y+1 : y+height - 2;
-		
-		gdk_gc_set_foreground (r->bordergc, color);
-		gdk_draw_point (window, r->bordergc, x1, y1);
-		
-		gdk_gc_set_foreground (r->bordergc, &aacolor);
-		
-		x1 = (corner == CL_CORNER_TOPLEFT ||
-		      corner == CL_CORNER_BOTTOMLEFT) ? x+1 : x+width-2;
-
-		y1 = (corner == CL_CORNER_TOPLEFT ||
-		      corner == CL_CORNER_TOPRIGHT) ? y : y+height-1;		
-		
-		gdk_draw_point (window, r->bordergc, x1, y1);
-
-		x1 = (corner == CL_CORNER_TOPLEFT ||
-		      corner == CL_CORNER_BOTTOMLEFT) ? x : x+width-1;
-
-		y1 = (corner == CL_CORNER_TOPLEFT ||
-		      corner == CL_CORNER_TOPRIGHT) ? y+1 : y+height-2;
-
-		gdk_draw_point (window, r->bordergc, x1, y1);
-								
-	}
-	else if (r->corners[corner] == CL_CORNER_NARROW)
-	{
-		x1 = (corner == CL_CORNER_TOPLEFT ||
-		      corner == CL_CORNER_BOTTOMLEFT) ? x : x+width-1;
-
-		y1 = (corner == CL_CORNER_TOPLEFT ||
-		      corner == CL_CORNER_TOPRIGHT) ? y : y+height-1;
-				
-		gdk_gc_set_foreground (r->bordergc, &aacolor);
-		gdk_draw_point (window, r->bordergc, x1, y1);
- 	}
-
-	gdk_gc_set_foreground (r->bordergc, &values.foreground);
-}
-
-static void cl_draw_fill (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                   int x, int y, int width, int height, CLRectangle *r)
-{
-	if (r->gradient_type == CL_GRADIENT_NONE ||
-		r->fill_gradient.from == NULL || r->fill_gradient.to == NULL)
-	{
-		gdk_draw_rectangle (window, r->fillgc, TRUE,
-		                    x+1, y+1, width-2, height-2);
-	}
-	else if (r->gradient_type == CL_GRADIENT_HORIZONTAL)
-	{
-		draw_vgradient (window, r->fillgc, gtk_widget_get_style(widget),
-		                x+1, y+1, width-2, height-2,
-		                r->fill_gradient.from, r->fill_gradient.to);
-	}
-	else if (r->gradient_type == CL_GRADIENT_VERTICAL)
-	{
-		draw_hgradient (window, r->fillgc, gtk_widget_get_style(widget),
-		                x+1, y+1, width-2, height-2,
-		                r->fill_gradient.from, r->fill_gradient.to);
-	}
-}
-
-void cl_rectangle_set_button(CLRectangle *r, GtkStyle *style,
-                            GtkStateType state_type,  gboolean has_default,
-                            gboolean has_focus,
-                            CLBorderType tl, CLBorderType tr,
-                            CLBorderType bl, CLBorderType br)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	int              my_state_type = (state_type == GTK_STATE_ACTIVE) ? 2 : 0;
-	GdkGC           *border_gc = clearlooks_style->border_gc[CL_BORDER_UPPER+my_state_type];
-	
-	
-	cl_rectangle_init (r, style->bg_gc[state_type],
-	                   clearlooks_style->border_gc[CL_BORDER_UPPER+my_state_type],
-	                   tl, tr, bl, br);
-
-	if (state_type != GTK_STATE_INSENSITIVE && !has_default)
-	{
-		cl_rectangle_set_gradient (&r->border_gradient,
-		                           &clearlooks_style->border[CL_BORDER_UPPER+my_state_type],
-		                           &clearlooks_style->border[CL_BORDER_LOWER+my_state_type]);
-	}
-	else if (has_default)
-		r->bordergc = style->black_gc;
-	else
-		r->bordergc = clearlooks_style->shade_gc[4];
-
-	r->gradient_type = CL_GRADIENT_VERTICAL;
-
-	r->topleft     = (state_type != GTK_STATE_ACTIVE) ? style->light_gc[state_type] : clearlooks_style->shade_gc[4];
-	r->bottomright = (state_type != GTK_STATE_ACTIVE) ? clearlooks_style->shade_gc[1] : NULL;
-	
-	shade (&style->bg[state_type], &r->tmp_color, 0.93);
-	
-
-	cl_rectangle_set_gradient (&r->fill_gradient,
-	                           &style->bg[state_type],
-	                           &r->tmp_color);
-}
-
-void cl_rectangle_set_entry (CLRectangle *r, GtkStyle *style,
-                            GtkStateType state_type,
-                            CLBorderType tl, CLBorderType tr,
-                            CLBorderType bl, CLBorderType br,
-                            gboolean has_focus)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	GdkGC *bordergc;
-	
-	if (has_focus)
-		bordergc = clearlooks_style->spot3_gc;
-	else if (state_type != GTK_STATE_INSENSITIVE)
-		bordergc = clearlooks_style->border_gc[CL_BORDER_LOWER];
-	else
-		bordergc = clearlooks_style->shade_gc[3];		
-	
-	cl_rectangle_init (r, style->base_gc[state_type], bordergc,
-    	               tl, tr, bl, br);
-
-	if (state_type != GTK_STATE_INSENSITIVE )
-		r->topleft     = (has_focus) ? clearlooks_style->spot1_gc
-	                                 : style->bg_gc[GTK_STATE_NORMAL];
-	
-	if (has_focus)
-		r->bottomright = clearlooks_style->spot1_gc;
-	else if (state_type == GTK_STATE_INSENSITIVE)
-		r->bottomright = style->base_gc[state_type];
-}
-
-void cl_draw_shadow(GdkWindow *window, GtkWidget *widget, GtkStyle *style,
-                    int x, int y, int width, int height, CLRectangle *r)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	int x1, y1, x2, y2;
-
-	if (r->bottomright != NULL)
-	{
-		x1 = x+1+(r->corners[CL_CORNER_BOTTOMLEFT]/2);
-		y1 = y2 = y+height-2;
-		x2 = x+width - 1 - (1+r->corners[CL_CORNER_BOTTOMRIGHT]/2);
-		
-		gdk_draw_line (window, r->bottomright, x1, y1, x2, y2);
-		
-		x1 = x2 = x+width-2;
-		y1 = y+1+(r->corners[CL_CORNER_TOPRIGHT]/2);
-		y2 = y+height - 1 - (1+r->corners[CL_CORNER_BOTTOMRIGHT]/2);
-
-		gdk_draw_line (window, r->bottomright, x1, y1, x2, y2);
-	}
-	
-	if (r->topleft != NULL)
-	{
-		x1 = x+1+(r->corners[CL_CORNER_TOPLEFT]/2);
-		y1 = y2 = y+1;
-		x2 = x+width-1-(1+r->corners[CL_CORNER_TOPRIGHT]/2);
-		
-		gdk_draw_line (window, r->topleft, x1, y1, x2, y2);
-		
-		x1 = x2 = x+1;
-		y1 = y+1+(r->corners[CL_CORNER_TOPLEFT]/2);
-		y2 = y+height-1-(1+r->corners[CL_CORNER_BOTTOMLEFT]/2);
-
-		gdk_draw_line (window, r->topleft, x1, y1, x2, y2);
-	}
-}
-
-void cl_rectangle_set_color (CLGradient *g, GdkColor *color)
-{
-	g->from = color;
-	g->to   = color;
-}
-
-void cl_rectangle_set_gradient (CLGradient *g, GdkColor *from, GdkColor *to)
-{
-	g->from = from;
-	g->to   = to;
-}
-
-void cl_rectangle_init (CLRectangle *r,
-                        GdkGC *fillgc, GdkGC *bordergc,
-                        int tl, int tr, int bl, int br)
-{
-	r->gradient_type = CL_GRADIENT_NONE;
-	
-	r->border_gradient.from = r->border_gradient.to = NULL;
-	r->fill_gradient.from   = r->fill_gradient.to   = NULL;
-	
-	r->fillgc      = fillgc;
-	r->bordergc    = bordergc;
-	
-	r->topleft     = NULL;
-	r->bottomright = NULL;
-	
-	r->corners[CL_CORNER_TOPLEFT] = tl;
-	r->corners[CL_CORNER_TOPRIGHT] = tr;
-	r->corners[CL_CORNER_BOTTOMLEFT] = bl;
-	r->corners[CL_CORNER_BOTTOMRIGHT] = br;
-}
-
-void cl_rectangle_set_corners (CLRectangle *r, int tl, int tr, int bl, int br)
-{
-	r->corners[CL_CORNER_TOPLEFT] = tl;
-	r->corners[CL_CORNER_TOPRIGHT] = tr;
-	r->corners[CL_CORNER_BOTTOMLEFT] = bl;
-	r->corners[CL_CORNER_BOTTOMRIGHT] = br;	
-}
-
-void cl_set_corner_sharpness (const gchar *detail, GtkWidget *widget, CLRectangle *r)
-{
-	if (widget->parent && GTK_IS_COMBO_BOX_ENTRY (widget->parent) || GTK_IS_COMBO (widget->parent))
-	{
-		gboolean rtl = get_direction (widget->parent) == GTK_TEXT_DIR_RTL;
-		int cl = rtl ? CL_CORNER_ROUND : CL_CORNER_NONE;
-		int cr = rtl ? CL_CORNER_NONE  : CL_CORNER_ROUND;
-		
-		cl_rectangle_set_corners (r, cl, cr, cl, cr);
-	}
-	else if (detail && !strcmp (detail, "spinbutton_up"))
-	{
-		gboolean rtl = get_direction (widget->parent) == GTK_TEXT_DIR_RTL;
-		int tl = rtl ? CL_CORNER_ROUND : CL_CORNER_NONE;
-		int tr = rtl ? CL_CORNER_NONE  : CL_CORNER_ROUND;
-
-		cl_rectangle_set_corners (r, tl, tr,
-		                          CL_CORNER_NONE, CL_CORNER_NONE);
-	}
-	else if (detail && !strcmp (detail, "spinbutton_down"))
-	{
-		gboolean rtl = get_direction (widget->parent) == GTK_TEXT_DIR_RTL;
-		int bl = rtl ? CL_CORNER_ROUND : CL_CORNER_NONE;
-		int br = rtl ? CL_CORNER_NONE  : CL_CORNER_ROUND;
-
-		cl_rectangle_set_corners (r, CL_CORNER_NONE, CL_CORNER_NONE,
-		                          bl, br);
+		cairo_set_source_rgb (cr, border_disabled->r,
+		                          border_disabled->g,
+		                          border_disabled->b);
 	}
 	else
 	{
-		cl_rectangle_set_corners (r, CL_CORNER_ROUND, CL_CORNER_ROUND,
-		                          CL_CORNER_ROUND, CL_CORNER_ROUND);
-	};
-}
-
-void cl_rectangle_set_clip_rectangle (CLRectangle *r, GdkRectangle *area)
-{
-	if (area == NULL)
-		return;
-	
-	if (r->fillgc)
-		gdk_gc_set_clip_rectangle (r->fillgc, area);
-	
-	if (r->bordergc)
-		gdk_gc_set_clip_rectangle (r->bordergc, area);		
-
-	if (r->topleft)
-		gdk_gc_set_clip_rectangle (r->topleft, area);		
-
-	if (r->bottomright)
-		gdk_gc_set_clip_rectangle (r->bottomright, area);		
-}
-
-void cl_rectangle_reset_clip_rectangle (CLRectangle *r)
-{
-	if (r->fillgc)
-		gdk_gc_set_clip_rectangle (r->fillgc, NULL);
-	
-	if (r->bordergc)
-		gdk_gc_set_clip_rectangle (r->bordergc, NULL);
-
-	if (r->topleft)
-		gdk_gc_set_clip_rectangle (r->topleft, NULL);
-
-	if (r->bottomright)
-		gdk_gc_set_clip_rectangle (r->bottomright, NULL);
-}
-
-void cl_rectangle_reset (CLRectangle *r, GtkStyle *style)
-{
-	cl_rectangle_init (r,
-	                   NULL, NULL,
-	                   CL_CORNER_ROUND, CL_CORNER_ROUND,
-	                   CL_CORNER_ROUND, CL_CORNER_ROUND);
-}
-
-GdkColor cl_gc_set_fg_color_shade (GdkGC *gc, GdkColormap *colormap, 
-                                   GdkColor *from, gfloat s)
-{
-	GdkColor tmp_color;
-	GdkGCValues values;
-
-	shade (from, &tmp_color, s);
-	gdk_gc_get_values (gc, &values);
-	gdk_rgb_find_color (colormap, &tmp_color);
-	gdk_gc_set_foreground (gc, &tmp_color);
-	
-	return values.foreground;
-}
-
-/* #warning MOVE THIS TO SUPPORT.C/H SO THE DRAW_CORNER FUNCTION CAN USE IT. OR, MAKE DRAW_CORNER USE IT SOME OTHER WAY. */
-
-static void cl_get_window_style_state (GtkWidget *widget, GtkStyle **style, GtkStateType *state_type)
-{
-	GtkStyle *windowstyle = NULL;
-	GtkWidget *tmpwidget = widget;
-	GtkStateType windowstate;
-	
-	if (widget && GTK_IS_ENTRY (widget))
-		tmpwidget = tmpwidget->parent;
-	
-	while (tmpwidget && GTK_WIDGET_NO_WINDOW (tmpwidget) && !GTK_IS_NOTEBOOK(tmpwidget))
-	{
-		tmpwidget = tmpwidget->parent;
-	}
-
-	*style     = tmpwidget->style;
-	*state_type = GTK_WIDGET_STATE(tmpwidget);
-}
-
-static GdkGC *cl_get_window_bg_gc (GtkWidget *widget)
-{
-	GtkStyle *style;
-	GtkStateType state_type;
-	
-	cl_get_window_style_state (widget, &style, &state_type);
-	
-	return style->bg_gc[state_type];
-}
-
-/******************************************************************************
- *   DRAW THE MIGHTY WIDGETS!                                                 *
- ******************************************************************************/
-
-void cl_draw_inset (GtkStyle *style, GdkWindow *window, GtkWidget *widget,
-                    GdkRectangle *area,
-                    gint x, gint y, gint width, gint height,
-                    int tl, int tr, int bl, int br )
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE(style);
-	ClearlooksStyle *clwindowstyle; /* style of the window this widget is on */
-	GtkStateType     windowstate;	
-	CLRectangle      r;
-
-	cl_rectangle_init (&r, NULL, style->black_gc,
-	                   tl, tr, bl, br);
-	
-	r.gradient_type = CL_GRADIENT_VERTICAL;
-	
-	cl_get_window_style_state(widget, (GtkStyle**)&clwindowstyle, &windowstate);
-	
-	g_assert (clwindowstyle != NULL);
-	
-	if (GTK_WIDGET_HAS_DEFAULT (widget))
-	{
-		r.bordergc = style->mid_gc[GTK_STATE_NORMAL];
-	}
-	else
-	{
-		cl_rectangle_set_gradient (&r.border_gradient,
-		                           &clwindowstyle->inset_dark[windowstate],
-		                           &clwindowstyle->inset_light[windowstate]);
-	}
-	cl_rectangle_set_clip_rectangle (&r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r); 
-	cl_rectangle_reset_clip_rectangle (&r);
-}
-
-/* Draw a normal (toggle)button. Not spinbuttons.*/ 
-void cl_draw_button(GtkStyle *style, GdkWindow *window,
-                    GtkStateType state_type, GtkShadowType shadow_type,
-                    GdkRectangle *area,
-                    GtkWidget *widget, const gchar *detail,
-                    gint x, gint y, gint width, gint height)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE(style);
-	int my_state_type = (state_type == GTK_STATE_ACTIVE) ? 2 : 0;
-	GdkGC *bg_gc = NULL;
-	gboolean is_active = FALSE;
-	CLRectangle r;
-	
-	/* Get the background color of the window we're on */
-	bg_gc = cl_get_window_bg_gc(widget);
-	
-	cl_rectangle_set_button (&r, style, state_type,
-	                         GTK_WIDGET_HAS_DEFAULT (widget),
-	                         GTK_WIDGET_HAS_FOCUS (widget),
-	                         CL_CORNER_ROUND, CL_CORNER_ROUND,
-	                         CL_CORNER_ROUND, CL_CORNER_ROUND);
-		
-	if (state_type == GTK_STATE_ACTIVE)
-		is_active = TRUE;
-
-	if (GTK_IS_TOGGLE_BUTTON(widget) &&
-	    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(widget)) &&
-	    state_type == GTK_STATE_PRELIGHT)
-	{
-		cl_rectangle_set_gradient (&r.fill_gradient, &clearlooks_style->shade[1], &clearlooks_style->shade[1]);
-		r.topleft     = clearlooks_style->shade_gc[3];
-		r.bottomright = clearlooks_style->shade_gc[1];
-		
-		is_active = TRUE;
-	}	
-
-	if (!is_active)
-		r.fillgc = NULL;
-		
-	if (!GTK_IS_NOTEBOOK (widget->parent))
-	{
-		gdk_draw_rectangle (window, bg_gc, FALSE, x, y, width-1, height-1);
-	
-		/* Draw "sunken" look when border thickness is more than 2 pixels. */
-		if (style->xthickness > 2 && style->ythickness > 2)
-		cl_draw_inset (style, window, widget, area, x, y, width, height,
-		               CL_CORNER_ROUND, CL_CORNER_ROUND,
-		               CL_CORNER_ROUND, CL_CORNER_ROUND);
+		cairo_set_source_rgb (cr, border_normal->r,
+		                          border_normal->g,
+		                          border_normal->b);
 	}
 	
-	/* Draw "sunken" look when border thickness is more than 2 pixels.*/
-	if (style->xthickness > 2 && style->ythickness > 2)
+	cairo_stroke (cr);
+	
+	if (!params->active)
 	{
-		x++;
-		y++;
-		height-=2;
-		width-=2;
-	}
-	
-	/* Don't draw the normal gradient for normal buttons. */
-
-	cl_rectangle_set_clip_rectangle (&r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
-	
-	
-	if (!is_active) 
-	{
-		int tmp_height = (float)height*0.25;
-	
-		gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
+		double light_y1 = params->ythickness-1,
+		       light_y2 = height - params->ythickness - 1,
+		       light_x1 = params->xthickness-1,
+		       light_x2 = width - params->xthickness - 1;
 		
-		draw_hgradient (window, style->bg_gc[state_type], style,
-		                x+2,y+2,width-4,tmp_height,
-		                &clearlooks_style->button_g1[state_type],
-			            &clearlooks_style->button_g2[state_type]);
-		
-		draw_hgradient (window, style->bg_gc[state_type], style,
-		                x+2, y+2+tmp_height, width-4, height-3-tmp_height*2,
-		                &clearlooks_style->button_g2[state_type],
-			            &clearlooks_style->button_g3[state_type]);
-		
-		draw_hgradient (window, style->bg_gc[state_type], style,
-		                x+2,y+height-tmp_height-1,width-4,tmp_height,
-		                &clearlooks_style->button_g3[state_type],
-			            &clearlooks_style->button_g4[state_type]);
-
-		gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
-	}				
-	
-	cl_draw_shadow    (window, widget, style, x, y, width, height, &r);
-	cl_rectangle_reset_clip_rectangle (&r);
-}
-
-/* Draw spinbuttons. */
-void cl_draw_spinbutton(GtkStyle *style, GdkWindow *window,
-                        GtkStateType state_type, GtkShadowType shadow_type,
-                        GdkRectangle *area,
-                        GtkWidget *widget, const gchar *detail,
-                        gint x, gint y, gint width, gint height)
-{
-	CLRectangle r;
-	GdkRectangle new_area;
-
-	int tl = CL_CORNER_NONE, tr = CL_CORNER_NONE,
-	    bl = CL_CORNER_NONE, br = CL_CORNER_NONE;	
-	
-	if (area == NULL)
-	{
-		new_area.x = x;
-		new_area.y = y;
-		new_area.width = width;
-		new_area.height = height;
-		area = &new_area;		
-	}
-
-	if (!strcmp (detail, "spinbutton")) /* draws the 'back' of the spinbutton */
-	{
-		GdkGC *bg_gc = cl_get_window_bg_gc(widget);
-		
-		gdk_gc_set_clip_rectangle (bg_gc, area);
-		gdk_draw_rectangle (window, bg_gc, FALSE, x, y, width-1, height-1);
-		gdk_gc_set_clip_rectangle (bg_gc, NULL);
-
-		if (style->xthickness > 2 && style->ythickness > 2)
-			cl_draw_inset (style, window, widget, area, x, y, width, height,
-			               CL_CORNER_NONE, CL_CORNER_ROUND,
-			               CL_CORNER_NONE, CL_CORNER_ROUND);
-		
-		return;
-	}
-
-	if (!strcmp (detail, "spinbutton_up"))
-	{
-		tr = CL_CORNER_ROUND;
-		
-		(style->xthickness > 2 && style->ythickness > 2) ? y++ : height++;
-	}
-	
-	if (!strcmp (detail, "spinbutton_down"))
-	{
-		br = CL_CORNER_ROUND;
-		
-		if (style->xthickness > 2 && style->ythickness > 2)
-			height--;
-	}
-	
-	cl_rectangle_set_button (&r, style, state_type,
-	                         GTK_WIDGET_HAS_DEFAULT  (widget),
-	                         GTK_WIDGET_HAS_FOCUS (widget),
-	                         tl, tr,
-	                         bl, br);
-	width--;
-	
-	cl_rectangle_set_clip_rectangle (&r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
-	cl_draw_shadow    (window, widget, style, x, y, width, height, &r);
-	cl_rectangle_reset_clip_rectangle (&r);
-}
-
-void cl_draw_combobox_entry (GtkStyle *style, GdkWindow *window,
-                             GtkStateType state_type, GtkShadowType shadow_type,
-                             GdkRectangle *area,
-                             GtkWidget *widget, const gchar *detail,
-                             gint x, gint y, gint width, gint height)
-{
-	CLRectangle r;
-	
-	gboolean rtl = get_direction (widget->parent) == GTK_TEXT_DIR_RTL;
-	gboolean has_focus = GTK_WIDGET_HAS_FOCUS (widget);
-	
-	int cl = rtl ? CL_CORNER_NONE  : CL_CORNER_ROUND,
-		cr = rtl ? CL_CORNER_ROUND : CL_CORNER_NONE;
-	
-	GdkGC *bg_gc = cl_get_window_bg_gc(widget);
-	
-	if (rtl)
-	{
-		if (!has_focus)
+		if (params->corners & CL_CORNER_TOPLEFT)
 		{
-			x -= 1;
-			width +=1;
 		}
+
+
+		/* Draw right shadow */
+		cairo_move_to (cr, width-params->xthickness, light_y1);
+		cairo_line_to (cr, width-params->xthickness, light_y2);
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.05);
+		cairo_stroke (cr);
+
+		/* Draw topleft shadow */
+		clearlooks_draw_top_left_highlight (cr, params, width, height, RADIUS);
 	}
-	else
-	{
-		width += 2;
-		if (has_focus) width--; /* this gives us a 2px focus line at the right side. */
-	}
-	
-	cl_rectangle_set_entry (&r, style, state_type,
-						   cl, cr, cl, cr,
-						   has_focus);
-
-	gdk_gc_set_clip_rectangle (bg_gc, area);
-	gdk_draw_rectangle (window, bg_gc, FALSE, x, y, width-1, height-1);
-	gdk_gc_set_clip_rectangle (bg_gc, NULL);
-
-	/* Draw "sunken" look when border thickness is more than 2 pixels. */
-	if (style->xthickness > 2 && style->ythickness > 2)
-	{
-		cl_draw_inset (style, window, widget, area, x, y, width, height,
-		               cl, cr, cl, cr);
-
-		y++;
-		x++;
-		width-=2;
-		height-=2;
-	}
-	
-	cl_rectangle_set_clip_rectangle (&r, area);
-
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
-	cl_draw_shadow (window, widget, style, x, y, width, height, &r); 
-	
-	cl_rectangle_reset_clip_rectangle (&r);
 }
 
-void cl_draw_combobox_button (GtkStyle *style, GdkWindow *window,
-                    GtkStateType state_type, GtkShadowType shadow_type,
-                    GdkRectangle *area,
-                    GtkWidget *widget, const gchar *detail,
-                    gint x, gint y, gint width, gint height)
+void
+clearlooks_draw_entry (cairo_t *cr,
+                       const ClearlooksColors *colors,
+                       const WidgetParameters *params,
+                       int x, int y, int width, int height)
 {
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE(style);
-	gboolean is_active  = FALSE;
-	gboolean draw_inset = FALSE;
-	CLRectangle r;
+#define RADIUS 3.0
+	cairo_translate (cr, x+0.5, y+0.5);
+	cairo_set_line_width (cr, 1.0);
+	
+	
+	/* Fill the background (shouldn't have to) */
+	cairo_rectangle (cr, -0.5, -0.5, width, height);
+	cairo_set_source_rgb (cr, params->parentbg.r, 
+	                          params->parentbg.g, 
+	                          params->parentbg.b);
+	cairo_fill (cr);
 
-	cl_rectangle_set_button (&r, style, state_type,
-	                         GTK_WIDGET_HAS_DEFAULT  (widget),
-	                         GTK_WIDGET_HAS_FOCUS (widget),
-	                         CL_CORNER_NONE, CL_CORNER_ROUND,
-	                         CL_CORNER_NONE, CL_CORNER_ROUND);
+	/* Fill the entry's base color (why isn't is large enough by default?) */
+	cairo_rectangle (cr, 1.5, 1.5, width-4, height-4);
+	cairo_set_source_rgb (cr, colors->base[params->state_type].r, 
+	                          colors->base[params->state_type].g, 
+	                          colors->base[params->state_type].b);
+	cairo_fill (cr);
 	
-	if (state_type == GTK_STATE_ACTIVE)
-		is_active = TRUE;
-	else
-		r.fillgc = NULL;
+	clearlooks_draw_inset (cr, width-1, height-1, 2.0, params->corners);
+
+	/* Draw the border */
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, params->disabled ? 0.3 : 0.5);
+	clearlooks_rounded_rectectangle (cr, x+1, y+1, width-3, height-3, RADIUS, params->corners);
+	cairo_stroke (cr);
+
+
+	/* Draw the inner shadow */	
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, params->disabled ? 0.05 : 0.1);
+	cairo_move_to (cr, 2, height-3);
+	cairo_arc (cr, params->xthickness+RADIUS-1, params->ythickness+RADIUS-1, RADIUS, M_PI, 270*(M_PI/180));
+	cairo_line_to (cr, width-3, 2);
+	cairo_stroke (cr);
+}
+
+void
+clearlooks_draw_spinbutton (cairo_t *cr,
+                            const ClearlooksColors *colors,
+                            const WidgetParameters *params,
+                            int x, int y, int width, int height)
+{
+	clearlooks_draw_button (cr, colors, params, x, y, width, height);
 	
-	/* Seriously, why can't non-gtk-apps at least try to be decent citizens?
-	   Take this fscking OpenOffice.org 1.9 for example. The morons responsible
-	   for this utter piece of crap give the clip size wrong values! :'(  */
+	/* Seperator */
+	cairo_move_to (cr, params->xthickness,         (height/2));
+	cairo_line_to (cr, width-params->xthickness-1, (height/2));
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+	cairo_stroke (cr);
+
+	cairo_move_to (cr, params->xthickness,         (height/2)+1);
+	cairo_line_to (cr, width-params->xthickness-1, (height/2)+1);
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.7);
+	cairo_stroke (cr);	
+}
+
+void
+clearlooks_draw_spinbutton_down (cairo_t *cr,
+                                 const ClearlooksColors *colors,
+                                 const WidgetParameters *params,
+                                 int x, int y, int width, int height)
+{
+	cairo_pattern_t *pattern;
 	
-	if (area)
+	cairo_translate (cr, x+1, y+1);
+	
+	clearlooks_rounded_rectectangle (cr, 1, 1, width-4, height-4, 3, params->corners);
+	
+	cairo_set_source_rgb (cr, colors->bg[params->state_type].r,
+	                          colors->bg[params->state_type].g, 
+	                          colors->bg[params->state_type].b);
+	
+	cairo_fill_preserve (cr);
+	
+	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0.0, 0.0, 0.0, 0.3);
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0.0, 0.0, 0.0, 0.0);
+	
+	cairo_set_source (cr, pattern);
+	cairo_fill (cr);
+	
+	cairo_pattern_destroy (pattern);
+}
+
+static void
+clearlooks_scale_draw_gradient (cairo_t *cr,
+                                const CairoColor *c1,
+                                const CairoColor *c2,
+                                const CairoColor *c3,
+                                int x, int y, int width, int height,
+                                boolean horizontal)
+{
+	cairo_pattern_t *pattern;
+	gdouble r, g, b;
+
+	pattern = cairo_pattern_create_linear (0, 0, horizontal ? 0 :  width, horizontal ? height : 0);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.0, c1->r, c1->g, c1->b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, c2->r, c2->g, c2->b);
+
+	cairo_rectangle (cr, x, y, width, height);	
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve (cr);
+	
+	cairo_set_source_rgb (cr, c3->r, c3->g, c3->b);
+	cairo_stroke (cr);
+}
+
+#define TROUGH_SIZE 6
+void
+clearlooks_draw_scale_trough (cairo_t *cr,
+                              const ClearlooksColors *colors,
+                              const WidgetParameters *params,
+                              const SliderParameters *slider,
+                              int x, int y, int width, int height)
+{
+	int     fill_x, fill_y, fill_width, fill_height; /* Fill x,y,w,h */
+	int     trough_width, trough_height;
+	double  translate_x, translate_y;
+	int     fill_size = slider->fill_size;
+
+	if (slider->horizontal)
 	{
-		area->x = x;
-		area->y = y;
-		area->width = width;
-		area->height = height;
-	}
+		if (fill_size > width-3)
+			fill_size = width-3;
 
-	x--;
-	width++;
-	
-	/* Draw "sunken" look when border thickness is more than 2 pixels. */
-	if (GTK_IS_COMBO(widget->parent))
-		draw_inset = (widget->parent->style->xthickness > 2 &&
-	                  widget->parent->style->ythickness > 2);
-	else
-		draw_inset = (style->xthickness > 2 && style->ythickness > 2);
+		fill_x        = slider->inverted ? width - fill_size - 3 : 0;
+		fill_y        = 0;
+		fill_width    = fill_size;			
+		fill_height   = TROUGH_SIZE-2;
 		
-	if (draw_inset)
-	{
-		cl_draw_inset (style, window, widget, area, x, y, width, height,
-		               CL_CORNER_NONE, CL_CORNER_ROUND,
-		               CL_CORNER_NONE, CL_CORNER_ROUND);
-	
-		x++;
-		y++;
-		height-=2;
-		width-=2;
+		trough_width  = width-3;
+		trough_height = TROUGH_SIZE-2;
+		
+		translate_x   = x + 0.5;
+		translate_y   = y + 0.5 + (height/2) - (TROUGH_SIZE/2);
 	}
 	else
 	{
-		x++;
-		width--;
+		if (fill_size > height-3)
+			fill_size = height-3;
+
+		fill_x        = 0;
+		fill_y        = slider->inverted ? height - fill_size - 3 : 0;
+		fill_width    = TROUGH_SIZE-2;
+		fill_height   = fill_size;			
+		
+		trough_width  = TROUGH_SIZE-2;
+		trough_height = height-3;
+		
+		translate_x   = x + 0.5 + (width/2) - (TROUGH_SIZE/2);
+		translate_y  = y + 0.5;
 	}
-	
-	if (area)
-		cl_rectangle_set_clip_rectangle (&r, area);
 
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
+	cairo_set_line_width (cr, 1.0);
+	cairo_translate (cr, translate_x, translate_y);
 	
-	if (!is_active)
-	{
-		int tmp_height = (float)height*0.25;
+	clearlooks_draw_inset (cr, trough_width+2, trough_height+2, 0, 0);
 	
-		gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
-		
-		draw_hgradient (window, style->bg_gc[state_type], style,
-		                x+2,y+2,width-4,tmp_height,
-		                &clearlooks_style->button_g1[state_type],
-			            &clearlooks_style->button_g2[state_type]);
-		
-		draw_hgradient (window, style->bg_gc[state_type], style,
-		                x+2, y+2+tmp_height, width-4, height-3-tmp_height*2,
-		                &clearlooks_style->button_g2[state_type],
-			            &clearlooks_style->button_g3[state_type]);
-		
-		draw_hgradient (window, style->bg_gc[state_type], style,
-		                x+2,y+height-tmp_height-1,width-4,tmp_height,
-		                &clearlooks_style->button_g3[state_type],
-			            &clearlooks_style->button_g4[state_type]);
-
-		gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
-	}					
+	cairo_translate (cr, 1, 1);
+	clearlooks_scale_draw_gradient (cr, &colors->shade[3], /* top */
+	                                    &colors->shade[1], /* bottom */
+	                                    &colors->shade[6], /* border */
+	                                    0, 0, trough_width, trough_height,
+	                                    slider->horizontal);
 	
-	cl_draw_shadow    (window, widget, style, x, y, width, height, &r);
-
-	if (area)
-		cl_rectangle_reset_clip_rectangle (&r);
+	clearlooks_scale_draw_gradient (cr, &colors->spot[1], /* top    */
+	                                    &colors->spot[0], /* bottom */
+	                                    &colors->spot[2], /* border */
+	                                    fill_x, fill_y, fill_width, fill_height,
+	                                    slider->horizontal);
 }
 
-/* Draw text Entry */
-void cl_draw_entry (GtkStyle *style, GdkWindow *window,
-                        GtkStateType state_type, GtkShadowType shadow_type,
-                        GdkRectangle *area,
-                        GtkWidget *widget, const gchar *detail,
-                        gint x, gint y, gint width, gint height)
+void
+clearlooks_draw_slider_button (cairo_t *cr,
+                               const ClearlooksColors *colors,
+                               const WidgetParameters *params,
+                               const SliderParameters *slider,
+                               int x, int y, int width, int height)
 {
-	CLRectangle r;
-	gboolean has_focus = GTK_WIDGET_HAS_FOCUS(widget);
-	GdkGC *bg_gc = cl_get_window_bg_gc(widget);
+	CairoColor      *border = (CairoColor*)&colors->shade[7];
+	cairo_pattern_t *pattern;
+
+	cairo_set_line_width (cr, 1.0);
 	
-	gdk_draw_rectangle (window, bg_gc, FALSE, x, y, width-1, height-1);
-
-	gtk_style_apply_default_background (style, window, TRUE, state_type,
-										area, x+1, y+1, width-2, height-2);
-
-	
-	cl_rectangle_set_entry (&r, style, state_type,
-							CL_CORNER_ROUND, CL_CORNER_ROUND,
-							CL_CORNER_ROUND, CL_CORNER_ROUND,
-							has_focus);
-	
-	/* Draw "sunken" look when border thickness is more than 2 pixels. */
-	if (style->xthickness > 2 && style->ythickness > 2)
-	{
-		cl_draw_inset (style, window, widget, area, x, y, width, height,
-		               CL_CORNER_ROUND, CL_CORNER_ROUND,
-		               CL_CORNER_ROUND, CL_CORNER_ROUND);
-	
-		x++;
-		y++;
-		width-=2;
-		height-=2;
-	}
-	
-	cl_rectangle_set_clip_rectangle (&r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
-	cl_draw_shadow (window, widget, style, x, y, width, height, &r); 
-	cl_rectangle_reset_clip_rectangle (&r);
-}
-
-void cl_draw_optionmenu(GtkStyle *style, GdkWindow *window,
-                        GtkStateType state_type, GtkShadowType shadow_type,
-                        GdkRectangle *area, GtkWidget *widget,
-                        const gchar *detail,
-                        gint x, gint y, gint width, gint height)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE(style);
-	GtkRequisition indicator_size;
-	GtkBorder indicator_spacing;
-	int line_pos;
-
-	option_menu_get_props (widget, &indicator_size, &indicator_spacing);
-	
-	if (get_direction (widget) == GTK_TEXT_DIR_RTL)
-		line_pos = x + (indicator_size.width + indicator_spacing.left + indicator_spacing.right) + style->xthickness;
-	else
-		line_pos = x + width - (indicator_size.width + indicator_spacing.left + indicator_spacing.right) - style->xthickness;
-
-	cl_draw_button (style, window, state_type, shadow_type, area, widget, detail, x, y, width, height);
-	
-	gdk_draw_line (window, clearlooks_style->shade_gc[3],
-				   line_pos, y + style->ythickness - 1, line_pos,
-				   y + height - style->ythickness);
-
-	gdk_draw_line (window, style->light_gc[state_type],
-				   line_pos+1, y + style->ythickness - 1, line_pos+1,
-				   y + height - style->ythickness);
-}
-
-
-void cl_draw_menuitem_button (GdkDrawable *window, GtkWidget *widget, GtkStyle *style,
-                              GdkRectangle *area, GtkStateType state_type, 
-                              int x, int y, int width, int height, CLRectangle *r)
-{
-	ClearlooksStyle *clearlooks_style = (ClearlooksStyle*)style;
-	gboolean menubar  = (widget->parent && GTK_IS_MENU_BAR(widget->parent)) ? TRUE : FALSE;
-	int corner        = CL_CORNER_NARROW;
-	GdkColor lower_color;
-
-	shade (&style->base[GTK_STATE_SELECTED], &lower_color, 0.85);
-	
-	if (menubar)
-	{
-		height++;
-		corner = CL_CORNER_NONE;
-		r->bordergc    = clearlooks_style->border_gc[CL_BORDER_UPPER];
-	}
+	if (slider->horizontal)
+		rotate_mirror_translate (cr, 0, x+0.5, y+0.5, FALSE, FALSE);
 	else
 	{
-		r->bordergc    = clearlooks_style->spot3_gc;
+		int tmp = height;
+		rotate_mirror_translate (cr, M_PI/2, x+0.5, y+0.5, FALSE, FALSE);
+		height = width;
+		width = tmp;
 	}
 	
-	cl_rectangle_set_corners (r, corner, corner, corner, corner);
+	clearlooks_draw_shadow (cr, width-1, height-1);
 	
-	cl_rectangle_set_gradient (&r->fill_gradient,
-	                           &style->base[GTK_STATE_SELECTED], &lower_color);
+	clearlooks_rounded_rectectangle (cr, 1, 1, width-3, height-3, 3.0, params->corners);
 
-	r->gradient_type = CL_GRADIENT_VERTICAL;
+	/* Fill the damn thing */
+	cairo_set_source_rgb (cr, colors->bg[params->state_type].r,
+	                          colors->bg[params->state_type].g,
+	                          colors->bg[params->state_type].b);
+	cairo_fill_preserve (cr);
 	
-	r->fillgc  = clearlooks_style->spot2_gc;
-	r->topleft = clearlooks_style->spot1_gc;
+	/* Fake light */
+	pattern	= cairo_pattern_create_linear (0, 0, 0, 6);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0,  1.0, 1.0, 1.0, 1.0);
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0,  1.0, 1.0, 1.0, 0.0);
+	cairo_set_source (cr, pattern);
+	cairo_fill (cr);
+	cairo_pattern_destroy (pattern);
 	
-	cl_rectangle_set_clip_rectangle (r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, r);
-	cl_draw_shadow (window, widget, style, x, y, width, height, r);
-	cl_rectangle_reset_clip_rectangle (r);
+	/* Draw the dented circle */
+	cairo_arc (cr, width-(width/2)-1, height-(height/2)-1, 2.5, 0, M_PI*2);
+	cairo_set_source_rgba (cr, 0., 0., 0., 0.2);
+	cairo_fill (cr);
+
+	cairo_arc (cr, width+1-(width/2)-1, height+1-(height/2)-1, 2.5, 0, M_PI*2);
+	cairo_set_source_rgba (cr, 1., 1., 1., 0.4);
+	cairo_fill (cr);
+	
+	/* Set the clip */
+	cairo_rectangle (cr, 1.5, 2.0, 5, height-4);
+	cairo_rectangle (cr, width-7.5, 1.5, 5 , height-4);
+	cairo_clip (cr);
+	
+	cairo_new_path (cr);
+	
+	/* Draw the white handles */
+	clearlooks_rounded_rectectangle (cr, 1.0, 1.0, width-3, height-3, 3.0, params->corners);
+	cairo_set_source_rgba (cr, 1., 1., 1., 0.5);
+	cairo_fill_preserve (cr);
+	
+	cairo_reset_clip (cr);
+	
+	/* Draw the border */
+	cairo_set_source_rgb (cr, border->r,
+	                          border->g,
+	                          border->b);
+	cairo_stroke (cr);
+	
+	/* Draw handle lines */
+	cairo_move_to (cr, 7, 1);
+	cairo_line_to (cr, 7, height-1.5);
+	
+	cairo_move_to (cr, width-8, 1);
+	cairo_line_to (cr, width-8, height-1.5);
+	
+	cairo_set_line_width (cr, 1.0);
+	cairo_set_source_rgba (cr, border->r,
+	                           border->g,
+	                           border->b,
+	                           0.1);
+	cairo_stroke (cr);
 }
 
-void cl_draw_menuitem_flat (GdkDrawable *window, GtkWidget *widget, GtkStyle *style,
-                              GdkRectangle *area, GtkStateType state_type, 
-                              int x, int y, int width, int height, CLRectangle *r)
+void
+clearlooks_draw_progressbar_trough (cairo_t *cr,
+                                    const ClearlooksColors *colors,
+                                    const WidgetParameters *params,
+                                    int x, int y, int width, int height)
 {
-	ClearlooksStyle *clearlooks_style = (ClearlooksStyle*)style;
-	gboolean menubar  = (widget->parent && GTK_IS_MENU_BAR(widget->parent)) ? TRUE : FALSE;
-	GdkColor tmp;
+	CairoColor      *border = (CairoColor*)&colors->shade[7];
+	cairo_pattern_t *pattern;
 	
-	cl_rectangle_set_corners (r, CL_CORNER_NARROW, CL_CORNER_NARROW,
-	                             CL_CORNER_NARROW, CL_CORNER_NARROW);
+	cairo_set_line_width (cr, 1.0);
 	
-	tmp = cl_gc_set_fg_color_shade (style->black_gc, style->colormap,
-	                                &style->base[GTK_STATE_PRELIGHT], 0.8);
+	/* Fill with bg color */
+	cairo_set_source_rgb (cr, colors->bg[params->state_type].r,
+	                          colors->bg[params->state_type].g,
+	                          colors->bg[params->state_type].b);
+	
+	cairo_rectangle (cr, x, y, width, height);	
+	cairo_fill (cr);
+	
+	/* Create trough box */
+	cairo_translate (cr, 0.5, 0.5);
+	clearlooks_rounded_rectectangle (cr, x, y, width-1, height-1, 1.5, params->corners);
+	pattern = cairo_pattern_create_linear (x, y, 0, height);
 
-	r->bordergc = style->black_gc;
-	r->fillgc = style->base_gc[GTK_STATE_PRELIGHT];
-	
-	if (menubar) height++;
+	/* Draw Gradient */
+	cairo_pattern_add_color_stop_rgb (pattern, 0.0, colors->shade[3].r,
+	                                                colors->shade[3].g,
+	                                                colors->shade[3].b);	
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, colors->shade[2].r,
+	                                                colors->shade[2].g,
+	                                                colors->shade[2].b);
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve (cr);
+	cairo_pattern_destroy (pattern);
 
-	cl_rectangle_set_clip_rectangle (r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, r);
-	cl_rectangle_reset_clip_rectangle (r);	
+	/* Draw border */
+	cairo_set_source_rgb (cr, border->r,
+	                          border->g,
+	                          border->b);
+	cairo_stroke (cr);
 	
-	gdk_gc_set_foreground (style->black_gc, &tmp);
+	/* Top shadow */
+	pattern = cairo_pattern_create_linear (x, y, 0, 4);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.1);	
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0., 0., 0., 0.);	
+	cairo_set_source (cr, pattern);
+	cairo_rectangle (cr, x, y, width, 4);
+	cairo_fill (cr);
+	cairo_pattern_destroy (pattern);
+	
+	/* Left shadow */
+	pattern = cairo_pattern_create_linear (x, y, 4, 0);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.05);	
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0., 0., 0., 0.);	
+	cairo_set_source (cr, pattern);
+	cairo_rectangle (cr, x, y, 4, height);
+	cairo_fill (cr);
+	cairo_pattern_destroy (pattern);
 }
 
-void cl_draw_menuitem_gradient (GdkDrawable *window, GtkWidget *widget, GtkStyle *style,
-                                GdkRectangle *area, GtkStateType state_type, 
-                                int x, int y, int width, int height, CLRectangle *r)
+void
+clearlooks_draw_progressbar_fill (cairo_t *cr,
+                                  const ClearlooksColors *colors,
+                                  const WidgetParameters *params,
+                                  const ProgressBarParameters *progressbar,
+                                  int x, int y, int width, int height)
 {
-	ClearlooksStyle *clearlooks_style = (ClearlooksStyle*)style;
-	gboolean menubar  = (widget->parent && GTK_IS_MENU_BAR(widget->parent)) ? TRUE : FALSE;
-	GdkColor tmp;
-	GdkColor lower_color;
+	boolean          is_horizontal = progressbar->orientation < 2;
+	double           tile_pos = 0;
+	double           stroke_width;
+	cairo_pattern_t *pattern;
 	
-	shade (&style->base[GTK_STATE_SELECTED], &lower_color, 0.8);
-	
-	cl_rectangle_set_corners (r, CL_CORNER_NARROW, CL_CORNER_NARROW,
-	                             CL_CORNER_NARROW, CL_CORNER_NARROW);
-	                             
-	cl_rectangle_set_gradient (&r->fill_gradient,
-	                           &style->base[GTK_STATE_SELECTED], &lower_color);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_clip (cr);
+	cairo_new_path (cr);
 
-	r->gradient_type = CL_GRADIENT_VERTICAL;
-	
-	tmp = cl_gc_set_fg_color_shade (style->black_gc, style->colormap,
-	                                &style->base[GTK_STATE_PRELIGHT], 0.8);
-
-	r->bordergc = style->black_gc;
-	r->fillgc = style->base_gc[GTK_STATE_PRELIGHT];
-	
-	if (menubar) height++;
-
-	cl_rectangle_set_clip_rectangle (r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, r);
-	cl_rectangle_reset_clip_rectangle (r);
-	
-	gdk_gc_set_foreground (style->black_gc, &tmp);
-}
-
-void cl_draw_treeview_header (GtkStyle *style, GdkWindow *window,
-                              GtkStateType state_type, GtkShadowType shadow_type,
-                              GdkRectangle *area,
-                              GtkWidget *widget, const gchar *detail,
-                              gint x, gint y, gint width, gint height)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	gint columns = 0, column_index = -1, fill_width = width;
-	gboolean is_etree = strcmp("ETree", G_OBJECT_TYPE_NAME(widget->parent)) == 0;
-	gboolean resizable = TRUE;
-	
-	GdkGC *bottom = clearlooks_style->shade_gc[5];
-		
-	if ( width < 2 || height < 2 )
-		return;
-	
-	if (GTK_IS_TREE_VIEW (widget->parent))
-	{
-		gtk_treeview_get_header_index (GTK_TREE_VIEW(widget->parent),
-	                                   widget, &column_index, &columns,
-	                                   &resizable);
-	}
-	else if (GTK_IS_CLIST (widget->parent))
-	{
-		gtk_clist_get_header_index (GTK_CLIST(widget->parent),
-		                            widget, &column_index, &columns);
-	}
-	
-	if (area)
-	{
-		gdk_gc_set_clip_rectangle (clearlooks_style->shade_gc[0], area);
-		gdk_gc_set_clip_rectangle (clearlooks_style->shade_gc[4], area);
-		gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);			
-		gdk_gc_set_clip_rectangle (clearlooks_style->shade_gc[5], area);
-	}
-	
-	if (state_type != GTK_STATE_NORMAL)
-		fill_width-=2;
-	
-	gdk_draw_rectangle (window, style->bg_gc[state_type], TRUE, x, y, fill_width, height-(height/3)+1);
-	
-	draw_hgradient (window, style->bg_gc[state_type], style,
-	                x, 1+y+height-(height/3), fill_width, height/3,
-	                &style->bg[state_type], &clearlooks_style->inset_dark[state_type]);
-
-	if (resizable || (column_index != columns-1))
-	{
-		gdk_draw_line (window, clearlooks_style->shade_gc[4], x+width-2, y+4, x+width-2, y+height-5); 
-		gdk_draw_line (window, clearlooks_style->shade_gc[0], x+width-1, y+4, x+width-1, y+height-5); 
-	}
-	
-	/* left light line */
-	if (column_index == 0)
-		gdk_draw_line (window, clearlooks_style->shade_gc[0], x, y+1, x, y+height-2);
-		
-	/* top light line */
-	gdk_draw_line (window, clearlooks_style->shade_gc[0], x, y, x+width-1, y);
-	
-	/* bottom dark line */
-	if (state_type == GTK_STATE_INSENSITIVE)
-		bottom = clearlooks_style->shade_gc[3];
-	
-	
-	gdk_draw_line (window, bottom, x, y+height-1, x+width-1, y+height-1);
-	
-	if (area)
-	{
-		gdk_gc_set_clip_rectangle (clearlooks_style->shade_gc[0], NULL);
-		gdk_gc_set_clip_rectangle (clearlooks_style->shade_gc[4], NULL);
-		gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
-		gdk_gc_set_clip_rectangle (clearlooks_style->shade_gc[5], NULL);
-	}		
-}
-
-/******************************************************************************
- * PROGRESSBAR STYLE 1                                                        *
- ******************************************************************************/
-
-static void cl_progressbar1_points_transform (GdkPoint *points, int npoints, 
-                                             int offset, gboolean is_horizontal)
-{
-	int i;
-	for ( i=0; i<npoints; i++) {
-		if ( is_horizontal )
-			points[i].x += offset;
-		else
-			points[i].y += offset;
-	}
-}
-
-GdkPixmap* cl_progressbar1_create_tile (GdkDrawable *drawable,
-                                        GtkWidget *widget,
-                                        GtkStyle *style,
-                                        gint height,
-                                        gint offset)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	int width  = height;
-	int line   = 0;
-	int center = width/2;
-	int xdir   = 1;
-	int trans;
-
-	int stripe_width   = height/2;
-	int topright       = height + stripe_width;	
-	int topright_div_2 = topright/2;
-
-	double shift;	
-	GdkPoint points[4];
-
-	GtkProgressBarOrientation orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
-	gboolean is_horizontal = (orientation == GTK_PROGRESS_LEFT_TO_RIGHT || orientation == GTK_PROGRESS_RIGHT_TO_LEFT) ? 1 : 0;
-	
-	GdkPixmap *tmp = gdk_pixmap_new (widget->window, width, height, -1);
-
-	GdkColor tmp_color;
-	shade (&clearlooks_style->spot2, &tmp_color, 0.90);
-	
-	if (is_horizontal)
-		draw_hgradient (tmp, style->black_gc, style, 0, 0, width, height,
-	    	            &clearlooks_style->spot2, &tmp_color );
-	else
-		draw_vgradient (tmp, style->black_gc, style, 0, 0, width, height,
-	    	            &tmp_color, &clearlooks_style->spot2); /* TODO: swap for RTL */
-	                
-	if (orientation == GTK_PROGRESS_RIGHT_TO_LEFT || 
-	    orientation == GTK_PROGRESS_BOTTOM_TO_TOP)
-	{
-		offset = -offset;
-		xdir = -1;
-	}
-	
-	if (get_direction (widget) == GTK_TEXT_DIR_RTL)
-		offset = -offset;
-	
 	if (is_horizontal)
 	{
-		points[0] = (GdkPoint){xdir*(topright - stripe_width - topright_div_2), 0};  /* topleft */
-		points[1] = (GdkPoint){xdir*(topright - topright_div_2), 0};                 /* topright */
-		points[2] = (GdkPoint){xdir*(stripe_width - topright_div_2), height};        /* bottomright */
-		points[3] = (GdkPoint){xdir*(-topright_div_2), height};                      /* bottomleft */
-	}
-	else
-	{
-		points[0] = (GdkPoint){height, xdir*(topright - stripe_width - topright_div_2)};  /* topleft */
-		points[1] = (GdkPoint){height, xdir*(topright - topright_div_2)};                 /* topright */
-		points[2] = (GdkPoint){0, xdir*(stripe_width - topright_div_2)};        /* bottomright */
-		points[3] = (GdkPoint){0, xdir*(-topright_div_2)};                      /* bottomleft */
-	}
-						 
-	
-	shift = (stripe_width*2)/(double)10;
-	cl_progressbar1_points_transform (points, 4, (offset*shift), is_horizontal);
-		
-	trans = (width/2)-1-(stripe_width*2);
-	cl_progressbar1_points_transform (points, 4, trans, is_horizontal);
-	gdk_draw_polygon (tmp, clearlooks_style->spot2_gc, TRUE, points, 4);
-	cl_progressbar1_points_transform (points, 4, -trans, is_horizontal);
-
-	trans = width/2-1;
-	cl_progressbar1_points_transform (points, 4, trans, is_horizontal);
-	gdk_draw_polygon (tmp, clearlooks_style->spot2_gc, TRUE, points, 4);
-	cl_progressbar1_points_transform (points, 4, -trans, is_horizontal);
-
-	trans = (width/2)-1+(stripe_width*2);
-	cl_progressbar1_points_transform (points, 4, trans, is_horizontal);
-	gdk_draw_polygon (tmp, clearlooks_style->spot2_gc, TRUE, points, 4);
-	
-	return tmp;
-}
-
-/* could be improved, I think. */
-static void
-cl_progressbar1_fill (GdkDrawable *drawable, GtkWidget *widget,
-                          GtkStyle *style, GdkGC *gc,
-                          gint x, gint y,
-                          gint width, gint height,
-                          guint8 offset, GdkRectangle *area)
-{
-	GtkProgressBarOrientation orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
-	gint size = (orientation == GTK_PROGRESS_LEFT_TO_RIGHT || orientation == GTK_PROGRESS_RIGHT_TO_LEFT) ? height : width;
-	GdkPixmap *tile = cl_progressbar1_create_tile (widget->window, widget, style, size, offset);
-
-	gint nx = x,
-	     ny = y,
-	     nwidth = height,
-	     nheight = width;
-	
-	gdk_gc_set_clip_rectangle (gc, area);
-	
-	switch (orientation)
-	{
-		case GTK_PROGRESS_LEFT_TO_RIGHT:
-		{
-			while (nx <= x + width )
-			{
-				if (nx + nwidth > x+width ) nwidth = (x+width) - nx;
-				gdk_draw_drawable (drawable, gc, tile, 0, 0, nx, y, nwidth, height);
-                                if (height <= 1)
-                                    nx += 1;
-                                else
-				    nx += (height-1 + !(height % 2));
-			}
-			break;
-		}
-		case GTK_PROGRESS_RIGHT_TO_LEFT:
-		{
-			gint src_x = 0, dst_x;
-			nx += width;
-			while (nx >= x )
-			{
-				dst_x = nx - height;
-				if (dst_x < x )
-				{
-					src_x = x - dst_x;
-					dst_x = x;
-				}
-				gdk_draw_drawable (drawable, gc, tile, src_x, 0, dst_x, y, nwidth, height);
-                                if (height <= 1)
-                                    nx -= 1;
-                                else
-				    nx -= (height-1 + !(height % 2));
-			}
-			break;
-		}
-		case GTK_PROGRESS_TOP_TO_BOTTOM:
-		{
-			while (ny <= y + height )
-			{
-				if (ny + nheight > y+height ) nheight = (y+height) - ny;
-				gdk_draw_drawable (drawable, gc, tile, 0, 0, x, ny, width, nheight);
-                                if (width <= 1)
-                                    ny += 1;
-                                else
-				    ny += (width-1 + !(width % 2));
-			}
-			break;
-		}
-		case GTK_PROGRESS_BOTTOM_TO_TOP:
-		{
-			gint src_y = 0, dst_y;
-			ny += height;
-			while (ny >= y )
-			{
-				dst_y = ny - width;
-				if (dst_y < y )
-				{
-					src_y = y - dst_y;
-					dst_y = y;
-				}
-				gdk_draw_drawable (drawable, gc, tile, 0, src_y, x, dst_y, width, width);
-                                if (width <= 1)
-                                    ny -= 1;
-                                else
-				    ny -= (width-1 + !(width % 2));
-			}
-			break;
-		}
-	}
-	
-	gdk_gc_set_clip_rectangle (gc, NULL);
-	
-	g_object_unref (tile);
-}
-
-cl_draw_progressbar1_trough(GdkDrawable *window, GtkWidget *widget,
-                            GtkStyle *style, GtkStateType state_type,
-                            gint x, gint y, gint width, gint height,
-                            GdkRectangle *area)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	GdkPoint points[4] = { {x,y}, {x+width-1,y},
-	                       {x,y+height-1}, {x+width-1,y+height-1} };
-	CLRectangle r;
-		
-						   
-	// Draw inset
-	if (style->xthickness > 1 && style->ythickness > 1)
-	{
-		cl_draw_inset (style, window, widget, area, x, y, width, height,
-		               CL_CORNER_NARROW, CL_CORNER_NARROW,
-		               CL_CORNER_NARROW, CL_CORNER_NARROW);
-
-		x++;
-		y++;
-		height-=2;
-		width-=2;
-	}	
-						   
-	gdk_draw_points (window, style->bg_gc[state_type], points, 4);
-
-	cl_rectangle_init (&r, clearlooks_style->shade_gc[2],
-	                       clearlooks_style->shade_gc[5],
-	                       CL_CORNER_NARROW, CL_CORNER_NARROW,
-	                       CL_CORNER_NARROW, CL_CORNER_NARROW);
-		
-	cl_rectangle_set_clip_rectangle (&r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
-	cl_rectangle_reset_clip_rectangle (&r);
-}
-
-void
-cl_draw_progressbar1_fill(GdkDrawable *window, GtkWidget *widget,
-                          GtkStyle *style, GtkStateType state_type,
-                          gint x, gint y, gint width, gint height,
-                          GdkRectangle *area, gint offset)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	GdkColor upper_color = style->base[GTK_STATE_SELECTED],
-	         lower_color,
-	         prev_foreground;
-	gboolean activity_mode = GTK_PROGRESS (widget)->activity_mode;
-	CLRectangle r;
-	
-	cl_progressbar1_fill (window, widget, style, style->black_gc,
-						 x, y, width, height,
-						 activity_mode ? 0 : offset,
-						 area);
-	
-	cl_rectangle_init (&r, NULL,
-	                       NULL,
-	                       CL_CORNER_NONE, CL_CORNER_NONE,
-	                       CL_CORNER_NONE, CL_CORNER_NONE);
-	
-	r.bordergc = clearlooks_style->spot3_gc;
-	r.topleft = clearlooks_style->spot2_gc;
-	
-	prev_foreground = cl_gc_set_fg_color_shade (clearlooks_style->spot2_gc,
-												style->colormap,
-												&clearlooks_style->spot2,
-												1.2);
-
-	cl_rectangle_set_clip_rectangle (&r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
-	cl_draw_shadow (window, widget, style, x, y, width, height, &r);
-	cl_rectangle_reset_clip_rectangle (&r);
-	
-	gdk_gc_set_foreground (clearlooks_style->spot2_gc, &prev_foreground);
-}
-
-/******************************************************************************
- * PROGRESSBAR STYLE 2                                                        *
- ******************************************************************************/
-
-void
-cl_draw_progressbar2_trough(GdkDrawable *window, GtkWidget *widget,
-                            GtkStyle *style, GtkStateType state_type,
-                            gint x, gint y, gint width, gint height,
-                            GdkRectangle *area, gboolean horizontal)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	CLRectangle r;
-	GdkColor c, d;
-	shade(&style->bg[0], &c, 0.95);
-	cl_rectangle_init (&r, clearlooks_style->shade_gc[2],
-	                       clearlooks_style->border_gc[CL_BORDER_UPPER],
-	                       CL_CORNER_NARROW, CL_CORNER_NARROW,
-	                       CL_CORNER_NARROW, CL_CORNER_NARROW);
-
-	r.gradient_type = horizontal ? CL_GRADIENT_VERTICAL : CL_GRADIENT_HORIZONTAL;
-	
-	cl_rectangle_set_gradient (&r.fill_gradient, &clearlooks_style->shade[2],
-	                                             &clearlooks_style->shade[1]);
-	
-	// Draw inset
-	if (style->xthickness > 1 && style->ythickness > 1)
-	{
-		cl_draw_inset (style, window, widget, area, x, y, width, height,
-		               CL_CORNER_NARROW, CL_CORNER_NARROW,
-		               CL_CORNER_NARROW, CL_CORNER_NARROW);
-
-		x++;
-		y++;
-		height-=2;
-		width-=2;
-	}	
-	
-	shade(&style->bg[0], &d, 0.80);
-	
-	// Draw the trough itself
-	cl_rectangle_set_clip_rectangle (&r, area);
-	cl_draw_rectangle (window, widget, style, x, y, width, height, &r);
-	cl_rectangle_set_gradient (&r.fill_gradient, &clearlooks_style->shade[3],
-	                                             &clearlooks_style->shade[2]);
-	cl_draw_fill (window, widget, style, x, y, width, 4, &r);
-	cl_rectangle_reset_clip_rectangle (&r);
-}
-
-static void
-cl_progressbar2_set_four_points(GtkWidget *widget, GdkPoint *points, int size)
-{
-	GtkProgressBarOrientation orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
-	int width, height;
-	switch (orientation)
-	{
-		case GTK_PROGRESS_LEFT_TO_RIGHT:
-			points[0].x = size;          points[0].y = 0;
-			points[1].x = size*2;        points[1].y = 0;
-			points[2].x = size;          points[2].y = size;
-			points[3].x = 0;             points[3].y = size;
-			break;
-		case GTK_PROGRESS_RIGHT_TO_LEFT:
-			points[0].x = 0;             points[0].y = 0;
-			points[1].x = size;          points[1].y = 0;
-			points[2].x = size*2;        points[2].y = size;
-			points[3].x = size;          points[3].y = size;
-			break;
-		case GTK_PROGRESS_TOP_TO_BOTTOM:
-			points[0].x = 0;             points[0].y = 0;
-			points[1].x = size;            points[1].y = size;
-			points[2].x = size;            points[2].y = size*2;
-			points[3].x = 0;             points[3].y = size;
-			break;
-		case GTK_PROGRESS_BOTTOM_TO_TOP:
-			points[0].x = size;             points[0].y = 0;
-			points[1].x = size;            points[1].y = size;
-			points[2].x = 0;            points[2].y = size*2;
-			points[3].x = 0;             points[3].y = size;
-			break;
-		default: 
-			points[0].x = 0;               points[0].y = 0;
-			points[1].x = 0;               points[1].y = 0;
-			points[2].x = 0;               points[2].y = 0;
-			points[3].x = 0;               points[3].y = 0;
-			break;
-	}
-}
-
-static GdkPixmap*
-cl_progressbar2_create_tile (GtkWidget *widget, GtkStyle *style, gint size, gboolean horizontal)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	int width, height;
-	GdkPixmap *tile;
-	GdkColor l1, l2, l3;
-	GdkColor d1, d2, d3;
-	GdkPoint points[4];
-	GdkRegion *region;
-	int height1, height2; /* sizes of both gradients */
-	
-	cl_progressbar2_set_four_points(widget, points, size);
-
-	region = gdk_region_polygon (points, 4, GDK_WINDING_RULE);
-
-	if (horizontal)
-	{
-		width = size*2;
-		height = size;
-	}
-	else
-	{
-		width = size;
-		height = size*2;
-	}
-	
-	height1 = (float)size*0.6;
-	height2 = size - height1;
-
-	tile = gdk_pixmap_new (widget->window, width, height, -1);
-
-	l3 = clearlooks_style->spot2;
-	shade (&l3, &l1, 1.05);
-	shade (&l3, &l2, 1.2);
-	
-	shade (&l3, &d3, 0.92);
-	shade (&d3, &d1, 1.05);
-	shade (&d3, &d2, 1.2);	
-
-	if (horizontal)
-	{
-		draw_hgradient (tile, style->bg_gc[0], style, 0, 0,         width, 3,       &l1, &l2);
-		draw_hgradient (tile, style->bg_gc[0], style, 0, 3,         width, height1, &l2, &l3);
-		draw_hgradient (tile, style->bg_gc[0], style, 0, height1+3, width, height2, &l3, &l2);
-	}
-	else
-	{
-		draw_vgradient (tile, style->bg_gc[0], style, 0,         0, 3,       height, &l1, &l2);
-		draw_vgradient (tile, style->bg_gc[0], style, 3,         0, height1, height, &l2, &l3);
-		draw_vgradient (tile, style->bg_gc[0], style, height1+3, 0, height2, height, &l3, &l2);
-	}
-	
-	/* And the angled stripes */
-	
-	gdk_gc_set_clip_region (clearlooks_style->spot3_gc, region);
-
-	if (horizontal)
-	{	
-		draw_hgradient (tile, clearlooks_style->spot3_gc, style, 0, 0,         width, 3,       &d1, &d2);
-		draw_hgradient (tile, clearlooks_style->spot3_gc, style, 0, 3,         width, height1, &d2, &d3);
-		draw_hgradient (tile, clearlooks_style->spot3_gc, style, 0, height1+3, width, height2, &d3, &d2);
-	}	
-	else
-	{
-		draw_vgradient (tile, clearlooks_style->spot3_gc, style, 0,         0, 3,       height, &d1, &d2);
-		draw_vgradient (tile, clearlooks_style->spot3_gc, style, 3,         0, height1, height, &d2, &d3);
-		draw_vgradient (tile, clearlooks_style->spot3_gc, style, height1+3, 0, height2, height, &d3, &d2);
-	}
-
-	gdk_gc_set_clip_region (clearlooks_style->spot3_gc, NULL);
-	
-	gdk_region_destroy (region);
-	
-	return tile;
-}
-
-static void
-cl_progressbar2_draw_fill(GdkDrawable *window, GdkGC *gc, GdkPixmap *tile,
-                          gint x, gint y, gint width, gint height,
-                          GtkOrientation orientation, gint offset)
-{
-	if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
-	{
-		int height2 = height*2;
-		int noffset = (((float)height2/10)*offset);
-		int nx      = x+noffset;
-
-		if (nx != x)
-			gdk_draw_drawable (window, gc, tile, 0, 0, x-(height2-noffset), y, height2, height);
-		
-		while (nx <= x+width)
-		{
-			gdk_draw_drawable (window, gc, tile, 0, 0, nx, y, height2, height);
-			nx += height2;
-		}
-	}
-	else if (orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
-	{
-		int height2 = height*2;
-		int noffset = (((float)height2/10)*offset);
-		int nx = x+width-1-noffset;
-		
-		while (nx+height2 >= x)
-		{
-			gdk_draw_drawable (window, gc, tile, 0, 0, nx, y, height2, height);
-			nx -= height2;
-		}
-	}
-	else if (orientation == GTK_PROGRESS_TOP_TO_BOTTOM)
-	{
-		int width2 = width*2;
-		int noffset = (((float)width2/10)*offset);
-		int ny = y+noffset;
-
-		if (ny != y)
-			gdk_draw_drawable (window, gc, tile, 0, 0, x, y-(width2-noffset), width, width2);
-
-		while (ny <= y+height)
-		{
-			gdk_draw_drawable (window, gc, tile, 0, 0, x, ny, width, width2);
-			ny += width2;
-		}			
-	}
-	else if (orientation == GTK_PROGRESS_BOTTOM_TO_TOP)
-	{
-		int width2 = width*2;
-		int noffset = (((float)width2/10)*offset);
-		int ny = y+height-1-noffset;
-
-		while (ny+width2 >= y)
-		{
-			gdk_draw_drawable (window, gc, tile, 0, 0, x, ny, width, width2);
-			ny -= width2;
-		}			
-	}
-}
-
-void
-cl_draw_progressbar2_fill(GdkDrawable *window, GtkWidget *widget,
-                          GtkStyle *style, GtkStateType state_type,
-                          gint x, gint y, gint width, gint height,
-                          GdkRectangle *area, gint offset)
-{
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	GdkPixmap       *tile;
-	GdkPoint         border_line[2];
-	int              shadow_pos;
-	GtkOrientation   orientation;
-	gboolean         is_horizontal;
-	GdkRectangle     fill_clip;
-	
-	if (width < 1 || height < 1)
-		return;
-
-	orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
-	
-	is_horizontal = orientation < 2;
-
-	tile = cl_progressbar2_create_tile(widget, style,
-	                                   is_horizontal ? height : width,
-	                                   is_horizontal);
-	
-	fill_clip.x = x;
-	fill_clip.y = y;
-	fill_clip.width = width;
-	fill_clip.height = height;
-	
-	switch (orientation)
-	{
-		case GTK_PROGRESS_LEFT_TO_RIGHT:
-			border_line[0].x = x+width-1;
-			border_line[0].y = y;
-			border_line[1].x = x+width-1;
-			border_line[1].y = y+height-1;
-			shadow_pos = 1;
-			break;
-		case GTK_PROGRESS_RIGHT_TO_LEFT:
-			border_line[0].x = x;
-			border_line[0].y = y;
-			border_line[1].x = x;
-			border_line[1].y = y+height-1;
-			shadow_pos = -2;
-			break;
-		case GTK_PROGRESS_TOP_TO_BOTTOM:
-			border_line[0].x = x;
-			border_line[0].y = y+height-1;
-			border_line[1].x = x+width-1;
-			border_line[1].y = y+height-1;
-			shadow_pos = 1;
-			break;
-		case GTK_PROGRESS_BOTTOM_TO_TOP:
-			border_line[0].x = x;
-			border_line[0].y = y;
-			border_line[1].x = x+width-1;
-			border_line[1].y = y;
-			shadow_pos = -2;
-			break;
-	}
-		
-	gdk_gc_set_clip_rectangle (clearlooks_style->spot2_gc, &fill_clip);
-	cl_progressbar2_draw_fill (window, clearlooks_style->spot2_gc, tile,
-	                           x, y, width, height, orientation, offset);
-	gdk_gc_set_clip_rectangle (clearlooks_style->spot2_gc, NULL);
-	
-	/* Don't draw shadow & border line when completely filled */
-	if (gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(widget)) != 1.0)
-	{
-		gdk_draw_line (window, clearlooks_style->spot2_gc,
-		               border_line[0].x, border_line[0].y,
-		               border_line[1].x, border_line[1].y);
-		
-		if (is_horizontal)
-			draw_vgradient (window, style->bg_gc[state_type], style,
-			                border_line[0].x+shadow_pos, y, 2, height,
-			                &clearlooks_style->shade[3],
-			                &clearlooks_style->shade[2]);
+		if (progressbar->orientation == CL_ORIENTATION_LEFT_TO_RIGHT)
+			rotate_mirror_translate (cr, 0, x, y, FALSE, FALSE);
 		else
-			draw_hgradient (window, style->bg_gc[state_type], style,
-			                x, border_line[0].y+shadow_pos, width, 2,
-			                &clearlooks_style->shade[3],
-			                &clearlooks_style->shade[2]);
+			rotate_mirror_translate (cr, 0, x+width, y, TRUE, FALSE);
+	}
+	else
+	{
+		int tmp = height;
+		height  = width;
+		width   = tmp;
+
+		if (progressbar->orientation == CL_ORIENTATION_TOP_TO_BOTTOM)
+			rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+		else
+			rotate_mirror_translate (cr, M_PI/2, x, y+width, TRUE, FALSE);
 	}
 	
-	g_object_unref (tile);
+	stroke_width = height*2;
+
+	cairo_set_line_width (cr, 1.0);
+	
+	cairo_save (cr);
+	cairo_rectangle (cr, 0, 0, width, height);
+		
+	/* Draw fill */
+	cairo_set_source_rgb (cr, colors->spot[1].r,
+	                          colors->spot[1].g,
+	                          colors->spot[1].b);
+	cairo_fill_preserve (cr);
+	
+	/* Draw gradient */
+	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 1., 1., 1., 0.0);	
+	cairo_pattern_add_color_stop_rgba (pattern, 0.2, 1., 1., 1., 0.4);	
+	cairo_pattern_add_color_stop_rgba (pattern, 0.6, 1., 1., 1., 0.0);	
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 1., 1., 1., 0.4);	
+	cairo_set_source (cr, pattern);
+	cairo_fill (cr);
+	
+	/* Draw strokes */
+	while (tile_pos <= width)
+	{
+		cairo_move_to (cr, stroke_width/2, 0);
+		cairo_line_to (cr, stroke_width,   0);
+		cairo_line_to (cr, stroke_width/2, height);
+		cairo_line_to (cr, 0, height);
+		
+		cairo_translate (cr, stroke_width, 0);
+		tile_pos += stroke_width;
+	}
+	
+	cairo_set_source_rgba (cr, colors->spot[2].r,
+	                           colors->spot[2].g,
+	                           colors->spot[2].b,
+	                           0.15);
+	
+	cairo_fill (cr);
+	
+	cairo_restore (cr);
+	
+	cairo_reset_clip (cr);
+	
+	/* Left shadow */
+	cairo_translate (cr, width, 0);
+	pattern = cairo_pattern_create_linear (0, 0, 3, 0);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.1);	
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0., 0., 0., 0.);	
+	cairo_set_source (cr, pattern);
+	cairo_rectangle (cr, 0, 0, 3, height);
+	cairo_fill (cr);
+	cairo_pattern_destroy (pattern);	
+	
+	/* End of bar line */
+	cairo_move_to (cr, -0.5, 0);
+	cairo_line_to (cr, -0.5, height);
+	cairo_set_source_rgba (cr, colors->spot[1].r,
+	                           colors->spot[1].g,
+	                           colors->spot[1].b,
+							   0.8);
+	cairo_stroke (cr);
 }
 
-/******************************************************************************
- * PROGRESSBAR STYLE 2 (flat)                                                 *
- ******************************************************************************/
+void
+clearlooks_draw_optionmenu (cairo_t *cr,
+                            const ClearlooksColors *colors,
+                            const WidgetParameters *params,
+                            const OptionMenuParameters *optionmenu,
+                            int x, int y, int width, int height)
+{
+	int shade  = params->disabled ? 4 : 6;
+	int offset = params->ythickness + 1;
+	
+	clearlooks_draw_button (cr, colors, params, x, y, width, height);
+	
+	cairo_set_line_width  (cr, 1.0);
+	cairo_translate       (cr, optionmenu->linepos, 0.5);
+	
+	cairo_move_to         (cr, 0.0, offset);
+	cairo_line_to         (cr, 0.0, height - offset - params->ythickness + 1);
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+	cairo_stroke          (cr);
+	
+	cairo_move_to         (cr, 1.0, offset);
+	cairo_line_to         (cr, 1.0, height - offset - params->ythickness + 1);
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
+	cairo_stroke          (cr);
+}
 
 void
-cl_draw_progressbar3_fill(GdkDrawable *window, GtkWidget *widget,
-                          GtkStyle *style, GtkStateType state_type,
-                          gint x, gint y, gint width, gint height,
-                          GdkRectangle *area)
+clearlooks_draw_menubar (cairo_t *cr,
+                         const ClearlooksColors *colors,
+                         const WidgetParameters *params,
+                         int x, int y, int width, int height)
 {
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	CairoColor lower;
+	cairo_pattern_t *pattern;
 	
-	gdk_draw_rectangle (window, clearlooks_style->spot2_gc, TRUE,
-	                    x, y, width, height);
+	shade (&colors->bg[0], &lower, 0.95);
+	
+	cairo_translate (cr, x, y);
+	cairo_rectangle (cr, 0, 0, width, height);
+	
+	/* Draw the gradient */
+	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.0, colors->bg[0].r,
+	                                                colors->bg[0].g,
+	                                                colors->bg[0].b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, lower.r,
+	                                                lower.g,
+	                                                lower.b);
+	cairo_set_source      (cr, pattern);
+	cairo_fill            (cr);
+	cairo_pattern_destroy (pattern);
+	
+	/* Draw bottom line */
+	cairo_set_line_width  (cr, 1.0);
+	cairo_move_to         (cr, 0, height-0.5);
+	cairo_line_to         (cr, width, height-0.5);
+	cairo_set_source_rgb  (cr, colors->shade[3].r,
+	                           colors->shade[3].g,
+	                           colors->shade[3].b);
+	cairo_stroke          (cr);
+}
+
+void
+clearlooks_draw_tab2 (cairo_t *cr,
+                     const ClearlooksColors *colors,
+                     const WidgetParameters *params,
+                     int x, int y, int width, int height)
+{
+	#define RADIUS 3.0
+	CairoColor      *border = (CairoColor*)&colors->shade[5];
+	CairoColor      *fill   = (CairoColor*)&colors->bg[params->state_type];
+	CairoColor      *bg     = (CairoColor*)&params->parentbg;
+	cairo_pattern_t *pattern;
+	
+	cairo_translate      (cr, x+0.5, y+0.5);
+	cairo_set_line_width (cr, 1.0);
+	
+	clearlooks_rounded_rectectangle (cr, 0, 0, width, height, RADIUS, CL_CORNER_ALL);
+	
+	if (params->active) 
+		bg = fill; /* Fill the active (actually, inactive) tab opaque */
+	
+	/* Fill the tab */
+	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	cairo_pattern_add_color_stop_rgb (pattern, params->active ? 1.0 : 0.0, fill->r, fill->g, fill->b);
+	cairo_pattern_add_color_stop_rgb (pattern, params->active ? 0.0 : 1.0, bg->r,   bg->g,   bg->b);
+	cairo_set_source      (cr, pattern);
+	cairo_fill_preserve   (cr);
+	cairo_pattern_destroy (pattern);
+	
+	/* Add an extra highligh */
+	pattern = cairo_pattern_create_linear (0, 0, 0, height/2);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 1.0, 1.0, 1.0, 0.5);
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 1.0, 1.0, 1.0, 0.0);
+	cairo_set_source      (cr, pattern);
+	cairo_fill_preserve   (cr);
+	cairo_pattern_destroy (pattern);
+	
+	
+	/* Draw the border */
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);	
+	cairo_stroke         (cr);
+	
+	/* Draw right shadow */
+	cairo_move_to (cr, width - 1, params->ythickness);
+	cairo_line_to (cr, width - 1, height - params->ythickness - 1);
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.05);
+	cairo_stroke (cr);
+
+	/* Draw topleft shadow */
+	clearlooks_draw_top_left_highlight (cr, params, width, height, RADIUS);
+}
+
+static void
+clearlooks_get_frame_gap_clip (int x, int y, int width, int height, 
+                               FrameParameters     *frame,
+                               ClearlooksRectangle *bevel,
+                               ClearlooksRectangle *border)
+{
+		if (frame->gap_side == CL_GAP_TOP)
+		{
+			CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  -0.5,
+												 frame->gap_width - 3, 2.0);
+			CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  -0.5,
+												 frame->gap_width - 2, 1.0);
+		}
+		else if (frame->gap_side == CL_GAP_BOTTOM)
+		{
+			CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  height - 2.5,
+												 frame->gap_width - 3, 2.0);
+			CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  height - 1.5,
+												 frame->gap_width - 2, 1.0);		
+		}
+		else if (frame->gap_side == CL_GAP_LEFT)
+		{
+			CLEARLOOKS_RECTANGLE_SET ((*bevel),  -0.5, 1.5 + frame->gap_x,
+												 2.0, frame->gap_width - 3);
+			CLEARLOOKS_RECTANGLE_SET ((*border), -0.5, 0.5 + frame->gap_x,
+												 1.0, frame->gap_width - 2);			
+		}
+		else if (frame->gap_side == CL_GAP_RIGHT)
+		{
+			CLEARLOOKS_RECTANGLE_SET ((*bevel),  width - 2.5, 1.5 + frame->gap_x,
+												 2.0, frame->gap_width - 3);
+			CLEARLOOKS_RECTANGLE_SET ((*border), width - 1.5, 0.5 + frame->gap_x,
+												 1.0, frame->gap_width - 2);			
+		}
+}
+
+void
+clearlooks_draw_frame            (cairo_t *cr,
+                                  const ClearlooksColors     *colors,
+                                  const WidgetParameters     *params,
+                                  const FrameParameters      *frame,
+                                  int x, int y, int width, int height)
+{
+	CairoColor *border = (CairoColor*)&colors->shade[6];
+	ClearlooksRectangle bevel_clip;
+	ClearlooksRectangle frame_clip;
+	ShadowParameters shadow;
+	
+	if (frame->gap_x != -1)
+		clearlooks_get_frame_gap_clip (x, y, width, height,
+		                               frame, &bevel_clip, &frame_clip);
+	
+	cairo_set_line_width (cr, 1.0);
+	cairo_translate      (cr, x+0.5, y+0.5);
+	
+	/* Set clip for the bevel */
+	if (frame->gap_x != -1)
+	{
+		/* Set clip for gap */
+		cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
+		cairo_rectangle      (cr, -0.5, -0.5, width-1, height-1);
+		cairo_rectangle      (cr, bevel_clip.x, bevel_clip.y, bevel_clip.width, bevel_clip.height);
+		cairo_clip           (cr);
+		cairo_new_path       (cr);
+	}
+	
+	/* Draw the bevel */
+	shadow.corners = params->corners;
+	shadow.shadow  = CL_SHADOW_OUT;
+	clearlooks_draw_highlight_and_shade (cr, &shadow, width, height, RADIUS);
+
+	/* Set clip for the frame */
+	cairo_reset_clip     (cr);
+	if (frame->gap_x != -1)
+	{
+		/* Set clip for gap */
+		cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
+		cairo_rectangle      (cr, -0.5, -0.5, width, height);
+		cairo_rectangle      (cr, frame_clip.x, frame_clip.y, frame_clip.width, frame_clip.height);
+		cairo_clip           (cr);
+		cairo_new_path       (cr);
+	}
+
+	/* Draw frame */
+	cairo_rectangle      (cr, 0, 0, width-1, height-1);
+	cairo_set_source_rgb (cr, border->r, border->g, border->b );
+	cairo_stroke         (cr);	
+}
+
+void
+clearlooks_draw_tab (cairo_t *cr,
+                     const ClearlooksColors *colors,
+                     const WidgetParameters *params,
+                     const TabParameters    *tab,
+                     int x, int y, int width, int height)
+{
+	#define RADIUS 3.0
+	CairoColor          *border1       = (CairoColor*)&colors->shade[6];
+	CairoColor          *border2       = (CairoColor*)&colors->shade[5];
+	CairoColor          *stripe_fill   = (CairoColor*)&colors->spot[1];
+	CairoColor          *stripe_border = (CairoColor*)&colors->spot[2];
+	CairoColor          *fill;
+
+	ShadowParameters     shadow;
+	cairo_pattern_t     *pattern;
+	
+	int                  corners;
+	double               strip_size;
+		
+	/* Set clip */
+	cairo_rectangle      (cr, x, y, width, height);
+	cairo_clip           (cr);
+	cairo_new_path       (cr);
+
+	/* Translate and set line width */	
+	cairo_set_line_width (cr, 1.0);
+	cairo_translate      (cr, x+0.5, y+0.5);
+
+
+	/* Make the tabs slightly bigger than they should be, to create a gap */
+	/* And calculate the strip size too, while you're at it */
+	if (tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM)
+	{
+		height += RADIUS;
+	 	strip_size = ((100.0/height)*2.0)/100.0;
+		
+		if (tab->gap_side == CL_GAP_TOP)
+		{
+			cairo_translate (cr, 0.0, -4.0); /* gap at the other side */
+			corners = CL_CORNER_BOTTOMLEFT | CL_CORNER_BOTTOMRIGHT;
+		}
+		else
+			corners = CL_CORNER_TOPLEFT | CL_CORNER_TOPRIGHT;
+	}
+	else
+	{
+		width += RADIUS;
+	 	strip_size = ((100.0/width)*2.0)/100.0;
+		
+		if (tab->gap_side == CL_GAP_LEFT) 
+		{
+			cairo_translate (cr, -4.0, 0.0); /* gap at the other side */
+			corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;		
+		}
+		else
+			corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;	
+	}
+	
+	/* Set the fill color */
+	if (params->active)
+		fill = (CairoColor*)&colors->bg[params->state_type];
+	else
+		fill = (CairoColor*)&params->parentbg;
+	
+
+	/* Set tab shape */
+	clearlooks_rounded_rectectangle (cr, 0,
+	                                     0,
+	                                     width-1,
+	                                     height-1,
+	                                     RADIUS, corners);
+	
+	/* Draw fill */
+	cairo_set_source_rgb  (cr, fill->r, fill->g, fill->b);
+	cairo_fill_preserve   (cr);
+	
+	/* Draw highlight */
+	shadow.shadow = CL_SHADOW_OUT;
+	shadow.corners = corners;
+	
+	clearlooks_draw_highlight_and_shade (cr, &shadow,
+	                                     width,
+	                                     height, RADIUS);
+	
+	clearlooks_rounded_rectectangle (cr, 0,
+	                                     0,
+	                                     width-1,
+	                                     height-1,
+	                                     RADIUS, corners);
+
+	/* Draw shade */
+	pattern = cairo_pattern_create_linear ( tab->gap_side == CL_GAP_LEFT   ? width-2  : 0,
+	                                        tab->gap_side == CL_GAP_TOP    ? height-2 : 0,
+	                                        tab->gap_side == CL_GAP_RIGHT  ? width    : 0,
+	                                        tab->gap_side == CL_GAP_BOTTOM ? height   : 0 );
+	
+	if (params->active)
+	{
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, 1.0, 1.0, 1.0, 0.5);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.3, 1.0, 1.0, 1.0, 0.0);
+	}
+	else
+	{
+		cairo_pattern_add_color_stop_rgb  (pattern, 0.0,        stripe_fill->r, stripe_fill->g, stripe_fill->b);
+		cairo_pattern_add_color_stop_rgb  (pattern, strip_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
+		cairo_pattern_add_color_stop_rgba (pattern, strip_size, 1.0, 1.0, 1.0, 0.5);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.8,        1.0, 1.0, 1.0, 0.0);
+	}
+	
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve (cr);
+	cairo_pattern_destroy (pattern);
+	
+	/* Draw border */
+	if (params->active)
+	{
+		cairo_set_source_rgb  (cr, border1->r, border1->g, border1->b);	
+		cairo_stroke (cr);
+	}
+	else
+	{
+		pattern = cairo_pattern_create_linear ( tab->gap_side == CL_GAP_LEFT   ? width-2  : 2,
+		                                        tab->gap_side == CL_GAP_TOP    ? height-2 : 2,
+		                                        tab->gap_side == CL_GAP_RIGHT  ? width    : 2,
+		                                        tab->gap_side == CL_GAP_BOTTOM ? height   : 2 );
+		
+		cairo_pattern_add_color_stop_rgb (pattern, 0.0,        stripe_border->r, stripe_border->g, stripe_border->b);
+		cairo_pattern_add_color_stop_rgb (pattern, strip_size, stripe_border->r, stripe_border->g, stripe_border->b);
+		cairo_pattern_add_color_stop_rgb (pattern, strip_size, border1->r,       border1->g,       border1->b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0,        border1->r,       border1->g,       border1->b);
+		cairo_set_source (cr, pattern);
+		cairo_stroke (cr);
+		cairo_pattern_destroy (pattern);
+	}
 }

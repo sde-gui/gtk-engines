@@ -301,15 +301,15 @@ hls_to_rgb (gdouble *h,
 }
 
 void
-shade (GdkColor * a, GdkColor * b, float k)
+shade (const CairoColor * a, CairoColor * b, float k)
 {
-	gdouble red;
-	gdouble green;
-	gdouble blue;
+	double red;
+	double green;
+	double blue;
 	
-	red = (gdouble) a->red / 65535.0;
-	green = (gdouble) a->green / 65535.0;
-	blue = (gdouble) a->blue / 65535.0;
+	red   = a->r;
+	green = a->g;
+	blue  = a->b;
 	
 	rgb_to_hls (&red, &green, &blue);
 	
@@ -327,9 +327,9 @@ shade (GdkColor * a, GdkColor * b, float k)
 	
 	hls_to_rgb (&red, &green, &blue);
 	
-	b->red = red * 65535.0;
-	b->green = green * 65535.0;
-	b->blue = blue * 65535.0;
+	b->r = red;
+	b->g = green;
+	b->b = blue;
 }
 
 
@@ -978,4 +978,32 @@ gboolean
 is_combo_box (GtkWidget * widget)
 {
 	return (find_combo_box_widget(widget) != NULL);
+}
+
+void
+clearlooks_gdk_color_to_rgb (GdkColor *c, double *r, double *g, double *b)
+{
+	*r = (double)c->red   /  (double)65535;
+	*g = (double)c->green /  (double)65535;
+	*b = (double)c->blue  /  (double)65535;
+}
+
+void
+clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
+{
+	GtkStateType state_type;
+	GtkWidget *parent;
+	GdkColor *gcolor;
+	
+	parent = widget->parent;
+	while (parent && GTK_WIDGET_NO_WINDOW (parent))
+		parent = parent->parent;
+
+	g_return_val_if_fail (parent != NULL, NULL);
+	
+	state_type = GTK_WIDGET_STATE (parent);
+	
+	gcolor = &gtk_widget_get_style (parent)->bg[state_type];
+	
+	clearlooks_gdk_color_to_rgb (gcolor, &color->r, &color->g, &color->b);
 }
