@@ -14,7 +14,7 @@ libclearlooks_la_SOURCES =		\
 	./src/clearlooks_draw.c		\
 	./src/clearlooks_draw.h
 
-libclearlooks_la_LDFLAGS = -module -avoid-version
+libclearlooks_la_LDFLAGS = -module -avoid-version -no-undefined
 libclearlooks_la_LIBADD =  $(GTK_LIBS)
 
 EXTRA_DIST = ./src/bits.c

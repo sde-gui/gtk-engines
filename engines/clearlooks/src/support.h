@@ -50,52 +50,8 @@ hls_to_rgb (gdouble *h,
 
 void
 shade (const CairoColor * a, CairoColor * b, float k);
-
-void
-draw_hgradient (GdkDrawable *drawable, GdkGC *gc, GtkStyle *style,
-                int x, int y, int width, int height,
-                GdkColor *top_color, GdkColor *bottom_color);
-
-void
-draw_vgradient (GdkDrawable *drawable, GdkGC *gc, GtkStyle *style,
-                int x, int y, int width, int height,
-                GdkColor *left_color, GdkColor *right_color);
-
-void
-arrow_draw_hline (GdkWindow     *window,
-                  GdkGC         *gc,
-                  int            x1,
-                  int            x2,
-                  int            y,
-                  gboolean       last);
-
-void
-arrow_draw_vline (GdkWindow     *window,
-                  GdkGC         *gc,
-                  int            y1,
-                  int            y2,
-                  int            x,
-                  gboolean       last);
-
-void
-draw_arrow (GdkWindow     *window,
-            GdkGC         *gc,
-            GdkRectangle  *area,
-            GtkArrowType   arrow_type,
-            gint           x,
-            gint           y,
-            gint           width,
-            gint           height);
-
-void
-calculate_arrow_geometry (GtkArrowType  arrow_type,
-                          gint         *x,
-                          gint         *y,
-                          gint         *width,
-                          gint         *height);
 						  
-GtkWidget *special_get_ancestor(GtkWidget * widget,
-				       GType widget_type);
+GtkWidget *special_get_ancestor(GtkWidget * widget, GType widget_type);
 					   
 void blend (GdkColormap *colormap,
             GdkColor *a, GdkColor *b, GdkColor *c, int alpha);

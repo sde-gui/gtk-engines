@@ -1,5 +1,13 @@
 2005-08-22  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/Makefile.am: Fixes bug 314127
+	* engines/clearlooks/src/support.c:
+	(gtk_treeview_get_header_index), (special_get_ancestor): Removed
+	obsolete functions.
+	* engines/clearlooks/src/support.h: Removed obsolete prototypes.
+
+2005-08-22  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_get_frame_gap_clip), (clearlooks_draw_tab),
 	(clearlooks_draw_separator):
