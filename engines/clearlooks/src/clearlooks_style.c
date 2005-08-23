@@ -74,7 +74,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 		
 		/* I want to avoid to have to do this. I need it for GtkEntry, unless I
 		   find out why it doesn't behave the way I expect it to. */
-		clearlooks_get_parent_bg (widget, &params->parentbg);		
+		clearlooks_get_parent_bg (widget, &params->parentbg);
 }
 
 static void
@@ -122,7 +122,7 @@ draw_shadow (DRAW_ARGS)
 	else if (DETAIL ("frame"))
 	{
 		WidgetParameters params;
-		FrameParameters  frame = { 0, -1, 0 };
+		FrameParameters  frame = { shadow_type, 0, -1, 0, &colors->shade[6] };
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
@@ -130,12 +130,27 @@ draw_shadow (DRAW_ARGS)
 		clearlooks_draw_frame (cr, colors, &params, &frame,
 		                       x, y, width, height);
 	}
+	else if (DETAIL ("scrolled_window"))
+	{
+		WidgetParameters params;
+		FrameParameters frame = { CL_SHADOW_NONE, 0, -1, 0, &colors->shade[5] };
+
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		params.corners = CL_CORNER_NONE;
+		
+		clearlooks_draw_frame (cr, colors, &params, &frame, x, y, width, height);
+	}
 	else
 	{
-		printf("draw_shadow: %s %s\n", detail, G_OBJECT_TYPE_NAME (widget));
-		parent_class->draw_shadow (style, window, state_type, shadow_type,
-		                           area, widget, detail,
-		                           x, y, width, height);
+		printf("draw_shadow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "(null");
+			
+		WidgetParameters params;
+		FrameParameters frame = { CL_SHADOW_NONE, 0, -1, 0, &colors->shade[5] };
+
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		params.corners = CL_CORNER_NONE;
+		
+		clearlooks_draw_frame (cr, colors, &params, &frame, x, y, width, height);
 	}
 	
 	cairo_destroy (cr);
@@ -157,15 +172,11 @@ draw_box_gap (DRAW_ARGS,
 	if (DETAIL ("notebook"))
 	{
 		WidgetParameters params;
-		FrameParameters  frame;
+		FrameParameters  frame = { shadow_type, gap_side, gap_x, gap_width, &colors->shade[6] };
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		params.corners = CL_CORNER_NONE;
-		
-		frame.gap_side  = (ClearlooksGapSide)gap_side;
-		frame.gap_x     = gap_x;
-		frame.gap_width = gap_width;
 		
 		clearlooks_draw_frame (cr, colors, &params, &frame,
 		                       x, y, width, height);
@@ -277,6 +288,46 @@ draw_box (DRAW_ARGS)
 
 		clearlooks_draw_menubar (cr, colors, &params,
 		                         x, y, width, height);
+	}
+	else if (DETAIL ("button") && widget->parent &&
+                 (GTK_IS_TREE_VIEW(widget->parent) ||
+                  GTK_IS_CLIST (widget->parent)))
+	{
+		WidgetParameters params;
+		ListViewHeaderParameters header;
+		
+		gint columns, column_index;
+		gboolean resizable = TRUE;
+		
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		
+		params.corners = CL_CORNER_NONE;
+		
+		if (GTK_IS_TREE_VIEW (widget->parent))
+		{
+			gtk_treeview_get_header_index (GTK_TREE_VIEW(widget->parent),
+										   widget, &column_index, &columns,
+										   &resizable);
+		}
+		else if (GTK_IS_CLIST (widget->parent))
+		{
+			gtk_clist_get_header_index (GTK_CLIST(widget->parent),
+										widget, &column_index, &columns);
+		}
+		
+		header.resizable = resizable;
+		
+		if (column_index == 0)
+			header.order = CL_ORDER_FIRST;
+		else if (column_index == columns-1)
+			header.order = CL_ORDER_LAST;
+		else
+			header.order = CL_ORDER_MIDDLE;
+		
+		gtk_style_apply_default_background (style, window, FALSE, state_type, area, x, y, width, height);
+		
+		clearlooks_draw_list_view_header (cr, colors, &params, &header,
+		                                  x, y, width, height);
 	}
 	else if (DETAIL ("button") || DETAIL ("buttondefault"))
 	{
@@ -547,15 +598,11 @@ draw_shadow_gap (DRAW_ARGS,
 	if (DETAIL ("frame"))
 	{
 		WidgetParameters params;
-		FrameParameters  frame;
+		FrameParameters  frame = { shadow_type, gap_side, gap_x, gap_width, &colors->shade[6] };
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		params.corners = CL_CORNER_NONE;
-		
-		frame.gap_side  = (ClearlooksGapSide)gap_side;
-		frame.gap_x     = gap_x;
-		frame.gap_width = gap_width;
 		
 		clearlooks_draw_frame (cr, colors, &params, &frame,
 		                       x, y, width, height);	

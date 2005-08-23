@@ -854,14 +854,14 @@ clearlooks_draw_frame            (cairo_t *cr,
                                   const FrameParameters      *frame,
                                   int x, int y, int width, int height)
 {
-	CairoColor *border = (CairoColor*)&colors->shade[6];
+	CairoColor *border = frame->border;
 	ClearlooksRectangle bevel_clip;
 	ClearlooksRectangle frame_clip;
-	ShadowParameters shadow;
 	
 	if (frame->gap_x != -1)
 		clearlooks_get_frame_gap_clip (x, y, width, height,
-		                               frame, &bevel_clip, &frame_clip);
+		                               (FrameParameters*)frame,
+		                               &bevel_clip, &frame_clip);
 	
 	cairo_set_line_width (cr, 1.0);
 	cairo_translate      (cr, x+0.5, y+0.5);
@@ -878,10 +878,14 @@ clearlooks_draw_frame            (cairo_t *cr,
 	}
 	
 	/* Draw the bevel */
-	shadow.corners = params->corners;
-	shadow.shadow  = CL_SHADOW_OUT;
-	clearlooks_draw_highlight_and_shade (cr, &shadow, width, height, RADIUS);
-
+	if (frame->shadow != CL_SHADOW_NONE)
+	{
+		ShadowParameters shadow;
+		shadow.corners = params->corners;
+		shadow.shadow  = frame->shadow;
+		clearlooks_draw_highlight_and_shade (cr, &shadow, width, height, RADIUS);
+	}
+	
 	/* Set clip for the frame */
 	cairo_reset_clip     (cr);
 	if (frame->gap_x != -1)
@@ -1067,7 +1071,7 @@ clearlooks_draw_separator (cairo_t *cr,
 		cairo_translate       (cr, x+0.5, y);
 		
 		cairo_move_to         (cr, 0.0, 0.0);
-		cairo_line_to         (cr, 0.0, height+1);
+		cairo_line_to         (cr, 0.0, height);
 		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
 		cairo_stroke          (cr);
 		
@@ -1075,5 +1079,61 @@ clearlooks_draw_separator (cairo_t *cr,
 		cairo_line_to         (cr, 1.0, height);
 		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
 		cairo_stroke          (cr);		
+	}
+}
+
+void
+clearlooks_draw_list_view_header (cairo_t *cr,
+                                  const ClearlooksColors          *colors,
+                                  const WidgetParameters          *widget,
+                                  const ListViewHeaderParameters  *header,
+                                  int x, int y, int width, int height)
+{
+	CairoColor      *border = (CairoColor*)&colors->shade[5];
+	cairo_pattern_t *pattern;
+	
+	cairo_translate (cr, x, y);
+	cairo_set_line_width (cr, 1.0);
+	
+	/* Draw highlight */
+	if (header->order == CL_ORDER_FIRST)
+	{
+		cairo_move_to (cr, 0.5, height-1);
+		cairo_line_to (cr, 0.5, 0.5);
+	}
+	else
+		cairo_move_to (cr, 0.0, 0.5);
+	
+	cairo_line_to (cr, width, 0.5);
+	
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5);
+	cairo_stroke (cr);
+	
+	/* Draw bottom border */
+	cairo_move_to (cr, 0.0, height-0.5);
+	cairo_line_to (cr, width, height-0.5);
+	cairo_set_source_rgb (cr, border->r,
+	                          border->g,
+	                          border->b);
+	cairo_stroke (cr);
+
+	/* Draw bottom shade */	
+	pattern = cairo_pattern_create_linear (0.0, height-5.0, 0.0, height-1.0);
+	cairo_pattern_add_color_stop_rgba     (pattern, 0.0, 0.0, 0.0, 0.0, 0.0);
+	cairo_pattern_add_color_stop_rgba     (pattern, 1.0, 0.0, 0.0, 0.0, 0.05);
+
+	cairo_rectangle       (cr, 0.0, height-5.0, width, 4.0);
+	cairo_set_source      (cr, pattern);
+	cairo_fill            (cr);
+	cairo_pattern_destroy (pattern);
+	
+	/* Draw resize grip */
+	if (header->order != CL_ORDER_LAST || header->resizable)
+	{
+		SeparatorParameters separator;
+		separator.horizontal = FALSE;
+		
+		clearlooks_draw_separator (cr, colors, widget, &separator,
+		                           width-1.5, 4.0, 2, height-8.0);
 	}
 }

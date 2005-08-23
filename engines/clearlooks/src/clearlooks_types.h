@@ -24,6 +24,13 @@ typedef enum
 
 typedef enum
 {
+	CL_ORDER_FIRST,
+	CL_ORDER_MIDDLE,
+	CL_ORDER_LAST
+} ClearlooksOrder;
+
+typedef enum
+{
 	CL_ORIENTATION_LEFT_TO_RIGHT,
 	CL_ORIENTATION_RIGHT_TO_LEFT,
 	CL_ORIENTATION_BOTTOM_TO_TOP,
@@ -110,6 +117,7 @@ typedef struct
 	ClearlooksGapSide gap_side;
 	int gap_x;
 	int gap_width;
+	CairoColor *border;
 } FrameParameters;
 
 typedef struct
@@ -127,6 +135,12 @@ typedef struct
 {
 	boolean horizontal;
 } SeparatorParameters;
+
+typedef struct
+{
+	ClearlooksOrder order;
+	boolean        resizable;
+} ListViewHeaderParameters;
 
 #define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) rect.x      = _x; \
                                                        rect.y      = _y; \

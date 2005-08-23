@@ -10,51 +10,51 @@
 
 void clearlooks_draw_button           (cairo_t *cr,
                                        const ClearlooksColors      *colors,
-                                       const WidgetParameters      *params,
+                                       const WidgetParameters      *widget,
                                        int x, int y, int width, int height);
 				
 void clearlooks_draw_scale_trough     (cairo_t *cr,
                                        const ClearlooksColors      *colors,
-                                       const WidgetParameters      *params,
+                                       const WidgetParameters      *widget,
                                        const SliderParameters      *slider,
                                        int x, int y, int width, int height);
 							  
 void clearlooks_draw_progressbar_trough (cairo_t *cr,
                                        const ClearlooksColors      *colors,
-                                       const WidgetParameters      *params,
+                                       const WidgetParameters      *widget,
                                        int x, int y, int width, int height);
 
 
 void clearlooks_draw_progressbar_fill (cairo_t *cr,
                                        const ClearlooksColors      *colors,
-                                       const WidgetParameters      *params,
+                                       const WidgetParameters      *widget,
                                        const ProgressBarParameters *progressbar,
                                        int x, int y, int width, int height);
 
 void clearlooks_draw_slider_bu        (cairo_t *cr,
                                        const ClearlooksColors     *colors,
-                                       const WidgetParameters     *params,
+                                       const WidgetParameters     *widget,
                                        const SliderParameters     *slider,
                                        int x, int y, int width, int height);
 
 void clearlooks_draw_entry            (cairo_t *cr,
                                        const ClearlooksColors     *colors,
-                                       const WidgetParameters     *params,
+                                       const WidgetParameters     *widget,
                                        int x, int y, int width, int height);
 
 void clearlooks_draw_spinbutton       (cairo_t *cr,
                                        const ClearlooksColors     *colors,
-                                       const WidgetParameters     *params,
+                                       const WidgetParameters     *widget,
                                        int x, int y, int width, int height);
 
 void clearlooks_draw_spinbutton_down  (cairo_t *cr,
                                        const ClearlooksColors     *colors,
-                                       const WidgetParameters     *params,
+                                       const WidgetParameters     *widget,
                                        int x, int y, int width, int height);
 
 void clearlooks_draw_optionmenu       (cairo_t *cr,
                                        const ClearlooksColors     *colors,
-                                       const WidgetParameters     *params,
+                                       const WidgetParameters     *widget,
                                        const OptionMenuParameters *optionmenu,
                                        int x, int y, int width, int height);
 								   
@@ -64,18 +64,18 @@ void clearlooks_draw_inset            (cairo_t *cr,
 
 void clearlooks_draw_menubar          (cairo_t *cr,
                                        const ClearlooksColors     *colors,
-                                       const WidgetParameters     *params,
+                                       const WidgetParameters     *widget,
                                        int x, int y, int width, int height);
 
 void clearlooks_draw_tab              (cairo_t *cr,
                                        const ClearlooksColors     *colors,
-                                       const WidgetParameters     *params,
+                                       const WidgetParameters     *widget,
                                        const TabParameters        *tab,
                                        int x, int y, int width, int height);
 									   
 void clearlooks_draw_frame            (cairo_t *cr,
                                        const ClearlooksColors     *colors,
-                                       const WidgetParameters     *params,
+                                       const WidgetParameters     *widget,
                                        const FrameParameters      *frame,
                                        int x, int y, int width, int height);
 
@@ -85,4 +85,9 @@ void clearlooks_draw_separator        (cairo_t *cr,
                                        const SeparatorParameters  *separator,
                                        int x, int y, int width, int height);
 
+void clearlooks_draw_list_view_header (cairo_t *cr,
+                                       const ClearlooksColors         *colors,
+                                       const WidgetParameters         *widget,
+                                       const ListViewHeaderParameters *header,
+                                       int x, int y, int width, int height);
 #endif /* CLEARLOOKS_DRAW_H */

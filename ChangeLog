@@ -1,3 +1,19 @@
+2005-08-23  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_frame), (clearlooks_draw_separator),
+	(clearlooks_draw_list_view_header): 
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters), (draw_shadow), (draw_box_gap),
+	(draw_box), (draw_shadow_gap):
+	Implemented listview headers.
+	
+	* engines/clearlooks/src/clearlooks_types.h: Added type for
+	Listview headers.
+	* engines/clearlooks/src/support.c: (clearlooks_get_parent_bg): Fixed
+	segfault.
+
 2005-08-22  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/Makefile.am: Fixes bug 314127
