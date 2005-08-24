@@ -6,6 +6,8 @@
 
 #include <cairo.h>
 
+#define M_PI 3.14159265358979323846
+
 void
 clearlooks_rounded_rectectangle (cairo_t *cr,
                                  double x, double y, double w, double h,
@@ -125,7 +127,7 @@ clearlooks_draw_top_left_highlight (cairo_t *cr,
 	cairo_move_to         (cr, light_x1, light_y2);
 	
 	if (params->corners & CL_CORNER_TOPLEFT)
-		cairo_arc         (cr, light_x1+radius, light_y1+radius, radius, M_PI, 270*(M_PI/180)); // 150
+		cairo_arc         (cr, light_x1+radius, light_y1+radius, radius, M_PI, 270*(M_PI/180));
 	else
 		cairo_line_to     (cr, light_x1, light_y1);
 	
@@ -208,7 +210,6 @@ clearlooks_draw_button (cairo_t *cr,
                         int x, int y, int width, int height)
 {
 #define RADIUS 3.0
-	double r, g, b;
 	double xoffset = 0, yoffset = 0;
 	const CairoColor *fill            = &colors->bg[params->state_type];
 	const CairoColor *border_normal   = &colors->shade[7];
@@ -307,19 +308,9 @@ clearlooks_draw_button (cairo_t *cr,
 	
 	if (!params->active)
 	{
-		double light_y1 = params->ythickness-1,
-		       light_y2 = height - params->ythickness - 1,
-		       light_x1 = params->xthickness-1,
-		       light_x2 = width - params->xthickness - 1;
-		
-		if (params->corners & CL_CORNER_TOPLEFT)
-		{
-		}
-
-
 		/* Draw right shadow */
-		cairo_move_to (cr, width-params->xthickness, light_y1);
-		cairo_line_to (cr, width-params->xthickness, light_y2);
+		cairo_move_to (cr, width-params->xthickness, params->ythickness - 1);
+		cairo_line_to (cr, width-params->xthickness, height - params->ythickness - 1);
 		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.05);
 		cairo_stroke (cr);
 
@@ -426,7 +417,6 @@ clearlooks_scale_draw_gradient (cairo_t *cr,
                                 boolean horizontal)
 {
 	cairo_pattern_t *pattern;
-	gdouble r, g, b;
 
 	pattern = cairo_pattern_create_linear (0, 0, horizontal ? 0 :  width, horizontal ? height : 0);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.0, c1->r, c1->g, c1->b);
@@ -756,7 +746,6 @@ clearlooks_draw_optionmenu (cairo_t *cr,
                             const OptionMenuParameters *optionmenu,
                             int x, int y, int width, int height)
 {
-	int shade  = params->disabled ? 4 : 6;
 	int offset = params->ythickness + 1;
 	
 	clearlooks_draw_button (cr, colors, params, x, y, width, height);
@@ -913,7 +902,6 @@ clearlooks_draw_tab (cairo_t *cr,
 {
 	#define RADIUS 3.0
 	CairoColor          *border1       = (CairoColor*)&colors->shade[6];
-	CairoColor          *border2       = (CairoColor*)&colors->shade[5];
 	CairoColor          *stripe_fill   = (CairoColor*)&colors->spot[1];
 	CairoColor          *stripe_border = (CairoColor*)&colors->spot[2];
 	CairoColor          *fill;

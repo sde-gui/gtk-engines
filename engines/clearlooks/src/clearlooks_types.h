@@ -147,4 +147,4 @@ typedef struct
                                                        rect.width  = _w; \
                                                        rect.height = _h;
 
-#endif // CLEARLOOKS_TYPES_H
+#endif /* CLEARLOOKS_TYPES_H */

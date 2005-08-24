@@ -1,3 +1,22 @@
+2005-08-24  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/Makefile.am:
+	* engines/clearlooks/src/bits.c:
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_top_left_highlight), (clearlooks_draw_button),
+	(clearlooks_scale_draw_gradient), (clearlooks_draw_optionmenu),
+	(clearlooks_draw_tab):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow),
+	(draw_box_gap), (combo_box_get_seperator_pos), (draw_vline),
+	(draw_hline), (draw_shadow_gap), (clearlooks_style_unrealize):
+	* engines/clearlooks/src/clearlooks_types.h:
+	* engines/clearlooks/src/support.c: (clearlooks_get_parent_bg):
+	* engines/clearlooks/src/support.h:
+
+	Major cleanup. Removed unused variables, function, files.
+	Compiles with -pedantic -ansi -std=c89.
+
 2005-08-23  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

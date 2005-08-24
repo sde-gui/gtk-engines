@@ -8,7 +8,6 @@
 #include <math.h>
 #include <string.h>
 
-#include "bits.c"
 #include "support.h"
 
 /* #define DEBUG 1 */
@@ -32,7 +31,6 @@
                      gint            width, \
                      gint            height
 
-static GdkGC *realize_color (GtkStyle * style, GdkColor * color);
 static GtkStyleClass *parent_class;
 
 static cairo_t *
@@ -122,7 +120,11 @@ draw_shadow (DRAW_ARGS)
 	else if (DETAIL ("frame"))
 	{
 		WidgetParameters params;
-		FrameParameters  frame = { shadow_type, 0, -1, 0, &colors->shade[6] };
+		FrameParameters  frame;
+		
+		frame.shadow  = shadow_type;
+		frame.gap_x   = -1;                 /* No gap will be drawn */
+		frame.border  = &colors->shade[6];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
@@ -133,7 +135,11 @@ draw_shadow (DRAW_ARGS)
 	else if (DETAIL ("scrolled_window"))
 	{
 		WidgetParameters params;
-		FrameParameters frame = { CL_SHADOW_NONE, 0, -1, 0, &colors->shade[5] };
+		FrameParameters frame;
+
+		frame.shadow = CL_SHADOW_NONE;
+		frame.gap_x  = -1;
+		frame.border = &colors->shade[5];
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
@@ -142,10 +148,14 @@ draw_shadow (DRAW_ARGS)
 	}
 	else
 	{
+		WidgetParameters params;
+		FrameParameters frame;
+
 		printf("draw_shadow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "(null");
 			
-		WidgetParameters params;
-		FrameParameters frame = { CL_SHADOW_NONE, 0, -1, 0, &colors->shade[5] };
+		frame.shadow = CL_SHADOW_NONE;
+		frame.gap_x  = -1;
+		frame.border = &colors->shade[5];
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
@@ -164,7 +174,6 @@ draw_box_gap (DRAW_ARGS,
 {
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
-	GdkRectangle      new_area;
 	cairo_t          *cr;
 	
 	cr = clearlooks_begin_paint (window, NULL);
@@ -172,7 +181,12 @@ draw_box_gap (DRAW_ARGS,
 	if (DETAIL ("notebook"))
 	{
 		WidgetParameters params;
-		FrameParameters  frame = { shadow_type, gap_side, gap_x, gap_width, &colors->shade[6] };
+		FrameParameters  frame;
+		
+		frame.shadow    = shadow_type;
+		frame.gap_side  = gap_side;
+		frame.gap_width = gap_width;
+		frame.border    = &colors->shade[6];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
@@ -261,11 +275,11 @@ combo_box_get_seperator_pos (GtkWidget *widget)
 				if (GTK_IS_ARROW (children->data) || GTK_IS_VSEPARATOR (children->data))
 					pos += GTK_WIDGET (children->data)->allocation.width;
 				
-			} while (children = g_list_next (children));
+			} while ((children = g_list_next (children)));
 		}
 	}
 	
-	pos += 2; // don't ask me why....
+	pos += 2; /* don't ask me why.... */
 	
 	return pos;
 }
@@ -536,7 +550,6 @@ draw_vline                      (GtkStyle               *style,
                                  gint                    y2,
                                  gint                    x)
 {
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	SeparatorParameters separator = { FALSE };
 	cairo_t *cr;
 
@@ -559,18 +572,18 @@ draw_hline                      (GtkStyle               *style,
                                  gint                    x2,
                                  gint                    y)
 {
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	SeparatorParameters separator;
 	cairo_t *cr;
 
 	cr = clearlooks_begin_paint (window, area);
 	
-	if (DETAIL ("label")) // wtf?
+	if (DETAIL ("label")) /* wtf? */
 	{
 		printf("draw_vline: label. ermm....?\n");
 	}
 	else
 	{
+		SeparatorParameters separator;
+		
 		separator.horizontal = TRUE;
 		
 		clearlooks_draw_separator (cr, NULL, NULL, &separator,
@@ -598,7 +611,13 @@ draw_shadow_gap (DRAW_ARGS,
 	if (DETAIL ("frame"))
 	{
 		WidgetParameters params;
-		FrameParameters  frame = { shadow_type, gap_side, gap_x, gap_width, &colors->shade[6] };
+		FrameParameters  frame;
+		
+		frame.shadow    = shadow_type;
+		frame.gap_side  = gap_side;
+		frame.gap_x     = gap_x;
+		frame.gap_width = gap_width;
+		frame.border    = (CairoColor*)&colors->shade[6];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
@@ -687,17 +706,6 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	}
 }
 
-static GdkGC *
-realize_color (GtkStyle * style,
-	       GdkColor * color)
-{
-	GdkGCValues gc_values;
-	gdk_colormap_alloc_color (style->colormap, color, FALSE, TRUE);
-	gc_values.foreground = *color;
-	return gtk_gc_get (style->depth, style->colormap, &gc_values, GDK_GC_FOREGROUND);
-}
-
-
 static void
 draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
             GdkRectangle *area, GtkWidget *widget, const gchar *detail,
@@ -709,9 +717,6 @@ draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
 static void
 clearlooks_style_unrealize (GtkStyle * style)
 {
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	int i;
-	
 	parent_class->unrealize (style);
 }
 

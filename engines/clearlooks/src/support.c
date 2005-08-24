@@ -1,7 +1,5 @@
 #include "support.h"
 
-/* #define ALWAYS_DITHER_GRADIENTS */
-
 GtkTextDirection
 get_direction (GtkWidget *widget)
 {
@@ -442,7 +440,11 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	while (parent && GTK_WIDGET_NO_WINDOW (parent))
 		parent = parent->parent;
 
-	g_return_val_if_fail (parent != NULL, NULL);
+	if (parent == NULL)
+	{
+		color->r = color->g = color->b = 255;
+		return;
+	}
 	
 	state_type = GTK_WIDGET_STATE (parent);
 	
