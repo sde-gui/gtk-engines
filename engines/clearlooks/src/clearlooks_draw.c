@@ -326,9 +326,13 @@ clearlooks_draw_entry (cairo_t *cr,
                        int x, int y, int width, int height)
 {
 #define RADIUS 3.0
+	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
+	CairoColor *border;
+	
+	border = (CairoColor*)&colors->shade[params->disabled ? 4 : 6];
+
 	cairo_translate (cr, x+0.5, y+0.5);
 	cairo_set_line_width (cr, 1.0);
-	
 	
 	/* Fill the background (shouldn't have to) */
 	cairo_rectangle (cr, -0.5, -0.5, width, height);
@@ -339,18 +343,17 @@ clearlooks_draw_entry (cairo_t *cr,
 
 	/* Fill the entry's base color (why isn't is large enough by default?) */
 	cairo_rectangle (cr, 1.5, 1.5, width-4, height-4);
-	cairo_set_source_rgb (cr, colors->base[params->state_type].r, 
-	                          colors->base[params->state_type].g, 
-	                          colors->base[params->state_type].b);
+	cairo_set_source_rgb (cr, base->r, 
+	                          base->g, 
+	                          base->b);
 	cairo_fill (cr);
 	
 	clearlooks_draw_inset (cr, width-1, height-1, 2.0, params->corners);
 
 	/* Draw the border */
-	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, params->disabled ? 0.3 : 0.5);
-	clearlooks_rounded_rectectangle (cr, x+1, y+1, width-3, height-3, RADIUS, params->corners);
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	clearlooks_rounded_rectectangle (cr, 1, 1, width-3, height-3, RADIUS, params->corners);
 	cairo_stroke (cr);
-
 
 	/* Draw the inner shadow */	
 	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, params->disabled ? 0.05 : 0.1);

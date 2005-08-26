@@ -91,6 +91,8 @@ draw_shadow (DRAW_ARGS)
 	ClearlooksColors *colors = &clearlooks_style->colors;
 	cairo_t          *cr     = clearlooks_begin_paint (window, area);
 
+	sanitize_size (window, &width, &height);
+	
 	if (DETAIL ("entry"))
 	{
 		WidgetParameters params;
@@ -102,9 +104,8 @@ draw_shadow (DRAW_ARGS)
 		               GTK_IS_SPIN_BUTTON (widget)))
 		{
 			width += style->xthickness;
+			params.corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
 		}
-		
-
 		
 		clearlooks_draw_entry (cr, &clearlooks_style->colors, &params,
 		                       x, y, width, height);
@@ -151,7 +152,7 @@ draw_shadow (DRAW_ARGS)
 		WidgetParameters params;
 		FrameParameters frame;
 
-		printf("draw_shadow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "(null");
+		printf("draw_shadow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "(null)");
 			
 		frame.shadow = CL_SHADOW_NONE;
 		frame.gap_x  = -1;

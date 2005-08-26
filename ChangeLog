@@ -1,3 +1,11 @@
+2005-08-27  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_entry): Draw an opaque border, instead of
+	a transparent one. What was I thinking?
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow):
+	Sanitize the size, if needed.
+
 2005-08-26  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
