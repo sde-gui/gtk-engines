@@ -212,7 +212,7 @@ clearlooks_draw_button (cairo_t *cr,
 #define RADIUS 3.0
 	double xoffset = 0, yoffset = 0;
 	const CairoColor *fill            = &colors->bg[params->state_type];
-	const CairoColor *border_normal   = &colors->shade[7];
+	const CairoColor *border_normal   = &colors->shade[6];
 	const CairoColor *border_disabled = &colors->shade[4];
 	const CairoColor *gradient_bottom = &colors->shade[3];
 	
@@ -811,14 +811,14 @@ clearlooks_get_frame_gap_clip (int x, int y, int width, int height,
 		CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  -0.5,
 											 frame->gap_width - 3, 2.0);
 		CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  -0.5,
-											 frame->gap_width - 2, 1.0);
+											 frame->gap_width - 2, 2.0);
 	}
 	else if (frame->gap_side == CL_GAP_BOTTOM)
 	{
 		CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  height - 2.5,
 											 frame->gap_width - 3, 2.0);
 		CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  height - 1.5,
-											 frame->gap_width - 2, 1.0);		
+											 frame->gap_width - 2, 2.0);		
 	}
 	else if (frame->gap_side == CL_GAP_LEFT)
 	{
@@ -860,14 +860,23 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		/* Set clip for gap */
 		cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
-		cairo_rectangle      (cr, -0.5, -0.5, width-1, height-1);
+		cairo_rectangle      (cr, -0.5, -0.5, width, height);
 		cairo_rectangle      (cr, bevel_clip.x, bevel_clip.y, bevel_clip.width, bevel_clip.height);
 		cairo_clip           (cr);
 		cairo_new_path       (cr);
 	}
 	
 	/* Draw the bevel */
-	if (frame->shadow != CL_SHADOW_NONE)
+	if (frame->shadow == CL_SHADOW_ETCHED_IN || frame->shadow == CL_SHADOW_ETCHED_OUT)
+	{
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8 );
+		if (frame->shadow == CL_SHADOW_ETCHED_IN)
+			cairo_rectangle       (cr, 1, 1, width-2, height-2);
+		else
+			cairo_rectangle       (cr, 0, 0, width-2, height-2);
+		cairo_stroke          (cr);
+	}
+	else if (frame->shadow != CL_SHADOW_NONE)
 	{
 		ShadowParameters shadow;
 		shadow.corners = params->corners;
@@ -888,8 +897,19 @@ clearlooks_draw_frame            (cairo_t *cr,
 	}
 
 	/* Draw frame */
-	cairo_rectangle      (cr, 0, 0, width-1, height-1);
-	cairo_set_source_rgb (cr, border->r, border->g, border->b );
+	if (frame->shadow == CL_SHADOW_ETCHED_IN || frame->shadow == CL_SHADOW_ETCHED_OUT)
+	{
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2 );
+		if (frame->shadow == CL_SHADOW_ETCHED_IN)
+			cairo_rectangle       (cr, 0, 0, width-2, height-2);
+		else
+			cairo_rectangle       (cr, 1, 1, width-2, height-2);
+	}
+	else
+	{
+		cairo_set_source_rgb (cr, border->r, border->g, border->b );
+		cairo_rectangle      (cr, 0, 0, width-1, height-1);
+	}
 	cairo_stroke         (cr);	
 }
 
@@ -1124,4 +1144,54 @@ clearlooks_draw_list_view_header (cairo_t *cr,
 		clearlooks_draw_separator (cr, colors, widget, &separator,
 		                           width-1.5, 4.0, 2, height-8.0);
 	}
+}
+
+/* We can't draw transparent things here, since it will be called on the same
+ * surface multiple times, when placed on a handlebox_bin or dockitem_bin */
+void
+clearlooks_draw_toolbar (cairo_t *cr,
+                         const ClearlooksColors          *colors,
+                         const WidgetParameters          *widget,
+                         int x, int y, int width, int height)
+{
+	CairoColor *light = (CairoColor*)&colors->shade[0];
+	CairoColor *dark  = (CairoColor*)&colors->shade[3];
+	
+	cairo_set_line_width (cr, 1.0);
+	
+	/* Draw highlight */
+	cairo_translate       (cr, x, y);
+	cairo_move_to         (cr, 0, 0.5);
+	cairo_line_to         (cr, width-1, 0.5);
+	cairo_set_source_rgb  (cr, light->r, light->g, light->b);
+	cairo_stroke          (cr);
+
+	/* Draw shadow */
+	cairo_move_to         (cr, 0, height-0.5);
+	cairo_line_to         (cr, width-1, height-0.5);
+	cairo_set_source_rgb  (cr, dark->r, dark->g, dark->b);
+	cairo_stroke          (cr);
+}
+
+void
+clearlooks_draw_menuitem (cairo_t *cr,
+                          const ClearlooksColors          *colors,
+                          const WidgetParameters          *widget,
+                          int x, int y, int width, int height)
+{
+	CairoColor *fill   = (CairoColor*)&colors->spot[1];
+	CairoColor *border = (CairoColor*)&colors->spot[1];
+	
+	cairo_translate      (cr, x+0.5, y+0.5);
+	cairo_set_line_width (cr, 1.0);
+	
+	/*clearlooks_rounded_rectectangle (cr, 0, 0, width-1, height-1,
+	                                   1.0, CL_CORNER_ALL);*/
+	
+	cairo_rectangle      (cr, 0, 0, width-1, height-1);
+	
+	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
+	cairo_fill_preserve  (cr);
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke         (cr);
 }

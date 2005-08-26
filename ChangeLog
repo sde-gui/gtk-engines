@@ -1,3 +1,18 @@
+2005-08-26  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button), (clearlooks_get_frame_gap_clip),
+	(clearlooks_draw_frame), (clearlooks_draw_list_view_header),
+	(clearlooks_draw_toolbar), (clearlooks_draw_menuitem):
+	Added drawing code for toolbars, menuitems. Lightened buttons borders.
+	Etched in/out support for frames.
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow),
+	(draw_box_gap), (draw_box), (draw_shadow_gap), (draw_arrow),
+	(clearlooks_style_init_from_rc), (clearlooks_style_class_init):
+	Implemented toolbars, menuitems (incomplete), scrollbars (incomplete).
+	Added etched in/out support for frames.
+
 2005-08-24  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/Makefile.am:

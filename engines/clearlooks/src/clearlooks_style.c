@@ -124,7 +124,7 @@ draw_shadow (DRAW_ARGS)
 		
 		frame.shadow  = shadow_type;
 		frame.gap_x   = -1;                 /* No gap will be drawn */
-		frame.border  = &colors->shade[6];
+		frame.border  = &colors->shade[5];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
@@ -168,9 +168,9 @@ draw_shadow (DRAW_ARGS)
 
 static void 
 draw_box_gap (DRAW_ARGS,
-	      GtkPositionType gap_side,
-	      gint            gap_x,
-	      gint            gap_width)
+	          GtkPositionType gap_side,
+	          gint            gap_x,
+	          gint            gap_width)
 {
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
@@ -185,6 +185,7 @@ draw_box_gap (DRAW_ARGS,
 		
 		frame.shadow    = shadow_type;
 		frame.gap_side  = gap_side;
+		frame.gap_x     = gap_x;
 		frame.gap_width = gap_width;
 		frame.border    = &colors->shade[6];
 		
@@ -293,6 +294,13 @@ draw_box (DRAW_ARGS)
 
 	cr     = clearlooks_begin_paint (window, area);
 	colors = &clearlooks_style->colors;
+
+	if ((width == -1) && (height == -1))
+		gdk_window_get_size (window, &width, &height);
+	else if (width == -1)   
+		gdk_window_get_size (window, &width, NULL);
+	else if (height == -1)
+		gdk_window_get_size (window, NULL, &height);
 
 	if (DETAIL ("menubar"))
 	{
@@ -503,6 +511,38 @@ draw_box (DRAW_ARGS)
 		clearlooks_draw_optionmenu (cr, colors, &params, &optionmenu,
 		                            x, y, width, height);		
 	}
+	else if (DETAIL ("menuitem"))
+	{
+		WidgetParameters params;
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		
+		clearlooks_draw_menuitem (cr, colors, &params,
+		                          x, y, width, height);
+	}
+	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar") || DETAIL ("slider"))
+	{
+		/* Temporary */
+		WidgetParameters params;
+		FrameParameters  frame;
+		
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		params.corners = CL_CORNER_NONE;
+		
+		frame.gap_x = -1;
+		frame.border = (CairoColor*)&colors->shade[6];
+		frame.shadow = CL_SHADOW_OUT;
+		
+		clearlooks_draw_frame (cr, colors, &params, &frame,
+		                       x, y, width, height);
+	}
+	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
+	{
+		clearlooks_draw_toolbar (cr, colors, NULL, x, y, width, height);
+	}
+	else if (DETAIL ("trough"))
+	{
+		
+	}
 	else
 	{
 		printf("draw_box: %s\n", detail);
@@ -617,14 +657,14 @@ draw_shadow_gap (DRAW_ARGS,
 		frame.gap_side  = gap_side;
 		frame.gap_x     = gap_x;
 		frame.gap_width = gap_width;
-		frame.border    = (CairoColor*)&colors->shade[6];
+		frame.border    = (CairoColor*)&colors->shade[5];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		params.corners = CL_CORNER_NONE;
 		
 		clearlooks_draw_frame (cr, colors, &params, &frame,
-		                       x, y, width, height);	
+		                       x, y, width, height);
 	}
 	else
 	{
@@ -652,13 +692,32 @@ draw_resize_grip (GtkStyle       *style,
 	return;
 }
 
+static void
+draw_arrow (GtkStyle      *style,
+                       GdkWindow     *window,
+                       GtkStateType   state,
+                       GtkShadowType  shadow,
+                       GdkRectangle  *area,
+                       GtkWidget     *widget,
+                       const gchar   *detail,
+                       GtkArrowType   arrow_type,
+                       gboolean       fill,
+                       gint           x,
+                       gint           y,
+                       gint           width,
+                       gint           height)
+{
+	parent_class->draw_arrow (style, window, state, shadow, area,
+	                          widget, detail, arrow_type, fill,
+	                          x, y, width, height);
+}
 
 static void
 clearlooks_style_init_from_rc (GtkStyle * style,
 			       GtkRcStyle * rc_style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	double shades[] = {1.065, 0.93, 0.896, 0.85, 0.768, 0.665, 0.5, 0.4, 0.205};
+	double shades[] = {1.15, 0.93, 0.896, 0.85, 0.768, 0.665, 0.5, 0.4, 0.205};
 	CairoColor spot_color;
 	CairoColor bg_normal;
 	double contrast;
@@ -748,6 +807,7 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_vline       = draw_vline;
 	style_class->draw_hline       = draw_hline;
 	style_class->draw_resize_grip = draw_resize_grip;
+	style_class->draw_arrow       = draw_arrow;
 }
 
 GType clearlooks_type_style = 0;

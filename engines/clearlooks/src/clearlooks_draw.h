@@ -90,4 +90,15 @@ void clearlooks_draw_list_view_header (cairo_t *cr,
                                        const WidgetParameters         *widget,
                                        const ListViewHeaderParameters *header,
                                        int x, int y, int width, int height);
+
+void clearlooks_draw_toolbar          (cairo_t *cr,
+                                       const ClearlooksColors         *colors,
+                                       const WidgetParameters         *widget,
+                                       int x, int y, int width, int height);
+
+void clearlooks_draw_menuitem         (cairo_t *cr,
+                                       const ClearlooksColors         *colors,
+                                       const WidgetParameters         *widget,
+                                       int x, int y, int width, int height);
+
 #endif /* CLEARLOOKS_DRAW_H */
