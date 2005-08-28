@@ -1,3 +1,15 @@
+2005-08-28  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_rounded_rectectangle), (clearlooks_draw_button),
+	(clearlooks_scale_draw_gradient), (clearlooks_draw_slider_button),
+	(clearlooks_draw_progressbar_trough), (clearlooks_draw_frame),
+	(clearlooks_draw_menuitem):
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box_gap),
+	(draw_hline):
+
+	Minor speed improvements.
+
 2005-08-27  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

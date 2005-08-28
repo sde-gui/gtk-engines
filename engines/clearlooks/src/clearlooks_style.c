@@ -7,6 +7,7 @@
 
 #include <math.h>
 #include <string.h>
+#include <sys/time.h>
 
 #include "support.h"
 
@@ -177,7 +178,7 @@ draw_box_gap (DRAW_ARGS,
 	ClearlooksColors *colors = &clearlooks_style->colors;
 	cairo_t          *cr;
 	
-	cr = clearlooks_begin_paint (window, NULL);
+	cr = clearlooks_begin_paint (window, area);
 
 	if (DETAIL ("notebook"))
 	{
@@ -206,7 +207,7 @@ draw_box_gap (DRAW_ARGS,
 									   gap_side, gap_x, gap_width);
 	}
 	
-	cairo_destroy (cr);
+	cairo_destroy (cr);	
 }
 
 static void
@@ -633,8 +634,6 @@ draw_hline                      (GtkStyle               *style,
 	
 	cairo_destroy (cr);
 }
-
-/**************************************************************************/
 
 static void 
 draw_shadow_gap (DRAW_ARGS,
