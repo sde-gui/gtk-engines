@@ -101,4 +101,17 @@ void clearlooks_draw_menuitem         (cairo_t *cr,
                                        const WidgetParameters         *widget,
                                        int x, int y, int width, int height);
 
+void clearlooks_draw_scrollbar_stepper (cairo_t *cr,
+                                        const ClearlooksColors           *colors,
+                                        const WidgetParameters           *widget,
+                                        const ScrollBarParameters        *scrollbar,
+                                        const ScrollBarStepperParameters *stepper,
+                                        int x, int y, int width, int height);
+
+void clearlooks_draw_scrollbar_slider (cairo_t *cr,
+                                       const ClearlooksColors          *colors,
+                                       const WidgetParameters          *widget,
+                                       const ScrollBarParameters       *scrollbar,
+                                       int x, int y, int width, int height);
+
 #endif /* CLEARLOOKS_DRAW_H */

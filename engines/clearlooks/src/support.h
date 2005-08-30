@@ -57,34 +57,37 @@ void       blend                   (GdkColormap  *colormap,
                                     GdkColor     *c,
                                     int           alpha);
 			
-GtkWidget *get_parent_window       (GtkWidget    *widget);
+GtkWidget*        get_parent_window       (GtkWidget    *widget);
+GdkColor*         get_parent_bgcolor      (GtkWidget    *widget);
+gboolean          is_combo_box            (GtkWidget    *widget);
+GtkWidget*        find_combo_box_widget   (GtkWidget    *widget);
 
-GdkColor  *get_parent_bgcolor      (GtkWidget    *widget);
+void              clearlooks_gdk_color_to_rgb   (GdkColor     *c,
+                                                 double       *r,
+                                                 double       *g,
+                                                 double       *b);
 
-gboolean   is_combo_box            (GtkWidget    *widget);
+void              gtk_treeview_get_header_index (GtkTreeView  *tv,
+                                                 GtkWidget    *header,
+                                                 gint         *column_index,
+                                                 gint         *columns,
+                                                 gboolean     *resizable);
 
-GtkWidget *find_combo_box_widget   (GtkWidget    *widget);
+void              gtk_clist_get_header_index    (GtkCList     *clist,
+                                                 GtkWidget    *button,
+                                                 gint         *column_index,
+                                                 gint         *columns);
 
-void clearlooks_gdk_color_to_rgb   (GdkColor     *c,
-                                    double       *r,
-                                    double       *g,
-                                    double       *b);
+void              clearlooks_get_parent_bg      (const GtkWidget *widget,
+                                                 CairoColor      *color);
 
-void gtk_treeview_get_header_index (GtkTreeView  *tv,
-                                    GtkWidget    *header,
-                                    gint         *column_index,
-                                    gint         *columns,
-                                    gboolean     *resizable);
+void              option_menu_get_props         (GtkWidget       *widget,
+                                                 GtkRequisition  *indicator_size,
+                                                 GtkBorder       *indicator_spacing);
 
-void gtk_clist_get_header_index    (GtkCList     *clist,
-                                    GtkWidget    *button,
-                                    gint         *column_index,
-                                    gint         *columns);
+ClearlooksStepper scrollbar_get_stepper         (GtkWidget       *widget,
+                                                 GdkRectangle    *stepper);
+ClearlooksStepper scrollbar_visible_steppers    (GtkWidget       *widget);
+ClearlooksJunction scrollbar_get_junction       (GtkWidget    *widget);
 
-void clearlooks_get_parent_bg      (const GtkWidget *widget,
-                                    CairoColor      *color);
-
-void option_menu_get_props         (GtkWidget       *widget,
-                                    GtkRequisition  *indicator_size,
-                                    GtkBorder       *indicator_spacing);
 #endif /* SUPPORT_H */

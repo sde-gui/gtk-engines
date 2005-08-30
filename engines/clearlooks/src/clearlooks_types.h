@@ -24,6 +24,22 @@ typedef enum
 
 typedef enum
 {
+	CL_JUNCTION_NONE      = 0,
+	CL_JUNCTION_BEGIN     = 1,
+	CL_JUNCTION_END       = 2
+} ClearlooksJunction;
+
+typedef enum
+{
+	CL_STEPPER_UNKNOWN    = 0,
+	CL_STEPPER_A          = 1,
+	CL_STEPPER_B          = 2,
+	CL_STEPPER_C          = 4,
+	CL_STEPPER_D          = 8
+} ClearlooksStepper;
+
+typedef enum
+{
 	CL_ORDER_FIRST,
 	CL_ORDER_MIDDLE,
 	CL_ORDER_LAST
@@ -139,8 +155,20 @@ typedef struct
 typedef struct
 {
 	ClearlooksOrder order;
-	boolean        resizable;
+	boolean         resizable;
 } ListViewHeaderParameters;
+
+typedef struct
+{
+	ClearlooksJunction junction;       /* On which sides the slider junctions */
+	ClearlooksStepper  steppers;       /* The visible steppers */
+	boolean            horizontal;
+} ScrollBarParameters;
+
+typedef struct
+{
+	ClearlooksStepper stepper;         /* Which stepper to draw */
+} ScrollBarStepperParameters;
 
 #define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) rect.x      = _x; \
                                                        rect.y      = _y; \

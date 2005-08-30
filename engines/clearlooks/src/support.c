@@ -452,3 +452,105 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	
 	clearlooks_gdk_color_to_rgb (gcolor, &color->r, &color->g, &color->b);
 }
+
+ClearlooksStepper
+scrollbar_get_stepper (GtkWidget    *widget,
+                       GdkRectangle *stepper)
+{
+	ClearlooksStepper value = CL_STEPPER_UNKNOWN;
+	GdkRectangle tmp;
+	GdkRectangle check_rectangle;
+	GtkOrientation orientation;
+
+	g_return_val_if_fail (GTK_IS_RANGE (widget), CL_STEPPER_UNKNOWN);
+
+	check_rectangle.x      = widget->allocation.x;
+	check_rectangle.y      = widget->allocation.y;
+	check_rectangle.width  = stepper->width;
+	check_rectangle.height = stepper->height;
+	
+	orientation = GTK_RANGE (widget)->orientation;
+	
+	if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
+		value = CL_STEPPER_A;
+
+	if (value == CL_STEPPER_UNKNOWN) /* Haven't found a match */
+	{
+		if (orientation == GTK_ORIENTATION_HORIZONTAL)
+			check_rectangle.x = widget->allocation.x + stepper->width;
+		else
+			check_rectangle.y = widget->allocation.y + stepper->height;
+		
+		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
+			value = CL_STEPPER_B;
+	}
+
+	if (value == CL_STEPPER_UNKNOWN) /* Still haven't found a match */
+	{
+		if (orientation == GTK_ORIENTATION_HORIZONTAL)
+			check_rectangle.x = widget->allocation.x + widget->allocation.width - (stepper->width * 2);
+		else
+			check_rectangle.y = widget->allocation.y + widget->allocation.height - (stepper->height * 2);
+		
+		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
+			value = CL_STEPPER_C;
+	}
+
+	if (value == CL_STEPPER_UNKNOWN) /* STILL haven't found a match */
+	{
+		if (orientation == GTK_ORIENTATION_HORIZONTAL)
+			check_rectangle.x = widget->allocation.x + widget->allocation.width - stepper->width;
+		else
+			check_rectangle.y = widget->allocation.y + widget->allocation.height - stepper->height;
+		
+		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
+			value = CL_STEPPER_D;
+	}
+	
+	return value;
+}
+
+ClearlooksStepper
+scrollbar_visible_steppers (GtkWidget *widget)
+{
+	ClearlooksStepper steppers = 0;
+	
+	g_return_val_if_fail (GTK_IS_RANGE (widget), CL_STEPPER_UNKNOWN);
+	
+	if (GTK_RANGE (widget)->has_stepper_a)
+		steppers |= CL_STEPPER_A;
+	
+	if (GTK_RANGE (widget)->has_stepper_b)
+		steppers |= CL_STEPPER_B;
+
+	if (GTK_RANGE (widget)->has_stepper_c)
+		steppers |= CL_STEPPER_C;
+
+	if (GTK_RANGE (widget)->has_stepper_d)
+		steppers |= CL_STEPPER_D;
+}
+
+ClearlooksJunction
+scrollbar_get_junction (GtkWidget    *widget)
+{	
+	GtkAdjustment *adj;
+	ClearlooksJunction junction = CL_JUNCTION_NONE;
+	
+	g_return_val_if_fail (GTK_IS_RANGE (widget), CL_JUNCTION_NONE);
+
+	adj = GTK_RANGE (widget)->adjustment;
+	
+	if (adj->value <= adj->lower &&
+		(GTK_RANGE (widget)->has_stepper_a || GTK_RANGE (widget)->has_stepper_b))
+	{
+		junction |= CL_JUNCTION_BEGIN;
+	}
+	
+	if (adj->value >= adj->upper - adj->page_size &&
+		(GTK_RANGE (widget)->has_stepper_c || GTK_RANGE (widget)->has_stepper_d))
+	{
+		junction |= CL_JUNCTION_END;
+	}
+	
+	return junction;
+}
