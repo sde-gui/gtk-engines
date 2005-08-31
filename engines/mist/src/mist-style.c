@@ -944,7 +944,16 @@ draw_option(GtkStyle *style,
 	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2), 0 , 2 * M_PI);
 	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
 
-	cairo_stroke (cr);
+	cairo_fill (cr);
+
+	gdk_cairo_set_source_color(cr, &style->base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
+	cairo_fill (cr);
+
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
+	
+	gdk_cairo_set_source_color(cr, &style->base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
+
+	cairo_fill (cr);
 
 	cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 0.5); 
  	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2), 0 , 2 * M_PI);
@@ -953,6 +962,7 @@ draw_option(GtkStyle *style,
 	cairo_stroke (cr);
 
 	cairo_set_line_width (cr, 1);
+
 
 	if ((shadow_type == GTK_SHADOW_IN) || 
 		(IS_TOGGLE_BUTTON(widget) && 
