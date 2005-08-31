@@ -1,3 +1,8 @@
+2005-08-31  Andrew Johnson  <ajgenius@ajgenius.us>
+
+        * engines/mist/src/mist-style.c: more cairo conversions - initial
+	change mostly complete now
+	
 2005-08-30  Andrew Johnson  <ajgenius@ajgenius.us>
 
         * engines/mist/src/mist-style.c: funky change to improve option

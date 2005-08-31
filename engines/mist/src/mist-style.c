@@ -130,6 +130,59 @@ mist_dot (cairo_t *cr,
 	cairo_restore(cr);
 }
 
+static void mist_line (cairo_t *cr,
+			GdkColor *color,
+			int x1,
+			int y1,
+			int x2,
+			int y2)
+{ 
+	cairo_save(cr);
+
+	gdk_cairo_set_source_color(cr, color);	
+	cairo_set_line_width (cr, 1);
+
+	cairo_move_to(cr, x1 + 0.5, y1 + 0.5);
+	cairo_line_to(cr, x2 + 0.5, y2 + 0.5);
+
+	cairo_stroke(cr);
+
+	cairo_restore(cr);
+}
+
+
+static void mist_polygon (cairo_t *cr,
+				GdkColor *color,
+				GdkPoint *points,
+				gint npoints)
+{
+	int i = 0;
+
+	cairo_save(cr);
+
+	gdk_cairo_set_source_color(cr, color);	
+	cairo_move_to(cr, points[0].x, points[0].y);
+
+	for (i = 1; i < npoints; i++)
+	{
+		if (!((points[i].x == points[i + 1].x) &&
+		    (points[i].y == points[i + 1].y))) 
+		{
+			cairo_line_to(cr, points[i].x, points[i].y);
+		}
+	}
+	
+	if ((points[npoints-1].x != points[0].y) ||
+		(points[npoints-1].y != points[0].y))
+	{
+		cairo_line_to(cr, points[0].x, points[0].y);
+	}
+
+	cairo_fill(cr);
+
+	cairo_restore(cr);
+}
+
 static void
 mist_tab (GtkStyle *style,
 	  GdkWindow *window,
@@ -236,7 +289,7 @@ mist_tab (GtkStyle *style,
 
 static void
 draw_rect (GtkStyle *style, 
-	   GdkWindow *window, 
+	   cairo_t *cr, 
 	   GdkColor *color1, 
 	   GdkColor *color2, 
 	   int x, 
@@ -244,8 +297,6 @@ draw_rect (GtkStyle *style,
 	   int width, 
 	   int height)
 {
-	cairo_t *cr = mist_begin_paint (window, NULL);
-
 	gdk_cairo_set_source_color(cr, color2);	
 
 	cairo_move_to (cr, x + 0.5, y + height - 0.5);
@@ -265,13 +316,11 @@ draw_rect (GtkStyle *style,
 	cairo_line_to (cr, x + 0.5, y + height - 0.5);
 
 	cairo_stroke (cr);
-
-	cairo_destroy(cr);
 }
 
 static void
 draw_rect_with_shadow (GtkStyle *style,
-		       GdkWindow *window,
+		       cairo_t *cr,
 		       GtkWidget *widget,
 		       GtkStateType state_type,
 		       GtkShadowType shadow_type,
@@ -308,7 +357,7 @@ draw_rect_with_shadow (GtkStyle *style,
 		
 	}
 	
-	draw_rect (style, window, &color1, &color2,
+	draw_rect (style, cr, &color1, &color2,
 		   x, y, width, height);
 	
 }
@@ -467,22 +516,26 @@ draw_shadow(GtkStyle *style,
 
 	shadow_type = get_shadow_type (style, detail, shadow_type);
 
+	cairo_t *cr = mist_begin_paint (window, area);
+
 	if (state_type == GTK_STATE_INSENSITIVE && shadow_type != GTK_SHADOW_NONE) {
 		shadow_type = GTK_SHADOW_ETCHED_IN;
 	}
 	
 	if (CHECK_DETAIL(detail, "frame") && widget->parent && GTK_IS_STATUSBAR (widget->parent)) {
 		if (shadow_type != GTK_SHADOW_NONE) {
-			gdk_draw_line (window, 
-				       style->dark_gc[GTK_STATE_NORMAL], 
-				       x, y, 
-				       x + width - 1, y);
-
+			gdk_cairo_set_source_color(cr, &style->dark[GTK_STATE_NORMAL]);	
+	
+			cairo_move_to (cr, x + 0.5, y + 0.5);
+			cairo_line_to (cr, x + width - 0.5, y + 0.5);
+			cairo_stroke (cr);
 		}
 	} else {
-		draw_rect_with_shadow (style, window, widget, state_type,
+		draw_rect_with_shadow (style, cr, widget, state_type,
 				       shadow_type,x, y, width, height);
 	}
+
+	cairo_destroy(cr);
 }
 
 static void
@@ -506,11 +559,11 @@ draw_polygon(GtkStyle *style,
 	static const gdouble pi_over_4 = M_PI_4;
 	static const gdouble pi_3_over_4 = M_PI_4 * 3;
 	
-	GdkGC              *gc1;
-	GdkGC              *gc2;
-	GdkGC              *gc3;
-	GdkGC              *gc4;
-	gdouble             angle;
+	GdkColor           *color1;
+	GdkColor           *color2;
+	GdkColor           *color3;
+	GdkColor           *color4;
+	gdouble            angle;
 	int                xadjust;
 	int                yadjust;
 	int                i;
@@ -521,43 +574,37 @@ draw_polygon(GtkStyle *style,
 	
 	switch (shadow_type) {
 	case GTK_SHADOW_IN:
-		gc1 = style->light_gc[state_type];
-		gc2 = style->dark_gc[state_type];
-		gc3 = style->light_gc[state_type];
-		gc4 = style->dark_gc[state_type];
+		color1 = &style->light[state_type];
+		color2 = &style->dark[state_type];
+		color3 = &style->light[state_type];
+		color4 = &style->dark[state_type];
 		break;
 	case GTK_SHADOW_ETCHED_IN:
-		gc1 = style->light_gc[state_type];
-		gc2 = style->dark_gc[state_type];
-		gc3 = style->dark_gc[state_type];
-		gc4 = style->light_gc[state_type];
+		color1 = &style->light[state_type];
+		color2 = &style->dark[state_type];
+		color3 = &style->dark[state_type];
+		color4 = &style->light[state_type];
 		break;
 	case GTK_SHADOW_OUT:
-		gc1 = style->dark_gc[state_type];
-		gc2 = style->light_gc[state_type];
-		gc3 = style->dark_gc[state_type];
-		gc4 = style->light_gc[state_type];
+		color1 = &style->dark[state_type];
+		color2 = &style->light[state_type];
+		color3 = &style->dark[state_type];
+		color4 = &style->light[state_type];
 		break;
 	case GTK_SHADOW_ETCHED_OUT:
-		gc1 = style->dark_gc[state_type];
-		gc2 = style->light_gc[state_type];
-		gc3 = style->light_gc[state_type];
-		gc4 = style->dark_gc[state_type];
+		color1 = &style->dark[state_type];
+		color2 = &style->light[state_type];
+		color3 = &style->light[state_type];
+		color4 = &style->dark[state_type];
 		break;
 	default:
 		return;
 	}
-	
-	if (area) {
-		gdk_gc_set_clip_rectangle(gc1, area);
-		gdk_gc_set_clip_rectangle(gc2, area);
-		gdk_gc_set_clip_rectangle(gc3, area);
-		gdk_gc_set_clip_rectangle(gc4, area);
-	}
+
+	cairo_t *cr = mist_begin_paint (window, area);
 	
 	if (fill)
-		gdk_draw_polygon(window, style->bg_gc[state_type], 
-				 TRUE, points, npoints);
+		mist_polygon(cr, &style->bg[state_type], points, npoints);
 	
 	npoints--;
 	
@@ -579,12 +626,12 @@ draw_polygon(GtkStyle *style,
 				yadjust = 0;
 			}
 
-			gdk_draw_line(window, gc1,
+			mist_line(cr, color1,
 				      points[i].x - xadjust, 
 				      points[i].y - yadjust,
 				      points[i + 1].x - xadjust, 
 				      points[i + 1].y - yadjust);
-			gdk_draw_line(window, gc3,
+			mist_line(cr, color3,
 				      points[i].x, points[i].y,
 				      points[i + 1].x, points[i + 1].y);
 		}
@@ -597,22 +644,18 @@ draw_polygon(GtkStyle *style,
 				yadjust = 0;
 			}
 			
-			gdk_draw_line(window, gc4,
+			mist_line(cr, color4,
 				      points[i].x + xadjust, 
 				      points[i].y + yadjust,
 				      points[i + 1].x + xadjust, 
 				      points[i + 1].y + yadjust);
-			gdk_draw_line(window, gc2,
+			mist_line(cr, color2,
 				      points[i].x, points[i].y,
 				      points[i + 1].x, points[i + 1].y);
 		}
 	}
-	if (area) {
-		gdk_gc_set_clip_rectangle(gc1, NULL);
-		gdk_gc_set_clip_rectangle(gc2, NULL);
-		gdk_gc_set_clip_rectangle(gc3, NULL);
-		gdk_gc_set_clip_rectangle(gc4, NULL);
-	}
+
+	cairo_destroy(cr);
 }
 
 static void
@@ -638,101 +681,93 @@ draw_diamond(GtkStyle * style,
 	
 	half_width = width / 2;
 	half_height = height / 2;
-	
-	if (area) {
-		gdk_gc_set_clip_rectangle(style->light_gc[state_type], area);
-		gdk_gc_set_clip_rectangle(style->bg_gc[state_type], area);
-		gdk_gc_set_clip_rectangle(style->dark_gc[state_type], area);
-		gdk_gc_set_clip_rectangle(style->black_gc, area);
-	}
+
+	cairo_t *cr = mist_begin_paint (window, area);
+
 	switch (shadow_type) {
 	case GTK_SHADOW_IN:
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + 2, y + half_height,
 			      x + half_width, y + height - 2);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + half_width, y + height - 2,
 			      x + width - 2, y + half_height);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + 1, y + half_height,
 			      x + half_width, y + height - 1);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + half_width, y + height - 1,
 			      x + width - 1, y + half_height);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x, y + half_height,
 			      x + half_width, y + height);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + half_width, y + height,
 			      x + width, y + half_height);
 		
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + 2, y + half_height,
 			      x + half_width, y + 2);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + half_width, y + 2,
 			      x + width - 2, y + half_height);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + 1, y + half_height,
 			      x + half_width, y + 1);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + half_width, y + 1,
 			      x + width - 1, y + half_height);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x, y + half_height,
 			      x + half_width, y);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + half_width, y,
 			      x + width, y + half_height);
 		break;
 	case GTK_SHADOW_OUT:
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + 2, y + half_height,
 			      x + half_width, y + height - 2);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + half_width, y + height - 2,
 			      x + width - 2, y + half_height);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + 1, y + half_height,
 			      x + half_width, y + height - 1);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + half_width, y + height - 1,
 			      x + width - 1, y + half_height);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x, y + half_height,
 			      x + half_width, y + height);
-		gdk_draw_line(window, style->dark_gc[state_type],
+		mist_line(cr, &style->dark[state_type],
 			      x + half_width, y + height,
 			      x + width, y + half_height);
 		
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + 2, y + half_height,
 			      x + half_width, y + 2);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + half_width, y + 2,
 			      x + width - 2, y + half_height);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + 1, y + half_height,
 			      x + half_width, y + 1);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + half_width, y + 1,
 			      x + width - 1, y + half_height);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x, y + half_height,
 			      x + half_width, y);
-		gdk_draw_line(window, style->light_gc[state_type],
+		mist_line(cr, &style->light[state_type],
 			      x + half_width, y,
 			      x + width, y + half_height);
 		break;
 	default:
 		break;
 	}
-	if (area) {
-		gdk_gc_set_clip_rectangle(style->light_gc[state_type], NULL);
-		gdk_gc_set_clip_rectangle(style->bg_gc[state_type], NULL);
-		gdk_gc_set_clip_rectangle(style->dark_gc[state_type], NULL);
-		gdk_gc_set_clip_rectangle(style->black_gc, NULL);
-	}
+
+	cairo_destroy(cr);
 }
 
 static void
@@ -748,7 +783,7 @@ draw_box(GtkStyle *style,
          int width,
          int height)
 {
-	GdkGC *light_gc, *dark_gc;
+	GdkColor *light, *dark;
 	GtkOrientation orientation;
 	
 	g_return_if_fail (style != NULL);
@@ -760,37 +795,37 @@ draw_box(GtkStyle *style,
 		state_type = GTK_STATE_SELECTED;
 	}
 
-	light_gc = style->light_gc[state_type];
-	dark_gc = style->dark_gc[state_type];
+	light = &style->light[state_type];
+	dark = &style->dark[state_type];
+
+	cairo_t *cr = mist_begin_paint (window, area);
 	
 	orientation = GTK_ORIENTATION_HORIZONTAL;
 	if (height > width)
 		orientation = GTK_ORIENTATION_VERTICAL;
 	
 	if (CHECK_DETAIL(detail, "optionmenutab")) {
-		gdk_draw_line (window, style->dark_gc[state_type], 
-			       x - 5, y, x - 5, y + height);
+		mist_line(cr, dark, x - 5, y, x - 5, y + height);
 		
 		gtk_paint_arrow (style, window, state_type, shadow_type, area, 
 				 widget, detail, GTK_ARROW_DOWN, TRUE,
 				 x + 1, y + 1, width - 2, height - 2);
 	} else if (CHECK_DETAIL(detail, "trough")) {
-		gdk_draw_rectangle (window, 
-				    style->bg_gc[state_type],
-				    TRUE,
-				    x, y, width - 1, height - 1);
-		gdk_draw_rectangle (window, 
-				    style->dark_gc[GTK_STATE_NORMAL],
-				    FALSE,
-				    x, y, width - 1, height - 1);
+		gdk_cairo_set_source_color(cr, &style->bg[state_type]);	
+		cairo_rectangle(cr, x, y, width - 1, height - 1);
+		cairo_fill(cr);
+
+		gdk_cairo_set_source_color(cr, dark);	
+		cairo_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
+		cairo_stroke(cr);
 	} else if (CHECK_DETAIL(detail, "menubar")
 		   || CHECK_DETAIL(detail, "dockitem_bin") 
 		   || CHECK_DETAIL(detail, "dockitem") 
 		   || CHECK_DETAIL(detail, "toolbar") 
 		   || CHECK_DETAIL(detail, "handlebox")) {
 		if (shadow_type != GTK_SHADOW_NONE) {
-			gdk_draw_line (window, 
-				       style->dark_gc[GTK_STATE_NORMAL], 
+			mist_line (cr, 
+				       &style->dark[GTK_STATE_NORMAL], 
 				       x, y + height - 1, 
 				       x + width - 1, y + height - 1);
 
@@ -800,20 +835,21 @@ draw_box(GtkStyle *style,
 			 shadow_type, area, widget,
 			 detail, x, y, width, height);
 	} else  if (CHECK_DETAIL(detail, "bar")) {
-		if (style->base_gc[GTK_STATE_SELECTED] && width > 1 && height > 1) {
-			gdk_draw_rectangle (window, style->base_gc[GTK_STATE_SELECTED], TRUE, x + 1, y + 1, 
-					    width - 2, height - 2);
+		if (width > 1 && height > 1) {
+			gdk_cairo_set_source_color(cr, &style->base[GTK_STATE_SELECTED]);	
+			cairo_rectangle(cr, x + 1, y + 1, width - 2, height - 2);
+			cairo_fill(cr);
 		}
 	
 
-		draw_rect (style, window, 
+		draw_rect (style, cr, 
 			   &style->dark[GTK_STATE_SELECTED],
 			   &style->dark[GTK_STATE_SELECTED],
 			   x, y, width, height);
 	} else if (CHECK_DETAIL(detail, "buttondefault")) {
-		gdk_draw_rectangle (window, style->fg_gc[GTK_STATE_NORMAL],
-				    FALSE,
-				    x, y, width - 1, height - 1);
+		gdk_cairo_set_source_color(cr, &style->fg[GTK_STATE_NORMAL]);	
+		cairo_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
+		cairo_stroke(cr);
 	} else {
 		/* Make sure stepper and slider outlines "overlap" - taken from
 		 * bluecurve */
@@ -852,12 +888,14 @@ draw_box(GtkStyle *style,
 			shadow_type = GTK_SHADOW_ETCHED_IN;
 		}
 		if (shadow_type != GTK_SHADOW_NONE) {
-			draw_rect_with_shadow (style, window, widget, 
+			draw_rect_with_shadow (style, cr, widget, 
 					       state_type, 
 					       shadow_type,
 					       x, y, width, height);
 		}
 	}
+
+	cairo_destroy(cr);
 }
 
 static void
@@ -875,19 +913,20 @@ draw_check(GtkStyle *style,
 {
 	sanitize_size (window, &width, &height);
 
-	gtk_paint_box (style, window, GTK_STATE_NORMAL, 
-		       GTK_SHADOW_IN, area, widget,
-		       detail, x, y, width - 1, height - 1);
+	cairo_t *cr = mist_begin_paint (window, area);
 
-	gdk_draw_rectangle (window, 
-			    style->base_gc[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL ], 
-			    TRUE,
-			    x + 1,  y + 1, width - 3, height - 3);
+	gdk_cairo_set_source_color(cr, &style->base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL ]);	
+	cairo_rectangle(cr, x + 1, y + 1, width - 3, height - 3);
+	cairo_fill(cr);
+
+	gdk_cairo_set_source_color(cr, &style->dark[state_type]);	
+	cairo_rectangle(cr, x + 0.5, y + 0.5, width - 2, height - 2);
+	cairo_stroke(cr);
 	
 	if (shadow_type == GTK_SHADOW_IN) {
-		gdk_draw_rectangle(window,
-				   widget->style->base_gc[GTK_STATE_SELECTED],
-				   TRUE, x + 2, y + 2, width - 5, height - 5);
+		gdk_cairo_set_source_color(cr, &style->base[GTK_STATE_SELECTED]);	
+		cairo_rectangle(cr, x + 2, y + 2, width - 5, height - 5);
+		cairo_fill(cr);
 	} else if (shadow_type == GTK_SHADOW_ETCHED_IN) { /* inconsistent */
 #define gray50_width 2
 #define gray50_height 2
@@ -914,6 +953,8 @@ draw_check(GtkStyle *style,
 #undef gray50_width
 #undef gray50_height 
 	}
+
+	cairo_destroy(cr);
 }
 
 static void
@@ -931,38 +972,19 @@ draw_option(GtkStyle *style,
 {
 	sanitize_size (window, &width, &height);
 
-	cairo_t *cr = mist_begin_paint (window, NULL);
+	cairo_t *cr = mist_begin_paint (window, area);
 
-	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) + 0.5, 0 , 2 * M_PI);
-	
-	gdk_cairo_set_source_color(cr, &style->base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
-
-	cairo_fill (cr);
-	cairo_set_line_width (cr, 0.5);
-
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
 	gdk_cairo_set_source_color(cr, &style->dark[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
-	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2), 0 , 2 * M_PI);
-	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
-
-	cairo_fill (cr);
-
-	gdk_cairo_set_source_color(cr, &style->base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
-	cairo_fill (cr);
-
-	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
-	
-	gdk_cairo_set_source_color(cr, &style->base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
-
-	cairo_fill (cr);
-
-	cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 0.5); 
- 	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2), 0 , 2 * M_PI);
-	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
-
 	cairo_stroke (cr);
+	
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
+	gdk_cairo_set_source_color(cr, &style->base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
+	cairo_fill (cr);
 
-	cairo_set_line_width (cr, 1);
-
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
+	cairo_set_source_rgba(cr, 0, 0, 0, 0.35); 
+	cairo_stroke (cr);
 
 	if ((shadow_type == GTK_SHADOW_IN) || 
 		(IS_TOGGLE_BUTTON(widget) && 
@@ -989,9 +1011,8 @@ draw_option(GtkStyle *style,
 		}
 		else
 		{
-			cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * M_PI);
-
 			gdk_cairo_set_source_color(cr, &style->bg[GTK_STATE_SELECTED]);	
+			cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * M_PI);
 			cairo_fill (cr);
 		}
 	}
@@ -1036,131 +1057,125 @@ draw_shadow_gap(GtkStyle *style,
                 int gap_x,
                 int gap_width)
 {
-	GdkGC *gc1 = NULL;
-	GdkGC *gc2 = NULL;
+	GdkColor *color1 = NULL;
+	GdkColor *color2 = NULL;
 	
 	g_return_if_fail (window != NULL);
 	
 	sanitize_size (window, &width, &height);
 	shadow_type = get_shadow_type (style, detail, shadow_type);
 	
+	cairo_t *cr = mist_begin_paint (window, area);
+
 	switch (shadow_type) {
 	case GTK_SHADOW_NONE:
 		return;
 	case GTK_SHADOW_IN:
-		gc1 = style->dark_gc[state_type];
-		gc2 = style->light_gc[state_type];
+		color1 = &style->dark[state_type];
+		color2 = &style->light[state_type];
 		break;
 	case GTK_SHADOW_OUT:
-		gc1 = style->light_gc[state_type];
-		gc2 = style->dark_gc[state_type];
+		color1 = &style->light[state_type];
+		color2 = &style->dark[state_type];
 		break;
 	case GTK_SHADOW_ETCHED_IN:
 	case GTK_SHADOW_ETCHED_OUT:
-		gc1 = style->dark_gc[state_type];
-		gc2 = style->dark_gc[state_type];
-	}
-
-	if (area) {
-		gdk_gc_set_clip_rectangle (gc1, area);
-		gdk_gc_set_clip_rectangle (gc2, area);
+		color1 = &style->dark[state_type];
+		color2 = &style->dark[state_type];
 	}
 	
 	switch (gap_side) {
         case GTK_POS_TOP:
 		if (gap_x > 0) {
-			gdk_draw_line (window, gc1, 
+			mist_line (cr, color1, 
 				       x, y, 
 				       x + gap_x, y);
 		}
 		if ((width - (gap_x + gap_width)) > 0) {
-			gdk_draw_line (window, gc1, 
+			mist_line (cr, color1, 
 				       x + gap_x + gap_width - 1, y,
 				       x + width - 1, y);
 		}
-		gdk_draw_line (window, gc1, 
+		mist_line (cr, color1,
 			       x, y, 
 			       x, y + height - 1);
-		gdk_draw_line (window, gc2,
+		mist_line (cr, color2,
 			       x + width - 1, y,
 			       x + width - 1, y + height - 1);
-		gdk_draw_line (window, gc2,
+		mist_line (cr, color2,
 			       x, y + height - 1,
 			       x + width - 1, y + height - 1);
 		break;
         case GTK_POS_BOTTOM:
-		gdk_draw_line (window, gc1,
+		mist_line (cr, color1,
 			       x, y,
 			       x + width - 1, y);
-		gdk_draw_line (window, gc1, 
+		mist_line (cr, color1, 
 			       x, y, 
 			       x, y + height - 1);
-		gdk_draw_line (window, gc2,
+		mist_line (cr, color2,
 			       x + width - 1, y,
 			       x + width - 1, y + height - 1);
 
 		if (gap_x > 0) {
-			gdk_draw_line (window, gc2, 
+			mist_line (cr, color2, 
 				       x, y + height - 1, 
 				       x + gap_x, y + height - 1);
 		}
 		if ((width - (gap_x + gap_width)) > 0) {
-			gdk_draw_line (window, gc2, 
+			mist_line (cr, color2, 
 				       x + gap_x + gap_width - 1, y + height - 1,
 				       x + width - 1, y + height - 1);
 		}
 		
 		break;
         case GTK_POS_LEFT:
-		gdk_draw_line (window, gc1,
+		mist_line (cr, color1,
 			       x, y,
 			       x + width - 1, y);
 		if (gap_x > 0) {
-			gdk_draw_line (window, gc1, 
+			mist_line (cr, color1, 
 				       x, y,
 				       x, y + gap_x);
 		}
 		if ((height - (gap_x + gap_width)) > 0) {
-			gdk_draw_line (window, gc1, 
+			mist_line (cr, color1, 
 				       x, y + gap_x + gap_width - 1,
 				       x, y + height - 1);
 		}
-		gdk_draw_line (window, gc2,
+		mist_line (cr, color2,
 			       x + width - 1, y,
 			       x + width - 1, y + height - 1);
-		gdk_draw_line (window, gc2,
+		mist_line (cr, color2,
 			       x, y + height - 1,
 			       x + width - 1, y + height - 1);
 		break;
         case GTK_POS_RIGHT:
-		gdk_draw_line (window, gc1,
+		mist_line (cr, color1,
 			       x, y,
 			       x + width - 1, y);
-		gdk_draw_line (window, gc1, 
+		mist_line (cr, color1, 
 			       x, y, 
 			       x, y + height - 1);
 
 
 		if (gap_x > 0) {
-			gdk_draw_line (window, gc2, 
+			mist_line (cr, color2, 
 				       x + width - 1, y,
 				       x + width - 1, y + gap_x);
 		}
 		if ((height - (gap_x + gap_width)) > 0) {
-			gdk_draw_line (window, gc2, 
+			mist_line (cr, color2, 
 				       x + width - 1, y + gap_x + gap_width - 1,
 				       x + width - 1, y + height - 1);
 		}
-		gdk_draw_line (window, gc2,
+		mist_line (cr, color2,
 			       x, y + height - 1,
 			       x + width - 1, y + height - 1);
 
 	}
 	
-	if (area) {
-		gdk_gc_set_clip_rectangle (gc1, NULL);
-		gdk_gc_set_clip_rectangle (gc2, NULL);
-	}
+	cairo_destroy(cr);
 }
 
 static void
@@ -1280,8 +1295,10 @@ draw_handle(GtkStyle *style,
 	if (height > width)
 		orientation = GTK_ORIENTATION_VERTICAL;
 	
-	dest.x = x + XTHICKNESS(style);
-	dest.y = y + YTHICKNESS(style);
+	x += XTHICKNESS(style);
+	y += YTHICKNESS(style);
+	dest.x = x;
+	dest.y = y;
 	dest.width = width - (XTHICKNESS(style) * 2);
 	dest.height = height - (YTHICKNESS(style) * 2);
 	
