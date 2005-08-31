@@ -1,5 +1,9 @@
 2005-08-30  Andrew Johnson  <ajgenius@ajgenius.us>
 
+        * engines/mist/src/mist-style.c: more changes toward cairo
+	
+2005-08-30  Andrew Johnson  <ajgenius@ajgenius.us>
+
 	* engines/mist/src/mist-style.c:begin conversion to cairo for 2.8
 	
 2005-08-30  Richard A. Stellingwerff  <remenic@gmail.com>

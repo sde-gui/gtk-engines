@@ -11,18 +11,37 @@ Thinice Authors: Tim Gerla <timg@rrv.net>
 #include <gtk/gtk.h>
 #include <cairo.h>
 
-#   include "mist-style.h"
-#   include "mist-rc-style.h"
-#   define DETAIL_CONST const
-#   define YTHICKNESS(style) (style->ythickness)
-#   define XTHICKNESS(style) (style->xthickness)
+#include "mist-style.h"
+#include "mist-rc-style.h"
 
-#define DETAIL(xx) ((detail) && (!strcmp(xx, detail)))
+#define YTHICKNESS(style) (style->ythickness)
+#define XTHICKNESS(style) (style->xthickness)
+
+#define CHECK_DETAIL(detail, value) ((detail) && (!strcmp(value, detail)))
 
 static GtkStyleClass *parent_class = NULL;
 
 static void mist_style_init       (MistStyle      *style);
 static void mist_style_class_init (MistStyleClass *klass);
+
+#define IS_TOGGLE_BUTTON(object) ((object) && object_is_a (object, "GtkToggleButton"))
+#define TOGGLE_BUTTON(object) (IS_TOGGLE_BUTTON(object)?(GtkToggleButton *)object:NULL)
+
+/* Widget Type Lookups/Macros */
+gboolean
+object_is_a (gpointer object, gchar * type_name)
+{
+  gboolean result = FALSE;
+
+  if ((object))
+    {
+      GType tmp = g_type_from_name (type_name);
+      if (tmp)
+	result = g_type_check_instance_is_a ((GTypeInstance * )object, tmp);
+    }
+
+  return result;
+}
 
 static void
 sanitize_size (GdkWindow *window, int *width, int *height)
@@ -44,18 +63,18 @@ get_shadow_type (GtkStyle *style, const char *detail, GtkShadowType requested)
 		retval = GTK_SHADOW_ETCHED_IN;
 	}
 	
-	if (DETAIL ("dockitem")
-	    || DETAIL ("handlebox_bin")) {
+	if (CHECK_DETAIL(detail, "dockitem")
+	    || CHECK_DETAIL(detail, "handlebox_bin")) {
 		retval = GTK_SHADOW_NONE;
-	} else if (DETAIL ("spinbutton_up")
-		   || DETAIL ("spinbutton_down")) {
+	} else if (CHECK_DETAIL(detail, "spinbutton_up")
+		   || CHECK_DETAIL(detail, "spinbutton_down")) {
 		retval = GTK_SHADOW_OUT;
-	} else if (DETAIL ("button") 
-		   || DETAIL ("togglebutton") 
-		   || DETAIL ("notebook") 
-		   || DETAIL ("optionmenu")) {
+	} else if (CHECK_DETAIL(detail, "button") 
+		   || CHECK_DETAIL(detail, "togglebutton") 
+		   || CHECK_DETAIL(detail, "notebook") 
+		   || CHECK_DETAIL(detail, "optionmenu")) {
 		retval = requested;
-	} else if (DETAIL ("menu")) {
+	} else if (CHECK_DETAIL(detail, "menu")) {
 		retval = GTK_SHADOW_ETCHED_IN;
 	}
 	
@@ -81,25 +100,34 @@ mist_begin_paint (GdkDrawable  *window, GdkRectangle *area)
 }
 
 static void
-mist_dot (GdkWindow *window,
-	  GdkGC *gc1,
-	  GdkGC *gc2,
+mist_dot (cairo_t *cr,
+	  GdkColor *color1,
+	  GdkColor *color2,
 	  int x,
 	  int y)
 {
-	GdkPoint points[3];
+	cairo_save(cr);
+
+	cairo_set_line_width (cr, 0.5);
+	cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
+
+	gdk_cairo_set_source_color(cr, color2);	
+
+	cairo_rectangle (cr, x - 1, y, 0.5, 0.5);
+	cairo_rectangle (cr, x - 1, y - 1, 0.5, 0.5);
+	cairo_rectangle (cr, x, y - 1, 0.5, 0.5);
+
+	cairo_stroke(cr);
 	
-	points[0].x = x-1; points[0].y = y;
-	points[1].x = x-1; points[1].y = y-1;
-	points[2].x = x;   points[2].y = y-1;
-	
-	gdk_draw_points(window, gc2, points, 3);
-	
-	points[0].x = x+1; points[0].y = y;
-	points[1].x = x+1; points[1].y = y+1;
-	points[2].x = x;   points[2].y = y+1;
-	
-	gdk_draw_points(window, gc1, points, 3);
+	gdk_cairo_set_source_color(cr, color1);	
+
+	cairo_rectangle (cr, x + 1, y, 0.5, 0.5);
+	cairo_rectangle (cr, x + 1, y + 1, 0.5, 0.5);
+	cairo_rectangle (cr, x, y + 1, 0.5, 0.5);
+
+	cairo_stroke(cr);
+
+	cairo_restore(cr);
 }
 
 static void
@@ -109,7 +137,7 @@ mist_tab (GtkStyle *style,
 	  GtkShadowType shadow_type,
 	  GdkRectangle *area,
 	  GtkWidget *widget,
-	  DETAIL_CONST char *detail,
+	  const char *detail,
 	  int x,
 	  int y,
 	  int width,
@@ -121,18 +149,14 @@ mist_tab (GtkStyle *style,
 	notebook = GTK_NOTEBOOK(widget);
 	orientation = notebook->tab_pos;
 		
-	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window)) {
-		if (area) {
-			gdk_gc_set_clip_rectangle(style->bg_gc[state_type], 
-						  area);
-		}
+	cairo_t *cr = mist_begin_paint (window, area);
 
-		gdk_draw_rectangle(window, style->bg_gc[state_type], TRUE,
-				   x, y, width, height);
-		if (area) {
-			gdk_gc_set_clip_rectangle(style->bg_gc[state_type], 
-						  NULL);
-		}
+	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window)) 
+	{
+		gdk_cairo_set_source_color(cr, &style->bg[state_type]);	
+
+		cairo_rectangle(cr, x, y, width, height);
+		cairo_fill(cr);
 	} else {
 		gtk_style_apply_default_background
 			(style, window,
@@ -145,8 +169,6 @@ mist_tab (GtkStyle *style,
 
 	light = &style->light[state_type];
 	dark = &style->dark[state_type];
-
-	cairo_t *cr = mist_begin_paint (window, NULL);
 
 	switch(orientation) {
 	case GTK_POS_TOP:
@@ -297,7 +319,7 @@ draw_hline(GtkStyle *style,
            GtkStateType state_type,
            GdkRectangle *area,
            GtkWidget *widget,
-           DETAIL_CONST char *detail,
+           const char *detail,
            int x1,
            int x2,
            int y)
@@ -311,10 +333,10 @@ draw_hline(GtkStyle *style,
 	
 	cairo_t *cr = mist_begin_paint (window, area);
 
-	if (DETAIL ("hseparator") 
-	    || DETAIL ("menuitem") 
-	    || DETAIL ("slider")
-	    || DETAIL("vscale")) 
+	if (CHECK_DETAIL(detail, "hseparator") 
+	    || CHECK_DETAIL(detail, "menuitem") 
+	    || CHECK_DETAIL(detail, "slider")
+	    || CHECK_DETAIL(detail, "vscale")) 
 	{
 		gdk_cairo_set_source_color(cr, &style->dark[state_type]);	
 
@@ -364,7 +386,7 @@ draw_vline(GtkStyle *style,
            GtkStateType state_type,
            GdkRectangle *area,
            GtkWidget *widget,
-           DETAIL_CONST char *detail,
+           const char *detail,
            int y1,
            int y2,
            int x)
@@ -378,10 +400,10 @@ draw_vline(GtkStyle *style,
 	
 	cairo_t *cr = mist_begin_paint (window, area);
 	
-	if (DETAIL ("vseparator") 
-	    || DETAIL ("toolbar") 
-	    || DETAIL ("slider") 
-	    || DETAIL ("hscale")) 
+	if (CHECK_DETAIL(detail, "vseparator") 
+	    || CHECK_DETAIL(detail, "toolbar") 
+	    || CHECK_DETAIL(detail, "slider") 
+	    || CHECK_DETAIL(detail, "hscale")) 
 	{
 		gdk_cairo_set_source_color(cr, &style->dark[state_type]);	
 
@@ -432,7 +454,7 @@ draw_shadow(GtkStyle *style,
 	    GtkShadowType shadow_type,
 	    GdkRectangle *area,
 	    GtkWidget *widget,
-	    DETAIL_CONST char *detail,
+	    const char *detail,
 	    int x,
 	    int y,
 	    int width,
@@ -449,7 +471,7 @@ draw_shadow(GtkStyle *style,
 		shadow_type = GTK_SHADOW_ETCHED_IN;
 	}
 	
-	if (DETAIL("frame") && widget->parent && GTK_IS_STATUSBAR (widget->parent)) {
+	if (CHECK_DETAIL(detail, "frame") && widget->parent && GTK_IS_STATUSBAR (widget->parent)) {
 		if (shadow_type != GTK_SHADOW_NONE) {
 			gdk_draw_line (window, 
 				       style->dark_gc[GTK_STATE_NORMAL], 
@@ -470,7 +492,7 @@ draw_polygon(GtkStyle *style,
              GtkShadowType shadow_type,
              GdkRectangle *area,
              GtkWidget *widget,
-             DETAIL_CONST char *detail,
+             const char *detail,
              GdkPoint *points,
              int npoints,
              int fill)
@@ -600,7 +622,7 @@ draw_diamond(GtkStyle * style,
              GtkShadowType shadow_type,
              GdkRectangle * area,
              GtkWidget * widget,
-             DETAIL_CONST char *detail,
+             const char *detail,
              int x,
              int y,
              int width,
@@ -720,7 +742,7 @@ draw_box(GtkStyle *style,
          GtkShadowType shadow_type,
          GdkRectangle *area,
          GtkWidget *widget,
-         DETAIL_CONST char *detail,
+         const char *detail,
          int x,
          int y,
          int width,
@@ -734,7 +756,7 @@ draw_box(GtkStyle *style,
 
 	sanitize_size (window, &width, &height);
 
-	if (DETAIL ("menuitem") && state_type == GTK_STATE_PRELIGHT) {
+	if (CHECK_DETAIL(detail, "menuitem") && state_type == GTK_STATE_PRELIGHT) {
 		state_type = GTK_STATE_SELECTED;
 	}
 
@@ -745,14 +767,14 @@ draw_box(GtkStyle *style,
 	if (height > width)
 		orientation = GTK_ORIENTATION_VERTICAL;
 	
-	if (DETAIL("optionmenutab")) {
+	if (CHECK_DETAIL(detail, "optionmenutab")) {
 		gdk_draw_line (window, style->dark_gc[state_type], 
 			       x - 5, y, x - 5, y + height);
 		
 		gtk_paint_arrow (style, window, state_type, shadow_type, area, 
 				 widget, detail, GTK_ARROW_DOWN, TRUE,
 				 x + 1, y + 1, width - 2, height - 2);
-	} else if (DETAIL("trough")) {
+	} else if (CHECK_DETAIL(detail, "trough")) {
 		gdk_draw_rectangle (window, 
 				    style->bg_gc[state_type],
 				    TRUE,
@@ -761,11 +783,11 @@ draw_box(GtkStyle *style,
 				    style->dark_gc[GTK_STATE_NORMAL],
 				    FALSE,
 				    x, y, width - 1, height - 1);
-	} else if (DETAIL("menubar")
-		   || DETAIL ("dockitem_bin") 
-		   || DETAIL ("dockitem") 
-		   || DETAIL ("toolbar") 
-		   || DETAIL ("handlebox")) {
+	} else if (CHECK_DETAIL(detail, "menubar")
+		   || CHECK_DETAIL(detail, "dockitem_bin") 
+		   || CHECK_DETAIL(detail, "dockitem") 
+		   || CHECK_DETAIL(detail, "toolbar") 
+		   || CHECK_DETAIL(detail, "handlebox")) {
 		if (shadow_type != GTK_SHADOW_NONE) {
 			gdk_draw_line (window, 
 				       style->dark_gc[GTK_STATE_NORMAL], 
@@ -773,11 +795,11 @@ draw_box(GtkStyle *style,
 				       x + width - 1, y + height - 1);
 
 		}
-	} else if (DETAIL("tab")) {
+	} else if (CHECK_DETAIL(detail, "tab")) {
 		mist_tab(style, window, state_type, 
 			 shadow_type, area, widget,
 			 detail, x, y, width, height);
-	} else  if (DETAIL ("bar")) {
+	} else  if (CHECK_DETAIL(detail, "bar")) {
 		if (style->base_gc[GTK_STATE_SELECTED] && width > 1 && height > 1) {
 			gdk_draw_rectangle (window, style->base_gc[GTK_STATE_SELECTED], TRUE, x + 1, y + 1, 
 					    width - 2, height - 2);
@@ -788,14 +810,14 @@ draw_box(GtkStyle *style,
 			   &style->dark[GTK_STATE_SELECTED],
 			   &style->dark[GTK_STATE_SELECTED],
 			   x, y, width, height);
-	} else if (DETAIL ("buttondefault")) {
+	} else if (CHECK_DETAIL(detail, "buttondefault")) {
 		gdk_draw_rectangle (window, style->fg_gc[GTK_STATE_NORMAL],
 				    FALSE,
 				    x, y, width - 1, height - 1);
 	} else {
 		/* Make sure stepper and slider outlines "overlap" - taken from
 		 * bluecurve */
-		if (DETAIL("slider") && widget && GTK_IS_RANGE (widget)) {
+		if (CHECK_DETAIL(detail, "slider") && widget && GTK_IS_RANGE (widget)) {
 			GtkAdjustment *adj = GTK_RANGE (widget)->adjustment;
 			if (adj->value <= adj->lower &&
 			    (GTK_RANGE (widget)->has_stepper_a ||
@@ -845,7 +867,7 @@ draw_check(GtkStyle *style,
            GtkShadowType shadow_type,
            GdkRectangle *area,
            GtkWidget *widget,
-           DETAIL_CONST char *detail,
+           const char *detail,
            int x,
            int y,
            int width,
@@ -901,7 +923,7 @@ draw_option(GtkStyle *style,
             GtkShadowType shadow_type,
             GdkRectangle *area,
             GtkWidget *widget,
-            DETAIL_CONST char *detail,
+            const char *detail,
             int x,
             int y,
             int width,
@@ -909,17 +931,62 @@ draw_option(GtkStyle *style,
 {
 	sanitize_size (window, &width, &height);
 
-	gdk_draw_arc(window, 
-		     style->base_gc[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL], 
-		     TRUE,
-		     x, y, width - 1, height - 1, 0, 360 * 64);
-	gdk_draw_arc(window, style->dark_gc[state_type], FALSE, 
-		     x, y, width - 1, height - 1, 0, 360 * 64);
+	cairo_t *cr = mist_begin_paint (window, NULL);
+
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) + 0.5, 0 , 2 * M_PI);
 	
-	if (shadow_type == GTK_SHADOW_IN) {
-		gdk_draw_arc(window, style->bg_gc[GTK_STATE_SELECTED], TRUE,
-			     x + 2, y + 2, width - 5, height - 5, 0, 360 * 64);
+	gdk_cairo_set_source_color(cr, &style->base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
+
+	cairo_fill (cr);
+	cairo_set_line_width (cr, 0.5);
+
+	gdk_cairo_set_source_color(cr, &style->dark[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2), 0 , 2 * M_PI);
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
+
+	cairo_stroke (cr);
+
+	cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 0.5); 
+ 	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2), 0 , 2 * M_PI);
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
+
+	cairo_stroke (cr);
+
+	cairo_set_line_width (cr, 1);
+
+	if ((shadow_type == GTK_SHADOW_IN) || 
+		(IS_TOGGLE_BUTTON(widget) && 
+		TOGGLE_BUTTON(widget)->inconsistent))
+	{
+		if ((state_type == GTK_STATE_INSENSITIVE) || 
+			(IS_TOGGLE_BUTTON(widget) && 
+			TOGGLE_BUTTON(widget)->inconsistent))
+		{
+			/* Rough logic, just make  thickness 1/3 height */
+			int line_width = ceil((height + 1)/3);
+
+			/* Force Thickness Even */
+			line_width -= (line_width % 2);
+
+			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+			cairo_set_line_width (cr, line_width + ((height % 2)?1:0));
+
+			cairo_move_to(cr, x + line_width - ((height % 2)?0.5:0), y + floor(height/2));
+			cairo_line_to(cr, x + width - line_width + ((height % 2)?0.5:0), y + floor(height/2));
+
+			gdk_cairo_set_source_color(cr, &style->bg[GTK_STATE_SELECTED]);	
+			cairo_stroke (cr);
+		}
+		else
+		{
+			cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * M_PI);
+
+			gdk_cairo_set_source_color(cr, &style->bg[GTK_STATE_SELECTED]);	
+			cairo_fill (cr);
+		}
 	}
+
+	cairo_destroy(cr);
 }
 
 static void
@@ -929,7 +996,7 @@ draw_tab(GtkStyle *style,
          GtkShadowType shadow_type,
          GdkRectangle *area,
          GtkWidget *widget,
-         DETAIL_CONST char *detail,
+         const char *detail,
          int x,
          int y,
          int width,
@@ -950,7 +1017,7 @@ draw_shadow_gap(GtkStyle *style,
                 GtkShadowType shadow_type,
                 GdkRectangle *area,
                 GtkWidget *widget,
-                DETAIL_CONST char *detail,
+                const char *detail,
                 int x,
                 int y,
                 int width,
@@ -1093,7 +1160,7 @@ draw_box_gap(GtkStyle *style,
 	     GtkShadowType shadow_type,
 	     GdkRectangle *area,
 	     GtkWidget *widget,
-	     DETAIL_CONST char *detail,
+	     const char *detail,
 	     int x,
 	     int y,
 	     int width,
@@ -1120,7 +1187,7 @@ draw_extension(GtkStyle *style,
                GtkShadowType shadow_type,
                GdkRectangle *area,
                GtkWidget *widget,
-               DETAIL_CONST char *detail,
+               const char *detail,
                int x,
                int y,
                int width,
@@ -1177,14 +1244,14 @@ draw_handle(GtkStyle *style,
             GtkShadowType shadow_type,
             GdkRectangle *area,
             GtkWidget *widget,
-            DETAIL_CONST char *detail,
+            const char *detail,
             int x,
             int y,
             int width,
             int height,
             GtkOrientation orientation)
 {
-	GdkGC *light_gc, *dark_gc;
+	GdkColor *light, *dark;
 	GdkRectangle dest;
 	int modx, mody;
 	
@@ -1196,8 +1263,8 @@ draw_handle(GtkStyle *style,
 	gtk_paint_box(style, window, state_type, shadow_type, area, widget,
 		      detail, x, y, width, height);
 	
-	light_gc = style->light_gc[state_type];
-	dark_gc = style->dark_gc[state_type];
+	light = &style->light[state_type];
+	dark = &style->dark[state_type];
 	
 	orientation = GTK_ORIENTATION_HORIZONTAL;
 	if (height > width)
@@ -1214,23 +1281,22 @@ draw_handle(GtkStyle *style,
 		modx = 0; mody = 4;
 	}
 	
-	gdk_gc_set_clip_rectangle(light_gc, &dest);
-	gdk_gc_set_clip_rectangle(dark_gc, &dest);
-	mist_dot(window,
-		 light_gc, dark_gc,
+	cairo_t *cr = mist_begin_paint (window, &dest);
+
+	mist_dot(cr,
+		 light, dark,
 		 x + width / 2 - modx,
 		 y + height / 2 - mody);
-	mist_dot(window,
-		 light_gc, dark_gc,
+	mist_dot(cr,
+		 light, dark,
 		 x + width / 2,
 		 y + height / 2);
-	mist_dot(window,
-		 light_gc, dark_gc,
+	mist_dot(cr,
+		 light, dark,
 		 x + width / 2 + modx,
 		 y + height / 2 + mody);
 	
-	gdk_gc_set_clip_rectangle(light_gc, NULL);
-	gdk_gc_set_clip_rectangle(dark_gc, NULL);
+	cairo_destroy(cr);
 }
 
 static void
@@ -1246,7 +1312,7 @@ draw_resize_grip(GtkStyle *style,
 		 int width,
 		 int height)
 {
-	GdkGC *light_gc, *dark_gc;
+	GdkColor *light, *dark;
 	GdkRectangle dest;
 	int xi, yi;
 	int max_x, max_y;
@@ -1257,11 +1323,6 @@ draw_resize_grip(GtkStyle *style,
 	
 	sanitize_size (window, &width, &height);
 	
-	if (area) {
-		gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-		gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-	}
-
 	switch (edge) {
 	case GDK_WINDOW_EDGE_NORTH_WEST:
 		/* make it square */
@@ -1332,14 +1393,17 @@ draw_resize_grip(GtkStyle *style,
 					    state_type, area,
 					    x, y, width, height);
 
-	light_gc = style->light_gc[state_type];
-	dark_gc = style->dark_gc[state_type];
+	light = &style->light[state_type];
+	dark = &style->dark[state_type];
 
 	max_x = (width - 2) / 5;
 	max_y = (height - 2) / 5;
 	
 	threshold = max_x;
 	
+
+	cairo_t *cr = mist_begin_paint (window, area);
+
 	for (xi = 0; xi <= max_x; xi++) {
 		for (yi = 0; yi <= max_y; yi++) {
 			gboolean draw_dot;
@@ -1368,19 +1432,15 @@ draw_resize_grip(GtkStyle *style,
 			}
 			
 			if (draw_dot) {
-				mist_dot(window,
-					 light_gc, dark_gc,
+				mist_dot(cr,
+					 light, dark,
 					 x + (xi * 5) + 2,
 					 y + (yi * 5) + 2);
 			}
 		}
 	}
 
-	if (area)
-	{
-		gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-		gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-	}
+	cairo_destroy(cr);
 }
 
 static void
