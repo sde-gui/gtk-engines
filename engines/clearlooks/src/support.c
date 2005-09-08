@@ -441,10 +441,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 		parent = parent->parent;
 
 	if (parent == NULL)
-	{
-		color->r = color->g = color->b = 255;
-		return;
-	}
+		parent = widget;
 	
 	state_type = GTK_WIDGET_STATE (parent);
 	
@@ -470,7 +467,11 @@ scrollbar_get_stepper (GtkWidget    *widget,
 	check_rectangle.height = stepper->height;
 	
 	orientation = GTK_RANGE (widget)->orientation;
+	printf("%d %d %d %d\n", check_rectangle.x, check_rectangle.y, check_rectangle.width, check_rectangle.height);
 	
+	if (widget->allocation.x == -1 && widget->allocation.y == -1)
+		return CL_STEPPER_UNKNOWN;
+		
 	if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
 		value = CL_STEPPER_A;
 

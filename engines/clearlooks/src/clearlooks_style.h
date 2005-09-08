@@ -46,6 +46,8 @@ struct _ClearlooksStyle
 	guint8   menubarstyle;
 	guint8   menuitemstyle;
 	guint8   listviewitemstyle;
+	GdkColor scrollbar_color;
+	gboolean has_scrollbar_color;
 };
 
 struct _ClearlooksStyleClass

@@ -39,14 +39,15 @@ struct _ClearlooksRcStyle
 {
   GtkRcStyle parent_instance;
 
-  GdkColor spot_color;
-  gboolean has_spot_color;
+  GdkColor scrollbar_color;
+  gboolean has_scrollbar_color;
   double contrast;
   guint8 sunkenmenubar;
   guint8 progressbarstyle;
   guint8 menubarstyle;
   guint8 menuitemstyle;
   guint8 listviewitemstyle;
+  guint8 scrollbarstyle;
 };
 
 struct _ClearlooksRcStyleClass

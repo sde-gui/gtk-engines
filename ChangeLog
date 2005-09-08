@@ -1,3 +1,35 @@
+2005-09-08  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_slider_button),
+	(clearlooks_draw_progressbar_trough),
+	(clearlooks_draw_scrollbar_trough),
+	(clearlooks_draw_scrollbar_stepper),
+	(clearlooks_draw_scrollbar_slider), (clearlooks_draw_statusbar),
+	(clearlooks_draw_menu_frame):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init), (theme_parse_int),
+	(clearlooks_rc_style_parse), (clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow),
+	(draw_handle), (combo_box_get_seperator_pos), (draw_box),
+	(draw_tab), (clearlooks_draw_arrow),
+	(clearlooks_style_init_from_rc), (clearlooks_style_class_init):
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/clearlooks_types.h:
+	* engines/clearlooks/src/support.c: (clearlooks_get_parent_bg),
+	(scrollbar_get_stepper):
+
+	Made slider (scale) border slightly brighter.
+	Made progressbar trough slightly brighter.
+	Added scrollbar trough.
+	Improved scrollbar steppers and sliders.
+	Added support for colored scrollbar slider.
+	New function for drawing statusbar.
+	
+	* themes/Clearlooks/gtk-2.0/gtkrc: Minor changes to the color scheme.
+
 2005-08-31  Andrew Johnson  <ajgenius@ajgenius.us>
 
         * engines/mist/src/mist-style.c: more cairo conversions - initial

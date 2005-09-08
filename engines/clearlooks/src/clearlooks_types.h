@@ -160,9 +160,11 @@ typedef struct
 
 typedef struct
 {
+	CairoColor         color;
 	ClearlooksJunction junction;       /* On which sides the slider junctions */
 	ClearlooksStepper  steppers;       /* The visible steppers */
 	boolean            horizontal;
+	boolean            has_color;
 } ScrollBarParameters;
 
 typedef struct

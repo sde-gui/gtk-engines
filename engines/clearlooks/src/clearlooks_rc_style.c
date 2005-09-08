@@ -40,7 +40,7 @@ GType clearlooks_type_rc_style = 0;
 
 enum
 {
-  TOKEN_SPOTCOLOR = G_TOKEN_LAST + 1,
+  TOKEN_SCROLLBARCOLOR = G_TOKEN_LAST + 1,
   TOKEN_CONTRAST,
   TOKEN_SUNKENMENU,
   TOKEN_PROGRESSBARSTYLE,
@@ -56,12 +56,12 @@ static struct
   }
 theme_symbols[] =
 {
-  { "spotcolor", 		TOKEN_SPOTCOLOR  },
-  { "contrast", 		TOKEN_CONTRAST  },
-  { "sunkenmenubar",    TOKEN_SUNKENMENU },
+  { "scrollbar_color",   TOKEN_SCROLLBARCOLOR  },
+  { "contrast", 		 TOKEN_CONTRAST  },
+  { "sunkenmenubar",     TOKEN_SUNKENMENU },
   { "progressbarstyle",  TOKEN_PROGRESSBARSTYLE },
-  { "menubarstyle",     TOKEN_MENUBARSTYLE },
-  { "menuitemstyle",    TOKEN_MENUITEMSTYLE },
+  { "menubarstyle",      TOKEN_MENUBARSTYLE },
+  { "menuitemstyle",     TOKEN_MENUITEMSTYLE },
   { "listviewitemstyle", TOKEN_LISTVIEWITEMSTYLE }
 };
 
@@ -92,7 +92,7 @@ clearlooks_rc_style_register_type (GTypeModule *module)
 static void
 clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
 {
-  clearlooks_rc->has_spot_color = FALSE;
+  clearlooks_rc->has_scrollbar_color = FALSE;
   clearlooks_rc->contrast = 1.0;
   clearlooks_rc->sunkenmenubar = 1;
   clearlooks_rc->progressbarstyle = 0;
@@ -154,32 +154,9 @@ theme_parse_contrast(GtkSettings  *settings,
 }
 
 static guint
-theme_parse_sunkenmenubar(GtkSettings  *settings,
-		     GScanner     *scanner,
-		     guint8       *sunken)
-{
-  guint token;
-
-  /* Skip 'sunkenmenubar' */
-  token = g_scanner_get_next_token(scanner);
-
-  token = g_scanner_get_next_token(scanner);
-  if (token != G_TOKEN_EQUAL_SIGN)
-    return G_TOKEN_EQUAL_SIGN;
-
-  token = g_scanner_get_next_token(scanner);
-  if (token != G_TOKEN_INT)
-    return G_TOKEN_INT;
-
-  *sunken = scanner->value.v_int;
-  
-  return G_TOKEN_NONE;
-}
-
-static guint
-theme_parse_progressbarstyle(GtkSettings  *settings,
-		     GScanner     *scanner,
-		     guint8       *progressbarstyle)
+theme_parse_int (GtkSettings  *settings,
+		         GScanner     *scanner,
+		         guint8       *progressbarstyle)
 {
   guint token;
 
@@ -198,75 +175,6 @@ theme_parse_progressbarstyle(GtkSettings  *settings,
   
   return G_TOKEN_NONE;
 }
-
-static guint
-theme_parse_menubarstyle(GtkSettings  *settings,
-		     GScanner     *scanner,
-		     guint8       *menubarstyle)
-{
-  guint token;
-
-  /* Skip 'menubarstyle' */
-  token = g_scanner_get_next_token(scanner);
-
-  token = g_scanner_get_next_token(scanner);
-  if (token != G_TOKEN_EQUAL_SIGN)
-    return G_TOKEN_EQUAL_SIGN;
-
-  token = g_scanner_get_next_token(scanner);
-  if (token != G_TOKEN_INT)
-    return G_TOKEN_INT;
-
-  *menubarstyle = scanner->value.v_int;
-  
-  return G_TOKEN_NONE;
-}
-
-static guint
-theme_parse_menuitemstyle(GtkSettings  *settings,
-		     GScanner     *scanner,
-		     guint8       *menuitemstyle)
-{
-  guint token;
-
-  /* Skip 'sunkenmenubar' */
-  token = g_scanner_get_next_token(scanner);
-
-  token = g_scanner_get_next_token(scanner);
-  if (token != G_TOKEN_EQUAL_SIGN)
-    return G_TOKEN_EQUAL_SIGN;
-
-  token = g_scanner_get_next_token(scanner);
-  if (token != G_TOKEN_INT)
-    return G_TOKEN_INT;
-
-  *menuitemstyle = scanner->value.v_int;
-  
-  return G_TOKEN_NONE;
-}
-
-static guint
-theme_parse_listviewitemstyle(GtkSettings  *settings,
-                          GScanner     *scanner,
-                          guint8       *listviewitemstyle)
-{         
-  guint token;
-	            
-  token = g_scanner_get_next_token(scanner);
-	              
-  token = g_scanner_get_next_token(scanner);
-
-  if (token != G_TOKEN_EQUAL_SIGN)
-     return G_TOKEN_EQUAL_SIGN;
-		          
-  token = g_scanner_get_next_token(scanner);
-  if (token != G_TOKEN_INT)
-    return G_TOKEN_INT;
-		            
-  *listviewitemstyle = scanner->value.v_int;
-	                
-  return G_TOKEN_NONE;
-}         
 
 static guint
 clearlooks_rc_style_parse (GtkRcStyle *rc_style,
@@ -313,27 +221,27 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
     {
       switch (token)
 	{
-	case TOKEN_SPOTCOLOR:
-	  token = theme_parse_color(settings, scanner, &clearlooks_style->spot_color);
-	  clearlooks_style->has_spot_color = TRUE;
+	case TOKEN_SCROLLBARCOLOR:
+	  token = theme_parse_color (settings, scanner, &clearlooks_style->scrollbar_color);
+	  clearlooks_style->has_scrollbar_color = TRUE;
 	  break;
 	case TOKEN_CONTRAST:
-	  token = theme_parse_contrast(settings, scanner, &clearlooks_style->contrast);
+	  token = theme_parse_contrast (settings, scanner, &clearlooks_style->contrast);
 	  break;
 	case TOKEN_SUNKENMENU:
-	  token = theme_parse_sunkenmenubar(settings, scanner, &clearlooks_style->sunkenmenubar);
+	  token = theme_parse_int (settings, scanner, &clearlooks_style->sunkenmenubar);
 	  break;
 	case TOKEN_PROGRESSBARSTYLE:
-	  token = theme_parse_progressbarstyle(settings, scanner, &clearlooks_style->progressbarstyle);
+	  token = theme_parse_int (settings, scanner, &clearlooks_style->progressbarstyle);
 	  break;
 	case TOKEN_MENUBARSTYLE:
-	  token = theme_parse_menubarstyle(settings, scanner, &clearlooks_style->menubarstyle);
+	  token = theme_parse_int (settings, scanner, &clearlooks_style->menubarstyle);
 	  break;
 	case TOKEN_MENUITEMSTYLE:
-	  token = theme_parse_menuitemstyle(settings, scanner, &clearlooks_style->menuitemstyle);
+	  token = theme_parse_int (settings, scanner, &clearlooks_style->menuitemstyle);
 	  break;
 	case TOKEN_LISTVIEWITEMSTYLE:
-	  token = theme_parse_listviewitemstyle(settings, scanner, &clearlooks_style->listviewitemstyle);
+	  token = theme_parse_int (settings, scanner, &clearlooks_style->listviewitemstyle);
 	  break;
 	default:
 	  g_scanner_get_next_token(scanner);
@@ -368,17 +276,17 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 	src_w = CLEARLOOKS_RC_STYLE (src);
 	dest_w = CLEARLOOKS_RC_STYLE (dest);
 	
-	dest_w->contrast = src_w->contrast;
-	dest_w->sunkenmenubar = src_w->sunkenmenubar;
-	dest_w->progressbarstyle = src_w->progressbarstyle;
-	dest_w->menubarstyle = src_w->menubarstyle;
-	dest_w->menuitemstyle = src_w->menuitemstyle;
+	dest_w->contrast          = src_w->contrast;
+	dest_w->sunkenmenubar     = src_w->sunkenmenubar;
+	dest_w->progressbarstyle  = src_w->progressbarstyle;
+	dest_w->menubarstyle      = src_w->menubarstyle;
+	dest_w->menuitemstyle     = src_w->menuitemstyle;
 	dest_w->listviewitemstyle = src_w->listviewitemstyle;
 
-	if (src_w->has_spot_color)
+	if (src_w->has_scrollbar_color)
 	{
-		dest_w->has_spot_color = TRUE;
-		dest_w->spot_color = src_w->spot_color;
+		dest_w->has_scrollbar_color = TRUE;
+		dest_w->scrollbar_color = src_w->scrollbar_color;
 	}
 }
 

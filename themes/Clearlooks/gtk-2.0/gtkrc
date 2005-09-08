@@ -12,6 +12,9 @@ style "clearlooks-default"
   GtkExpander    ::expander_size     = 16
   GtkScale       ::slider-length     = 27
 #  GtkToolbar     ::button-relief     = GTK_RELIEF_NORMAL
+#  GtkMenuBar     ::shadow-type       = GTK_SHADOW_OUT
+#  GtkScrollbar   ::has-secondary-forward-stepper = 1
+#  GtkScrollbar   ::has-secondary-backward-stepper = 1
 
   xthickness = 1
   ythickness = 1
@@ -25,7 +28,7 @@ style "clearlooks-default"
   bg[NORMAL]	    = "#e8e5de" # light beige
   bg[PRELIGHT]      = "#f9f7f3" # very light beige
   bg[SELECTED]	    = "#5598d7" # deepsky
-  bg[INSENSITIVE]   = "#f1efeb" # beige
+  bg[INSENSITIVE]   = "#e8e5de" # beige
   bg[ACTIVE]        = "#d7d3ca" # dark beige
 
   base[NORMAL]      = "#ffffff" # white 
@@ -42,6 +45,7 @@ style "clearlooks-default"
 
   engine "clearlooks" 
   {
+	scrollbar_color   = "#76acde"
     menubarstyle      = 2       # 0 = flat, 1 = sunken, 2 = flat gradient
     menuitemstyle     = 1       # 0 = flat, 1 = 3d-ish (gradient), 2 = 3d-ish (button)
     listviewitemstyle = 1       # 0 = flat, 1 = 3d-ish (gradient)
@@ -62,10 +66,17 @@ style "clearlooks-wider" = "clearlooks-default"
   ythickness = 3
 }
 
+style "clearlooks-statusbar" = "clearlooks-wider"
+{
+	#bg[NORMAL] = "#ebe8e3"
+}
 style "clearlooks-button" = "clearlooks-wider"
 {
   bg[NORMAL]        = "#f1efeb" # light beige
-  bg[PRELIGHT]      = "#f9f7f3" # very light beige
+  bg[INSENSITIVE]   = "#eceae4"
+
+#  bg[PRELIGHT]      = "#f9f7f3" # very light beige
+  bg[PRELIGHT] = "#f7f6f4"
 }
 
 style "clearlooks-notebook" = "clearlooks-wide"
@@ -88,6 +99,11 @@ style "clearlooks-menu" = "clearlooks-default"
   xthickness = 2
   ythickness = 1
   bg[NORMAL] = "#f9f7f3"
+}
+
+style "clearlooks-menubar-item" = "clearlooks-button"
+{
+    fg[PRELIGHT] = "#000000"
 }
 
 style "clearlooks-menu-item" = "clearlooks-default"
@@ -143,17 +159,19 @@ class "GtkFrame"  style "clearlooks-wide"
 class "GtkMenu"   style "clearlooks-menu"
 class "GtkEntry"  style "clearlooks-wider"
 class "GtkMenuItem"    style "clearlooks-menu-item"
-class "GtkStatusbar"   style "clearlooks-wide"
+class "GtkStatusbar"   style "clearlooks-statusbar"
 class "GtkNotebook"    style "clearlooks-notebook"
 class "GtkProgressBar" style "clearlooks-progressbar"
+ 
 #class "GtkMenuBar" style "clearlooks-menubar"
 
 widget_class "*MenuItem.*" style "clearlooks-menu-item"
+#widget_class "*.GtkMenuBar.*MenuItem.*" style "clearlooks-menubar-item"
 
 # combobox stuff
 widget_class "*.GtkComboBox.GtkButton" style "clearlooks-combo"
 widget_class "*.GtkCombo.GtkButton"    style "clearlooks-combo"
-
+widget_class "*Statusbar.*" style "clearlooks-statusbar"
 # tooltips stuff
 widget_class "*.tooltips.*.GtkToggleButton" style "clearlooks-tasklist"
 widget "gtk-tooltips" style "clearlooks-tooltips"

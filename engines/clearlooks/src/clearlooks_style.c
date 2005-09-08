@@ -113,10 +113,16 @@ draw_shadow (DRAW_ARGS)
 	}
 	else if (DETAIL ("frame") && widget && GTK_IS_STATUSBAR (widget->parent))
 	{
-		SeparatorParameters separator;
-		separator.horizontal = TRUE;
+		WidgetParameters params;
 		
-		clearlooks_draw_separator (cr, NULL, NULL, &separator,
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+
+		gtk_style_apply_default_background (style, window, TRUE, state_type,
+		                                    area, x, y, width, height);
+		
+	//	gdk_draw_rectangle (window, style->bg_gc[state_type], TRUE, x, y, width, height);
+		
+		clearlooks_draw_statusbar (cr, colors, &params,
 		                           x, y, width, height);
 	}
 	else if (DETAIL ("frame"))
@@ -251,7 +257,8 @@ draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 static void 
 draw_handle (DRAW_ARGS, GtkOrientation orientation)
 {
-//	printf("draw_handle: %s\n", detail);
+	gtk_style_apply_default_background (style, window, TRUE, state_type, area, x, y, width, height);
+	//printf("draw_handle: %s\n", detail);
 	return;
 	parent_class->draw_handle (style, window, state_type, shadow_type, area,
 	                           widget, detail, x, y, width, height,
@@ -282,7 +289,7 @@ combo_box_get_seperator_pos (GtkWidget *widget)
 		}
 	}
 	
-	pos += 2; /* don't ask me why.... */
+	pos += 2; /* don't ask me why.... widget->style->xthickness - 1 ? */
 	
 	return pos;
 }
@@ -369,7 +376,7 @@ draw_box (DRAW_ARGS)
 			}
 		}
 		else
-			params.corners    = CL_CORNER_ALL;
+			params.corners    = CL_CORNER_ALL;		
 		
 		if (DETAIL ("spinbutton"))
 			params.disabled = GTK_WIDGET_STATE (widget) & GTK_STATE_INSENSITIVE;
@@ -377,6 +384,13 @@ draw_box (DRAW_ARGS)
 		if (GTK_IS_TOGGLE_BUTTON (widget) &&
 		    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
 			params.active = TRUE;
+		
+		// Fix some firefox crap.
+		if (widget && widget->parent && widget->allocation.x == -1 &&  widget->allocation.y == -1)
+		{
+			gtk_style_apply_default_background (widget->parent->style, window, TRUE, GTK_STATE_NORMAL,
+			                                    area, x, y, width, height);
+		}
 		
 		clearlooks_draw_button (cr, &clearlooks_style->colors, &params,
 		                        x, y, width, height);
@@ -462,13 +476,34 @@ draw_box (DRAW_ARGS)
 		clearlooks_draw_progressbar_trough (cr, colors, &params, 
 		                                    x, y, width, height);
 	}
-	else if (DETAIL ("trough"))
+	else if (DETAIL ("trough") && widget && (GTK_IS_VSCROLLBAR (widget) || GTK_IS_HSCROLLBAR (widget)))
 	{
-		/* Temporary */
-		cairo_translate (cr, x, y);
-		cairo_rectangle (cr, 0, 0, width, height);
-		cairo_set_source_rgb (cr, colors->shade[4].r, colors->shade[4].g, colors->shade[4].b);
-		cairo_fill (cr);
+		WidgetParameters params;
+		ScrollBarParameters scrollbar;
+		
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		params.corners = CL_CORNER_NONE;
+		
+		scrollbar.horizontal = TRUE;
+		scrollbar.junction   = scrollbar_get_junction (widget);
+		scrollbar.steppers   = scrollbar_visible_steppers (widget);
+		
+		if (GTK_IS_RANGE (widget))
+			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
+		
+		if (scrollbar.horizontal)
+		{
+			x += 2;
+			width -= 4;
+		}
+		else
+		{
+			y += 2;
+			height -= 4;
+		}
+		
+		clearlooks_draw_scrollbar_trough (cr, colors, &params, &scrollbar,
+		                                  x, y, width, height);
 	}
 	else if (DETAIL ("bar"))
 	{
@@ -519,7 +554,9 @@ draw_box (DRAW_ARGS)
 			optionmenu.linepos = width - (indicator_size.width + indicator_spacing.left + indicator_spacing.right) - style->xthickness;
 		
 		clearlooks_draw_optionmenu (cr, colors, &params, &optionmenu,
-		                            x, y, width, height);		
+		                            x, y, width, height);
+		                            
+		
 	}
 	else if (DETAIL ("menuitem"))
 	{
@@ -553,6 +590,7 @@ draw_box (DRAW_ARGS)
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
 		
+		scrollbar.has_color  = FALSE;
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = scrollbar_get_junction (widget);
 		scrollbar.steppers   = scrollbar_visible_steppers (widget);
@@ -560,7 +598,11 @@ draw_box (DRAW_ARGS)
 		if (GTK_IS_RANGE (widget))
 			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
 		
-		gtk_style_apply_default_background (style, window, TRUE, state_type, area, x, y, width, height);
+		if (clearlooks_style->has_scrollbar_color)
+		{
+			clearlooks_gdk_color_to_rgb (&clearlooks_style->scrollbar_color, &scrollbar.color.r, &scrollbar.color.g, &scrollbar.color.b);
+			scrollbar.has_color = TRUE;
+		}
 		
 		if (DETAIL ("slider"))
 		{
@@ -586,6 +628,14 @@ draw_box (DRAW_ARGS)
 	else if (DETAIL ("trough"))
 	{
 		
+	}
+	else if (DETAIL ("menu"))
+	{
+		WidgetParameters params;
+		
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		
+		clearlooks_draw_menu_frame (cr, colors, &params, x, y, width, height);
 	}
 	else
 	{
@@ -620,7 +670,46 @@ draw_option (DRAW_ARGS)
 static void
 draw_tab (DRAW_ARGS)
 {
-	
+#define ARROW_SPACE 2
+#define ARROW_LINE_HEIGHT 2
+#define ARROW_LINE_WIDTH 5
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	GtkRequisition indicator_size;
+	GtkBorder indicator_spacing;
+	gint arrow_height;
+
+	option_menu_get_props (widget, &indicator_size, &indicator_spacing);
+
+	indicator_size.width += (indicator_size.width % 2) - 1;
+	arrow_height = indicator_size.width / 2 + 2;
+
+	x += (width - indicator_size.width) / 2;
+	y += height/2;
+
+	parent_class->draw_arrow (style, window, state_type, shadow_type, area,
+	                          widget, detail, GTK_ARROW_DOWN, TRUE,
+	                          x, y, indicator_size.width, height);
+
+/*
+	if (state_type == GTK_STATE_INSENSITIVE)
+	{
+		draw_arrow (window, style->light_gc[state_type], area,
+		            GTK_ARROW_UP, 1+x, 1+y-arrow_height,
+		            indicator_size.width, arrow_height);
+
+		draw_arrow (window, style->light_gc[state_type], area,
+		            GTK_ARROW_DOWN, 1+x, 1+y+1,
+		            indicator_size.width, arrow_height);
+	}
+
+	draw_arrow (window, style->fg_gc[state_type], area,
+	            GTK_ARROW_UP, x, y-arrow_height,
+	            indicator_size.width, arrow_height);
+
+	draw_arrow (window, style->fg_gc[state_type], area,
+	            GTK_ARROW_DOWN, x, y+1,
+	            indicator_size.width, arrow_height);
+	*/
 }
 
 static void
@@ -735,7 +824,7 @@ draw_resize_grip (GtkStyle       *style,
 }
 
 static void
-draw_arrow (GtkStyle      *style,
+clearlooks_draw_arrow (GtkStyle      *style,
                        GdkWindow     *window,
                        GtkStateType   state,
                        GtkShadowType  shadow,
@@ -759,7 +848,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 			       GtkRcStyle * rc_style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	double shades[] = {1.15, 0.93, 0.896, 0.85, 0.768, 0.665, 0.5, 0.4, 0.205};
+	double shades[] = {1.15, 0.99, 0.896, 0.85, 0.768, 0.665, 0.5, 0.4, 0.205};
 	CairoColor spot_color;
 	CairoColor bg_normal;
 	double contrast;
@@ -777,6 +866,10 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->menuitemstyle     = CLEARLOOKS_RC_STYLE (rc_style)->menuitemstyle;
 	clearlooks_style->listviewitemstyle = CLEARLOOKS_RC_STYLE (rc_style)->listviewitemstyle;
+	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->has_scrollbar_color;
+	
+	if (clearlooks_style->has_scrollbar_color)
+		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
 	
 	/* Lighter to darker */
 	for (i = 0; i < 9; i++)
@@ -849,7 +942,7 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_vline       = draw_vline;
 	style_class->draw_hline       = draw_hline;
 	style_class->draw_resize_grip = draw_resize_grip;
-	style_class->draw_arrow       = draw_arrow;
+	style_class->draw_arrow       = clearlooks_draw_arrow;
 }
 
 GType clearlooks_type_style = 0;

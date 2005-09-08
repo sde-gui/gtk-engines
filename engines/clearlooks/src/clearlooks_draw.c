@@ -500,7 +500,7 @@ clearlooks_draw_slider_button (cairo_t *cr,
                                const SliderParameters *slider,
                                int x, int y, int width, int height)
 {
-	CairoColor      *border = (CairoColor*)&colors->shade[7];
+	CairoColor      *border = (CairoColor*)&colors->shade[6];
 	cairo_pattern_t *pattern;
 
 	cairo_set_line_width (cr, 1.0);
@@ -602,12 +602,12 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	pattern = cairo_pattern_create_linear (x, y, 0, height);
 
 	/* Draw Gradient */
-	cairo_pattern_add_color_stop_rgb (pattern, 0.0, colors->shade[3].r,
-	                                                colors->shade[3].g,
-	                                                colors->shade[3].b);	
-	cairo_pattern_add_color_stop_rgb (pattern, 1.0, colors->shade[2].r,
+	cairo_pattern_add_color_stop_rgb (pattern, 0.0, colors->shade[2].r,
 	                                                colors->shade[2].g,
-	                                                colors->shade[2].b);
+	                                                colors->shade[2].b);	
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, colors->shade[1].r,
+	                                                colors->shade[1].g,
+	                                                colors->shade[1].b);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
@@ -1191,6 +1191,50 @@ clearlooks_draw_menuitem (cairo_t *cr,
 }
 
 void
+clearlooks_draw_scrollbar_trough (cairo_t *cr,
+                                  const ClearlooksColors           *colors,
+                                  const WidgetParameters           *widget,
+                                  const ScrollBarParameters        *scrollbar,
+                                  int x, int y, int width, int height)
+{
+	CairoColor      *bg     = (CairoColor*)&colors->shade[2];
+	CairoColor      *border = (CairoColor*)&colors->shade[6];
+	CairoColor       bg_shade;
+	cairo_pattern_t *pattern;
+	
+	shade (bg, &bg_shade, 0.95);
+	
+	cairo_set_line_width (cr, 1);
+	//cairo_translate (cr, x, y);
+	
+	if (scrollbar->horizontal)
+	{
+		int tmp = height;
+		rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+		height = width;
+		width = tmp;
+	}
+	else
+	{
+		cairo_translate (cr, x, y);	
+	}
+
+	pattern = cairo_pattern_create_linear (1, 0, width-2, 0);
+	cairo_pattern_add_color_stop_rgb (pattern, 0,   bg_shade.r, bg_shade.g, bg_shade.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.2, bg->r,      bg->g,      bg->b);
+	
+	cairo_rectangle (cr, 1, 0, width-2, height);
+	cairo_set_source (cr, pattern);
+	cairo_fill (cr);
+	
+	cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke (cr);
+	
+	cairo_pattern_destroy (pattern);
+}
+
+void
 clearlooks_draw_scrollbar_stepper (cairo_t *cr,
                                    const ClearlooksColors           *colors,
                                    const WidgetParameters           *widget,
@@ -1198,32 +1242,60 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
                                    const ScrollBarStepperParameters *stepper,
                                    int x, int y, int width, int height)
 {
-	FrameParameters frame;
+	ClearlooksCorners corners = CL_CORNER_NONE;
+	CairoColor *border = (CairoColor*)&colors->shade[6];
+	CairoColor *bg     = (CairoColor*)&colors->bg[widget->state_type];
+	CairoColor  bg_shade1, bg_shade2;
+	cairo_pattern_t *pattern;
+	ShadowParameters shadow;
 	
-	frame.gap_x = -1;
-	frame.border = (CairoColor*)&colors->shade[5];
-	frame.shadow = CL_SHADOW_OUT;
+	if (scrollbar->horizontal)
+	{
+		if (stepper->stepper == CL_STEPPER_A)
+			corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
+		else if (stepper->stepper == CL_STEPPER_D)
+			corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+	}
+	else
+	{
+		if (stepper->stepper == CL_STEPPER_A)
+			corners = CL_CORNER_TOPLEFT | CL_CORNER_TOPRIGHT;
+		else if (stepper->stepper == CL_STEPPER_D)
+			corners = CL_CORNER_BOTTOMLEFT | CL_CORNER_BOTTOMRIGHT;
+	}
 	
-	clearlooks_draw_frame (cr, colors, widget, &frame, x, y, width, height);
+	shade (bg, &bg_shade1, 0.95);
+	shade (bg, &bg_shade2, 1.02);
 	
-	/* Test the steppers
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1);
-	cairo_rectangle (cr, 0, 0, width, height);
 	
-	if (stepper->stepper == CL_STEPPER_A)
-		cairo_set_source_rgb (cr, 1, 0, 0); // red
-	else if (stepper->stepper == CL_STEPPER_B)
-		cairo_set_source_rgb (cr, 0, 1, 0); // green
-	else if (stepper->stepper == CL_STEPPER_C)
-		cairo_set_source_rgb (cr, 0, 0, 1); // blue
-	else if (stepper->stepper == CL_STEPPER_D)
-		cairo_set_source_rgb (cr, 0, 1, 1);
+	
+	clearlooks_rounded_rectectangle (cr, 0.5, 0.5, width-1, height-1, 3.0, corners);
+	
+	if (scrollbar->horizontal)
+		pattern = cairo_pattern_create_linear (0, 0, 0, height);
 	else
-		cairo_set_source_rgb (cr, 1, 1, 0);
+		pattern = cairo_pattern_create_linear (0, 0, width, 0);
+		
+	cairo_pattern_add_color_stop_rgb (pattern, 0,   bg_shade2.r, bg_shade2.g, bg_shade2.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5, bg_shade2.r, bg_shade2.g, bg_shade2.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1,   bg_shade1.r, bg_shade1.g, bg_shade1.b);
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve (cr);
+	cairo_pattern_destroy (pattern);
+
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke (cr);
 	
-	cairo_fill (cr);
-	*/
+	cairo_translate (cr, 0.5, 0.5);
+	shadow.shadow  = CL_SHADOW_OUT;
+	shadow.corners = corners;
+	
+	clearlooks_draw_highlight_and_shade (cr, &shadow,
+	                                     width,
+	                                     height, 3.0);
+	
 }
 
 void
@@ -1233,13 +1305,6 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
                                    const ScrollBarParameters       *scrollbar,
                                    int x, int y, int width, int height)
 {
-
-	FrameParameters frame;
-	
-	frame.gap_x = -1;
-	frame.border = (CairoColor*)&colors->shade[5];
-	frame.shadow = CL_SHADOW_OUT;
-	
 	if (scrollbar->junction & CL_JUNCTION_BEGIN)
 	{
 		if (scrollbar->horizontal)
@@ -1261,11 +1326,96 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 			height += 1;
 	}
 
-	clearlooks_draw_frame (cr, colors, widget, &frame, x, y, width, height);
+	if (scrollbar->has_color)
+	{
+		CairoColor *border  = (CairoColor*)&colors->shade[6];
+		CairoColor  fill    = scrollbar->color;
+		CairoColor  hilight;
+		CairoColor  shade1, shade2, shade3;
+		cairo_pattern_t *pattern;
+			
+		if (scrollbar->horizontal)
+		{
+			cairo_translate (cr, x, y);	
+		}
+		else
+		{
+			int tmp = height;
+			rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+			height = width;
+			width = tmp;
+		}
+	
+		if (widget->prelight)
+			shade (&fill, &fill, 1.1);
+			
+		cairo_set_line_width (cr, 1);
+		
+		shade (&fill, &hilight, 1.2);
+		shade (&fill, &shade1, 1.1);
+		shade (&fill, &shade2, 1.05);
+		shade (&fill, &shade3, 0.98);
+		
+		pattern = cairo_pattern_create_linear (2, 2, 2, height-4);
+		cairo_pattern_add_color_stop_rgb (pattern, 0,   shade1.r, shade1.g, shade1.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.5, shade2.r, shade2.g, shade2.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1, fill.r,  fill.g,  fill.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.5,   shade3.r, shade3.g, shade3.b);	
+		cairo_rectangle (cr, 2, 2, width-4, height-4);
+		cairo_set_source (cr, pattern);
+		cairo_fill (cr);
+		cairo_pattern_destroy (pattern);
+		
+		cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
+		cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+		cairo_stroke (cr);
+	
+		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
+		cairo_set_source_rgb (cr, border->r, border->g, border->b);
+		cairo_stroke (cr);		
+	}
+	else
+	{
+		ScrollBarStepperParameters stepper;
+		stepper.stepper = CL_STEPPER_UNKNOWN;
+		
+		clearlooks_draw_scrollbar_stepper (cr, colors, widget, scrollbar, &stepper, x, y, width, height);
+	}
+	
+}
 
-	cairo_translate (cr, x, y);
+void
+clearlooks_draw_statusbar (cairo_t *cr,
+                           const ClearlooksColors          *colors,
+                           const WidgetParameters          *widget,
+                           int x, int y, int width, int height)
+{
+	cairo_set_line_width  (cr, 1);
+	cairo_translate       (cr, x, y+0.5);
+	cairo_move_to         (cr, 0, 0);
+	cairo_line_to         (cr, width, 0);
+	cairo_set_source_rgba (cr, 0, 0, 0, 0.2);
+	cairo_stroke          (cr);
+
+	cairo_translate       (cr, 0, 1);
+	cairo_move_to         (cr, 0, 0);
+	cairo_line_to         (cr, width, 0);
+	cairo_set_source_rgba (cr, 1, 1, 1, 0.8);
+	cairo_stroke          (cr);
+}
+
+void
+clearlooks_draw_menu_frame (cairo_t *cr,
+                            const ClearlooksColors          *colors,
+                            const WidgetParameters          *widget,
+                            int x, int y, int width, int height)
+{
+	CairoColor *border = (CairoColor*)&colors->shade[5];
+	cairo_translate      (cr, x, y);
 	cairo_set_line_width (cr, 1);
-	cairo_rectangle (cr, 0, 0, width, height);
-	cairo_set_source_rgb (cr, 1, 0, 1);
-	cairo_fill (cr);
+	
+	cairo_rectangle      (cr, 0.5, 0.5, width-1, height-1);
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	
+	cairo_stroke         (cr);
 }
