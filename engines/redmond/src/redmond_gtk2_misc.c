@@ -456,6 +456,24 @@ composite_color_shade(GdkColor *original,
 /* Base Drawing Routines                       */
 /***********************************************/
  
+cairo_t *
+redmond_begin_paint (GdkDrawable  *window, GdkRectangle *area)
+{
+    cairo_t *cr;
+
+    cr = (cairo_t*)gdk_cairo_create (window);
+
+    cairo_set_line_width (cr, 1);
+
+    if (area) {
+        cairo_rectangle (cr, area->x, area->y, area->width, area->height);
+        cairo_clip (cr);
+        cairo_new_path (cr);
+    }
+
+    return cr;
+}
+
 /***********************************************
  * redmond_draw_part -
  *  
@@ -583,33 +601,50 @@ do_redmond_draw_cross_hatch_fill (GtkStyle * style,
  *   It originated in Smooth-Engine.
  ***********************************************/
 void
-do_redmond_draw_shadow (GdkWindow * window,
-		GdkGC * tl_gc,
-		GdkGC * br_gc,
+do_redmond_draw_shadow (cairo_t *cr,
+		GdkColor * tl,
+		GdkColor * br,
 		gint x,
 		gint y, 
 		gint width, 
 		gint height, 
 		gboolean topleft_overlap)
 {
+  cairo_save(cr);
+
+  cairo_set_line_width (cr, 1);
+
   if (topleft_overlap)
     {
-      gdk_draw_line (window, br_gc, x, y + height - 1, x + width - 1,
-		     y + height - 1);
-      gdk_draw_line (window, br_gc, x + width - 1, y, x + width - 1,
-		     y + height - 1);
+      gdk_cairo_set_source_color(cr, br);	
+
+      cairo_move_to(cr, x + 0.5, y + height - 0.5);
+      cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
+      cairo_line_to(cr, x + width - 0.5, y + 0.5);
+
+      cairo_stroke(cr);
     }
  
-  gdk_draw_line (window, tl_gc, x, y, x, y + height - 1);
-  gdk_draw_line (window, tl_gc, x, y, x + width - 1, y);
- 
+  gdk_cairo_set_source_color(cr, tl);	
+
+  cairo_move_to(cr, x + 0.5, y + height - 0.5);
+  cairo_line_to(cr, x + 0.5, y + 0.5);
+  cairo_line_to(cr, x + width - 0.5, y + 0.5);
+
+  cairo_stroke(cr);
+
   if (!topleft_overlap)
     {
-      gdk_draw_line (window, br_gc, x, y + height - 1, x + width - 1,
-		     y + height - 1);
-      gdk_draw_line (window, br_gc, x + width - 1, y, x + width - 1,
-		     y + height - 1);
+      gdk_cairo_set_source_color(cr, br);	
+
+      cairo_move_to(cr, x + 0.5, y + height - 0.5);
+      cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
+      cairo_line_to(cr, x + width - 0.5, y + 0.5);
+
+      cairo_stroke(cr);
     }
+
+  cairo_restore(cr);
 }
  
 /***********************************************
@@ -621,26 +656,92 @@ do_redmond_draw_shadow (GdkWindow * window,
  *   It originated in Smooth-Engine.
  ***********************************************/
 void
-do_redmond_draw_check (GdkWindow * window,
-	       GdkGC * gc,
-               gint x, 
-               gint y, 
-               gint width, 
-               gint height)
-{
+do_redmond_draw_check (cairo_t *cr,
+                       GdkColor * color,
+                       gint x, 
+                       gint y, 
+                       gint width, 
+                       gint height)
+{ 
+  double left, top;
+  int scale;
+
+  scale = MIN(width, height);
+
+  if (!(scale % 2))
+    scale -= 1;
+
+  if (scale <= 11)
+    scale = 9;
+
+  left = x + floor((width - scale) / 2) + 0.5;
+  top = y + floor((height - scale) / 2) + 0.5;
+
+  cairo_save(cr);
+
+  gdk_cairo_set_source_color(cr, color);	
+  cairo_set_line_width(cr, 0.5);
+/*
+    0   1   2   3   4   5   6   7   8
+  +---+---+---+---+---+---+---+---+---+
+0 |   |   |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+
+1 |   |   |   |   |   |   |   | x |   |
+  +---+---+---+---+---+---+---+---+---+
+2 |   |   |   |   |   |   | x | x |   |
+  +---+---+---+---+---+---+---+---+---+
+3 |   | x |   |   |   | x | x | x |   |
+  +---+---+---+---+---+---+---+---+---+
+4 |   | x | x |   | x | x | x |   |   |
+  +---+---+---+---+---+---+---+---+---+
+5 |   | x | x | x | x | x |   |   |   |
+  +---+---+---+---+---+---+---+---+---+
+6 |   |   | x | x | x |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+
+7 |   |   |   | x |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+
+8 |   |   |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+
+
+*/
+
+  cairo_move_to(cr, left + floor((1*scale)/9), top + floor((3*scale)/9)); //(1,3)
+  cairo_line_to(cr, left + floor((1*scale)/9), top + floor((5*scale)/9)); //(1,5)
+  cairo_line_to(cr, left + floor((3*scale)/9), top + floor((7*scale)/9)); //(3,7)
+  cairo_line_to(cr, left + floor((7*scale)/9), top + floor((3*scale)/9)); //(7,3)
+  cairo_line_to(cr, left + floor((7*scale)/9), top + floor((1*scale)/9)); //(7,1)
+  cairo_line_to(cr, left + floor((3*scale)/9), top + floor((5*scale)/9)); //(3,5)
+  cairo_line_to(cr, left + floor((1*scale)/9), top + floor((3*scale)/9)); //(1,3)
+
+  cairo_fill(cr);
+
+  cairo_move_to(cr, left + floor((1*scale)/9), top + floor((3*scale)/9)); //(1,3)
+  cairo_line_to(cr, left + floor((1*scale)/9), top + floor((5*scale)/9)); //(1,5)
+  cairo_line_to(cr, left + floor((3*scale)/9), top + floor((7*scale)/9)); //(3,7)
+  cairo_line_to(cr, left + floor((7*scale)/9), top + floor((3*scale)/9)); //(7,3)
+  cairo_line_to(cr, left + floor((7*scale)/9), top + floor((1*scale)/9)); //(7,1)
+  cairo_line_to(cr, left + floor((3*scale)/9), top + floor((5*scale)/9)); //(3,5)
+  cairo_line_to(cr, left + floor((1*scale)/9), top + floor((3*scale)/9)); //(1,3)
+  cairo_stroke(cr);
+
+  cairo_restore(cr);
+
+#if 0
   x += 1;
   y += 1;
   width -= 2;
   height -= 2;
- 
+
   /* short diagonal */
   gdk_draw_line (window, gc, x + 0, y + height - 5, x + 0, y + height - 3);	/* Left Line */
   gdk_draw_line (window, gc, x + 1, y + height - 4, x + 1, y + height - 2);	/* Right Line */
  
   /* Long Diagonal */
-  gdk_draw_line (window, gc, x + 2, y + height - 3, x + width - 1, y + 0);	/* Top Line */
+  gdk_draw_line (window, pxp?gc, x + 2, y + height - 3, x + width - 1, y + 0);	/* Top Line */
   gdk_draw_line (window, gc, x + 2, y + height - 2, x + width - 1, y + 1);	/* Center Line */
   gdk_draw_line (window, gc, x + 2, y + height - 1, x + width - 1, y + 2);	/* Bottom Line */
+
+#endif
 }
  
 /***********************************************
@@ -654,8 +755,8 @@ do_redmond_draw_check (GdkWindow * window,
  *   both which  were based on ThinIce's.
  ***********************************************/
 void
-do_redmond_draw_arrow (GdkWindow * window,
-               GdkGC * gc,
+do_redmond_draw_arrow (cairo_t *cr,
+               GdkColor * color,
                GtkArrowType arrow_type,
                gint x, 
                gint y, 
@@ -710,10 +811,27 @@ do_redmond_draw_arrow (GdkWindow * window,
           increment = -1;
         }
  
-      for (i = extra; i < height; i++)
-        gdk_draw_line(window, gc, 
-                      x + (i - extra), start + i * increment, 
-                      x + width - (i - extra) - 1,  start + i * increment);
+      cairo_save(cr);
+
+      gdk_cairo_set_source_color(cr, color);	
+      cairo_set_line_width (cr, 0.5);
+
+      cairo_move_to(cr, x + 0.5, start + 0.5);
+      cairo_line_to(cr, x + width - 0.5, start + 0.5);
+      cairo_line_to(cr, x + ((height - 1) - extra) + 0.5, start + (height - 1)*increment + 0.5);
+      cairo_line_to(cr, x + 0.5, start + 0.5);
+
+      cairo_stroke(cr);
+
+
+      cairo_move_to(cr, x + 0.5, start + 0.5);
+      cairo_line_to(cr, x + width - 0.5, start + 0.5);
+      cairo_line_to(cr, x + ((height - 1) - extra) + 0.5, start + (height - 1)*increment + 0.5);
+      cairo_line_to(cr, x + 0.5, start + 0.5);
+
+      cairo_fill(cr);
+
+      cairo_restore(cr);
     }
   else
     {
@@ -757,10 +875,27 @@ do_redmond_draw_arrow (GdkWindow * window,
           increment = -1;
         }
  
-      for (i = extra; i < width; i++)
-        gdk_draw_line(window, gc, 
-                      start + i * increment, y + (i - extra), 
-                      start + i * increment, y + height - (i - extra) - 1);
+      cairo_save(cr);
+
+      gdk_cairo_set_source_color(cr, color);	
+      cairo_set_line_width (cr, 0.5);
+
+      cairo_move_to(cr, start + 0.5, y + 0.5);
+      cairo_line_to(cr, start + 0.5, y + height - 0.5);
+      cairo_line_to(cr, start + (width - 1)*increment + 0.5, y + ((width - 1) - extra) + 0.5);
+      cairo_line_to(cr, start + 0.5, y + 0.5);
+
+      cairo_stroke(cr);
+
+
+      cairo_move_to(cr, start + 0.5, y + 0.5);
+      cairo_line_to(cr, start + 0.5, y + height - 0.5);
+      cairo_line_to(cr, start + (width - 1)*increment + 0.5, y + ((width - 1) - extra) + 0.5);
+      cairo_line_to(cr, start + 0.5, y + 0.5);
+
+      cairo_fill(cr);
+
+      cairo_restore(cr);
     }
 }
  
@@ -775,36 +910,40 @@ do_redmond_draw_arrow (GdkWindow * window,
  *   spacer line.
  ***********************************************/
 void
-do_redmond_draw_line(GdkWindow * window,
-             GdkGC * dark_gc,
-             GdkGC * light_gc,
+do_redmond_draw_line(cairo_t *cr,
+             GdkColor * dark,
+             GdkColor * light,
              GdkRectangle * area,
              gint start,
              gint end,
              gint base,
              gboolean horizontal)
 {  
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (dark_gc, area);
-      gdk_gc_set_clip_rectangle (light_gc, area);
-    }
- 
+  cairo_set_line_width (cr, 1);
+
   if (horizontal) 
     {
-      gdk_draw_line (window, dark_gc, start + 1, base + 0, end - 2, base + 0);
-      gdk_draw_line (window, light_gc, start + 1, base + 1, end - 2, base + 1);
+      gdk_cairo_set_source_color(cr, dark);	
+      cairo_move_to(cr, start + 1.5, base + 0.5);
+      cairo_line_to(cr, end - 1.5, base + 0.5);
+      cairo_stroke(cr);
+
+      gdk_cairo_set_source_color(cr, light);	
+      cairo_move_to(cr, start + 1.5, base + 1.5);
+      cairo_line_to(cr, end - 1.5, base + 1.5);
+      cairo_stroke(cr);
     } 
   else 
     {
-      gdk_draw_line (window, dark_gc, base + 0, start + 1, base + 0, end - 2);
-      gdk_draw_line (window, light_gc, base + 1, start + 1, base + 1, end - 2);
-    }
-   
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (dark_gc, NULL);
-      gdk_gc_set_clip_rectangle (light_gc, NULL);
+      gdk_cairo_set_source_color(cr, dark);	
+      cairo_move_to(cr, base + 0.5, start + 1.5);
+      cairo_line_to(cr, base + 0.5, end - 1.5);
+      cairo_stroke(cr);
+
+      gdk_cairo_set_source_color(cr, light);	
+      cairo_move_to(cr, base + 1.5, start + 1.5);
+      cairo_line_to(cr, base + 1.5, end - 1.5);
+      cairo_stroke(cr);
     }
 }
  

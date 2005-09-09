@@ -89,6 +89,8 @@ redmond_style_realize (GtkStyle * style)
  
       gc_values.foreground = color;
  
+      redmond_style->black_border[i] = color;
+
       redmond_style->black_border_gc[i] =
 	gtk_gc_get (style->depth, style->colormap, &gc_values,
 		    GDK_GC_FOREGROUND);

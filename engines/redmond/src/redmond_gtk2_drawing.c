@@ -63,12 +63,16 @@ redmond_draw_hline (GtkStyle * style,
 {
   g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
  
-  do_redmond_draw_line(window, 
-                       style->dark_gc[state_type], 
-                       style->light_gc[state_type], 
+  cairo_t *cr = redmond_begin_paint (window, area);
+
+  do_redmond_draw_line(cr, 
+                       &style->dark[state_type], 
+                       &style->light[state_type], 
                        area, 
                        x1, x2, y, 
                        TRUE);
+
+  cairo_destroy(cr);
 }
  
 /***********************************************
@@ -92,12 +96,16 @@ redmond_draw_vline (GtkStyle * style,
  
   g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
  
-  do_redmond_draw_line(window, 
-                       style->dark_gc[state_type], 
-                       style->light_gc[state_type], 
+  cairo_t *cr = redmond_begin_paint (window, area);
+
+  do_redmond_draw_line(cr, 
+                       &style->dark[state_type], 
+                       &style->light[state_type], 
                        area, 
                        y1, y2, x, 
                        FALSE);
+
+  cairo_destroy(cr);
 }
   
 /***********************************************
@@ -136,11 +144,13 @@ redmond_draw_check (GtkStyle * style,
   /* Always draw the checkbox and mark centered
    * at a fixed size.
    */
-  x -= (1 + CHECK_SIZE - width) / 2;
+  /*x -= (1 + CHECK_SIZE - width) / 2;
   y -= (1 + CHECK_SIZE - height) / 2;
   width = CHECK_SIZE;
-  height = CHECK_SIZE;
+  height = CHECK_SIZE;*/
   
+  cairo_t *cr = redmond_begin_paint (window, area);
+
   if (CHECK_DETAIL (detail, "check"))	/* Menu item */
     {
       /* check boxes in menu don't actually draw box, only the check mark,
@@ -148,7 +158,7 @@ redmond_draw_check (GtkStyle * style,
        */
       if (shadow == GTK_SHADOW_IN)
 	{
-	  do_redmond_draw_check (window, style->text_gc[state], x + 3, y + 3,
+	  do_redmond_draw_check (cr, &style->text[state], x + 3, y + 3,
 			 width - 4, height - 4);
 	}
     }
@@ -178,12 +188,12 @@ redmond_draw_check (GtkStyle * style,
               (IS_TOGGLE_BUTTON(widget) && 
                TOGGLE_BUTTON(widget)->inconsistent))
             {
-	      do_redmond_draw_check (window, style->fg_gc[GTK_STATE_INSENSITIVE],
+	      do_redmond_draw_check (cr, &style->fg[GTK_STATE_INSENSITIVE],
 			             x + 2, y + 2, width - 4, height - 4);
             }
 	  else
             {
-	      do_redmond_draw_check (window, style->fg_gc[GTK_STATE_NORMAL],
+	      do_redmond_draw_check (cr, &style->fg[GTK_STATE_NORMAL],
 			             x + 2, y + 2, width - 4, height - 4);
             }
 	}
@@ -191,6 +201,8 @@ redmond_draw_check (GtkStyle * style,
       gtk_paint_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_IN,
 			area, widget, detail, x, y, width, height);
     }
+    
+    cairo_destroy(cr);
 }
  
 /***********************************************
@@ -371,13 +383,17 @@ redmond_draw_arrow (GtkStyle * style,
         state = GTK_STATE_NORMAL;
     }
  
+  cairo_t *cr = redmond_begin_paint (window, area);
+
   if (state == GTK_STATE_INSENSITIVE)
     {
-      do_redmond_draw_arrow (window, style->light_gc[state], arrow_type, x+1, y+1, width, height);
-      do_redmond_draw_arrow (window, style->fg_gc[state], arrow_type, x, y, width, height);
+      do_redmond_draw_arrow (cr, &style->light[state], arrow_type, x+1, y+1, width, height);
+      do_redmond_draw_arrow (cr, &style->fg[state], arrow_type, x, y, width, height);
     }
   else
-    do_redmond_draw_arrow (window, style->fg_gc[state], arrow_type, x, y, width, height);
+    do_redmond_draw_arrow (cr, &style->fg[state], arrow_type, x, y, width, height);
+
+  cairo_destroy(cr);
 }
  
 /***********************************************
@@ -409,32 +425,25 @@ redmond_draw_shadow (GtkStyle * style,
  
   if (shadow_type == GTK_SHADOW_NONE)
     return;
- 
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (redmond_style->black_border_gc[state_type],
- 				 area);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
-    }
- 
+
+  cairo_t *cr = redmond_begin_paint (window, area);
+  
   switch (shadow_type)
     {
     case GTK_SHADOW_NONE:
       break;
     case GTK_SHADOW_ETCHED_IN:
-      do_redmond_draw_shadow (window, style->dark_gc[state_type],
-		      style->light_gc[state_type], x, y, width, height, TRUE);
-      do_redmond_draw_shadow (window, style->light_gc[state_type],
-		      style->dark_gc[state_type], x + 1, y + 1, width - 2,
+      do_redmond_draw_shadow (cr, &style->dark[state_type],
+		      &style->light[state_type], x, y, width, height, TRUE);
+      do_redmond_draw_shadow (cr, &style->light[state_type],
+		      &style->dark[state_type], x + 1, y + 1, width - 2,
 		      height - 2, TRUE);
       break;
     case GTK_SHADOW_ETCHED_OUT:
-      do_redmond_draw_shadow (window, style->light_gc[state_type],
-		      style->dark_gc[state_type], x, y, width, height, TRUE);
-      do_redmond_draw_shadow (window, style->dark_gc[state_type],
-		      style->light_gc[state_type], x + 1, y + 1, width - 2,
+      do_redmond_draw_shadow (cr, &style->light[state_type],
+		      &style->dark[state_type], x, y, width, height, TRUE);
+      do_redmond_draw_shadow (cr, &style->dark[state_type],
+		      &style->light[state_type], x + 1, y + 1, width - 2,
 		      height - 2, TRUE);
       break;
     case GTK_SHADOW_IN:
@@ -445,9 +454,10 @@ redmond_draw_shadow (GtkStyle * style,
 	   * needs some logic so no matter how big the default area
 	   * it only draws exactly one pixel around button.
 	   */
-	  gdk_draw_rectangle (window,
-			      redmond_style->black_border_gc[state_type],
-			      FALSE, x, y, width - 1, height - 1);
+           cairo_set_line_width (cr, 1);
+           gdk_cairo_set_source_color(cr, &redmond_style->black_border[state_type]);	
+           cairo_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
+           cairo_stroke(cr);
 	}
       else if (((CHECK_DETAIL (detail, "vscrollbar"))
 		|| (CHECK_DETAIL (detail, "hscrollbar"))
@@ -457,8 +467,10 @@ redmond_draw_shadow (GtkStyle * style,
 	  /* Scrollbar steppers and Defaultable Buttons use a flat
 	   * dark edge on pressed.
 	   */
-	  gdk_draw_rectangle (window, style->dark_gc[state_type], FALSE,
-			      x, y, width - 1, height - 1);
+           cairo_set_line_width (cr, 1);
+           gdk_cairo_set_source_color(cr, &style->dark[state_type]);	
+           cairo_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
+           cairo_stroke(cr);
 	}
       else if (((CHECK_DETAIL (detail, "entry"))
 		|| (CHECK_DETAIL (detail, "frame")))
@@ -473,22 +485,22 @@ redmond_draw_shadow (GtkStyle * style,
  
 	  if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 	    {
-	      do_redmond_draw_shadow (window, style->dark_gc[state_type],
-			      style->light_gc[state_type], x, y, width + 2,
+	      do_redmond_draw_shadow (cr, &style->dark[state_type],
+			      &style->light[state_type], x, y, width + 2,
 			      height, FALSE);
-	      do_redmond_draw_shadow (window,
-			      redmond_style->black_border_gc[state_type],
-			      style->bg_gc[state_type], x + 1, y + 1, width,
+	      do_redmond_draw_shadow (cr,
+			      &redmond_style->black_border[state_type],
+			      &style->bg[state_type], x + 1, y + 1, width,
 			      height - 2, FALSE);
 	    }
 	  else
 	    {
-	      do_redmond_draw_shadow (window, style->dark_gc[state_type],
-			      style->light_gc[state_type], x - 2, y,
+	      do_redmond_draw_shadow (cr, &style->dark[state_type],
+			      &style->light[state_type], x - 2, y,
 			      width + 2, height, FALSE);
-	      do_redmond_draw_shadow (window,
-			      redmond_style->black_border_gc[state_type],
-			      style->bg_gc[state_type], x - 1, y + 1, width,
+	      do_redmond_draw_shadow (cr,
+			      &redmond_style->black_border[state_type],
+			      &style->bg[state_type], x - 1, y + 1, width,
 			      height - 2, FALSE);
 	    }
 	}
@@ -499,19 +511,19 @@ redmond_draw_shadow (GtkStyle * style,
 		   && (is_toolbar_item (widget))))
 	{
 	  /* Toolbar Buttons, Status Bars, Frames, and Troughs are drawn with a thin border */
-	  do_redmond_draw_shadow (window, style->dark_gc[state_type],
-			  style->light_gc[state_type], x, y, width, height,
+	  do_redmond_draw_shadow (cr, &style->dark[state_type],
+			  &style->light[state_type], x, y, width, height,
 			  FALSE);
 	}
       else
 	{
 	  /* Normal IN Border */
-	  do_redmond_draw_shadow (window, style->dark_gc[state_type],
-			  style->light_gc[state_type], x, y, width, height,
+	  do_redmond_draw_shadow (cr, &style->dark[state_type],
+			  &style->light[state_type], x, y, width, height,
 			  FALSE);
-	  do_redmond_draw_shadow (window,
-			  redmond_style->black_border_gc[state_type],
-			  style->bg_gc[state_type], x + 1, y + 1, width - 2,
+	  do_redmond_draw_shadow (cr,
+			  &redmond_style->black_border[state_type],
+			  &style->bg[state_type], x + 1, y + 1, width - 2,
 			  height - 2, FALSE);
 	}
       break;
@@ -527,11 +539,11 @@ redmond_draw_shadow (GtkStyle * style,
 	   * and Combo/ComboBoxEntry buttons, the internal & external borders are 
 	   * inverted when OUT since they are inset into another widgets IN edge.
 	   */
-	  do_redmond_draw_shadow (window, style->bg_gc[state_type],
-			  redmond_style->black_border_gc[state_type], x, y,
+	  do_redmond_draw_shadow (cr, &style->bg[state_type],
+			  &redmond_style->black_border[state_type], x, y,
 			  width, height, FALSE);
-	  do_redmond_draw_shadow (window, style->light_gc[state_type],
-			  style->dark_gc[state_type], x + 1, y + 1, width - 2,
+	  do_redmond_draw_shadow (cr, &style->light[state_type],
+			  &style->dark[state_type], x + 1, y + 1, width - 2,
 			  height - 2, FALSE);
 	}
       else if ((CHECK_DETAIL (detail, "frame"))
@@ -539,31 +551,24 @@ redmond_draw_shadow (GtkStyle * style,
 		   && (is_toolbar_item (widget))))
 	{
 	  /* Toolbar Buttons and Frames are drawn with a thin border */
-	  do_redmond_draw_shadow (window, style->light_gc[state_type],
-			  style->dark_gc[state_type], x, y, width, height,
+	  do_redmond_draw_shadow (cr, &style->light[state_type],
+			  &style->dark[state_type], x, y, width, height,
 			  FALSE);
 	}
       else
 	{
 	  /* Normal OUT Border */
-	  do_redmond_draw_shadow (window, style->light_gc[state_type],
-			  redmond_style->black_border_gc[state_type], x, y,
+	  do_redmond_draw_shadow (cr, &style->light[state_type],
+			  &redmond_style->black_border[state_type], x, y,
 			  width, height, FALSE);
-	  do_redmond_draw_shadow (window, style->bg_gc[state_type],
-			  style->dark_gc[state_type], x + 1, y + 1, width - 2,
+	  do_redmond_draw_shadow (cr, &style->bg[state_type],
+			  &style->dark[state_type], x + 1, y + 1, width - 2,
 			  height - 2, FALSE);
 	}
       break;
     }
- 
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (redmond_style->black_border_gc[state_type],
-				 NULL);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
-    }
+
+    cairo_destroy(cr);
 }
  
 /***********************************************
@@ -617,6 +622,7 @@ redmond_draw_combobox_button (GtkStyle * style,
 	      gdk_draw_rectangle (window,
 	      	                  parent_style->base_gc[parent_state],
 			          TRUE, x - 2, y, width + 2, height);
+
             }
           else
             gtk_paint_flat_box (style, window, state_type,
@@ -1180,17 +1186,15 @@ redmond_draw_box (GtkStyle * style,
           else
             clip = shadow;
             
-          gdk_gc_set_clip_rectangle(style->light_gc[state_type], &clip);
-          gdk_gc_set_clip_rectangle(style->dark_gc[state_type], &clip);
+           cairo_t *cr = redmond_begin_paint (window, &clip);
           
-	  do_redmond_draw_shadow (window, style->light_gc[state_type],
-			          style->dark_gc[state_type], x, y, 
+	  do_redmond_draw_shadow (cr, &style->light[state_type],
+			          &style->dark[state_type], x, y, 
                                   width + 2*right_cutoff, 
                                   height + 2*bottom_cutoff,
 			          FALSE);
-			          
-          gdk_gc_set_clip_rectangle(style->light_gc[state_type], NULL);
-          gdk_gc_set_clip_rectangle(style->dark_gc[state_type], NULL);
+
+           cairo_destroy(cr);			          
         }
     }
   else if ((CHECK_DETAIL (detail, "menuitem")) && widget && widget->parent
@@ -1200,7 +1204,7 @@ redmond_draw_box (GtkStyle * style,
        * a thin inset border on select/active,
        * and a thin outset border on prelight
        */
-      GdkGC *top, *bottom;
+      GdkColor *top, *bottom;
       gboolean pressed = FALSE;
  
       if (state_type != GTK_STATE_INSENSITIVE)
@@ -1216,17 +1220,22 @@ redmond_draw_box (GtkStyle * style,
              GTK_WIDGET_REALIZED(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel) &&
              GTK_WIDGET_VISIBLE(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel))))
         {  
-          top = style->light_gc[state_type];
-          bottom = style->dark_gc[state_type];
+          top = &style->light[state_type];
+          bottom = &style->dark[state_type];
         }
       else
         {
-          top = style->dark_gc[state_type];
-          bottom = style->light_gc[state_type];
+          top = &style->dark[state_type];
+          bottom = &style->light[state_type];
         }
-      do_redmond_draw_shadow (window, top, bottom,
+
+      cairo_t *cr = redmond_begin_paint (window, area);
+          
+      do_redmond_draw_shadow (cr, top, bottom,
 		      x, y, width, height,
 		      FALSE);
+
+      cairo_destroy(cr);
     }
   else if ((CHECK_DETAIL (detail, "bar"))
 	   && (widget && IS_PROGRESS_BAR (widget)))
@@ -1312,10 +1321,14 @@ redmond_draw_box (GtkStyle * style,
       else
 	vline_x = x + width - (indicator_size.width + indicator_spacing.left + 
                                indicator_spacing.right) - style->xthickness;
- 
-      do_redmond_draw_line(window, style->dark_gc[state_type], style->light_gc[state_type], 
+
+      cairo_t *cr = redmond_begin_paint (window, area);
+
+      do_redmond_draw_line(cr, &style->dark[state_type], &style->light[state_type], 
                            area, y + style->ythickness + 1, y + height - style->ythickness - 2, 
                            vline_x, FALSE);
+ 
+      cairo_destroy(cr);
  
       if ((widget) && (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL))
          x +=  indicator_spacing.right + style->xthickness;
@@ -1656,10 +1669,14 @@ redmond_draw_handle (GtkStyle * style,
       /* draw the drag bar */
       if (orientation == GTK_ORIENTATION_VERTICAL)
         {
-  	  do_redmond_draw_shadow (window, style->light_gc[state_type],
-			          style->dark_gc[state_type],
+           cairo_t *cr = redmond_begin_paint (window, area);
+          
+	  do_redmond_draw_shadow (cr, &style->light[state_type],
+			          &style->dark[state_type],
 			          x + style->xthickness + 1, y + height / 2 - 1,
 			          width - style->xthickness - 3, 3, FALSE);
+
+            cairo_destroy(cr);
  	
           bottom_cutoff = TRUE;
         }
@@ -1668,11 +1685,14 @@ redmond_draw_handle (GtkStyle * style,
           right_cutoff = (!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR);
           left_cutoff = !right_cutoff;
  
-	  do_redmond_draw_shadow (window, style->light_gc[state_type],
-			          style->dark_gc[state_type], x + width / 2 - 1,
+           cairo_t *cr = redmond_begin_paint (window, area);
+          
+	  do_redmond_draw_shadow (cr, &style->light[state_type],
+			          &style->dark[state_type], x + width / 2 - 1,
 			          y + style->ythickness + 1, 3,
 			          height - style->ythickness - 3, FALSE);
-			          
+
+           cairo_destroy(cr);			          
         }
       if (is_panel_widget_item (widget)
 	  && (CHECK_DETAIL (detail, "handlebox")
@@ -1736,19 +1756,16 @@ redmond_draw_handle (GtkStyle * style,
              
           if (!skip_shadow)
             {
-               gdk_gc_set_clip_rectangle(style->light_gc[state_type], &clip);
-               gdk_gc_set_clip_rectangle(style->dark_gc[state_type], &clip);
+                cairo_t *cr = redmond_begin_paint (window, &clip);
           
-	       do_redmond_draw_shadow (window, style->light_gc[state_type],
-		 	               style->dark_gc[state_type],
+   	       do_redmond_draw_shadow (cr, &style->light[state_type],
+			               &style->dark[state_type],
                                        x - 2*left_cutoff, 
                                        y - 2*top_cutoff, 
                                        width + 2*left_cutoff + 2*right_cutoff,
 			               height + 2*top_cutoff + 2*bottom_cutoff,
 			               FALSE);
-			          
-               gdk_gc_set_clip_rectangle(style->light_gc[state_type], NULL);
-               gdk_gc_set_clip_rectangle(style->dark_gc[state_type], NULL);
+              cairo_destroy(cr);			          
             }
 	}
     }

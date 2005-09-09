@@ -990,8 +990,7 @@ draw_option(GtkStyle *style,
 		(IS_TOGGLE_BUTTON(widget) && 
 		TOGGLE_BUTTON(widget)->inconsistent))
 	{
-		if ((state_type == GTK_STATE_INSENSITIVE) || 
-			(IS_TOGGLE_BUTTON(widget) && 
+		if ((IS_TOGGLE_BUTTON(widget) && 
 			TOGGLE_BUTTON(widget)->inconsistent))
 		{
 			/* Rough logic, just make  thickness 1/3 height */

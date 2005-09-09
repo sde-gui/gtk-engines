@@ -115,6 +115,9 @@ void composite_color_shade(GdkColor *original,
                            gdouble shade_ratio, 
                            GdkColor *composite);
  
+cairo_t *
+redmond_begin_paint (GdkDrawable  *window, GdkRectangle *area);
+
 void redmond_draw_part (GdkDrawable * drawable, 
                         GdkGC * gc, 
                         GdkRectangle * area, 
@@ -141,33 +144,33 @@ void do_redmond_draw_cross_hatch_fill (GtkStyle * style,
                                        gint width, 
                                        gint height);
                                        
-void do_redmond_draw_shadow (GdkWindow * window, 
-                             GdkGC * tl_gc,
-                             GdkGC * br_gc, 
+void do_redmond_draw_shadow (cairo_t *cr, 
+                             GdkColor * tl,
+                             GdkColor * br, 
                              gint x, 
                              gint y, 
                              gint width, 
                              gint height, 
                              gboolean topleft_overlap);
                              
-void do_redmond_draw_check (GdkWindow * window, 
-                            GdkGC * gc, 
+void do_redmond_draw_check (cairo_t *cr,
+                            GdkColor *color, 
                             gint x, 
                             gint y, 
                             gint width, 
                             gint height);
                             
-void do_redmond_draw_arrow (GdkWindow * window, 
-                            GdkGC * gc, 
+void do_redmond_draw_arrow (cairo_t *cr,
+                            GdkColor *color,
                             GtkArrowType arrow_type, 
                             gint x, 
                             gint y, 
                             gint width, 
                             gint height);
                             
-void do_redmond_draw_line(GdkWindow * window, 
-                          GdkGC * dark_gc, 
-                          GdkGC * light_gc, 
+void do_redmond_draw_line(cairo_t *cr, 
+                          GdkColor * dark, 
+                          GdkColor * light, 
                           GdkRectangle * area, 
                           gint start, 
                           gint end, 

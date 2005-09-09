@@ -22,6 +22,8 @@
 #include <math.h>
 #include <string.h>
  
+#include <cairo.h>
+
 void
 redmond_draw_hline (GtkStyle * style,
 	    GdkWindow * window,

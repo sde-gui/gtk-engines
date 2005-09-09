@@ -1,3 +1,17 @@
+2005-09-09  Andrew Johnson  <ajgenius@ajgenius.us>
+
+        * engines/mist/src/mist-style.c: fix disabled/selected option
+	
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	* engines/redmond/src/redmond_gtk2_drawing.h:
+	* engines/redmond/src/redmond_gtk2_engine.c:
+	* engines/redmond/src/redmond_gtk2_engine.h:
+	* engines/redmond/src/redmond_gtk2_misc.c:
+	* engines/redmond/src/redmond_gtk2_misc.h: 
+		partially converted to cairo
+		check still has problem sizes,
+		fills and options need to be done yet
+		
 2005-09-08  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

@@ -62,6 +62,7 @@ typedef struct
 {
   GtkStyle parent_instance;
   GdkGC *black_border_gc[5];
+  GdkColor black_border[5];
 } RedmondStyle;
  
 typedef struct
