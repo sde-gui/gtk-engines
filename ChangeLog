@@ -1,5 +1,10 @@
 2005-09-11  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box),
+	(draw_option): Drawing pretty radio buttons!
+
+2005-09-11  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_rounded_rectectangle), (clearlooks_draw_button),
 	(clearlooks_draw_frame), (clearlooks_draw_menu_frame),

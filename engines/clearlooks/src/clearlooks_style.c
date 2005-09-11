@@ -653,8 +653,6 @@ draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
-
-		printf("wtf?\n");
 		clearlooks_draw_toolbar (cr, colors, NULL, x, y, width, height);
 	}
 	else if (DETAIL ("trough"))
@@ -695,8 +693,64 @@ draw_slider (DRAW_ARGS, GtkOrientation orientation)
 static void
 draw_option (DRAW_ARGS)
 {
-	parent_class->draw_option (style, window, state_type, shadow_type, area,
-	                           widget, detail, x, y, width, height);
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	CairoColor *border;
+	CairoColor *dot;
+
+	cairo_t *cr = clearlooks_begin_paint (window, area);
+	cairo_pattern_t *pt;
+
+	if (state_type == GTK_STATE_INSENSITIVE)
+	{
+		border = &clearlooks_style->colors.shade[2];
+		dot    = &clearlooks_style->colors.spot[0];
+	}
+	else
+	{
+		border = &clearlooks_style->colors.shade[7];
+		dot    = &clearlooks_style->colors.spot[1];
+	}
+	
+	pt = cairo_pattern_create_linear (0, 0, 14, 14);
+	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.1);
+	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
+	cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
+	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 1);
+	
+	cairo_translate (cr, x, y);
+	
+	cairo_set_line_width (cr, 2);
+	cairo_arc       (cr, 7, 7, 6, 0, M_PI*2);	
+	cairo_set_source (cr, pt);
+	cairo_stroke (cr);
+	
+	cairo_set_line_width (cr, 1);
+
+	cairo_arc       (cr, 7, 7, 5.5, 0, M_PI*2);	
+	
+	if (state_type != GTK_STATE_INSENSITIVE)
+	{
+		CairoColor *bg = &clearlooks_style->colors.base[state_type];
+		cairo_set_source_rgb (cr, bg->r, bg->g, bg->b);
+		cairo_fill_preserve (cr);
+	}
+	
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke (cr);
+	
+	
+	if (shadow_type == GTK_SHADOW_IN)
+	{
+		cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
+		cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+		cairo_fill (cr);
+		
+		cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
+		cairo_set_source_rgba (cr, 1,1,1, 0.5);
+		cairo_fill (cr);
+	}
+	
+	cairo_destroy (cr);
 }
 
 static void
