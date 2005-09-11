@@ -93,7 +93,7 @@ draw_shadow (DRAW_ARGS)
 	cairo_t          *cr     = clearlooks_begin_paint (window, area);
 
 	sanitize_size (window, &width, &height);
-	
+
 	if (DETAIL ("entry"))
 	{
 		WidgetParameters params;
@@ -120,8 +120,6 @@ draw_shadow (DRAW_ARGS)
 		gtk_style_apply_default_background (style, window, TRUE, state_type,
 		                                    area, x, y, width, height);
 		
-	//	gdk_draw_rectangle (window, style->bg_gc[state_type], TRUE, x, y, width, height);
-		
 		clearlooks_draw_statusbar (cr, colors, &params,
 		                           x, y, width, height);
 	}
@@ -129,42 +127,34 @@ draw_shadow (DRAW_ARGS)
 	{
 		WidgetParameters params;
 		FrameParameters  frame;
-		
 		frame.shadow  = shadow_type;
 		frame.gap_x   = -1;                 /* No gap will be drawn */
-		frame.border  = &colors->shade[5];
+		frame.border  = &colors->shade[4];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
-		
-		clearlooks_draw_frame (cr, colors, &params, &frame,
-		                       x, y, width, height);
+	
+		if (!g_str_equal ("XfcePanelWindow", gtk_widget_get_name (gtk_widget_get_toplevel (widget))))
+			clearlooks_draw_frame (cr, colors, &params, &frame,
+			                       x, y, width, height);
 	}
-	else if (DETAIL ("scrolled_window"))
+	else if (DETAIL ("scrolled_window") || DETAIL ("viewport") || detail == NULL)
 	{
-		WidgetParameters params;
-		FrameParameters frame;
-
-		frame.shadow = CL_SHADOW_NONE;
-		frame.gap_x  = -1;
-		frame.border = &colors->shade[5];
-
-		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		params.corners = CL_CORNER_NONE;
-		
-		clearlooks_draw_frame (cr, colors, &params, &frame, x, y, width, height);
+		CairoColor *border = (CairoColor*)&colors->shade[5];
+		cairo_rectangle (cr, x+0.5, y+0.5, width-1, height-1);
+		cairo_set_source_rgb (cr, border->r, border->g, border->b);
+		cairo_set_line_width (cr, 1);
+		cairo_stroke (cr);
 	}
 	else
 	{
 		WidgetParameters params;
 		FrameParameters frame;
 
-		printf("draw_shadow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "(null)");
-			
 		frame.shadow = CL_SHADOW_NONE;
 		frame.gap_x  = -1;
 		frame.border = &colors->shade[5];
-
+		printf("draw_shadow: %s %s\n", detail, widget? G_OBJECT_TYPE_NAME (widget) : "null");
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
 		
@@ -246,8 +236,8 @@ draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 	{
 		printf("draw_extension: %s\n", detail);
 		parent_class->draw_extension (style, window, state_type, shadow_type, area,
-									  widget, detail, x, y, width, height,
-									  gap_side);
+		                              widget, detail, x, y, width, height,
+		                              gap_side);
 
 	}
 	
@@ -257,12 +247,52 @@ draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 static void 
 draw_handle (DRAW_ARGS, GtkOrientation orientation)
 {
-	gtk_style_apply_default_background (style, window, TRUE, state_type, area, x, y, width, height);
-	//printf("draw_handle: %s\n", detail);
-	return;
-	parent_class->draw_handle (style, window, state_type, shadow_type, area,
-	                           widget, detail, x, y, width, height,
-	                           orientation);
+	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
+	ClearlooksColors *colors = &clearlooks_style->colors;
+	cairo_t          *cr;
+	
+	sanitize_size (window, &width, &height);
+	
+	cr = clearlooks_begin_paint (window, area);
+	
+	if (DETAIL ("handlebox"))
+	{
+		WidgetParameters params;
+		HandleParameters handle;
+
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		handle.type = CL_HANDLE_TOOLBAR;
+		handle.horizontal = FALSE;
+		
+		if (GTK_IS_TOOLBAR (widget))
+		{
+			cairo_save (cr);
+			clearlooks_draw_toolbar (cr, colors, &params, x, y, width, height);
+			cairo_restore (cr);
+		}
+		
+		clearlooks_draw_handle (cr, colors, &params, &handle,
+		                        x, y, width, height);
+	}
+	else if (DETAIL ("paned"))
+	{
+		WidgetParameters params;
+		HandleParameters handle;
+
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		handle.type = CL_HANDLE_SPLITTER;
+		handle.horizontal = GTK_IS_VPANED (widget);
+			
+		clearlooks_draw_handle (cr, colors, &params, &handle,
+		                        x, y, width, height);
+	}
+	else
+	{
+		printf ("%s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null");
+		parent_class->draw_handle (style, window, state_type, shadow_type, area,
+		                           widget, detail, x, y, width, height,
+		                           orientation);
+	}
 }
 
 static int
@@ -623,6 +653,8 @@ draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
+
+		printf("wtf?\n");
 		clearlooks_draw_toolbar (cr, colors, NULL, x, y, width, height);
 	}
 	else if (DETAIL ("trough"))
@@ -668,48 +700,44 @@ draw_option (DRAW_ARGS)
 }
 
 static void
+draw_up_down_arrow (cairo_t *cr, CairoColor *fill,
+                    int x, int y, int width, int height)
+{
+#define ARROW_WIDTH 7.0
+
+	cairo_move_to (cr, x +ARROW_WIDTH/2, y);
+	cairo_line_to (cr, x,                y+5);
+	cairo_line_to (cr, x +ARROW_WIDTH,   y+5);
+	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);	
+	cairo_fill (cr);
+
+	cairo_move_to (cr, x + ARROW_WIDTH/2, y + height);
+	cairo_line_to (cr, x,                 y + height - 5);
+	cairo_line_to (cr, x + ARROW_WIDTH,   y + height - 5);
+	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
+	cairo_fill (cr);
+}
+
+static void
 draw_tab (DRAW_ARGS)
 {
-#define ARROW_SPACE 2
-#define ARROW_LINE_HEIGHT 2
-#define ARROW_LINE_WIDTH 5
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	GtkRequisition indicator_size;
-	GtkBorder indicator_spacing;
-	gint arrow_height;
-
-	option_menu_get_props (widget, &indicator_size, &indicator_spacing);
-
-	indicator_size.width += (indicator_size.width % 2) - 1;
-	arrow_height = indicator_size.width / 2 + 2;
-
-	x += (width - indicator_size.width) / 2;
-	y += height/2;
-
-	parent_class->draw_arrow (style, window, state_type, shadow_type, area,
-	                          widget, detail, GTK_ARROW_DOWN, TRUE,
-	                          x, y, indicator_size.width, height);
-
-/*
+	CairoColor *fill = &clearlooks_style->colors.shade[7];
+	
+	cairo_t *cr = clearlooks_begin_paint (window, area);
+	
+	cairo_translate (cr, x, y-1);
+	cairo_set_line_width (cr, 1);
+	
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
-		draw_arrow (window, style->light_gc[state_type], area,
-		            GTK_ARROW_UP, 1+x, 1+y-arrow_height,
-		            indicator_size.width, arrow_height);
-
-		draw_arrow (window, style->light_gc[state_type], area,
-		            GTK_ARROW_DOWN, 1+x, 1+y+1,
-		            indicator_size.width, arrow_height);
+		draw_up_down_arrow (cr, &clearlooks_style->colors.shade[0], 1, 1, width, height+1);
+		fill = &clearlooks_style->colors.shade[3];
 	}
+	
+	draw_up_down_arrow (cr, fill, 0, 0, width, height+1);
 
-	draw_arrow (window, style->fg_gc[state_type], area,
-	            GTK_ARROW_UP, x, y-arrow_height,
-	            indicator_size.width, arrow_height);
-
-	draw_arrow (window, style->fg_gc[state_type], area,
-	            GTK_ARROW_DOWN, x, y+1,
-	            indicator_size.width, arrow_height);
-	*/
+	cairo_destroy (cr);
 }
 
 static void
@@ -826,7 +854,7 @@ draw_resize_grip (GtkStyle       *style,
 static void
 clearlooks_draw_arrow (GtkStyle      *style,
                        GdkWindow     *window,
-                       GtkStateType   state,
+                       GtkStateType   state_type,
                        GtkShadowType  shadow,
                        GdkRectangle  *area,
                        GtkWidget     *widget,
@@ -838,9 +866,40 @@ clearlooks_draw_arrow (GtkStyle      *style,
                        gint           width,
                        gint           height)
 {
-	parent_class->draw_arrow (style, window, state, shadow, area,
-	                          widget, detail, arrow_type, fill,
-	                          x, y, width, height);
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	CairoColor *color = &clearlooks_style->colors.shade[7];
+	cairo_t *cr = clearlooks_begin_paint (window, area);
+		
+	sanitize_size (window, &width, &height);
+
+	if (is_combo_box (widget))
+	{
+		y -= 2;
+		height += 4;
+		x += 3;
+		
+		cairo_translate (cr, x, y);
+		cairo_set_line_width (cr, 1);
+		
+		if (state_type == GTK_STATE_INSENSITIVE)
+		{
+			draw_up_down_arrow (cr, &clearlooks_style->colors.shade[0], 1, 1, width, height);
+			color = &clearlooks_style->colors.shade[3];
+		}
+		
+		draw_up_down_arrow (cr, color, 0, 0, width, height);
+	
+	}
+	else
+	{
+		//printf("draw_arrow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null");
+
+		parent_class->draw_arrow (style, window, state_type, shadow, area,
+		                          widget, detail, arrow_type, fill,
+		                          x, y, width, height);
+	}
+	
+	cairo_destroy (cr);
 }
 
 static void

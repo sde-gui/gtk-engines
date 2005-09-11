@@ -29,7 +29,7 @@ style "clearlooks-default"
   bg[PRELIGHT]      = "#f9f7f3" # very light beige
   bg[SELECTED]	    = "#5598d7" # deepsky
   bg[INSENSITIVE]   = "#e8e5de" # beige
-  bg[ACTIVE]        = "#d7d3ca" # dark beige
+  bg[ACTIVE]        = "#c9c3b4" #"#d7d3ca" # dark beige
 
   base[NORMAL]      = "#ffffff" # white 
   base[PRELIGHT]    = "#5f8ec4" # dark beige

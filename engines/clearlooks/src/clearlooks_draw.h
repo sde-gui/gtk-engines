@@ -12,13 +12,13 @@ void clearlooks_draw_button           (cairo_t *cr,
                                        const ClearlooksColors      *colors,
                                        const WidgetParameters      *widget,
                                        int x, int y, int width, int height);
-				
+
 void clearlooks_draw_scale_trough     (cairo_t *cr,
                                        const ClearlooksColors      *colors,
                                        const WidgetParameters      *widget,
                                        const SliderParameters      *slider,
                                        int x, int y, int width, int height);
-							  
+
 void clearlooks_draw_progressbar_trough (cairo_t *cr,
                                        const ClearlooksColors      *colors,
                                        const WidgetParameters      *widget,
@@ -72,7 +72,7 @@ void clearlooks_draw_tab              (cairo_t *cr,
                                        const WidgetParameters     *widget,
                                        const TabParameters        *tab,
                                        int x, int y, int width, int height);
-									   
+
 void clearlooks_draw_frame            (cairo_t *cr,
                                        const ClearlooksColors     *colors,
                                        const WidgetParameters     *widget,
@@ -128,6 +128,12 @@ void clearlooks_draw_statusbar        (cairo_t *cr,
 void clearlooks_draw_menu_frame       (cairo_t *cr,
                                        const ClearlooksColors          *colors,
                                        const WidgetParameters          *widget,
+                                       int x, int y, int width, int height);
+
+void clearlooks_draw_handle           (cairo_t *cr,
+                                       const ClearlooksColors          *colors,
+                                       const WidgetParameters          *widget,
+                                       const HandleParameters          *handle,
                                        int x, int y, int width, int height);
 
 #endif /* CLEARLOOKS_DRAW_H */

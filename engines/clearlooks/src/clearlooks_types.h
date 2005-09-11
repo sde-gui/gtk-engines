@@ -70,6 +70,12 @@ typedef enum
 	CL_SHADOW_ETCHED_OUT
 } ClearlooksShadowType;
 
+typedef enum
+{
+	CL_HANDLE_TOOLBAR,
+	CL_HANDLE_SPLITTER
+} ClearlooksHandleType;
+
 typedef struct
 {
 	double r;
@@ -166,6 +172,12 @@ typedef struct
 	boolean            horizontal;
 	boolean            has_color;
 } ScrollBarParameters;
+
+typedef struct
+{
+	ClearlooksHandleType type;
+	boolean              horizontal; 
+} HandleParameters;
 
 typedef struct
 {

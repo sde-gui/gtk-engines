@@ -13,8 +13,6 @@ clearlooks_rounded_rectectangle (cairo_t *cr,
                                  double x, double y, double w, double h,
                                  double radius, uint8 corners)
 {
-//	cairo_rectangle (cr, x, y, w, h);
-//	return;
 	if (corners & CL_CORNER_TOPLEFT)
 		cairo_move_to (cr, x+radius, y);
 	else
@@ -247,7 +245,7 @@ clearlooks_draw_button (cairo_t *cr,
 		
 		shade (fill, &top_shade, 1.1);
 		shade (fill, &bottom_shade, 0.85);
-		shade (fill, &middle_shade, 0.97);
+		shade (fill, &middle_shade, 0.96);
 		
 		pattern	= cairo_pattern_create_linear (0, 0, 0, height);
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0, top_shade.r, top_shade.g, top_shade.b);
@@ -846,6 +844,9 @@ clearlooks_draw_frame            (cairo_t *cr,
 	ClearlooksRectangle bevel_clip;
 	ClearlooksRectangle frame_clip;
 	
+	if (frame->shadow == CL_SHADOW_NONE)
+		return;
+	
 	if (frame->gap_x != -1)
 		clearlooks_get_frame_gap_clip (x, y, width, height,
 		                               (FrameParameters*)frame,
@@ -1418,4 +1419,70 @@ clearlooks_draw_menu_frame (cairo_t *cr,
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
 	
 	cairo_stroke         (cr);
+}
+
+void
+clearlooks_draw_handle (cairo_t *cr,
+                        const ClearlooksColors          *colors,
+                        const WidgetParameters          *widget,
+                        const HandleParameters          *handle,
+                        int x, int y, int width, int height)
+{
+#define NUM_BARS 12
+#define BAR_SPACING 2
+	
+	CairoColor *dark  = (CairoColor*)&colors->shade[4];
+	CairoColor *light = (CairoColor*)&colors->shade[0];
+
+	int bar_height;
+	int bar_width  = 4;
+	int i, bar_y = 0;
+	
+	int num_bars, bar_spacing;
+	
+	if (handle->type == CL_HANDLE_TOOLBAR)
+	{
+		num_bars    = 12;
+		bar_spacing = 2;
+	}
+	else if (handle->type == CL_HANDLE_SPLITTER)
+	{
+		num_bars    = 20;
+		bar_spacing = 2;
+	}
+	
+	bar_height = num_bars * bar_spacing;
+	
+	if (handle->horizontal)
+	{
+		int tmp = height;
+		rotate_mirror_translate (cr, M_PI/2,
+		                         x + 0.5 + width/2 - bar_height/2,
+		                         y + height/2 - bar_width/2,
+		                         FALSE, FALSE);
+		height = width;
+		width = tmp;
+	}
+	else
+	{
+		cairo_translate (cr, x + width/2 - bar_width/2, y + height/2 - bar_height/2 + 0.5);
+	}
+	
+	cairo_set_line_width (cr, 1);
+
+	for (i=0; i<num_bars; i++)
+	{
+		cairo_move_to (cr, 0, bar_y);
+		cairo_line_to (cr, bar_width, bar_y);
+		cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
+		cairo_stroke (cr);
+		
+		cairo_move_to (cr, 0, bar_y+1);
+		cairo_line_to (cr, bar_width, bar_y+1);
+		cairo_set_source_rgb (cr, light->r, light->g, light->b);
+		cairo_stroke (cr);
+		
+		bar_y += bar_spacing;
+	}
+
 }

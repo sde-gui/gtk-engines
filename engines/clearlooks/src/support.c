@@ -467,7 +467,6 @@ scrollbar_get_stepper (GtkWidget    *widget,
 	check_rectangle.height = stepper->height;
 	
 	orientation = GTK_RANGE (widget)->orientation;
-	printf("%d %d %d %d\n", check_rectangle.x, check_rectangle.y, check_rectangle.width, check_rectangle.height);
 	
 	if (widget->allocation.x == -1 && widget->allocation.y == -1)
 		return CL_STEPPER_UNKNOWN;

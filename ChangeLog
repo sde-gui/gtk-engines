@@ -1,3 +1,21 @@
+2005-09-11  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_rounded_rectectangle), (clearlooks_draw_button),
+	(clearlooks_draw_frame), (clearlooks_draw_menu_frame),
+	(clearlooks_draw_handle):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow),
+	(draw_extension), (draw_handle), (draw_box), (draw_up_down_arrow),
+	(draw_tab), (clearlooks_draw_arrow):
+	* engines/clearlooks/src/clearlooks_types.h:
+	* engines/clearlooks/src/support.c: (scrollbar_get_stepper):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	
+	Implemented handle bars. Improved arrows on combobox/optionmenu.
+	Improved gradient on buttons.
+	Shadowless frames are no longer drawn.
+
 2005-09-09  Andrew Johnson  <ajgenius@ajgenius.us>
 
         * engines/mist/src/mist-style.c: fix disabled/selected option
