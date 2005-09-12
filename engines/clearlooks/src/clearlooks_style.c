@@ -711,7 +711,7 @@ draw_option (DRAW_ARGS)
 		dot    = &clearlooks_style->colors.spot[1];
 	}
 	
-	pt = cairo_pattern_create_linear (0, 0, 14, 14);
+	pt = cairo_pattern_create_linear (0, 0, 13, 13);
 	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.1);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
@@ -748,6 +748,69 @@ draw_option (DRAW_ARGS)
 		cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
 		cairo_set_source_rgba (cr, 1,1,1, 0.5);
 		cairo_fill (cr);
+	}
+	
+	cairo_destroy (cr);
+}
+
+static void
+draw_check (DRAW_ARGS)
+{
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	CairoColor *border;
+	CairoColor *dot;
+
+	cairo_t *cr = clearlooks_begin_paint (window, area);
+	cairo_pattern_t *pt;
+
+	if (state_type == GTK_STATE_INSENSITIVE)
+	{
+		border = &clearlooks_style->colors.shade[2];
+		dot    = &clearlooks_style->colors.spot[0];
+	}
+	else
+	{
+		border = &clearlooks_style->colors.shade[7];
+		dot    = &clearlooks_style->colors.spot[1];
+	}
+	
+	pt = cairo_pattern_create_linear (0, 0, 0, 13);
+	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.04);
+	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
+	cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
+	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.6);
+	
+	cairo_translate (cr, x, y);
+	
+	cairo_set_line_width (cr, 1);
+	cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
+	cairo_set_source (cr, pt);
+	cairo_stroke (cr);
+	
+	cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
+	
+	if (state_type != GTK_STATE_INSENSITIVE)
+	{
+		CairoColor *bg = &clearlooks_style->colors.base[state_type];
+		cairo_set_source_rgb (cr, bg->r, bg->g, bg->b);
+		cairo_fill_preserve (cr);
+	}
+	
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke (cr);
+	
+	
+	if (shadow_type == GTK_SHADOW_IN)
+	{
+		cairo_set_line_width (cr, 1.7);
+		cairo_move_to (cr, 0.5 + (width*0.2), (height*0.5));
+		cairo_line_to (cr, 0.5 + (width*0.4), (height*0.7));
+		
+		cairo_curve_to (cr, 0.5 + (width*0.4), (height*0.7),
+		                    0.5 + (width*0.5), (height*0.4),
+		                    0.5 + (width*0.70), (height*0.25));
+		cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+		cairo_stroke (cr);
 	}
 	
 	cairo_destroy (cr);
@@ -1050,6 +1113,7 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_box_gap     = draw_box_gap;
 	style_class->draw_extension   = draw_extension;
 	style_class->draw_option      = draw_option;
+	style_class->draw_check       = draw_check;
 	style_class->draw_flat_box    = draw_flat_box;
 	style_class->draw_tab         = draw_tab;
 	style_class->draw_vline       = draw_vline;

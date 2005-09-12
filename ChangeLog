@@ -1,3 +1,9 @@
+2005-09-12  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_option),
+	(draw_check), (clearlooks_style_class_init): Draw pretty checkbox
+	buttons, too!
+
 2005-09-11  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_box),
