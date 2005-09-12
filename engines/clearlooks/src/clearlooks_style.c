@@ -69,7 +69,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 			params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 		
 		params->xthickness = style->xthickness;
-		params->ythickness = style->ythickness;		
+		params->ythickness = style->ythickness;
 		
 		/* I want to avoid to have to do this. I need it for GtkEntry, unless I
 		   find out why it doesn't behave the way I expect it to. */
@@ -817,42 +817,20 @@ draw_check (DRAW_ARGS)
 }
 
 static void
-draw_up_down_arrow (cairo_t *cr, CairoColor *fill,
-                    int x, int y, int width, int height)
-{
-#define ARROW_WIDTH 7.0
-
-	cairo_move_to (cr, x +ARROW_WIDTH/2, y);
-	cairo_line_to (cr, x,                y+5);
-	cairo_line_to (cr, x +ARROW_WIDTH,   y+5);
-	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);	
-	cairo_fill (cr);
-
-	cairo_move_to (cr, x + ARROW_WIDTH/2, y + height);
-	cairo_line_to (cr, x,                 y + height - 5);
-	cairo_line_to (cr, x + ARROW_WIDTH,   y + height - 5);
-	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
-	cairo_fill (cr);
-}
-
-static void
 draw_tab (DRAW_ARGS)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	CairoColor *fill = &clearlooks_style->colors.shade[7];
+	ClearlooksColors *colors = &clearlooks_style->colors;	
+	WidgetParameters params;
+	ArrowParameters  arrow;
 	
 	cairo_t *cr = clearlooks_begin_paint (window, area);
 	
-	cairo_translate (cr, x, y-1);
-	cairo_set_line_width (cr, 1);
+	clearlooks_set_widget_parameters (widget, style, state_type, &params);
+	arrow.type      = CL_ARROW_COMBO;
+	arrow.direction = CL_DIRECTION_DOWN;
 	
-	if (state_type == GTK_STATE_INSENSITIVE)
-	{
-		draw_up_down_arrow (cr, &clearlooks_style->colors.shade[0], 1, 1, width, height+1);
-		fill = &clearlooks_style->colors.shade[3];
-	}
-	
-	draw_up_down_arrow (cr, fill, 0, 0, width, height+1);
+	clearlooks_draw_arrow (cr, colors, &params, &arrow, x, y, width, height);
 
 	cairo_destroy (cr);
 }
@@ -969,7 +947,7 @@ draw_resize_grip (GtkStyle       *style,
 }
 
 static void
-clearlooks_draw_arrow (GtkStyle      *style,
+draw_arrow (GtkStyle      *style,
                        GdkWindow     *window,
                        GtkStateType   state_type,
                        GtkShadowType  shadow,
@@ -983,29 +961,31 @@ clearlooks_draw_arrow (GtkStyle      *style,
                        gint           width,
                        gint           height)
 {
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	CairoColor *color = &clearlooks_style->colors.shade[7];
+	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
+	ClearlooksColors *colors = &clearlooks_style->colors;
 	cairo_t *cr = clearlooks_begin_paint (window, area);
 		
 	sanitize_size (window, &width, &height);
 
-	if (is_combo_box (widget))
+	if (DETAIL ("arrow"))
 	{
-		y -= 2;
-		height += 4;
-		x += 3;
+		WidgetParameters params;
+		ArrowParameters  arrow;
 		
-		cairo_translate (cr, x, y);
-		cairo_set_line_width (cr, 1);
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		arrow.type = CL_ARROW_NORMAL;
+		arrow.direction = (ClearlooksDirection)arrow_type;
 		
-		if (state_type == GTK_STATE_INSENSITIVE)
+		if (is_combo_box (widget))
 		{
-			draw_up_down_arrow (cr, &clearlooks_style->colors.shade[0], 1, 1, width, height);
-			color = &clearlooks_style->colors.shade[3];
+			arrow.type = CL_ARROW_COMBO;
+			y -= 2;
+			height += 4;
+			x += 3;
 		}
 		
-		draw_up_down_arrow (cr, color, 0, 0, width, height);
-	
+		clearlooks_draw_arrow (cr, colors, &params, &arrow,
+		                       x, y, width, height);
 	}
 	else
 	{
@@ -1119,7 +1099,7 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_vline       = draw_vline;
 	style_class->draw_hline       = draw_hline;
 	style_class->draw_resize_grip = draw_resize_grip;
-	style_class->draw_arrow       = clearlooks_draw_arrow;
+	style_class->draw_arrow       = draw_arrow;
 }
 
 GType clearlooks_type_style = 0;

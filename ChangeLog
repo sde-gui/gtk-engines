@@ -1,5 +1,16 @@
 2005-09-12  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_normal_arrow), (clearlooks_draw_combo_arrow),
+	(clearlooks_draw_arrow):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters), (draw_tab), (draw_arrow),
+	(clearlooks_style_class_init):
+	* engines/clearlooks/src/clearlooks_types.h: Draw pretty combo arrows.
+
+2005-09-12  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_style.c: (draw_option),
 	(draw_check), (clearlooks_style_class_init): Draw pretty checkbox
 	buttons, too!

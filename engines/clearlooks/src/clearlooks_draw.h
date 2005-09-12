@@ -136,4 +136,9 @@ void clearlooks_draw_handle           (cairo_t *cr,
                                        const HandleParameters          *handle,
                                        int x, int y, int width, int height);
 
+void clearlooks_draw_arrow            (cairo_t *cr,
+                                       const ClearlooksColors          *colors,
+                                       const WidgetParameters          *widget,
+                                       const ArrowParameters           *arrow,
+                                       int x, int y, int width, int height);
 #endif /* CLEARLOOKS_DRAW_H */

@@ -1486,3 +1486,76 @@ clearlooks_draw_handle (cairo_t *cr,
 	}
 
 }
+
+static void
+clearlooks_draw_normal_arrow (cairo_t *cr, CairoColor *color,
+                              double x, double y, double width, double height)
+{
+#define ARROW_WIDTH 10.0
+#define ARROW_HEIGHT 5.0
+	cairo_translate (cr, x + width/2.0,
+						 0.5 + (int)(y + height/2.0)); // ensure pixel aligned
+	
+	cairo_set_line_width (cr, 1);
+	
+	cairo_move_to   (cr, -ARROW_WIDTH/2, -ARROW_HEIGHT/2);
+	cairo_line_to   (cr, 0, ARROW_HEIGHT/2);
+	cairo_line_to   (cr, ARROW_WIDTH/2, -ARROW_HEIGHT/2);
+	
+	cairo_set_source_rgb (cr, color->r, color->g, color->b);
+	cairo_fill (cr);	
+}
+
+static void
+clearlooks_draw_combo_arrow (cairo_t *cr, CairoColor *fill,
+                             double x, double y, double width, double height)
+{
+#define ARROW_WIDTH 7.0
+	cairo_translate (cr, x, y);
+	cairo_set_line_width (cr, 1);
+
+	cairo_move_to (cr, ARROW_WIDTH/2, 0);
+	cairo_line_to (cr, 0,             5);
+	cairo_line_to (cr, ARROW_WIDTH,   5);
+	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);	
+	cairo_fill (cr);
+
+	cairo_move_to (cr, ARROW_WIDTH/2, height);
+	cairo_line_to (cr, 0,             height - 5);
+	cairo_line_to (cr, ARROW_WIDTH,   height - 5);
+	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
+	cairo_fill (cr);
+}
+
+void
+clearlooks_draw_arrow (cairo_t *cr,
+                       const ClearlooksColors          *colors,
+                       const WidgetParameters          *widget,
+                       const ArrowParameters           *arrow,
+                       int x, int y, int width, int height)
+{
+	CairoColor *color = (CairoColor*)&colors->shade[widget->disabled ? 3 : 7];
+	
+	if (arrow->type == CL_ARROW_NORMAL)
+	{
+		if (widget->disabled)
+		{
+			cairo_save (cr);
+			clearlooks_draw_normal_arrow (cr, (CairoColor*)&colors->shade[0],
+			                              x+0.5, y+1, width, height);
+			cairo_restore (cr);
+		}
+		clearlooks_draw_normal_arrow (cr, color, x, y, width, height);
+	}
+	else if (arrow->type == CL_ARROW_COMBO)
+	{
+		if (widget->disabled)
+		{
+			cairo_save (cr);
+			clearlooks_draw_combo_arrow (cr, (CairoColor*)&colors->shade[0],
+			                             x+0.5, y+1, width, height);
+			cairo_restore (cr);
+		}
+		clearlooks_draw_combo_arrow (cr, color, x, y, width, height);
+	}
+}

@@ -76,6 +76,20 @@ typedef enum
 	CL_HANDLE_SPLITTER
 } ClearlooksHandleType;
 
+typedef enum
+{
+	CL_ARROW_NORMAL,
+	CL_ARROW_COMBO
+} ClearlooksArrowType;
+
+typedef enum
+{
+	CL_DIRECTION_UP,
+	CL_DIRECTION_DOWN,
+	CL_DIRECTION_LEFT,
+	CL_DIRECTION_RIGHT
+} ClearlooksDirection;
+
 typedef struct
 {
 	double r;
@@ -183,6 +197,12 @@ typedef struct
 {
 	ClearlooksStepper stepper;         /* Which stepper to draw */
 } ScrollBarStepperParameters;
+
+typedef struct
+{
+	ClearlooksArrowType type;
+	ClearlooksDirection direction;
+} ArrowParameters;
 
 #define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) rect.x      = _x; \
                                                        rect.y      = _y; \
