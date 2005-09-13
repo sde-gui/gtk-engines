@@ -89,6 +89,7 @@ clearlooks_draw_inset (cairo_t *cr, int width, int height,
 	if (corners & CL_CORNER_BOTTOMRIGHT)
 		bot_x2 = width-radius;
 	
+	cairo_set_line_width (cr, 1);
 	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.03);
 	cairo_move_to (cr, top_x1+0.5, 0.0);
 	cairo_line_to (cr, top_x2-0.5, 0.0);
@@ -213,7 +214,7 @@ clearlooks_draw_button (cairo_t *cr,
 	double xoffset = 0, yoffset = 0;
 	const CairoColor *fill            = &colors->bg[params->state_type];
 	const CairoColor *border_normal   = &colors->shade[6];
-	const CairoColor *border_disabled = &colors->shade[4];
+	const CairoColor *border_disabled = &colors->shade[5];
 	const CairoColor *gradient_bottom = &colors->shade[3];
 	
 	cairo_translate (cr, x, y);
@@ -321,7 +322,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
 	CairoColor *border;
 	
-	border = (CairoColor*)&colors->shade[params->disabled ? 4 : 6];
+	border = (CairoColor*)&colors->shade[params->disabled ? 5 : 6];
 
 	cairo_translate (cr, x+0.5, y+0.5);
 	cairo_set_line_width (cr, 1.0);
@@ -479,7 +480,7 @@ clearlooks_draw_scale_trough (cairo_t *cr,
 	
 	cairo_translate (cr, 1, 1);
 	clearlooks_scale_draw_gradient (cr, &colors->shade[3], /* top */
-	                                    &colors->shade[1], /* bottom */
+	                                    &colors->shade[2], /* bottom */
 	                                    &colors->shade[6], /* border */
 	                                    0, 0, trough_width, trough_height,
 	                                    slider->horizontal);
@@ -600,12 +601,12 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	pattern = cairo_pattern_create_linear (x, y, 0, height);
 
 	/* Draw Gradient */
-	cairo_pattern_add_color_stop_rgb (pattern, 0.0, colors->shade[2].r,
+	cairo_pattern_add_color_stop_rgb (pattern, 0.0, colors->shade[3].r,
+	                                                colors->shade[3].g,
+	                                                colors->shade[3].b);	
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, colors->shade[2].r,
 	                                                colors->shade[2].g,
-	                                                colors->shade[2].b);	
-	cairo_pattern_add_color_stop_rgb (pattern, 1.0, colors->shade[1].r,
-	                                                colors->shade[1].g,
-	                                                colors->shade[1].b);
+	                                                colors->shade[2].b);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);

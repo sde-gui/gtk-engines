@@ -1004,18 +1004,18 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 			       GtkRcStyle * rc_style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	double shades[] = {1.15, 0.99, 0.896, 0.85, 0.768, 0.665, 0.5, 0.4, 0.205};
+	double shades[] = {1.15, 0.95, 0.896, 0.85, 0.768, 0.665, 0.5, 0.4, 0.205};
 	CairoColor spot_color;
 	CairoColor bg_normal;
 	double contrast;
 	int i;
 	
-	bg_normal.r = style->bg[GTK_STATE_NORMAL].red   / 65535.0;
-	bg_normal.g = style->bg[GTK_STATE_NORMAL].green / 65535.0;
-	bg_normal.b = style->bg[GTK_STATE_NORMAL].blue  / 65535.0;
-
 	parent_class->init_from_rc (style, rc_style);
-	
+
+	bg_normal.r = style->bg[0].red   / 65535.0;
+	bg_normal.g = style->bg[0].green / 65535.0;
+	bg_normal.b = style->bg[0].blue  / 65535.0;
+
 	contrast = CLEARLOOKS_RC_STYLE (rc_style)->contrast;
 	
 	clearlooks_style->progressbarstyle  = CLEARLOOKS_RC_STYLE (rc_style)->progressbarstyle;

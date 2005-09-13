@@ -6,7 +6,7 @@ style "clearlooks-default"
   GtkRange       ::slider_width      = 15
   GtkRange       ::stepper_size      = 15
   GtkScrollbar   ::min_slider_length = 30
-  GtkCheckButton ::indicator_size    = 12
+  GtkCheckButton ::indicator_size    = 14
   GtkMenuBar     ::internal-padding  = 0
   GtkTreeView    ::expander_size     = 14
   GtkExpander    ::expander_size     = 16
