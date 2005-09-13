@@ -281,7 +281,7 @@ draw_handle (DRAW_ARGS, GtkOrientation orientation)
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		handle.type = CL_HANDLE_SPLITTER;
-		handle.horizontal = GTK_IS_VPANED (widget);
+		handle.horizontal = orientation == GTK_ORIENTATION_HORIZONTAL;
 			
 		clearlooks_draw_handle (cr, colors, &params, &handle,
 		                        x, y, width, height);

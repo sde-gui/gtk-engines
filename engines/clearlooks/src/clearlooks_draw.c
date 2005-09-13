@@ -213,7 +213,7 @@ clearlooks_draw_button (cairo_t *cr,
 #define RADIUS 3.0
 	double xoffset = 0, yoffset = 0;
 	const CairoColor *fill            = &colors->bg[params->state_type];
-	const CairoColor *border_normal   = &colors->shade[6];
+	const CairoColor *border_normal   = &colors->shade[7];
 	const CairoColor *border_disabled = &colors->shade[5];
 	const CairoColor *gradient_bottom = &colors->shade[3];
 	
@@ -322,7 +322,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
 	CairoColor *border;
 	
-	border = (CairoColor*)&colors->shade[params->disabled ? 5 : 6];
+	border = (CairoColor*)&colors->shade[params->disabled ? 5 : 7];
 
 	cairo_translate (cr, x+0.5, y+0.5);
 	cairo_set_line_width (cr, 1.0);
