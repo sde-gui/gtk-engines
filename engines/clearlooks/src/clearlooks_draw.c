@@ -1494,9 +1494,7 @@ clearlooks_draw_normal_arrow (cairo_t *cr, CairoColor *color,
 {
 #define ARROW_WIDTH 10.0
 #define ARROW_HEIGHT 5.0
-	cairo_translate (cr, x + width/2.0,
-						 0.5 + (int)(y + height/2.0)); // ensure pixel aligned
-	
+
 	cairo_set_line_width (cr, 1);
 	
 	cairo_move_to   (cr, -ARROW_WIDTH/2, -ARROW_HEIGHT/2);
@@ -1512,20 +1510,54 @@ clearlooks_draw_combo_arrow (cairo_t *cr, CairoColor *fill,
                              double x, double y, double width, double height)
 {
 #define ARROW_WIDTH 7.0
-	cairo_translate (cr, x, y);
+#define ARROW_HEIGHT 5.0
+#define ARROW_SPACING 8
+	
 	cairo_set_line_width (cr, 1);
 
-	cairo_move_to (cr, ARROW_WIDTH/2, 0);
-	cairo_line_to (cr, 0,             5);
-	cairo_line_to (cr, ARROW_WIDTH,   5);
+	y -= ARROW_SPACING/2;
+	
+	cairo_move_to (cr, -ARROW_WIDTH/2, y + ARROW_HEIGHT/2);
+	cairo_line_to   (cr, 0, y + -ARROW_HEIGHT/2);
+	cairo_line_to   (cr, ARROW_WIDTH/2, y + ARROW_HEIGHT/2);
 	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);	
 	cairo_fill (cr);
-
-	cairo_move_to (cr, ARROW_WIDTH/2, height);
-	cairo_line_to (cr, 0,             height - 5);
-	cairo_line_to (cr, ARROW_WIDTH,   height - 5);
-	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
+	
+	y += ARROW_SPACING;
+	
+	cairo_move_to (cr, -ARROW_WIDTH/2, y + -ARROW_HEIGHT/2);
+	cairo_line_to   (cr, 0, y + ARROW_HEIGHT/2);
+	cairo_line_to   (cr, ARROW_WIDTH/2, y + -ARROW_HEIGHT/2);
+	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);	
 	cairo_fill (cr);
+}
+
+static void
+_clearlooks_draw_arrow (cairo_t *cr, CairoColor *color,
+                        ClearlooksDirection dir, ClearlooksArrowType type,
+                        double x, double y, double width, double height)
+{
+	double rotate;
+	
+	if (dir == CL_DIRECTION_LEFT)
+		rotate = M_PI*1.5;
+	else if (dir == CL_DIRECTION_RIGHT)
+		rotate = M_PI*0.5;
+	else if (dir == CL_DIRECTION_UP)
+		rotate = M_PI;
+	else
+		rotate = 0;
+	
+	if (type == CL_ARROW_NORMAL)
+	{		
+		rotate_mirror_translate (cr, rotate, x, y, FALSE, FALSE);		
+		clearlooks_draw_normal_arrow (cr, color, 0, 0, width, height);
+	}
+	else if (type == CL_ARROW_COMBO)
+	{
+		cairo_translate (cr, x, y);
+		clearlooks_draw_combo_arrow (cr, color, 0, 0, width, height);
+	}
 }
 
 void
@@ -1535,28 +1567,31 @@ clearlooks_draw_arrow (cairo_t *cr,
                        const ArrowParameters           *arrow,
                        int x, int y, int width, int height)
 {
-	CairoColor *color = (CairoColor*)&colors->shade[widget->disabled ? 3 : 7];
+	CairoColor *color = (CairoColor*)&colors->shade[7];
+	gdouble tx, ty;
 	
-	if (arrow->type == CL_ARROW_NORMAL)
+	if (arrow->direction == CL_DIRECTION_DOWN || arrow->direction == CL_DIRECTION_UP)
 	{
-		if (widget->disabled)
-		{
-			cairo_save (cr);
-			clearlooks_draw_normal_arrow (cr, (CairoColor*)&colors->shade[0],
-			                              x+0.5, y+1, width, height);
-			cairo_restore (cr);
-		}
-		clearlooks_draw_normal_arrow (cr, color, x, y, width, height);
+		tx = x + width/2;
+		ty = (y + height/2) + 0.5;
 	}
-	else if (arrow->type == CL_ARROW_COMBO)
+	else
 	{
-		if (widget->disabled)
-		{
-			cairo_save (cr);
-			clearlooks_draw_combo_arrow (cr, (CairoColor*)&colors->shade[0],
-			                             x+0.5, y+1, width, height);
-			cairo_restore (cr);
-		}
-		clearlooks_draw_combo_arrow (cr, color, x, y, width, height);
+		tx = (x + width/2) + 0.5;
+		ty = y + height/2;
 	}
+	
+	if (widget->disabled)
+	{
+		_clearlooks_draw_arrow (cr, &colors->shade[0],
+		                        arrow->direction, arrow->type,
+		                        tx+0.5, ty+0.5, width, height);
+		
+		color = (CairoColor*)&colors->shade[4];
+	}
+
+	cairo_identity_matrix (cr);
+	
+	_clearlooks_draw_arrow (cr, color, arrow->direction, arrow->type,
+	                        tx, ty, width, height);
 }

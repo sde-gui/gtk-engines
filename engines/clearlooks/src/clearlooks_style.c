@@ -154,7 +154,7 @@ draw_shadow (DRAW_ARGS)
 		frame.shadow = CL_SHADOW_NONE;
 		frame.gap_x  = -1;
 		frame.border = &colors->shade[5];
-		printf("draw_shadow: %s %s\n", detail, widget? G_OBJECT_TYPE_NAME (widget) : "null");
+		//printf("draw_shadow: %s %s\n", detail, widget? G_OBJECT_TYPE_NAME (widget) : "null");
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
 		
@@ -393,17 +393,25 @@ draw_box (DRAW_ARGS)
 	else if (DETAIL ("button") || DETAIL ("buttondefault"))
 	{
 		WidgetParameters params;
-		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		if ((widget && (GTK_IS_COMBO_BOX_ENTRY (widget->parent) || GTK_IS_COMBO (widget->parent))))
 		{
-			params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;			
+			params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+			
+			/* Seriously, why can't non-gtk-apps at least try to be decent citizens?
+			   Take this fscking OpenOffice.org 1.9 for example. The morons responsible
+			   for this utter piece of crap gave the clip size wrong values! :'(  */
+/*			cairo_reset_clip (cr);
+			cairo_rectangle (cr, x+ 0.5, y+ 0.5, 10, 10);
+			cairo_clip (cr);
+			cairo_new_path (cr);
+*/
 			if (params.xthickness > 2)
 			{
 				x--;
 				width++;
-			}
+			}			
 		}
 		else
 			params.corners    = CL_CORNER_ALL;		
@@ -612,7 +620,7 @@ draw_box (DRAW_ARGS)
 			                          x, y, width, height);
 		}
 	}
-	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar") || DETAIL ("slider"))
+	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar") || DETAIL ("slider") || DETAIL ("stepper"))
 	{
 		WidgetParameters    params;
 		ScrollBarParameters scrollbar;
@@ -669,7 +677,7 @@ draw_box (DRAW_ARGS)
 	}
 	else
 	{
-		printf("draw_box: %s\n", detail);
+		//printf("draw_box: %s\n", detail);
 		parent_class->draw_box (style, window, state_type, shadow_type, area,
 		                        widget, detail, x, y, width, height);
 	}
@@ -976,12 +984,16 @@ draw_arrow (GtkStyle      *style,
 		arrow.type = CL_ARROW_NORMAL;
 		arrow.direction = (ClearlooksDirection)arrow_type;
 		
+/*		cairo_rectangle (cr, x, y, width, height);
+		cairo_set_source_rgb (cr, 1, 0, 0);
+		cairo_fill (cr);
+	*/	
 		if (is_combo_box (widget))
 		{
 			arrow.type = CL_ARROW_COMBO;
 			y -= 2;
 			height += 4;
-			x += 3;
+			x += 1;
 		}
 		
 		clearlooks_draw_arrow (cr, colors, &params, &arrow,
