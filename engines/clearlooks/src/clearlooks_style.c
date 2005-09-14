@@ -711,7 +711,7 @@ draw_option (DRAW_ARGS)
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
 		border = &clearlooks_style->colors.shade[2];
-		dot    = &clearlooks_style->colors.spot[0];
+		dot    = &clearlooks_style->colors.shade[2];
 	}
 	else
 	{
@@ -774,7 +774,7 @@ draw_check (DRAW_ARGS)
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
 		border = &clearlooks_style->colors.shade[2];
-		dot    = &clearlooks_style->colors.spot[0];
+		dot    = &clearlooks_style->colors.shade[2];
 	}
 	else
 	{
@@ -786,7 +786,7 @@ draw_check (DRAW_ARGS)
 	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.04);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
-	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.6);
+	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.4);
 	
 	cairo_translate (cr, x, y);
 	
