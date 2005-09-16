@@ -1,5 +1,10 @@
 2005-09-16  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_trough): Fix progressbar shadow in Firefox.
+
+2005-09-16  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc: Fix statusbar breakage.
 
 2005-09-16  Richard A. Stellingwerff  <remenic@gmail.com>
