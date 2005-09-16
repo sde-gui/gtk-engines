@@ -264,7 +264,7 @@ draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.type = CL_HANDLE_TOOLBAR;
 		handle.horizontal = FALSE;
 		
-		if (GTK_IS_TOOLBAR (widget))
+		if (GTK_IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
 			cairo_save (cr);
 			clearlooks_draw_toolbar (cr, colors, &params, x, y, width, height);
@@ -288,10 +288,27 @@ draw_handle (DRAW_ARGS, GtkOrientation orientation)
 	}
 	else
 	{
-		printf ("%s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null");
+		printf ("draw_handle: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null");
+		WidgetParameters params;
+		HandleParameters handle;
+
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		handle.type = CL_HANDLE_TOOLBAR;
+		handle.horizontal = FALSE;
+		
+		if (GTK_IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
+		{
+			cairo_save (cr);
+			clearlooks_draw_toolbar (cr, colors, &params, x, y, width, height);
+			cairo_restore (cr);
+		}
+		
+		clearlooks_draw_handle (cr, colors, &params, &handle,
+		                        x, y, width, height);
+/*
 		parent_class->draw_handle (style, window, state_type, shadow_type, area,
 		                           widget, detail, x, y, width, height,
-		                           orientation);
+		                           orientation);*/
 	}
 }
 
@@ -652,7 +669,6 @@ draw_box (DRAW_ARGS)
 			ScrollBarStepperParameters stepper;
 			GdkRectangle this_rectangle = { x, y, width, height };
 
-
 			stepper.stepper = scrollbar_get_stepper (widget, &this_rectangle);
 
 			clearlooks_draw_scrollbar_stepper (cr, colors, &params, &scrollbar, &stepper,
@@ -661,7 +677,8 @@ draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
-		clearlooks_draw_toolbar (cr, colors, NULL, x, y, width, height);
+		if (shadow_type != GTK_SHADOW_NONE)
+			clearlooks_draw_toolbar (cr, colors, NULL, x, y, width, height);
 	}
 	else if (DETAIL ("trough"))
 	{
@@ -738,14 +755,13 @@ draw_option (DRAW_ARGS)
 	
 	if (state_type != GTK_STATE_INSENSITIVE)
 	{
-		CairoColor *bg = &clearlooks_style->colors.base[state_type];
+		CairoColor *bg = &clearlooks_style->colors.base[0];
 		cairo_set_source_rgb (cr, bg->r, bg->g, bg->b);
 		cairo_fill_preserve (cr);
 	}
 	
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
 	cairo_stroke (cr);
-	
 	
 	if (shadow_type == GTK_SHADOW_IN)
 	{
@@ -799,15 +815,14 @@ draw_check (DRAW_ARGS)
 	
 	if (state_type != GTK_STATE_INSENSITIVE)
 	{
-		CairoColor *bg = &clearlooks_style->colors.base[state_type];
+		CairoColor *bg = &clearlooks_style->colors.base[0];
 		cairo_set_source_rgb (cr, bg->r, bg->g, bg->b);
 		cairo_fill_preserve (cr);
 	}
 	
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
 	cairo_stroke (cr);
-	
-	
+		
 	if (shadow_type == GTK_SHADOW_IN)
 	{
 		cairo_set_line_width (cr, 1.7);

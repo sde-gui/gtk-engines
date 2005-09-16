@@ -214,7 +214,7 @@ clearlooks_draw_button (cairo_t *cr,
 	double xoffset = 0, yoffset = 0;
 	const CairoColor *fill            = &colors->bg[params->state_type];
 	const CairoColor *border_normal   = &colors->shade[7];
-	const CairoColor *border_disabled = &colors->shade[5];
+	const CairoColor *border_disabled = &colors->shade[4];
 	const CairoColor *gradient_bottom = &colors->shade[3];
 	
 	cairo_translate (cr, x, y);
@@ -322,7 +322,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
 	CairoColor *border;
 	
-	border = (CairoColor*)&colors->shade[params->disabled ? 5 : 7];
+	border = (CairoColor*)&colors->shade[params->disabled ? 4 : 7];
 
 	cairo_translate (cr, x+0.5, y+0.5);
 	cairo_set_line_width (cr, 1.0);
@@ -684,7 +684,7 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	                          colors->spot[1].g,
 	                          colors->spot[1].b);
 	cairo_fill_preserve (cr);
-	
+
 	/* Draw gradient */
 	pattern = cairo_pattern_create_linear (0, 0, 0, height);
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 1., 1., 1., 0.0);	

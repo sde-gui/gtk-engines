@@ -1,3 +1,13 @@
+2005-09-16  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button), (clearlooks_draw_entry),
+	(clearlooks_draw_progressbar_fill): Slightly lighter border on disabled
+	buttons.
+	* engines/clearlooks/src/clearlooks_style.c: (draw_handle),
+	(draw_box), (draw_option), (draw_check): Fixed prelight checkbuttons.
+	Unknown handles are drawn properly now. 
+
 2005-09-14  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_option),
