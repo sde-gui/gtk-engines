@@ -68,7 +68,7 @@ style "clearlooks-wider" = "clearlooks-default"
 
 style "clearlooks-button" = "clearlooks-wider"
 {
-  bg[NORMAL]        = "#f1efeb" # light beige
+  bg[NORMAL]        = "#f1efea"
   bg[INSENSITIVE]   = "#eceae4"
 
 #  bg[PRELIGHT]      = "#f9f7f3" # very light beige

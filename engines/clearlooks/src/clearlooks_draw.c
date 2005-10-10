@@ -78,26 +78,26 @@ clearlooks_draw_inset (cairo_t *cr, int width, int height,
 	double top_x1 = 0, top_x2 = width, bot_x1 = 0, bot_x2 = width;
 	
 	if (corners & CL_CORNER_TOPLEFT)
-		top_x1 = radius;
+		top_x1 = radius-1;
 	
 	if (corners & CL_CORNER_TOPRIGHT)
-		top_x2 = width-radius;
+		top_x2 = width-radius+1;
 	
 	if (corners & CL_CORNER_BOTTOMLEFT)
-		bot_x1 = radius;
+		bot_x1 = radius-1;
 	
 	if (corners & CL_CORNER_BOTTOMRIGHT)
-		bot_x2 = width-radius;
+		bot_x2 = width-radius+1;
 	
 	cairo_set_line_width (cr, 1);
-	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.03);
-	cairo_move_to (cr, top_x1+0.5, 0.0);
-	cairo_line_to (cr, top_x2-0.5, 0.0);
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.04);
+	cairo_move_to (cr, top_x1, 0.0);
+	cairo_line_to (cr, top_x2, 0.0);
 	cairo_stroke (cr);
 	
-	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
-	cairo_move_to (cr, bot_x1+0.5,       height);
-	cairo_line_to (cr, bot_x2-0.5, height);
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5);
+	cairo_move_to (cr, bot_x1, height);
+	cairo_line_to (cr, bot_x2, height);
 	cairo_stroke (cr);
 }
 
@@ -213,7 +213,7 @@ clearlooks_draw_button (cairo_t *cr,
 #define RADIUS 3.0
 	double xoffset = 0, yoffset = 0;
 	const CairoColor *fill            = &colors->bg[params->state_type];
-	const CairoColor *border_normal   = &colors->shade[7];
+	const CairoColor *border_normal   = &colors->shade[params->active ? 8 : 7];
 	const CairoColor *border_disabled = &colors->shade[4];
 	const CairoColor *gradient_bottom = &colors->shade[3];
 	
@@ -230,7 +230,7 @@ clearlooks_draw_button (cairo_t *cr,
 		if (params->ythickness == 3)
 			yoffset = 1;
 	}
-	
+
 	cairo_set_line_width (cr, 1.0);
 	
 	clearlooks_rounded_rectectangle (cr, xoffset+1, yoffset+1,
@@ -244,7 +244,7 @@ clearlooks_draw_button (cairo_t *cr,
 		gdouble shade_size = ((100.0/height)*6.0)/100.0;
 		CairoColor top_shade, bottom_shade, middle_shade;
 		
-		shade (fill, &top_shade, 1.1);
+		shade (fill, &top_shade, 2.0); // klopt hier iets niet! waarom werkt t met zwart niet!
 		shade (fill, &bottom_shade, 0.85);
 		shade (fill, &middle_shade, 0.96);
 		
@@ -255,6 +255,7 @@ clearlooks_draw_button (cairo_t *cr,
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0, bottom_shade.r, bottom_shade.g, bottom_shade.b);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
+		cairo_pattern_destroy (pattern);
 	}
 	else
 	{
@@ -322,7 +323,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
 	CairoColor *border;
 	
-	border = (CairoColor*)&colors->shade[params->disabled ? 4 : 7];
+	border = (CairoColor*)&colors->shade[params->disabled ? 4 : 6];
 
 	cairo_translate (cr, x+0.5, y+0.5);
 	cairo_set_line_width (cr, 1.0);
@@ -1415,7 +1416,11 @@ clearlooks_draw_menu_frame (cairo_t *cr,
 	CairoColor *border = (CairoColor*)&colors->shade[5];
 	cairo_translate      (cr, x, y);
 	cairo_set_line_width (cr, 1);
-	
+/*	
+	cairo_set_source_rgba (cr, colors->bg[0].r, colors->bg[0].g, colors->bg[0].b, 0.9);
+	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+	cairo_paint          (cr);
+*/
 	cairo_rectangle      (cr, 0.5, 0.5, width-1, height-1);
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
 	

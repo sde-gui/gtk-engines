@@ -364,8 +364,12 @@ draw_box (DRAW_ARGS)
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		clearlooks_draw_menubar (cr, colors, &params,
-		                         x, y, width, height);
+//		if (gtk_widget_get_toplevel (widget)->allocation.x == widget->allocation.x &&
+//			gtk_widget_get_toplevel (widget)->allocation.width == widget->allocation.width)
+//		{
+			clearlooks_draw_menubar (cr, colors, &params,
+		    	                     x, y, width, height);
+//		}
 	}
 	else if (DETAIL ("button") && widget->parent &&
                  (GTK_IS_TREE_VIEW(widget->parent) ||
@@ -441,7 +445,7 @@ draw_box (DRAW_ARGS)
 			params.active = TRUE;
 		
 		// Fix some firefox crap.
-		if (widget && widget->parent && widget->allocation.x == -1 &&  widget->allocation.y == -1)
+		if (GTK_IS_BUTTON (widget) && GTK_IS_FIXED (widget->parent) && widget->allocation.x == -1 &&  widget->allocation.y == -1)
 		{
 			gtk_style_apply_default_background (widget->parent->style, window, TRUE, GTK_STATE_NORMAL,
 			                                    area, x, y, width, height);
@@ -740,7 +744,7 @@ draw_option (DRAW_ARGS)
 	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.1);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
-	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 1);
+	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.5);
 	
 	cairo_translate (cr, x, y);
 	
@@ -748,6 +752,7 @@ draw_option (DRAW_ARGS)
 	cairo_arc       (cr, 7, 7, 6, 0, M_PI*2);	
 	cairo_set_source (cr, pt);
 	cairo_stroke (cr);
+	cairo_pattern_destroy (pt);
 	
 	cairo_set_line_width (cr, 1);
 
@@ -773,7 +778,7 @@ draw_option (DRAW_ARGS)
 		cairo_set_source_rgba (cr, 1,1,1, 0.5);
 		cairo_fill (cr);
 	}
-	
+
 	cairo_destroy (cr);
 }
 
@@ -810,6 +815,7 @@ draw_check (DRAW_ARGS)
 	cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
 	cairo_set_source (cr, pt);
 	cairo_stroke (cr);
+	cairo_pattern_destroy (pt);
 	
 	cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
 	
@@ -1031,7 +1037,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 			       GtkRcStyle * rc_style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	double shades[] = {1.15, 0.95, 0.896, 0.85, 0.768, 0.665, 0.5, 0.4, 0.205};
+	double shades[] = {1.15, 0.95, 0.896, 0.85, 0.7, 0.665, 0.5, 0.4, 0.4};
 	CairoColor spot_color;
 	CairoColor bg_normal;
 	double contrast;
