@@ -310,6 +310,8 @@ draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		                           widget, detail, x, y, width, height,
 		                           orientation);*/
 	}
+
+	cairo_destroy (cr);
 }
 
 static int
