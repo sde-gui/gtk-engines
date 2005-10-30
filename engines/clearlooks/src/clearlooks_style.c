@@ -65,6 +65,8 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 		params->state_type = (ClearlooksStateType)state_type;
 		params->corners     = CL_CORNER_ALL;
 		
+		params->focus      = GTK_WIDGET_HAS_FOCUS (widget);
+		
 		if (!params->active && widget && GTK_IS_TOGGLE_BUTTON (widget))
 			params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 		
@@ -288,7 +290,7 @@ draw_handle (DRAW_ARGS, GtkOrientation orientation)
 	}
 	else
 	{
-		printf ("draw_handle: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null");
+//		printf ("draw_handle: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null");
 		WidgetParameters params;
 		HandleParameters handle;
 
@@ -1039,7 +1041,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 			       GtkRcStyle * rc_style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	double shades[] = {1.15, 0.95, 0.896, 0.85, 0.7, 0.665, 0.5, 0.4, 0.4};
+	double shades[] = {1.15, 0.95, 0.896, 0.85, 0.7, 0.665, 0.5, 0.45, 0.4};
 	CairoColor spot_color;
 	CairoColor bg_normal;
 	double contrast;
@@ -1092,11 +1094,104 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 }
 
 static void
+gdk_cairo_set_source_color_alpha (cairo_t  *cr,
+                GdkColor *color, float alpha)
+{
+  g_return_if_fail (cr != NULL);
+  g_return_if_fail (color != NULL);
+
+  cairo_set_source_rgba (cr,
+            color->red / 65535.,
+            color->green / 65535.,
+            color->blue / 65535.,
+	        alpha);
+}
+
+static void
 draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
             GdkRectangle *area, GtkWidget *widget, const gchar *detail,
             gint x, gint y, gint width, gint height)
 {
-	
+  cairo_t *cr;
+  gboolean free_dash_list = FALSE;
+  gint line_width = 1;
+  gint8 *dash_list = "\1\1";
+
+  if (widget)
+    {
+      gtk_widget_style_get (widget,
+                "focus-line-width", &line_width,
+                "focus-line-pattern", (gchar *)&dash_list,
+                NULL);
+
+      free_dash_list = TRUE;
+  }
+
+  if (detail && !strcmp (detail, "add-mode"))
+    {
+      if (free_dash_list)
+    g_free (dash_list);
+
+      dash_list = "\4\4";
+      free_dash_list = FALSE;
+    }
+
+  sanitize_size (window, &width, &height);
+
+  cr = gdk_cairo_create (window);
+
+  if (detail && !strcmp (detail, "colorwheel_light"))
+    cairo_set_source_rgb (cr, 0., 0., 0.);
+  else if (detail && !strcmp (detail, "colorwheel_dark"))
+    cairo_set_source_rgb (cr, 1., 1., 1.);
+  else
+    gdk_cairo_set_source_color_alpha (cr, &style->fg[state_type], 0.7);
+
+  cairo_set_line_width (cr, line_width);
+  
+  if (dash_list[0])
+    {
+      gint n_dashes = strlen (dash_list);
+      gdouble *dashes = g_new (gdouble, n_dashes);
+      gdouble total_length = 0;
+      gdouble dash_offset;
+      gint i;
+
+      for (i = 0; i < n_dashes; i++)
+    {
+      dashes[i] = dash_list[i];
+      total_length += dash_list[i];
+    }
+
+      /* The dash offset here aligns the pattern to integer pixels
+       * by starting the dash at the right side of the left border
+       * Negative dash offsets in cairo don't work
+       * (https://bugs.freedesktop.org/show_bug.cgi?id=2729)
+       */
+      dash_offset = - line_width / 2.;
+      while (dash_offset < 0)
+    dash_offset += total_length;
+
+      cairo_set_dash (cr, dashes, n_dashes, dash_offset);
+      g_free (dashes);
+    }
+
+  if (area)
+    {
+      gdk_cairo_rectangle (cr, area);
+      cairo_clip (cr);
+    }
+
+  cairo_rectangle (cr,
+           x + line_width / 2.,
+           y + line_width / 2.,
+           width - line_width,
+           height - line_width);
+  cairo_stroke (cr);
+  cairo_destroy (cr);
+
+  if (free_dash_list)
+    g_free (dash_list);
 }
 
 static void

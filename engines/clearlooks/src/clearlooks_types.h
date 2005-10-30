@@ -120,6 +120,7 @@ typedef struct
 	boolean active;
 	boolean prelight;
 	boolean disabled;
+	boolean focus;
 	
 	ClearlooksStateType state_type;
 	

@@ -1,3 +1,19 @@
+2005-10-30  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button), (clearlooks_draw_progressbar_trough),
+	(clearlooks_draw_progressbar_fill),
+	(clearlooks_draw_scrollbar_trough),
+	(clearlooks_draw_scrollbar_stepper):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters), (draw_handle),
+	(clearlooks_style_init_from_rc),
+	(gdk_cairo_set_source_color_alpha), (draw_focus):
+	* engines/clearlooks/src/clearlooks_types.h:
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Lots of tweaking of contrast and colors. Fixed the focus rings.
+
 2005-10-16  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_handle): Fix memory leak. Patch from Mart Raudsepp (leio).
