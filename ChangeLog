@@ -1,3 +1,10 @@
+2005-10-31  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (draw_box), (draw_slider):
+	* engines/crux/src/eazel-theme-hacks.c:
+
+	Remove various hacks
+
 2005-10-30  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
