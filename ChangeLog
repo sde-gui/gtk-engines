@@ -1,3 +1,10 @@
+2005-11-02  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (crux_begin_paint),
+	(paint_outline), (paint_shadow):
+
+	Use cairo functions rather than gdk
+
 2005-10-31  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (draw_box), (draw_slider):

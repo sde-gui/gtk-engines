@@ -9,7 +9,7 @@
 #include <math.h>
 #include <string.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define DETAIL(xx) ((detail) != 0 && strcmp (xx, detail) == 0)
 
@@ -236,6 +236,27 @@ debug (const char *fmt, ...)
     }
 }
 
+/* cairo functions */
+
+static cairo_t *
+crux_begin_paint (GdkDrawable *window, GdkRectangle *area)
+{
+	cairo_t *cr;
+
+	cr = (cairo_t*) gdk_cairo_create (window);
+
+	cairo_set_line_width (cr, 1.0);
+
+	if (area)
+	{
+		cairo_rectangle (cr, area->x, area->y, area->width, area->height);
+		cairo_clip (cr);
+		cairo_new_path (cr);
+	}
+
+	return cr;
+}
+
 /* adapted from nautilus-gdk-extensions.c */
 static void
 interpolate_color (GdkColor *dest, gdouble ratio,
@@ -360,60 +381,102 @@ paint_stock_image (eazel_theme_data *theme_data,
 
 static void
 paint_outline (GdkWindow *window, GdkGC *gc, gboolean rounded,
-	       int x, int y, int width, int height)
+	       gdouble x, gdouble y, gdouble width, gdouble height)
 {
-    int corner = rounded ? 1 : 0;
+	gdouble radius = (rounded) ? 2.0 : 0.1;
+	GdkGCValues values;
+	cairo_t *cr;
 
-    /* left and top outermost */
-    gdk_draw_line (window, gc, x, y + corner,
-		   x, y + height - (corner + 1));
-    gdk_draw_line (window, gc, x + corner, y, x + width - (corner + 1), y);
+	cr = crux_begin_paint (window, NULL);
 
-    /* right and bottom outermost */
-    gdk_draw_line (window, gc, x + width - 1, y + corner,
-		   x + width - 1, y + height - (corner + 1));
-    gdk_draw_line (window, gc, x + corner, y + height - 1,
-		   x + width - (corner + 1), y + height - 1);
+	gdk_gc_get_values (gc, &values);
+	gdk_colormap_query_color (gdk_gc_get_colormap (gc), values.foreground.pixel, &values.foreground);
+	gdk_cairo_set_source_color (cr, &values.foreground);
+
+	x += 0.5; y += 0.5;
+	width -= 1.0; height -= 1.0;
+
+	cairo_move_to (cr, x + radius, y);
+	cairo_arc (cr, x + width - radius, y + radius, radius, M_PI * 1.5, M_PI * 2);
+	cairo_arc (cr, x + width - radius, y + height - radius, radius, 0, M_PI * 0.5);
+	cairo_arc (cr, x + radius, y + height-radius, radius, M_PI * 0.5, M_PI);
+	cairo_arc (cr, x + radius, y + radius, radius, M_PI, M_PI * 1.5);
+
+	cairo_stroke (cr);
+	cairo_destroy (cr);
+
 }
 
 static void
 paint_shadow (GdkWindow *window, GdkGC *a, GdkGC *b, GdkGC *c, GdkGC *d,
-	      gboolean rounded, int x, int y, int width, int height)
+	      gboolean rounded, gdouble x, gdouble y, gdouble width, gdouble height)
 {
-    int corner = rounded ? 1 : 0;
+	GdkGCValues values;
+	gdouble radius = (rounded) ? 2.0 : 0.1;
+	cairo_t * cr;
 
-    if (a != 0)
-    {
-	/* left and top outermost */
-	gdk_draw_line (window, a, x, y + corner,
-		       x, y + height - (corner + 1));
-	gdk_draw_line (window, a, x + corner, y, x + width - (corner + 1), y);
-    }
+	x += 0.5; y += 0.5;
+	width -= 1.0; height -= 1.0;
 
-    if (d != 0)
-    {
-	/* right and bottom outermost */
-	gdk_draw_line (window, d, x + width - 1, y + corner,
-		       x + width - 1, y + height - (corner + 1));
-	gdk_draw_line (window, d, x + corner, y + height - 1,
-		       x + width - (corner + 1), y + height - 1);
-    }
+	cr = crux_begin_paint (window, NULL);
 
-    if (b != 0)
-    {
-	/* left and top inner */
-	gdk_draw_line (window, b, x + 1, y + 2, x + 1, y + height - 2);
-	gdk_draw_line (window, b, x + 1, y + 1, x + width - 2, y + 1);
-    }
+	if (a != 0)
+	{
+		/* left and top outermost */
+		gdk_gc_get_values (a, &values);
+		gdk_colormap_query_color (gdk_gc_get_colormap (a), values.foreground.pixel, &values.foreground);
+		gdk_cairo_set_source_color (cr, &values.foreground);
 
-    if (c != 0)
-    {
-	/* right and bottom outermost */
-	gdk_draw_line (window, c, x + width - 2, y + 1,
-		       x + width - 2, y + height - 2);
-	gdk_draw_line (window, c, x + 1, y + height - 2,
-		       x + width - 2, y + height - 2);
-    }
+		cairo_arc (cr, x + radius, y + height - radius, radius, M_PI * 0.75, M_PI);
+		cairo_arc (cr, x + radius, y + radius, radius, M_PI, M_PI * 1.5);
+		cairo_arc (cr, x + width - radius, y + radius, radius, M_PI * 1.5, M_PI * 1.75);
+		cairo_stroke (cr);
+	}
+
+	if (d != 0)
+	{
+		/* right and bottom outermost */
+		gdk_gc_get_values (d, &values);
+		gdk_colormap_query_color (gdk_gc_get_colormap (d), values.foreground.pixel, &values.foreground);
+		gdk_cairo_set_source_color (cr, &values.foreground);
+
+		cairo_arc (cr, x + width - radius, y + radius, radius, M_PI * 1.75, 0);
+		cairo_arc (cr, x + width - radius, y + height - radius, radius, 0, M_PI * 0.5);
+		cairo_arc (cr, x + radius, y + height - radius, radius, M_PI * 0.5, M_PI * 0.75);
+		cairo_stroke (cr);
+	}
+
+
+	/* +-1 for inner lines, although this should probably be set to the pen width */
+	/* XXX: are these actually used anywhere usefully? */
+
+	if (b != 0)
+	{
+		/* left and top inner */
+		gdk_gc_get_values (b, &values);
+		gdk_colormap_query_color (gdk_gc_get_colormap (b), values.foreground.pixel, &values.foreground);
+		gdk_cairo_set_source_color (cr, &values.foreground);
+
+		cairo_arc (cr, x + radius + 1.0, y + height - radius - 1.0, radius, M_PI * 0.75, M_PI);
+		cairo_arc (cr, x + radius + 1.0, y + radius + 1.0, radius, M_PI, M_PI * 1.5);
+		cairo_arc (cr, x + width - radius - 1.0, y + radius + 1.0, radius, M_PI * 1.5, M_PI * 1.75);
+		cairo_stroke (cr);
+	}
+
+	if (c != 0)
+	{
+		/* right and bottom inner */
+		gdk_gc_get_values (c, &values);
+		gdk_colormap_query_color (gdk_gc_get_colormap (c), values.foreground.pixel, &values.foreground);
+		gdk_cairo_set_source_color (cr, &values.foreground);
+
+		cairo_arc (cr, x + width - radius - 1.0, y + radius + 1.0, radius, M_PI * 1.75, 0);
+		cairo_arc (cr, x + width - radius -1.0, y + height - radius - 1.0, radius, 0, M_PI * 0.5);
+		cairo_arc (cr, x + radius + 1.0, y + height - radius - 1.0, radius, M_PI * 0.5, M_PI * 1.25);
+		cairo_stroke (cr);
+	}
+
+	cairo_destroy (cr);
 }
 
 static void
