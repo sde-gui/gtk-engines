@@ -257,6 +257,26 @@ crux_begin_paint (GdkDrawable *window, GdkRectangle *area)
 	return cr;
 }
 
+static void
+crux_paint_menuitem_gradient (cairo_t * cr, GdkColor * c, gdouble x, gdouble y, gdouble width, gdouble height)
+{
+	cairo_pattern_t * crp;
+	gdouble r, g, b;
+	r = c->red / 65536.0;
+	g = c->green / 65536.0;
+	b = c->blue / 65536.0;
+	crp = cairo_pattern_create_linear (x, y, x, y + height);
+	cairo_pattern_add_color_stop_rgb (crp, 0.0, r/2.0, g/2.0, b/2.0);
+	cairo_pattern_add_color_stop_rgb (crp, 0.2, r, g, b);
+	cairo_pattern_add_color_stop_rgb (crp, 0.85, r, g, b);
+	cairo_pattern_add_color_stop_rgb (crp, 1.0, r/2.0, g/2.0, b/2.0);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_set_source (cr, crp);
+	cairo_fill (cr);
+	cairo_pattern_destroy (crp);
+}
+
+
 /* adapted from nautilus-gdk-extensions.c */
 static void
 interpolate_color (GdkColor *dest, gdouble ratio,
@@ -404,13 +424,14 @@ paint_outline (GdkWindow *window, GdkGC *gc, gboolean rounded,
 
 	cairo_stroke (cr);
 	cairo_destroy (cr);
-
 }
 
 static void
 paint_shadow (GdkWindow *window, GdkGC *a, GdkGC *b, GdkGC *c, GdkGC *d,
 	      gboolean rounded, gdouble x, gdouble y, gdouble width, gdouble height)
 {
+	/* a: left/top, outer; b: left/top inner; c: right/bottom inner, d: right/bottom outer */
+
 	GdkGCValues values;
 	gdouble radius = (rounded) ? 2.0 : 0.1;
 	cairo_t * cr;
@@ -482,47 +503,23 @@ paint_shadow (GdkWindow *window, GdkGC *a, GdkGC *b, GdkGC *c, GdkGC *d,
 static void
 paint_entry_shadow (GdkWindow *window, GtkStyle *style,
 		    GtkStateType state_type,
-		    int x, int y, int width, int height)
+		    gdouble x, gdouble y, gdouble width, gdouble height)
 {
-    gdk_draw_rectangle (window, style->black_gc, FALSE,
-			x + 1, y + 1, width - 3, height - 3);
-
-    gdk_draw_line (window, style->dark_gc[state_type],
-		   x, y, x + width - 1, y);
-    gdk_draw_line (window, style->dark_gc[state_type],
-		   x, y, x, y + height - 1);
-
-    gdk_draw_line (window, style->white_gc,
-		   x + 1, y + height - 1, x + width - 1, y + height - 1);
-    gdk_draw_line (window, style->white_gc,
-		   x + width - 1, y + 1, x + width - 1, y + height - 1);
-
-    gdk_draw_line (window, style->mid_gc[state_type],
+	paint_shadow (window, style->dark_gc[state_type], style->black_gc, style->black_gc, style->white_gc, FALSE, x, y, width, height);
+	/*
+	TODO: Convert these two remaining lines to cairo
+	gdk_draw_line (window, style->mid_gc[state_type],
 		   x + 2, y + 2, x + width - 3, y + 2);
-    gdk_draw_line (window, style->mid_gc[state_type],
+	gdk_draw_line (window, style->mid_gc[state_type],
 		   x + 2, y + 2, x + 2, y + height - 3);
-
-    gdk_draw_line (window, style->white_gc,
-		   x + 2, y + height - 3, x + width - 3, y + height - 3);
-    gdk_draw_line (window, style->white_gc,
-		   x + width - 3, y + 2, x + width - 3, y + height - 3);
+	*/
 }
 
 static void
 paint_menuitem_shadow (GdkWindow *window, GtkStyle *style,
 		       int x, int y, int width, int height)
 {
-    gdk_draw_rectangle (window, style->black_gc, FALSE,
-			x + 2, y + 1, width - 5, height - 3);
-
-    gdk_draw_line (window, style->dark_gc[GTK_STATE_NORMAL],
-		   x + 1, y, x + width - 3, y);
-    gdk_draw_line (window, style->dark_gc[GTK_STATE_NORMAL],
-		   x + 1, y, x + 1, y + height - 2);
-    gdk_draw_line (window, style->white_gc,
-		   x + 2, y + height - 1, x + width - 2, y + height - 1);
-    gdk_draw_line (window, style->white_gc,
-		   x + width - 2, y + 1, x + width - 2, y + height - 1);
+	paint_shadow (window, style->dark_gc[GTK_STATE_NORMAL], style->black_gc, style->black_gc, style->white_gc, FALSE, x, y, width, height);
 }
 
 static void
@@ -1137,6 +1134,9 @@ draw_box (GtkStyle *style,
     eazel_theme_data *theme_data;
     gboolean set_bg = FALSE;
 
+	cairo_t * cr;
+	GdkGCValues values;
+
     g_return_if_fail (style != NULL);
     g_return_if_fail (window != NULL);
 
@@ -1326,13 +1326,14 @@ draw_box (GtkStyle *style,
 
 	   if (DETAIL ("menuitem"))
 	   {
-			if (state_type == GTK_STATE_INSENSITIVE) /* Catch for OpenOffice 2 */
-				return;
-			full.x +=3; full.y+=2;
-			full.width -= 6; full.height -= 4;
 			paint_menuitem_shadow (window, style, x, y, width, height);
-			eazel_engine_draw_gradient (window, style->bg_gc[state_type], &full,
-		                                &full, theme_data->gradients[state_type]);
+
+			cr = crux_begin_paint (window, NULL);
+			gdk_gc_get_values (style->bg_gc[state_type], &values);
+			gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
+			crux_paint_menuitem_gradient (cr, &values.foreground, x + 2, y + 2, width - 4, height - 4);
+			cairo_destroy (cr);
+			return;
 	   }
 
 	    if (gradient != NULL && gradient->direction != GRADIENT_NONE)
