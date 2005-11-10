@@ -1,3 +1,9 @@
+2005-11-10  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_fill): Applied patch #321185 from
+	Jason Allen to fix memory leak.
+
 2005-11-10  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (crux_paint_menuitem_gradient),

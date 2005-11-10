@@ -733,6 +733,7 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_pattern_add_color_stop_rgb (pattern, 1.0, shade1.r, shade1.g, shade1.b);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
+	cairo_pattern_destroy (pattern);
 	
 	/* Draw strokes */
 	while (tile_pos <= width)
