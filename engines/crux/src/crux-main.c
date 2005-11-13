@@ -29,7 +29,6 @@ theme_init (GTypeModule *module)
 G_MODULE_EXPORT void
 theme_exit(void)
 {
-  uninstall_all_focus_hooks();
 }
     
 G_MODULE_EXPORT GtkRcStyle *

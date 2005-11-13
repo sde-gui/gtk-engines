@@ -1,3 +1,15 @@
+2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_fill), (clearlooks_draw_tab),
+	(clearlooks_draw_list_view_header):
+	* engines/clearlooks/src/clearlooks_types.h:
+	* engines/crux/src/crux-main.c: (theme_exit):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Flattened the inactive tabs, increased the shade of list headers,
+	and made the progressbar less 3d'ish.
+
 2005-11-10  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

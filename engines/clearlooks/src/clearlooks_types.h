@@ -90,6 +90,12 @@ typedef enum
 	CL_DIRECTION_RIGHT
 } ClearlooksDirection;
 
+typedef enum
+{
+	CL_PROGRESSBAR_CONTINUOUS,
+	CL_PROGRESSBAR_DISCRETE
+} ClearlooksProgressBarStyle;
+
 typedef struct
 {
 	double r;
@@ -141,6 +147,7 @@ typedef struct
 typedef struct
 {
 	ClearlooksOrientation orientation;
+	ClearlooksProgressBarStyle style;
 } ProgressBarParameters;
 
 typedef struct
