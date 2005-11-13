@@ -1,5 +1,17 @@
 2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_fill):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(cl_progressbar_remove), (update_progressbar), (timer_func),
+	(cl_progressbar_known), (cl_progressbar_add), (draw_box),
+	(clearlooks_style_init_from_rc):
+
+	Added animating progressbar, thanks to Kulyk Nazar (tirpse)!
+
+2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_init_from_rc):
 	* engines/clearlooks/src/clearlooks_style.h:

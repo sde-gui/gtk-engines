@@ -681,11 +681,14 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
                                   const ClearlooksColors *colors,
                                   const WidgetParameters *params,
                                   const ProgressBarParameters *progressbar,
-                                  int x, int y, int width, int height)
+                                  int x, int y, int width, int height,
+                                  gint offset)
 {
 	boolean          is_horizontal = progressbar->orientation < 2;
 	double           tile_pos = 0;
 	double           stroke_width;
+	int			x_step;
+
 	cairo_pattern_t *pattern;
 	CairoColor       shade1;
 	
@@ -714,6 +717,8 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	
 	stroke_width = height*2;
 
+	x_step = (((float)stroke_width/10)*offset);
+
 	cairo_set_line_width (cr, 1.0);
 	
 	cairo_save (cr);
@@ -736,17 +741,17 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 	
 	/* Draw strokes */
-	while (tile_pos <= width)
+	while (tile_pos <= width+x_step)
 	{
-		cairo_move_to (cr, stroke_width/2, 0);
-		cairo_line_to (cr, stroke_width,   0);
-		cairo_line_to (cr, stroke_width/2, height);
-		cairo_line_to (cr, 0, height);
+		cairo_move_to (cr, stroke_width/2-x_step, 0);
+		cairo_line_to (cr, stroke_width-x_step,   0);
+		cairo_line_to (cr, stroke_width/2-x_step, height);
+		cairo_line_to (cr, -x_step, height);
 		
 		cairo_translate (cr, stroke_width, 0);
 		tile_pos += stroke_width;
 	}
-	
+
 	cairo_set_source_rgba (cr, colors->spot[2].r,
 	                           colors->spot[2].g,
 	                           colors->spot[2].b,

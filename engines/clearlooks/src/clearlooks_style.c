@@ -32,6 +32,13 @@
                      gint            width, \
                      gint            height
 
+#ifdef HAVE_ANIMATION
+static GList *progressbars = NULL;
+static int timer_id = 0;
+#endif
+
+static gint8 pboffset = 0;
+
 static GtkStyleClass *parent_class;
 
 static cairo_t *
@@ -49,6 +56,65 @@ clearlooks_begin_paint (GdkDrawable  *window, GdkRectangle *area)
 
     return cr;
 }
+
+#ifdef HAVE_ANIMATION
+static void cl_progressbar_remove (gpointer data)
+{
+        if (g_list_find (progressbars, data) == NULL)
+                return;
+
+        progressbars = g_list_remove (progressbars, data);
+        g_object_unref (data);
+
+        if (g_list_first(progressbars) == NULL) {
+                g_source_remove(timer_id);
+                timer_id = 0;
+        }
+}
+
+static void update_progressbar (gpointer data, gpointer user_data)
+{
+        gfloat fraction;
+
+        if (data == NULL)
+                return;
+
+       	fraction = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (data));
+
+        /* update only if not filled */
+        if (fraction < 1.0)
+                gtk_widget_queue_resize ((GtkWidget*)data);
+
+        if (fraction >= 1.0 || GTK_PROGRESS (data)->activity_mode)
+                cl_progressbar_remove (data);
+}
+
+static gboolean timer_func (gpointer data)
+{
+        g_list_foreach (progressbars, update_progressbar, NULL);
+        if (--pboffset < 0) pboffset = 9;
+        return (g_list_first(progressbars) != NULL);
+}
+
+static gboolean cl_progressbar_known(gconstpointer data)
+{
+        return (g_list_find (progressbars, data) != NULL);
+}
+
+static void cl_progressbar_add (gpointer data)
+{
+        if (!GTK_IS_PROGRESS_BAR (data))
+                return;
+
+        progressbars = g_list_append (progressbars, data);
+
+        g_object_ref (data);
+        g_signal_connect ((GObject*)data, "unrealize", G_CALLBACK (cl_progressbar_remove), data);
+
+        if (timer_id == 0)
+                timer_id = g_timeout_add (100, timer_func, NULL);
+}
+#endif /* HAVE_ANIMATION */
 
 static void
 clearlooks_set_widget_parameters (const GtkWidget      *widget,
@@ -572,6 +638,23 @@ draw_box (DRAW_ARGS)
 	{
 		WidgetParameters      params;
 		ProgressBarParameters progressbar;
+
+#ifdef HAVE_ANIMATION
+		if(clearlooks_style->animation)
+		{	
+			gboolean activity_mode = GTK_PROGRESS (widget)->activity_mode;
+		 	if (!activity_mode && gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (widget)) != 1.0 &&
+                        	!cl_progressbar_known((gconstpointer)widget))
+                	{
+                        	cl_progressbar_add ((gpointer)widget);
+                	}
+                }
+                else
+         		if(cl_progressbar_known((gconstpointer)widget))
+                	{
+                        	cl_progressbar_remove ((gpointer)widget);
+                	}
+#endif
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
@@ -581,9 +664,9 @@ draw_box (DRAW_ARGS)
 			progressbar.orientation = CL_ORIENTATION_LEFT_TO_RIGHT;
 		
 		cairo_reset_clip (cr);
-				
+
 		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
-		                                  x, y, width, height);
+		                                  x, y, width, height,pboffset);
 		
 	}
 	else if (DETAIL ("hscale") || DETAIL ("vscale"))
@@ -1055,12 +1138,12 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 
 	contrast = CLEARLOOKS_RC_STYLE (rc_style)->contrast;
 	
-	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	clearlooks_style->progressbarstyle  = CLEARLOOKS_RC_STYLE (rc_style)->progressbarstyle;
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->menuitemstyle     = CLEARLOOKS_RC_STYLE (rc_style)->menuitemstyle;
 	clearlooks_style->listviewitemstyle = CLEARLOOKS_RC_STYLE (rc_style)->listviewitemstyle;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->has_scrollbar_color;
+	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
@@ -1092,9 +1175,6 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 		                             &clearlooks_style->colors.base[i].g,
 		                             &clearlooks_style->colors.base[i].b);
 	}
-	
-	if (clearlooks_style->animation)
-		printf("animation is enabled!\n");
 }
 
 static void

@@ -29,7 +29,7 @@ void clearlooks_draw_progressbar_fill (cairo_t *cr,
                                        const ClearlooksColors      *colors,
                                        const WidgetParameters      *widget,
                                        const ProgressBarParameters *progressbar,
-                                       int x, int y, int width, int height);
+                                       int x, int y, int width, int height, gint offset);
 
 void clearlooks_draw_slider_button    (cairo_t *cr,
                                        const ClearlooksColors     *colors,
