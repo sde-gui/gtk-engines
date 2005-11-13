@@ -1,5 +1,12 @@
 2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_unrealize):
+
+	Don't update the progressbars after unloading the engine.
+
+2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_progressbar_fill):
 	* engines/clearlooks/src/clearlooks_draw.h:

@@ -1282,6 +1282,17 @@ static void
 clearlooks_style_unrealize (GtkStyle * style)
 {
 	parent_class->unrealize (style);
+
+#ifdef HAVE_ANIMATION
+	while ((progressbars = g_list_first (progressbars)))
+		cl_progressbar_remove (progressbars->data);
+	
+	if (timer_id != 0)
+	{
+		g_source_remove(timer_id);
+		timer_id = 0;
+	}
+#endif /* HAVE_ANIMATION */	
 }
 
 static void
