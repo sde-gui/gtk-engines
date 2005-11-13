@@ -35,6 +35,9 @@
 #ifdef HAVE_ANIMATION
 static GList *progressbars = NULL;
 static int timer_id = 0;
+static GList *checks = NULL;
+static gint8 checks_trans = 2;
+static int checks_timer_id = 0;
 #endif
 
 static gint8 pboffset = 0;
@@ -103,16 +106,83 @@ static gboolean cl_progressbar_known(gconstpointer data)
 
 static void cl_progressbar_add (gpointer data)
 {
-        if (!GTK_IS_PROGRESS_BAR (data))
+	if (!GTK_IS_PROGRESS_BAR (data))
+		return;
+
+	progressbars = g_list_append (progressbars, data);
+
+	g_object_ref (data);
+	g_signal_connect ((GObject*)data, "unrealize", G_CALLBACK (cl_progressbar_remove), data);
+
+	if (timer_id == 0)
+		timer_id = g_timeout_add (100, timer_func, NULL);
+}
+
+static void cl_checks_remove (gpointer data)
+{
+	if (g_list_find (checks, data) == NULL)
+		return;
+        
+	checks = g_list_remove (checks, data);
+	
+	g_object_unref (data);
+	
+	if (g_list_first(checks) == NULL) {
+		g_source_remove(checks_timer_id);
+		checks_timer_id = 0;
+	}
+}
+
+static void cl_update_checks (gpointer data, gpointer user_data)
+{
+	if (data == NULL)
+		return;
+		
+	if (checks_trans > 5)
+		cl_checks_remove(data);
+	
+	gtk_widget_queue_resize ((GtkWidget*)data);
+}
+
+static gboolean cl_checks_known(gconstpointer data)
+{
+	return (g_list_find (checks, data) != NULL);
+}
+
+static gboolean cl_checks_timer_func (gpointer data)
+{
+	g_list_foreach (checks, cl_update_checks, NULL);
+
+	if (++checks_trans > 6)
+		checks_trans = 2;
+	
+	return (g_list_first(checks) != NULL);
+}
+
+static void cl_checks_toggled (gpointer data)
+{
+	if (!GTK_IS_CHECK_BUTTON (data))
                 return;
 
-        progressbars = g_list_append (progressbars, data);
+	if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(data)))
+	{
+		if (g_list_first(checks) == NULL)
+			checks_trans = 2;
+		
+		return;
+	}
+	
+	if(!cl_checks_known(data))
+		checks = g_list_append (checks, data);
+	else
+		return;
 
-        g_object_ref (data);
-        g_signal_connect ((GObject*)data, "unrealize", G_CALLBACK (cl_progressbar_remove), data);
-
-        if (timer_id == 0)
-                timer_id = g_timeout_add (100, timer_func, NULL);
+	g_object_ref (data);
+	
+	g_signal_connect ((GObject*)data, "unrealize", G_CALLBACK (cl_checks_remove), data);
+	
+	if (checks_timer_id == 0)
+		checks_timer_id = g_timeout_add (100, cl_checks_timer_func, NULL);
 }
 #endif /* HAVE_ANIMATION */
 
@@ -122,35 +192,35 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
                                   GtkStateType          state_type,
                                   WidgetParameters     *params)
 {
-		if (widget && GTK_IS_ENTRY (widget))
-			state_type = GTK_WIDGET_STATE (widget);
+	if (widget && GTK_IS_ENTRY (widget))
+		state_type = GTK_WIDGET_STATE (widget);
 
-		params->active     = (state_type == GTK_STATE_ACTIVE);
-		params->prelight   = (state_type == GTK_STATE_PRELIGHT);
-		params->disabled   = (state_type == GTK_STATE_INSENSITIVE);			
-		params->state_type = (ClearlooksStateType)state_type;
-		params->corners     = CL_CORNER_ALL;
+	params->active     = (state_type == GTK_STATE_ACTIVE);
+	params->prelight   = (state_type == GTK_STATE_PRELIGHT);
+	params->disabled   = (state_type == GTK_STATE_INSENSITIVE);			
+	params->state_type = (ClearlooksStateType)state_type;
+	params->corners     = CL_CORNER_ALL;
 		
-		params->focus      = GTK_WIDGET_HAS_FOCUS (widget);
+	params->focus      = GTK_WIDGET_HAS_FOCUS (widget);
 		
-		if (!params->active && widget && GTK_IS_TOGGLE_BUTTON (widget))
-			params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
+	if (!params->active && widget && GTK_IS_TOGGLE_BUTTON (widget))
+		params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 		
-		params->xthickness = style->xthickness;
-		params->ythickness = style->ythickness;
+	params->xthickness = style->xthickness;
+	params->ythickness = style->ythickness;
 		
-		/* I want to avoid to have to do this. I need it for GtkEntry, unless I
-		   find out why it doesn't behave the way I expect it to. */
-		clearlooks_get_parent_bg (widget, &params->parentbg);
+	/* I want to avoid to have to do this. I need it for GtkEntry, unless I
+	   find out why it doesn't behave the way I expect it to. */
+	clearlooks_get_parent_bg (widget, &params->parentbg);
 }
 
 static void
 draw_flat_box (DRAW_ARGS)
 {
 	parent_class->draw_flat_box (style, window, state_type,
-			             shadow_type,
-		                     area, widget, detail,
-		                     x, y, width, height);
+	                             shadow_type,
+	                             area, widget, detail,
+	                             x, y, width, height);
 }
 
 static void
@@ -875,9 +945,21 @@ draw_check (DRAW_ARGS)
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	CairoColor *border;
 	CairoColor *dot;
+	double trans = 1.0;
 
 	cairo_t *cr = clearlooks_begin_paint (window, area);
 	cairo_pattern_t *pt;
+
+#ifdef HAVE_ANIMATION
+	if(clearlooks_style->animation && GTK_IS_CHECK_BUTTON (widget))
+	{
+		if (!cl_checks_known((gconstpointer)widget))
+			g_signal_connect ((GObject*)widget, "toggled", G_CALLBACK (cl_checks_toggled), widget);
+	}
+	else
+		if (cl_checks_known((gconstpointer)widget))
+			cl_checks_remove((gpointer)widget);
+#endif
 
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
@@ -925,7 +1007,13 @@ draw_check (DRAW_ARGS)
 		cairo_curve_to (cr, 0.5 + (width*0.4), (height*0.7),
 		                    0.5 + (width*0.5), (height*0.4),
 		                    0.5 + (width*0.70), (height*0.25));
-		cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+		
+#ifdef HAVE_ANIMATION
+		if (clearlooks_style->animation && (checks_trans < 9) && cl_checks_known((gconstpointer)widget))
+			trans = (float)checks_trans/5;
+#endif
+		
+		cairo_set_source_rgba (cr, dot->r, dot->g, dot->b, trans);
 		cairo_stroke (cr);
 	}
 	
@@ -1285,8 +1373,18 @@ clearlooks_style_unrealize (GtkStyle * style)
 
 #ifdef HAVE_ANIMATION
 	while ((progressbars = g_list_first (progressbars)))
+	{
+		g_object_disconnect (progressbars->data, "any_signal::unrealize", G_CALLBACK (cl_progressbar_remove), progressbars->data, NULL);
 		cl_progressbar_remove (progressbars->data);
+	}
 	
+	while ((checks = g_list_first (checks)))
+	{
+		g_object_disconnect (checks->data, "any_signal::unrealize", G_CALLBACK (cl_checks_remove), checks->data, NULL);
+		g_object_disconnect (checks->data, "any_signal::toggled", G_CALLBACK (cl_checks_toggled), checks->data, NULL);
+		cl_checks_remove (checks->data);
+	}
+
 	if (timer_id != 0)
 	{
 		g_source_remove(timer_id);

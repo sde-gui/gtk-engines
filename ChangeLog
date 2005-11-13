@@ -1,5 +1,16 @@
 2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_style.c: (cl_progressbar_add),
+	(cl_checks_remove), (cl_update_checks), (cl_checks_known),
+	(cl_checks_timer_func), (cl_checks_toggled),
+	(clearlooks_set_widget_parameters), (draw_flat_box), (draw_check),
+	(clearlooks_style_unrealize):
+
+	Checkmarks now animate, too. Thanks once again to Kulyk Nazar (tirpse)!
+	Properly disconnecting signals from progressbars and check boxes, I hope. 
+
+2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_unrealize):
 
