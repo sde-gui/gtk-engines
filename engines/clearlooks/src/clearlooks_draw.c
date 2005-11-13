@@ -469,6 +469,7 @@ clearlooks_scale_draw_gradient (cairo_t *cr,
 	cairo_rectangle (cr, x+0.5, y+0.5, width-1, height-1);	
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
+	cairo_pattern_destroy (pattern);
 	
 	cairo_rectangle (cr, x, y, width, height);	
 	cairo_set_source_rgb (cr, c3->r, c3->g, c3->b);
@@ -660,8 +661,8 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	pattern = cairo_pattern_create_linear (x, y, x, y+4);
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.1);	
 	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0., 0., 0., 0.);	
-	cairo_set_source (cr, pattern);
 	cairo_rectangle (cr, x+1, y+1, width-2, 4);
+	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
@@ -669,8 +670,8 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	pattern = cairo_pattern_create_linear (x, y, x+4, y);
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.05);	
 	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0., 0., 0., 0.);	
-	cairo_set_source (cr, pattern);
 	cairo_rectangle (cr, x+1, y+1, 4, height-2);
+	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 }
@@ -766,8 +767,8 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	pattern = cairo_pattern_create_linear (0, 0, 3, 0);
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.1);	
 	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0., 0., 0., 0.);	
-	cairo_set_source (cr, pattern);
 	cairo_rectangle (cr, 0, 0, 3, height);
+	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);	
 	

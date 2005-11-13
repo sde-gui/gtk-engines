@@ -19,6 +19,7 @@
  * Written by Owen Taylor <otaylor@redhat.com>
  * and by Alexander Larsson <alexl@redhat.com>
  * Modified by Richard Stellingwerff <remenic@gmail.com>
+ * Modified by Kulyk Nazar <schamane@myeburg.net>
  */
 
 #include <gtk/gtkrc.h>
@@ -48,6 +49,7 @@ struct _ClearlooksRcStyle
   guint8 menuitemstyle;
   guint8 listviewitemstyle;
   guint8 scrollbarstyle;
+  gboolean animation;
 };
 
 struct _ClearlooksRcStyleClass

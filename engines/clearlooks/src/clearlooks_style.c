@@ -1091,6 +1091,9 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 		                             &clearlooks_style->colors.base[i].g,
 		                             &clearlooks_style->colors.base[i].b);
 	}
+	
+	if (CLEARLOOKS_RC_STYLE (rc_style)->animation)
+		printf("animation is enabled!\n");
 }
 
 static void

@@ -19,6 +19,7 @@
  * Written by Owen Taylor <otaylor@redhat.com>
  * and by Alexander Larsson <alexl@redhat.com>
  * Modified by Richard Stellingwerff <remenic@gmail.com>
+ * Modified by Kulyk Nazar <schamane@myeburg.net>
  */
 
 #include "clearlooks_style.h"
@@ -46,7 +47,11 @@ enum
   TOKEN_PROGRESSBARSTYLE,
   TOKEN_MENUBARSTYLE,
   TOKEN_MENUITEMSTYLE,
-  TOKEN_LISTVIEWITEMSTYLE
+  TOKEN_LISTVIEWITEMSTYLE,
+  TOKEN_ANIMATION,
+  
+  TOKEN_TRUE,
+  TOKEN_FALSE
 };
 
 static struct
@@ -62,7 +67,11 @@ theme_symbols[] =
   { "progressbarstyle",  TOKEN_PROGRESSBARSTYLE },
   { "menubarstyle",      TOKEN_MENUBARSTYLE },
   { "menuitemstyle",     TOKEN_MENUITEMSTYLE },
-  { "listviewitemstyle", TOKEN_LISTVIEWITEMSTYLE }
+  { "listviewitemstyle", TOKEN_LISTVIEWITEMSTYLE },
+  { "animation",	TOKEN_ANIMATION },
+  
+  { "TRUE",	TOKEN_TRUE },
+  { "FALSE",	TOKEN_FALSE }
 };
 
 
@@ -99,6 +108,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
   clearlooks_rc->menubarstyle = 0;
   clearlooks_rc->menuitemstyle = 1;
   clearlooks_rc->listviewitemstyle = 1;
+  clearlooks_rc->animation = FALSE;
 }
 
 static void
@@ -111,6 +121,29 @@ clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
   rc_style_class->parse = clearlooks_rc_style_parse;
   rc_style_class->create_style = clearlooks_rc_style_create_style;
   rc_style_class->merge = clearlooks_rc_style_merge;
+}
+
+static guint
+theme_parse_boolean(GtkSettings *settings,
+                     GScanner     *scanner,
+                    gboolean *retval)
+{
+  guint token;
+  token = g_scanner_get_next_token(scanner);
+  
+  token = g_scanner_get_next_token(scanner);
+  if (token != G_TOKEN_EQUAL_SIGN)
+    return G_TOKEN_EQUAL_SIGN;
+  
+  token = g_scanner_get_next_token(scanner);
+  if (token == TOKEN_TRUE)
+    *retval = TRUE;
+  else if (token == TOKEN_FALSE)
+    *retval = FALSE;
+  else
+    return TOKEN_TRUE;
+
+  return G_TOKEN_NONE;
 }
 
 static guint
@@ -243,6 +276,9 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	case TOKEN_LISTVIEWITEMSTYLE:
 	  token = theme_parse_int (settings, scanner, &clearlooks_style->listviewitemstyle);
 	  break;
+	case TOKEN_ANIMATION:
+	  token = theme_parse_boolean (settings, scanner, &clearlooks_style->animation);
+	  break;
 	default:
 	  g_scanner_get_next_token(scanner);
 	  token = G_TOKEN_RIGHT_CURLY;
@@ -288,6 +324,9 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 		dest_w->has_scrollbar_color = TRUE;
 		dest_w->scrollbar_color = src_w->scrollbar_color;
 	}
+	
+	dest_w->animation = src_w->animation;
+
 }
 
 

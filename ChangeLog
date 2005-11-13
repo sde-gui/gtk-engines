@@ -1,6 +1,23 @@
 2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_scale_draw_gradient),
+	(clearlooks_draw_progressbar_trough),
+	(clearlooks_draw_progressbar_fill): Fixed a little memory leak.
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init), (theme_parse_boolean),
+	(clearlooks_rc_style_parse), (clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_init_from_rc):
+
+	Added a new option in gtkrc called "animation". This will be used
+	to enable/disable animation a theme. Thanks goes to Kulyk Nazar
+	"tirpse, Schamane" for his work on this.
+
+2005-11-13  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_progressbar_fill), (clearlooks_draw_tab),
 	(clearlooks_draw_list_view_header):
 	* engines/clearlooks/src/clearlooks_types.h:
