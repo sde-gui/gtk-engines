@@ -1055,6 +1055,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 
 	contrast = CLEARLOOKS_RC_STYLE (rc_style)->contrast;
 	
+	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	clearlooks_style->progressbarstyle  = CLEARLOOKS_RC_STYLE (rc_style)->progressbarstyle;
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->menuitemstyle     = CLEARLOOKS_RC_STYLE (rc_style)->menuitemstyle;
@@ -1092,7 +1093,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 		                             &clearlooks_style->colors.base[i].b);
 	}
 	
-	if (CLEARLOOKS_RC_STYLE (rc_style)->animation)
+	if (clearlooks_style->animation)
 		printf("animation is enabled!\n");
 }
 

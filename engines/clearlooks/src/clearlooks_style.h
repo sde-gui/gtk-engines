@@ -48,6 +48,7 @@ struct _ClearlooksStyle
 	guint8   listviewitemstyle;
 	GdkColor scrollbar_color;
 	gboolean has_scrollbar_color;
+	gboolean animation;
 };
 
 struct _ClearlooksStyleClass
