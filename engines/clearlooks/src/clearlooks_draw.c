@@ -370,7 +370,10 @@ clearlooks_draw_entry (cairo_t *cr,
 	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
 	CairoColor *border;
 	
-	border = (CairoColor*)&colors->shade[params->disabled ? 4 : 6];
+	if (params->focus)
+		border = (CairoColor*)&colors->spot[2];
+	else
+		border = (CairoColor*)&colors->shade[params->disabled ? 4 : 6];
 
 	cairo_translate (cr, x+0.5, y+0.5);
 	cairo_set_line_width (cr, 1.0);
@@ -391,16 +394,30 @@ clearlooks_draw_entry (cairo_t *cr,
 	
 	clearlooks_draw_inset (cr, width-1, height-1, 2.0, params->corners);
 
+	/* Draw the inner shadow */
+	if (params->focus)
+	{
+		cairo_rectangle (cr, 2, 2, width-5, height-5);
+	//	clearlooks_rounded_rectectangle (cr, 2, 2, width-5, height-5, RADIUS-1, params->corners);
+		cairo_set_source_rgb (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b);
+		cairo_stroke (cr);
+	}
+	else
+	{
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, params->disabled ? 0.05 : 0.1);
+		/*
+		cairo_move_to (cr, 2, height-3);
+		cairo_arc (cr, params->xthickness+RADIUS-1, params->ythickness+RADIUS-1, RADIUS, M_PI, 270*(M_PI/180));
+		cairo_line_to (cr, width-3, 2);*/
+		cairo_move_to (cr, 2, height-3);
+		cairo_line_to (cr, 2, 2);
+		cairo_line_to (cr, width-3, 2);
+		cairo_stroke (cr);
+	}
+
 	/* Draw the border */
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
 	clearlooks_rounded_rectectangle (cr, 1, 1, width-3, height-3, RADIUS, params->corners);
-	cairo_stroke (cr);
-
-	/* Draw the inner shadow */	
-	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, params->disabled ? 0.05 : 0.1);
-	cairo_move_to (cr, 2, height-3);
-	cairo_arc (cr, params->xthickness+RADIUS-1, params->ythickness+RADIUS-1, RADIUS, M_PI, 270*(M_PI/180));
-	cairo_line_to (cr, width-3, 2);
 	cairo_stroke (cr);
 }
 
