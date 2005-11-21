@@ -7,6 +7,7 @@
 #include "debug.h"
 
 #include <stdio.h>
+#include <string.h>
 
 GType crux_type_rc_style = 0;
 
@@ -15,7 +16,7 @@ static void crux_rc_style_merge (GtkRcStyle *dest, GtkRcStyle *src);
 
 static void crux_rc_style_finalize (GObject *object);
 
-GtkRcStyleClass *rc_parent_class;
+static GtkRcStyleClass *rc_parent_class;
 
 static void
 crux_rc_style_init (CruxRcStyle *style)

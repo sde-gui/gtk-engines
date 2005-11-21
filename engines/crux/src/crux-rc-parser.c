@@ -649,22 +649,6 @@ parse_1_gradient_assign (eazel_theme_data *theme_data, GScanner *scanner,
     return G_TOKEN_NONE;
 }
 
-static gchar*
-gtk_rc_check_pixmap_dir (const gchar *dir, 
-			 const gchar *pixmap_file)
-{
-  gchar *buf;
-
-  buf = g_build_filename (dir, pixmap_file, NULL);
-
-  if (g_file_test (buf, G_FILE_TEST_EXISTS))
-    return buf;
-   
-  g_free (buf);
- 
-   return NULL;
- }
-
 static guint
 parse_stock_stmt (GScanner *scanner, GtkSettings  *settings, eazel_theme_data *theme_data,
 		  eazel_engine_stock_table **table_ptr)

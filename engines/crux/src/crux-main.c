@@ -15,12 +15,6 @@
 G_MODULE_EXPORT void
 theme_init (GTypeModule *module)
 {
-  GtkRangeClass *rangeclass;
-  GtkScaleClass *scaleclass;
-  GtkCheckButtonClass *checkclass;
-
-  /*make_warnings_and_criticals_stop_in_debugger ();*/
-  
   crux_rc_style_register_type (module);
   crux_style_register_type (module);
   crux_rc_parser_init_gradients();

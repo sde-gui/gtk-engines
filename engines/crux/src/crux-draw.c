@@ -3,7 +3,6 @@
 #include "crux-rc-style.h"
 #include "crux-common.h"
 #include "crux-pixmaps.h"
-#include "crux-gradient.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -79,21 +78,13 @@ draw_diamond (GtkStyle *style,
 	      const gchar *detail, gint x, gint y, gint width, gint height);
 
 static void
-draw_oval (GtkStyle *style,
-	   GdkWindow *window,
-	   GtkStateType state_type,
-	   GtkShadowType shadow_type,
-	   GdkRectangle *area,
-	   GtkWidget *widget,
-	   const gchar *detail, gint x, gint y, gint width, gint height);
-
-static void
 draw_string (GtkStyle *style,
 	     GdkWindow *window,
 	     GtkStateType state_type,
 	     GdkRectangle *area,
 	     GtkWidget *widget,
 	     const gchar *detail, gint x, gint y, const gchar *string);
+#if 0
 static void
 draw_flat_box (GtkStyle *style,
 	       GdkWindow *window,
@@ -102,6 +93,7 @@ draw_flat_box (GtkStyle *style,
 	       GdkRectangle *area,
 	       GtkWidget *widget,
 	       const gchar *detail, gint x, gint y, gint width, gint height);
+#endif
 
 static void
 draw_check (GtkStyle *style,
@@ -119,25 +111,6 @@ draw_option (GtkStyle *style,
 	     GdkRectangle *area,
 	     GtkWidget *widget,
 	     const gchar *detail, gint x, gint y, gint width, gint height);
-
-static void
-draw_cross (GtkStyle *style,
-	    GdkWindow *window,
-	    GtkStateType state_type,
-	    GtkShadowType shadow_type,
-	    GdkRectangle *area,
-	    GtkWidget *widget,
-	    const gchar *detail, gint x, gint y, gint width, gint height);
-
-static void
-draw_ramp (GtkStyle *style,
-	   GdkWindow *window,
-	   GtkStateType state_type,
-	   GtkShadowType shadow_type,
-	   GdkRectangle *area,
-	   GtkWidget *widget,
-	   const gchar *detail,
-	   GtkArrowType arrow_type, gint x, gint y, gint width, gint height);
 
 static void
 draw_tab (GtkStyle *style,
@@ -275,6 +248,32 @@ crux_paint_menuitem_gradient (cairo_t * cr, GdkColor * c, gdouble x, gdouble y, 
 	cairo_fill (cr);
 	cairo_pattern_destroy (crp);
 }
+
+static void
+crux_paint_gradient (cairo_t * cr, GdkColor * c, GdkRectangle * rect, eazel_engine_gradient *gradient)
+{
+	gint x, y, width, height;
+	x = rect->x; y = rect->y; width = rect->width; height = rect->height;
+
+	cairo_set_line_width (cr, 0.0);
+	cairo_pattern_t * crp;
+	gdouble r, g, b;
+	r = c->red / 65536.0;
+	g = c->green / 65536.0;
+	b = c->blue / 65536.0;
+	if (gradient->direction == GRADIENT_VERTICAL)
+		crp = cairo_pattern_create_linear (x, y, x, y + height);
+	else if (gradient->direction == GRADIENT_HORIZONTAL)
+		crp = cairo_pattern_create_linear (x, y, x + width, y);
+
+	cairo_pattern_add_color_stop_rgb (crp, 0.0, r*1.1, g*1.1, b*1.1);
+	cairo_pattern_add_color_stop_rgb (crp, 1.0, r*.8, g*.8, b*.8);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_set_source (cr, crp);
+	cairo_fill (cr);
+	cairo_pattern_destroy (crp);
+}
+
 
 
 /* adapted from nautilus-gdk-extensions.c */
@@ -923,7 +922,7 @@ draw_shadow (GtkStyle *style,
     GdkGC *gc_a, *gc_b, *gc_c, *gc_d;
     gint thickness_light;
     gint thickness_dark;
-    gboolean rounded = FALSE, rounded_inner = FALSE;
+    gboolean rounded = FALSE;
     gboolean outline = TRUE;
     gint i;
 
@@ -991,7 +990,7 @@ draw_shadow (GtkStyle *style,
     {
 	/* Clist title buttons have square edges */
 	if (widget == 0 || !GTK_IS_CLIST (widget->parent))
-	    rounded = rounded_inner = TRUE;
+	    rounded = TRUE;
     }
     else if (DETAIL ("menuitem"))
     {
@@ -1324,41 +1323,26 @@ draw_box (GtkStyle *style,
 	    full.width = width;
 	    full.height = height;
 
-	   if (DETAIL ("menuitem"))
-	   {
-			paint_menuitem_shadow (window, style, x, y, width, height);
+	if (DETAIL ("menuitem"))
+	{
+		paint_menuitem_shadow (window, style, x, y, width, height);
 
-			cr = crux_begin_paint (window, NULL);
-			gdk_gc_get_values (style->bg_gc[state_type], &values);
-			gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
-			crux_paint_menuitem_gradient (cr, &values.foreground, x + 2, y + 2, width - 4, height - 4);
-			cairo_destroy (cr);
-			return;
-	   }
-
-	    if (gradient != NULL && gradient->direction != GRADIENT_NONE)
-	    {
-		if (!set_bg)
-		{
-		    eazel_engine_draw_gradient (window,
-						style->bg_gc[state_type],
-						&full, &full, gradient);
-		}
-		else
-		{
-		    GdkRectangle dest;
-
-		    if (area != 0)
-			gdk_rectangle_intersect (&full, area, &dest);
-		    else
-			dest = full;
-		    eazel_engine_set_bg_gradient (window, gradient);
-		    gdk_window_clear_area (window, dest.x, dest.y,
-					   dest.width, dest.height);
-		}
-	    }
-	    else
-	    {
+		cr = crux_begin_paint (window, area);
+		gdk_gc_get_values (style->bg_gc[state_type], &values);
+		gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
+		crux_paint_menuitem_gradient (cr, &values.foreground, x + 2, y + 2, width - 4, height - 4);
+		cairo_destroy (cr);
+	}
+	else if (gradient != NULL && gradient->direction != GRADIENT_NONE)
+	{
+		cr = crux_begin_paint (window, area);
+		gdk_gc_get_values (style->bg_gc[state_type], &values);
+		gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
+		crux_paint_gradient (cr, &values.foreground, &full, gradient);
+		cairo_destroy (cr);
+	}
+	else
+	{
 		if (!set_bg)
 		{
 		    gdk_draw_rectangle (window, style->bg_gc[state_type], TRUE,
@@ -1375,7 +1359,7 @@ draw_box (GtkStyle *style,
 		    gdk_window_clear_area (window, dest.x, dest.y,
 					   dest.width, dest.height);
 		}
-	    }
+	}
 
 	    if (DETAIL ("button") && widget != 0
 		&& GTK_WIDGET_HAS_DEFAULT (widget))
@@ -1826,19 +1810,6 @@ draw_diamond (GtkStyle *style,
 }
 
 static void
-draw_oval (GtkStyle *style,
-	   GdkWindow *window,
-	   GtkStateType state_type,
-	   GtkShadowType shadow_type,
-	   GdkRectangle *area,
-	   GtkWidget *widget,
-	   const gchar *detail, gint x, gint y, gint width, gint height)
-{
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
-}
-
-static void
 draw_string (GtkStyle *style,
 	     GdkWindow *window,
 	     GtkStateType state_type,
@@ -1872,6 +1843,7 @@ draw_string (GtkStyle *style,
     }
 }
 
+#if 0
 static void
 draw_flat_box (GtkStyle *style,
 	       GdkWindow *window,
@@ -1932,6 +1904,7 @@ draw_flat_box (GtkStyle *style,
 	gtk_style_apply_default_pixmap (style, window, state_type, area, x,
 					y, width, height);
 }
+#endif
 
 static void
 paint_check (GtkStyle *style,
@@ -2054,33 +2027,6 @@ draw_option (GtkStyle *style,
 {
     paint_check (style, window, state_type, shadow_type, area,
 		 widget, detail, x, y, width, height, EAZEL_ENGINE_OPTION);
-}
-
-static void
-draw_cross (GtkStyle *style,
-	    GdkWindow *window,
-	    GtkStateType state_type,
-	    GtkShadowType shadow_type,
-	    GdkRectangle *area,
-	    GtkWidget *widget,
-	    const gchar *detail, gint x, gint y, gint width, gint height)
-{
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
-}
-
-static void
-draw_ramp (GtkStyle *style,
-	   GdkWindow *window,
-	   GtkStateType state_type,
-	   GtkShadowType shadow_type,
-	   GdkRectangle *area,
-	   GtkWidget *widget,
-	   const gchar *detail,
-	   GtkArrowType arrow_type, gint x, gint y, gint width, gint height)
-{
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
 }
 
 static void
@@ -2440,7 +2386,6 @@ draw_slider (GtkStyle *style,
     if (DETAIL ("slider")) {
 	{
 	    int thumb_x, thumb_y;
-	    gboolean focused;
 
 	    focused = 1;
 

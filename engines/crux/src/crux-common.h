@@ -103,7 +103,7 @@ typedef struct pixmap_cache_node_struct eazel_engine_pixmap_cache_node;
 
 typedef struct {
     char *filename;
-    int border[4];
+    guint border[4];
     eazel_engine_gradient *recolor;
     GdkPixbuf *pixbuf;
     eazel_engine_pixmap_cache_node *pixmap_first, *pixmap_last;

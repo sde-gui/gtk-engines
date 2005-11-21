@@ -1,3 +1,15 @@
+2005-11-21  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-common.h:
+	* engines/crux/src/crux-draw.c: (crux_paint_gradient),
+	(draw_shadow), (draw_box), (draw_slider):
+	* engines/crux/src/crux-main.c: (theme_init):
+	* engines/crux/src/crux-rc-parser.c:
+	* engines/crux/src/crux-rc-style.c:
+
+	- Applied crux patch from bug 321140
+	- General gradients now drawn using cairo
+
 2005-11-16  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
