@@ -1,5 +1,12 @@
 2005-11-21  Thomas Wood  <thos@gnome.org>
 
+	* NEWS:
+	* configure.ac:
+
+	Update for 2.7.0 release
+
+2005-11-21  Thomas Wood  <thos@gnome.org>
+
 	* engines/crux/src/crux-common.h:
 	* engines/crux/src/crux-draw.c: (crux_paint_gradient),
 	(draw_shadow), (draw_box), (draw_slider):

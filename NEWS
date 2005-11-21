@@ -1,3 +1,11 @@
+Overview of Changes in 2.7.0 (since 2.6.3)
+==========================================
+* Clearlooks and Mist engine now uses cairo to do drawing
+* Redmond and Crux engine convertions to cairo started
+* Various cleanups and fixes
+* Animation code for checkboxes and radiobuttons in clearlooks (off by default)
+
+
 Overview of Changes in 2.6.4 (since 2.6.3)
 ==========================================
 * Fixed bugs: 
