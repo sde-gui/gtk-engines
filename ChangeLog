@@ -1,3 +1,13 @@
+2005-11-22  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_trough):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters):
+
+	Fixed crash in gnumeric. The bug was potentially harmful
+	to other apps as well.
+
 2005-11-21  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

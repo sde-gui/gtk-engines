@@ -199,9 +199,9 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->prelight   = (state_type == GTK_STATE_PRELIGHT);
 	params->disabled   = (state_type == GTK_STATE_INSENSITIVE);			
 	params->state_type = (ClearlooksStateType)state_type;
-	params->corners     = CL_CORNER_ALL;
+	params->corners    = CL_CORNER_ALL;
 		
-	params->focus      = GTK_WIDGET_HAS_FOCUS (widget);
+	params->focus      = widget && GTK_WIDGET_HAS_FOCUS (widget);
 		
 	if (!params->active && widget && GTK_IS_TOGGLE_BUTTON (widget))
 		params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
@@ -211,7 +211,8 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 		
 	/* I want to avoid to have to do this. I need it for GtkEntry, unless I
 	   find out why it doesn't behave the way I expect it to. */
-	clearlooks_get_parent_bg (widget, &params->parentbg);
+	if (widget)
+		clearlooks_get_parent_bg (widget, &params->parentbg);
 }
 
 static void

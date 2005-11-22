@@ -675,19 +675,19 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	cairo_stroke (cr);
 	
 	/* Top shadow */
+	cairo_rectangle (cr, x+1, y+1, width-2, 4);
 	pattern = cairo_pattern_create_linear (x, y, x, y+4);
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.1);	
 	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0., 0., 0., 0.);	
-	cairo_rectangle (cr, x+1, y+1, width-2, 4);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
-	
+
 	/* Left shadow */
+	cairo_rectangle (cr, x+1, y+1, 4, height-2);
 	pattern = cairo_pattern_create_linear (x, y, x+4, y);
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.05);	
 	cairo_pattern_add_color_stop_rgba (pattern, 1.0, 0., 0., 0., 0.);	
-	cairo_rectangle (cr, x+1, y+1, 4, height-2);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
