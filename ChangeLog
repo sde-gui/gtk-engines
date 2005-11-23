@@ -1,3 +1,19 @@
+2005-11-23  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/animation.c: (cl_async_animation_lookup),
+	(cl_async_animation_remove), (cl_async_animation_add),
+	(cl_async_animation_update), (cl_async_animation_timer_func),
+	(cl_async_animation_getdata), (cl_checkbox_toggle),
+	(cl_progressbar_add), (cl_disconnect):
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box),
+	(draw_option), (draw_check), (draw_arrow), (draw_focus),
+	(clearlooks_style_unrealize):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Updated the animation code from Kulyk Nazar's latest patch. Moved all
+	animation functions to animations.c. It needs a lot of testing still.
+	Changed the bg[ACTIVE] shade to make it a bit lighter.
+
 2005-11-22  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

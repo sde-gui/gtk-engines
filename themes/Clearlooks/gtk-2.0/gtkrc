@@ -17,6 +17,9 @@ style "clearlooks-default"
 #  GtkScrollbar   ::has-secondary-forward-stepper = 1
 #  GtkScrollbar   ::has-secondary-backward-stepper = 1
 
+  GtkButton      ::child-displacement-x = 1
+  GtkButton      ::child-displacement-y = 1
+
   xthickness = 1
   ythickness = 1
 
@@ -31,7 +34,7 @@ style "clearlooks-default"
   bg[PRELIGHT]      = "#f9f7f3" # very light beige
   bg[SELECTED]	    = "#5598d7" # deepsky
   bg[INSENSITIVE]   = "#efebe5" # beige
-  bg[ACTIVE]        = "#ccc6b8" #"#d7d3ca" # dark beige
+  bg[ACTIVE]        = "#dcd4c9" #"#d7d3ca" # dark beige
 
   base[NORMAL]      = "#ffffff" # white 
   base[PRELIGHT]    = "#5f8ec4" # dark beige
@@ -47,11 +50,12 @@ style "clearlooks-default"
 
   engine "clearlooks" 
   {
-	scrollbar_color   = "#76acde"
+    scrollbar_color   = "#76acde"
     menubarstyle      = 2       # 0 = flat, 1 = sunken, 2 = flat gradient
     menuitemstyle     = 1       # 0 = flat, 1 = 3d-ish (gradient), 2 = 3d-ish (button)
     listviewitemstyle = 1       # 0 = flat, 1 = 3d-ish (gradient)
     progressbarstyle  = 1       # 0 = candy bar, 1 = fancy candy bar, 2 = flat
+    animation         = TRUE
   }
 }
 

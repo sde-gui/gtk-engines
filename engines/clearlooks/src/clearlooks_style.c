@@ -1,19 +1,17 @@
 #include <gtk/gtk.h>
 #include <cairo.h>
-
-#include "clearlooks_style.h"
-#include "clearlooks_rc_style.h"
-#include "clearlooks_draw.h"
-
 #include <math.h>
 #include <string.h>
 #include <sys/time.h>
 
+#include "clearlooks_style.h"
+#include "clearlooks_rc_style.h"
+#include "clearlooks_draw.h"
 #include "support.h"
 
 /* #define DEBUG 1 */
 
-#define HAVE_ANIMATION 1
+// #define HAVE_ANIMATION 1
 
 #define SCALE_SIZE 5
 
@@ -33,14 +31,8 @@
                      gint            height
 
 #ifdef HAVE_ANIMATION
-static GList *progressbars = NULL;
-static int timer_id = 0;
-static GList *checks = NULL;
-static gint8 checks_trans = 2;
-static int checks_timer_id = 0;
+#include "animation.c"
 #endif
-
-static gint8 pboffset = 0;
 
 static GtkStyleClass *parent_class;
 
@@ -59,132 +51,6 @@ clearlooks_begin_paint (GdkDrawable  *window, GdkRectangle *area)
 
     return cr;
 }
-
-#ifdef HAVE_ANIMATION
-static void cl_progressbar_remove (gpointer data)
-{
-        if (g_list_find (progressbars, data) == NULL)
-                return;
-
-        progressbars = g_list_remove (progressbars, data);
-        g_object_unref (data);
-
-        if (g_list_first(progressbars) == NULL) {
-                g_source_remove(timer_id);
-                timer_id = 0;
-        }
-}
-
-static void update_progressbar (gpointer data, gpointer user_data)
-{
-        gfloat fraction;
-
-        if (data == NULL)
-                return;
-
-       	fraction = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (data));
-
-        /* update only if not filled */
-        if (fraction < 1.0)
-                gtk_widget_queue_resize ((GtkWidget*)data);
-
-        if (fraction >= 1.0 || GTK_PROGRESS (data)->activity_mode)
-                cl_progressbar_remove (data);
-}
-
-static gboolean timer_func (gpointer data)
-{
-        g_list_foreach (progressbars, update_progressbar, NULL);
-        if (--pboffset < 0) pboffset = 9;
-        return (g_list_first(progressbars) != NULL);
-}
-
-static gboolean cl_progressbar_known(gconstpointer data)
-{
-        return (g_list_find (progressbars, data) != NULL);
-}
-
-static void cl_progressbar_add (gpointer data)
-{
-	if (!GTK_IS_PROGRESS_BAR (data))
-		return;
-
-	progressbars = g_list_append (progressbars, data);
-
-	g_object_ref (data);
-	g_signal_connect ((GObject*)data, "unrealize", G_CALLBACK (cl_progressbar_remove), data);
-
-	if (timer_id == 0)
-		timer_id = g_timeout_add (100, timer_func, NULL);
-}
-
-static void cl_checks_remove (gpointer data)
-{
-	if (g_list_find (checks, data) == NULL)
-		return;
-        
-	checks = g_list_remove (checks, data);
-	
-	g_object_unref (data);
-	
-	if (g_list_first(checks) == NULL) {
-		g_source_remove(checks_timer_id);
-		checks_timer_id = 0;
-	}
-}
-
-static void cl_update_checks (gpointer data, gpointer user_data)
-{
-	if (data == NULL)
-		return;
-		
-	if (checks_trans > 5)
-		cl_checks_remove(data);
-	
-	gtk_widget_queue_resize ((GtkWidget*)data);
-}
-
-static gboolean cl_checks_known(gconstpointer data)
-{
-	return (g_list_find (checks, data) != NULL);
-}
-
-static gboolean cl_checks_timer_func (gpointer data)
-{
-	g_list_foreach (checks, cl_update_checks, NULL);
-
-	if (++checks_trans > 6)
-		checks_trans = 2;
-	
-	return (g_list_first(checks) != NULL);
-}
-
-static void cl_checks_toggled (gpointer data)
-{
-	if (!GTK_IS_CHECK_BUTTON (data))
-                return;
-
-	if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(data)))
-	{
-		if (g_list_first(checks) == NULL)
-			checks_trans = 2;
-		
-		return;
-	}
-	
-	if(!cl_checks_known(data))
-		checks = g_list_append (checks, data);
-	else
-		return;
-
-	g_object_ref (data);
-	
-	g_signal_connect ((GObject*)data, "unrealize", G_CALLBACK (cl_checks_remove), data);
-	
-	if (checks_timer_id == 0)
-		checks_timer_id = g_timeout_add (100, cl_checks_timer_func, NULL);
-}
-#endif /* HAVE_ANIMATION */
 
 static void
 clearlooks_set_widget_parameters (const GtkWidget      *widget,
@@ -709,22 +575,20 @@ draw_box (DRAW_ARGS)
 	{
 		WidgetParameters      params;
 		ProgressBarParameters progressbar;
+		gint8                 frame = 0;
 
 #ifdef HAVE_ANIMATION
-		if(clearlooks_style->animation)
+		if(clearlooks_style->animation && GTK_IS_PROGRESS_BAR (widget))
 		{	
 			gboolean activity_mode = GTK_PROGRESS (widget)->activity_mode;
-		 	if (!activity_mode && gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (widget)) != 1.0 &&
-                        	!cl_progressbar_known((gconstpointer)widget))
-                	{
-                        	cl_progressbar_add ((gpointer)widget);
-                	}
-                }
-                else
-         		if(cl_progressbar_known((gconstpointer)widget))
-                	{
-                        	cl_progressbar_remove ((gpointer)widget);
-                	}
+			
+		 	if (!activity_mode &&
+			    gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (widget)) != 1.0 &&
+			    !cl_async_animation_lookup((gconstpointer)widget))
+			{
+				cl_progressbar_add ((gpointer)widget);
+			}
+		}
 #endif
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
@@ -735,10 +599,13 @@ draw_box (DRAW_ARGS)
 			progressbar.orientation = CL_ORIENTATION_LEFT_TO_RIGHT;
 		
 		cairo_reset_clip (cr);
-
-		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
-		                                  x, y, width, height,pboffset);
 		
+#ifdef HAVE_ANIMATION
+		frame = cl_async_animation_getdata((gpointer)widget).frame;
+#endif
+		
+		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
+		                                  x, y, width, height, frame);
 	}
 	else if (DETAIL ("hscale") || DETAIL ("vscale"))
 	{
@@ -883,9 +750,20 @@ draw_option (DRAW_ARGS)
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	CairoColor *border;
 	CairoColor *dot;
+	double trans = 1.0;
+	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN);
 
 	cairo_t *cr = clearlooks_begin_paint (window, area);
 	cairo_pattern_t *pt;
+
+#ifdef HAVE_ANIMATION
+	if(clearlooks_style->animation && GTK_IS_CHECK_BUTTON (widget) && !cl_async_animation_lookup((gconstpointer)widget)  && !g_slist_find (signaled_widgets, (gconstpointer)widget))
+	{
+			signaled_widgets = g_slist_append (signaled_widgets, widget);
+			g_signal_connect ((GObject*)widget, "toggled", G_CALLBACK (cl_checkbox_toggle), widget);
+			//printf("signal connected %d\n",widget);
+	}
+#endif
 
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
@@ -897,7 +775,6 @@ draw_option (DRAW_ARGS)
 		border = &clearlooks_style->colors.shade[7];
 		dot    = &clearlooks_style->colors.spot[1];
 	}
-	
 	pt = cairo_pattern_create_linear (0, 0, 13, 13);
 	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.1);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
@@ -911,7 +788,7 @@ draw_option (DRAW_ARGS)
 	cairo_set_source (cr, pt);
 	cairo_stroke (cr);
 	cairo_pattern_destroy (pt);
-	
+
 	cairo_set_line_width (cr, 1);
 
 	cairo_arc       (cr, 7, 7, 5.5, 0, M_PI*2);	
@@ -926,14 +803,30 @@ draw_option (DRAW_ARGS)
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
 	cairo_stroke (cr);
 	
-	if (shadow_type == GTK_SHADOW_IN)
+#ifdef HAVE_ANIMATION
+	if (clearlooks_style->animation && cl_async_animation_lookup((gconstpointer)widget) && GTK_IS_CHECK_BUTTON (widget))
+	{
+		int value = cl_async_animation_getdata((gpointer)widget).frame;
+		
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
+			trans = (float)(5-value)/5;
+		else
+			trans = (float)value/5;
+		
+		draw_bullet = TRUE;
+	}
+#endif
+
+	if (draw_bullet)
 	{
 		cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
-		cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+		//cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+		cairo_set_source_rgba (cr, dot->r, dot->g, dot->b,trans);
 		cairo_fill (cr);
 		
 		cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
-		cairo_set_source_rgba (cr, 1,1,1, 0.5);
+		//cairo_set_source_rgba (cr, 1,1,1, 0.5);
+		cairo_set_source_rgba (cr, 1,1,1, 0.5+trans);		
 		cairo_fill (cr);
 	}
 
@@ -947,21 +840,20 @@ draw_check (DRAW_ARGS)
 	CairoColor *border;
 	CairoColor *dot;
 	double trans = 1.0;
+	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN);
 
 	cairo_t *cr = clearlooks_begin_paint (window, area);
 	cairo_pattern_t *pt;
 
 #ifdef HAVE_ANIMATION
-	if(clearlooks_style->animation && GTK_IS_CHECK_BUTTON (widget))
+	if(clearlooks_style->animation && GTK_IS_CHECK_BUTTON (widget) && !cl_async_animation_lookup((gconstpointer)widget)  && !g_slist_find (signaled_widgets, (gconstpointer)widget))
 	{
-		if (!cl_checks_known((gconstpointer)widget))
-			g_signal_connect ((GObject*)widget, "toggled", G_CALLBACK (cl_checks_toggled), widget);
+			signaled_widgets = g_slist_append (signaled_widgets, widget);
+			g_signal_connect ((GObject*)widget, "toggled", G_CALLBACK (cl_checkbox_toggle), widget);
+			//printf("signal connected %d\n",widget);
 	}
-	else
-		if (cl_checks_known((gconstpointer)widget))
-			cl_checks_remove((gpointer)widget);
 #endif
-
+	
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
 		border = &clearlooks_style->colors.shade[2];
@@ -972,7 +864,7 @@ draw_check (DRAW_ARGS)
 		border = &clearlooks_style->colors.shade[7];
 		dot    = &clearlooks_style->colors.spot[1];
 	}
-	
+
 	pt = cairo_pattern_create_linear (0, 0, 0, 13);
 	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.04);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
@@ -999,7 +891,21 @@ draw_check (DRAW_ARGS)
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
 	cairo_stroke (cr);
 		
-	if (shadow_type == GTK_SHADOW_IN)
+#ifdef HAVE_ANIMATION
+	if (clearlooks_style->animation && cl_async_animation_lookup((gconstpointer)widget))
+	{
+		int value = cl_async_animation_getdata((gpointer)widget).frame;
+		
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
+			trans = (float)(5-value)/5;
+		else
+			trans = (float)value/5;
+		
+		draw_bullet = TRUE;
+	}
+#endif
+
+	if (draw_bullet)
 	{
 		cairo_set_line_width (cr, 1.7);
 		cairo_move_to (cr, 0.5 + (width*0.2), (height*0.5));
@@ -1009,15 +915,10 @@ draw_check (DRAW_ARGS)
 		                    0.5 + (width*0.5), (height*0.4),
 		                    0.5 + (width*0.70), (height*0.25));
 		
-#ifdef HAVE_ANIMATION
-		if (clearlooks_style->animation && (checks_trans < 9) && cl_checks_known((gconstpointer)widget))
-			trans = (float)checks_trans/5;
-#endif
 		
 		cairo_set_source_rgba (cr, dot->r, dot->g, dot->b, trans);
 		cairo_stroke (cr);
 	}
-	
 	cairo_destroy (cr);
 }
 
@@ -1152,7 +1053,7 @@ draw_resize_grip (GtkStyle       *style,
 }
 
 static void
-draw_arrow (GtkStyle      *style,
+draw_arrow (GtkStyle  *style,
                        GdkWindow     *window,
                        GtkStateType   state_type,
                        GtkShadowType  shadow,
@@ -1285,86 +1186,86 @@ draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
             GdkRectangle *area, GtkWidget *widget, const gchar *detail,
             gint x, gint y, gint width, gint height)
 {
-  cairo_t *cr;
-  gboolean free_dash_list = FALSE;
-  gint line_width = 1;
-  gint8 *dash_list = "\1\1";
+	cairo_t *cr;
+	gboolean free_dash_list = FALSE;
+	gint line_width = 1;
+	gint8 *dash_list = "\1\1";
 
-  if (widget)
-    {
-      gtk_widget_style_get (widget,
-                "focus-line-width", &line_width,
-                "focus-line-pattern", (gchar *)&dash_list,
-                NULL);
+	if (widget)
+	{
+		gtk_widget_style_get (widget,
+				      "focus-line-width", &line_width,
+				      "focus-line-pattern",
+				      (gchar *) & dash_list, NULL);
 
-      free_dash_list = TRUE;
-  }
+		free_dash_list = TRUE;
+	}
 
-  if (detail && !strcmp (detail, "add-mode"))
-    {
-      if (free_dash_list)
-    g_free (dash_list);
+	if (detail && !strcmp (detail, "add-mode"))
+	{
+		if (free_dash_list)
+			g_free (dash_list);
 
-      dash_list = "\4\4";
-      free_dash_list = FALSE;
-    }
+		dash_list = "\4\4";
+		free_dash_list = FALSE;
+	}
 
-  sanitize_size (window, &width, &height);
+	sanitize_size (window, &width, &height);
 
-  cr = gdk_cairo_create (window);
+	cr = gdk_cairo_create (window);
 
-  if (detail && !strcmp (detail, "colorwheel_light"))
-    cairo_set_source_rgb (cr, 0., 0., 0.);
-  else if (detail && !strcmp (detail, "colorwheel_dark"))
-    cairo_set_source_rgb (cr, 1., 1., 1.);
-  else
-    gdk_cairo_set_source_color_alpha (cr, &style->fg[state_type], 0.7);
+	if (detail && !strcmp (detail, "colorwheel_light"))
+		cairo_set_source_rgb (cr, 0., 0., 0.);
+	else if (detail && !strcmp (detail, "colorwheel_dark"))
+		cairo_set_source_rgb (cr, 1., 1., 1.);
+	else
+		gdk_cairo_set_source_color_alpha (cr, &style->fg[state_type],
+						  0.7);
 
-  cairo_set_line_width (cr, line_width);
-  
-  if (dash_list[0])
-    {
-      gint n_dashes = strlen (dash_list);
-      gdouble *dashes = g_new (gdouble, n_dashes);
-      gdouble total_length = 0;
-      gdouble dash_offset;
-      gint i;
+	cairo_set_line_width (cr, line_width);
 
-      for (i = 0; i < n_dashes; i++)
-    {
-      dashes[i] = dash_list[i];
-      total_length += dash_list[i];
-    }
+	if (dash_list[0])
+	{
+		gint n_dashes = strlen (dash_list);
+		gdouble *dashes = g_new (gdouble, n_dashes);
+		gdouble total_length = 0;
+		gdouble dash_offset;
+		gint i;
 
-      /* The dash offset here aligns the pattern to integer pixels
-       * by starting the dash at the right side of the left border
-       * Negative dash offsets in cairo don't work
-       * (https://bugs.freedesktop.org/show_bug.cgi?id=2729)
-       */
-      dash_offset = - line_width / 2.;
-      while (dash_offset < 0)
-    dash_offset += total_length;
+		for (i = 0; i < n_dashes; i++)
+		{
+			dashes[i] = dash_list[i];
+			total_length += dash_list[i];
+		}
 
-      cairo_set_dash (cr, dashes, n_dashes, dash_offset);
-      g_free (dashes);
-    }
+		/* The dash offset here aligns the pattern to integer pixels
+		 * by starting the dash at the right side of the left border
+		 * Negative dash offsets in cairo don't work
+		 * (https://bugs.freedesktop.org/show_bug.cgi?id=2729)
+		 */
+		dash_offset = -line_width / 2.;
+		while (dash_offset < 0)
+			dash_offset += total_length;
 
-  if (area)
-    {
-      gdk_cairo_rectangle (cr, area);
-      cairo_clip (cr);
-    }
+		cairo_set_dash (cr, dashes, n_dashes, dash_offset);
+		g_free (dashes);
+	}
 
-  cairo_rectangle (cr,
-           x + line_width / 2.,
-           y + line_width / 2.,
-           width - line_width,
-           height - line_width);
-  cairo_stroke (cr);
-  cairo_destroy (cr);
+	if (area)
+	{
+		gdk_cairo_rectangle (cr, area);
+		cairo_clip (cr);
+	}
 
-  if (free_dash_list)
-    g_free (dash_list);
+	cairo_rectangle (cr,
+			 x + line_width / 2.,
+			 y + line_width / 2.,
+			 width - line_width, height - line_width);
+	cairo_stroke (cr);
+	cairo_destroy (cr);
+
+	if (free_dash_list)
+		g_free (dash_list);
 }
 
 static void
@@ -1373,23 +1274,27 @@ clearlooks_style_unrealize (GtkStyle * style)
 	parent_class->unrealize (style);
 
 #ifdef HAVE_ANIMATION
-	while ((progressbars = g_list_first (progressbars)))
+	 while (signaled_widgets)
 	{
-		g_object_disconnect (progressbars->data, "any_signal::unrealize", G_CALLBACK (cl_progressbar_remove), progressbars->data, NULL);
-		cl_progressbar_remove (progressbars->data);
+		if(GTK_IS_CHECK_BUTTON (signaled_widgets->data))
+			g_object_disconnect (signaled_widgets->data, "any_signal::toggled", G_CALLBACK (cl_checkbox_toggle), signaled_widgets->data, NULL);
+		//else if   add other signals here
+		cl_async_animation_remove(signaled_widgets->data);
+		//printf("removed from gslist %d\n",signaled_widgets->data);
+		signaled_widgets = g_slist_next (signaled_widgets);
+	}
+	g_slist_free(signaled_widgets);
+
+	if(async_widgets != NULL)
+	{
+		g_hash_table_foreach_remove(async_widgets, cl_disconnect, NULL);
+		//g_hash_table_destroy(async_widgets);
 	}
 	
-	while ((checks = g_list_first (checks)))
+	if(async_widget_timer_id != 0)
 	{
-		g_object_disconnect (checks->data, "any_signal::unrealize", G_CALLBACK (cl_checks_remove), checks->data, NULL);
-		g_object_disconnect (checks->data, "any_signal::toggled", G_CALLBACK (cl_checks_toggled), checks->data, NULL);
-		cl_checks_remove (checks->data);
-	}
-
-	if (timer_id != 0)
-	{
-		g_source_remove(timer_id);
-		timer_id = 0;
+		g_source_remove(async_widget_timer_id);
+		async_widget_timer_id = 0;
 	}
 #endif /* HAVE_ANIMATION */	
 }
