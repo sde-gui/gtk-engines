@@ -11,7 +11,7 @@
 
 /* #define DEBUG 1 */
 
-// #define HAVE_ANIMATION 1
+#define HAVE_ANIMATION 1
 
 #define SCALE_SIZE 5
 
@@ -578,7 +578,7 @@ draw_box (DRAW_ARGS)
 		gint8                 frame = 0;
 
 #ifdef HAVE_ANIMATION
-		if(clearlooks_style->animation && GTK_IS_PROGRESS_BAR (widget))
+		if(clearlooks_style->animation && CL_IS_PROGRESS_BAR (widget))
 		{	
 			gboolean activity_mode = GTK_PROGRESS (widget)->activity_mode;
 			

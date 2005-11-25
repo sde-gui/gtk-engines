@@ -2,6 +2,8 @@
  * it exists. Most of this was written by Kulyk Nazar.
  */
 
+#define CL_IS_PROGRESS_BAR(widget) GTK_IS_PROGRESS_BAR(widget) && widget->allocation.x != -1 && widget->allocation.y != -1
+
 struct _Widget_Animation {
 	gint8 max_frames;
 	gint8 frame;

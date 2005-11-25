@@ -211,10 +211,11 @@ clearlooks_draw_button (cairo_t *cr,
                         const WidgetParameters *params,
                         int x, int y, int width, int height)
 {
-#define RADIUS 3.0
+	const float RADIUS = 3.0;
+	
 	double xoffset = 0, yoffset = 0;
 	const CairoColor *fill            = &colors->bg[params->state_type];
-	const CairoColor *border_normal   = &colors->shade[params->active ? 8 : 7];
+	const CairoColor *border_normal   = &colors->shade[7];
 	const CairoColor *border_disabled = &colors->shade[4];
 	const CairoColor *gradient_bottom = &colors->shade[3];
 	
@@ -366,7 +367,8 @@ clearlooks_draw_entry (cairo_t *cr,
                        const WidgetParameters *params,
                        int x, int y, int width, int height)
 {
-#define RADIUS 3.0
+	const float RADIUS = 3.0;
+	
 	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
 	CairoColor *border;
 	
@@ -908,6 +910,7 @@ clearlooks_draw_frame            (cairo_t *cr,
                                   const FrameParameters      *frame,
                                   int x, int y, int width, int height)
 {
+	const float RADIUS = 3.0;
 	CairoColor *border = frame->border;
 	ClearlooksRectangle bevel_clip;
 	ClearlooksRectangle frame_clip;
@@ -988,7 +991,7 @@ clearlooks_draw_tab (cairo_t *cr,
                      const TabParameters    *tab,
                      int x, int y, int width, int height)
 {
-	#define RADIUS 3.0
+	const float RADIUS = 3.0;
 	CairoColor          *border1       = (CairoColor*)&colors->shade[6];
 	CairoColor          *stripe_fill   = (CairoColor*)&colors->spot[1];
 	CairoColor          *stripe_border = (CairoColor*)&colors->spot[2];
@@ -1583,8 +1586,8 @@ static void
 clearlooks_draw_normal_arrow (cairo_t *cr, CairoColor *color,
                               double x, double y, double width, double height)
 {
-#define ARROW_WIDTH 10.0
-#define ARROW_HEIGHT 5.0
+	const int ARROW_WIDTH  = 10.0;
+	const int ARROW_HEIGHT = 5.0;
 
 	cairo_set_line_width (cr, 1);
 	
@@ -1600,9 +1603,9 @@ static void
 clearlooks_draw_combo_arrow (cairo_t *cr, CairoColor *fill,
                              double x, double y, double width, double height)
 {
-#define ARROW_WIDTH 7.0
-#define ARROW_HEIGHT 5.0
-#define ARROW_SPACING 8
+	const int ARROW_WIDTH   = 7.0;
+	const int ARROW_HEIGHT  = 5.0;
+	const int ARROW_SPACING = 8;
 	
 	cairo_set_line_width (cr, 1);
 
@@ -1674,7 +1677,7 @@ clearlooks_draw_arrow (cairo_t *cr,
 	
 	if (widget->disabled)
 	{
-		_clearlooks_draw_arrow (cr, &colors->shade[0],
+		_clearlooks_draw_arrow (cr, (CairoColor*)&colors->shade[0],
 		                        arrow->direction, arrow->type,
 		                        tx+0.5, ty+0.5, width, height);
 		
