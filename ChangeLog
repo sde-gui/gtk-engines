@@ -1,4 +1,10 @@
-2005-11-25  Richard Stellingwerff  <set EMAIL_ADDRESS environment variable>
+2005-11-27  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_check):
+
+	Don't draw the "sunken" look when x/ythickness is smaller than 3.
+
+2005-11-25  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/animation.c:
 	* engines/clearlooks/src/clearlooks_draw.c:

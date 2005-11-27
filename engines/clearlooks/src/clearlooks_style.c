@@ -850,7 +850,6 @@ draw_check (DRAW_ARGS)
 	{
 			signaled_widgets = g_slist_append (signaled_widgets, widget);
 			g_signal_connect ((GObject*)widget, "toggled", G_CALLBACK (cl_checkbox_toggle), widget);
-			//printf("signal connected %d\n",widget);
 	}
 #endif
 	
@@ -865,21 +864,30 @@ draw_check (DRAW_ARGS)
 		dot    = &clearlooks_style->colors.spot[1];
 	}
 
-	pt = cairo_pattern_create_linear (0, 0, 0, 13);
-	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.04);
-	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
-	cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
-	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.4);
-	
 	cairo_translate (cr, x, y);
-	
 	cairo_set_line_width (cr, 1);
-	cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
-	cairo_set_source (cr, pt);
-	cairo_stroke (cr);
-	cairo_pattern_destroy (pt);
 	
-	cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
+	if (style->xthickness > 2 && style->ythickness > 2)
+	{
+		/* Draw a gradient around the box so it appears sunken. */
+		pt = cairo_pattern_create_linear (0, 0, 0, 13);
+		cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.04);
+		cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
+		cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
+		cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.4);
+		
+		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
+		cairo_set_source (cr, pt);
+		cairo_stroke (cr);
+		cairo_pattern_destroy (pt);
+		
+		/* Draw the rectangle for the checkbox itself */
+		cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
+	}
+	else
+	{
+		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
+	}
 	
 	if (state_type != GTK_STATE_INSENSITIVE)
 	{
