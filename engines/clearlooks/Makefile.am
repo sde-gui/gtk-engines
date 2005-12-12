@@ -1,5 +1,7 @@
 INCLUDES = $(GTK_CFLAGS)
 
+EXTRA_DIST = ./src/animation.c
+
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libclearlooks.la
 

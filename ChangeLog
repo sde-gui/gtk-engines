@@ -1,3 +1,9 @@
+2005-12-13  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/Makefile.am:
+
+	Add animation.c to the dist.
+
 2005-11-27  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_check):
