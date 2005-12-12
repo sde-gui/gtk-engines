@@ -1,3 +1,18 @@
+2005-12-12  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+	Update for 2.7.1 release
+	
+	* engines/metal/src/metal_gtk2_drawing.c: (metal_draw_box),
+	(metal_draw_tab), (metal_draw_extension):
+	* engines/metal/src/metal_gtk2_misc.c: (do_metal_draw_arrow),
+	(is_first_tab), (do_metal_draw_notebook_tab):
+	* engines/metal/src/metal_gtk2_misc.h:
+	* engines/thinice/src/thinice_theme_draw.c: (draw_box),
+	(draw_extension), (thinice_tab):
+	Fixes bug 323215
+
 2005-12-13  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/Makefile.am:

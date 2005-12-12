@@ -1,3 +1,9 @@
+Overview of Changes in 2.7.1 (since 2.7.0)
+==========================================
+
+* Bug fixes to metal and thinice engines (bug 323215)
+* Updates and bug fixes to Clearlooks engine
+
 Overview of Changes in 2.7.0 (since 2.6.3)
 ==========================================
 * Clearlooks and Mist engine now uses cairo to do drawing

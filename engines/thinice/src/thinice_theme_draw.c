@@ -19,6 +19,20 @@ Tomas Ögren <stric@ing.umu.se>
 #define min(x,y) ((x)<=(y)?(x):(y))
 #endif
 
+#define DRAW_ARGS    GtkStyle       *style, \
+                     GdkWindow      *window, \
+                     GtkStateType    state_type, \
+                     GtkShadowType   shadow_type, \
+                     GdkRectangle   *area, \
+                     GtkWidget      *widget, \
+                     const gchar    *detail, \
+                     gint            x, \
+                     gint            y, \
+                     gint            width, \
+                     gint            height
+
+#define DRAW_VARS    style, window, state_type, shadow_type, area, widget, detail, x, y, width, height
+
 static void thinice_style_init       (ThiniceStyle      *style);
 static void thinice_style_class_init (ThiniceStyleClass *klass);
 
@@ -59,7 +73,8 @@ thinice_tab(GtkStyle * style,
             gint x,
             gint y,
             gint width,
-            gint height);
+            gint height,
+	    gint orientation);
 
 #if 0
 static void
@@ -1346,11 +1361,6 @@ draw_box(GtkStyle * style,
          detail, x, y, width, height);
        */
     }
-  else if (DETAIL("tab"))
-    {
-      thinice_tab(style, window, state_type, shadow_type, area, widget,
-                  detail, x, y, width, height);
-    }
   else
     {
 #ifdef DEBUG
@@ -1746,60 +1756,17 @@ draw_box_gap(GtkStyle * style,
 
 
 static void
-draw_extension(GtkStyle * style,
-               GdkWindow * window,
-               GtkStateType state_type,
-               GtkShadowType shadow_type,
-               GdkRectangle * area,
-               GtkWidget * widget,
-               const gchar *detail,
-               gint x,
-               gint y,
-               gint width,
-               gint height,
-               GtkPositionType gap_side)
+draw_extension(DRAW_ARGS, GtkPositionType gap_side)
 {
-  GdkRectangle        rect;
+	switch (gap_side)
+	{
+		case GTK_POS_TOP: gap_side = GTK_POS_BOTTOM; break;
+		case GTK_POS_BOTTOM: gap_side = GTK_POS_TOP; break;
+		case GTK_POS_LEFT: gap_side = GTK_POS_RIGHT; break;
+		case GTK_POS_RIGHT: gap_side = GTK_POS_LEFT; break;
+	}
 
-  g_return_if_fail(style != NULL);
-  g_return_if_fail(window != NULL);
-
-  sanitize_size (window, &width, &height);
-
-  gtk_paint_box(style, window, state_type, shadow_type, area, widget, detail,
-                x, y, width, height);
-
-  switch (gap_side)
-    {
-    case GTK_POS_TOP:
-      rect.x = x + style->xthickness;
-      rect.y = y;
-      rect.width = width - style->xthickness * 2;
-      rect.height = style->ythickness;
-      break;
-    case GTK_POS_BOTTOM:
-      rect.x = x + style->xthickness;
-      rect.y = y + height - style->ythickness;
-      rect.width = width - style->xthickness * 2;
-      rect.height = style->ythickness;
-      break;
-    case GTK_POS_LEFT:
-      rect.x = x;
-      rect.y = y + style->ythickness;
-      rect.width = style->xthickness;
-      rect.height = height - style->ythickness * 2;
-      break;
-    case GTK_POS_RIGHT:
-      rect.x = x + width - style->xthickness;
-      rect.y = y + style->ythickness;
-      rect.width = style->xthickness;
-      rect.height = height - style->ythickness * 2;
-      break;
-    }
-
-  gtk_style_apply_default_background(style, window,
-                                     widget && !GTK_WIDGET_NO_WINDOW(widget),
-                                     state_type, area, rect.x, rect.y, rect.width, rect.height);
+	thinice_tab(DRAW_VARS, gap_side);
 }
 
 #if 0
@@ -2300,25 +2267,9 @@ thinice_dot(GdkWindow *window,
 }
 
 static void
-thinice_tab(GtkStyle * style,
-            GdkWindow * window,
-            GtkStateType state_type,
-            GtkShadowType shadow_type,
-            GdkRectangle * area,
-            GtkWidget * widget,
-            const gchar *detail,
-            gint x,
-            gint y,
-            gint width,
-            gint height)
+thinice_tab(DRAW_ARGS, gint orientation)
 {
-  GtkNotebook *notebook;
   GdkGC *lightgc, *darkgc;
-  int orientation;
-
-
-  notebook = GTK_NOTEBOOK(widget);
-  orientation = notebook->tab_pos;
 
   lightgc = style->light_gc[state_type];
   darkgc = style->dark_gc[state_type];

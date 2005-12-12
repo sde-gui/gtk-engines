@@ -240,8 +240,9 @@ do_metal_draw_arrow (GdkWindow * window,
     {
     case GTK_ARROW_UP:
       base = width;
-      // if (base % 2 == 0)
-      //	base--;
+      /* if (base % 2 == 0)
+        	base--;
+      */
       xoffset = (width - base) / 2;
       span = (base + 1) / 2;
       yoffset = (height + span) / 2 - 1;
@@ -253,8 +254,9 @@ do_metal_draw_arrow (GdkWindow * window,
       break;
     case GTK_ARROW_DOWN:
       base = width;
-      // if (base % 2 == 0)
-      // base--;
+      /* if (base % 2 == 0)
+         base--;
+      */
       xoffset = (width - base) / 2;
       span = (base + 1) / 2;
       yoffset = (height - span) / 2;
@@ -272,8 +274,9 @@ do_metal_draw_arrow (GdkWindow * window,
       else
 	{
 	  base = height;
-	  // if (base % 2 == 0)
+	  /* if (base % 2 == 0)
 	  // 	    base--;
+	  */
 	}
       yoffset = (height - base) / 2;
       span = (base + 1) / 2;
@@ -286,8 +289,9 @@ do_metal_draw_arrow (GdkWindow * window,
       break;
     case GTK_ARROW_LEFT:
       base = height;
-      //      if (base % 2 == 0)
+      /*      if (base % 2 == 0)
       //	base--;
+      */
       yoffset = (height - base) / 2;
       span = (base + 1) / 2;
       xoffset = (width + span) / 2 - 1;
@@ -615,6 +619,7 @@ is_first_tab (GtkNotebook *notebook,
 	      int          x,
 	      int          y)
 {
+
   GtkWidget *widget = GTK_WIDGET (notebook);
   int border_width = GTK_CONTAINER (notebook)->border_width;
 
@@ -642,19 +647,19 @@ do_metal_draw_notebook_tab (GtkStyle * style,
 	   gint x,
 	   gint y,
 	   gint width,
-	   gint height)
+	   gint height,
+	   gint orientation)
 {
   MetalStyle *metal_style = METAL_STYLE (style);
-  GtkNotebook *notebook;
   GdkGC *lightgc, *midgc, *darkgc, *brightgc, *bggc;
   GdkPoint points[5];
-  int orientation;
   gboolean is_first, selected;
 
-  notebook = GTK_NOTEBOOK (widget);
-  orientation = notebook->tab_pos;
+  if (widget != NULL && GTK_IS_NOTEBOOK(widget))
+     is_first = is_first_tab (GTK_NOTEBOOK (widget), x, y);
+  else
+     is_first = FALSE;
 
-  is_first = is_first_tab (notebook, x, y);
   selected = state_type == GTK_STATE_NORMAL;
 
   lightgc = metal_style->light_gray_gc;

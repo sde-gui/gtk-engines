@@ -877,11 +877,12 @@ metal_draw_box (GtkStyle      *style,
       do_metal_draw_notebook (style, window, state_type, shadow_type,
 		      area, widget, detail, x, y, width, height);
     }
-  else if (CHECK_DETAIL(detail, "tab"))
+/*  else if (CHECK_DETAIL(detail, "tab"))
     {
       do_metal_draw_notebook_tab (style, window, state_type, shadow_type,
 		 area, widget, detail, x, y, width, height);
     }
+*/
   else if (CHECK_DETAIL(detail, "button") || CHECK_DETAIL(detail, "togglebutton"))
     {
       do_metal_draw_button (style, window, state_type, shadow_type,
@@ -1564,8 +1565,6 @@ metal_draw_tab (GtkStyle * style,
   printf ("metal_draw_tab: %p %s %i %i\n", detail, detail, width, height);
 #endif
 
-  metal_draw_box (style, window, state_type, shadow_type, area, widget, detail,
-		 x, y, width, height);
 }
 
 /**************************************************************************/
@@ -1715,9 +1714,14 @@ metal_draw_extension (GtkStyle * style,
   printf ("metal_draw_extension: %p %p %s %i %i %i %i\n", widget, window, detail,
 	  x, y, width, height);
 #endif
-
-  metal_draw_box (style, window, state_type, shadow_type, area, widget, detail,
-		 x, y, width, height);
+	switch (gap_side)
+	{
+		case GTK_POS_TOP: gap_side = GTK_POS_BOTTOM; break;
+		case GTK_POS_BOTTOM: gap_side = GTK_POS_TOP; break;
+		case GTK_POS_LEFT: gap_side = GTK_POS_RIGHT; break;
+		case GTK_POS_RIGHT: gap_side = GTK_POS_LEFT; break;
+	}
+  do_metal_draw_notebook_tab (style, window, state_type, shadow_type, area, widget, detail, x, y, width, height, gap_side);
 }
 /**************************************************************************/
 void

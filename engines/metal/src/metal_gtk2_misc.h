@@ -177,7 +177,8 @@ do_metal_draw_notebook_tab (GtkStyle * style,
 	   gint x,
 	   gint y,
 	   gint width,
-	   gint height);
+	   gint height,
+	   gint orientation);
 
 void
 do_metal_draw_button (GtkStyle * style,
