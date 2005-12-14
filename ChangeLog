@@ -1,3 +1,41 @@
+2005-12-14  Thomas Wood  <thos@gnome.org>
+
+	* engines/smooth/Makefile.am:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
+	(theme_parse_boolean), (theme_parse_fill), (theme_parse_edge),
+	(theme_parse_button_default), (theme_parse_active_tab),
+	(theme_parse_tab), (theme_parse_option), (theme_parse_grip),
+	(theme_parse_check):
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.h:
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(rounded_extension_points), (square_extension_points),
+	(triangle_extension_points), (smooth_fill_background),
+	(smooth_draw_grip), (do_smooth_draw_shadow),
+	(do_smooth_draw_focus), (smooth_draw_extension),
+	(smooth_draw_button_default), (smooth_draw_handle):
+	* engines/smooth/src/engine/smooth_gtk2_misc.c: (is_toolbar_item):
+	* engines/smooth/src/engine/smooth_gtk2_misc.h:
+	* engines/smooth/src/engine/smooth_gtk2_rc.c:
+	(smooth_rc_style_init_data):
+	* engines/smooth/src/interfaces/abstract/abstract_drawing_interface
+	.c:
+	* engines/smooth/src/interfaces/drawing_interface.c:
+	(SmoothDrawingInterfaceSetup):
+	* engines/smooth/src/interfaces/gdk2/src/gdk2_gradient_routines.c:
+	(internal_create_vertical_gradient_image_buffer),
+	(GDK2CanvasRenderGradient):
+	* engines/smooth/src/interfaces/shared/gdk/gdk_drawing_interface.c:
+	(internal_drawing_area_use_pen_gc):
+	* engines/smooth/src/utils/draw_arrows.c: (SmoothDrawDirtyArrow):
+	* engines/smooth/src/utils/draw_arrows.h:
+	* engines/smooth/src/utils/draw_border.c:
+	(SmoothDrawPolygonBorder):
+	* engines/smooth/src/utils/draw_checkmark.c:
+	(SmoothDrawCrossCheckMark):
+	* engines/smooth/src/utils/draw_grips.c: (modula):
+
+	Applied smooth engine patch from bug 321140
+
 2005-12-12  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

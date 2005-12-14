@@ -24,8 +24,8 @@
 #include <interfaces/abstract/abstract_drawing_interface.h>
 
 /* drawingInterface */
-DrawingInterfaceClass drawingInterface;
-SmoothBool drawingInterfaceInitialized = SmoothFalse;
+static DrawingInterfaceClass drawingInterface;
+static SmoothBool drawingInterfaceInitialized = SmoothFalse;
 
 /* Setup drawingInterface, aka reset and then callback to initialize specific implementation */
 void SmoothDrawingInterfaceSetup	(
@@ -53,7 +53,7 @@ void SmoothDrawingInterfaceSetup	(
 		drawingInterface.InitializeInterface(&drawingInterface);
 
 	drawingInterfaceInitialized = SmoothTrue;
-};
+}
 
 /* Cleanup drawingInterface, aka reset to initial Values */
 void SmoothDrawingInterfaceCleanup()

@@ -40,8 +40,6 @@ EXTRA_DIST =								\
 	./src/utils/draw_arrows.h					\
 	./src/utils/draw_checkmark.h					\
         ./src/utils/smooth_parts.h					\
-	./src/engine/shared/gtk/smooth_gtk_misc.h			\
-	./src/engine/shared/gtk/smooth_gtk_drawing.h			\
 	./src/engine/shared/gtk/smooth_gtk_rc.h				\
 	./src/engine/smooth_gtk2_misc.h					\
 	./src/engine/smooth_gtk2_drawing.h				\
@@ -62,8 +60,6 @@ libsmooth_la_SOURCES =							\
 	./src/utils/draw_grips.c					\
 	./src/utils/draw_arrows.c					\
 	./src/utils/draw_checkmark.c					\
-	./src/engine/shared/gtk/smooth_gtk_misc.c			\
-	./src/engine/shared/gtk/smooth_gtk_drawing.c			\
 	./src/engine/shared/gtk/smooth_gtk_rc.c				\
 	./src/engine/smooth_gtk2_misc.c					\
 	./src/engine/smooth_gtk2_drawing.c				\

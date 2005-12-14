@@ -37,8 +37,6 @@
 #ifndef SMOOTH_GTK2_MISC_H
 #define SMOOTH_GTK2_MISC_H
 
-#include <engine/shared/gtk/smooth_gtk_misc.h>
-
 #if GTK_CHECK_VERSION(2, 6, 0)
 #	define GTK2_6		1
 #	define GTK2_4		1

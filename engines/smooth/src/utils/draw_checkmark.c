@@ -89,7 +89,7 @@ SmoothDrawCrossCheckMark(SmoothCanvas *Canvas,
 
         if (width >= 16) 
 	{
-		SmoothInt off_1, off_2, off_3;
+		SmoothInt off_1, off_2;
 		SmoothInt line_width = ceil(((width + 1)/5));
 	
 		if (!(line_width % 2)) 
@@ -100,7 +100,6 @@ SmoothDrawCrossCheckMark(SmoothCanvas *Canvas,
 
 		off_2 = line_width;
 		off_1 = off_2 - 1;
-		off_3 = off_2 + 1;
 
 
 		SmoothCanvasStore(Canvas);

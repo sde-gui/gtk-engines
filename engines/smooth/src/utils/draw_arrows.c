@@ -280,7 +280,7 @@ SmoothDrawDirtyArrow(SmoothCanvas *Canvas,
 			SmoothBool OutsideEdge)
 {
 	SmoothInt x, y, width, height;
-	SmoothInt size, half_size, tail=0;
+	SmoothInt size, half_size;
 	
 	SmoothPoint points[4];
 
@@ -294,12 +294,6 @@ SmoothDrawDirtyArrow(SmoothCanvas *Canvas,
 	
 	switch (ArrowType) {
 		case SMOOTH_ARROW_TYPE_UP:
-			if (size - height > 0)
-			{
-				tail = size - height;
-				/* y += (height - size)/2; */
-			}
-
 			SmoothPointSetValues(&points[0], x + half_size, y);
 			SmoothPointSetValues(&points[1], x, y + size - 1);
 
@@ -308,12 +302,6 @@ SmoothDrawDirtyArrow(SmoothCanvas *Canvas,
 		break;
 
 		case SMOOTH_ARROW_TYPE_DOWN:			
-			if (size - height > 0)
-			{
-				tail = size - height;
-				/* y += (height - size)/2; */
-			}
-
 			SmoothPointSetValues(&points[0], x + half_size, y + size - 1);
 			SmoothPointSetValues(&points[1], x + size - 1, y );
 
@@ -322,12 +310,6 @@ SmoothDrawDirtyArrow(SmoothCanvas *Canvas,
 		break;
 
 		case SMOOTH_ARROW_TYPE_LEFT:
-			if (size - height > 0)
-			{
-				tail = size - width;
-				/* x += (width - size)/2; */
-			}
-
 			SmoothPointSetValues(&points[0], x, y + half_size);
 			SmoothPointSetValues(&points[1], x + size - 1, y  + size - 1);
 
@@ -336,12 +318,6 @@ SmoothDrawDirtyArrow(SmoothCanvas *Canvas,
 		break;
 
 		case SMOOTH_ARROW_TYPE_RIGHT:
-			if (size - height > 0)
-			{
-				tail = size - width;
-				/* x += (width - size)/2; */
-			}
-
 			SmoothPointSetValues(&points[0], x + size - 1, y + half_size);
 			SmoothPointSetValues(&points[1], x, y);
 

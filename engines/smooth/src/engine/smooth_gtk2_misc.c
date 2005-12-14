@@ -74,7 +74,7 @@ is_toolbar_item (GtkWidget * widget)
 {
   gboolean result = FALSE;
 
-  if ((widget) && (widget->parent))
+  if ((widget) && (widget->parent)) {
     if ((IS_BONOBO_TOOLBAR (widget->parent))
 	|| (IS_BONOBO_DOCK_ITEM (widget->parent))
 	|| (IS_EGG_TOOLBAR (widget->parent))
@@ -83,7 +83,7 @@ is_toolbar_item (GtkWidget * widget)
       result = TRUE;
     else
       result = is_toolbar_item (widget->parent);
-
+  }
   return result;
 }
 
@@ -102,7 +102,7 @@ is_panel_widget_item (GtkWidget * widget)
   return result;
 }
 
-GtkWidget *
+static GtkWidget *
 find_combo_box_entry_widget (GtkWidget * widget)
 {
   GtkWidget *result = NULL;
@@ -118,7 +118,7 @@ find_combo_box_entry_widget (GtkWidget * widget)
   return result;
 }
 
-gboolean
+static gboolean
 combo_box_is_using_list (GtkWidget * widget)
 {
   gboolean result = FALSE;
@@ -136,7 +136,7 @@ combo_box_is_using_list (GtkWidget * widget)
   return result;
 }
 
-GtkWidget *
+static GtkWidget *
 find_combo_box_widget (GtkWidget * widget, gboolean as_list)
 {
   GtkWidget *result = NULL;
@@ -156,7 +156,7 @@ find_combo_box_widget (GtkWidget * widget, gboolean as_list)
   return result;
 }
  
-GtkWidget *
+static GtkWidget *
 find_combo_widget (GtkWidget * widget)
 {
   GtkWidget *result = NULL;

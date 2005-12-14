@@ -33,7 +33,8 @@
 /******************************************************************************/
 #include ENGINE_HEADER
 #include ENGINE_RC_HEADER
-#include ENGINE_MISC_HEADER
+
+#define CHECK_DETAIL(detail, value) ((detail) && (!strcmp(value, detail)))
 
 ThemeSymbols theme_symbols[] =
 {
@@ -821,9 +822,9 @@ theme_parse_boolean(GScanner *scanner,
 		    guint *retval)
 {
   guint token;
-  gint result=0;
-  
-  token = theme_parse_custom_enum (scanner, wanted_token, TranslateBooleanName, return_default, &result);	
+  guint result=0;
+
+  token = theme_parse_custom_enum (scanner, wanted_token, (SmoothTranslateEnumFunc)TranslateBooleanName, return_default, &result);	
   
   *retval = result;
   
@@ -1368,10 +1369,10 @@ theme_parse_fill(GScanner *scanner,
     }
     break;
     case TOKEN_HDIRECTION:
-      token = theme_parse_custom_enum(scanner, TOKEN_HDIRECTION, TranslateGradientDirectionName, DEFAULT_HGRADIENTDIRECTION,  &retval->gradient_direction[TRUE]);
+      token = theme_parse_custom_enum(scanner, TOKEN_HDIRECTION, (SmoothTranslateEnumFunc)TranslateGradientDirectionName, DEFAULT_HGRADIENTDIRECTION,  &retval->gradient_direction[TRUE]);
       break;
     case TOKEN_VDIRECTION:
-      token = theme_parse_custom_enum(scanner, TOKEN_VDIRECTION, TranslateGradientDirectionName, DEFAULT_VGRADIENTDIRECTION,  &retval->gradient_direction[FALSE]);
+      token = theme_parse_custom_enum(scanner, TOKEN_VDIRECTION, (SmoothTranslateEnumFunc)TranslateGradientDirectionName, DEFAULT_VGRADIENTDIRECTION,  &retval->gradient_direction[FALSE]);
       break;
     case TOKEN_SHADE1_VALUE:
       token = theme_parse_float (scanner, TOKEN_SHADE1_VALUE, 1.3, &retval->shade1, 0.0, 2.5);
@@ -1483,7 +1484,7 @@ theme_parse_edge(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, TranslateEdgeStyleName, DEFAULT_EDGESTYLE, &retval->style);
+      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateEdgeStyleName, DEFAULT_EDGESTYLE, &retval->style);
       break;
     case TOKEN_LINE:
       token = theme_parse_line (scanner, TOKEN_LINE, &retval->line);
@@ -1531,7 +1532,7 @@ theme_parse_button_default(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
       case TOKEN_STYLE:
-	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, TranslateButtonDefaultStyleName, SMOOTH_BUTTON_DEFAULT_STYLE_DEFAULT, &THEME_PART(retval)->style);
+	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateButtonDefaultStyleName, SMOOTH_BUTTON_DEFAULT_STYLE_DEFAULT, &THEME_PART(retval)->style);
 	break;
 	
       case TOKEN_LINE:
@@ -1660,7 +1661,7 @@ theme_parse_active_tab(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
       case TOKEN_STYLE:
-	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, TranslateTabStyleName, DEFAULT_TABSTYLE, &THEME_PART(retval)->style);
+	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateTabStyleName, DEFAULT_TABSTYLE, &THEME_PART(retval)->style);
 	break;
 	
       case TOKEN_LINE:
@@ -1720,7 +1721,7 @@ theme_parse_tab(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
       case TOKEN_STYLE:
-	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, TranslateTabStyleName, DEFAULT_TABSTYLE, &THEME_PART(retval)->style);
+	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateTabStyleName, DEFAULT_TABSTYLE, &THEME_PART(retval)->style);
 	break;
 	
       case TOKEN_ACTIVE_TAB:
@@ -1785,7 +1786,7 @@ theme_parse_option(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, TranslateCheckStyleName, SMOOTH_CHECKMARK_STYLE_DEFAULT_OPTION, &THEME_PART(retval)->style);
+      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateCheckStyleName, SMOOTH_CHECKMARK_STYLE_DEFAULT_OPTION, &THEME_PART(retval)->style);
       break;
     case TOKEN_FILL :
       token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
@@ -1843,7 +1844,7 @@ theme_parse_grip(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, TranslateGripStyleName, DEFAULT_GRIPSTYLE,  &THEME_PART(retval)->style);
+      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateGripStyleName, DEFAULT_GRIPSTYLE,  &THEME_PART(retval)->style);
       break;
     case TOKEN_LINE:
       token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
@@ -1962,7 +1963,7 @@ theme_parse_check(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, TranslateCheckStyleName, SMOOTH_CHECKMARK_STYLE_DEFAULT,  &THEME_PART(retval)->style);
+      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateCheckStyleName, SMOOTH_CHECKMARK_STYLE_DEFAULT,  &THEME_PART(retval)->style);
       break;
     case TOKEN_FILL :
       token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);

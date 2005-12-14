@@ -419,7 +419,7 @@ GDKCanvasDeallocateColor(SmoothGDKPrivateCanvas *Canvas,
 }
 
 /* Canvas cache/uncache a _Color */
-SmoothInt
+static SmoothInt
 cached_color_hash(SmoothColor *_Color, SmoothDouble Shade)
 {
 	SmoothInt hash = 0;
@@ -629,84 +629,13 @@ internal_drawing_area_use_pen_gc(SmoothGDKPrivateCanvas *Canvas, SmoothBool Requ
 
 			if (result && Canvas->Pen.UsePattern)
 			{
-				 gdk_gc_set_dashes(result, Canvas->Pen.Pattern.Offset, Canvas->Pen.Pattern.Pattern, Canvas->Pen.Pattern.Length); 
+				 gdk_gc_set_dashes(result, Canvas->Pen.Pattern.Offset, (gint8 *)Canvas->Pen.Pattern.Pattern, Canvas->Pen.Pattern.Length); 
 			}
 		}	
 	}	
 	
 	return result;
 	
-}
-void
-internal_drawing_area_unuse_pen_gc(SmoothGDKPrivateCanvas *Canvas, GdkGC * GC)
-{
-	if (Canvas)
-	{
-		SmoothInt value = Canvas->Pen.Color.CacheIndex;
-
-		if (GC)
-		{
-			gtk_gc_release(GC);
-		}	
-		
-		if ((value >= 0) && (Canvas->Pen.Color.Alpha > 0))
-		{
-			internal_color_unref(value);
-		}
-	}	
-}
-
-GdkGC *
-internal_drawing_area_use_brush_gc(SmoothGDKPrivateCanvas *Canvas, SmoothBool RequireValidColor)
-{
-	GdkGC *result = NULL;
-
-	if (Canvas)
-	{
-		GdkGCValues gc_values;
-		SmoothInt value = Canvas->Brush.Color.CacheIndex, flags=0;
-
-		if (!(Canvas->Colormap)) {
-			Canvas->Colormap = gdk_colormap_get_system();
-			Canvas->Depth = gdk_colormap_get_visual(Canvas->Colormap)->depth;
-		}
-
-		if ((Canvas->Brush.Color.Alpha > 0))
-		{
-			SmoothColor *fg = NULL;
-
-			fg = internal_color_get_color(Canvas->Colormap, &Canvas->Brush.Color, 1.0, value);
-			
-			gc_values.foreground = fg->RGB;
-			gc_values.background = fg->RGB;
-			
-			flags = GDK_GC_FOREGROUND | GDK_GC_BACKGROUND;
-		}
-		
-		if (!RequireValidColor || flags)
-			result = gtk_gc_get (Canvas->Depth, Canvas->Colormap, &gc_values, flags);
-	}	
-	
-	return result;
-	
-}
-void
-internal_drawing_area_unuse_brush_gc(SmoothGDKPrivateCanvas *Canvas, GdkGC * GC)
-{
-	if (Canvas)
-	{
-		SmoothInt value = Canvas->Brush.Color.CacheIndex;
-		
-		if (GC)
-		{
-			gtk_gc_release(GC);
-		}
-	
-		if ((value >= 0) && (Canvas->Brush.Color.Alpha > 0))
-		{
-			internal_color_unref(value);
-		}
-	}	
 }
 
 /* Canvas cache/uncache a shaded _Color */

@@ -35,7 +35,7 @@
 /******************************************************************************/
 #include "smooth_parts.h"
 
-SmoothInt modula(SmoothFloat number, SmoothInt divisor) 
+static SmoothInt modula(SmoothFloat number, SmoothInt divisor) 
 {
   return (((SmoothInt)number % divisor) + (number - (SmoothInt)number));
 }  

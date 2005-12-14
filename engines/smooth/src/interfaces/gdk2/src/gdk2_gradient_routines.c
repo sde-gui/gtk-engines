@@ -140,7 +140,6 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
 	SmoothImageBuffer buffer;
 	
 	SmoothUChar *ptr;
-	SmoothUChar point[4];
 
 	SmoothUChar r0, g0, b0, a0;
 	SmoothUChar rf, gf, bf, af;
@@ -307,8 +306,9 @@ GDK2CanvasRenderGradient(SmoothCanvas Canvas,
 				SmoothInt Height)
 
 {	
+#ifndef ALWAYSDITHER
 	SmoothGDKPrivateCanvas *GDKPrivateCanvas = Canvas;
-
+#endif
 	SmoothBool result = SmoothFalse;
 	SmoothRectangle clip;
 	
@@ -316,14 +316,16 @@ GDK2CanvasRenderGradient(SmoothCanvas Canvas,
 	SmoothBool northern   = (Gradient.Type == SMOOTH_GRADIENT_NORTHERN_DIAGONAL);
 	SmoothBool diagonal   = ((Gradient.Type == SMOOTH_GRADIENT_NORTHERN_DIAGONAL) || (Gradient.Type == SMOOTH_GRADIENT_SOUTHERN_DIAGONAL));
 	
+#ifndef ALWAYSDITHER
 	SmoothInt depth = GDKPrivateCanvas->Depth;
 	SmoothInt ditherdepth = GDKPrivateCanvas->DitherDepth;
-	
-	#ifdef ALWAYSDITHER
+#endif
+
+#ifdef ALWAYSDITHER
 	SmoothBool dither = (!diagonal);
-	#else
+#else
 	SmoothBool dither = (((depth > 0) && (depth <= ditherdepth)) && (!diagonal));
-	#endif
+#endif
 	
 	if ((Width <= 0) || (Height <= 0))
 	{

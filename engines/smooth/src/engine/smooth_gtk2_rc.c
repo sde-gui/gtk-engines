@@ -37,7 +37,7 @@
 #include "smooth_gtk2_misc.h"
 #include "smooth_gtk2_rc.h"
 
-void smooth_rc_style_init_data (SmoothRcStyleData *style)
+static void smooth_rc_style_init_data (SmoothRcStyleData *style)
 {
   gint i;
 

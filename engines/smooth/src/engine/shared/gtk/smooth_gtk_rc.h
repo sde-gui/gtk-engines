@@ -67,7 +67,7 @@ typedef enum
 #define DEFAULT_TROUGH_SHOW_VALUE	FALSE
 #define DEFAULT_GRIPOVERLAP		FALSE
 
-typedef gboolean (*SmoothTranslateEnumFunc) (gchar * str, gint *retval);
+typedef gboolean (*SmoothTranslateEnumFunc) (gchar * str, guint *retval);
 
 #define THEME_PART(part)                 ((smooth_part_style *) (part))
 

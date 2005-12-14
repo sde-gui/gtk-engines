@@ -361,7 +361,7 @@ SmoothDrawBevelWithGap(SmoothCanvas *Canvas,
 	}  
 }
 
-void
+static void
 SmoothDrawCircularShadow(SmoothCanvas *Canvas,
 				SmoothColor TopLeftColor,
 				SmoothColor BottomRightColor,
@@ -378,7 +378,7 @@ SmoothDrawCircularShadow(SmoothCanvas *Canvas,
 	SmoothCanvasDrawArc(Canvas, x, y, width, height, 225.0, 180.0);
 }
 
-void
+static void
 SmoothDrawCircularBevel(SmoothCanvas *Canvas,
 				SmoothColor TopLeftColor,
 				SmoothColor BottomRightColor,
@@ -717,7 +717,7 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 
 	SmoothDouble		angle;
 	SmoothInt		j,i, x1,y1, x2,y2, xt, yt, mx=0,my=0, sign, thickness;
-	SmoothBool		line_overlap = SmoothFalse, invert_in = SmoothTrue;
+	SmoothBool		invert_in = SmoothTrue;
 	
 	SmoothCanvasCacheShadedColor(Canvas, BaseColor, default_shades_table[0], &darktone);
 	SmoothCanvasCacheShadedColor(Canvas, BaseColor, default_shades_table[1], &lighttone);
@@ -740,7 +740,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 			color[2] = darktone;
 			color[3] = lighttone;
 			
-			line_overlap = SmoothTrue;
 			invert_in = SmoothTrue;
 			thickness = Border->Thickness - 1;
 		break;
@@ -761,7 +760,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 				color[3] = midtone;
 			}
 					
-			line_overlap = SmoothFalse;
 			invert_in = SmoothFalse;
 			thickness = 1;
 		break;
@@ -772,7 +770,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 			color[2] = middarktone;
 			color[3] = darktone;
 					
-			line_overlap = SmoothFalse;
 			invert_in = SmoothTrue;
 			thickness = 1;
 		break;
@@ -783,7 +780,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 			color[2] = coldtone;
 			color[3] = midtone;
 			
-			line_overlap = SmoothFalse;
 			invert_in = SmoothTrue;
 			thickness = 1;
 		break;
@@ -794,7 +790,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 			color[2] = icetone;
 			color[3] = BaseColor;
 				
-			line_overlap = SmoothFalse;
 			invert_in = SmoothFalse;
 			thickness = 1;
 		break;
@@ -805,7 +800,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 			color[0] = lighttone;
 			color[2] = (Border->Style == SMOOTH_BEVEL_STYLE_THIN)?darktone:midtone;
 
-			line_overlap = SmoothFalse;
 			invert_in = SmoothTrue;
 			thickness = 0;
 		break;
@@ -815,7 +809,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 			color[0] = darktone;
 			color[2] = darktone;
 
-			line_overlap = SmoothFalse;
 			invert_in = SmoothTrue;
 			thickness = 0;
 		break;
@@ -836,7 +829,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 				color[3] = darktone;
 			}
 					
-			line_overlap = SmoothTrue;
 			invert_in = SmoothFalse;
 			thickness = 1;
 		break;
@@ -858,7 +850,6 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 				color[3] = darktone;
 			}
 						
-			line_overlap = SmoothFalse;
 			invert_in = SmoothFalse;
 			thickness = 1;
 		break;

@@ -89,8 +89,8 @@ struct SmoothArrowPartProto
 		
 	SmoothArrow *DefaultStyle;
 	SmoothArrow *DefaultStateStyles;/*[5];*/
-	SmoothArrow *DefaultTypeStyles;/*[SMOOTH_ARROW_TYPE_COUNT]*/;
-	SmoothArrow *Styles[5];/*[5][SMOOTH_ARROW_TYPE_COUNT]*/;
+	SmoothArrow *DefaultTypeStyles;/*[SMOOTH_ARROW_TYPE_COUNT]*/
+	SmoothArrow *Styles[5];/*[5][SMOOTH_ARROW_TYPE_COUNT]*/
 
 	SmoothBool StylesFreed;
 
