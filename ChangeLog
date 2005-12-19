@@ -1,3 +1,28 @@
+2005-12-19  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_rounded_rectangle), (clearlooks_draw_button),
+	(clearlooks_draw_entry), (clearlooks_draw_spinbutton_down),
+	(clearlooks_draw_slider_button),
+	(clearlooks_draw_progressbar_trough), (clearlooks_draw_tab),
+	(clearlooks_draw_scrollbar_stepper):
+
+	Renamed clearlooks_draw_rectectangle to clearlooks_draw_rectangle.
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow),
+	(draw_box), (clearlooks_style_unrealize):
+
+	Don't draw entry in TreeView edit mode.
+
+	* engines/clearlooks/src/support.c: (clearlooks_get_parent_bg):
+	* engines/clearlooks/src/support.h:
+
+	Fixed a warning, removed unused methods.
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Made background just a tiiiiiiiny bit darker.
+
 2005-12-14  Thomas Wood  <thos@gnome.org>
 
 	* engines/smooth/Makefile.am:

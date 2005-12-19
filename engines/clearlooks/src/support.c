@@ -13,75 +13,6 @@ get_direction (GtkWidget *widget)
 	return dir;
 }
 
-GdkPixbuf *
-generate_bit (unsigned char alpha[], GdkColor *color, double mult)
-{
-	guint r, g, b;
-	GdkPixbuf *pixbuf;
-	unsigned char *pixels;
-	int w, h, rs;
-	int x, y;
-	
-	r = (color->red >> 8) * mult;
-	r = MIN(r, 255);
-	g = (color->green >> 8) * mult;
-	g = MIN(g, 255);
-	b = (color->blue >> 8) * mult;
-	b = MIN(b, 255);
-	
-	pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, RADIO_SIZE, RADIO_SIZE);
-	
-	w = gdk_pixbuf_get_width (pixbuf);
-	h = gdk_pixbuf_get_height (pixbuf);
-	rs = gdk_pixbuf_get_rowstride (pixbuf);
-	pixels = gdk_pixbuf_get_pixels (pixbuf);
-	
-	
-	for (y=0; y < h; y++)
-	{
-		for (x=0; x < w; x++)
-		{
-			pixels[y*rs + x*4 + 0] = r;
-			pixels[y*rs + x*4 + 1] = g;
-			pixels[y*rs + x*4 + 2] = b;
-			if (alpha)
-				pixels[y*rs + x*4 + 3] = alpha[y*w + x];
-			else
-				pixels[y*rs + x*4 + 3] = 255;
-		}
-	}
-	
-	return pixbuf;
-}
-
-GdkPixmap *
-pixbuf_to_pixmap (GtkStyle  *style,
-                  GdkPixbuf *pixbuf,
-                  GdkScreen *screen)
-{
-	GdkGC *tmp_gc;
-	GdkPixmap *pixmap;
-	
-	pixmap = gdk_pixmap_new (gdk_screen_get_root_window (screen),
-	                         gdk_pixbuf_get_width (pixbuf),
-	                         gdk_pixbuf_get_height (pixbuf),
-	                         style->depth);
-							 
-	gdk_drawable_set_colormap (pixmap, style->colormap);
-	
-	tmp_gc = gdk_gc_new (pixmap);
-	
-	gdk_pixbuf_render_to_drawable (pixbuf, pixmap, tmp_gc, 0, 0, 0, 0,
-	                               gdk_pixbuf_get_width (pixbuf),
-	                               gdk_pixbuf_get_height (pixbuf),
-	                               GDK_RGB_DITHER_NORMAL, 0, 0);
-	
-	gdk_gc_unref (tmp_gc);
-	
-	return pixmap;
-}
-
-
 void
 rgb_to_hls (gdouble *r,
             gdouble *g,
@@ -426,7 +357,7 @@ void
 clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 {
 	GtkStateType state_type;
-	GtkWidget *parent;
+	const GtkWidget *parent;
 	GdkColor *gcolor;
 	
 	if (widget == NULL)
@@ -445,7 +376,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	
 	state_type = GTK_WIDGET_STATE (parent);
 	
-	gcolor = &gtk_widget_get_style (parent)->bg[state_type];
+	gcolor = &parent->style->bg[state_type];
 	
 	clearlooks_gdk_color_to_rgb (gcolor, &color->r, &color->g, &color->b);
 }

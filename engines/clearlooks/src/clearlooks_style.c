@@ -99,7 +99,7 @@ draw_shadow (DRAW_ARGS)
 
 	sanitize_size (window, &width, &height);
 
-	if (DETAIL ("entry"))
+	if (DETAIL ("entry") && !(widget->parent && GTK_IS_TREE_VIEW (widget->parent)))
 	{
 		WidgetParameters params;
 		
@@ -601,7 +601,7 @@ draw_box (DRAW_ARGS)
 		cairo_reset_clip (cr);
 		
 #ifdef HAVE_ANIMATION
-		frame = cl_async_animation_getdata((gpointer)widget).frame;
+		frame = 10 - cl_async_animation_getdata((gpointer)widget).frame;
 #endif
 		
 		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
@@ -1279,19 +1279,18 @@ draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
 static void
 clearlooks_style_unrealize (GtkStyle * style)
 {
-	parent_class->unrealize (style);
-
 #ifdef HAVE_ANIMATION
 	 while (signaled_widgets)
 	{
 		if(GTK_IS_CHECK_BUTTON (signaled_widgets->data))
-			g_object_disconnect (signaled_widgets->data, "any_signal::toggled", G_CALLBACK (cl_checkbox_toggle), signaled_widgets->data, NULL);
-		//else if   add other signals here
+			g_object_disconnect (signaled_widgets->data,
+			                     "any_signal::toggled",
+			                     G_CALLBACK (cl_checkbox_toggle),
+			                     signaled_widgets->data, NULL);
+
 		cl_async_animation_remove(signaled_widgets->data);
-		//printf("removed from gslist %d\n",signaled_widgets->data);
 		signaled_widgets = g_slist_next (signaled_widgets);
 	}
-	g_slist_free(signaled_widgets);
 
 	if(async_widgets != NULL)
 	{
@@ -1305,6 +1304,8 @@ clearlooks_style_unrealize (GtkStyle * style)
 		async_widget_timer_id = 0;
 	}
 #endif /* HAVE_ANIMATION */	
+
+	parent_class->unrealize (style);
 }
 
 static void

@@ -29,8 +29,7 @@ style "clearlooks-default"
   fg[ACTIVE]        = "#000000" # black
   fg[INSENSITIVE]   = "#b5b3ac" # dark beige
 
-  #bg[NORMAL]	    = "#e8e5de" # light beige
-  bg[NORMAL]        = "#efebe5"
+  bg[NORMAL]        = "#ede9e3"
   bg[PRELIGHT]      = "#f9f7f3" # very light beige
   bg[SELECTED]	    = "#5598d7" # deepsky
   bg[INSENSITIVE]   = "#efebe5" # beige

@@ -20,36 +20,16 @@
 
 GtkTextDirection get_direction     (GtkWidget *widget);
 
-GdkPixbuf *generate_bit            (unsigned char   alpha[],
-                                    GdkColor       *color,
-                                    double          mult);
-
-GdkPixbuf *colorize_bit            (unsigned char  *bit,
-                                    unsigned char  *alpha,
-                                    GdkColor       *new_color);
-
-GdkPixmap *pixbuf_to_pixmap        (GtkStyle     *style,
-                                    GdkPixbuf    *pixbuf,
-                                    GdkScreen    *screen);
-
 gboolean   sanitize_size (          GdkWindow    *window,
                                     gint         *width,
                                     gint         *height);
 
-void       rgb_to_hls              (gdouble      *r,
-                                    gdouble      *g,
-                                    gdouble      *b);
-
-void       hls_to_rgb              (gdouble      *h,
-                                    gdouble      *l,
-                                    gdouble      *s);
+GtkWidget *special_get_ancestor    (GtkWidget    *widget,
+                                    GType         widget_type);
 
 void       shade                   (const CairoColor *a,
                                     CairoColor       *b,
                                     float             k);
-						  
-GtkWidget *special_get_ancestor    (GtkWidget    *widget,
-                                    GType         widget_type);
 					   
 void       blend                   (GdkColormap  *colormap,
                                     GdkColor     *a,
