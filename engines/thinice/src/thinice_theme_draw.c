@@ -1147,8 +1147,9 @@ draw_box(GtkStyle * style,
          gint height)
 {
   GdkGC *light_gc, *dark_gc;
+#ifdef DEBUG
   GtkOrientation      orientation;
-
+#endif
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -1157,11 +1158,11 @@ draw_box(GtkStyle * style,
   light_gc = style->light_gc[state_type];
   dark_gc = style->dark_gc[state_type];
 
+#ifdef DEBUG
   orientation = GTK_ORIENTATION_HORIZONTAL;
   if (height > width)
     orientation = GTK_ORIENTATION_VERTICAL;
 
-#ifdef DEBUG
   printf("%p %s %i %i state_type = %d (%d)\n", detail, detail, width, height, state_type, orientation);
 #endif
 
@@ -1179,8 +1180,7 @@ draw_box(GtkStyle * style,
           gdk_gc_set_clip_rectangle(light_gc, area);
           gdk_gc_set_clip_rectangle(dark_gc, area);
 
-#if 0
-          /* DEBUG */
+#ifdef DEBUG 
           points[0].x = x ;
           points[0].y = y ;
           points[1].x = x + width;
@@ -1191,7 +1191,6 @@ draw_box(GtkStyle * style,
           points[3].y = y + height;
 
           gdk_draw_polygon(window, light_gc, FALSE, points, 4);
-          /* DEBUG */
 #endif
 
           if (size % 2)
@@ -2055,7 +2054,7 @@ draw_handle(GtkStyle * style,
 
   if (DETAIL("paned")) 
     {
-      int i, w, h;
+      int i, w;
       int start_i, end_i;
 
       dest.x = x;

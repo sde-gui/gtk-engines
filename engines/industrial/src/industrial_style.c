@@ -18,6 +18,7 @@
 #include "industrial_style_versioned_include.h"
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #define DETAIL(xx)   ((detail) && (!strcmp((xx), detail)))
 #if INDUSTRIAL_GTK_VERSION == 2
@@ -528,13 +529,11 @@ ensure_pixmap (GtkStyle *style, GdkWindow *window, Shading *shading, int pixmap)
     char **xpm_copy;
     int colors;
     int height;
-    int width;
     int i;
 
     xpm = pixmaps[pixmap];
     first_line = g_strsplit (xpm[0], " ", 0);
 
-    width = atoi (first_line[0]);
     height = atoi (first_line[1]);
     colors = atoi (first_line[2]);
 
@@ -595,18 +594,6 @@ get_color (GtkStyle *style, GdkColor *bg_color, GdkColor *fg_color, int shade)
   Shading *shading = get_shading (style, bg_color, fg_color);
   ensure_shade (style, shading, shade);
   return &shading->colors[shade];
-}
-
-static GdkGC *
-get_gray_gc (GtkStyle *style, int shade)
-{
-  return get_gc (style, &style->bg[GTK_STATE_NORMAL], &style->fg[GTK_STATE_NORMAL], shade);
-}
-
-static GdkColor *
-get_gray_color (GtkStyle *style, int shade)
-{
-  return get_color (style, &style->bg[GTK_STATE_NORMAL], &style->fg[GTK_STATE_NORMAL], shade);
 }
 
 static gboolean 
@@ -904,28 +891,6 @@ draw_rounded_rect_two_pixel (GdkWindow *window,
   kaleidoscope_point (window, corner_gc, area, x, y, width, height, 0, 1);
 }
 
-static void
-draw_dot (GdkWindow *window,
-	  GdkGC *gc,
-	  GtkOrientation orientation,
-	  int x_base,
-	  int y_base,
-	  int first_offset,
-	  int second_offset)
-{
-  if (orientation == GTK_ORIENTATION_HORIZONTAL) {
-    gdk_draw_point (window,
-		    gc,
-		    x_base + first_offset,
-		    y_base + second_offset);
-  } else {
-    gdk_draw_point (window,
-		    gc,
-		    x_base + second_offset,
-		    y_base + first_offset);
-  }
-}
-
   /* #define names assume vertical */
 #define HANDLE_HEIGHT (4 * 4 + 1 + 2)
 #define HANDLE_WIDTH (4 + 1 + 2)
@@ -1012,7 +977,7 @@ draw_hline (GtkStyle     *style,
 {
   GdkGC *gc;
   
-#if DEBUG
+#ifdef DEBUG
   printf ("draw_hline: %p %p %s %i %i %i\n", widget, window, detail, x1, x2,
 	  y);
 #endif
@@ -1075,7 +1040,7 @@ draw_handle (GtkStyle      *style,
   
   sanitize_size (window, &width, &height);
 
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i %i  %i\n", __FUNCTION__, widget, window, detail, x, y,
 	  width, height, orientation);
 #endif
@@ -1160,7 +1125,7 @@ draw_vline (GtkStyle     *style,
 {
   GdkGC *gc;
 
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i\n", __FUNCTION__, widget, window, detail, y1, y2,
 	  x);
 #endif
@@ -1198,7 +1163,7 @@ draw_slider (GtkStyle      *style,
 {
   int handle_width, handle_height;
 
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i %i  %i\n", __FUNCTION__, widget, window, detail, x, y,
 	  width, height, orientation);
 #endif
@@ -1341,7 +1306,6 @@ real_draw_box (GtkStyle      *style,
 
     GdkGC *gc;
     GdkColor *color;
-    int gradient_lines = 7;
 
     if (! (GTK_WIDGET_HAS_DEFAULT (widget) &&
 	   GTK_IS_BUTTON (widget) && 
@@ -1834,7 +1798,7 @@ draw_box (GtkStyle      *style,
 	  gint           width,
 	  gint           height)
 {
-#if DEBUG
+#ifdef DEBUG
   printf ("draw_box: %p %p %s %i %i %i %i\n", widget, window, detail, x, y,
 	  width, height);
 #endif
@@ -1865,7 +1829,7 @@ draw_shadow (GtkStyle        *style,
 	     gint             width,
 	     gint             height)
 {
-#if DEBUG
+#ifdef DEBUG
   printf ("draw_shadow: %p %p %s %i %i %i %i\n", widget, window, detail, x, y,
 	  width, height);
 #endif
@@ -1972,7 +1936,7 @@ draw_box_gap (GtkStyle       *style,
 	      gint            gap_x,
 	      gint            gap_width)
 {
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i %i  %i\n", __FUNCTION__, widget, window, detail, x, y,
 	  width, height, gap_side);
 #endif
@@ -2029,7 +1993,7 @@ draw_shadow_gap (GtkStyle       *style,
 		 gint            gap_x,
 		 gint            gap_width)
 {
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i %i  %i\n", __FUNCTION__, widget, window, detail, x, y,
 	  width, height, gap_side);
 #endif
@@ -2061,7 +2025,7 @@ draw_extension (GtkStyle       *style,
   GdkColor *fg_color;
   GdkGC *corner_gc;
 
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i %i  %i\n", __FUNCTION__, widget, window, detail, x, y,
 	  width, height, gap_side);
 #endif
@@ -2272,7 +2236,7 @@ draw_arrow (GtkStyle      *style,
 {
   gint original_width, original_x;
 
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i %i\n", __FUNCTION__, widget, window, detail, x, y,
 	  width, height);
 #endif
@@ -2351,7 +2315,7 @@ draw_check (GtkStyle		*style,
 
   GdkColor *fg, *bg;
 
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i %i\n", __FUNCTION__, widget, window, detail, x, y,
 	  width, height);
 #endif
@@ -2420,7 +2384,7 @@ draw_option (GtkStyle		*style,
   int which;
   GdkColor *fg, *bg;
 
-#if DEBUG
+#ifdef DEBUG
   printf ("%s: %p %p %s %i %i %i %i\n", __FUNCTION__, widget, window, detail, x, y,
 	  width, height);
 #endif

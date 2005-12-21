@@ -7,7 +7,7 @@ theme_init (GTypeModule *module)
 {
   hc_rc_style_register_type (module);
   hc_style_register_type (module);
-  gtk_rc_reparse_all;
+  gtk_rc_reparse_all ();
 }
 
 G_MODULE_EXPORT void

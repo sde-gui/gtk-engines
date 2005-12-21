@@ -1,3 +1,29 @@
+2005-12-21  Thomas Wood  <thos@gnome.org>
+
+	* engines/hc/src/hc-main.c: (theme_init):
+	* engines/hc/src/hc-style.c: (hc_draw_shadow):
+	* engines/industrial/src/industrial_style.c: (ensure_pixmap),
+	(draw_hline), (draw_handle), (draw_vline), (draw_slider),
+	(real_draw_box), (draw_box), (draw_shadow), (draw_box_gap),
+	(draw_shadow_gap), (draw_extension), (draw_arrow), (draw_check),
+	(draw_option):
+	* engines/industrial/src/parse_rc_style.h:
+	* engines/mist/src/mist-rc-style.c:
+	* engines/mist/src/mist-style.c: (draw_box), (draw_resize_grip),
+	(draw_string):
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_box):
+	* engines/redmond/src/redmond_gtk2_engine.c:
+	* engines/redmond/src/redmond_gtk2_misc.c: (is_toolbar_item),
+	(gtk_menu_shell_setup_signals), (gtk_menu_shell_cleanup_signals):
+	* engines/thinice/src/thinice_rc_style.c:
+	(thinice_rc_style_class_init):
+	* engines/thinice/src/thinice_theme_draw.c: (draw_box),
+	(draw_handle):
+
+	- Patches and fixes for bug 321140 to hc, industrial, mist, redmond and
+	  thinice engines (cleanups for compiler warnings and removal of
+	  unneeded code)
+
 2005-12-19  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

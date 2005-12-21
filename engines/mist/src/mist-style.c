@@ -800,10 +800,6 @@ draw_box(GtkStyle *style,
 
 	cairo_t *cr = mist_begin_paint (window, area);
 	
-	orientation = GTK_ORIENTATION_HORIZONTAL;
-	if (height > width)
-		orientation = GTK_ORIENTATION_VERTICAL;
-	
 	if (CHECK_DETAIL(detail, "optionmenutab")) {
 		mist_line(cr, dark, x - 5, y, x - 5, y + height);
 		
@@ -1339,7 +1335,6 @@ draw_resize_grip(GtkStyle *style,
 		 int height)
 {
 	GdkColor *light, *dark;
-	GdkRectangle dest;
 	int xi, yi;
 	int max_x, max_y;
 	int threshold;
@@ -1480,12 +1475,8 @@ draw_string (GtkStyle      *style,
 	     int            y,
 	     const char    *string)
 {
-	GdkDisplay *display;
-	
 	g_return_if_fail (GTK_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
-	
-	display = gdk_drawable_get_display (window);
 	
 	if (area) {
 		gdk_gc_set_clip_rectangle (style->fg_gc[state_type], area);

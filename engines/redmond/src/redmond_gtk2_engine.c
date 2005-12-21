@@ -132,7 +132,7 @@ redmond_style_class_init (RedmondStyleClass * klass)
   style_class->draw_handle = redmond_draw_handle;
 }
   
-void
+static void
 redmond_style_register_type (GTypeModule * module)
 {
   static const GTypeInfo object_info = {

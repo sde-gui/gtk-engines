@@ -244,12 +244,6 @@ hc_draw_shadow(GtkStyle * style,
 	       gint width,
 	       gint height)
 {
-  GdkGC *gc1 = NULL;
-  GdkGC *gc2 = NULL;
-  gint thickness_light;
-  gint thickness_dark;
-  gint i;
-  
   g_return_if_fail (GTK_IS_STYLE (style));
   g_return_if_fail (window != NULL);
 

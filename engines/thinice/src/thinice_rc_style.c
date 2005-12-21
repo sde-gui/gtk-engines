@@ -3,7 +3,6 @@
 
 static void      thinice_rc_style_init         (ThiniceRcStyle      *style);
 static void      thinice_rc_style_class_init   (ThiniceRcStyleClass *klass);
-static void      thinice_rc_style_finalize     (GObject             *object);
 static guint     thinice_rc_style_parse        (GtkRcStyle          *rc_style,
 					       GtkSettings          *settings,
 					       GScanner             *scanner);
@@ -81,7 +80,6 @@ static void
 thinice_rc_style_class_init (ThiniceRcStyleClass *klass)
 {
   GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 

@@ -48,10 +48,10 @@ theme_parse_named_double(GScanner     *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static gboolean
 theme_parse_boolean(GScanner *scanner,
                     GTokenType wanted_token,
-                    guint *retval)
+                    gboolean *retval)
 {
   guint token;
   

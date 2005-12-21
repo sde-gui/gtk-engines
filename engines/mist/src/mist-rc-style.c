@@ -3,7 +3,6 @@
 
 static void      mist_rc_style_init         (MistRcStyle      *style);
 static void      mist_rc_style_class_init   (MistRcStyleClass *klass);
-static void      mist_rc_style_finalize     (GObject          *object);
 static guint     mist_rc_style_parse        (GtkRcStyle       *rc_style,
 					     GtkSettings      *settings,
 					     GScanner         *scanner);
