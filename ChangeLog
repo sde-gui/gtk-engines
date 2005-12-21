@@ -1,3 +1,14 @@
+2005-12-21  Kjartan Maraas,,23491770  <kmaraas@gnome.org>
+
+	* engines/smooth/src/interfaces/abstract/abstract_drawing_interface
+	.c:
+	* engines/smooth/src/interfaces/shared/gdk/gdk_drawing_interface.c:
+	(internal_drawing_area_use_pen_gc),
+	(internal_drawing_area_unuse_pen_gc),
+	(internal_drawing_area_use_brush_gc),
+	(internal_drawing_area_unuse_brush_gc): Revert too agressive cleanups so
+	we don't get unresolved symbols and crashes/100% cpu hangs.
+
 2005-12-21  Thomas Wood  <thos@gnome.org>
 
 	* engines/hc/src/hc-main.c: (theme_init):

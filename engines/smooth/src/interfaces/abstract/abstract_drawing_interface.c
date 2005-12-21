@@ -120,7 +120,7 @@ AbstractCanvasSetPenValues(SmoothCanvas Canvas,
 #endif
 
 /* Initialize drawingInterface */
-static SmoothBool 
+SmoothBool 
 AbstractDrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface)
 {
 	/* Color Get/Set Values */
@@ -284,7 +284,7 @@ AbstractDrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface)
 	return SmoothTrue;
 }
 
-static SmoothBool 
+SmoothBool 
 AbstractDrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface)
 {
 	return SmoothTrue;
