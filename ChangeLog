@@ -1,3 +1,12 @@
+2005-12-26  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters), (draw_box),
+	(clearlooks_style_init_from_rc):
+	* engines/clearlooks/src/clearlooks_types.h:
+
+	Added 'is_default' field to WidgetParameters.
+
 2005-12-21  Kjartan Maraas,,23491770  <kmaraas@gnome.org>
 
 	* engines/smooth/src/interfaces/abstract/abstract_drawing_interface

@@ -118,7 +118,6 @@ typedef struct
 	
 	CairoColor shade[9];
 	CairoColor spot[3];
-	
 } ClearlooksColors;
 
 typedef struct
@@ -127,6 +126,7 @@ typedef struct
 	boolean prelight;
 	boolean disabled;
 	boolean focus;
+	boolean is_default;
 	
 	ClearlooksStateType state_type;
 	

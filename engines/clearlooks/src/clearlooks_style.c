@@ -68,6 +68,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->corners    = CL_CORNER_ALL;
 		
 	params->focus      = widget && GTK_WIDGET_HAS_FOCUS (widget);
+	params->is_default = widget && GTK_WIDGET_HAS_DEFAULT (widget);
 		
 	if (!params->active && widget && GTK_IS_TOGGLE_BUTTON (widget))
 		params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
@@ -443,10 +444,7 @@ draw_box (DRAW_ARGS)
 		}
 		else
 			params.corners    = CL_CORNER_ALL;		
-		
-		if (DETAIL ("spinbutton"))
-			params.disabled = GTK_WIDGET_STATE (widget) & GTK_STATE_INSENSITIVE;
-		
+	
 		if (GTK_IS_TOGGLE_BUTTON (widget) &&
 		    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
 			params.active = TRUE;
@@ -1122,7 +1120,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 			       GtkRcStyle * rc_style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	double shades[] = {1.15, 0.95, 0.896, 0.85, 0.7, 0.665, 0.5, 0.45, 0.4};
+	double shades[] = {1.15, 0.95, 0.896, 0.82, 0.7, 0.665, 0.5, 0.45, 0.4};
 	CairoColor spot_color;
 	CairoColor bg_normal;
 	double contrast;
