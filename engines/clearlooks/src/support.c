@@ -485,3 +485,9 @@ scrollbar_get_junction (GtkWidget    *widget)
 	
 	return junction;
 }
+
+gboolean cl_is_gnome_panel (GtkWidget *widget)
+{
+	return widget && (strcmp(G_OBJECT_TYPE_NAME (widget), "PanelWidget") == 0);
+}
+

@@ -1,5 +1,16 @@
 2005-12-26  Richard Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
+
+	Don't draw menubar on GNOME panel.
+
+	* engines/clearlooks/src/support.c: (cl_is_gnome_panel):
+	* engines/clearlooks/src/support.h:
+
+	Added function to check if the widget is the GNOME panel.
+
+2005-12-26  Richard Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_set_widget_parameters), (draw_box),
 	(clearlooks_style_init_from_rc):

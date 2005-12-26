@@ -366,18 +366,14 @@ draw_box (DRAW_ARGS)
 	else if (height == -1)
 		gdk_window_get_size (window, NULL, &height);
 
-	if (DETAIL ("menubar"))
+	if (DETAIL ("menubar") && !cl_is_gnome_panel (widget->parent))
 	{
 		WidgetParameters params;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-//		if (gtk_widget_get_toplevel (widget)->allocation.x == widget->allocation.x &&
-//			gtk_widget_get_toplevel (widget)->allocation.width == widget->allocation.width)
-//		{
-			clearlooks_draw_menubar (cr, colors, &params,
-		    	                     x, y, width, height);
-//		}
+		clearlooks_draw_menubar (cr, colors, &params,
+		                         x, y, width, height);
 	}
 	else if (DETAIL ("button") && widget->parent &&
                  (GTK_IS_TREE_VIEW(widget->parent) ||
