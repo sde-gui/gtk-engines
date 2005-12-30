@@ -100,7 +100,7 @@ draw_shadow (DRAW_ARGS)
 
 	sanitize_size (window, &width, &height);
 
-	if (DETAIL ("entry") && !(widget->parent && GTK_IS_TREE_VIEW (widget->parent)))
+	if (DETAIL ("entry") && !(widget && widget->parent && GTK_IS_TREE_VIEW (widget->parent)))
 	{
 		WidgetParameters params;
 		

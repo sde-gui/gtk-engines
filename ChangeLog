@@ -1,3 +1,10 @@
+2005-12-30  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow):
+
+	Added an extra check for the entry widget. Prevents a crash
+	in evolution.
+
 2005-12-26  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
