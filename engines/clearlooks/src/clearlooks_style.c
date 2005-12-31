@@ -202,7 +202,8 @@ draw_box_gap (DRAW_ARGS,
 	}
 	else
 	{
-		printf("box_gap: %s %s\n", detail, G_OBJECT_TYPE_NAME (widget));
+		if (widget)
+			printf("box_gap: %s %s\n", detail, G_OBJECT_TYPE_NAME (widget));
 		parent_class->draw_box_gap (style, window, state_type, shadow_type,
 									   area, widget, detail,
 									   x, y, width, height,
@@ -366,7 +367,7 @@ draw_box (DRAW_ARGS)
 	else if (height == -1)
 		gdk_window_get_size (window, NULL, &height);
 
-	if (DETAIL ("menubar") && !cl_is_gnome_panel (widget->parent))
+	if (DETAIL ("menubar") && !(widget && cl_is_gnome_panel (widget->parent)))
 	{
 		WidgetParameters params;
 		
@@ -375,7 +376,7 @@ draw_box (DRAW_ARGS)
 		clearlooks_draw_menubar (cr, colors, &params,
 		                         x, y, width, height);
 	}
-	else if (DETAIL ("button") && widget->parent &&
+	else if (DETAIL ("button") && widget && widget->parent &&
                  (GTK_IS_TREE_VIEW(widget->parent) ||
                   GTK_IS_CLIST (widget->parent)))
 	{
