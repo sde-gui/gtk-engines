@@ -1089,7 +1089,7 @@ draw_arrow (GtkStyle  *style,
 		cairo_set_source_rgb (cr, 1, 0, 0);
 		cairo_fill (cr);
 	*/	
-		if (is_combo_box (widget))
+		if (cl_is_combo_box (widget))
 		{
 			arrow.type = CL_ARROW_COMBO;
 			y -= 2;

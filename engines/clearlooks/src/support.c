@@ -324,7 +324,7 @@ GdkColor *get_parent_bgcolor (GtkWidget *widget)
 }
 
 GtkWidget *
-find_combo_box_widget (GtkWidget * widget)
+cl_find_combo_box_widget (GtkWidget * widget)
 {
 	GtkWidget *result = NULL;
 	
@@ -333,16 +333,16 @@ find_combo_box_widget (GtkWidget * widget)
 		if (GTK_IS_COMBO_BOX (widget))
 			result = widget;
 		else
-			result = find_combo_box_widget(widget->parent);
+			result = cl_find_combo_box_widget(widget->parent);
 	}
 	
 	return result;
 }
 
 gboolean
-is_combo_box (GtkWidget * widget)
+cl_is_combo_box (GtkWidget * widget)
 {
-	return (find_combo_box_widget(widget) != NULL);
+	return (cl_find_combo_box_widget(widget) != NULL);
 }
 
 void

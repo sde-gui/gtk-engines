@@ -39,8 +39,8 @@ void       blend                   (GdkColormap  *colormap,
 			
 GtkWidget*        get_parent_window       (GtkWidget    *widget);
 GdkColor*         get_parent_bgcolor      (GtkWidget    *widget);
-gboolean          is_combo_box            (GtkWidget    *widget);
-GtkWidget*        find_combo_box_widget   (GtkWidget    *widget);
+gboolean          cl_is_combo_box         (GtkWidget    *widget);
+GtkWidget*        cl_find_combo_box_widget(GtkWidget    *widget);
 
 void              clearlooks_gdk_color_to_rgb   (GdkColor     *c,
                                                  double       *r,

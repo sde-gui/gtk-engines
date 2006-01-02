@@ -1,3 +1,13 @@
+2006-01-02  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_arrow):
+	* engines/clearlooks/src/support.c: (cl_find_combo_box_widget),
+	(cl_is_combo_box):
+	* engines/clearlooks/src/support.h:
+
+	Prefixed some function with cl_ to avoid symbol conflicts with
+	other engines. Based on a patch from #315562.
+
 2005-12-31  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_box_gap),
