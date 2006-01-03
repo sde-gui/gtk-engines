@@ -953,6 +953,28 @@ hc_draw_arrow (GtkStyle      *style,
 	      x, y, width, height);
 }
 
+
+static void
+hc_draw_flat_box (GtkStyle	*style,
+                  GdkWindow	*window,
+                  GtkStateType	 state_type,
+                  GtkShadowType	 shadow_type,
+                  GdkRectangle	*area,
+                  GtkWidget	*widget,
+                  const gchar	*detail,
+                  gint		 x,
+                  gint		 y,
+                  gint		 width,
+                  gint		 height)
+{
+  if (detail && !strcmp ("tooltip", detail))
+    gtk_paint_box (style, window, state_type, shadow_type, area,
+                   widget, detail, x, y, width, height);
+  else
+    parent_class->draw_flat_box (style, window, state_type, shadow_type, area,
+                                 widget, detail, x, y, width, height);
+}
+
 static void 
 hc_draw_box_gap (GtkStyle       *style,
 		 GdkWindow      *window,
@@ -1601,6 +1623,7 @@ hc_style_class_init (HcStyleClass *klass)
   style_class->draw_tab = hc_draw_tab;
   style_class->draw_shadow_gap = hc_draw_shadow_gap;
   style_class->draw_arrow = hc_draw_arrow;
+  style_class->draw_flat_box = hc_draw_flat_box;
   style_class->draw_box_gap = hc_draw_box_gap;
   style_class->draw_handle = hc_draw_handle;  
   style_class->draw_hline = hc_draw_hline; 

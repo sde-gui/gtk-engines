@@ -1,3 +1,11 @@
+2006-01-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/hc/src/hc-style.c: (hc_draw_flat_box),
+	(hc_style_class_init):
+	Add a hc_draw_flat_box function, that calls the gtk_paint_box
+	function for tooltips to avoid the hardcoded black border that
+	the default engine uses. Closes bug #318151.
+
 2006-01-02  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_arrow):
