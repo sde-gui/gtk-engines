@@ -1,13 +1,23 @@
+Overview of Changes in 2.7.2 (since 2.7.1)
+==========================================
+
+* Numerous Clearlooks bug fixes (including #315562, #323218, #323218, #325168)
+* Patches and fixes for bug 321140 to hc, industrial, mist, redmond, smooth
+  and thinice engines (cleanups for compiler warnings and removal of unneeded
+  code)
+
+
 Overview of Changes in 2.7.1 (since 2.7.0)
 ==========================================
 
 * Bug fixes to metal and thinice engines (bug 323215)
 * Updates and bug fixes to Clearlooks engine
 
+
 Overview of Changes in 2.7.0 (since 2.6.3)
 ==========================================
 * Clearlooks and Mist engine now uses cairo to do drawing
-* Redmond and Crux engine convertions to cairo started
+* Redmond and Crux engine conversions to cairo started
 * Various cleanups and fixes
 * Animation code for checkboxes and radiobuttons in clearlooks (off by default)
 
