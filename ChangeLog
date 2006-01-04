@@ -1,3 +1,13 @@
+2006-01-04  Thomas Wood  <thos@gnome.org>
+
+	* engines/lighthouseblue/src/lighthouseblue_rc_style.c:
+	(theme_parse_boolean):
+	* engines/lighthouseblue/src/lighthouseblue_style.c: (draw_arrow),
+	(lighthouseblue_style_class_init):
+	* engines/lighthouseblue/src/util.c:
+
+	Applied Lighthouseblue engine patch from bug 321140
+
 2006-01-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/hc/src/hc-style.c: (hc_draw_flat_box),

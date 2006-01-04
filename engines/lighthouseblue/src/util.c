@@ -64,34 +64,6 @@ static gboolean is_stepper_a (GtkWidget *widget, gint x, gint y)
 	return FALSE;
 }
 
-static gboolean is_stepper_b (GtkWidget *widget, gint x, gint y)
-{
-	GtkRange *range;
-	if (GTK_IS_RANGE (widget))
-	{
-		range = GTK_RANGE (widget);
-		return range->has_stepper_b
-			   && (range->layout->stepper_b.x == (x - widget->allocation.x))
-			   && (range->layout->stepper_b.y == (y - widget->allocation.y));
-	}
-	
-	return FALSE;
-}
-
-static gboolean is_stepper_c (GtkWidget *widget, gint x, gint y)
-{
-	GtkRange *range;
-	if (GTK_IS_RANGE (widget))
-	{
-		range = GTK_RANGE (widget);
-		return range->has_stepper_c
-			   && (range->layout->stepper_c.x == (x - widget->allocation.x))
-			   && (range->layout->stepper_c.y == (y - widget->allocation.y));
-	}
-	
-	return FALSE;
-}
-
 static gboolean is_stepper_d (GtkWidget *widget, gint x, gint y)
 {
 	GtkRange *range;

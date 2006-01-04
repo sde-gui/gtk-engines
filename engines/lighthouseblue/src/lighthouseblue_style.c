@@ -251,8 +251,6 @@ static void draw_arrow (GtkStyle *style,
 						gboolean fill, gint x, gint y, gint width, gint height)
 {
 	GdkGC *fg_gc;
-	gint orig_width;
-	gint orig_height;
 	
 	g_return_if_fail (LIGHTHOUSEBLUE_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
@@ -1544,15 +1542,7 @@ static void draw_handle (GtkStyle *style,
 		gdk_gc_set_clip_rectangle (dark_gc, NULL);
 	}
 }
-	
-static void draw_expander (GtkStyle * style,
-			 GdkWindow * window,
-			 GtkStateType state_type,
-			 GdkRectangle * area,
-			 GtkWidget * widget,
-			 const gchar * detail,
-			 gint x, gint y, GtkExpanderStyle expander_style){}
-				 
+
 static void draw_layout (GtkStyle *style,
 						 GdkWindow *window,
 						 GtkStateType state_type,
@@ -1838,7 +1828,6 @@ static void lighthouseblue_style_class_init (LighthouseBlueStyleClass *klass)
 
   style_class->draw_focus = draw_focus;
 
-  /*style_class->draw_expander = draw_expander;*/
   style_class->draw_layout = draw_layout;
 
   style_class->draw_resize_grip = draw_resize_grip;

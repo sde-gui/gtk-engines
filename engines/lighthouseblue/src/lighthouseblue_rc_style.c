@@ -79,7 +79,7 @@ static void lighthouseblue_rc_style_class_init (LighthouseBlueRcStyleClass *klas
   rc_style_class->create_style = lighthouseblue_rc_style_create_style;
 }
 
-static guint theme_parse_boolean (GScanner *scanner, GTokenType wanted_token, guint *retval)
+static gboolean theme_parse_boolean (GScanner *scanner, GTokenType wanted_token, gboolean *retval)
 {
   guint token;
 
