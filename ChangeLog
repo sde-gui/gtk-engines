@@ -1,6 +1,12 @@
 2006-01-05  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
+
+	Removed some very unprofessional debugging output... 
+
+2006-01-05  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
 	* engines/clearlooks/src/support.c: (cl_is_panel_widget):
 	* engines/clearlooks/src/support.h:
 
