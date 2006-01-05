@@ -353,6 +353,7 @@ combo_box_get_seperator_pos (GtkWidget *widget)
 static void
 draw_box (DRAW_ARGS)
 {
+	printf("draw a fucking box\n");
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	const ClearlooksColors *colors;
 	cairo_t *cr;
@@ -367,8 +368,10 @@ draw_box (DRAW_ARGS)
 	else if (height == -1)
 		gdk_window_get_size (window, NULL, &height);
 
-	if (DETAIL ("menubar") && !(widget && cl_is_gnome_panel (widget->parent)))
+	if (DETAIL ("menubar") && 
+	    !(widget && (cl_is_panel_widget (widget->parent))))
 	{
+		printf("I'm not here!%s\n", G_OBJECT_TYPE_NAME (widget->parent));
 		WidgetParameters params;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);

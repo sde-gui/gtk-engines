@@ -486,8 +486,9 @@ scrollbar_get_junction (GtkWidget    *widget)
 	return junction;
 }
 
-gboolean cl_is_gnome_panel (GtkWidget *widget)
+gboolean cl_is_panel_widget (GtkWidget *widget)
 {
-	return widget && (strcmp(G_OBJECT_TYPE_NAME (widget), "PanelWidget") == 0);
+        return widget && (strcmp(G_OBJECT_TYPE_NAME (widget), "PanelApplet") == 0 ||
+	                  strcmp(G_OBJECT_TYPE_NAME (widget), "PanelWidget") == 0);
 }
 

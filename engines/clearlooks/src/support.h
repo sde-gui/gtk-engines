@@ -71,6 +71,7 @@ ClearlooksStepper scrollbar_visible_steppers    (GtkWidget       *widget);
 ClearlooksJunction scrollbar_get_junction       (GtkWidget    *widget);
 
 
-gboolean          cl_is_gnome_panel             (GtkWidget *widget);
+gboolean          cl_is_panel_widget            (GtkWidget *widget);
+
 
 #endif /* SUPPORT_H */

@@ -1,3 +1,13 @@
+2006-01-05  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
+	* engines/clearlooks/src/support.c: (cl_is_panel_widget):
+	* engines/clearlooks/src/support.h:
+
+	Renamed cl_is_gnome_panel to cl_is_panel_widget to catch
+	applets as well. Don't ask me why the Window List applet
+	likes to draw like a menubar, but it does.
+
 2006-01-04  Thomas Wood  <thos@gnome.org>
 
 	* engines/lighthouseblue/src/lighthouseblue_rc_style.c:
