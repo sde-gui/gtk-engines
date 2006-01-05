@@ -585,6 +585,8 @@ draw_box (DRAW_ARGS)
 				cl_progressbar_add ((gpointer)widget);
 			}
 		}
+
+		frame = cl_async_animation_getdata((gpointer)widget).frame;
 #endif
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
@@ -595,10 +597,6 @@ draw_box (DRAW_ARGS)
 			progressbar.orientation = CL_ORIENTATION_LEFT_TO_RIGHT;
 		
 		cairo_reset_clip (cr);
-		
-#ifdef HAVE_ANIMATION
-		frame = 10 - cl_async_animation_getdata((gpointer)widget).frame;
-#endif
 		
 		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
 		                                  x, y, width, height, frame);

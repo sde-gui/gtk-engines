@@ -1,6 +1,14 @@
 2006-01-05  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Reverted to 'forward motion' animation by default, when
+	enabled. Disabled by default now.
+
+2006-01-05  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
 
 	Removed some very unprofessional debugging output... 
 
