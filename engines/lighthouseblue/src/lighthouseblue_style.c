@@ -1401,10 +1401,10 @@ static void draw_slider (GtkStyle *style,
 	
 	if (area)
 	{
-		gdk_gc_set_clip_rectangle (gc1, area);
-		gdk_gc_set_clip_rectangle (gc2, area);
-		gdk_gc_set_clip_rectangle (gc3, area);
-		gdk_gc_set_clip_rectangle (gc4, area);
+		gdk_gc_set_clip_rectangle (gc1, NULL);
+		gdk_gc_set_clip_rectangle (gc2, NULL);
+		gdk_gc_set_clip_rectangle (gc3, NULL);
+		gdk_gc_set_clip_rectangle (gc4, NULL);
 	}
 }
 				   
@@ -1494,7 +1494,7 @@ static void draw_handle (GtkStyle *style,
 			}
 		}
 		
-		return;
+		goto end;
 	}
 	else
 	{
@@ -1536,6 +1536,7 @@ static void draw_handle (GtkStyle *style,
 		}
 	}
 	
+end:
 	if (area)
 	{
 		gdk_gc_set_clip_rectangle (light_gc, NULL);

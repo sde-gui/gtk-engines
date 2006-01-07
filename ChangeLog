@@ -1,3 +1,9 @@
+2006-01-06  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/lighthouseblue/src/lighthouseblue_style.c: (draw_slider),
+	(draw_handle):
+	Make sure the clip regions are reset again.
+
 2006-01-05  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
