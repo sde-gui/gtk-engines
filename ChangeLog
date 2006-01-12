@@ -1,5 +1,11 @@
 2006-01-12  Daniel Borgmann  <daniel.borgmann@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
+	
+	Don't draw the shadow on vertical toolbars.
+
+2006-01-12  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_style.c: (scale_or_ref):
 	
 	Add missing function for icon transparency patch.
