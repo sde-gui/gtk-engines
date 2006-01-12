@@ -641,24 +641,25 @@ draw_box (DRAW_ARGS)
 		WidgetParameters params;
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
-	/*	if (widget && GTK_IS_MENU_BAR (widget->parent))
+		if (widget && GTK_IS_MENU_BAR (widget->parent))
 		{
-			params.corners = CL_CORNER_NONE;
+			/*params.corners = CL_CORNER_NONE;
 			params.active = TRUE;
 			params.state_type = CL_STATE_ACTIVE;
 			params.xthickness = 2;
 			params.ythickness = 2;
 			
-			clearlooks_draw_button (cr, colors, &params, x, y, width, height+1);
+			clearlooks_draw_button (cr, colors, &params, x, y, width, height+1);*/
+			
+			params.corners = CL_CORNER_TOPLEFT | CL_CORNER_TOPRIGHT;
+			height += 1;
 		}
-		else*/
+		else
 		{	
-			WidgetParameters params;
-			clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		
-			clearlooks_draw_menuitem (cr, colors, &params,
-			                          x, y, width, height);
+			params.corners = CL_CORNER_ALL;
 		}
+		
+		clearlooks_draw_menuitem (cr, colors, &params, x, y, width, height);
 	}
 	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar") || DETAIL ("slider") || DETAIL ("stepper"))
 	{

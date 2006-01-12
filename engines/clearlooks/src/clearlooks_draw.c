@@ -1227,16 +1227,27 @@ clearlooks_draw_menuitem (cairo_t *cr,
                           const WidgetParameters          *widget,
                           int x, int y, int width, int height)
 {
-	CairoColor *fill   = (CairoColor*)&colors->spot[1];
-	CairoColor *border = (CairoColor*)&colors->spot[1];
+	CairoColor *fill = (CairoColor*)&colors->spot[1];
+	CairoColor fill_shade;
+	CairoColor *border = (CairoColor*)&colors->spot[2];
+	cairo_pattern_t *pattern;
+	
+	shade (fill, &fill_shade, 0.85);
 	
 	cairo_translate      (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 	
-	cairo_rectangle      (cr, 0, 0, width, height);
+	clearlooks_rounded_rectangle (cr, 0, 0, width, height, 3.0, widget->corners);
 	
-	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
-	cairo_fill           (cr);
+	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0,   fill->r, fill->g, fill->b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, fill_shade.r, fill_shade.g, fill_shade.b);
+	
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve  (cr);
+	
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke	         (cr);
 }
 
 void
