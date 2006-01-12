@@ -1,3 +1,10 @@
+2006-01-12  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (set_transparency),
+	(render_icon), (clearlooks_style_class_init):
+	
+	Applied icon transparency patch again.
+
 2006-01-12	Daniel Borgmann  <daniel.borgmann@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
