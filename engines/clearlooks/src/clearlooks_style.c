@@ -707,7 +707,8 @@ draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
-		if (shadow_type != GTK_SHADOW_NONE)
+		// Only draw the shadows on horizontal toolbars
+		if (shadow_type != GTK_SHADOW_NONE && height < 2*width )
 			clearlooks_draw_toolbar (cr, colors, NULL, x, y, width, height);
 	}
 	else if (DETAIL ("trough"))
@@ -1341,6 +1342,21 @@ set_transparency (const GdkPixbuf *pixbuf, gdouble alpha_percent)
 	}
 
 	return target;
+}
+
+static GdkPixbuf*
+scale_or_ref (GdkPixbuf *src,
+              int width,
+              int height)
+{
+	if (width == gdk_pixbuf_get_width (src) &&
+	    height == gdk_pixbuf_get_height (src)) {
+		return g_object_ref (src);
+	} else {
+		return gdk_pixbuf_scale_simple (src,
+                                        width, height,
+                                        GDK_INTERP_BILINEAR);
+	}
 }
 
 static GdkPixbuf *
