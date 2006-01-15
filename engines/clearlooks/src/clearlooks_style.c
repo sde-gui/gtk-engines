@@ -1059,6 +1059,29 @@ draw_resize_grip (GtkStyle       *style,
                   gint            width,
                   gint            height)
 {
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	ClearlooksColors *colors = &clearlooks_style->colors;
+
+	cairo_t *cr = clearlooks_begin_paint (window, area);
+
+	WidgetParameters params;
+	ResizeGripParameters grip;
+	grip.edge = (ClearlooksWindowEdge)edge;
+
+	int lx, ly;
+
+	g_return_if_fail (window != NULL);
+
+	if (edge != GDK_WINDOW_EDGE_SOUTH_EAST)
+		return; // sorry... need to work on this :P
+
+	clearlooks_set_widget_parameters (widget, style, state_type, &params);	
+
+	clearlooks_draw_resize_grip (cr, colors, &params, &grip,
+	                             x, y, width, height);
+
+	cairo_destroy (cr);
+
 	return;
 }
 

@@ -96,6 +96,18 @@ typedef enum
 	CL_PROGRESSBAR_DISCRETE
 } ClearlooksProgressBarStyle;
 
+typedef enum
+{
+	CL_WINDOW_EDGE_NORTH_WEST,
+	CL_WINDOW_EDGE_NORTH,
+	CL_WINDOW_EDGE_NORTH_EAST,
+	CL_WINDOW_EDGE_WEST,
+	CL_WINDOW_EDGE_EAST,
+	CL_WINDOW_EDGE_SOUTH_WEST,
+	CL_WINDOW_EDGE_SOUTH,
+	CL_WINDOW_EDGE_SOUTH_EAST  
+} ClearlooksWindowEdge;
+
 typedef struct
 {
 	double r;
@@ -211,6 +223,11 @@ typedef struct
 	ClearlooksArrowType type;
 	ClearlooksDirection direction;
 } ArrowParameters;
+
+typedef struct
+{
+	ClearlooksWindowEdge edge;
+} ResizeGripParameters;
 
 #define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) rect.x      = _x; \
                                                        rect.y      = _y; \

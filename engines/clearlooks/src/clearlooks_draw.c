@@ -1662,3 +1662,34 @@ clearlooks_draw_arrow (cairo_t *cr,
 	_clearlooks_draw_arrow (cr, color, arrow->direction, arrow->type,
 	                        tx, ty, width, height);
 }
+
+void
+clearlooks_draw_resize_grip (cairo_t *cr,
+                             const ClearlooksColors          *colors,
+                             const WidgetParameters          *widget,
+                             const ResizeGripParameters      *grip,
+                             int x, int y, int width, int height)
+{
+ 	CairoColor *dark = (CairoColor*)&colors->shade[4];
+	int lx, ly;
+ 
+	cairo_set_line_width (cr, 1);
+
+	for (ly=0; ly<3; ly++) // vertically, three rows of dots
+	{
+		for (lx=0; lx<=ly; lx++) // horizontally
+		{
+			int ny = (2-ly) * 5;
+			int nx = lx * 4;
+
+			cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
+			cairo_arc (cr, x+width-nx-1, y+height-ny-1, 1.3, 0, M_PI*2);
+			cairo_fill (cr);
+
+			cairo_set_source_rgba (cr, 1, 1, 1, 0.5);
+			cairo_arc (cr, x+width-nx, y+height-ny, 1.3, 0, M_PI*2);
+			cairo_fill (cr);
+		}
+	}
+}
+
