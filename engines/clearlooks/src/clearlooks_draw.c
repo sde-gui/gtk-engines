@@ -1245,6 +1245,7 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	
 	cairo_set_source (cr, pattern);
 	cairo_fill_preserve  (cr);
+	cairo_pattern_destroy (pattern);
 	
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
 	cairo_stroke	         (cr);
