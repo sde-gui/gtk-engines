@@ -2013,34 +2013,61 @@ draw_check (GtkStyle *style,
 	    const gchar *detail, gint x, gint y, gint width, gint height)
 {
 	cairo_t * cr;
+	gdouble cx, cy; /* co-ordinates for cairo */
 	eazel_engine_gradient g;
 	GdkGCValues values;
 	GdkRectangle box;
+	GdkGC *a, *b, *c, *d;
 
 	g.direction = GRADIENT_VERTICAL;
 
 	gdk_gc_get_values (style->bg_gc[state_type], &values);
 	gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
 
-	paint_shadow (window, style->black_gc, style->light_gc[state_type], style->dark_gc[state_type], style->black_gc,
-			FALSE, x, y, height, height);
+	if (state_type == GTK_STATE_INSENSITIVE)
+	{
+		a = style->dark_gc[state_type];
+		b = NULL;
+		d = style->dark_gc[state_type];
+		c = NULL;
+	}
+	else
+	{
+		a = style->black_gc;
+		b = style->light_gc[state_type];
+		c = style->dark_gc[state_type];
+		d = style->black_gc;
+	}
+
+	paint_shadow (window, a, b, c, d, FALSE, x, y, height, height);
 
 	cr = crux_begin_paint (window, NULL);
 
-	box.x = x + 2;
-	box.y = y + 2;
-	box.height = box.width = height - 4;
+	if (state_type != GTK_STATE_INSENSITIVE)
+	{
+		box.x = x + 2;
+		box.y = y + 2;
+		box.height = box.width = height - 4;
 
-	crux_paint_gradient (cr, &values.foreground, &box, &g);
+		crux_paint_gradient (cr, &values.foreground, &box, &g);
+	}
 
 	if (shadow_type != GTK_SHADOW_OUT)
 	{
 		/* draw tick mark */
-		cairo_set_source_rgba (cr, 0, 0, 0, 1);
+		gdk_gc_get_values (a, &values);
+		gdk_colormap_query_color (gdk_gc_get_colormap (a), values.foreground.pixel, &values.foreground);
+		gdk_cairo_set_source_color (cr, &values.foreground);
+
 		cairo_set_line_width (cr, 2.0);
-		cairo_move_to (cr, x + 2.5, y + height * 0.3 + 0.5);
-		cairo_line_to (cr, x + (width * 0.45) + 0.5, y + height * 0.6 + 0.5);
-		cairo_line_to (cr, x + width - 1.5, y + 2.5);
+		cx = x + 0.5; width--;
+		cy = y + 0.5; height--;
+
+		/* TODO: draw drop shadow (if state is not insensitive) */
+
+		cairo_move_to (cr, x + 3.0, y + height * 0.5);
+		cairo_line_to (cr, x + width * 0.5, y + height * 0.7);
+		cairo_line_to (cr, x + width - 1.0, y + 3.0);
 		cairo_stroke (cr);
 		cairo_fill (cr);
 	}
