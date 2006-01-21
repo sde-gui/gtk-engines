@@ -1,3 +1,13 @@
+2006-01-21  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (paint_stock_image),
+	(paint_shadow), (paint_default), (paint_arrow), (draw_box),
+	(draw_polygon), (draw_arrow), (draw_check), (draw_focus),
+	(draw_slider):
+	* themes/Crux/gtk-2.0/gtkrc:
+
+	First attempt at cairo check boxes
+
 2006-01-16  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* NEWS:

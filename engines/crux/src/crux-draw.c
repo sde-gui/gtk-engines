@@ -166,10 +166,10 @@ draw_focus (GtkStyle *style,
 	    GtkStateType state_type,
 	    GdkRectangle *area,
 	    GtkWidget *widget,
-	    const gchar *detail, 
-	    gint x, 
-	    gint y, 
-	    gint width, 
+	    const gchar *detail,
+	    gint x,
+	    gint y,
+	    gint width,
 	    gint height);
 
 static void
@@ -386,7 +386,7 @@ paint_stock_image (eazel_theme_data *theme_data,
 	{
 	    gdk_draw_pixmap (window, style->fg_gc[state_type], pixmap,
 			     xsrc, ysrc, x, y, width, height);
-	} 
+	}
 
 	if (mask != 0)
 	{
@@ -394,7 +394,7 @@ paint_stock_image (eazel_theme_data *theme_data,
 	    gdk_gc_set_clip_origin (style->fg_gc[state_type], 0, 0);
 	}
    }
-    
+
     eazel_engine_stock_free_pixmaps (theme_data->stock, type, pixmap, mask);
 }
 
@@ -432,7 +432,7 @@ paint_shadow (GdkWindow *window, GdkGC *a, GdkGC *b, GdkGC *c, GdkGC *d,
 	/* a: left/top, outer; b: left/top inner; c: right/bottom inner, d: right/bottom outer */
 
 	GdkGCValues values;
-	gdouble radius = (rounded) ? 2.0 : 0.1;
+	gdouble radius = (rounded) ? 2.0 : 0.01;
 	cairo_t * cr;
 
 	x += 0.5; y += 0.5;
@@ -608,7 +608,7 @@ paint_default (eazel_theme_data *theme_data,
 	int y_i = y + i;
 	int w_i = width - (i * 2);
 	int h_i = height - (i * 2);
-	
+
 	int d_corner = (corner && i == 0) ? corner : 0;
 
 	gdk_draw_line (window, gc, x_i + d_corner, y_i,
@@ -712,7 +712,7 @@ paint_arrow (GdkWindow *window, GdkGC *gc, GtkArrowType arrow_type,
 
     center_x = x + half_width;
     center_y = y + half_height;
-  
+
     switch (arrow_type)
     {
 	int i;
@@ -1151,7 +1151,7 @@ draw_box (GtkStyle *style,
     if ((width == -1) && (height == -1))
     {
 	gdk_window_get_size (window, &width, &height);
-	
+
 	/* FIXME GNOME2
 	   if (gdk_window_get_type (window) != GDK_WINDOW_PIXMAP)
 	   set_bg = TRUE;
@@ -1285,7 +1285,7 @@ draw_box (GtkStyle *style,
 	    y1 = /*style->ythickness +*/ y;
 	    y2 = (y + height) /*- style->ythickness*/;
 
-	    gdk_draw_line (window, style->dark_gc[state_type], 
+	    gdk_draw_line (window, style->dark_gc[state_type],
 			   x + x_offset, y1, x + x_offset, y2);
 	    gdk_draw_line (window, style->light_gc[state_type],
 			   x + 1 + x_offset, y1, x +1 + x_offset, y2);
@@ -1376,7 +1376,7 @@ draw_box (GtkStyle *style,
 			y += theme_data->default_thickness -1;
 			width -= theme_data->default_thickness * 2 -1,
 			height -= theme_data->default_thickness * 2 -1;
-		}	
+		}
 		fun (theme_data, window, style->black_gc, TRUE, TRUE,
 		     theme_data->default_thickness,
 		     x - (theme_data->default_thickness),
@@ -1419,12 +1419,12 @@ draw_polygon (GtkStyle *style,
 #ifndef M_PI
 #define M_PI    3.14159265358979323846
 #endif /*
-        * M_PI 
+        * M_PI
         */
 #ifndef M_PI_4
 #define M_PI_4  0.78539816339744830962
 #endif /*
-        * M_PI_4 
+        * M_PI_4
         */
 
     static const gdouble pi_over_4 = M_PI_4;
@@ -1642,7 +1642,7 @@ draw_arrow (GtkStyle *style,
 	  {
 	  XXX A hack, assumes that up arrow is drawn before
 	  XXX down arrow. (Currently it is)
-	  
+
 	  draw_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_OUT,
 	  NULL, widget, "entry", x - 2, 0,
 	  width + 4, window_height);
@@ -1658,7 +1658,7 @@ draw_arrow (GtkStyle *style,
 	    for (i = 0; i < 4; i++)
 	    {
 		gdk_draw_line (window, style->fg_gc[state_type],
-			       tem_x - i, tem_y + i, 
+			       tem_x - i, tem_y + i,
 			       tem_x + i, tem_y + i);
 	    }
 	}
@@ -2012,8 +2012,41 @@ draw_check (GtkStyle *style,
 	    GtkWidget *widget,
 	    const gchar *detail, gint x, gint y, gint width, gint height)
 {
-    paint_check (style, window, state_type, shadow_type, area,
-		 widget, detail, x, y, width, height, EAZEL_ENGINE_CHECK);
+	cairo_t * cr;
+	eazel_engine_gradient g;
+	GdkGCValues values;
+	GdkRectangle box;
+
+	g.direction = GRADIENT_VERTICAL;
+
+	gdk_gc_get_values (style->bg_gc[state_type], &values);
+	gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
+
+	paint_shadow (window, style->black_gc, style->light_gc[state_type], style->dark_gc[state_type], style->black_gc,
+			FALSE, x, y, height, height);
+
+	cr = crux_begin_paint (window, NULL);
+
+	box.x = x + 2;
+	box.y = y + 2;
+	box.height = box.width = height - 4;
+
+	crux_paint_gradient (cr, &values.foreground, &box, &g);
+
+	if (shadow_type != GTK_SHADOW_OUT)
+	{
+		/* draw tick mark */
+		cairo_set_source_rgba (cr, 0, 0, 0, 1);
+		cairo_set_line_width (cr, 2.0);
+		cairo_move_to (cr, x + 2.5, y + height * 0.3 + 0.5);
+		cairo_line_to (cr, x + (width * 0.45) + 0.5, y + height * 0.6 + 0.5);
+		cairo_line_to (cr, x + width - 1.5, y + 2.5);
+		cairo_stroke (cr);
+		cairo_fill (cr);
+	}
+
+	cairo_destroy (cr);
+
 }
 
 static void
@@ -2338,7 +2371,7 @@ draw_focus (GtkStyle *style,
 		return;
 	}
 	/* Make sure no widget is without a focus indicator! */
-	parent_style_class->draw_focus(style, window, state_type, area, widget, 
+	parent_style_class->draw_focus(style, window, state_type, area, widget,
 	                               detail, x, y, width, height);
 }
 
@@ -2355,7 +2388,7 @@ draw_slider (GtkStyle *style,
 {
     eazel_theme_data *theme_data;
     gboolean focused;
-    
+
     g_return_if_fail (style != NULL);
     g_return_if_fail (window != NULL);
 
@@ -2416,7 +2449,7 @@ draw_slider (GtkStyle *style,
 		/* XXX `4' is 1/2 height of thumb */
 		thumb_y = y + height / 2 - 4;
 	    }
-	    
+
 	    paint_stock_image (theme_data,
 			       width > height
 			       ? (state_type == GTK_STATE_PRELIGHT

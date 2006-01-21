@@ -58,7 +58,7 @@ style "default"
   GtkRange::trough_border = 2
 
   GtkScale::slider_length = 16
-  GtkCheckButton::indicator_size = 10
+  GtkCheckButton::indicator_size = 12
   GtkCheckButton::indicator_spacing = 3
   GtkCheckMenuItem::indicator_size = 10
 
