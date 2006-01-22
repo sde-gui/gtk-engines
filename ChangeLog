@@ -1,3 +1,23 @@
+2006-01-22  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/Makefile.am: Use new shared functions
+	* engines/crux/src/crux-draw.c: (crux_paint_gradient), (draw_box),
+	(draw_check), (draw_option): Draw radio buttons using cairo
+
+	* engines/crux/src/crux-draw.h:
+	* engines/crux/src/eazel-theme.h:
+
+	Remove references to (old) undefined functions
+
+	* configure.ac:
+	* engines/Makefile.am:
+	* engines/support/Makefile.am:
+	* engines/support/cairo-support.c: (rgb_to_hls), (hls_to_rgb),
+	(ge_gdk_color_to_cairo), (ge_shade_color):
+	* engines/support/cairo-support.h:
+
+	New cross-engine support functions
+
 2006-01-21  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (draw_check): Add insensitive state
