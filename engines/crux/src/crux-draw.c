@@ -4,6 +4,8 @@
 #include "crux-common.h"
 #include "crux-pixmaps.h"
 
+#include "cairo-support.h"
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
@@ -250,7 +252,7 @@ crux_paint_menuitem_gradient (cairo_t * cr, GdkColor * c, gdouble x, gdouble y, 
 }
 
 static void
-crux_paint_gradient (cairo_t * cr, GdkColor * c, GdkRectangle * rect, eazel_engine_gradient *gradient)
+crux_paint_gradient (cairo_t * cr, GdkColor * c, GdkRectangle * rect, eazel_engine_gradient_direction gradient)
 {
 	gint x, y, width, height;
 	x = rect->x; y = rect->y; width = rect->width; height = rect->height;
@@ -261,10 +263,16 @@ crux_paint_gradient (cairo_t * cr, GdkColor * c, GdkRectangle * rect, eazel_engi
 	r = c->red / 65536.0;
 	g = c->green / 65536.0;
 	b = c->blue / 65536.0;
-	if (gradient->direction == GRADIENT_VERTICAL)
-		crp = cairo_pattern_create_linear (x, y, x, y + height);
-	else if (gradient->direction == GRADIENT_HORIZONTAL)
-		crp = cairo_pattern_create_linear (x, y, x + width, y);
+	switch (gradient)
+	{
+		case GRADIENT_VERTICAL:
+			crp = cairo_pattern_create_linear (x, y, x, y + height);
+			break;
+		case GRADIENT_HORIZONTAL:
+			crp = cairo_pattern_create_linear (x, y, x + width, y);
+			break;
+		default: return;
+	}
 
 	cairo_pattern_add_color_stop_rgb (crp, 0.0, r*1.1, g*1.1, b*1.1);
 	cairo_pattern_add_color_stop_rgb (crp, 1.0, r*.8, g*.8, b*.8);
@@ -766,46 +774,6 @@ paint_arrow (GdkWindow *window, GdkGC *gc, GtkArrowType arrow_type,
     }
 }
 
-static void
-paint_tick (GdkWindow *window, GdkGC *gc, int x, int y)
-{
-#define PIXEL(a,b) gdk_draw_point (window, gc, x + a, y + b)
-
-    PIXEL (4, -4);
-    PIXEL (3, -3); PIXEL (4, -3); PIXEL (5, -3);
-    PIXEL (-2, -2);
-    PIXEL (2, -2); PIXEL (3, -2); PIXEL (4, -2);
-    PIXEL (-3, -1); PIXEL (-2, -1); PIXEL (-1, -1);
-    PIXEL (1, -1); PIXEL (2, -1); PIXEL (3, -1);
-    PIXEL (-2, 0); PIXEL (-1, 0); PIXEL (0, 0); PIXEL (1, 0); PIXEL (2, 0);
-    PIXEL (-1, 1); PIXEL (0, 1); PIXEL (1, 1);
-    PIXEL (0, 2);
-
-#undef PIXEL
-}
-
-static void
-paint_bullet (GdkWindow *window, GdkGC *gc, int x, int y)
-{
-#define PIXEL(a, b) gdk_draw_point (window, gc, x + a, y + b)
-
-    PIXEL (0, 0); PIXEL (0, -1); PIXEL (-1, 0); PIXEL (-1, -1);
-    PIXEL (1, -1); PIXEL (2, -1); PIXEL (-1, 1); PIXEL (-1, 2);
-
-    PIXEL (0, -2); PIXEL (1, -2);
-    PIXEL (-2, 0); PIXEL (-2, 1);
-    PIXEL (1, 0); PIXEL (2, 0); PIXEL (3, 0);
-    PIXEL (0, 1); PIXEL (1, 1); PIXEL (2, 1); PIXEL (3, 1);
-    PIXEL (0, 2); PIXEL (1, 2); PIXEL (2, 2);
-    PIXEL (0, 3); PIXEL (1, 3);
-
-    PIXEL (-1, -2); PIXEL (-2, -1); PIXEL (2, -2); PIXEL (3, -1);
-    PIXEL (-2, 2); PIXEL (-1, 3); PIXEL (2, 3); PIXEL (3, 2);
-
-#undef PIXEL
-}
-
-
 /* style functions */
 
 static void
@@ -1338,7 +1306,7 @@ draw_box (GtkStyle *style,
 		cr = crux_begin_paint (window, area);
 		gdk_gc_get_values (style->bg_gc[state_type], &values);
 		gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
-		crux_paint_gradient (cr, &values.foreground, &full, gradient);
+		crux_paint_gradient (cr, &values.foreground, &full, gradient->direction);
 		cairo_destroy (cr);
 	}
 	else
@@ -1907,103 +1875,6 @@ draw_flat_box (GtkStyle *style,
 #endif
 
 static void
-paint_check (GtkStyle *style,
-	     GdkWindow *window,
-	     GtkStateType state_type,
-	     GtkShadowType shadow_type,
-	     GdkRectangle *area,
-	     GtkWidget *widget,
-	     const gchar *detail, gint x, gint y, gint width, gint height,
-	     eazel_engine_stock_image stock_base)
-{
-    eazel_engine_stock_image type;
-    gboolean active = (shadow_type != GTK_SHADOW_OUT);
-    gboolean has_focus = (widget != 0 && GTK_WIDGET_HAS_FOCUS (widget));
-    gboolean menu_item = (widget != 0 && gtk_widget_get_ancestor (widget, GTK_TYPE_MENU_ITEM));
-
-    eazel_theme_data *theme_data;
-
-    theme_data = CRUX_RC_STYLE (style->rc_style)->theme_data;
-    g_assert (theme_data != NULL);
-
-    if (GTK_IS_TREE_VIEW (widget)) {
-      has_focus = FALSE;
-    }
-
-    if (DETAIL ("checkbutton") || DETAIL ("radiobutton"))
-    {
-	/* correct for braindeath in gtk_real_check_button_draw_indicator */
-	if (widget != 0 && GTK_IS_TOGGLE_BUTTON (widget))
-	    active = GTK_TOGGLE_BUTTON (widget)->active;
-	if (widget != 0)
-	{
-	    state_type = GTK_WIDGET_STATE (widget);
-	    /* XXX the widget gives us no way to tell between
-	       XXX checked, and checked-and-clicked states.. */
-	    if (active && state_type == GTK_STATE_ACTIVE)
-		state_type = GTK_STATE_NORMAL;
-	    else if (!has_focus && !active && state_type == GTK_STATE_ACTIVE)
-		state_type = GTK_STATE_NORMAL;
-	}
-    }
-
-    if (!menu_item)
-    {
-	switch (state_type)
-	{
-	case GTK_STATE_INSENSITIVE:
-	    type = (!active ? EAZEL_ENGINE_CHECK_DISABLED
-		    : EAZEL_ENGINE_CHECK_ACTIVE_DISABLED);
-	    break;
-
-	case GTK_STATE_PRELIGHT:
-	    type = (active
-		    ? (has_focus ? EAZEL_ENGINE_CHECK_ACTIVE_HI_FOCUS
-		       : EAZEL_ENGINE_CHECK_ACTIVE_HI)
-		    : (has_focus ? EAZEL_ENGINE_CHECK_HI_FOCUS
-		       : EAZEL_ENGINE_CHECK_HI));
-	    break;
-
-	case GTK_STATE_ACTIVE:
-	    type = (active
-		    ? (has_focus ? EAZEL_ENGINE_CHECK_ACTIVE_PRESSED_FOCUS
-		       : EAZEL_ENGINE_CHECK_ACTIVE)
-		    : (has_focus ? EAZEL_ENGINE_CHECK_PRESSED_FOCUS
-		       : EAZEL_ENGINE_CHECK_PRESSED));
-	    break;
-
-	default:
-	    type = (active
-		    ? (has_focus ? EAZEL_ENGINE_CHECK_ACTIVE_FOCUS
-		       : EAZEL_ENGINE_CHECK_ACTIVE)
-		    : (has_focus ? EAZEL_ENGINE_CHECK_FOCUS
-		       : EAZEL_ENGINE_CHECK));
-	}
-
-	paint_stock_image (theme_data, type + stock_base,
-			   FALSE, FALSE, style, window,
-			   state_type, area, widget,
-			   x-3, y-3, width+6, height+6);
-    }
-    else
-    {
-	if (!active)
-	    return;
-
-	if (stock_base == EAZEL_ENGINE_CHECK)
-	{
-	    paint_tick (window, style->fg_gc[state_type],
-			x + width / 2, y + width / 2);
-	}
-	else
-	{
-	    paint_bullet (window, style->fg_gc[state_type],
-			  x + width / 2, y + width / 2);
-	}
-    }
-}
-
-static void
 draw_check (GtkStyle *style,
 	    GdkWindow *window,
 	    GtkStateType state_type,
@@ -2014,29 +1885,24 @@ draw_check (GtkStyle *style,
 {
 	cairo_t * cr;
 	gdouble cx, cy; /* co-ordinates for cairo */
-	eazel_engine_gradient g;
 	GdkGCValues values;
 	GdkRectangle box;
 	GdkGC *a, *b, *c, *d;
 
-	g.direction = GRADIENT_VERTICAL;
-
 	gdk_gc_get_values (style->bg_gc[state_type], &values);
 	gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
 
+	a = style->fg_gc[state_type];
+	d = style->fg_gc[state_type];
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
-		a = style->dark_gc[state_type];
 		b = NULL;
-		d = style->dark_gc[state_type];
 		c = NULL;
 	}
 	else
 	{
-		a = style->black_gc;
 		b = style->light_gc[state_type];
 		c = style->dark_gc[state_type];
-		d = style->black_gc;
 	}
 
 	paint_shadow (window, a, b, c, d, FALSE, x, y, height, height);
@@ -2049,16 +1915,15 @@ draw_check (GtkStyle *style,
 		box.y = y + 2;
 		box.height = box.width = height - 4;
 
-		crux_paint_gradient (cr, &values.foreground, &box, &g);
+		crux_paint_gradient (cr, &values.foreground, &box, GRADIENT_VERTICAL);
 	}
 
 	if (shadow_type != GTK_SHADOW_OUT)
 	{
 		/* draw tick mark */
 		gdk_gc_get_values (a, &values);
-		gdk_colormap_query_color (gdk_gc_get_colormap (a), values.foreground.pixel, &values.foreground);
+		gdk_colormap_query_color (gdk_gc_get_colormap (style->bg_gc[state_type]), values.foreground.pixel, &values.foreground);
 		gdk_cairo_set_source_color (cr, &values.foreground);
-
 		cairo_set_line_width (cr, 2.0);
 		cx = x + 0.5; width--;
 		cy = y + 0.5; height--;
@@ -2085,8 +1950,58 @@ draw_option (GtkStyle *style,
 	     GtkWidget *widget,
 	     const gchar *detail, gint x, gint y, gint width, gint height)
 {
-    paint_check (style, window, state_type, shadow_type, area,
-		 widget, detail, x, y, width, height, EAZEL_ENGINE_OPTION);
+	cairo_t *cr;
+	cairo_pattern_t *crp;
+	GdkRectangle rect;
+	gdouble cx, cy, radius; /* cairo co-ordinates */
+	CairoColor c1, c2;
+
+
+	cx = x + (height / 2) + 0.5;
+	cy = y + (height / 2) + 0.5;
+	radius = (height / 2) - 1.0;
+
+	rect.x = x; rect.y = y;
+	rect.height = rect.width = height;
+
+	cr = crux_begin_paint (window, area);
+
+	cairo_set_line_width (cr, 1.0);
+	cairo_arc (cr, cx, cy, radius, 0.0, M_PI * 2);
+
+
+	if (state_type != GTK_STATE_INSENSITIVE)
+	{
+		ge_gdk_color_to_cairo (&style->white, &c1);
+		ge_shade_color (&c1, &c2, 0.2);
+
+		crp = cairo_pattern_create_linear (x + 0.5, y + 0.5, x + height - 1.0, y + height - 1.0);
+		if (shadow_type == GTK_SHADOW_OUT)
+		{
+			cairo_pattern_add_color_stop_rgb (crp, 0.3, c1.r, c1.g, c1.b);
+			cairo_pattern_add_color_stop_rgb (crp, 1.2, c2.r, c2.g, c2.b);
+		}
+		else
+		{
+			cairo_pattern_add_color_stop_rgb (crp, 0.3, c2.r, c2.g, c2.b);
+			cairo_pattern_add_color_stop_rgb (crp, 1.2, c1.r, c1.g, c1.b);
+		}
+		cairo_set_source (cr, crp);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (crp);
+	}
+
+	gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+	cairo_stroke (cr);
+
+	if (shadow_type == GTK_SHADOW_IN)
+	{
+		cairo_set_line_width (cr, 0.0);
+		cairo_arc (cr, cx, cy, radius - 2.5, 0.0, M_PI * 2);
+		cairo_fill (cr);
+	}
+
+	cairo_destroy (cr);
 }
 
 static void

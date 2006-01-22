@@ -317,7 +317,6 @@ typedef struct {
 /* prototypes */
 
 /* from eazel-theme-main.c */
-extern gboolean eazel_engine_widget_in_focused_window_p (GtkWidget *widget);
 extern void theme_init (GtkThemeEngine *engine);
 extern void theme_exit (void);
 
