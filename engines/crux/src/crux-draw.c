@@ -1210,29 +1210,69 @@ draw_box (GtkStyle *style,
 	{
 	    if (state_type != GTK_STATE_INSENSITIVE)
 	    {
-		gboolean focused;
-		focused = 1;
-		paint_stock_image (theme_data,
-				   focused ? EAZEL_ENGINE_PROGRESS_BAR
-				   : EAZEL_ENGINE_PROGRESS_BAR_INACTIVE,
-				   TRUE, FALSE, style, window, state_type,
-				   area, widget, x, y, width, height);
-		if (x > style->xthickness)
+		cairo_pattern_t *crp;
+		CairoColor c1,c2;
+		GtkProgressBarOrientation orientation;
+		cr = crux_begin_paint (window, area);
+
+		if (widget && GTK_IS_PROGRESS_BAR (widget))
+			orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
+		else
+			orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+
+		if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT || orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
+			crp = cairo_pattern_create_linear (x, y, x, y + height);
+		else
+			crp = cairo_pattern_create_linear (x, y, x + width, y);
+
+		/* draw end cap */
+		cairo_set_source_rgb (cr, 0, 0, 0);
+		if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
 		{
-		    paint_stock_image (theme_data,
-				       EAZEL_ENGINE_PROGRESS_BAR_LEFT,
-				       TRUE, FALSE, style, window, state_type,
-				       area, widget, x - 2, y, -1, height);
+			cairo_move_to (cr, x + width + 0.5, y);
+			cairo_line_to (cr, x + width + 0.5, y + height);
 		}
-		if (widget != 0
-		    && x + width < widget->allocation.width - style->xthickness - 3)
+		else if (orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
 		{
-		    paint_stock_image (theme_data,
-				       EAZEL_ENGINE_PROGRESS_BAR_RIGHT,
-				       TRUE, FALSE, style, window,
-				       state_type, area, widget,
-				       x + width, y, -1, height);
+			cairo_move_to (cr, x - 0.5, y);
+			cairo_line_to (cr, x - 0.5, y + height);
 		}
+		else if (orientation == GTK_PROGRESS_BOTTOM_TO_TOP)
+		{
+			cairo_move_to (cr, x, y - 0.5);
+			cairo_line_to (cr, x + width, y - 0.5);
+		}
+		else if (orientation == GTK_PROGRESS_TOP_TO_BOTTOM)
+		{
+			cairo_move_to (cr, x, y + height + 0.5);
+			cairo_line_to (cr, x + width, y + height + 0.5);
+		}
+		cairo_stroke (cr);
+
+		/* TODO: add shadow */
+
+		/* draw gradient */
+		cairo_rectangle (cr, x, y, width, height);
+		ge_gdk_color_to_cairo (&style->base[GTK_STATE_SELECTED], &c1);
+		ge_shade_color (&c1, &c2, 0.5);
+		cairo_pattern_add_color_stop_rgb (crp, 0.1, c1.r, c1.g, c1.b);
+		cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
+		cairo_set_source (cr, crp);
+		cairo_fill (cr);
+
+		/* draw bevel */
+		cairo_move_to (cr, x, y + height);
+		cairo_line_to (cr, x, y);
+		cairo_line_to (cr, x + width, y);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.4);
+		cairo_stroke (cr);
+		cairo_line_to (cr, x + width, y + height);
+		cairo_line_to (cr, x, y + height);
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.4);
+		cairo_stroke (cr);
+
+		cairo_destroy (cr);
+		cairo_pattern_destroy (crp);
 	    }
 	    else
 	    {
@@ -1976,7 +2016,7 @@ draw_option (GtkStyle *style,
 		ge_shade_color (&c1, &c2, 0.2);
 
 		crp = cairo_pattern_create_linear (x + 0.5, y + 0.5, x + height - 1.0, y + height - 1.0);
-		if (shadow_type == GTK_SHADOW_OUT)
+		if (shadow_type == GTK_SHADOW_OUT && state_type != GTK_STATE_ACTIVE)
 		{
 			cairo_pattern_add_color_stop_rgb (crp, 0.3, c1.r, c1.g, c1.b);
 			cairo_pattern_add_color_stop_rgb (crp, 1.2, c2.r, c2.g, c2.b);
