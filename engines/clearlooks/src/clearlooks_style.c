@@ -11,8 +11,6 @@
 
 /* #define DEBUG 1 */
 
-#define HAVE_ANIMATION 1
-
 #define SCALE_SIZE 5
 
 #define DETAIL(xx)   ((detail) && (!strcmp(xx, detail)))
