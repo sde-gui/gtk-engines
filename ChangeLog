@@ -1,3 +1,10 @@
+2006-01-30  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+
+	Updated for 2.7.4 release
+
 2006-01-27  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c:

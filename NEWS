@@ -1,3 +1,10 @@
+Overview of Changes in 2.7.4 (since 2.7.3)
+==========================================
+
+* Not compiling any animation code in clearlooks anymore
+* Crux updated with radio and check buttons drawn using cairo
+* Crux updated with progress bar bars drawn using cairo
+
 Overview of Changes in 2.7.3 (since 2.7.2)
 ==========================================
 
