@@ -25,7 +25,12 @@
 #include "clearlooks_style.h"
 #include "clearlooks_rc_style.h"
 
+#include "animation.h"
+
 static void      clearlooks_rc_style_init         (ClearlooksRcStyle      *style);
+#ifdef HAVE_ANIMATION
+static void      clearlooks_rc_style_finalize     (GObject                *object);
+#endif
 static void      clearlooks_rc_style_class_init   (ClearlooksRcStyleClass *klass);
 static GtkStyle *clearlooks_rc_style_create_style (GtkRcStyle             *rc_style);
 static guint     clearlooks_rc_style_parse        (GtkRcStyle             *rc_style,
@@ -111,22 +116,42 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
   clearlooks_rc->animation = FALSE;
 }
 
+#ifdef HAVE_ANIMATION
+static void
+clearlooks_rc_style_finalize (GObject *object)
+{
+	/* cleanup all the animation stuff */
+	clearlooks_animation_cleanup ();
+	
+	if (G_OBJECT_CLASS (parent_class)->finalize != NULL)
+		G_OBJECT_CLASS (parent_class)->finalize(object);
+}
+#endif
+
+
 static void
 clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
 {
   GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
+#ifdef HAVE_ANIMATION
+  GObjectClass    *g_object_class = G_OBJECT_CLASS (klass);
+#endif
 
   parent_class = g_type_class_peek_parent (klass);
 
   rc_style_class->parse = clearlooks_rc_style_parse;
   rc_style_class->create_style = clearlooks_rc_style_create_style;
   rc_style_class->merge = clearlooks_rc_style_merge;
+
+#ifdef HAVE_ANIMATION
+  g_object_class->finalize = clearlooks_rc_style_finalize;
+#endif
 }
 
 static guint
-theme_parse_boolean(GtkSettings *settings,
+theme_parse_boolean (GtkSettings *settings,
                      GScanner     *scanner,
-                    gboolean *retval)
+                     gboolean *retval)
 {
   guint token;
   token = g_scanner_get_next_token(scanner);

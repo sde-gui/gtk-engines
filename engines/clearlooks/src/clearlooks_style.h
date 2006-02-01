@@ -22,6 +22,7 @@
  */
 #include <gtk/gtkstyle.h>
 
+#include "animation.h"
 #include "clearlooks_types.h"
 
 typedef struct _ClearlooksStyle ClearlooksStyle;

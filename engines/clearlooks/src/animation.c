@@ -1,189 +1,309 @@
 /* Yes, this is evil code. But many people seem to like hazardous things, so
  * it exists. Most of this was written by Kulyk Nazar.
+ *
+ * heavily modified by Benjamin Berg <benjamin@sipsolutions.net>.
  */
 
-#define CL_IS_PROGRESS_BAR(widget) GTK_IS_PROGRESS_BAR(widget) && widget->allocation.x != -1 && widget->allocation.y != -1
+#include "animation.h"
 
-struct _Widget_Animation {
-	gint8 max_frames;
-	gint8 frame;
-	gint8 loop;
+#ifdef HAVE_ANIMATION
+#include <glib/gtimer.h>
+
+struct _AnimationInfo {
+	GTimer *timer;
+	
+	gdouble start_modifier;
+	gdouble stop_time;
+	GtkWidget *widget;
 };
+typedef struct _AnimationInfo AnimationInfo;
 
-typedef struct _Widget_Animation Widget_Animation;
+struct _SignalInfo {
+	GtkWidget *widget;
+	gulong handler_id;
+};
+typedef struct _SignalInfo SignalInfo;
 
-static GSList     *signaled_widgets      = NULL;
-static GHashTable *async_widgets         = NULL;
-static int         async_widget_timer_id = 0;
-
-
-static gboolean cl_async_animation_timer_func (gpointer data);
-static gpointer cl_async_animation_lookup     (gconstpointer data);
-static void     cl_async_animation_remove     (gpointer data);
-static void     cl_async_animation_add        (gpointer data,
-                                               gint8 count, gint8 loop);
+static GSList     *connected_widgets  = NULL;
+static GHashTable *animated_widgets   = NULL;
+static int         animation_timer_id = 0;
 
 
+static gboolean animation_timeout_handler (gpointer data);
+
+/* This forces a redraw on a widget */
+static gboolean
+force_widget_redraw (GtkWidget *widget)
+{
+	if (GTK_IS_PROGRESS_BAR (widget))
+		gtk_widget_queue_resize (widget);
+	else
+		gtk_widget_queue_draw (widget);
+}
+
+/* ensures that the timer is running */
+static void
+start_timer ()
+{
+	if (animation_timer_id == 0)
+		animation_timer_id = g_timeout_add (ANIMATION_DELAY, animation_timeout_handler, NULL);
+}
+
+/* ensures that the timer is stopped */
+static void
+stop_timer ()
+{
+	if (animation_timer_id != 0)
+	{
+		g_source_remove(animation_timer_id);
+		animation_timer_id = 0;
+	}
+}
+
+
+/* destroys an AnimationInfo structure including the GTimer */
+static void
+animation_info_destroy (AnimationInfo *animation_info)
+{
+	g_timer_destroy (animation_info->timer);
+	g_free (animation_info);
+}
+
+
+/* This function does not unref the weak reference, because the object
+ * is beeing destroyed currently. */
+static void
+on_animated_widget_destruction (gpointer data, GObject *object)
+{
+	/* steal the animation info from the hash table (destroying it would
+	 * result in the weak reference to be unrefed, which does not work
+	 * as the widget is already destroyed. */
+	g_hash_table_steal (animated_widgets, object);
+	animation_info_destroy ((AnimationInfo*) data);
+}
+
+/* This function also needs to unref the weak reference. */
+static void
+destroy_animation_info_and_weak_unref (gpointer data)
+{
+	AnimationInfo *animation_info = data;
+	
+	/* force a last redraw. This is so that if the animation is removed,
+	 * the widget is left in a sane state. */
+	force_widget_redraw (animation_info->widget);
+	
+	g_object_weak_unref (G_OBJECT (animation_info->widget), on_animated_widget_destruction, data);
+	animation_info_destroy (animation_info);
+}
 
 /* Find and return a pointer to the data linked to this widget, if it exists */
-static gpointer
-cl_async_animation_lookup(gconstpointer data)
+static AnimationInfo*
+lookup_animation_info (const GtkWidget *widget)
 {
-	if (async_widgets)
-		return g_hash_table_lookup (async_widgets, data);
+	if (animated_widgets)
+		return g_hash_table_lookup (animated_widgets, widget);
 	
 	return NULL;
 }
 
-/* Remove a widget and its data from the hash table */
+/* Create all the relevant information for the animation, and insert it into the hash table. */
 static void
-cl_async_animation_remove (gpointer data)
+add_animation (const GtkWidget *widget, gdouble stop_time)
 {
-	Widget_Animation *value = cl_async_animation_lookup(data);
+	AnimationInfo *value;
 	
-	if (value == NULL)
+	/* object already in the list, do not add it twice */
+	if (lookup_animation_info (widget))
 		return;
 	
-	g_free(value);
+	if (animated_widgets == NULL)
+		animated_widgets = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+		                                          NULL, destroy_animation_info_and_weak_unref);
 	
-	g_hash_table_remove(async_widgets, data);
+	value = g_new(AnimationInfo, 1);
 	
-	g_object_disconnect (data, "any_signal::unrealize", G_CALLBACK (cl_async_animation_remove), data, NULL);
+	value->widget = (GtkWidget*) widget;
 	
-	g_object_unref (data);
+	value->timer = g_timer_new ();
+	value->stop_time= stop_time;
+	value->start_modifier = 0.0;
+
+	g_object_weak_ref (G_OBJECT (widget), on_animated_widget_destruction, value);
+	g_hash_table_insert (animated_widgets, (GtkWidget*) widget, value);
 	
-	if ((g_hash_table_size(async_widgets) == 0)&&(async_widget_timer_id != 0)) {
-		g_source_remove(async_widget_timer_id);
-		async_widget_timer_id = 0;
-	}
+	start_timer ();
 }
 
-/* Add a widget to the hash table */
-static void
-cl_async_animation_add (gpointer data, gint8 count, gint8 loop)
-{
-	Widget_Animation *value;
-	
-	/* object already in the list, not adding twice */
-	if(cl_async_animation_lookup(data))
-		return;
-	
-	if(async_widgets == NULL)
-		async_widgets = g_hash_table_new(g_direct_hash, g_direct_equal);
-	
-	value = g_new(Widget_Animation, sizeof(Widget_Animation));
-	value->frame = count;
-	value->max_frames= count;
-	value->loop = loop;
-	g_hash_table_insert (async_widgets, data, value);
-	
-	g_object_ref (data);
-	
-	g_signal_connect ((GObject*)data, "unrealize", G_CALLBACK (cl_async_animation_remove), data);
-	
-	if (async_widget_timer_id == 0)
-		async_widget_timer_id = g_timeout_add (100, cl_async_animation_timer_func, NULL);
-}
-
-/* Update the animation. This goes trough the entire list of widgets and queues
- * a redraw on them.
- */
+/* update the animation information for each widget. This will also queue a redraw
+ * and stop the animation if it is done. */
 static gboolean
-cl_async_animation_update (gpointer data, gpointer value, gpointer user_data)
+update_animation_info (gpointer key, gpointer value, gpointer user_data)
 {
-	Widget_Animation *my_value = value;
+	AnimationInfo *animation_info = value;
+	GtkWidget *widget = key;
+	gdouble elapsed;
 	
-	if ((data == NULL) || (value == NULL))
-		return;
+	if ((widget == NULL) || (animation_info == NULL))
+		g_assert_not_reached ();
+	
+	/* remove the widget from the hash table if it is not drawable */
+	if (!GTK_WIDGET_DRAWABLE (widget))
+		return TRUE;
+	
+	if (GTK_IS_PROGRESS_BAR (widget))
+	{
+		gfloat fraction = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (widget));
 		
-	if (--(my_value->frame) < 0)
-	{
-		if(my_value->loop == 0)
-			my_value->frame = my_value->max_frames;
-		else if(my_value->loop == 1)
-		{
-			//animation is done
-			g_free((Widget_Animation*)value);
+		/* stop animation for filled/not filled progress bars */
+		if (fraction <= 0.0 || fraction >= 1.0)
 			return TRUE;
-		}
-		else if (my_value->loop > 1)
-		{
-			my_value->loop--;
-			my_value->frame = my_value->max_frames;
-		}
 	}
 	
-	if(GTK_IS_PROGRESS_BAR ((GtkWidget*)data))
-	{
-		gfloat fraction = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (data));
-		/* update only if not filled */
-		/* trick for progressbar, remove if it 100% from animation list, or animate if not) */
-		if (fraction < 1.0)
-			gtk_widget_queue_resize ((GtkWidget*)data);
-		else
-		{
-			/* animation is done */
-			g_free((Widget_Animation*)value);
-			return TRUE;
-		}
-	}
-	else
-		gtk_widget_queue_draw ((GtkWidget*)data);
+	force_widget_redraw (widget);
+	
+	/* stop at stop_time */
+	if (animation_info->stop_time != 0 &&
+	    g_timer_elapsed (animation_info->timer, NULL) > animation_info->stop_time)
+		return TRUE;
 	
 	return FALSE;
 }
 
 /* This gets called by the glib main loop every once in a while. */
 static gboolean
-cl_async_animation_timer_func (gpointer data)
+animation_timeout_handler (gpointer data)
 {
-	//printf("** TICK **\n");
-	g_hash_table_foreach_remove (async_widgets, cl_async_animation_update, NULL);
+	/*g_print("** TICK **\n");*/
+	g_hash_table_foreach_remove (animated_widgets, update_animation_info, NULL);
 	
-	if(g_hash_table_size(async_widgets)==0)
+	if(g_hash_table_size(animated_widgets)==0)
 	{
-		g_source_remove(async_widget_timer_id);
-		async_widget_timer_id = 0;
+		stop_timer ();
+		return FALSE;
 	}
-	
-	return (g_hash_table_size(async_widgets) != 0);
-}
-
-/* Return a structure with the data values */
-static Widget_Animation
-cl_async_animation_getdata (gpointer data)
-{
-	Widget_Animation  res = { 0, 0, 0 };
-	Widget_Animation *tmp = (Widget_Animation*)cl_async_animation_lookup(data);
-	
-	if(tmp)
-		return *tmp;
-	else
-		return res;
-}
-
-static void
-cl_checkbox_toggle (gpointer data)
-{
-	//printf("togled %d\n",data);
-	Widget_Animation *value;
-	if((value = cl_async_animation_lookup(data))!= NULL)
-		value->frame = value->max_frames - value->frame;
-	cl_async_animation_add(data,5,1);
-}
-
-
-static void
-cl_progressbar_add (gpointer data)
-{
-	cl_async_animation_add(data,9,0);
-}
-
-static gboolean
-cl_disconnect(gpointer data, gpointer value, gpointer user_data)
-{
-	if(GTK_IS_CHECK_BUTTON (data))
-		g_object_disconnect (data, "any_signal::toggled", G_CALLBACK (cl_checkbox_toggle ), data, NULL);
 	
 	return TRUE;
 }
+
+static void
+on_checkbox_toggle (GtkWidget *widget, gpointer data)
+{
+	AnimationInfo *animation_info = lookup_animation_info (widget);
+	
+	if (animation_info != NULL)
+	{
+		gfloat elapsed = g_timer_elapsed (animation_info->timer, NULL);
+		
+		animation_info->start_modifier = elapsed - animation_info->start_modifier;
+	}
+	else
+	{
+		add_animation (widget, CHECK_ANIMATION_TIME);
+	}
+}
+
+static void
+on_connected_widget_destruction (gpointer data, GObject *widget)
+{
+	connected_widgets = g_slist_remove (connected_widgets, data);
+	g_free (data);
+}
+
+static void
+disconnect_all_signals ()
+{
+	GSList * item = connected_widgets;
+	while (item != NULL)
+	{
+		SignalInfo *signal_info = (SignalInfo*) item->data;
+		
+		g_signal_handler_disconnect (signal_info->widget, signal_info->handler_id);
+		g_object_weak_unref (G_OBJECT (signal_info->widget), on_connected_widget_destruction, signal_info);
+		g_free (signal_info);
+		
+		item = g_slist_next (item);
+	}
+	
+	g_slist_free (connected_widgets);
+	connected_widgets = NULL;
+}
+
+/* helper function for clearlooks_animation_connect_checkbox */
+static gint
+find_signal_info (gconstpointer signal_info, gconstpointer widget)
+{
+	if (((SignalInfo*)signal_info)->widget == widget)
+		return 0;
+	else
+		return 1;
+}
+
+
+/* external interface */
+
+/* adds a progress bar */
+void
+clearlooks_animation_progressbar_add (GtkWidget *progressbar)
+{
+	gdouble fraction = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (progressbar));
+	
+	if (fraction < 1.0 && fraction > 0.0)
+		add_animation ((GtkWidget*) progressbar, 0.0);
+}
+
+/* hooks up the signals for check and radio buttons */
+void
+clearlooks_animation_connect_checkbox (GtkWidget *widget)
+{
+	if (GTK_IS_CHECK_BUTTON (widget))
+	{
+		if (!g_slist_find_custom (connected_widgets, widget, find_signal_info))
+		{
+			SignalInfo * signal_info = g_new (SignalInfo, 1);
+			
+			signal_info->widget = widget;
+			signal_info->handler_id = g_signal_connect ((GObject*)widget, "toggled", G_CALLBACK (on_checkbox_toggle), NULL);
+			
+			connected_widgets = g_slist_append (connected_widgets, signal_info);
+			g_object_weak_ref (G_OBJECT (widget), on_connected_widget_destruction, signal_info);
+		}
+	}
+}
+
+/* returns TRUE if the widget is animated, and FALSE otherwise */
+gboolean
+clearlooks_animation_is_animated (GtkWidget *widget)
+{
+	return lookup_animation_info (widget) != NULL ? TRUE : FALSE;
+}
+
+/* returns the elapsed time for the animation */
+gdouble
+clearlooks_animation_elapsed (gpointer data)
+{
+	AnimationInfo *animation_info = lookup_animation_info (data);
+	
+	if (animation_info)
+		return   g_timer_elapsed (animation_info->timer, NULL)
+		       - animation_info->start_modifier;
+	else
+		return 0.0;
+}
+
+/* cleans up all resources of the animation system */
+void
+clearlooks_animation_cleanup ()
+{
+	disconnect_all_signals ();
+	
+	if (animated_widgets != NULL)
+	{
+		g_hash_table_destroy (animated_widgets);
+		animated_widgets = NULL;
+	}
+	
+	stop_timer ();
+}
+
+
+#endif /* HAVE_ANIMATION */

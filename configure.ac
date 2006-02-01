@@ -30,6 +30,8 @@ AC_ARG_ENABLE(redmond,		[  --disable-redmond		skip Redmond engine/theme], 		[red
 AC_ARG_ENABLE(smooth, 		[  --disable-smooth		skip Smooth engine], 			[smooth=$enableval], 		[smooth=$disableval])
 AC_ARG_ENABLE(thinice,		[  --disable-thinice		skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice=$disableval])
 
+AC_ARG_ENABLE(animation, 	[  --enable-animation		compile clearlooks with animation support], 	[animation=$disableval], 	[animation=$enableval])
+
 AC_ARG_ENABLE(themes, 		[  --disable-themes		skip installing default themes], 	[themes=$enableval], 		[themes=$disableval])
 
 BUILD_ENGINES=""
@@ -111,6 +113,11 @@ AC_SUBST(GTK_VERSION)
 AC_SUBST(BUILD_ENGINES)
 AC_SUBST(BUILD_THEMES)
 
+if test $animation = "y"; then
+	AC_DEFINE_UNQUOTED(HAVE_ANIMATION, 1, [Defines whether to compile with animation support])
+fi
+
+AM_CONFIG_HEADER([engines/clearlooks/src/config.h])
 AM_CONFIG_HEADER([engines/crux/src/config.h])
 AM_CONFIG_HEADER([engines/smooth/src/config.h])
 
@@ -157,7 +164,12 @@ echo -e "\nEngines and Themes:"
 
 echo -n "      ClearLooks - "
 if test "$clearlooks" = "y"; then
-        echo "Including"
+        echo -n "Including"
+        if test $animation = "y"; then
+        	echo " with animation support"
+        else
+        	echo " without animation support"
+        fi
 else
         echo "Skipping"
 fi

@@ -1,9 +1,10 @@
 INCLUDES = $(GTK_CFLAGS)
 
-EXTRA_DIST = ./src/animation.c
-
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libclearlooks.la
+
+EXTRA_DIST = ./src/config.h.in
+
 
 libclearlooks_la_SOURCES =		\
         ./src/clearlooks_rc_style.c	\
@@ -12,10 +13,13 @@ libclearlooks_la_SOURCES =		\
         ./src/clearlooks_style.h	\
         ./src/clearlooks_theme_main.c	\
 	./src/support.c			\
+	./src/animation.c		\
+	./src/animation.h		\
 	./src/support.h			\
 	./src/clearlooks_draw.c		\
 	./src/clearlooks_draw.h		\
-	./src/clearlooks_types.h
+	./src/clearlooks_types.h	\
+	./src/config.h
 
 libclearlooks_la_LDFLAGS = -module -avoid-version -no-undefined
 libclearlooks_la_LIBADD =  $(GTK_LIBS)

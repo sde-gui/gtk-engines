@@ -29,7 +29,7 @@
                      gint            height
 
 #ifdef HAVE_ANIMATION
-#include "animation.c"
+#include "animation.h"
 #endif
 
 static GtkStyleClass *parent_class;
@@ -575,22 +575,18 @@ draw_box (DRAW_ARGS)
 	{
 		WidgetParameters      params;
 		ProgressBarParameters progressbar;
-		gint8                 frame = 0;
+		gdouble               elapsed = 0.0;
 
 #ifdef HAVE_ANIMATION
 		if(clearlooks_style->animation && CL_IS_PROGRESS_BAR (widget))
 		{	
 			gboolean activity_mode = GTK_PROGRESS (widget)->activity_mode;
 			
-		 	if (!activity_mode &&
-			    gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (widget)) != 1.0 &&
-			    !cl_async_animation_lookup((gconstpointer)widget))
-			{
-				cl_progressbar_add ((gpointer)widget);
-			}
+		 	if (!activity_mode)
+				clearlooks_animation_progressbar_add ((gpointer)widget);
 		}
 
-		frame = cl_async_animation_getdata((gpointer)widget).frame;
+		elapsed = clearlooks_animation_elapsed (widget);
 #endif
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
@@ -603,7 +599,8 @@ draw_box (DRAW_ARGS)
 		cairo_reset_clip (cr);
 		
 		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
-		                                  x, y, width, height, frame);
+		                                  x, y, width, height,
+		                                  10 - (int)(elapsed * 10.0) % 10);
 	}
 	else if (DETAIL ("hscale") || DETAIL ("vscale"))
 	{
@@ -757,12 +754,8 @@ draw_option (DRAW_ARGS)
 	cairo_pattern_t *pt;
 
 #ifdef HAVE_ANIMATION
-	if(clearlooks_style->animation && GTK_IS_CHECK_BUTTON (widget) && !cl_async_animation_lookup((gconstpointer)widget)  && !g_slist_find (signaled_widgets, (gconstpointer)widget))
-	{
-			signaled_widgets = g_slist_append (signaled_widgets, widget);
-			g_signal_connect ((GObject*)widget, "toggled", G_CALLBACK (cl_checkbox_toggle), widget);
-			//printf("signal connected %d\n",widget);
-	}
+	if (clearlooks_style->animation)
+		clearlooks_animation_connect_checkbox (widget);
 #endif
 
 	if (state_type == GTK_STATE_INSENSITIVE)
@@ -804,19 +797,22 @@ draw_option (DRAW_ARGS)
 	cairo_stroke (cr);
 	
 #ifdef HAVE_ANIMATION
-	if (clearlooks_style->animation && cl_async_animation_lookup((gconstpointer)widget) && GTK_IS_CHECK_BUTTON (widget))
+	if (clearlooks_style->animation && GTK_IS_CHECK_BUTTON (widget) &&
+        clearlooks_animation_is_animated (widget) &&
+        !gtk_toggle_button_get_inconsistent (GTK_TOGGLE_BUTTON (widget)))
 	{
-		int value = cl_async_animation_getdata((gpointer)widget).frame;
-		
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
-			trans = (float)(5-value)/5;
+		gfloat elapsed = clearlooks_animation_elapsed (widget);
+	
+		if (draw_bullet)
+			trans = sqrt (sqrt (MIN(elapsed / CHECK_ANIMATION_TIME, 1.0)));	
 		else
-			trans = (float)value/5;
+			trans = 1.0 - sqrt (sqrt (MIN(elapsed / CHECK_ANIMATION_TIME, 1.0)));
 		
 		draw_bullet = TRUE;
 	}
 #endif
 
+	/* inconsistent state is missing? */
 	if (draw_bullet)
 	{
 		cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
@@ -846,11 +842,8 @@ draw_check (DRAW_ARGS)
 	cairo_pattern_t *pt;
 
 #ifdef HAVE_ANIMATION
-	if(clearlooks_style->animation && GTK_IS_CHECK_BUTTON (widget) && !cl_async_animation_lookup((gconstpointer)widget)  && !g_slist_find (signaled_widgets, (gconstpointer)widget))
-	{
-			signaled_widgets = g_slist_append (signaled_widgets, widget);
-			g_signal_connect ((GObject*)widget, "toggled", G_CALLBACK (cl_checkbox_toggle), widget);
-	}
+	if (clearlooks_style->animation)
+		clearlooks_animation_connect_checkbox (widget);
 #endif
 	
 	if (state_type == GTK_STATE_INSENSITIVE)
@@ -900,14 +893,16 @@ draw_check (DRAW_ARGS)
 	cairo_stroke (cr);
 		
 #ifdef HAVE_ANIMATION
-	if (clearlooks_style->animation && cl_async_animation_lookup((gconstpointer)widget))
+	if (clearlooks_style->animation && GTK_IS_CHECK_BUTTON (widget) &&
+	    clearlooks_animation_is_animated(widget) &&
+	    !gtk_toggle_button_get_inconsistent (GTK_TOGGLE_BUTTON (widget)))
 	{
-		int value = cl_async_animation_getdata((gpointer)widget).frame;
-		
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
-			trans = (float)(5-value)/5;
+		gfloat elapsed = clearlooks_animation_elapsed (widget);
+	
+		if (draw_bullet)
+			trans = sqrt (sqrt (MIN(elapsed / CHECK_ANIMATION_TIME, 1.0)));
 		else
-			trans = (float)value/5;
+			trans = 1.0 - sqrt (sqrt (MIN(elapsed / CHECK_ANIMATION_TIME, 1.0)));
 		
 		draw_bullet = TRUE;
 	}
@@ -1302,32 +1297,6 @@ draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
 static void
 clearlooks_style_unrealize (GtkStyle * style)
 {
-#ifdef HAVE_ANIMATION
-	 while (signaled_widgets)
-	{
-		if(GTK_IS_CHECK_BUTTON (signaled_widgets->data))
-			g_object_disconnect (signaled_widgets->data,
-			                     "any_signal::toggled",
-			                     G_CALLBACK (cl_checkbox_toggle),
-			                     signaled_widgets->data, NULL);
-
-		cl_async_animation_remove(signaled_widgets->data);
-		signaled_widgets = g_slist_next (signaled_widgets);
-	}
-
-	if(async_widgets != NULL)
-	{
-		g_hash_table_foreach_remove(async_widgets, cl_disconnect, NULL);
-		//g_hash_table_destroy(async_widgets);
-	}
-	
-	if(async_widget_timer_id != 0)
-	{
-		g_source_remove(async_widget_timer_id);
-		async_widget_timer_id = 0;
-	}
-#endif /* HAVE_ANIMATION */	
-
 	parent_class->unrealize (style);
 }
 

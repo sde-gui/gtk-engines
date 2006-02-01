@@ -1,3 +1,32 @@
+2006-02-01  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* configure.ac:
+	
+	Patch from Benjamin Berg to add a --enable-animation option to
+	the configure script. Enables animation for Clearlooks only.
+	
+	* engines/clearlooks/Makefile.am:
+	* engines/clearlooks/src/animation.c: (force_widget_redraw),
+	(start_timer), (stop_timer), (animation_info_destroy),
+	(on_animated_widget_destruction),
+	(destroy_animation_info_and_weak_unref), (lookup_animation_info),
+	(add_animation), (update_animation_info),
+	(animation_timeout_handler), (on_checkbox_toggle),
+	(on_connected_widget_destruction), (disconnect_all_signals),
+	(find_signal_info), (clearlooks_animation_progressbar_add),
+	(clearlooks_animation_connect_checkbox),
+	(clearlooks_animation_is_animated), (clearlooks_animation_elapsed),
+	(clearlooks_animation_cleanup):
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_finalize), (clearlooks_rc_style_class_init),
+	(theme_parse_boolean):
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box),
+	(draw_option), (draw_check), (clearlooks_style_unrealize):
+	* engines/clearlooks/src/clearlooks_style.h:
+
+	Applied patch from Benjamin Berg to improve the sanity of the animation
+	code. Should improve stability, and improves readability here and there.
+
 2006-01-30  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:
