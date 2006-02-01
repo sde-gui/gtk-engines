@@ -1,5 +1,11 @@
 2006-02-01  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/config.h.in:
+	
+	Fixing incomplete check-in..
+
+2006-02-01  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* configure.ac:
 	
 	Patch from Benjamin Berg to add a --enable-animation option to
