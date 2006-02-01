@@ -1,5 +1,12 @@
 2006-02-01  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/animation.h:
+
+	No longer including animation.c, but splitted the implementation
+	from the prototype. From Benjamin's patch.
+
+2006-02-01  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/config.h.in:
 	
 	Fixing incomplete check-in..
