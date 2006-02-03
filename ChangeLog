@@ -1,3 +1,9 @@
+2006-02-04  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_check):
+
+	Added inconsistent state. Fixes #325932.
+
 2006-02-01  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/animation.h:

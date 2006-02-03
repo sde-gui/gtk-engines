@@ -836,7 +836,7 @@ draw_check (DRAW_ARGS)
 	CairoColor *border;
 	CairoColor *dot;
 	double trans = 1.0;
-	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN);
+	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN);
 
 	cairo_t *cr = clearlooks_begin_paint (window, area);
 	cairo_pattern_t *pt;
@@ -910,14 +910,22 @@ draw_check (DRAW_ARGS)
 
 	if (draw_bullet)
 	{
-		cairo_set_line_width (cr, 1.7);
-		cairo_move_to (cr, 0.5 + (width*0.2), (height*0.5));
-		cairo_line_to (cr, 0.5 + (width*0.4), (height*0.7));
+		if (shadow_type == GTK_SHADOW_ETCHED_IN) /* Inconsistent */
+		{
+			cairo_set_line_width (cr, 2.0);
+			cairo_move_to (cr, 3, height*0.5);
+			cairo_line_to (cr, width-3, height*0.5);
+		}
+		else
+		{
+			cairo_set_line_width (cr, 1.7);
+			cairo_move_to (cr, 0.5 + (width*0.2), (height*0.5));
+			cairo_line_to (cr, 0.5 + (width*0.4), (height*0.7));
 		
-		cairo_curve_to (cr, 0.5 + (width*0.4), (height*0.7),
-		                    0.5 + (width*0.5), (height*0.4),
-		                    0.5 + (width*0.70), (height*0.25));
-		
+			cairo_curve_to (cr, 0.5 + (width*0.4), (height*0.7),
+			                    0.5 + (width*0.5), (height*0.4),
+			                    0.5 + (width*0.70), (height*0.25));
+		}
 		
 		cairo_set_source_rgba (cr, dot->r, dot->g, dot->b, trans);
 		cairo_stroke (cr);
