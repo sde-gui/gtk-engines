@@ -289,6 +289,22 @@ clearlooks_draw_button (cairo_t *cr,
 		cairo_fill (cr);
 		cairo_pattern_destroy (pattern);
 	}
+
+
+	/* Drawing the border */
+
+	if (!params->active && params->is_default)
+	{
+		CairoColor *l = &colors->shade[4];
+		CairoColor *d = &colors->shade[4];
+		cairo_set_source_rgb(cr, l->r, l->g, l->b);
+		cairo_rectangle (cr, 2.5, 2.5, width-5, height-5);
+		cairo_stroke (cr);
+
+		cairo_set_source_rgb(cr, d->r, d->g, d->b);
+		cairo_rectangle (cr, 3.5, 3.5, width-7, height-7);
+		cairo_stroke (cr);
+	}
 	
 	if (params->disabled)
 	{
@@ -308,6 +324,7 @@ clearlooks_draw_button (cairo_t *cr,
                                   3.0, params->corners);
 	cairo_stroke (cr);
 	
+	/* Draw the "shadow" */
 	if (!params->active)
 	{
 		cairo_translate (cr, 0.5, 0.5);

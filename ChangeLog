@@ -1,3 +1,12 @@
+2006-02-06  Richard Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button):
+
+	Default buttons can now be recognized by a more visible border.
+	I really need to rework the button drawing code, because it's huge
+	and ugly. And this is not the place to talk about that.
+
 2006-02-04  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_check):
