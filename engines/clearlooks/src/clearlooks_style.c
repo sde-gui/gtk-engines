@@ -83,10 +83,58 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 static void
 draw_flat_box (DRAW_ARGS)
 {
-	parent_class->draw_flat_box (style, window, state_type,
-	                             shadow_type,
-	                             area, widget, detail,
-	                             x, y, width, height);
+	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
+	ClearlooksColors *colors = &clearlooks_style->colors;
+	
+	cairo_t *cr;
+
+	cr     = clearlooks_begin_paint (window, area);
+	colors = &clearlooks_style->colors;
+	
+	if (detail && 	
+	    state_type == GTK_STATE_SELECTED && (
+	    !strncmp ("cell_even", detail, strlen ("cell_even")) ||
+	    !strncmp ("cell_odd", detail, strlen ("cell_odd"))))
+	{
+		cairo_pattern_t *pattern;
+		CairoColor       lower_color;
+		CairoColor       upper_color;
+		
+		cairo_translate (cr, x, y);
+
+		if (GTK_WIDGET_HAS_FOCUS (widget))
+		{
+			upper_color = colors->base[state_type];
+		}
+		else
+		{
+			upper_color = colors->base[GTK_STATE_ACTIVE];
+		}
+		
+		shade (&upper_color, &lower_color, 0.8);
+			
+		pattern = cairo_pattern_create_linear (0, 0, 0, height);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.0, upper_color.r,
+		                                                upper_color.g,
+		                                                upper_color.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0, lower_color.r,
+		                                                lower_color.g,
+		                                                lower_color.b);
+		
+		cairo_set_source (cr, pattern);
+		cairo_rectangle  (cr, 0, 0, width, height);
+		cairo_fill       (cr);
+		
+		cairo_pattern_destroy (pattern);
+		cairo_destroy (cr);
+	}
+	else
+	{
+		parent_class->draw_flat_box (style, window, state_type,
+		                             shadow_type,
+		                             area, widget, detail,
+		                             x, y, width, height);
+	}
 }
 
 static void

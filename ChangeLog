@@ -1,3 +1,9 @@
+2006-02-14  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_flat_box):
+	
+	Re-implemented the listview item gradients.
+
 2006-02-06  Richard Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
