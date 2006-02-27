@@ -1349,6 +1349,24 @@ draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
 }
 
 static void
+clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
+{
+	ClearlooksStyle * cl_style = CLEARLOOKS_STYLE (style);
+	ClearlooksStyle * cl_src = CLEARLOOKS_STYLE (src);
+	
+	cl_style->colors              = cl_src->colors;
+	cl_style->progressbarstyle    = cl_src->progressbarstyle;
+	cl_style->menubarstyle        = cl_style->menubarstyle;
+	cl_style->menuitemstyle       = cl_style->menuitemstyle;
+	cl_style->listviewitemstyle   = cl_style->listviewitemstyle;
+	cl_style->scrollbar_color     = cl_style->scrollbar_color;
+	cl_style->has_scrollbar_color = cl_style->has_scrollbar_color;
+	cl_style->animation           = cl_style->animation;
+	
+	parent_class->copy (style, src);
+}
+
+static void
 clearlooks_style_unrealize (GtkStyle * style)
 {
 	parent_class->unrealize (style);
@@ -1502,6 +1520,7 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	
 	parent_class = g_type_class_peek_parent (klass);
 
+	style_class->copy             = clearlooks_style_copy;
 	style_class->unrealize        = clearlooks_style_unrealize;
 	style_class->init_from_rc     = clearlooks_style_init_from_rc;
 	style_class->draw_handle      = draw_handle;

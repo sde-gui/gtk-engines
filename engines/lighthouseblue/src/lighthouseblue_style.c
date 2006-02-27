@@ -1771,6 +1771,20 @@ static void lighthouseblue_style_init_from_rc (GtkStyle *style, GtkRcStyle *rc_s
 	}
 }
 
+static void lighthouseblue_style_copy (GtkStyle *style, GtkStyle *src)
+{
+	LighthouseBlueStyle *lighthouseblue_style = LIGHTHOUSEBLUE_STYLE (style);
+	LighthouseBlueStyle *lighthouseblue_src = LIGHTHOUSEBLUE_STYLE (src);
+	gint i;
+	
+	for (i = 0; i < 8; i++)
+	{
+		lighthouseblue_style->shade[i] = lighthouseblue_src->shade[i];
+	}
+	
+	parent_class->copy (style, src);
+}
+
 static void lighthouseblue_style_realize (GtkStyle *style)
 {
 	LighthouseBlueStyle *lighthouseblue_style = LIGHTHOUSEBLUE_STYLE (style);
@@ -1806,6 +1820,7 @@ static void lighthouseblue_style_class_init (LighthouseBlueStyleClass *klass)
 
   parent_class = g_type_class_peek_parent (klass);
 
+  style_class->copy = lighthouseblue_style_copy;
   style_class->realize = lighthouseblue_style_realize;
   style_class->unrealize = lighthouseblue_style_unrealize;
   style_class->init_from_rc = lighthouseblue_style_init_from_rc;

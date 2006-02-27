@@ -135,6 +135,19 @@ metal_style_unrealize (GtkStyle * style)
 
   parent_class->unrealize (style);
 }
+
+static void
+metal_style_copy (GtkStyle *style, GtkStyle *src)
+{
+  MetalStyle *metal_style = METAL_STYLE (style);
+  MetalStyle *metal_src = METAL_STYLE (src);
+  
+  metal_style->light_gray = metal_src->light_gray;
+  metal_style->mid_gray = metal_src->mid_gray;
+  metal_style->dark_gray = metal_src->dark_gray;
+  
+  parent_class->copy (style, src);
+}
  
 static void
 metal_style_class_init (MetalStyleClass * klass)
@@ -145,6 +158,7 @@ metal_style_class_init (MetalStyleClass * klass)
  
   style_class->realize = metal_style_realize;
   style_class->unrealize = metal_style_unrealize;
+  style_class->copy = metal_style_copy;
   style_class->init_from_rc = metal_style_init_from_rc;
 
   style_class->draw_hline = metal_draw_hline;

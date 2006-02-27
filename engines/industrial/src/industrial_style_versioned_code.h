@@ -1,5 +1,20 @@
 
 static void
+industrial_style_copy (GtkStyle * style,
+                       GtkStyle * src)
+{
+  IndustrialStyle *industrial_style = INDUSTRIAL_STYLE (style);
+  IndustrialStyle *industrial_src = INDUSTRIAL_STYLE (src);
+  
+  industrial_style->contrast        = industrial_src->contrast;
+  industrial_style->contrast_center = industrial_src->contrast_center;
+  industrial_style->rounded_buttons = industrial_src->rounded_buttons;
+  industrial_style->shading_hash    = NULL;
+  
+  parent_class->copy (style, src);
+}
+
+static void
 industrial_style_init_from_rc (GtkStyle * style,
 			       GtkRcStyle * rc_style)
 {
@@ -51,6 +66,7 @@ industrial_style_class_init (IndustrialStyleClass * klass)
   style_class->realize = industrial_style_realize;
   style_class->unrealize = industrial_style_unrealize;
 #endif
+  style_class->copy = industrial_style_copy;
   style_class->init_from_rc = industrial_style_init_from_rc;
 
   /*

@@ -1,3 +1,15 @@
+2006-02-27  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_copy), (clearlooks_style_class_init):
+	* engines/industrial/src/industrial_style_versioned_code.h:
+	* engines/lighthouseblue/src/lighthouseblue_style.c:
+	(lighthouseblue_style_copy), (lighthouseblue_style_class_init):
+	* engines/metal/src/metal_gtk2_engine.c: (metal_style_copy),
+	(metal_style_class_init):
+	Added functions that copy the styles to all engines that save data
+	in them. (Fixes: #325760 for real)
+
 2006-02-27  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c:
