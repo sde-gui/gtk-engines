@@ -372,12 +372,12 @@ draw_handle (DRAW_ARGS, GtkOrientation orientation)
 static int
 combo_box_get_seperator_pos (GtkWidget *widget)
 {
-	GList *children;
+	GList *children, *children_start;
 	int pos = 0;
 	
 	if (widget && GTK_IS_COMBO_BOX (widget->parent))
 	{
-		children = gtk_container_get_children (GTK_CONTAINER (widget));
+		children = children_start = gtk_container_get_children (GTK_CONTAINER (widget));
 		
 		if (children && GTK_IS_HBOX (children->data))
 			children = gtk_container_get_children (GTK_CONTAINER (children->data));
@@ -395,6 +395,8 @@ combo_box_get_seperator_pos (GtkWidget *widget)
 	
 	pos += 2; /* don't ask me why.... widget->style->xthickness - 1 ? */
 	
+	g_list_free (children_start);	
+
 	return pos;
 }
 
