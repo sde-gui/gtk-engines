@@ -1,3 +1,15 @@
+2006-04-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(combo_box_get_seperator_pos), (draw_resize_grip):
+	- Two memory leak fixes from Fedora Core
+	  (Matthias Clasen <mclasen@redhat.com>)
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
+	- Fix orientation of the fill line for RTL locales
+	  (#337381, yairhr@yahoo.com)
+	- Prevent the fill line from overshooting the trough.
+
 2006-02-27  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

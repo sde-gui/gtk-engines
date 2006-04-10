@@ -373,6 +373,7 @@ static int
 combo_box_get_seperator_pos (GtkWidget *widget)
 {
 	GList *children, *children_start;
+	GtkWidget *child;
 	int pos = 0;
 	
 	if (widget && GTK_IS_COMBO_BOX (widget->parent))
@@ -380,7 +381,11 @@ combo_box_get_seperator_pos (GtkWidget *widget)
 		children = children_start = gtk_container_get_children (GTK_CONTAINER (widget));
 		
 		if (children && GTK_IS_HBOX (children->data))
-			children = gtk_container_get_children (GTK_CONTAINER (children->data));
+		{
+			child = GTK_WIDGET (children->data);
+			g_list_free (children_start);
+			children = children_start = gtk_container_get_children (GTK_CONTAINER (child));
+		}
 
 		if (children)
 		{
@@ -567,14 +572,17 @@ draw_box (DRAW_ARGS)
 		GtkAdjustment *adjustment = gtk_range_get_adjustment (GTK_RANGE (widget));	
 		WidgetParameters params;
 		SliderParameters slider;
+		gint slider_length;
 		
+		gtk_widget_style_get (widget, "slider-length", &slider_length, NULL);
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners    = CL_CORNER_NONE;
 		
 		slider.inverted   = gtk_range_get_inverted (GTK_RANGE (widget));
 		slider.horizontal = (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL);
-		slider.fill_size  = (slider.horizontal ? width: height) * (1 / ((adjustment->upper - adjustment->lower) / (adjustment->value - adjustment->lower)));	
-
+		slider.fill_size  = ((slider.horizontal ? width : height) - slider_length) * (1 / ((adjustment->upper - adjustment->lower) / (adjustment->value - adjustment->lower))) + slider_length / 2;
+		if (slider.horizontal)
+			slider.inverted = slider.inverted != (get_direction (widget) == GTK_TEXT_DIR_RTL);
 		clearlooks_draw_scale_trough (cr, &clearlooks_style->colors,
 		                              &params, &slider,
 		                              x, y, width, height);
@@ -1109,7 +1117,7 @@ draw_resize_grip (GtkStyle       *style,
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
 
-	cairo_t *cr = clearlooks_begin_paint (window, area);
+	cairo_t *cr;
 
 	WidgetParameters params;
 	ResizeGripParameters grip;
@@ -1121,6 +1129,8 @@ draw_resize_grip (GtkStyle       *style,
 
 	if (edge != GDK_WINDOW_EDGE_SOUTH_EAST)
 		return; // sorry... need to work on this :P
+	
+	cr = clearlooks_begin_paint (window, area);
 
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);	
 
