@@ -303,7 +303,7 @@
 
 	Added 'is_default' field to WidgetParameters.
 
-2005-12-21  Kjartan Maraas,,23491770  <kmaraas@gnome.org>
+2005-12-21  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* engines/smooth/src/interfaces/abstract/abstract_drawing_interface
 	.c:
