@@ -1366,12 +1366,12 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	
 	cl_style->colors              = cl_src->colors;
 	cl_style->progressbarstyle    = cl_src->progressbarstyle;
-	cl_style->menubarstyle        = cl_style->menubarstyle;
-	cl_style->menuitemstyle       = cl_style->menuitemstyle;
-	cl_style->listviewitemstyle   = cl_style->listviewitemstyle;
-	cl_style->scrollbar_color     = cl_style->scrollbar_color;
-	cl_style->has_scrollbar_color = cl_style->has_scrollbar_color;
-	cl_style->animation           = cl_style->animation;
+	cl_style->menubarstyle        = cl_src->menubarstyle;
+	cl_style->menuitemstyle       = cl_src->menuitemstyle;
+	cl_style->listviewitemstyle   = cl_src->listviewitemstyle;
+	cl_style->scrollbar_color     = cl_src->scrollbar_color;
+	cl_style->has_scrollbar_color = cl_src->has_scrollbar_color;
+	cl_style->animation           = cl_src->animation;
 	
 	parent_class->copy (style, src);
 }
