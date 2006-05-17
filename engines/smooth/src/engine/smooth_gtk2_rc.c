@@ -433,6 +433,7 @@ smooth_gtkrc_style_merge (SmoothRcStyleData *dest_data,
 
       part_merge(THEME_PART(&dest_data->tabs), THEME_PART(&src_data->tabs));
       
+      dest_data->tabs.highlight = src_data->tabs.highlight;
       dest_data->tabs.use_active_tab = src_data->tabs.use_active_tab;
       part_merge(&dest_data->tabs.active_tab,&src_data->tabs.active_tab);
 

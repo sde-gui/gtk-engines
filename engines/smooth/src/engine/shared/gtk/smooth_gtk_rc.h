@@ -212,6 +212,7 @@ typedef struct {
 typedef struct {
   smooth_part_style part;
 
+  gboolean highlight;
   gboolean use_active_tab;
 
   smooth_part_style active_tab;
@@ -280,6 +281,7 @@ enum
 
     TOKEN_TABS,
     TOKEN_ACTIVE_TAB,
+    TOKEN_HIGHLIGHT,
 
     TOKEN_PROGRESS,
     

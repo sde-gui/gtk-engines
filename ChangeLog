@@ -1,3 +1,12 @@
+2006-05-17  Rob Staudinger  <robert.staudinger@gmail.com>
+
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	* engines/smooth/src/engine/smooth_gtk2_rc.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.h:
+	Tab highlights for the smooth engine.
+	Syntax: "tabs { highlight = TRUE }"
+
 2006-04-19  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

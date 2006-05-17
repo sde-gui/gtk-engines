@@ -79,6 +79,7 @@ ThemeSymbols theme_symbols[] =
 
   { "tabs",                TOKEN_TABS },
   { "active_tab",          TOKEN_ACTIVE_TAB },
+  { "highlight",           TOKEN_HIGHLIGHT },
 
   { "progress",            TOKEN_PROGRESS },
 
@@ -1727,6 +1728,10 @@ theme_parse_tab(GScanner *scanner,
       case TOKEN_ACTIVE_TAB:
 	token = theme_parse_active_tab (scanner, TOKEN_ACTIVE_TAB, &retval->active_tab);
 	retval->use_active_tab = TRUE;
+	break;	  
+
+      case TOKEN_HIGHLIGHT:
+	token = theme_parse_boolean (scanner, TOKEN_HIGHLIGHT, FALSE, &retval->highlight);
 	break;	  
 
       case TOKEN_LINE:

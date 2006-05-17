@@ -2162,13 +2162,16 @@ smooth_draw_extension(GtkStyle * style,
 	SmoothBorder border;
 
   GtkStateType parent_state;
-SmoothColor base_color;
+  SmoothColor base_color;
   GdkPoint	 fill_points[8], edge_points[8];
   GdkRectangle tab_area, smooth_draw_area;
   GtkStyle	 *parent_style;
   gint 		 selected=0;
   GtkNotebook *notebook=NULL;
-  smooth_part_style * tab;
+  smooth_part_style *part;
+  smooth_tab_style  *tab = NULL;
+  gint               tab_stripe_off = 0;
+  GdkRegion         *cliprgn = NULL;
 
   g_return_if_fail(sanitize_parameters(style, window, &width, &height));
     
@@ -2189,13 +2192,14 @@ SmoothColor base_color;
     area = &tab_area;
   }
 	
-  tab = smooth_tab_part(style, selected);
-  
+  part = smooth_tab_part(style, selected);
+  tab = &THEME_DATA(style)->tabs;
+
 
 	GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
 	base_color =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;	
-	smooth_style_get_border(style, state_type, shadow_type, detail, tab, 0.0, &border);
+	smooth_style_get_border(style, state_type, shadow_type, detail, part, 0.0, &border);
 
 
   switch (smooth_tab_get_style(style,selected))
@@ -2203,12 +2207,14 @@ SmoothColor base_color;
     case SMOOTH_TAB_NORMAL:
       goto square;
     case SMOOTH_TAB_ROUND:
+      tab_stripe_off = 1;
       if ((rounded_extension_points(x, y, width, height, selected, TRUE, gap_side, fill_points)) && 
           (rounded_extension_points(x, y, width, height, selected, FALSE, gap_side, edge_points))) 
         goto draw;	    
       else
         return;
     case SMOOTH_TAB_TRIANGLE:
+        tab_stripe_off = 1;
 	if ( CHECK_DETAIL(detail, "tab") && widget && GTK_IS_NOTEBOOK(widget)) {
           gint i, t;
 
@@ -2264,6 +2270,7 @@ SmoothColor base_color;
         return;
     
     draw :	
+
 	parent_style = style;
 	parent_state = GTK_STATE_NORMAL;
 	if (widget) {
@@ -2276,21 +2283,55 @@ SmoothColor base_color;
 		}
 	}
 
-        smooth_fill_background(da, parent_style, parent_state, GTK_SHADOW_NONE, tab, x, y, width, height, FALSE, FALSE,
+        smooth_fill_background(da, parent_style, parent_state, GTK_SHADOW_NONE, part, x, y, width, height, FALSE, FALSE,
 				 GTK_ORIENTATION_VERTICAL,FALSE, FALSE);
 	  
-          {
-            GdkRegion *cliprgn = gdk_region_polygon(fill_points, 8, GDK_EVEN_ODD_RULE);
-              
-		GDKModifyCanvasClipRegion(&da, cliprgn);
+	cliprgn = gdk_region_polygon(fill_points, 8, GDK_EVEN_ODD_RULE);
 
-            smooth_fill_background(da, style, state_type, GTK_SHADOW_NONE, tab, x, y, width, height, FALSE, FALSE,
-					 GTK_ORIENTATION_VERTICAL,FALSE, FALSE);
+	GDKModifyCanvasClipRegion(&da, cliprgn);
+	smooth_fill_background(da, style, state_type, GTK_SHADOW_NONE, part, x, y, width, height, FALSE, FALSE,
+				 GTK_ORIENTATION_VERTICAL,FALSE, FALSE);
 
-		GDKModifyCanvasClipRegion(&da, NULL);
-            gdk_region_destroy(cliprgn);
-	  }
+	/* draw tab highlight */
+	if (selected && 
+	    tab->highlight &&
+	    GTK_IS_NOTEBOOK (widget)) {
 
+		if (GTK_POS_LEFT == gtk_notebook_get_tab_pos (GTK_NOTEBOOK (widget))) {
+
+			x += tab_stripe_off;
+			smooth_fill_background(da, style, GTK_STATE_SELECTED, 
+					   GTK_SHADOW_NONE, part, x, y, 3, 
+					   height, FALSE, FALSE, GTK_ORIENTATION_VERTICAL, 
+					   FALSE, FALSE);
+		}
+		if (GTK_POS_TOP== gtk_notebook_get_tab_pos (GTK_NOTEBOOK (widget))) {
+
+			y += tab_stripe_off;
+			smooth_fill_background(da, style, GTK_STATE_SELECTED, 
+					   GTK_SHADOW_NONE, part, x, y, width, 
+					   3, FALSE, FALSE, GTK_ORIENTATION_VERTICAL, 
+					   FALSE, FALSE);
+		}
+		if (GTK_POS_RIGHT == gtk_notebook_get_tab_pos (GTK_NOTEBOOK (widget))) {
+
+			x -= (tab_stripe_off + 1);
+			smooth_fill_background(da, style, GTK_STATE_SELECTED, 
+					   GTK_SHADOW_NONE, part, x + width - 3, y, 3, 
+					   height, FALSE, FALSE, GTK_ORIENTATION_VERTICAL, 
+					   FALSE, FALSE);
+		}
+		if (GTK_POS_BOTTOM == gtk_notebook_get_tab_pos (GTK_NOTEBOOK (widget))) {
+
+			y -= (tab_stripe_off + 1);
+			smooth_fill_background(da, style, GTK_STATE_SELECTED, 
+					   GTK_SHADOW_NONE, part, x, y + height - 3, width, 
+					   3, FALSE, FALSE, GTK_ORIENTATION_VERTICAL, 
+					   FALSE, FALSE);		
+		}
+	}
+	GDKModifyCanvasClipRegion(&da, NULL);
+	gdk_region_destroy(cliprgn);
 
 	/* draw inner shadow line(s)  */	
 	SmoothDrawPolygonBorder(&border, da, base_color, edge_points, 8);
