@@ -205,6 +205,29 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr,
 	cairo_restore (cr);
 }
 
+static void
+clearlooks_draw_gripdots (cairo_t *cr, int x, int y,
+                          int width, int height, int xr, int yr,
+                          float contrast)
+{
+	int i, j;
+	int xoff, yoff;
+
+	for ( i = 0; i < xr; i++ ) {
+		for ( j = 0; j < yr; j++ ) {
+			xoff = x -(xr * 3 / 2) + 3 * i;
+			yoff = y -(yr * 3 / 2) + 3 * j; 
+			
+			cairo_rectangle (cr, width/2+0.5+xoff, height/2+0.5+yoff, 2, 2);
+			cairo_set_source_rgba (cr, 1., 1., 1., 0.8+contrast);
+			cairo_fill (cr);
+			cairo_rectangle (cr, width/2+0.5+xoff, height/2+0.5+yoff, 1, 1);
+			cairo_set_source_rgba (cr, 0, 0, 0, 0.2+contrast);
+			cairo_fill (cr);
+		}
+	}
+}
+
 void
 clearlooks_draw_button (cairo_t *cr,
                         const ClearlooksColors *colors,
@@ -538,6 +561,104 @@ clearlooks_draw_scale_trough (cairo_t *cr,
 	                                    slider->horizontal);
 }
 
+static void
+clearlooks_draw_slider (cairo_t *cr,
+                        const ClearlooksColors *colors,
+                        const WidgetParameters *params,
+                        int x, int y, int width, int height)
+{
+	const CairoColor	*border = &colors->shade[params->disabled ? 4 : 6];
+	const CairoColor	*spot = &colors->spot[1];
+	CairoColor          *fill = &colors->shade[2];
+	
+
+	cairo_pattern_t *pattern;
+	
+	if (params->disabled)
+		border = &colors->shade[4];
+	else if (params->prelight)
+		border = &colors->spot[2];
+	else
+		border = &colors->shade[6];
+
+	cairo_set_line_width (cr, 1.0);	
+	cairo_translate      (cr, x, y);
+
+	// fill the widget
+	cairo_rectangle (cr, 0.5, 0.5, width-2, height-2);
+
+	/* Fake light */
+	if (!params->disabled)
+	{
+		const CairoColor *top = &colors->shade[0];
+		const CairoColor *bot = &colors->shade[2];
+
+		pattern	= cairo_pattern_create_linear (0, 0, 0, height);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.0,  top->r, top->g, top->b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0,  bot->r, bot->g, bot->b);
+		cairo_set_source (cr, pattern);
+		cairo_fill (cr);
+		cairo_pattern_destroy (pattern);
+	}
+	else
+	{
+		cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
+		cairo_rectangle      (cr, 0.5, 0.5, width-2, height-2);
+		cairo_fill           (cr);
+	}
+
+	/* Set the clip */
+	cairo_rectangle (cr, 0.5, 0.5, 6, height-2);
+	cairo_rectangle (cr, width-7.5, 0.5, 6 , height-2);
+	cairo_clip (cr);
+	
+	cairo_new_path (cr);
+	
+	/* Draw the handles */
+	clearlooks_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, 3.0, params->corners);
+	pattern = cairo_pattern_create_linear (0.5, 0.5, 0.5, 0.5+height);
+
+	if ( params->prelight )
+	{
+		CairoColor highlight;
+		shade (spot, &highlight, 1.5);	
+		cairo_pattern_add_color_stop_rgb (pattern, 0.0, highlight.r, highlight.g, highlight.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0, spot->r, spot->g, spot->b);
+		cairo_set_source (cr, pattern);
+	}
+	else
+		cairo_set_source_rgba (cr, 1, 1, 1, 0.5);
+
+	cairo_fill (cr);
+	cairo_pattern_destroy (pattern);
+	
+	cairo_reset_clip (cr);
+
+	/* Draw the border */
+	clearlooks_rounded_rectangle (cr, 0, 0, width-1, height-1, 3.0, params->corners);
+	cairo_set_source_rgb (cr, border->r,
+	                          border->g,
+	                          border->b);
+	cairo_stroke (cr);
+	
+	/* Draw handle lines */
+	if (width > 14)
+	{
+		cairo_move_to (cr, 6, 0.5);
+		cairo_line_to (cr, 6, height-0.5);
+	
+		cairo_move_to (cr, width-7, 0.5);
+		cairo_line_to (cr, width-7, height-0.5);
+	
+		cairo_set_line_width (cr, 1.0);
+		cairo_set_source_rgba (cr, border->r,
+		                           border->g,
+		                           border->b,
+	                           0.3);
+		cairo_stroke (cr);
+	}
+}
+
 void
 clearlooks_draw_slider_button (cairo_t *cr,
                                const ClearlooksColors *colors,
@@ -545,7 +666,8 @@ clearlooks_draw_slider_button (cairo_t *cr,
                                const SliderParameters *slider,
                                int x, int y, int width, int height)
 {
-	CairoColor      *border = (CairoColor*)&colors->shade[6];
+	const CairoColor *border = &colors->shade[6];
+	CairoColor        top, bottom;
 	cairo_pattern_t *pattern;
 
 	cairo_set_line_width (cr, 1.0);
@@ -561,67 +683,10 @@ clearlooks_draw_slider_button (cairo_t *cr,
 	}
 	
 	clearlooks_draw_shadow (cr, width-1, height-1);
-	
-	clearlooks_rounded_rectangle (cr, 0.5, 0.5, width-2, height-2, 3.0, params->corners);
+	clearlooks_draw_slider (cr, colors, params, 1, 1, width-2, height-2);
 
-	/* Fill the damn thing */
-	cairo_set_source_rgb (cr, colors->bg[params->state_type].r,
-	                          colors->bg[params->state_type].g,
-	                          colors->bg[params->state_type].b);
-	cairo_fill_preserve (cr);
-	
-	/* Fake light */
-	pattern	= cairo_pattern_create_linear (0, 0, 0, 6);
-	cairo_pattern_add_color_stop_rgba (pattern, 0.0,  1.0, 1.0, 1.0, 1.0);
-	cairo_pattern_add_color_stop_rgba (pattern, 1.0,  1.0, 1.0, 1.0, 0.0);
-	cairo_set_source (cr, pattern);
-	cairo_fill (cr);
-	cairo_pattern_destroy (pattern);
-	
-	/* Draw the dented circle */
-	cairo_arc (cr, width-(width/2)-1, height-(height/2)-1, 2.5, 0, M_PI*2);
-	cairo_set_source_rgba (cr, 0., 0., 0., 0.2);
-	cairo_fill (cr);
-
-	cairo_arc (cr, width-(width/2), height-(height/2), 2.5, 0, M_PI*2);
-	cairo_set_source_rgba (cr, 1., 1., 1., 0.4);
-	cairo_fill (cr);
-	
-	/* Set the clip */
-	cairo_rectangle (cr, 1.5, 1.5, 5, height-4);
-	cairo_rectangle (cr, width-7.5, 1.5, 5 , height-4);
-	cairo_clip (cr);
-	
-	cairo_new_path (cr);
-	
-	/* Draw the white handles */
-	clearlooks_rounded_rectangle (cr, 0.5, 0.5, width-2, height-2, 3.0, params->corners);
-	cairo_set_source_rgba (cr, 1, 1, 1, 0.5);
-	cairo_fill (cr);
-	
-	cairo_reset_clip (cr);
-
-	/* Draw the border */
-	clearlooks_rounded_rectangle (cr, 1, 1, width-3, height-3, 3.0, params->corners);
-	cairo_set_source_rgb (cr, border->r,
-	                          border->g,
-	                          border->b);
-	cairo_stroke (cr);
-	
-	/* Draw handle lines */
-	cairo_move_to (cr, 7, 1);
-	cairo_line_to (cr, 7, height-1.5);
-	
-	cairo_move_to (cr, width-8, 1);
-	cairo_line_to (cr, width-8, height-1.5);
-	
-	cairo_set_line_width (cr, 1.0);
-	cairo_set_source_rgba (cr, border->r,
-	                           border->g,
-	                           border->b,
-	                           0.3);
-	cairo_stroke (cr);
-}
+	if (width > 24)
+		clearlooks_draw_gripdots (cr, 0, 0, width-2, height-2, 3, 3, 0);}
 
 void
 clearlooks_draw_progressbar_trough (cairo_t *cr,

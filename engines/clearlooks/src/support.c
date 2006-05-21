@@ -494,3 +494,17 @@ gboolean cl_is_panel_widget (GtkWidget *widget)
 	                  strcmp(G_OBJECT_TYPE_NAME (widget), "PanelWidget") == 0);
 }
 
+GtkTextDirection
+cl_get_parent_direction (const GtkWidget *widget)
+{
+	GtkTextDirection dir;
+
+	if (widget && widget->parent)
+		dir = gtk_widget_get_direction (widget->parent);
+	else if (widget)
+		dir = gtk_widget_get_direction (widget);
+	else
+		dir = gtk_widget_get_default_direction ();
+
+	return dir;
+}

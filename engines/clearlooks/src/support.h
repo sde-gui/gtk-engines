@@ -73,5 +73,6 @@ ClearlooksJunction scrollbar_get_junction       (GtkWidget    *widget);
 
 gboolean          cl_is_panel_widget            (GtkWidget *widget);
 
+GtkTextDirection  cl_get_parent_direction       (const GtkWidget *widget);
 
 #endif /* SUPPORT_H */
