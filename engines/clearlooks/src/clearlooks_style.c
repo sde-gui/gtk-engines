@@ -649,10 +649,17 @@ draw_box (DRAW_ARGS)
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		if (widget && GTK_IS_PROGRESS_BAR (widget))
+		{
 			progressbar.orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
+			progressbar.value = gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(widget));
+			progressbar.pulsing = GTK_PROGRESS (widget)->activity_mode;
+		}
 		else
+		{
 			progressbar.orientation = CL_ORIENTATION_LEFT_TO_RIGHT;
-		
+			progressbar.value = 0;
+			progressbar.pulsing = FALSE;
+		}
 		cairo_reset_clip (cr);
 		
 		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,

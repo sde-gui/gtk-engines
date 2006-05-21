@@ -160,6 +160,8 @@ typedef struct
 {
 	ClearlooksOrientation orientation;
 	ClearlooksProgressBarStyle style;
+	boolean pulsing;
+	float value;
 } ProgressBarParameters;
 
 typedef struct

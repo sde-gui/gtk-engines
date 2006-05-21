@@ -758,12 +758,31 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	
 	cairo_restore (cr);
 	
+	/* inner highlight border */
 	cairo_set_source_rgba (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b, 0.5);
-	cairo_rectangle (cr, 0.5, 0.5, width-2, height-1);
+
+	if (progressbar->pulsing)
+		cairo_rectangle (cr, 1.5, 0.5, width-3, height-1);
+	else
+		cairo_rectangle (cr, 0.5, 0.5, (progressbar->value < 1.0) ? width-2 : width-1, height-1);
+
 	cairo_stroke (cr);
 	
 	cairo_reset_clip (cr);
 	
+	/* begin of bar line */
+	if (progressbar->pulsing)
+	{
+		cairo_move_to (cr, 0.5, 0);
+		cairo_line_to (cr, 0.5, height);
+		cairo_set_source_rgba (cr, colors->spot[2].r,
+		                           colors->spot[2].g,
+		                           colors->spot[2].b,
+								   0.5);
+		cairo_stroke (cr);
+		
+	}
+
 	/* Left shadow */
 	cairo_translate (cr, width, 0);
 	pattern = cairo_pattern_create_linear (0, 0, 3, 0);
@@ -775,13 +794,16 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_pattern_destroy (pattern);	
 	
 	/* End of bar line */
-	cairo_move_to (cr, -0.5, 0);
-	cairo_line_to (cr, -0.5, height);
-	cairo_set_source_rgba (cr, colors->spot[2].r,
-	                           colors->spot[2].g,
-	                           colors->spot[2].b,
-							   0.5);
-	cairo_stroke (cr);
+	if (progressbar->value < 1.0)
+	{
+		cairo_move_to (cr, -0.5, 0);
+		cairo_line_to (cr, -0.5, height);
+		cairo_set_source_rgba (cr, colors->spot[2].r,
+		                           colors->spot[2].g,
+		                           colors->spot[2].b,
+								   0.5);
+		cairo_stroke (cr);
+	}
 }
 
 void
