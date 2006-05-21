@@ -426,10 +426,13 @@ draw_box (DRAW_ARGS)
 	    !(widget && (cl_is_panel_widget (widget->parent))))
 	{
 		WidgetParameters params;
+		MenuBarParameters menubar;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		clearlooks_draw_menubar (cr, colors, &params,
+		menubar.style = clearlooks_style->menubarstyle;
+
+		clearlooks_draw_menubar (cr, colors, &params, &menubar,
 		                         x, y, width, height);
 	}
 	else if (DETAIL ("button") && widget && widget->parent &&

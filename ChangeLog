@@ -1,3 +1,15 @@
+2006-05-21  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_menubar0), (clearlooks_draw_menubar2),
+	(clearlooks_draw_menubar1), (clearlooks_draw_menubar),
+	(clearlooks_draw_toolbar):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_style.c: (draw_box):
+	* engines/clearlooks/src/clearlooks_types.h:
+
+	Added the three menubar styles.
+
 2006-05-17  Rob Staudinger  <robert.staudinger@gmail.com>
 
 	* engines/smooth/src/engine/smooth_gtk2_drawing.c:

@@ -65,6 +65,7 @@ void clearlooks_draw_inset            (cairo_t *cr,
 void clearlooks_draw_menubar          (cairo_t *cr,
                                        const ClearlooksColors     *colors,
                                        const WidgetParameters     *widget,
+                                       const MenuBarParameters    *menubar,
                                        int x, int y, int width, int height);
 
 void clearlooks_draw_tab              (cairo_t *cr,
@@ -148,5 +149,11 @@ void clearlooks_draw_resize_grip      (cairo_t *cr,
                                        const ResizeGripParameters      *grip,
                                        int x, int y, int width, int height);
 
+/* Function Pointers */
+typedef void (*menubar_draw_proto) (cairo_t *cr,
+                                    const ClearlooksColors *colors,
+                                    const WidgetParameters *params,
+                                    const MenuBarParameters *menubar,
+                                    int x, int y, int width, int height);
 
 #endif /* CLEARLOOKS_DRAW_H */

@@ -229,6 +229,11 @@ typedef struct
 	ClearlooksWindowEdge edge;
 } ResizeGripParameters;
 
+typedef struct
+{
+	int style;
+} MenuBarParameters;
+
 #define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) rect.x      = _x; \
                                                        rect.y      = _y; \
                                                        rect.width  = _w; \

@@ -810,14 +810,39 @@ clearlooks_draw_optionmenu (cairo_t *cr,
 }
 
 void
-clearlooks_draw_menubar (cairo_t *cr,
-                         const ClearlooksColors *colors,
-                         const WidgetParameters *params,
-                         int x, int y, int width, int height)
+clearlooks_draw_menubar0 (cairo_t *cr,
+                          const ClearlooksColors *colors,
+                          const WidgetParameters *params,
+                          const MenuBarParameters *menubar,
+                          int x, int y, int width, int height)
+{
+	const CairoColor *light = &colors->shade[0];
+	const CairoColor *dark = &colors->shade[3];
+
+	cairo_set_line_width (cr, 1);
+	cairo_translate (cr, x, y+0.5);
+
+	cairo_move_to (cr, 0, 0);
+	cairo_line_to (cr, width, 0);
+	cairo_set_source_rgb (cr, light->r, light->g, light->b);
+	cairo_stroke (cr);
+
+	cairo_move_to (cr, 0, height-1);
+	cairo_line_to (cr, width, height-1);
+	cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
+	cairo_stroke (cr);
+}
+
+void
+clearlooks_draw_menubar2 (cairo_t *cr,
+                          const ClearlooksColors *colors,
+                          const WidgetParameters *params,
+                          const MenuBarParameters *menubar,
+                          int x, int y, int width, int height)
 {
 	CairoColor lower;
 	cairo_pattern_t *pattern;
-	
+
 	shade (&colors->bg[0], &lower, 0.95);
 	
 	cairo_translate (cr, x, y);
@@ -843,6 +868,44 @@ clearlooks_draw_menubar (cairo_t *cr,
 	                           colors->shade[3].g,
 	                           colors->shade[3].b);
 	cairo_stroke          (cr);
+}
+
+void
+clearlooks_draw_menubar1 (cairo_t *cr,
+                          const ClearlooksColors *colors,
+                          const WidgetParameters *params,
+                          const MenuBarParameters *menubar,
+                          int x, int y, int width, int height)
+{
+	const CairoColor *border = &colors->shade[3];
+
+	clearlooks_draw_menubar2 (cr, colors, params, menubar,
+	                          x, y, width, height);
+
+	cairo_rectangle      (cr, 0.5, 0.5, width-1, height-1);
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke         (cr);
+}
+
+
+static menubar_draw_proto menubar_draw[3] = { clearlooks_draw_menubar0, 
+                                              clearlooks_draw_menubar1,
+                                              clearlooks_draw_menubar2 };
+
+void
+clearlooks_draw_menubar (cairo_t *cr,
+                         const ClearlooksColors *colors,
+                         const WidgetParameters *params,
+                         const MenuBarParameters *menubar,
+                         int x, int y, int width, int height)
+{
+
+
+	if (menubar->style < 0 || menubar->style > 3)
+		return;
+
+	menubar_draw[menubar->style](cr, colors, params, menubar,
+	                             x, y, width, height);
 }
 
 static void
@@ -1219,8 +1282,8 @@ clearlooks_draw_toolbar (cairo_t *cr,
                          const WidgetParameters          *widget,
                          int x, int y, int width, int height)
 {
-	CairoColor *light = (CairoColor*)&colors->shade[0];
-	CairoColor *dark  = (CairoColor*)&colors->shade[3];
+	const CairoColor *light = &colors->shade[0];
+	const CairoColor *dark  = &colors->shade[3];
 	
 	cairo_set_line_width (cr, 1.0);
 	
