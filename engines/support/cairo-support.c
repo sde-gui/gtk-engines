@@ -1,4 +1,5 @@
 #include "cairo-support.h"
+#include <math.h>
 
 static void
 rgb_to_hls (gdouble *r, gdouble *g, gdouble *b)
@@ -192,3 +193,69 @@ ge_shade_color (const CairoColor * a, CairoColor * b, gdouble k)
 	b->g = green;
 	b->b = blue;
 }
+
+void
+ge_saturate_color (const CairoColor * a, CairoColor * b, gdouble k)
+{
+	gdouble red;
+	gdouble green;
+	gdouble blue;
+
+	red   = a->r;
+	green = a->g;
+	blue  = a->b;
+
+	rgb_to_hls (&red, &green, &blue);
+/*
+	green *= k;
+	if (green > 1.0)
+		green = 1.0;
+	else if (green < 0.0)
+		green = 0.0;
+*/
+	blue *= k;
+	if (blue > 1.0)
+		blue = 1.0;
+	else if (blue < 0.0)
+		blue = 0.0;
+
+	hls_to_rgb (&red, &green, &blue);
+
+	b->r = red;
+	b->g = green;
+	b->b = blue;
+}
+
+
+void
+ge_cairo_rounded_rectangle (cairo_t *cr,
+                                 double x, double y, double w, double h,
+                                 double radius, CairoCorners corners)
+{
+	if (corners & CR_CORNER_TOPLEFT)
+		cairo_move_to (cr, x+radius, y);
+	else
+		cairo_move_to (cr, x, y);
+	
+	if (corners & CR_CORNER_TOPRIGHT)
+		cairo_arc (cr, x+w-radius, y+radius, radius, M_PI * 1.5, M_PI * 2);
+	else
+		cairo_line_to (cr, x+w, y);
+	
+	if (corners & CR_CORNER_BOTTOMRIGHT)
+		cairo_arc (cr, x+w-radius, y+h-radius, radius, 0, M_PI * 0.5);
+	else
+		cairo_line_to (cr, x+w, y+h);
+	
+	if (corners & CR_CORNER_BOTTOMLEFT)
+		cairo_arc (cr, x+radius,   y+h-radius, radius, M_PI * 0.5, M_PI);
+	else
+		cairo_line_to (cr, x, y+h);
+	
+	if (corners & CR_CORNER_TOPLEFT)
+		cairo_arc (cr, x+radius,   y+radius,   radius, M_PI, M_PI * 1.5);
+	else
+		cairo_line_to (cr, x, y);
+}
+
+

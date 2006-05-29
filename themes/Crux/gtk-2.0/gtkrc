@@ -49,13 +49,13 @@
 # Default style for all widgets to build from
 style "default"
 {
-  GtkWidget::interior_focus = 0
-  GtkWidget::focus_padding = 0
-  GtkWidget::focus_line_width = 1
+#  GtkWidget::interior_focus = 0
+#  GtkWidget::focus_padding = 0
+#  GtkWidget::focus_line_width = 1
 
   GtkRange::slider_width = 11
   GtkRange::stepper_size = 11
-  GtkRange::trough_border = 2
+  GtkRange::trough_border = 0
 
   GtkScale::slider_length = 16
   GtkCheckButton::indicator_size = 12
@@ -63,7 +63,7 @@ style "default"
   GtkCheckMenuItem::indicator_size = 10
 
   #GtkMenuBar::shadow_type = GTK_SHADOW_NONE
-  GtkToolBar::shadow_type = GTK_SHADOW_NONE
+  #GtkToolBar::shadow_type = GTK_SHADOW_NONE
   #GtkSpinButton::shadow_type = GTK_SHADOW_NONE
 
   GtkOptionMenu::indicator_size = { 11, 6 }
@@ -77,10 +77,10 @@ style "default"
   fg[SELECTED] = "#ffffff"
   fg[INSENSITIVE] = "#555555"
 
-  bg[NORMAL] = "#dddddd"
-  bg[ACTIVE] = "#bbbbbb"
-  bg[PRELIGHT] = "#eeeeee"
-  bg[INSENSITIVE] = "#dddddd"
+  bg[NORMAL] = "#d3d7cf"
+  bg[ACTIVE] = "#a3a69f"
+  bg[PRELIGHT] = "#ededeb"
+  bg[INSENSITIVE] = "#c4c6c0"
 
   text[NORMAL] = "#000000"
   text[ACTIVE] = "#000000"
@@ -426,16 +426,17 @@ class "GtkRuler" style "no-gradients"
 style "menuitem"
 {
   fg[PRELIGHT] = "#ffffff"
+  bg[PRELIGHT] = "#008080"
 
   engine "crux-engine"
   {
-    bg[PRELIGHT] = <0>
+#    bg[PRELIGHT] = <0>
 
-    gradient[NORMAL] = {}
-    gradient[ACTIVE] = {}
-    gradient[SELECTED] = {}
-    # by default menuitem_gradient just references <0>
-    gradient[PRELIGHT] = { vertical : <0,0.5> [3] <0> [10] <0> [2] <0,0.6> }
+#    gradient[NORMAL] = {}
+#    gradient[ACTIVE] = {}
+#    gradient[SELECTED] = {}
+#    # by default menuitem_gradient just references <0>
+#    gradient[PRELIGHT] = { vertical : <0,0.5> [3] <0> [10] <0> [2] <0,0.6> }
   }
 }
 
