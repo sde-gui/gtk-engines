@@ -1,3 +1,8 @@
+2006-06-01  Thomas Wood  <thos@gnome.org>
+
+	* engines/industrial/src/industrial_style.c: (real_draw_box):
+	Applied patch from Bug 341694 - Crash in d4x
+
 2006-05-29  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (crux_begin_paint),

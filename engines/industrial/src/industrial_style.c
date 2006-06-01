@@ -1672,10 +1672,9 @@ real_draw_box (GtkStyle      *style,
 	bg_color = get_color (style, &style->bg[state_type], &style->fg[state_type], SHADE_BG);
 	corner_gc = get_gc (style, bg_color, fg_color, SHADE_HALF);
       }
+      draw_rounded_rect_one_pixel (window, bg_gc, fg_gc, corner_gc,
+				   area, x, y, width, height);
     }
-
-    draw_rounded_rect_one_pixel (window, bg_gc, fg_gc, corner_gc,
-				 area, x, y, width, height);
   } else if (DETAIL("menubar")) {
     GdkGC *bg_gc;
     GdkGC *fg_gc;
