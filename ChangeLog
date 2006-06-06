@@ -1,3 +1,13 @@
+2006-06-06  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (paint_menuitem), (paint_shadow),
+	(paint_progress_bar), (draw_box):
+	* themes/Crux/gtk-2.0/gtkrc:
+
+	- Implement new style menu items
+	- Bug fixes to paint_shadow and draw_box
+	- Fix draw issues in paint_progress_bar
+
 2006-06-01  Thomas Wood  <thos@gnome.org>
 
 	* engines/industrial/src/industrial_style.c: (real_draw_box):

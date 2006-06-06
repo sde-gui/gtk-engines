@@ -426,7 +426,7 @@ class "GtkRuler" style "no-gradients"
 style "menuitem"
 {
   fg[PRELIGHT] = "#ffffff"
-  bg[PRELIGHT] = "#008080"
+  bg[PRELIGHT] = "#508083"
 
   engine "crux-engine"
   {
