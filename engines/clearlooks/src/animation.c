@@ -174,7 +174,12 @@ static gboolean
 animation_timeout_handler (gpointer data)
 {
 	/*g_print("** TICK **\n");*/
+	
+	/* enter threads as update_animation_info will use gtk/gdk. */
+	gdk_threads_enter ();
 	g_hash_table_foreach_remove (animated_widgets, update_animation_info, NULL);
+	/* leave threads again */
+	gdk_threads_leave ();
 	
 	if(g_hash_table_size(animated_widgets)==0)
 	{

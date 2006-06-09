@@ -1,3 +1,9 @@
+2006-06-09  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/animation.c: (animation_timeout_handler):
+	Add locking to prevent problems with multithreaded applications.
+	(Fixes #342199)
+
 2006-06-06  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (paint_menuitem), (paint_shadow),
