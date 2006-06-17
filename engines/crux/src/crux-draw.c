@@ -14,6 +14,8 @@
 
 #define DETAIL(xx) ((detail) != 0 && strcmp (xx, detail) == 0)
 
+#define OUTLINE_GRAY 46/255.0, 52/255.0, 54/255.0
+
 GtkStyleClass *parent_style_class;
 
 static void
@@ -229,6 +231,7 @@ crux_begin_paint (GdkDrawable *window, GdkRectangle *area)
 
 	cairo_set_line_width (cr, 1.0);
 	cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
 
 	if (area)
 	{
@@ -266,56 +269,6 @@ paint_menuitem (cairo_t *cr, GtkStyle *style, GtkStateType state_type,
 	cairo_set_source (cr, crp);
 	cairo_fill (cr);
 	cairo_pattern_destroy (crp);
-}
-
-static void
-crux_paint_gradient (cairo_t * cr, GdkColor * c, eazel_engine_gradient_direction gradient,
-			gdouble x, gdouble y, gdouble width, gdouble height)
-{
-	cairo_set_line_width (cr, 0.0);
-	cairo_pattern_t * crp;
-	gdouble r, g, b;
-
-	gdouble lighten, darken;
-
-	lighten = 1.2;
-	darken = 0.8;
-
-	r = c->red / 65536.0;
-	g = c->green / 65536.0;
-	b = c->blue / 65536.0;
-	switch (gradient)
-	{
-		case GRADIENT_VERTICAL:
-			crp = cairo_pattern_create_linear (x, y, x, y + height);
-			break;
-		case GRADIENT_HORIZONTAL:
-			crp = cairo_pattern_create_linear (x, y, x + width, y);
-			break;
-		default: return;
-	}
-
-	cairo_pattern_add_color_stop_rgb (crp, 0.0, r*lighten, g*lighten, b*lighten);
-	cairo_pattern_add_color_stop_rgb (crp, 1.0, r*darken, g*darken, b*darken);
-	cairo_rectangle (cr, x, y, width, height);
-	cairo_set_source (cr, crp);
-	cairo_fill (cr);
-	cairo_pattern_destroy (crp);
-}
-
-
-
-/* adapted from nautilus-gdk-extensions.c */
-static void
-interpolate_color (GdkColor *dest, gdouble ratio,
-		   GdkColor *start, GdkColor *end)
-{
-	g_return_if_fail (ratio >= 0.0);
-	g_return_if_fail (ratio <= 1.0);
-
-	dest->red = start->red * (1.0 - ratio) + (end->red & 0xFF) * ratio;
-	dest->green = start->green * (1.0 - ratio) + end->green * ratio;
-	dest->blue = start->blue * (1.0 - ratio) + end->blue * ratio;
 }
 
 static void
@@ -482,10 +435,10 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 			/* outline */
 			if (state_type == GTK_STATE_INSENSITIVE)
 				/* disabled gray stroke */
-				cairo_set_source_rgb (cr, 136/255.0, 138/255.0, 133/255.0);
+				gdk_cairo_set_source_color (cr, &style->fg [state_type]);
 			else
 				/* dark gray */
-				cairo_set_source_rgb (cr, 46/255.0, 52/255.0, 54/255.0);
+				cairo_set_source_rgb (cr, OUTLINE_GRAY);
 			cairo_stroke (cr);
 
 			/* inside shadow */
@@ -513,7 +466,7 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 			{
 				ge_cairo_rounded_rectangle (cr, x, y, width, height , radius, CR_CORNER_ALL);
 				/* disabled gray stroke */
-				cairo_set_source_rgb (cr, 136/255.0, 138/255.0, 133/255.0);
+				gdk_cairo_set_source_color (cr, &style->fg [state_type]);
 				cairo_stroke (cr);
 			}
 			else
@@ -533,7 +486,8 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 				cairo_pattern_destroy (crp);
 
 				/* dark gray */
-				cairo_set_source_rgb (cr, 46/255.0, 52/255.0, 54/255.0);
+
+				cairo_set_source_rgb (cr, OUTLINE_GRAY);
 				cairo_stroke (cr);
 
 				ge_cairo_rounded_rectangle (cr, x+1.0, y+1.0, width-2.0, height-2.0, radius, CR_CORNER_ALL);
@@ -958,17 +912,8 @@ draw_shadow (GtkStyle *style,
 	     GtkWidget *widget,
 	     const gchar *detail, gint x, gint y, gint width, gint height)
 {
-    GdkGC *gc1 = NULL;
-    GdkGC *gc2 = NULL;
-    GdkGC *gc3 = NULL;
-    GdkGC *gc4 = NULL;
-    GdkGC *gc_a, *gc_b, *gc_c, *gc_d;
-    gint thickness_light;
-    gint thickness_dark;
-    gboolean rounded = FALSE;
     gboolean outline = TRUE;
     gboolean focused = FALSE;
-    gint i;
 
     eazel_theme_data *theme_data;
 
@@ -1648,27 +1593,95 @@ draw_check (GtkStyle *style,
 	    const gchar *detail, gint x, gint y, gint width, gint height)
 {
 	cairo_t * cr;
-	gdouble cx, cy; /* co-ordinates for cairo */
+	cairo_pattern_t *crp;
+	CairoColor c1;
+	gdouble cx, cy, cw, ch; /* co-ordinates for cairo */
+
+	debug ("draw_check: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
+	    detail, state_type, shadow_type, x, y, width, height);
 
 	cr = crux_begin_paint (window, NULL);
 
-	paint_button (cr, style, state_type, shadow_type, x, y, width, height);
+	/* set up for line drawing */
+	cx = x + 0.5; cy = y + 0.5;
+	ch = height - 1.0; cw = width - 1.0;
+
+	ge_cairo_rounded_rectangle (cr, cx, cy, cw, ch, 2.0, CR_CORNER_ALL);
+
+	if (state_type == GTK_STATE_INSENSITIVE)
+	{
+		gdk_cairo_set_source_color (cr, &style->bg[state_type]);
+		cairo_fill_preserve (cr);
+
+		gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+		cairo_stroke (cr);
+
+		/* prepare area for check mark */
+		cx+= 2.0; cy+= 2.0; cw -= 4.0; ch -= 4.0;
+	}
+	else
+	{
+		/* create gradient */
+		crp = cairo_pattern_create_linear (cx, cy, cx, cy + ch);
+
+		ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &c1);
+		ge_shade_color (&c1, &c1, 0.9); /* darken */
+
+		if (state_type == GTK_STATE_ACTIVE)
+		{
+			cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
+			cairo_pattern_add_color_stop_rgb (crp, 1.0, 1.0, 1.0, 1.0);
+		}
+		else
+		{
+			cairo_pattern_add_color_stop_rgb (crp, 0.0, 1.0, 1.0, 1.0);
+			cairo_pattern_add_color_stop_rgb (crp, 1.0, c1.r, c1.g, c1.b);
+		}
+		cairo_set_source (cr, crp);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (crp);
+
+		cairo_set_source_rgb (cr, OUTLINE_GRAY);
+		cairo_stroke (cr);
+
+		/* inner hilight */
+		cx+=1.0; cy+=1.0; cw -= 2.0; ch -= 2.0;
+		ge_cairo_rounded_rectangle (cr, cx, cy, cw, ch, 1.0, CR_CORNER_ALL);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.7);
+		cairo_stroke (cr);
+
+		/* prepare area for check mark */
+		cx+=1.0; cy+=1.0; cw -= 2.0; ch -= 2.0;
+	}
 
 	if (shadow_type != GTK_SHADOW_OUT)
 	{
-		/* draw tick mark */
-		gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+
 		cairo_set_line_width (cr, 2.0);
-		cx = x + 0.5; width--;
-		cy = y + 0.5; height--;
 
-		/* TODO: draw drop shadow (if state is not insensitive) */
+		/* draw shadow first */
+		if (state_type != GTK_STATE_INSENSITIVE)
+		{
+			cy+=1.0;
+			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+			cairo_move_to (cr, cx + cw * 0.25, cy + ch * 0.5);
+			cairo_line_to (cr, cx + cw * 0.5, cy + ch * 0.75);
+			cairo_line_to (cr, cx + cw, cy + ch * 0.25);
+			cairo_stroke (cr);
+			cy-=1.0;
+		}
+		if (state_type == GTK_STATE_INSENSITIVE)
+			gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+		else
+			gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
 
-		cairo_move_to (cr, cx + 3.0, cy + height * 0.5);
-		cairo_line_to (cr, cx + width * 0.5, cy + height * 0.7);
-		cairo_line_to (cr, cx + width - 2.0, cy + 3.0);
+		/* draw check mark */
+		cairo_move_to (cr, cx + cw * 0.25, cy + ch * 0.5);
+		cairo_line_to (cr, cx + cw * 0.5, cy + ch * 0.75);
+		cairo_line_to (cr, cx + cw, cy + ch * 0.25);
 		cairo_stroke (cr);
-		cairo_fill (cr);
+
+
 	}
 
 	cairo_destroy (cr);
@@ -1685,53 +1698,79 @@ draw_option (GtkStyle *style,
 {
 	cairo_t *cr;
 	cairo_pattern_t *crp;
-	GdkRectangle rect;
 	gdouble cx, cy, radius; /* cairo co-ordinates */
 	CairoColor c1, c2;
 
-
-	cx = x + (height / 2) + 0.5;
-	cy = y + (height / 2) + 0.5;
-	radius = (height / 2) - 1.0;
-
-	rect.x = x; rect.y = y;
-	rect.height = rect.width = height;
+	debug ("draw_option: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
+	    detail, state_type, shadow_type, x, y, width, height);
 
 	cr = crux_begin_paint (window, area);
 
-	cairo_set_line_width (cr, 1.0);
+	cx = x + (height / 2) - 0.5;
+	cy = y + (height / 2) - 0.5;
+	radius = (height / 2);
+
 	cairo_arc (cr, cx, cy, radius, 0.0, M_PI * 2);
 
-
-	if (state_type != GTK_STATE_INSENSITIVE)
+	if (state_type == GTK_STATE_INSENSITIVE)
 	{
-		ge_gdk_color_to_cairo (&style->white, &c1);
-		ge_shade_color (&c1, &c2, 0.2);
+		gdk_cairo_set_source_color (cr, &style->bg[state_type]);
+		cairo_fill_preserve (cr);
 
-		crp = cairo_pattern_create_linear (x + 0.5, y + 0.5, x + height - 1.0, y + height - 1.0);
-		if (shadow_type == GTK_SHADOW_OUT && state_type != GTK_STATE_ACTIVE)
+		gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+		cairo_stroke (cr);
+	}
+	else
+	{
+		ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
+		ge_shade_color (&c1, &c2, 0.7);
+		ge_shade_color (&c1, &c1, 9.9);
+
+		crp = cairo_pattern_create_linear (x, y, x + height, y + height);
+		if (state_type != GTK_STATE_ACTIVE)
 		{
-			cairo_pattern_add_color_stop_rgb (crp, 0.3, c1.r, c1.g, c1.b);
-			cairo_pattern_add_color_stop_rgb (crp, 1.2, c2.r, c2.g, c2.b);
+			/* out shadow */
+			cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
+			cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
 		}
 		else
 		{
-			cairo_pattern_add_color_stop_rgb (crp, 0.3, c2.r, c2.g, c2.b);
-			cairo_pattern_add_color_stop_rgb (crp, 1.2, c1.r, c1.g, c1.b);
+			/* in shadow */
+			cairo_pattern_add_color_stop_rgb (crp, 0.0, c2.r, c2.g, c2.b);
+			cairo_pattern_add_color_stop_rgb (crp, 1.0, c1.r, c1.g, c1.b);
 		}
 		cairo_set_source (cr, crp);
 		cairo_fill_preserve (cr);
 		cairo_pattern_destroy (crp);
+
+		cairo_set_source_rgb (cr, OUTLINE_GRAY);
+		cairo_stroke (cr);
+
+		cairo_arc (cr, cx, cy, radius - 1.0, 0.0, M_PI * 2);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5);
+		cairo_stroke (cr);
 	}
 
-	gdk_cairo_set_source_color (cr, &style->fg[state_type]);
-	cairo_stroke (cr);
 
 	if (shadow_type == GTK_SHADOW_IN)
 	{
-		cairo_set_line_width (cr, 0.0);
-		cairo_arc (cr, cx, cy, radius - 2.5, 0.0, M_PI * 2);
-		cairo_fill (cr);
+		/* draw check mark */
+		cairo_arc (cr, cx, cy, radius / 2.0, 0.0, M_PI * 2);
+
+		if (state_type == GTK_STATE_INSENSITIVE)
+		{
+			gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+			cairo_fill_preserve (cr);
+			cairo_stroke (cr);
+		}
+		else
+		{
+			gdk_cairo_set_source_color (cr, &style->light[GTK_STATE_SELECTED]);
+			cairo_fill_preserve (cr);
+
+			gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+			cairo_stroke (cr);
+		}
 	}
 
 	cairo_destroy (cr);
@@ -1998,7 +2037,6 @@ draw_focus (GtkStyle *style,
 	    const gchar *detail, gint x, gint y, gint width, gint height)
 {
     eazel_theme_data *theme_data;
-    gboolean rounded = TRUE, rounded_inner = TRUE;
 
     g_return_if_fail (style != NULL);
     g_return_if_fail (window != NULL);

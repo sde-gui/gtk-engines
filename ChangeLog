@@ -1,3 +1,11 @@
+2006-06-17  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (crux_begin_paint), (paint_button),
+	(draw_shadow), (draw_check), (draw_option), (draw_focus):
+
+	- Implement new style check and radio buttons
+	- Remove unused variables and functions
+
 2006-06-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/animation.c: (animation_timeout_handler):
