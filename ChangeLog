@@ -1,3 +1,12 @@
+2006-06-20  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (paint_scrollbar_trough),
+	(draw_box), (draw_arrow), (draw_check), (draw_option),
+	(draw_slider):
+
+	- Start work on new scrollbars
+	- Improve check and radio buttons
+
 2006-06-17  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (crux_begin_paint), (paint_button),
