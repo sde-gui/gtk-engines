@@ -641,6 +641,69 @@ paint_entry_shadow (cairo_t *cr, GtkStyle *style,
 }
 
 static void
+paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOrientation orientation,
+	gdouble x, gdouble y, gdouble width, gdouble height)
+{
+	cairo_pattern_t *crp;
+	gdouble gradient_size;
+
+	/* gradient_size is the size of the "shadow" at the ends of the trough
+	 * it needs to be calculated so that it is a fixed size, since cairo takes a ratio when adding gradient stops
+	 */
+
+	#define OFFWHITE 238/255.0, 238/255.0, 238/255.0
+
+	cairo_rectangle (cr, x, y, width, height);
+	gdk_cairo_set_source_color (cr, &style->dark[state_type]);
+	cairo_fill (cr);
+
+	if (orientation == GTK_ORIENTATION_HORIZONTAL)
+		cairo_rectangle (cr, x, y, width, height * 0.4);
+	else
+		cairo_rectangle (cr, x, y, width * 0.4, height);
+
+	cairo_set_source_rgb (cr, OFFWHITE);
+	cairo_fill_preserve (cr);
+
+	cairo_set_source_rgb (cr, OUTLINE_GRAY);
+	cairo_stroke (cr);
+
+
+	if (orientation == GTK_ORIENTATION_HORIZONTAL)
+		cairo_rectangle (cr, x, y + height * 0.6, width, height * 0.4);
+	else
+		cairo_rectangle (cr, x + width * 0.6, y, width * 0.4, height);
+
+	cairo_set_source_rgb (cr, OFFWHITE);
+	cairo_fill_preserve (cr);
+
+	cairo_set_source_rgb (cr, OUTLINE_GRAY);
+	cairo_stroke (cr);
+
+	if (orientation == GTK_ORIENTATION_HORIZONTAL)
+	{
+		crp = cairo_pattern_create_linear (x, y, x + width, y);
+		gradient_size = 24 / width;
+	}
+	else
+	{
+		crp = cairo_pattern_create_linear (x, y, x, y + height);
+		gradient_size = 24 / height;
+	}
+
+
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_pattern_add_color_stop_rgba (crp, 0.0, 0.0, 0.0, 0.0, 0.4);
+	cairo_pattern_add_color_stop_rgba (crp, gradient_size, 0.0, 0.0, 0.0, 0.0);
+	cairo_pattern_add_color_stop_rgba (crp, 1 - gradient_size, 0.0, 0.0, 0.0, 0.0);
+	cairo_pattern_add_color_stop_rgba (crp, 1.0, 0.0, 0.0, 0.0, 0.4);
+
+	cairo_set_source (cr, crp);
+	cairo_fill (cr);
+	cairo_pattern_destroy (crp);
+}
+
+static void
 paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkProgressBarOrientation orientation,
 		    gdouble x, gdouble y, gdouble width, gdouble height)
 {
@@ -999,6 +1062,10 @@ draw_box (GtkStyle *style,
 
 	cr = crux_begin_paint (window, area);
 
+	/* no pressed state for scollbar buttons yet... */
+	if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
+		shadow_type = GTK_SHADOW_OUT;
+
 	if (DETAIL ("button") || DETAIL ("optionmenu"))
 		paint_button (cr, style, state_type, shadow_type, x, y, width, height);
 	else if (DETAIL ("menuitem"))
@@ -1046,6 +1113,13 @@ draw_box (GtkStyle *style,
 			height-=2;
 		}
 		paint_button (cr, style, GTK_STATE_NORMAL, GTK_SHADOW_OUT, x, y, width, height);
+	}
+	else if (DETAIL ("trough") && GTK_IS_SCROLLBAR (widget))
+	{
+		if (GTK_IS_HSCROLLBAR (widget))
+			paint_scrollbar_trough (cr, style, state_type, GTK_ORIENTATION_HORIZONTAL, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
+		else
+			paint_scrollbar_trough (cr, style, state_type, GTK_ORIENTATION_VERTICAL, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
 	}
 	else
 	{
@@ -1269,6 +1343,7 @@ draw_arrow (GtkStyle *style,
 
     if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
     {
+	    /*
 	int type = 0;
 	switch (arrow_type)
 	{
@@ -1288,15 +1363,9 @@ draw_arrow (GtkStyle *style,
 	    type = EAZEL_ENGINE_ARROW_RIGHT;
 	    break;
 	}
-
-	type += (state_type == GTK_STATE_ACTIVE ? 2
-		 : state_type == GTK_STATE_PRELIGHT ? 1 : 0);
-
-	paint_stock_image (theme_data, type, TRUE, FALSE,
-			   style, window, state_type,
-			   area, widget, x, y, width, height);
-    }
-    else if (DETAIL ("spinbutton"))
+	*/
+	}
+    if (DETAIL ("spinbutton"))
     {
 	int window_width, window_height;
 	int tem_x, tem_y;
@@ -1664,9 +1733,9 @@ draw_check (GtkStyle *style,
 		{
 			cy+=1.0;
 			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
-			cairo_move_to (cr, cx + cw * 0.25, cy + ch * 0.5);
-			cairo_line_to (cr, cx + cw * 0.5, cy + ch * 0.75);
-			cairo_line_to (cr, cx + cw, cy + ch * 0.25);
+			cairo_move_to (cr, cx + floor(cw / 4), cy + ch / 2);
+			cairo_line_to (cr, cx + floor(cw / 2), cy + floor(ch * 0.75));
+			cairo_line_to (cr, cx + cw, cy + floor(ch / 4));
 			cairo_stroke (cr);
 			cy-=1.0;
 		}
@@ -1676,12 +1745,11 @@ draw_check (GtkStyle *style,
 			gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
 
 		/* draw check mark */
-		cairo_move_to (cr, cx + cw * 0.25, cy + ch * 0.5);
-		cairo_line_to (cr, cx + cw * 0.5, cy + ch * 0.75);
-		cairo_line_to (cr, cx + cw, cy + ch * 0.25);
+		/* use floor() so that we still end up with a .5 value when adding to the co-ordinate! */
+		cairo_move_to (cr, cx + floor(cw / 4), cy + ch / 2);
+		cairo_line_to (cr, cx + floor(cw / 2), cy + floor(ch * 0.75));
+		cairo_line_to (cr, cx + cw, cy + floor(ch / 4));
 		cairo_stroke (cr);
-
-
 	}
 
 	cairo_destroy (cr);
@@ -1706,9 +1774,9 @@ draw_option (GtkStyle *style,
 
 	cr = crux_begin_paint (window, area);
 
-	cx = x + (height / 2) - 0.5;
-	cy = y + (height / 2) - 0.5;
-	radius = (height / 2);
+	cx = x + (height / 2);
+	cy = y + (height / 2);
+	radius = (height / 2) - 0.5;
 
 	cairo_arc (cr, cx, cy, radius, 0.0, M_PI * 2);
 
@@ -1768,7 +1836,7 @@ draw_option (GtkStyle *style,
 			gdk_cairo_set_source_color (cr, &style->light[GTK_STATE_SELECTED]);
 			cairo_fill_preserve (cr);
 
-			gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+			gdk_cairo_set_source_color (cr, &style->dark[GTK_STATE_SELECTED]);
 			cairo_stroke (cr);
 		}
 	}
@@ -2118,52 +2186,49 @@ draw_slider (GtkStyle *style,
 
     if (DETAIL ("slider")) {
 	{
-	    int thumb_x, thumb_y;
+		cairo_t *cr;
+		cairo_pattern_t *crp;
+		CairoColor c1, c2;
 
-	    focused = 1;
+		cr = crux_begin_paint (window, area);
 
-	    /* XXX could be a gradient? */
-	    paint_stock_image (theme_data,
-			       width > height
-			       ? (state_type == GTK_STATE_PRELIGHT
-				  ? EAZEL_ENGINE_H_SCROLLBAR_HI
-				  : !focused
-				  ? EAZEL_ENGINE_H_SCROLLBAR_INACTIVE
-				  : EAZEL_ENGINE_H_SCROLLBAR)
-			       : (state_type == GTK_STATE_PRELIGHT
-				  ? EAZEL_ENGINE_V_SCROLLBAR_HI
-				  : !focused
-				  ? EAZEL_ENGINE_V_SCROLLBAR_INACTIVE
-				  : EAZEL_ENGINE_V_SCROLLBAR),
-			       TRUE, FALSE, style, window, state_type, area,
-			       widget, x, y, width, height);
-	    if (width > height)
-	      {
-	      /* XXX `4' is 1/2 width of thumb */
-	      thumb_x = x + width / 2 - 4;
-		thumb_y = y;
-	    }
-	    else
-	      {
-	      thumb_x = x;
-		/* XXX `4' is 1/2 height of thumb */
-		thumb_y = y + height / 2 - 4;
-	    }
+		cairo_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
 
-	    paint_stock_image (theme_data,
-			       width > height
-			       ? (state_type == GTK_STATE_PRELIGHT
-				  ? EAZEL_ENGINE_H_SCROLLBAR_THUMB_HI
-				  : !focused
-				  ? EAZEL_ENGINE_H_SCROLLBAR_THUMB_INACTIVE
-				  : EAZEL_ENGINE_H_SCROLLBAR_THUMB)
-			       : (state_type == GTK_STATE_PRELIGHT
-				  ? EAZEL_ENGINE_V_SCROLLBAR_THUMB_HI
-				  : !focused
-				  ? EAZEL_ENGINE_V_SCROLLBAR_THUMB_INACTIVE
-				  : EAZEL_ENGINE_V_SCROLLBAR_THUMB),
-			       FALSE, FALSE, style, window, state_type, area,
-			       widget, thumb_x, thumb_y, -1, -1);
+		if (orientation == GTK_ORIENTATION_VERTICAL)
+			crp = cairo_pattern_create_linear (x, y, x + width, y);
+		else
+			crp = cairo_pattern_create_linear (x, y, x, y + height);
+
+		ge_gdk_color_to_cairo (&style->light[GTK_STATE_SELECTED], &c1);
+		ge_gdk_color_to_cairo (&style->dark[GTK_STATE_SELECTED], &c2);
+		cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
+		cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
+		cairo_set_source (cr, crp);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (crp);
+
+		gdk_cairo_set_source_color (cr, &style->dark[GTK_STATE_SELECTED]);
+		cairo_stroke (cr);
+/*
+		cairo_rectangle (cr, x + 1.5, y + 1.5, width - 2.0, height - 2.0);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.3);
+		cairo_stroke (cr);
+*/
+		/* bevel */
+		cairo_rectangle (cr, x+1.5, y+1.5, width-3.0, height-3.0);
+		if (orientation == GTK_ORIENTATION_VERTICAL)
+			crp = cairo_pattern_create_linear (x, y, x + width, y);
+		else
+			crp = cairo_pattern_create_linear (x, y, x, y + height);
+		cairo_pattern_add_color_stop_rgba (crp, 0.0, 1.0, 1.0, 1.0, .5);
+		cairo_pattern_add_color_stop_rgba (crp, 1.0, 1.0, 1.0, 1.0, 0.2);
+		cairo_set_source (cr, crp);
+		cairo_stroke (cr);
+
+		cairo_pattern_destroy (crp);
+
+
+		cairo_destroy (cr);
 	}
     } else {
       paint_stock_image (theme_data,
