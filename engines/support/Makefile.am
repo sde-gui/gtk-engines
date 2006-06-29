@@ -1,6 +1,12 @@
+noinst_LTLIBRARIES=libsupport.la
+
 INCLUDES = $(GTK_CFLAGS)
 
-EXTRA_DIST = \
+libsupport_la_SOURCES = \
 	./cairo-support.c	\
-	./cairo-support.h
+	./cairo-support.h	\
+	./general-support.h	\
+	./widget-information.c	\
+	./widget-information.h	\
+	./ge-support.h
 

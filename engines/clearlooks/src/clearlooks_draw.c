@@ -3,6 +3,7 @@
 #include "clearlooks_types.h"
 
 #include "support.h"
+#include <ge-support.h>
 
 #include <cairo.h>
 
@@ -608,9 +609,10 @@ clearlooks_draw_slider (cairo_t *cr,
 	}
 
 	/* Set the clip */
+	cairo_save (cr);
 	cairo_rectangle (cr, 0.5, 0.5, 6, height-2);
 	cairo_rectangle (cr, width-7.5, 0.5, 6 , height-2);
-	cairo_clip (cr);
+	cairo_clip_preserve (cr);
 	
 	cairo_new_path (cr);
 	
@@ -632,7 +634,7 @@ clearlooks_draw_slider (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
-	cairo_reset_clip (cr);
+	cairo_restore (cr);
 
 	/* Draw the border */
 	clearlooks_rounded_rectangle (cr, 0, 0, width-1, height-1, 3.0, params->corners);
@@ -754,6 +756,7 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_pattern_t *pattern;
 	CairoColor       shade1;
 	
+	cairo_save (cr);
 	cairo_rectangle (cr, x, y, width, height);
 	cairo_clip (cr);
 	cairo_new_path (cr);
@@ -833,7 +836,7 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 
 	cairo_stroke (cr);
 	
-	cairo_reset_clip (cr);
+	cairo_restore (cr);
 	
 	/* begin of bar line */
 	if (progressbar->pulsing)
@@ -1054,6 +1057,8 @@ clearlooks_draw_frame            (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);
 	cairo_translate      (cr, x+0.5, y+0.5);
 	
+	/* save everything */
+	cairo_save (cr);
 	/* Set clip for the bevel */
 	if (frame->gap_x != -1)
 	{
@@ -1062,7 +1067,6 @@ clearlooks_draw_frame            (cairo_t *cr,
 		cairo_rectangle      (cr, -0.5, -0.5, width, height);
 		cairo_rectangle      (cr, bevel_clip.x, bevel_clip.y, bevel_clip.width, bevel_clip.height);
 		cairo_clip           (cr);
-		cairo_new_path       (cr);
 	}
 	
 	/* Draw the bevel */
@@ -1083,8 +1087,9 @@ clearlooks_draw_frame            (cairo_t *cr,
 		clearlooks_draw_highlight_and_shade (cr, &shadow, width, height, RADIUS);
 	}
 	
-	/* Set clip for the frame */
-	cairo_reset_clip     (cr);
+	/* restore the previous clip region */
+	cairo_restore    (cr);
+	cairo_save       (cr);
 	if (frame->gap_x != -1)
 	{
 		/* Set clip for gap */
@@ -1092,7 +1097,6 @@ clearlooks_draw_frame            (cairo_t *cr,
 		cairo_rectangle      (cr, -0.5, -0.5, width, height);
 		cairo_rectangle      (cr, frame_clip.x, frame_clip.y, frame_clip.width, frame_clip.height);
 		cairo_clip           (cr);
-		cairo_new_path       (cr);
 	}
 
 	/* Draw frame */
@@ -1110,6 +1114,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 		cairo_rectangle      (cr, 0, 0, width-1, height-1);
 	}
 	cairo_stroke         (cr);
+	cairo_restore (cr);
 }
 
 void

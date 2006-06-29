@@ -1,6 +1,8 @@
 #ifndef CLEARLOOKS_TYPES_H
 #define CLEARLOOKS_TYPES_H
 
+#include <ge-support.h>
+
 typedef unsigned char boolean;
 typedef unsigned char uint8;
 
@@ -107,13 +109,6 @@ typedef enum
 	CL_WINDOW_EDGE_SOUTH,
 	CL_WINDOW_EDGE_SOUTH_EAST  
 } ClearlooksWindowEdge;
-
-typedef struct
-{
-	double r;
-	double g;
-	double b;
-} CairoColor;
 
 typedef struct
 {

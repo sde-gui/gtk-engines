@@ -1,6 +1,8 @@
 SUBDIRS = pixmaps
 
-INCLUDES = $(GTK_CFLAGS) -DDATADIR=\"$(datadir)/themes/Crux/pixmaps\" -I$(top_builddir)/engines/support
+INCLUDES = $(GTK_CFLAGS)				\
+           -DDATADIR=\"$(datadir)/themes/Crux/pixmaps\"	\
+           -I$(top_builddir)/engines/support
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 
@@ -27,10 +29,8 @@ libcrux_engine_la_SOURCES = \
 	./src/debug.h                 \
 	./src/crux-gradient.c         \
 	./src/crux-gradient.h         \
-	./src/eazel-theme.h           \
-	$(top_builddir)/engines/support/cairo-support.c \
-	$(top_builddir)/engines/support/cairo-support.h
+	./src/eazel-theme.h
 
 libcrux_engine_la_LDFLAGS = -module -avoid-version -no-undefined
-libcrux_engine_la_LIBADD = $(GTK_LIBS)
+libcrux_engine_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
 

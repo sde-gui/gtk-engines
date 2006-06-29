@@ -21,7 +21,7 @@ typedef enum
 } CairoCorners;
 
 
-void ge_gdk_color_to_cairo (GdkColor * gc, CairoColor * cc);
-void ge_shade_color (const CairoColor *a, CairoColor *b, gdouble k);
-void ge_saturate_color (const CairoColor * a, CairoColor * b, gdouble k);
-void ge_cairo_rounded_rectangle (cairo_t *cr, double x, double y, double w, double h, double radius, CairoCorners corners);
+void ge_gdk_color_to_cairo (GdkColor * gc, CairoColor * cc) G_GNUC_INTERNAL;
+void ge_shade_color (const CairoColor *a, CairoColor *b, gdouble k) G_GNUC_INTERNAL;
+void ge_saturate_color (const CairoColor * a, CairoColor * b, gdouble k) G_GNUC_INTERNAL;
+void ge_cairo_rounded_rectangle (cairo_t *cr, double x, double y, double w, double h, double radius, CairoCorners corners) G_GNUC_INTERNAL;

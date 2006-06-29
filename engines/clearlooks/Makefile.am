@@ -1,4 +1,5 @@
-INCLUDES = $(GTK_CFLAGS)
+INCLUDES = $(GTK_CFLAGS)	\
+           -I$(top_builddir)/engines/support
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libclearlooks.la
@@ -22,5 +23,5 @@ libclearlooks_la_SOURCES =		\
 	./src/config.h
 
 libclearlooks_la_LDFLAGS = -module -avoid-version -no-undefined
-libclearlooks_la_LIBADD =  $(GTK_LIBS)
+libclearlooks_la_LIBADD =  $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
 

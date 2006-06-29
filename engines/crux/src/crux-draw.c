@@ -4,7 +4,7 @@
 #include "crux-common.h"
 #include "crux-pixmaps.h"
 
-#include "cairo-support.h"
+#include <ge-support.h>
 
 #include <stdio.h>
 #include <math.h>
@@ -881,8 +881,7 @@ draw_hline (GtkStyle *style,
     gint thickness_dark;
     gint i;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
 
     debug ("draw_hline: detail=%s state=%d x1=%d x2=%d y=%d\n",
 	    detail, state_type, x1, x2, y);
@@ -929,8 +928,7 @@ draw_vline (GtkStyle *style,
     gint thickness_dark;
     gint i;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
 
     debug ("draw_vline: detail=%s state=%d x=%d y1=%d y2=%d\n",
 	    detail, state_type, x, y1, y2);
@@ -980,8 +978,8 @@ draw_shadow (GtkStyle *style,
 
     eazel_theme_data *theme_data;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     theme_data = CRUX_RC_STYLE(style->rc_style)->theme_data;
     g_assert (theme_data != NULL);
@@ -993,19 +991,6 @@ draw_shadow (GtkStyle *style,
 
     debug ("draw_shadow: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
-
-    /* Protection against broken GTK+ widgets */
-    g_return_if_fail (width < 32768);
-    g_return_if_fail (height < 32768);
-    g_return_if_fail (width >= -1);
-    g_return_if_fail (height >= -1);
-
-    if ((width == -1) && (height == -1))
-	gdk_window_get_size (window, &width, &height);
-    else if (width == -1)
-	gdk_window_get_size (window, &width, NULL);
-    else if (height == -1)
-	gdk_window_get_size (window, NULL, &height);
 
 
 	if (widget != NULL && GTK_WIDGET_HAS_FOCUS (widget))
@@ -1034,21 +1019,8 @@ draw_box (GtkStyle *style,
 	cairo_t *cr;
 	gdouble cx, cy, cw, ch;
 
-	g_return_if_fail (style != NULL);
-	g_return_if_fail (window != NULL);
-
-    /* Protection against broken GTK+ widgets */
-    g_return_if_fail (width < 32768);
-    g_return_if_fail (height < 32768);
-    g_return_if_fail (width >= -1);
-    g_return_if_fail (height >= -1);
-
-    if ((width == -1) && (height == -1))
-	gdk_window_get_size (window, &width, &height);
-    else if (width == -1)
-	gdk_window_get_size (window, &width, NULL);
-    else if (height == -1)
-	gdk_window_get_size (window, NULL, &height);
+	CHECK_ARGS
+	SANITIZE_SIZE
 
     if (DETAIL ("spinbutton")) {
       if (y > (height / 3)) {
@@ -1190,8 +1162,7 @@ draw_polygon (GtkStyle *style,
     gint yadjust;
     gint i;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
     g_return_if_fail (points != NULL);
 
     debug ("draw_polygon: detail=%s state=%d shadow=%d\n",
@@ -1323,20 +1294,11 @@ draw_arrow (GtkStyle *style,
     x = x - 4;
     y = y - 3;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
-    g_return_if_fail (width >= -1);
-    g_return_if_fail (height >= -1);
+    CHECK_ARGS
+    /*SANITIZE_SIZE*/
 
     theme_data = CRUX_RC_STYLE (style->rc_style)->theme_data;
     g_assert (theme_data != NULL);
-
-    if ((width == -1) && (height == -1))
-	gdk_window_get_size (window, &width, &height);
-    else if (width == -1)
-	gdk_window_get_size (window, &width, NULL);
-    else if (height == -1)
-	gdk_window_get_size (window, NULL, &height);
 
     debug ("draw_arrow: detail=%s state=%d shadow=%d arrow_type=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, arrow_type, x, y, width, height);
@@ -1448,24 +1410,11 @@ draw_diamond (GtkStyle *style,
     gint half_width;
     gint half_height;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     debug ("draw_diamond: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
-
-    /* Protection against broken GTK+ widgets */
-    g_return_if_fail (width < 32768);
-    g_return_if_fail (height < 32768);
-    g_return_if_fail (width >= -1);
-    g_return_if_fail (height >= -1);
-
-    if ((width == -1) && (height == -1))
-	gdk_window_get_size (window, &width, &height);
-    else if (width == -1)
-	gdk_window_get_size (window, &width, NULL);
-    else if (height == -1)
-	gdk_window_get_size (window, NULL, &height);
 
     half_width = width / 2;
     half_height = height / 2;
@@ -1563,8 +1512,7 @@ draw_string (GtkStyle *style,
 	     GtkWidget *widget,
 	     const gchar *detail, gint x, gint y, const gchar *string)
 {
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
 
     debug ("draw_string: detail=%s state=%d x=%d y=%d\n",
 	    detail, state_type, x, y);
@@ -1601,21 +1549,8 @@ draw_flat_box (GtkStyle *style,
 {
     GdkGC *gc1;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
-
-    /* Protection against broken GTK+ widgets */
-    g_return_if_fail (width < 32768);
-    g_return_if_fail (height < 32768);
-    g_return_if_fail (width >= -1);
-    g_return_if_fail (height >= -1);
-
-    if ((width == -1) && (height == -1))
-	gdk_window_get_size (window, &width, &height);
-    else if (width == -1)
-	gdk_window_get_size (window, &width, NULL);
-    else if (height == -1)
-	gdk_window_get_size (window, NULL, &height);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     debug ("draw_flat_box: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
@@ -1666,6 +1601,9 @@ draw_check (GtkStyle *style,
 	CairoColor c1;
 	gdouble cx, cy, cw, ch; /* co-ordinates for cairo */
 
+	CHECK_ARGS
+	SANITIZE_SIZE
+	
 	debug ("draw_check: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
@@ -1769,6 +1707,9 @@ draw_option (GtkStyle *style,
 	gdouble cx, cy, radius; /* cairo co-ordinates */
 	CairoColor c1, c2;
 
+	CHECK_ARGS
+	SANITIZE_SIZE
+	
 	debug ("draw_option: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
@@ -1853,8 +1794,8 @@ draw_tab (GtkStyle *style,
 	  GtkWidget *widget,
 	  const gchar *detail, gint x, gint y, gint width, gint height)
 {
-	g_return_if_fail (style != NULL);
-	g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
 	/* Draws an option menu tab (the up and down pointing arrows)
 	 * TODO: Make this look neater
@@ -1883,8 +1824,8 @@ draw_shadow_gap (GtkStyle *style,
 {
     GdkRectangle rect;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     debug ("draw_shadow_gap: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
@@ -1940,8 +1881,8 @@ draw_box_gap (GtkStyle *style,
 {
     GdkRectangle rect;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     debug ("draw_box_gap: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
@@ -2004,8 +1945,8 @@ draw_extension (GtkStyle *style,
 
     eazel_theme_data *theme_data;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     theme_data = CRUX_RC_STYLE (style->rc_style)->theme_data;
     g_assert (theme_data != NULL);
@@ -2106,27 +2047,14 @@ draw_focus (GtkStyle *style,
 {
     eazel_theme_data *theme_data;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     theme_data = CRUX_RC_STYLE (style->rc_style)->theme_data;
     g_assert (theme_data != NULL);
 
     debug ("draw_focus: detail=%s x=%d y=%d w=%d h=%d\n",
 	    detail, x, y, width, height);
-
-    /* Protection against broken GTK+ widgets */
-    g_return_if_fail (width < 32768);
-    g_return_if_fail (height < 32768);
-    g_return_if_fail (width >= -1);
-    g_return_if_fail (height >= -1);
-
-    if ((width == -1) && (height == -1))
-	gdk_window_get_size (window, &width, &height);
-    else if (width == -1)
-	gdk_window_get_size (window, &width, NULL);
-    else if (height == -1)
-	gdk_window_get_size (window, NULL, &height);
 
 	if (DETAIL ("entry"))
 	{
@@ -2157,27 +2085,14 @@ draw_slider (GtkStyle *style,
     eazel_theme_data *theme_data;
     gboolean focused;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     theme_data = CRUX_RC_STYLE (style->rc_style)->theme_data;
     g_assert (theme_data != NULL);
 
     debug ("draw_slider: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
-
-    /* Protection against broken GTK+ widgets */
-    g_return_if_fail (width < 32768);
-    g_return_if_fail (height < 32768);
-    g_return_if_fail (width >= -1);
-    g_return_if_fail (height >= -1);
-
-    if ((width == -1) && (height == -1))
-	gdk_window_get_size (window, &width, &height);
-    else if (width == -1)
-	gdk_window_get_size (window, &width, NULL);
-    else if (height == -1)
-	gdk_window_get_size (window, NULL, &height);
 
     if (area)
 	gdk_gc_set_clip_rectangle (style->black_gc, area);
@@ -2260,24 +2175,11 @@ draw_handle (GtkStyle *style,
     GdkGC *light_gc, *dark_gc;
     GdkRectangle dest;
 
-    g_return_if_fail (style != NULL);
-    g_return_if_fail (window != NULL);
+    CHECK_ARGS
+    SANITIZE_SIZE
 
     debug ("draw_handle: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	   detail, state_type, shadow_type, x, y, width, height);
-
-    /* Protection against broken GTK+ widgets */
-    g_return_if_fail (width < 32768);
-    g_return_if_fail (height < 32768);
-    g_return_if_fail (width >= -1);
-    g_return_if_fail (height >= -1);
-
-    if ((width == -1) && (height == -1))
-	gdk_window_get_size (window, &width, &height);
-    else if (width == -1)
-	gdk_window_get_size (window, &width, NULL);
-    else if (height == -1)
-	gdk_window_get_size (window, NULL, &height);
 
     if (DETAIL ("dockitem") && state_type == GTK_STATE_NORMAL)
 	state_type = GTK_STATE_ACTIVE;

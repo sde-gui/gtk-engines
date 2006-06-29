@@ -4,6 +4,7 @@
 #include <string.h>
 #include <sys/time.h>
 
+#include <ge-support.h>
 #include "clearlooks_style.h"
 #include "clearlooks_rc_style.h"
 #include "clearlooks_draw.h"
@@ -43,7 +44,7 @@ clearlooks_begin_paint (GdkDrawable  *window, GdkRectangle *area)
 
     if (area) {
         cairo_rectangle (cr, area->x, area->y, area->width, area->height);
-        cairo_clip (cr);
+        cairo_clip_preserve (cr);
         cairo_new_path (cr);
     }
 
@@ -83,6 +84,9 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 static void
 draw_flat_box (DRAW_ARGS)
 {
+	CHECK_ARGS
+	SANITIZE_SIZE
+	
 	if (detail && 	
 	    state_type == GTK_STATE_SELECTED && (
 	    !strncmp ("cell_even", detail, 9) ||
@@ -660,7 +664,8 @@ draw_box (DRAW_ARGS)
 			progressbar.value = 0;
 			progressbar.pulsing = FALSE;
 		}
-		cairo_reset_clip (cr);
+		/* WTF is this doing here?
+		 * cairo_reset_clip (cr); */
 		
 		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
 		                                  x, y, width, height,

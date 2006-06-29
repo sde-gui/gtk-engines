@@ -1,3 +1,33 @@
+2006-06-29  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/Makefile.am:
+	* engines/crux/Makefile.am:
+	Link against libsupport.la
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_slider), (clearlooks_draw_progressbar_fill),
+	(clearlooks_draw_frame):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_begin_paint), (draw_flat_box), (draw_box):
+	- Clipping fixes. (Bug #345769)
+	- Some initial macro usage from the support stuff.
+
+	* engines/clearlooks/src/clearlooks_types.h:
+	* engines/crux/src/crux-draw.c: (draw_hline), (draw_vline),
+	(draw_shadow), (draw_box), (draw_polygon), (draw_arrow),
+	(draw_diamond), (draw_string), (draw_flat_box), (draw_check),
+	(draw_option), (draw_tab), (draw_shadow_gap), (draw_box_gap),
+	(draw_extension), (draw_focus), (draw_slider), (draw_handle):
+	- Use the checking macros from support, etc.
+
+	* engines/support/Makefile.am:
+	* engines/support/cairo-support.h:
+	* engines/support/ge-support.h:
+	* engines/support/general-support.h:
+	* engines/support/widget-information.h:
+	- Create a static libsupport.la library that engines can link
+	against.
+
 2006-06-20  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (paint_scrollbar_trough),
