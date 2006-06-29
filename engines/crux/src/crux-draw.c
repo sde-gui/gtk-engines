@@ -973,6 +973,8 @@ draw_shadow (GtkStyle *style,
 	     GtkWidget *widget,
 	     const gchar *detail, gint x, gint y, gint width, gint height)
 {
+	GdkRectangle area2 = {x, y, width, height};
+
     gboolean outline = TRUE;
     gboolean focused = FALSE;
 
@@ -997,7 +999,14 @@ draw_shadow (GtkStyle *style,
 		focused = TRUE;
 
 	cairo_t *cr;
+	if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
+	{
+		width += 2;
+		if (area == NULL)
+			area = &area2;
+	}
 	cr = crux_begin_paint (window, area);
+
 
 	if (DETAIL ("entry"))
 		paint_entry_shadow (cr, style, state_type, focused, x, y, width, height);
@@ -1039,7 +1048,41 @@ draw_box (GtkStyle *style,
 		shadow_type = GTK_SHADOW_OUT;
 
 	if (DETAIL ("button") || DETAIL ("optionmenu"))
+	{
+		if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
+		{
+			if (state_type == GTK_STATE_INSENSITIVE)
+				gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_INSENSITIVE]);
+			else
+				gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_NORMAL]);
+			cairo_rectangle (cr, x, y, width, height);
+			cairo_fill (cr);
+
+			paint_entry_shadow (cr, style, state_type, FALSE, x - 4, y, width + 4, height);
+			x += 3; y += 3;
+			width -= 6; height -= 6;
+		}
+		if (widget && (GTK_IS_TREE_VIEW (widget->parent)))
+		{
+			if (state_type == GTK_STATE_INSENSITIVE)
+				gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_INSENSITIVE]);
+			else
+				gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_NORMAL]);
+			cairo_rectangle (cr, x, y, width, height);
+			cairo_fill (cr);
+					
+			x += 1; y += 1;
+			width -= 2; height -= 2;
+		}
 		paint_button (cr, style, state_type, shadow_type, x, y, width, height);
+	}
+	else if (DETAIL ("buttondefault"))
+	{
+		gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+		cx = x + 0.5; cy = y + 0.5; cw = width - 1.0; ch = height - 1.0;
+		ge_cairo_rounded_rectangle (cr, cx, cy, cw, ch, 3.0, CR_CORNER_ALL);
+		cairo_stroke (cr);
+	}
 	else if (DETAIL ("menuitem"))
 		paint_menuitem (cr, style, state_type, x, y, width, height);
 	else if (DETAIL ("menu"))
@@ -1097,6 +1140,7 @@ draw_box (GtkStyle *style,
 	{
 		/* fill  */
 		cairo_rectangle (cr, x, y, width, height);
+
 		if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
 		{
 			cairo_pattern_t *crp;
@@ -1122,7 +1166,6 @@ draw_box (GtkStyle *style,
 			gdk_cairo_set_source_color (cr, &style->bg[state_type]);
 			cairo_fill (cr);
 		}
-
 		paint_shadow (cr, style, state_type, shadow_type, x, y, width, height);
 	}
 

@@ -1,3 +1,12 @@
+2006-06-29  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (draw_shadow), (draw_box):
+	- Add ring to Default buttons
+	- Make ComboBox buttons appear as if they are inside the GtkEntry
+	- Make treeview headers slightly smaller
+
+	* engines/support/widget-information.h: Fix Benjamin's keyboard
+
 2006-06-29  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/Makefile.am:

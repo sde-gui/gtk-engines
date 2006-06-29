@@ -1,4 +1,4 @@
-#if ß
+#if 0
 #include <gtk/gtk.h>
 
 /* While the UNKOWN cases should never happen, they shall be
