@@ -446,6 +446,7 @@ widget_class "*.*MenuItem.*" style "menuitem"
 
 style "menu"
 {
+  xthickness = 3
   engine "crux-engine"
   {
     gradient[NORMAL] = {}
@@ -461,6 +462,9 @@ class "GtkMenu" style "menu"
 
 style "entry"
 {
+  xthickness = 3
+  ythickness = 3
+
   engine "crux-engine"
   {
     thickness = 3

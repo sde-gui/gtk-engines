@@ -1,3 +1,11 @@
+2006-07-01  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: 
+	(draw_check), (draw_option): Draw menu item check/options without borders
+	(crux_draw_style_class_init): Remove some old and probably unused code
+
+	* themes/Crux/gtk-2.0/gtkrc: Some tweaks to borders
+
 2006-06-29  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (draw_shadow), (draw_box):
