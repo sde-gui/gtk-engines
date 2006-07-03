@@ -1,4 +1,5 @@
-INCLUDES = $(GTK_CFLAGS)
+INCLUDES = $(GTK_CFLAGS)	\
+           -I$(top_builddir)/engines/support
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 
@@ -13,5 +14,4 @@ libredmond95_la_SOURCES = \
 	./src/redmond_gtk2_engine.h
 
 libredmond95_la_LDFLAGS = -module -avoid-version -no-undefined
-libredmond95_la_LIBADD = $(GTK_LIBS)
-
+libredmond95_la_LIBADD =  $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la

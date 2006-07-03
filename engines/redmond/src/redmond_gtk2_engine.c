@@ -79,18 +79,17 @@ redmond_style_realize (GtkStyle * style)
  
   parent_class->realize (style);
  
+  ge_gtk_style_to_cairo_color_cube (style, &redmond_style->color_cube);
+
   for (i = 0; i < 5; i++)
-    {
-      GdkColor color;
+    { 
       GdkGCValues gc_values;
  
-      composite_color_shade (&style->bg[i], 0.3, &color);
-      gdk_colormap_alloc_color (style->colormap, &color, FALSE, TRUE);
- 
-      gc_values.foreground = color;
- 
-      redmond_style->black_border[i] = color;
+      ge_shade_color(&(redmond_style->color_cube.bg[i]), 0.3, &(redmond_style->black_border[i]));
 
+      ge_cairo_color_to_gtk (&redmond_style->black_border[i], &gc_values.foreground);
+      gdk_colormap_alloc_color (style->colormap, &gc_values.foreground, FALSE, TRUE);
+ 
       redmond_style->black_border_gc[i] =
 	gtk_gc_get (style->depth, style->colormap, &gc_values,
 		    GDK_GC_FOREGROUND);

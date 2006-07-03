@@ -1,3 +1,38 @@
+2006-07-03  Andrew Johnson  <acjgenius@earthlink.net>
+
+	* engines/mist/Makefile.am:
+	* engines/mist/src/mist-style.c: (mist_dot), (mist_line),
+	(mist_polygon), (mist_tab), (mist_draw_border), (draw_hline),
+	(draw_vline), (draw_shadow), (draw_polygon), (draw_diamond),
+	(draw_box), (draw_check), (draw_option), (draw_shadow_gap),
+	(draw_box_gap), (draw_extension), (draw_handle),
+	(draw_resize_grip), (mist_style_realize), (mist_style_class_init):
+	* engines/mist/src/mist-style.h:
+	* engines/redmond/Makefile.am:
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_hline),
+	(redmond_draw_vline), (redmond_draw_check), (redmond_draw_arrow),
+	(redmond_draw_shadow), (redmond_draw_box), (redmond_draw_handle):
+	* engines/redmond/src/redmond_gtk2_engine.c:
+	(redmond_style_realize):
+	* engines/redmond/src/redmond_gtk2_engine.h:
+	* engines/redmond/src/redmond_gtk2_misc.c: (option_menu_get_props),
+	(do_redmond_draw_check), (do_redmond_draw_arrow),
+	(do_redmond_draw_line):
+	* engines/redmond/src/redmond_gtk2_misc.h:
+	
+	- Start using libsupport functions in redmond and mist
+
+	* engines/support/cairo-support.c: (ge_hsb_from_color),
+	(ge_color_from_hsb), (ge_gdk_color_to_cairo),
+	(ge_cairo_color_to_gtk), (ge_gtk_style_to_cairo_color_cube),
+	(ge_shade_color), (ge_saturate_color), (ge_gdk_drawable_to_cairo),
+	(ge_cairo_set_color), (ge_cairo_rounded_rectangle),
+	(ge_cairo_simple_border):
+	* engines/support/cairo-support.h:
+
+	- Added new support functions
+	- Modified shade et al functions to use CairoColor instead of rgb gdouble's 
+
 2006-07-01  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: 

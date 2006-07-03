@@ -292,188 +292,7 @@ option_menu_get_props (GtkWidget * widget,
   else
     *indicator_spacing = default_option_indicator_spacing;
 }
- 
-/***********************************************/
-/* Colour Shade Routines                       */
-/***********************************************/
- 
-/***********************************************
- * color_get_rgb_from_hsb -
- *  
- *   Get HSB values from RGB values.
- *
- *   Taken from Smooth but originated in GTK+
- ***********************************************/
-static void
-color_get_hsb_from_rgb (gdouble red, 
-                        gdouble green, 
-                        gdouble blue,	
-                        gdouble *hue, 
-                        gdouble *saturation,
-                        gdouble *brightness) 
-{
-  gdouble min, max, delta;
-    
-  if (red > green)
-    {
-      max = MAX(red, blue);
-      min = MIN(green, blue);      
-    }
-  else
-    {
-      max = MAX(green, blue);
-      min = MIN(red, blue);      
-    }
   
-  *brightness = (max + min) / 2;
- 	
-  if (max == min)
-    {
-      *hue = 0;
-      *saturation = 0;
-    }	
-  else
-    {
-      if (*brightness <= 0.5)
-        *saturation = (max - min) / (max + min);
-      else
-        *saturation = (max - min) / (2 - max - min);
-       
-      delta = max -min;
- 
-      if (red == max)
-        *hue = (green - blue) / delta;
-      else if (green == max)
-        *hue = 2 + (blue - red) / delta;
-      else if (blue == max)
-        *hue = 4 + (red - green) / delta;
- 
-      *hue *= 60;
-      if (*hue < 0.0)
-        *hue += 360;
-    }
-}
- 
-/***********************************************
- * color_get_rgb_from_hsb -
- *  
- *   Get RGB values from HSB values.
- *
- *   Taken from Smooth but originated in GTK+
- ***********************************************/
-#define MODULA(number, divisor) (((gint)number % divisor) + (number - (gint)number))
-static void
-color_get_rgb_from_hsb (gdouble hue, 
-                        gdouble saturation,
-                        gdouble brightness, 
-                        gdouble *red, 
-                        gdouble *green, 
-                        gdouble *blue)
-{
-  gint i;
-  gdouble hue_shift[3], color_shift[3];
-  gdouble m1, m2, m3;
-	  
-  if (brightness <= 0.5)
-    m2 = brightness * (1 + saturation);
-  else
-    m2 = brightness + saturation - brightness * saturation;
- 
-  m1 = 2 * brightness - m2;
- 
-  hue_shift[0] = hue + 120;
-  hue_shift[1] = hue;
-  hue_shift[2] = hue - 120;
- 
-  color_shift[0] = color_shift[1] = color_shift[2] = brightness;	
- 
-  i = (saturation == 0)?3:0;
- 
-  for (; i < 3; i++)
-    {
-      m3 = hue_shift[i];
- 
-      if (m3 > 360)
-        m3 = MODULA(m3, 360);
-      else if (m3 < 0)
-        m3 = 360 - MODULA(ABS(m3), 360);
- 
-      if (m3 < 60)
-        color_shift[i] = m1 + (m2 - m1) * m3 / 60;
-      else if (m3 < 180)
-        color_shift[i] = m2;
-      else if (m3 < 240)
-        color_shift[i] = m1 + (m2 - m1) * (240 - m3) / 60;
-      else
-        color_shift[i] = m1;
-    }	
- 
-  *red = color_shift[0];
-  *green = color_shift[1];
-  *blue = color_shift[2];	
-}
- 
-/***********************************************
- * composite_color_shade -
- *  
- *   Calculate a composite color shade ratio.
- *
- *   Taken from Smooth but originated in GTK+
- ***********************************************/
-void
-composite_color_shade(GdkColor *original, 
-                      gdouble shade_ratio,
-                      GdkColor *composite)
-{
-  gdouble red=0;
-  gdouble green=0;
-  gdouble blue=0;
- 
-  gdouble hue = 0;
-  gdouble saturation = 0;
-  gdouble brightness = 0;
- 
-  red = (gdouble) original->red / 65535.0;
-  green = (gdouble) original->green / 65535.0;
-  blue = (gdouble) original->blue / 65535.0;
- 
-  color_get_hsb_from_rgb (red, green, blue, &hue, &saturation, &brightness);
- 
-  brightness = MIN(brightness*shade_ratio, 1.0);
-  brightness = MAX(brightness, 0.0);
-  
-  saturation = MIN(saturation*shade_ratio, 1.0);
-  saturation = MAX(saturation, 0.0);
-  
-  color_get_rgb_from_hsb (hue, saturation, brightness, &red, &green, &blue);
- 
-  composite->red = red * 65535.0;
-  composite->green = green * 65535.0;
-  composite->blue = blue * 65535.0;
-}
- 
-/***********************************************/
-/* Base Drawing Routines                       */
-/***********************************************/
- 
-cairo_t *
-redmond_begin_paint (GdkDrawable  *window, GdkRectangle *area)
-{
-    cairo_t *cr;
-
-    cr = (cairo_t*)gdk_cairo_create (window);
-
-    cairo_set_line_width (cr, 1);
-
-    if (area) {
-        cairo_rectangle (cr, area->x, area->y, area->width, area->height);
-        cairo_clip (cr);
-        cairo_new_path (cr);
-    }
-
-    return cr;
-}
-
 /***********************************************
  * redmond_draw_part -
  *  
@@ -589,64 +408,7 @@ do_redmond_draw_cross_hatch_fill (GtkStyle * style,
   g_object_unref (gc);
   g_object_unref (pixmap);
 }
- 
-/***********************************************
- * do_redmond_draw_shadow -
- *  
- *   A simple routine to draw thin border
- *   with a topleft and bottomright gc.
- *   Used to cut down the length of all the 
- *   functions.
- *    
- *   It originated in Smooth-Engine.
- ***********************************************/
-void
-do_redmond_draw_shadow (cairo_t *cr,
-		GdkColor * tl,
-		GdkColor * br,
-		gint x,
-		gint y, 
-		gint width, 
-		gint height, 
-		gboolean topleft_overlap)
-{
-  cairo_save(cr);
-
-  cairo_set_line_width (cr, 1);
-
-  if (topleft_overlap)
-    {
-      gdk_cairo_set_source_color(cr, br);	
-
-      cairo_move_to(cr, x + 0.5, y + height - 0.5);
-      cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
-      cairo_line_to(cr, x + width - 0.5, y + 0.5);
-
-      cairo_stroke(cr);
-    }
- 
-  gdk_cairo_set_source_color(cr, tl);	
-
-  cairo_move_to(cr, x + 0.5, y + height - 0.5);
-  cairo_line_to(cr, x + 0.5, y + 0.5);
-  cairo_line_to(cr, x + width - 0.5, y + 0.5);
-
-  cairo_stroke(cr);
-
-  if (!topleft_overlap)
-    {
-      gdk_cairo_set_source_color(cr, br);	
-
-      cairo_move_to(cr, x + 0.5, y + height - 0.5);
-      cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
-      cairo_line_to(cr, x + width - 0.5, y + 0.5);
-
-      cairo_stroke(cr);
-    }
-
-  cairo_restore(cr);
-}
- 
+  
 /***********************************************
  * do_redmond_draw_check -
  *  
@@ -657,7 +419,7 @@ do_redmond_draw_shadow (cairo_t *cr,
  ***********************************************/
 void
 do_redmond_draw_check (cairo_t *cr,
-                       GdkColor * color,
+                       CairoColor * color,
                        gint x, 
                        gint y, 
                        gint width, 
@@ -679,7 +441,7 @@ do_redmond_draw_check (cairo_t *cr,
 
   cairo_save(cr);
 
-  gdk_cairo_set_source_color(cr, color);	
+  ge_cairo_set_color(cr, color);	
   cairo_set_line_width(cr, 0.5);
 /*
     0   1   2   3   4   5   6   7   8
@@ -756,7 +518,7 @@ do_redmond_draw_check (cairo_t *cr,
  ***********************************************/
 void
 do_redmond_draw_arrow (cairo_t *cr,
-               GdkColor * color,
+               CairoColor * color,
                GtkArrowType arrow_type,
                gint x, 
                gint y, 
@@ -813,7 +575,7 @@ do_redmond_draw_arrow (cairo_t *cr,
  
       cairo_save(cr);
 
-      gdk_cairo_set_source_color(cr, color);	
+      ge_cairo_set_color(cr, color);	
       cairo_set_line_width (cr, 0.5);
 
       cairo_move_to(cr, x + 0.5, start + 0.5);
@@ -877,7 +639,7 @@ do_redmond_draw_arrow (cairo_t *cr,
  
       cairo_save(cr);
 
-      gdk_cairo_set_source_color(cr, color);	
+      ge_cairo_set_color(cr, color);	
       cairo_set_line_width (cr, 0.5);
 
       cairo_move_to(cr, start + 0.5, y + 0.5);
@@ -911,8 +673,8 @@ do_redmond_draw_arrow (cairo_t *cr,
  ***********************************************/
 void
 do_redmond_draw_line(cairo_t *cr,
-             GdkColor * dark,
-             GdkColor * light,
+             CairoColor * dark,
+             CairoColor * light,
              GdkRectangle * area,
              gint start,
              gint end,
@@ -923,24 +685,24 @@ do_redmond_draw_line(cairo_t *cr,
 
   if (horizontal) 
     {
-      gdk_cairo_set_source_color(cr, dark);	
+      ge_cairo_set_color(cr, dark);	
       cairo_move_to(cr, start + 1.5, base + 0.5);
       cairo_line_to(cr, end - 1.5, base + 0.5);
       cairo_stroke(cr);
 
-      gdk_cairo_set_source_color(cr, light);	
+      ge_cairo_set_color(cr, light);	
       cairo_move_to(cr, start + 1.5, base + 1.5);
       cairo_line_to(cr, end - 1.5, base + 1.5);
       cairo_stroke(cr);
     } 
   else 
     {
-      gdk_cairo_set_source_color(cr, dark);	
+      ge_cairo_set_color(cr, dark);	
       cairo_move_to(cr, base + 0.5, start + 1.5);
       cairo_line_to(cr, base + 0.5, end - 1.5);
       cairo_stroke(cr);
 
-      gdk_cairo_set_source_color(cr, light);	
+      ge_cairo_set_color(cr, light);	
       cairo_move_to(cr, base + 1.5, start + 1.5);
       cairo_line_to(cr, base + 1.5, end - 1.5);
       cairo_stroke(cr);

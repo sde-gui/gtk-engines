@@ -21,6 +21,7 @@
  */
 #include <gmodule.h>
 #include <gtk/gtk.h>
+#include "cairo-support.h"
  
 /*****************************/
 /* RC Style Declaration      */
@@ -62,7 +63,8 @@ typedef struct
 {
   GtkStyle parent_instance;
   GdkGC *black_border_gc[5];
-  GdkColor black_border[5];
+  CairoColor black_border[5];
+  CairoColorCube color_cube;
 } RedmondStyle;
  
 typedef struct

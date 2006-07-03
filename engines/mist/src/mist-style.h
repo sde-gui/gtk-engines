@@ -1,4 +1,5 @@
 #include <gtk/gtkstyle.h>
+#include "ge-support.h"
 
 typedef struct _MistStyle MistStyle;
 typedef struct _MistStyleClass MistStyleClass;
@@ -15,6 +16,8 @@ extern GType mist_type_style;
 struct _MistStyle
 {
   GtkStyle parent_instance;
+
+  CairoColorCube color_cube;
 };
 
 struct _MistStyleClass

@@ -111,13 +111,6 @@ void option_menu_get_props (GtkWidget * widget,
                             GtkBorder * indicator_spacing);
  
 /* Misc Drawing/Colour Functions */ 
-void composite_color_shade(GdkColor *original, 
-                           gdouble shade_ratio, 
-                           GdkColor *composite);
- 
-cairo_t *
-redmond_begin_paint (GdkDrawable  *window, GdkRectangle *area);
-
 void redmond_draw_part (GdkDrawable * drawable, 
                         GdkGC * gc, 
                         GdkRectangle * area, 
@@ -144,24 +137,15 @@ void do_redmond_draw_cross_hatch_fill (GtkStyle * style,
                                        gint width, 
                                        gint height);
                                        
-void do_redmond_draw_shadow (cairo_t *cr, 
-                             GdkColor * tl,
-                             GdkColor * br, 
-                             gint x, 
-                             gint y, 
-                             gint width, 
-                             gint height, 
-                             gboolean topleft_overlap);
-                             
 void do_redmond_draw_check (cairo_t *cr,
-                            GdkColor *color, 
+                            CairoColor *color, 
                             gint x, 
                             gint y, 
                             gint width, 
                             gint height);
                             
 void do_redmond_draw_arrow (cairo_t *cr,
-                            GdkColor *color,
+                            CairoColor *color,
                             GtkArrowType arrow_type, 
                             gint x, 
                             gint y, 
@@ -169,8 +153,8 @@ void do_redmond_draw_arrow (cairo_t *cr,
                             gint height);
                             
 void do_redmond_draw_line(cairo_t *cr, 
-                          GdkColor * dark, 
-                          GdkColor * light, 
+                          CairoColor * dark, 
+                          CairoColor * light, 
                           GdkRectangle * area, 
                           gint start, 
                           gint end, 

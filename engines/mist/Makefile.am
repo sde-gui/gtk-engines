@@ -1,4 +1,5 @@
-INCLUDES = $(GTK_CFLAGS)
+INCLUDES = $(GTK_CFLAGS)	\
+           -I$(top_builddir)/engines/support
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 
@@ -15,5 +16,5 @@ libmist_la_SOURCES = \
 	./src/mist.c
 
 libmist_la_LDFLAGS = -module -avoid-version -no-undefined
-libmist_la_LIBADD = $(GTK_LIBS)
+libmist_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
 

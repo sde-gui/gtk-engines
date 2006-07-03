@@ -1,157 +1,132 @@
 #include "cairo-support.h"
 #include <math.h>
 
-static void
-rgb_to_hls (gdouble *r, gdouble *g, gdouble *b)
+/***********************************************
+ * ge_hsb_from_color -
+ *  
+ *   Get HSB values from RGB values.
+ *
+ *   Modified from Smooth but originated in GTK+
+ ***********************************************/
+void
+ge_hsb_from_color (const CairoColor *color, 
+                        gdouble *hue, 
+                        gdouble *saturation,
+                        gdouble *brightness) 
 {
-	gdouble min;
-	gdouble max;
-	gdouble red;
-	gdouble green;
-	gdouble blue;
-	gdouble h, l, s;
-	gdouble delta;
-	
-	red = *r;
-	green = *g;
-	blue = *b;
+	gdouble min, max, delta;
+	gdouble red, green, blue;
 
+	red = color->r;
+	green = color->g;
+	blue = color->b;
+  
 	if (red > green)
 	{
-		if (red > blue)
-			max = red;
-		else
-			max = blue;
-	
-		if (green < blue)
-			min = green;
-		else
-			min = blue;
+		max = MAX(red, blue);
+		min = MIN(green, blue);      
 	}
 	else
 	{
-		if (green > blue)
-			max = green;
-		else
-			max = blue;
-	
-		if (red < blue)
-			min = red;
-		else
-			min = blue;
+		max = MAX(green, blue);
+		min = MIN(red, blue);      
 	}
-
-	l = (max + min) / 2;
-	s = 0;
-	h = 0;
-
-	if (max != min)
+  
+	*brightness = (max + min) / 2;
+ 	
+	if (max == min)
 	{
-		if (l <= 0.5)
-			s = (max - min) / (max + min);
+		*hue = 0;
+	*saturation = 0;
+	}	
+	else
+	{
+		if (*brightness <= 0.5)
+			*saturation = (max - min) / (max + min);
 		else
-			s = (max - min) / (2 - max - min);
-	
+			*saturation = (max - min) / (2 - max - min);
+       
 		delta = max -min;
+ 
 		if (red == max)
-			h = (green - blue) / delta;
+			*hue = (green - blue) / delta;
 		else if (green == max)
-			h = 2 + (blue - red) / delta;
+			*hue = 2 + (blue - red) / delta;
 		else if (blue == max)
-			h = 4 + (red - green) / delta;
-	
-		h *= 60;
-		if (h < 0.0)
-			h += 360;
+			*hue = 4 + (red - green) / delta;
+ 
+		*hue *= 60;
+		if (*hue < 0.0)
+			*hue += 360;
 	}
-
-	*r = h;
-	*g = l;
-	*b = s;
 }
-
-static void
-hls_to_rgb (gdouble *h, gdouble *l, gdouble *s)
+ 
+/***********************************************
+ * ge_color_from_hsb -
+ *  
+ *   Get RGB values from HSB values.
+ *
+ *   Modified from Smooth but originated in GTK+
+ ***********************************************/
+#define MODULA(number, divisor) (((gint)number % divisor) + (number - (gint)number))
+void
+ge_color_from_hsb (gdouble hue, 
+                        gdouble saturation,
+                        gdouble brightness, 
+                        CairoColor *color)
 {
-	gdouble hue;
-	gdouble lightness;
-	gdouble saturation;
-	gdouble m1, m2;
-	gdouble r, g, b;
-	
-	lightness = *l;
-	saturation = *s;
+	gint i;
+	gdouble hue_shift[3], color_shift[3];
+	gdouble m1, m2, m3;
 
-	if (lightness <= 0.5)
-		m2 = lightness * (1 + saturation);
+	if (!color) return;
+  	  
+	if (brightness <= 0.5)
+		m2 = brightness * (1 + saturation);
 	else
-		m2 = lightness + saturation - lightness * saturation;
-		
-	m1 = 2 * lightness - m2;
-
-	if (saturation == 0)
+		m2 = brightness + saturation - brightness * saturation;
+ 
+	m1 = 2 * brightness - m2;
+ 
+	hue_shift[0] = hue + 120;
+	hue_shift[1] = hue;
+	hue_shift[2] = hue - 120;
+ 
+	color_shift[0] = color_shift[1] = color_shift[2] = brightness;	
+ 
+	i = (saturation == 0)?3:0;
+ 
+	for (; i < 3; i++)
 	{
-		*h = lightness;
-		*l = lightness;
-		*s = lightness;
-	}
-	else
-	{
-		hue = *h + 120;
-		while (hue > 360)
-			hue -= 360;
-		while (hue < 0)
-			hue += 360;
-	
-		if (hue < 60)
-			r = m1 + (m2 - m1) * hue / 60;
-		else if (hue < 180)
-			r = m2;
-		else if (hue < 240)
-			r = m1 + (m2 - m1) * (240 - hue) / 60;
+		m3 = hue_shift[i];
+ 
+		if (m3 > 360)
+			m3 = MODULA(m3, 360);
+		else if (m3 < 0)
+			m3 = 360 - MODULA(ABS(m3), 360);
+ 
+		if (m3 < 60)
+			color_shift[i] = m1 + (m2 - m1) * m3 / 60;
+		else if (m3 < 180)
+			color_shift[i] = m2;
+		else if (m3 < 240)
+			color_shift[i] = m1 + (m2 - m1) * (240 - m3) / 60;
 		else
-			r = m1;
-	
-		hue = *h;
-		while (hue > 360)
-			hue -= 360;
-		while (hue < 0)
-			hue += 360;
-	
-		if (hue < 60)
-			g = m1 + (m2 - m1) * hue / 60;
-		else if (hue < 180)
-			g = m2;
-		else if (hue < 240)
-			g = m1 + (m2 - m1) * (240 - hue) / 60;
-		else
-			g = m1;
-	
-		hue = *h - 120;
-		while (hue > 360)
-			hue -= 360;
-		while (hue < 0)
-			hue += 360;
-	
-		if (hue < 60)
-			b = m1 + (m2 - m1) * hue / 60;
-		else if (hue < 180)
-			b = m2;
-		else if (hue < 240)
-			b = m1 + (m2 - m1) * (240 - hue) / 60;
-		else
-			b = m1;
-	
-		*h = r;
-		*l = g;
-		*s = b;
-	}
+			color_shift[i] = m1;
+	}	
+ 
+	color->r = color_shift[0];
+	color->g = color_shift[1];
+	color->b = color_shift[2];	
+	color->a = 1.0;	
 }
 
 void
 ge_gdk_color_to_cairo (GdkColor *c, CairoColor *cc)
 {
 	gdouble r, g, b;
+
+	g_return_if_fail (c && cc);
 
 	r = c->red / 65536.0;
 	g = c->green / 65536.0;
@@ -160,78 +135,121 @@ ge_gdk_color_to_cairo (GdkColor *c, CairoColor *cc)
 	cc->r = r;
 	cc->g = g;
 	cc->b = b;
+	cc->a = 1.0;
 }
 
 void
-ge_shade_color (const CairoColor * a, CairoColor * b, gdouble k)
+ge_cairo_color_to_gtk (CairoColor *cc, GdkColor *c)
 {
-	gdouble red;
-	gdouble green;
-	gdouble blue;
+	gdouble r, g, b;
 
-	red   = a->r;
-	green = a->g;
-	blue  = a->b;
+	g_return_if_fail (c && cc);
 
-	rgb_to_hls (&red, &green, &blue);
-	
-	green *= k;
-	if (green > 1.0)
-		green = 1.0;
-	else if (green < 0.0)
-		green = 0.0;
+	r = cc->r * 65536.0;
+	g = cc->g * 65536.0;
+	b = cc->b * 65536.0;
 
-	blue *= k;
-	if (blue > 1.0)
-		blue = 1.0;
-	else if (blue < 0.0)
-		blue = 0.0;
+	c->red = r;
+	c->green = g;
+	c->blue = b;
+}
 
-	hls_to_rgb (&red, &green, &blue);
+void 
+ge_gtk_style_to_cairo_color_cube (GtkStyle * style, CairoColorCube *cube)
+{
+	int i;
 
-	b->r = red;
-	b->g = green;
-	b->b = blue;
+	g_return_if_fail (style && cube);
+
+	for (i = 0; i < 5; i++)
+	{ 
+		ge_gdk_color_to_cairo (&style->bg[i], &cube->bg[i]);
+		ge_gdk_color_to_cairo (&style->fg[i], &cube->fg[i]);
+
+		ge_gdk_color_to_cairo (&style->dark[i], &cube->dark[i]);
+		ge_gdk_color_to_cairo (&style->light[i], &cube->light[i]);
+		ge_gdk_color_to_cairo (&style->mid[i], &cube->mid[i]);
+
+		ge_gdk_color_to_cairo (&style->base[i], &cube->base[i]);
+		ge_gdk_color_to_cairo (&style->text[i], &cube->text[i]);
+		ge_gdk_color_to_cairo (&style->text_aa[i], &cube->text_aa[i]);
+    	}
 }
 
 void
-ge_saturate_color (const CairoColor * a, CairoColor * b, gdouble k)
+ge_shade_color(const CairoColor *base, gdouble shade_ratio, CairoColor *composite)
 {
-	gdouble red;
-	gdouble green;
-	gdouble blue;
+	gdouble hue = 0;
+	gdouble saturation = 0;
+	gdouble brightness = 0;
+ 
+	g_return_if_fail (base && composite);
 
-	red   = a->r;
-	green = a->g;
-	blue  = a->b;
-
-	rgb_to_hls (&red, &green, &blue);
-/*
-	green *= k;
-	if (green > 1.0)
-		green = 1.0;
-	else if (green < 0.0)
-		green = 0.0;
-*/
-	blue *= k;
-	if (blue > 1.0)
-		blue = 1.0;
-	else if (blue < 0.0)
-		blue = 0.0;
-
-	hls_to_rgb (&red, &green, &blue);
-
-	b->r = red;
-	b->g = green;
-	b->b = blue;
+	ge_hsb_from_color (base, &hue, &saturation, &brightness);
+ 
+	brightness = MIN(brightness*shade_ratio, 1.0);
+	brightness = MAX(brightness, 0.0);
+  
+	saturation = MIN(saturation*shade_ratio, 1.0);
+	saturation = MAX(saturation, 0.0);
+  
+	ge_color_from_hsb (hue, saturation, brightness, composite);
+	composite->a = base->a;	
 }
 
+void
+ge_saturate_color (const CairoColor * base, gdouble saturate_level, CairoColor *composite)
+{
+	gdouble hue = 0;
+	gdouble saturation = 0;
+	gdouble brightness = 0;
+ 
+	g_return_if_fail (base && composite);
+
+	ge_hsb_from_color (base, &hue, &saturation, &brightness);
+
+	saturation = MIN(saturation*saturate_level, 1.0);
+	saturation = MAX(saturation, 0.0);
+
+	ge_color_from_hsb (hue, saturation, brightness, composite);
+	composite->a = base->a;	
+}
+
+cairo_t * 
+ge_gdk_drawable_to_cairo (GdkDrawable  *window, GdkRectangle *area)
+{
+	cairo_t *cr;
+
+	g_return_if_fail (window != NULL);
+
+	cr = (cairo_t*)gdk_cairo_create (window);
+	cairo_set_line_width (cr, 1.0);
+
+	if (area) 
+	{
+		cairo_rectangle (cr, area->x, area->y, area->width, area->height);
+		cairo_clip_preserve (cr);
+		cairo_new_path (cr);
+	}
+
+	return cr;
+}
+
+void 
+ge_cairo_set_color (cairo_t *cr, CairoColor *color)
+{
+	g_return_if_fail (cr && color);
+
+	cairo_set_source_rgba (cr, color->r, color->g, color->b, color->a);	
+}
 
 void
 ge_cairo_rounded_rectangle (cairo_t *cr,
                                  double x, double y, double w, double h,
                                  double radius, CairoCorners corners)
 {
+	g_return_if_fail (cr != NULL);
+
 	if (corners & CR_CORNER_TOPLEFT)
 		cairo_move_to (cr, x+radius, y);
 	else
@@ -258,4 +276,64 @@ ge_cairo_rounded_rectangle (cairo_t *cr,
 		cairo_line_to (cr, x, y);
 }
 
+/***********************************************
+ * ge_cairo_simple_border -
+ *  
+ *   A simple routine to draw thin squared
+ *   borders with a topleft and bottomright color.
+ *    
+ *   It originated in Smooth-Engine.
+ ***********************************************/
+void
+ge_cairo_simple_border (cairo_t *cr,
+				CairoColor * tl, CairoColor * br,
+				gint x,	gint y, gint width, gint height, 
+				gboolean topleft_overlap)
+{
+	g_return_if_fail (cr != NULL);
+	g_return_if_fail (tl != NULL);
+	g_return_if_fail (br != NULL);
+	
 
+	gboolean solid_color = (tl == br) || ((tl->r == br->r) && (tl->g == br->g) && (tl->b == br->b) && (tl->a == br->a));
+
+	topleft_overlap &= !solid_color;
+
+	cairo_save(cr);
+
+	cairo_set_line_width (cr, 1);
+
+	if (topleft_overlap)
+	{
+		ge_cairo_set_color(cr, br);	
+
+		cairo_move_to(cr, x + 0.5, y + height - 0.5);
+		cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
+		cairo_line_to(cr, x + width - 0.5, y + 0.5);
+
+		cairo_stroke(cr);
+	}
+ 
+	ge_cairo_set_color(cr, tl);	
+
+	cairo_move_to(cr, x + 0.5, y + height - 0.5);
+	cairo_line_to(cr, x + 0.5, y + 0.5);
+	cairo_line_to(cr, x + width - 0.5, y + 0.5);
+
+	if (!topleft_overlap)
+	{
+		if (!solid_color)
+		{
+			cairo_stroke(cr);
+			ge_cairo_set_color(cr, br);	
+		}
+
+		cairo_move_to(cr, x + 0.5, y + height - 0.5);
+		cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
+		cairo_line_to(cr, x + width - 0.5, y + 0.5);
+	}
+
+	cairo_stroke(cr);
+
+	cairo_restore(cr);
+}
