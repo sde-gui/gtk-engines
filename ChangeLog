@@ -1,3 +1,9 @@
+2006-07-03  Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/crux/src/crux-draw.c: (paint_menuitem), (paint_button),
+	(paint_shadow), (paint_progress_bar), (draw_box), (draw_check),
+	(draw_option): Fixed crux ge_shade/ge_saturate calls
+	
 2006-07-03  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* engines/mist/Makefile.am:

@@ -260,10 +260,10 @@ paint_menuitem (cairo_t *cr, GtkStyle *style, GtkStateType state_type,
 	ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
 	crp = cairo_pattern_create_linear (x, y, x, y + height);
 	cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
-	ge_shade_color (&c1, &c1, 1.3);
+	ge_shade_color (&c1, 1.3, &c1);
 	cairo_pattern_add_color_stop_rgb (crp, 0.35, c1.r, c1.g, c1.b);
 	cairo_pattern_add_color_stop_rgb (crp, 0.28, c1.r, c1.g, c1.b);
-	ge_shade_color (&c1, &c1, 0.6);
+	ge_shade_color (&c1, 0.6, &c1);
 	cairo_pattern_add_color_stop_rgb (crp, 1.0, c1.r, c1.g, c1.b);
 	cairo_rectangle (cr, x, y, width, height);
 	cairo_set_source (cr, crp);
@@ -406,8 +406,8 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 
 	/* calculate start and end colours for the gradient */
 	ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-	ge_shade_color (&c1, &c2, 0.9); /* darken */
-	ge_shade_color (&c1, &c1, 1.1); /* lighten */
+	ge_shade_color (&c1, 0.9, &c2); /* darken */
+	ge_shade_color (&c1, 1.1, &c1); /* lighten */
 
 	switch (shadow_type)
 	{
@@ -522,8 +522,8 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 		if (state_type == GTK_STATE_SELECTED)
 		{
 			ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-			ge_saturate_color (&c1, &c2, 1.2); /* darken */
-			//ge_saturate_color (&c1, &c1, 0.8); /* darken */
+			ge_saturate_color (&c1, 1.2, &c2); /* darken */
+			//ge_saturate_color (&c1, 0.8, &c1); /* darken */
 			cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
 			cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
 		}
@@ -713,8 +713,8 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	cairo_rectangle (cr, x, y, width, height);
 
 	ge_gdk_color_to_cairo (&style->base[GTK_STATE_SELECTED], &c1);
-	ge_shade_color (&c1, &c2, 0.8); /* darken */
-	ge_shade_color (&c1, &c1, 1.4); /* lighten */
+	ge_shade_color (&c1, 0.8, &c2); /* darken */
+	ge_shade_color (&c1, 1.4, &c1); /* lighten */
 	if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT || orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
 		crp = cairo_pattern_create_linear (x, y, x, y + height);
 	else
@@ -1148,8 +1148,8 @@ draw_box (GtkStyle *style,
 
 			crp = cairo_pattern_create_linear (x, y, x, y + height);
 			ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-			ge_shade_color (&c1, &c2, 0.9);
-			ge_shade_color (&c1, &c1, 1.1);
+			ge_shade_color (&c1, 0.9, &c2);
+			ge_shade_color (&c1, 1.1, &c1);
 			/*
 			cairo_pattern_add_color_stop_rgb (crp, 0.0, 238/255.0, 238/255.0, 236/255.0);
 			cairo_pattern_add_color_stop_rgb (crp, 1.0, 185/255.0, 189/255.0, 182/255.0);
@@ -1679,7 +1679,7 @@ draw_check (GtkStyle *style,
 			crp = cairo_pattern_create_linear (cx, cy, cx, cy + ch);
 
 			ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &c1);
-			ge_shade_color (&c1, &c1, 0.9); /* darken */
+			ge_shade_color (&c1, 0.9, &c1); /* darken */
 
 			if (state_type == GTK_STATE_ACTIVE)
 			{
@@ -1781,8 +1781,8 @@ draw_option (GtkStyle *style,
 		else
 		{
 			ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-			ge_shade_color (&c1, &c2, 0.7);
-			ge_shade_color (&c1, &c1, 9.9);
+			ge_shade_color (&c1, 0.7, &c2);
+			ge_shade_color (&c1, 9.9, &c1);
 
 			crp = cairo_pattern_create_linear (x, y, x + height, y + height);
 			if (state_type != GTK_STATE_ACTIVE)
