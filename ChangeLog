@@ -1,3 +1,54 @@
+2006-07-07 Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/hc/Makefile.am:
+	* engines/hc/src/hc-style.c: (hc_draw_dot), (hc_draw_line),
+	(hc_arrow), (hc_style_realize), (hc_draw_shadow),
+	(hc_draw_extension), (hc_draw_check), (hc_draw_option),
+	(hc_draw_tab), (hc_draw_shadow_gap), (hc_draw_layout),
+	(hc_draw_arrow), (hc_draw_box_gap), (hc_draw_handle),
+	(hc_draw_hline), (hc_draw_vline), (hc_draw_diamond),
+	(hc_draw_polygon), (hc_style_class_init):
+	* engines/hc/src/hc-style.h:
+	
+	- Initial Work Toward Cairo Verson of hc-engine
+
+	* engines/mist/src/mist-style.c: (draw_shadow), (draw_polygon),
+	(draw_diamond), (draw_box), (draw_check), (draw_option),
+	(draw_shadow_gap), (draw_box_gap), (draw_extension), (draw_handle),
+	(draw_resize_grip), (mist_style_class_init):
+
+	- More gdk -> cairo in mist. it should be all cairo now. (if not all done....)
+
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_check),
+	(redmond_draw_extension), (redmond_draw_handle):
+	* engines/redmond/src/redmond_gtk2_misc.c: (do_redmond_draw_check):
+
+	- gdk -> cairo. Mostly cairo now, sans part stuff
+
+	* engines/support/cairo-support.c:
+	(ge_gtk_style_to_cairo_color_cube),
+	(ge_cairo_rotate_mirror_translate), (ge_cairo_simple_border),
+	(ge_cairo_polygon), (ge_cairo_line):
+
+	- Added some more simple cairo wrappers for gdk conversion ease
+
+	* engines/support/cairo-support.h:
+	* engines/thinice/Makefile.am:
+	* engines/thinice/src/thinice_misc.c:
+	* engines/thinice/src/thinice_misc.h:
+	* engines/thinice/src/thinice_main.c: (theme_create_rc_style):
+	* engines/thinice/src/thinice_style.h:
+	* engines/thinice/src/thinice_theme_draw.c: (draw_hline),
+	(draw_vline), (draw_shadow), (draw_polygon), (draw_arrow),
+	(draw_diamond), (draw_box), (draw_check), (draw_option),
+	(draw_shadow_gap), (draw_box_gap), (draw_slider), (draw_handle),
+	(thinice_tab), (thinice_style_realize), (thinice_style_class_init):
+
+	- Convert to cairo from gdk - all gdk drawing is gone
+	- replaced optionmenu arrow with the standard arrow
+	- added thinice_misc
+	- a few things aren't quite done, (arrow positioning for eg), but most things are fairly accurate
+
 2006-07-03  Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/crux/src/crux-draw.c: (paint_menuitem), (paint_button),

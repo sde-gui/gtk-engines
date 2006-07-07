@@ -1,4 +1,5 @@
-INCLUDES = $(GTK_CFLAGS)
+INCLUDES = $(GTK_CFLAGS)	\
+           -I$(top_builddir)/engines/support
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 
@@ -15,5 +16,5 @@ libhcengine_la_SOURCES = \
 	./src/hc-main.c
 
 libhcengine_la_LDFLAGS = -module -avoid-version -no-undefined
-libhcengine_la_LIBADD = $(GTK_LIBS)
+libhcengine_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
 

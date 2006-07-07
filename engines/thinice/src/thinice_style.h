@@ -1,4 +1,5 @@
 #include <gtk/gtkstyle.h>
+#include "ge-support.h"
 
 typedef struct _ThiniceStyle ThiniceStyle;
 typedef struct _ThiniceStyleClass ThiniceStyleClass;
@@ -15,6 +16,7 @@ extern GType thinice_type_style;
 struct _ThiniceStyle
 {
   GtkStyle parent_instance;
+  CairoColorCube color_cube;
 };
 
 struct _ThiniceStyleClass

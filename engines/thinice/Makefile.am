@@ -1,4 +1,5 @@
-INCLUDES = $(GTK_CFLAGS)
+INCLUDES = $(GTK_CFLAGS)	\
+           -I$(top_builddir)/engines/support
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 
@@ -10,10 +11,12 @@ EXTRA_DIST = \
 libthinice_la_SOURCES = \
 	./src/thinice_rc_style.c	\
 	./src/thinice_rc_style.h	\
-	./src/thinice_style.h	\
+	./src/thinice_style.h		\
+	./src/thinice_misc.h		\
+	./src/thinice_misc.c		\
 	./src/thinice_theme_draw.c	\
 	./src/thinice_main.c
 
 libthinice_la_LDFLAGS = -module -avoid-version -no-undefined
-libthinice_la_LIBADD = $(GTK_LIBS)
+libthinice_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
 

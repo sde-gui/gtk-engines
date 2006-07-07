@@ -21,18 +21,3 @@ theme_create_rc_style (void)
   ptr = GTK_RC_STYLE (g_object_new (THINICE_TYPE_RC_STYLE, NULL));  
   return (GtkRcStyle *)ptr;
 }
-
-/* The following function will be called by GTK+ when the module
- * is loaded and checks to see if we are compatible with the
- * version of GTK+ that loads us.
- */
-#if 0
-G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
-const gchar*
-g_module_check_init (GModule *module)
-{
-  return gtk_check_version (GTK_MAJOR_VERSION,
-			    GTK_MINOR_VERSION,
-			    GTK_MICRO_VERSION - GTK_INTERFACE_AGE);
-}
-#endif

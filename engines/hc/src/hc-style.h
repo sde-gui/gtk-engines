@@ -20,6 +20,7 @@
  */
 
 #include <gtk/gtkstyle.h>
+#include "ge-support.h"
 
 typedef struct _HcStyle HcStyle;
 typedef struct _HcStyleClass HcStyleClass;
@@ -37,6 +38,7 @@ extern GtkStyleClass *style_parent_class;
 struct _HcStyle
 {
   GtkStyle parent_instance;
+  CairoColorCube color_cube;
 };
 
 struct _HcStyleClass

@@ -22,6 +22,9 @@ typedef struct
 	CairoColor base[5];
 	CairoColor text[5];
 	CairoColor text_aa[5];
+
+	CairoColor black;
+	CairoColor white;
 } CairoColorCube;
 
 typedef enum
@@ -49,4 +52,7 @@ void ge_cairo_set_color (cairo_t *cr, CairoColor *color) G_GNUC_INTERNAL;
 
 void ge_cairo_rounded_rectangle (cairo_t *cr, double x, double y, double w, double h, double radius, CairoCorners corners) G_GNUC_INTERNAL;
 
-void ge_cairo_simple_border (cairo_t *cr, CairoColor * tl, CairoColor * br, gint x,	gint y, gint width, gint height, gboolean topleft_overlap) G_GNUC_INTERNAL;
+void ge_cairo_simple_border (cairo_t *cr, CairoColor * tl, CairoColor * br, gint x, gint y, gint width, gint height, gboolean topleft_overlap) G_GNUC_INTERNAL;
+
+void ge_cairo_line (cairo_t *cr, CairoColor *color, gint x1, gint y1, gint x2, gint y2) G_GNUC_INTERNAL;
+void ge_cairo_polygon (cairo_t *cr, CairoColor *color, GdkPoint *points, gint npoints) G_GNUC_INTERNAL;

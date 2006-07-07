@@ -174,6 +174,12 @@ ge_gtk_style_to_cairo_color_cube (GtkStyle * style, CairoColorCube *cube)
 		ge_gdk_color_to_cairo (&style->text[i], &cube->text[i]);
 		ge_gdk_color_to_cairo (&style->text_aa[i], &cube->text_aa[i]);
     	}
+
+	cube->black.r = cube->black.g = cube->black.b = 0;
+	cube->black.a = 1;
+
+	cube->white.r = cube->white.g = cube->white.b = 1;
+	cube->white.a = 1;
 }
 
 void
@@ -241,6 +247,39 @@ ge_cairo_set_color (cairo_t *cr, CairoColor *color)
 	g_return_if_fail (cr && color);
 
 	cairo_set_source_rgba (cr, color->r, color->g, color->b, color->a);	
+}
+
+/* KEEP IN MIND, MIRROR TAKES PLACE BEFORE ROTATION */
+/* ROTATES ANTI-CLOCKWISE, I THINK :P */
+/* TODO: Do I really need THREE matrices? */
+void
+ge_cairo_rotate_mirror_translate (cairo_t *cr, 
+					double radius, double x, double y,
+					gboolean mirror_horizontally, 
+					gboolean mirror_vertically)
+{
+	cairo_matrix_t matrix_rotate;
+	cairo_matrix_t matrix_mirror;
+	cairo_matrix_t matrix_result;
+	
+	double r_cos = cos(radius);
+	double r_sin = sin(radius);
+	
+	cairo_matrix_init (&matrix_rotate, r_cos,
+	                                   r_sin,
+	                                   r_sin,
+	                                   r_cos,
+	                                   x, y);
+	
+	cairo_matrix_init (&matrix_mirror, mirror_horizontally ? -1 : 1,
+	                                   0,
+	                                   0,
+	                                   mirror_vertically ? -1 : 1,
+									   0, 0);
+
+	cairo_matrix_multiply (&matrix_result, &matrix_mirror, &matrix_rotate);
+
+	cairo_set_matrix (cr, &matrix_result);
 }
 
 void
@@ -332,6 +371,58 @@ ge_cairo_simple_border (cairo_t *cr,
 		cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
 		cairo_line_to(cr, x + width - 0.5, y + 0.5);
 	}
+
+	cairo_stroke(cr);
+
+	cairo_restore(cr);
+}
+
+void ge_cairo_polygon (cairo_t *cr,
+				CairoColor *color,
+				GdkPoint *points,
+				gint npoints)
+{
+	int i = 0;
+
+	cairo_save(cr);
+
+	ge_cairo_set_color(cr, color);	
+	cairo_move_to(cr, points[0].x, points[0].y);
+
+	for (i = 1; i < npoints; i++)
+	{
+		if (!((points[i].x == points[i + 1].x) &&
+		    (points[i].y == points[i + 1].y))) 
+		{
+			cairo_line_to(cr, points[i].x, points[i].y);
+		}
+	}
+	
+	if ((points[npoints-1].x != points[0].y) ||
+		(points[npoints-1].y != points[0].y))
+	{
+		cairo_line_to(cr, points[0].x, points[0].y);
+	}
+
+	cairo_fill(cr);
+
+	cairo_restore(cr);
+}
+
+void ge_cairo_line (cairo_t *cr,
+			CairoColor *color,
+			gint x1,
+			gint y1,
+			gint x2,
+			gint y2)
+{ 
+	cairo_save(cr);
+
+	ge_cairo_set_color(cr, color);	
+	cairo_set_line_width (cr, 1);
+
+	cairo_move_to(cr, x1 + 0.5, y1 + 0.5);
+	cairo_line_to(cr, x2 + 0.5, y2 + 0.5);
 
 	cairo_stroke(cr);
 

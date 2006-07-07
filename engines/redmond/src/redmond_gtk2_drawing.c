@@ -175,12 +175,22 @@ redmond_draw_check (GtkStyle * style,
 	    do_redmond_draw_cross_hatch_fill (style, window, GTK_STATE_NORMAL, 
                                               area, RADIO_NONE, x, y, width, height);
 	  else
-	    gdk_draw_rectangle (window, style->base_gc[GTK_STATE_NORMAL],
-			        TRUE, x, y, width, height);
+          {
+            ge_cairo_set_color(cr, &redmond_style->color_cube.base[GTK_STATE_NORMAL]);
+
+            cairo_rectangle(cr, x, y, width - 1, height - 1);
+
+            cairo_fill(cr);
+          }
+
 	  break;
 	default:
-	  gdk_draw_rectangle (window, style->bg_gc[GTK_STATE_NORMAL], TRUE,
-			      x, y, width, height);
+          ge_cairo_set_color(cr, &redmond_style->color_cube.bg[GTK_STATE_NORMAL]);
+
+          cairo_rectangle(cr, x, y, width - 1, height - 1);
+
+          cairo_fill(cr);
+
 	}
  
       if ((shadow == GTK_SHADOW_IN) || 
@@ -201,7 +211,7 @@ redmond_draw_check (GtkStyle * style,
             }
 	}
  
-      gtk_paint_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_IN,
+      redmond_draw_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_IN,
 			area, widget, detail, x, y, width, height);
     }
     
@@ -1431,52 +1441,46 @@ redmond_draw_extension (GtkStyle * style,
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
  
-  GdkGC *gc1 = NULL;
-  GdkGC *gc2 = NULL;
-  GdkGC *gc3 = NULL;
-  GdkGC *gc4 = NULL;
+  CairoColor *color1 = NULL;
+  CairoColor *color2 = NULL;
+  CairoColor *color3 = NULL;
+  CairoColor *color4 = NULL;
  
   g_return_if_fail(sanitize_parameters(style, window, &width, &height));
  
   do_redmond_draw_default_fill (style, window, GTK_STATE_NORMAL, area, 
                                 x, y, width, height);
  
+      cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+
   switch (shadow_type)
     {
     case GTK_SHADOW_NONE:
       return;
     case GTK_SHADOW_IN:
-      gc1 = style->dark_gc[state_type];
-      gc2 = redmond_style->black_border_gc[state_type];
-      gc3 = style->bg_gc[state_type];
-      gc4 = style->light_gc[state_type];
+      color1 = &redmond_style->color_cube.dark[state_type];
+      color2 = &redmond_style->black_border[state_type];
+      color3 = &redmond_style->color_cube.bg[state_type];
+      color4 = &redmond_style->color_cube.light[state_type];
       break;
     case GTK_SHADOW_ETCHED_IN:
-      gc1 = style->dark_gc[state_type];
-      gc2 = style->light_gc[state_type];
-      gc3 = style->dark_gc[state_type];
-      gc4 = style->light_gc[state_type];
+      color1 = &redmond_style->color_cube.dark[state_type];
+      color2 = &redmond_style->color_cube.light[state_type];
+      color3 = &redmond_style->color_cube.dark[state_type];
+      color4 = &redmond_style->color_cube.light[state_type];
       break;
     case GTK_SHADOW_OUT:
-      gc1 = style->light_gc[state_type];
-      gc2 = style->bg_gc[state_type];
-      gc3 = style->dark_gc[state_type];
-      gc4 = redmond_style->black_border_gc[state_type];
+      color1 = &redmond_style->color_cube.light[state_type];
+      color2 = &redmond_style->color_cube.bg[state_type];
+      color3 = &redmond_style->color_cube.dark[state_type];
+      color4 = &redmond_style->black_border[state_type];
       break;
     case GTK_SHADOW_ETCHED_OUT:
-      gc1 = style->light_gc[state_type];
-      gc2 = style->dark_gc[state_type];
-      gc3 = style->light_gc[state_type];
-      gc4 = style->dark_gc[state_type];
+      color1 = &redmond_style->color_cube.light[state_type];
+      color2 = &redmond_style->color_cube.dark[state_type];
+      color3 = &redmond_style->color_cube.light[state_type];
+      color4 = &redmond_style->color_cube.dark[state_type];
       break;
-    }
- 
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (gc1, area);
-      gdk_gc_set_clip_rectangle (gc2, area);
-      gdk_gc_set_clip_rectangle (gc3, area);
-      gdk_gc_set_clip_rectangle (gc4, area);
     }
  
   switch (shadow_type)
@@ -1495,17 +1499,17 @@ redmond_draw_extension (GtkStyle * style,
                                         width - (2 * style->xthickness),
                                         height - (style->ythickness));
  
-	  gdk_draw_line (window, gc1, x, y, x, y + height - 2);
-	  gdk_draw_line (window, gc2, x + 1, y, x + 1, y + height - 2);
+	  ge_cairo_line (cr, color1, x, y, x, y + height - 2);
+	  ge_cairo_line (cr, color2, x + 1, y, x + 1, y + height - 2);
  
-	  gdk_draw_line (window, gc3,
+	  ge_cairo_line (cr, color3,
 			 x + 2, y + height - 2, x + width - 2,
 			 y + height - 2);
-	  gdk_draw_line (window, gc3, x + width - 2, y, x + width - 2,
+	  ge_cairo_line (cr, color3, x + width - 2, y, x + width - 2,
 			 y + height - 2);
-	  gdk_draw_line (window, gc4, x + 1, y + height - 1, x + width - 2,
+	  ge_cairo_line (cr, color4, x + 1, y + height - 1, x + width - 2,
 			 y + height - 1);
-	  gdk_draw_line (window, gc4, x + width - 1, y, x + width - 1,
+	  ge_cairo_line (cr, color4, x + width - 1, y, x + width - 1,
 			 y + height - 2);
 	  break;
 	case GTK_POS_BOTTOM:
@@ -1515,18 +1519,18 @@ redmond_draw_extension (GtkStyle * style,
                                         width - (2 * style->xthickness),
                                         height - (style->ythickness));
  
-	  gdk_draw_line (window, gc1, x + 2, y, x + width - 3, y);
-	  gdk_draw_line (window, gc1, x, y + 2, x, y + height - 1);
+	  ge_cairo_line (cr, color1, x + 2, y, x + width - 3, y);
+	  ge_cairo_line (cr, color1, x, y + 2, x, y + height - 1);
  
-	  gdk_draw_line (window, gc2, x + 1, y + 1, x + width - 2, y + 1);
-	  gdk_draw_line (window, gc2, x + 1, y + 1, x + 1, y + height - 1);
-	  gdk_draw_line (window, gc1, x, y + 2, x + 1, y + 1);
+	  ge_cairo_line (cr, color2, x + 1, y + 1, x + width - 2, y + 1);
+	  ge_cairo_line (cr, color2, x + 1, y + 1, x + 1, y + height - 1);
+	  ge_cairo_line (cr, color1, x, y + 2, x + 1, y + 1);
  
-	  gdk_draw_line (window, gc3,
+	  ge_cairo_line (cr, color3,
 			 x + width - 2, y + 2, x + width - 2, y + height - 1);
-	  gdk_draw_line (window, gc4, x + width - 1, y + 2, x + width - 1,
+	  ge_cairo_line (cr, color4, x + width - 1, y + 2, x + width - 1,
 			 y + height - 1);
-	  gdk_draw_line (window, gc4, x + width - 1, y + 2, x + width - 2,
+	  ge_cairo_line (cr, color4, x + width - 1, y + 2, x + width - 2,
 			 y + 1);
 	  break;
 	case GTK_POS_LEFT:
@@ -1536,16 +1540,16 @@ redmond_draw_extension (GtkStyle * style,
                                         width - (style->xthickness),
                                         height - (2 * style->ythickness));
  
-	  gdk_draw_line (window, gc1, x, y, x + width - 2, y);
-	  gdk_draw_line (window, gc2, x + 1, y + 1, x + width - 2, y + 1);
+	  ge_cairo_line (cr, color1, x, y, x + width - 2, y);
+	  ge_cairo_line (cr, color2, x + 1, y + 1, x + width - 2, y + 1);
  
-	  gdk_draw_line (window, gc3,
+	  ge_cairo_line (cr, color3,
 			 x, y + height - 2, x + width - 2, y + height - 2);
-	  gdk_draw_line (window, gc3,
+	  ge_cairo_line (cr, color3,
 			 x + width - 2, y + 2, x + width - 2, y + height - 2);
-	  gdk_draw_line (window, gc4, x, y + height - 1, x + width - 2,
+	  ge_cairo_line (cr, color4, x, y + height - 1, x + width - 2,
 			 y + height - 1);
-	  gdk_draw_line (window, gc4, x + width - 1, y + 1, x + width - 1,
+	  ge_cairo_line (cr, color4, x + width - 1, y + 1, x + width - 1,
 			 y + height - 2);
 	  break;
 	case GTK_POS_RIGHT:
@@ -1555,27 +1559,21 @@ redmond_draw_extension (GtkStyle * style,
                                         width - (style->xthickness),
                                         height - (2 * style->ythickness));
  
-	  gdk_draw_line (window, gc1, x + 1, y, x + width - 1, y);
-	  gdk_draw_line (window, gc1, x, y + 1, x, y + height - 2);
-	  gdk_draw_line (window, gc2, x + 1, y + 1, x + width - 1, y + 1);
-	  gdk_draw_line (window, gc2, x + 1, y + 1, x + 1, y + height - 2);
+	  ge_cairo_line (cr, color1, x + 1, y, x + width - 1, y);
+	  ge_cairo_line (cr, color1, x, y + 1, x, y + height - 2);
+	  ge_cairo_line (cr, color2, x + 1, y + 1, x + width - 1, y + 1);
+	  ge_cairo_line (cr, color2, x + 1, y + 1, x + 1, y + height - 2);
  
-	  gdk_draw_line (window, gc3,
+	  ge_cairo_line (cr, color3,
 			 x + 2, y + height - 2, x + width - 1,
 			 y + height - 2);
-	  gdk_draw_line (window, gc4, x + 1, y + height - 1, x + width - 1,
+	  ge_cairo_line (cr, color4, x + 1, y + height - 1, x + width - 1,
 			 y + height - 1);
 	  break;
 	}
     }
  
-  if (area)
-    {
-      gdk_gc_set_clip_rectangle (gc1, NULL);
-      gdk_gc_set_clip_rectangle (gc2, NULL);
-      gdk_gc_set_clip_rectangle (gc3, NULL);
-      gdk_gc_set_clip_rectangle (gc4, NULL);
-    }
+    cairo_destroy(cr);
 }
  
 /***********************************************
@@ -1671,19 +1669,18 @@ redmond_draw_handle (GtkStyle * style,
 		}
 	    }
 	}
+
+      cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
  
       /* draw the drag bar */
       if (orientation == GTK_ORIENTATION_VERTICAL)
         {
-           cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
           
 	  ge_cairo_simple_border (cr, &redmond_style->color_cube.light[state_type],
 			          &redmond_style->color_cube.dark[state_type],
 			          x + style->xthickness + 1, y + height / 2 - 1,
 			          width - style->xthickness - 3, 3, FALSE);
 
-            cairo_destroy(cr);
- 	
           bottom_cutoff = TRUE;
         }
       else
@@ -1691,15 +1688,12 @@ redmond_draw_handle (GtkStyle * style,
           right_cutoff = (!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR);
           left_cutoff = !right_cutoff;
  
-           cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
-          
 	  ge_cairo_simple_border (cr, &redmond_style->color_cube.light[state_type],
 			          &redmond_style->color_cube.dark[state_type], x + width / 2 - 1,
 			          y + style->ythickness + 1, 3,
 			          height - style->ythickness - 3, FALSE);
-
-           cairo_destroy(cr);			          
         }
+
       if (is_panel_widget_item (widget)
 	  && (CHECK_DETAIL (detail, "handlebox")
 	      && (!IS_HANDLE_BOX_ITEM (widget)))
@@ -1710,16 +1704,16 @@ redmond_draw_handle (GtkStyle * style,
 	   */
 	  if (orientation == GTK_ORIENTATION_VERTICAL)
 	    {
-	      gdk_draw_line (window, style->dark_gc[state_type], x + 1, y + 0,
+	      ge_cairo_line (cr, &redmond_style->color_cube.dark[state_type], x + 1, y + 0,
 			     x + width - 2, y + 0);
-	      gdk_draw_line (window, style->light_gc[state_type], x + 1,
+	      ge_cairo_line (cr, &redmond_style->color_cube.light[state_type], x + 1,
 			     y + 1, x + width - 2, y + 1);
 	    }
 	  else
 	    {
-	      gdk_draw_line (window, style->dark_gc[state_type], x + 0, y + 1,
+	      ge_cairo_line (cr, &redmond_style->color_cube.dark[state_type], x + 0, y + 1,
 			     x + 0, y + height - 2);
-	      gdk_draw_line (window, style->light_gc[state_type], x + 1,
+	      ge_cairo_line (cr, &redmond_style->color_cube.light[state_type], x + 1,
 			     y + 1, x + 1, y + height - 2);
 	    }
 	}
@@ -1762,8 +1756,6 @@ redmond_draw_handle (GtkStyle * style,
              
           if (!skip_shadow)
             {
-                cairo_t *cr = ge_gdk_drawable_to_cairo (window, &clip);
-          
    	       ge_cairo_simple_border (cr, &redmond_style->color_cube.light[state_type],
 			               &redmond_style->color_cube.dark[state_type],
                                        x - 2*left_cutoff, 
@@ -1771,8 +1763,8 @@ redmond_draw_handle (GtkStyle * style,
                                        width + 2*left_cutoff + 2*right_cutoff,
 			               height + 2*top_cutoff + 2*bottom_cutoff,
 			               FALSE);
-              cairo_destroy(cr);			          
             }
 	}
+           cairo_destroy(cr);			          
     }
 }

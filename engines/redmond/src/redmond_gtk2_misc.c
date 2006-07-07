@@ -487,23 +487,6 @@ do_redmond_draw_check (cairo_t *cr,
   cairo_stroke(cr);
 
   cairo_restore(cr);
-
-#if 0
-  x += 1;
-  y += 1;
-  width -= 2;
-  height -= 2;
-
-  /* short diagonal */
-  gdk_draw_line (window, gc, x + 0, y + height - 5, x + 0, y + height - 3);	/* Left Line */
-  gdk_draw_line (window, gc, x + 1, y + height - 4, x + 1, y + height - 2);	/* Right Line */
- 
-  /* Long Diagonal */
-  gdk_draw_line (window, pxp?gc, x + 2, y + height - 3, x + width - 1, y + 0);	/* Top Line */
-  gdk_draw_line (window, gc, x + 2, y + height - 2, x + width - 1, y + 1);	/* Center Line */
-  gdk_draw_line (window, gc, x + 2, y + height - 1, x + width - 1, y + 2);	/* Bottom Line */
-
-#endif
 }
  
 /***********************************************
