@@ -62,7 +62,7 @@ redmond_draw_hline (GtkStyle * style,
             gint y)
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
-  g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
+  CHECK_ARGS
  
   cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -96,7 +96,7 @@ redmond_draw_vline (GtkStyle * style,
   if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
     return;
  
-  g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
+  CHECK_ARGS
  
   cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -142,7 +142,8 @@ redmond_draw_check (GtkStyle * style,
             gint height)
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+  SANITIZE_SIZE
  
   /* Always draw the checkbox and mark centered
    * at a fixed size.
@@ -251,7 +252,8 @@ redmond_draw_option (GtkStyle * style,
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
  
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+  SANITIZE_SIZE
  
   /* Since X arcs are very primitive and don't always
    * produce circles, we use bits here. Since the bits
@@ -351,7 +353,8 @@ redmond_draw_arrow (GtkStyle * style,
   if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
     return;
  
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+  SANITIZE_SIZE
 
   if ((CHECK_DETAIL (detail, "spinbutton"))
       || (CHECK_DETAIL (detail, "vscrollbar"))
@@ -436,7 +439,8 @@ redmond_draw_shadow (GtkStyle * style,
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
  
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+  SANITIZE_SIZE
  
   if (shadow_type == GTK_SHADOW_NONE)
     return;
@@ -961,7 +965,8 @@ redmond_draw_box (GtkStyle * style,
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
  
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+  SANITIZE_SIZE
  
   if (IS_MENU_SHELL(widget))
     {
@@ -1399,7 +1404,8 @@ redmond_draw_slider (GtkStyle * style,
              gint height, 
              GtkOrientation orientation)
 {
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+  SANITIZE_SIZE
  
   if ((CHECK_DETAIL (detail, "hscale")) || (CHECK_DETAIL (detail, "vscale")))
     {
@@ -1446,7 +1452,8 @@ redmond_draw_extension (GtkStyle * style,
   CairoColor *color3 = NULL;
   CairoColor *color4 = NULL;
  
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+  SANITIZE_SIZE
  
   do_redmond_draw_default_fill (style, window, GTK_STATE_NORMAL, area, 
                                 x, y, width, height);
@@ -1600,7 +1607,8 @@ redmond_draw_handle (GtkStyle * style,
 
   gboolean left_cutoff = FALSE, right_cutoff = FALSE, top_cutoff = FALSE, bottom_cutoff = FALSE;
 
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+  SANITIZE_SIZE
   
   if (IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
      (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) && 

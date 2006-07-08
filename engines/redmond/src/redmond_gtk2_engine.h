@@ -21,7 +21,7 @@
  */
 #include <gmodule.h>
 #include <gtk/gtk.h>
-#include "cairo-support.h"
+#include "ge-support.h"
  
 /*****************************/
 /* RC Style Declaration      */

@@ -1,5 +1,3 @@
-#define DETAIL(xx) ((detail) && (!strcmp(xx, detail)))
-
 GtkShadowType
 thinice_shadow_type (GtkStyle *style, const char *detail, GtkShadowType requested);
 
@@ -35,3 +33,6 @@ void thinice_arrow (cairo_t *cr,
 			gint y, 
 			gint width, 
 			gint height);
+
+void thinice_draw_separator(cairo_t *cr, gboolean horizontal,
+                           int x, int y, int width, int height);

@@ -2,6 +2,8 @@
 #include <glib.h>
 
 /* macros to make sure that things are sane ... */
+#define CHECK_DETAIL(detail, value) ((detail) && (!strcmp(value, detail)))
+
 #define CHECK_ARGS					\
   g_return_if_fail (window != NULL);			\
   g_return_if_fail (style != NULL);

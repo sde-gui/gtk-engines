@@ -15,11 +15,11 @@ thinice_shadow_type (GtkStyle *style, const char *detail, GtkShadowType requeste
         retval = GTK_SHADOW_ETCHED_IN;
     }
 
-    if (DETAIL ("dockitem") || DETAIL ("handlebox_bin") || DETAIL ("spinbutton_up") || DETAIL ("spinbutton_down")) {
+    if (CHECK_DETAIL (detail, "dockitem") || CHECK_DETAIL (detail, "handlebox_bin") || CHECK_DETAIL (detail, "spinbutton_up") || CHECK_DETAIL (detail, "spinbutton_down")) {
         retval = GTK_SHADOW_NONE;
-    } else if (DETAIL ("button") || DETAIL ("togglebutton") || DETAIL ("notebook") || DETAIL ("optionmenu")) {
+    } else if (CHECK_DETAIL (detail, "button") || CHECK_DETAIL (detail, "togglebutton") || CHECK_DETAIL (detail, "notebook") || CHECK_DETAIL (detail, "optionmenu")) {
         retval = requested;
-    } else if (DETAIL ("menu")) {
+    } else if (CHECK_DETAIL (detail, "menu")) {
         retval = GTK_SHADOW_ETCHED_IN;
     }
 
@@ -175,7 +175,6 @@ void thinice_arrow (cairo_t *cr,
     }
 }
 
-
 void
 thinice_slash_two(cairo_t *cr,
                   CairoColor *color1,
@@ -185,11 +184,11 @@ thinice_slash_two(cairo_t *cr,
                   gint width,
                   gint height)
 {
-  gint centerx, centery, thick;
+  gdouble centerx, centery, thick;
   gint ax1=0,ax2=0,ay1=0,ay2=0;
 
-  centerx = (width - 1)/2 + x;
-  centery = (height - 1)/2 + y;
+  centerx = width/2 + x + 0.5;
+  centery = height/2 + y + 0.5;
   if (width > height)
     {
       ax1 = -2; ax2 = 1;
@@ -199,13 +198,20 @@ thinice_slash_two(cairo_t *cr,
       ay1 = -2; ay2 = 1;
     }
 
-  thick = ((width < height?width-1:height-1) >> 1) - 2;
-  ge_cairo_line (cr, color2,
-                centerx - thick + ax1, centery + thick + ay1,
-                centerx + thick + ax1, centery - thick + ay1);
-  ge_cairo_line (cr, color1,
-                centerx - thick + ax1 + ax2, centery + thick + ay1 + ay2,
-                centerx + thick + ax1 + ax2, centery - thick + ay1 + ay2);
+  thick = ((width < height?width-1:height-1) >> 1) - 1.5;
+
+	cairo_set_line_width (cr, 1);
+
+	ge_cairo_set_color(cr, color2);	
+  	cairo_move_to(cr, centerx - thick + ax1, centery + thick + ay1);
+	cairo_line_to(cr, centerx + thick + ax1, centery - thick + ay1);
+	cairo_stroke(cr);
+
+	ge_cairo_set_color(cr, color1);	
+	cairo_move_to(cr, centerx - thick + ax1 + ax2, centery + thick + ay1 + ay2);
+	cairo_line_to(cr, centerx + thick + ax1 + ax2, centery - thick + ay1 + ay2);
+	cairo_stroke(cr);
+
   if (width > height)
     {
       ax1 = 2; /* ax2 = 1; */
@@ -214,12 +220,18 @@ thinice_slash_two(cairo_t *cr,
     {
       ay1 = 2; /* ay2 = 1; */
     }
-  ge_cairo_line (cr, color2,
-                centerx - thick + ax1, centery + thick + ay1,
-                centerx + thick + ax1, centery - thick + ay1);
-  ge_cairo_line (cr, color1, 
-                centerx - thick + ax1 + ax2, centery + thick + ay1 + ay2,
-                centerx + thick + ax1 + ax2, centery - thick + ay1 + ay2);
+
+	cairo_set_line_width (cr, 1);
+
+	ge_cairo_set_color(cr, color2);	
+  	cairo_move_to(cr, centerx - thick + ax1, centery + thick + ay1);
+	cairo_line_to(cr, centerx + thick + ax1, centery - thick + ay1);
+	cairo_stroke(cr);
+
+	ge_cairo_set_color(cr, color1);	
+	cairo_move_to(cr, centerx - thick + ax1 + ax2, centery + thick + ay1 + ay2);
+	cairo_line_to(cr, centerx + thick + ax1 + ax2, centery - thick + ay1 + ay2);
+	cairo_stroke(cr);
 }
 
 
@@ -234,16 +246,22 @@ thinice_slash_one(cairo_t *cr,
 {
   gint centerx, centery, thick;
 
-  centerx = width/2 + x;
-  centery = height/2 + y;
+  centerx = width/2 + x + 0.5;
+  centery = height/2 + y + 0.5;
 
-  thick = ((width < height?width:height) >> 1);
-  ge_cairo_line (cr, color2,
-                centerx - thick, centery + thick,
-                centerx + thick, centery - thick);
-  ge_cairo_line (cr, color1,
-                centerx - thick, centery + thick - 1,
-                centerx + thick - 1, centery - thick);
+  thick = ((width < height?width:height) >> 1) - 1.5;
+
+  cairo_set_line_width (cr, 1);
+
+  ge_cairo_set_color(cr, color2);	
+  cairo_move_to(cr, centerx - thick, centery + thick);
+  cairo_line_to(cr, centerx + thick, centery - thick);
+  cairo_stroke(cr);
+
+  ge_cairo_set_color(cr, color2);	
+  cairo_move_to(cr, centerx - thick, centery + thick - 1);
+  cairo_line_to(cr, centerx + thick - 1, centery - thick);
+  cairo_stroke(cr);
 }
 
 void
@@ -275,4 +293,41 @@ thinice_dot(cairo_t *cr,
 	cairo_stroke(cr);
 
 	cairo_restore(cr);
+}
+
+
+void
+thinice_draw_separator(cairo_t *cr, gboolean horizontal,
+                           int x, int y, int width, int height)
+{
+	if (horizontal)
+	{
+		cairo_set_line_width  (cr, 1.0);
+		cairo_translate       (cr, x, y+0.5);
+		
+		cairo_move_to         (cr, 0.0,     0.0);
+		cairo_line_to         (cr, width+1, 0.0);
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+		cairo_stroke          (cr);
+		
+		cairo_move_to         (cr, 0.0,   1.0);
+		cairo_line_to         (cr, width, 1.0);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
+		cairo_stroke          (cr);				
+	}
+	else
+	{
+		cairo_set_line_width  (cr, 1.0);
+		cairo_translate       (cr, x+0.5, y);
+		
+		cairo_move_to         (cr, 0.0, 0.0);
+		cairo_line_to         (cr, 0.0, height);
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+		cairo_stroke          (cr);
+		
+		cairo_move_to         (cr, 1.0, 0.0);
+		cairo_line_to         (cr, 1.0, height);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
+		cairo_stroke          (cr);		
+	}
 }

@@ -1,3 +1,42 @@
+2006-07-08 Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/mist/src/mist-style.c:
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_hline),
+	(redmond_draw_vline), (redmond_draw_check), (redmond_draw_option),
+	(redmond_draw_arrow), (redmond_draw_shadow), (redmond_draw_box),
+	(redmond_draw_slider), (redmond_draw_extension),
+	(redmond_draw_handle):
+	* engines/redmond/src/redmond_gtk2_engine.h:
+	* engines/redmond/src/redmond_gtk2_misc.c:
+	* engines/redmond/src/redmond_gtk2_misc.h:
+
+	- Move more things over too libsupport functions/macros
+
+	* engines/support/general-support.h:
+	* engines/support/widget-information.c: (object_is_a),
+	(is_combo_box_entry), (combo_box_is_using_list), (is_combo_box),
+	(is_combo), (is_in_combo_box), (is_toolbar_item),
+	(is_panel_widget_item), (is_bonobo_dock_item),
+	(option_menu_get_props):
+	* engines/support/widget-information.h:
+
+	- Merged widget tests from redmond into libsupport
+
+	* engines/thinice/src/thinice_misc.c: (thinice_shadow_type),
+	(thinice_slash_two), (thinice_slash_one), (thinice_dot),
+	(thinice_draw_separator):
+	* engines/thinice/src/thinice_misc.h:
+	* engines/thinice/src/thinice_theme_draw.c: (draw_hline),
+	(draw_vline), (draw_shadow), (draw_arrow), (draw_box),
+	(draw_option), (draw_handle), (thinice_tab):
+
+	- Switched vline/hline to use clearlooks separator
+	- Improved slashes
+	- Fix Inconsistant Option Size
+	- Partially(?) fixed notebook tabs
+	- Improved optionmenu vs combo tab drawing, (mostly) copied from redmond
+	- More libsupport updates
+
 2006-07-07 Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/hc/Makefile.am:

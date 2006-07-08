@@ -64,31 +64,13 @@ draw_hline(GtkStyle * style,
            gint y)
 {
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
-  gint                thickness_light;
-  gint                thickness_dark;
-  gint                i;
+	
+	CHECK_ARGS
 
-  CHECK_ARGS
-
-  thickness_light = style->ythickness / 2;
-  thickness_dark = style->ythickness - thickness_light;
-
-  cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
-
-  for (i = 0; i < thickness_dark; i++)
-    {
-      ge_cairo_line(cr, &thinice_style->color_cube.light[state_type], x2 - i - 1, y + i, x2, y + i);
-      ge_cairo_line(cr, &thinice_style->color_cube.dark[state_type], x1, y + i, x2 - i - 1, y + i);
-    }
-
-  y += thickness_dark;
-  for (i = 0; i < thickness_light; i++)
-    {
-      ge_cairo_line(cr, &thinice_style->color_cube.dark[state_type], x1, y + i, x1 + thickness_light - i - 1, y + i);
-      ge_cairo_line(cr, &thinice_style->color_cube.light[state_type], x1 + thickness_light - i - 1, y + i, x2, y + i);
-    }
-  
-  cairo_destroy(cr);
+	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	
+	thinice_draw_separator(cr, TRUE, x1, y, x2-x1, 2);
+	cairo_destroy (cr);
 }
 
 static void
@@ -103,31 +85,17 @@ draw_vline(GtkStyle * style,
            gint x)
 {
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
-  gint                thickness_light;
-  gint                thickness_dark;
-  gint                i;
 
-  CHECK_ARGS
+	CHECK_ARGS
 
-  thickness_light = style->xthickness / 2;
-  thickness_dark = style->xthickness - thickness_light;
+	if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
+		return;
 
-  cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	
+	thinice_draw_separator(cr, FALSE, x, y1, 2, y2-y1);
 
-  for (i = 0; i < thickness_dark; i++)
-    {
-      ge_cairo_line(cr, &thinice_style->color_cube.light[state_type], x + i, y2 - i - 1, x + i, y2);
-      ge_cairo_line(cr, &thinice_style->color_cube.dark[state_type], x + i, y1, x + i, y2 - i - 1);
-    }
-
-  x += thickness_dark;
-  for (i = 0; i < thickness_light; i++)
-    {
-      ge_cairo_line(cr, &thinice_style->color_cube.dark[state_type], x + i, y1, x + i, y1 + thickness_light - i);
-      ge_cairo_line(cr, &thinice_style->color_cube.light[state_type], x + i, y1 + thickness_light - i, x + i, y2);
-    }
-
-  cairo_destroy(cr);
+	cairo_destroy (cr);
 }
 
 static void
@@ -157,7 +125,7 @@ draw_shadow(GtkStyle     *style,
     case GTK_SHADOW_NONE:
       return;
     case GTK_SHADOW_IN:
-      if (((x == 1) || (y == 1)) && (DETAIL("entry") || DETAIL("text")))
+      if (((x == 1) || (y == 1)) && (CHECK_DETAIL (detail, "entry") || CHECK_DETAIL (detail, "text")))
         {
     			color1 = color2 = &thinice_style->color_cube.base[state_type];
           break;
@@ -351,6 +319,9 @@ draw_arrow(GtkStyle * style,
 
 	CHECK_ARGS
 
+	if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
+		return;
+
 	SANITIZE_SIZE
 
 	switch (shadow_type)
@@ -390,7 +361,7 @@ draw_arrow(GtkStyle * style,
 
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 
-	if (DETAIL("vscrollbar") || DETAIL("hscrollbar"))
+	if (CHECK_DETAIL (detail, "vscrollbar") || CHECK_DETAIL (detail, "hscrollbar"))
 	{
 		switch (THINICE_RC_STYLE (style->rc_style)->mark_type2)
 		{
@@ -423,11 +394,6 @@ draw_arrow(GtkStyle * style,
 	}
 	else
 	{
-		if (DETAIL("menuitem"))
-		{
-			ax = x + width - aw;
-		}
-
 		if (state_type == GTK_STATE_INSENSITIVE)
 			thinice_arrow (cr, &thinice_style->color_cube.white, arrow_type, x+1, y+1, width, height);
 		thinice_arrow (cr, &thinice_style->color_cube.fg[state_type], arrow_type, x, y, width, height);
@@ -570,43 +536,15 @@ draw_box(GtkStyle * style,
 
   SANITIZE_SIZE
 
+  if (CHECK_DETAIL(detail, "optionmenutab"))
+	return;
+
   light = &thinice_style->color_cube.light[state_type];
   dark = &thinice_style->color_cube.dark[state_type];
 
   cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 
-  if (DETAIL("optionmenutab"))
-    {
-          GdkPoint            points[4];
-          guint size, ydiff, xdiff;
-
-          size = min(width, height);
-
-          if (size % 2)
-            size++;
-
-          ydiff = max(0, (height - size) / 2);
-          xdiff = max(0, (width - size) / 2);
-
-          cairo_set_line_width (cr, 1);
-
-          ge_cairo_set_color(cr, light);
-          cairo_move_to(cr, x + size + xdiff, y + ydiff);
-          cairo_line_to(cr, x + xdiff, y + ydiff);
-          cairo_line_to(cr, x + size / 2 + xdiff, y + size + ydiff);
-          cairo_line_to(cr, x + size + xdiff, y + ydiff);
-	  cairo_stroke(cr);
-
-          ge_cairo_set_color(cr, dark);
-          cairo_move_to(cr, x + size + xdiff - 1, y + ydiff);
-          cairo_line_to(cr, x + xdiff - 1, y + ydiff);
-          cairo_line_to(cr, x + size / 2 + xdiff - 1, y + size + ydiff);
-          cairo_line_to(cr, x + size + xdiff - 1, y + ydiff);
-	  cairo_stroke(cr);
-
-	  draw_arrow(style, window, state_type, shadow_type, area, widget, detail, GTK_ARROW_DOWN, TRUE, x-2, y-1, width+2, height+2);
-    }
-  else if (DETAIL("trough"))
+ if (CHECK_DETAIL (detail, "trough"))
     {
            ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
 
@@ -617,15 +555,15 @@ draw_box(GtkStyle * style,
       draw_shadow(style, window, state_type, shadow_type, area, widget,
                        detail, x, y, width, height);
     }
-  else if (DETAIL("slider"))
+  else if (CHECK_DETAIL (detail, "slider"))
     {
     }
-  else if (DETAIL("buttondefault"))
+  else if (CHECK_DETAIL (detail, "buttondefault"))
     {
       /* I don't want no background on default buttons..
          Let's add that cute triangle (see below) instead... */
     }
-  else if (DETAIL("button"))
+  else if (CHECK_DETAIL (detail, "button"))
     {
       if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP (window))
         {
@@ -672,7 +610,7 @@ draw_box(GtkStyle * style,
       draw_shadow(style, window, state_type, shadow_type, area, widget,
                        detail, x, y, width, height);
     }
-  else if (DETAIL("bar"))
+  else if (CHECK_DETAIL (detail, "bar"))
     {
       if ((height > 1) && (width > 1))
         {
@@ -685,7 +623,7 @@ draw_box(GtkStyle * style,
 
         }
     }
-  else if (DETAIL("handlebox_bin"))
+  else if (CHECK_DETAIL (detail, "handlebox_bin"))
     {
       if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
         {
@@ -704,7 +642,7 @@ draw_box(GtkStyle * style,
                                              x, y, width, height);
         }
     }
-  else if (DETAIL("menubar"))
+  else if (CHECK_DETAIL (detail, "menubar"))
     {
       if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
         {
@@ -745,6 +683,40 @@ draw_box(GtkStyle * style,
       draw_shadow(style, window, state_type, shadow_type, area, widget,
                        detail, x, y, width, height);
     }
+
+  if (CHECK_DETAIL(detail, "optionmenu") ||  (CHECK_DETAIL(detail, "button") && 
+       (is_combo_box(widget, FALSE)) && !(is_combo_box_entry(widget))))
+    {
+      GtkRequisition indicator_size;
+      GtkBorder indicator_spacing;
+      gint vline_x;
+ 
+      if (state_type != GTK_STATE_INSENSITIVE)
+        state_type = GTK_STATE_NORMAL;
+ 
+      option_menu_get_props (widget, &indicator_size, &indicator_spacing);
+ 
+      if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL))
+	vline_x = x + indicator_size.width + indicator_spacing.left + indicator_spacing.right;
+      else
+	vline_x = x + width - (indicator_size.width + indicator_spacing.left + 
+                               indicator_spacing.right) - style->xthickness;
+
+      thinice_draw_separator(cr, FALSE, vline_x, y + style->ythickness + 1, style->xthickness, height - 2*style->ythickness - 2);
+ 
+      if ((widget) && (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL))
+         x +=  indicator_spacing.right + style->xthickness;
+      else
+         x += width - indicator_size.width - indicator_spacing.right - style->xthickness;
+ 
+      y += ((height - indicator_size.height) / 2) + 1;
+ 
+      width = indicator_size.width;
+      height = indicator_size.height;
+ 
+      draw_arrow (style, window, state_type, shadow_type, area, NULL, "optionmenu", 
+	                      GTK_ARROW_DOWN, TRUE,  x,  y,  width,  height);
+   }
 
   cairo_destroy(cr);
 }
@@ -848,21 +820,21 @@ draw_option(GtkStyle * style,
     {
     case GTK_SHADOW_ETCHED_IN:
       ge_cairo_set_color(cr, color2);
-      cairo_arc(cr, centerX + 1, centerY + 1, radius, 0, 2 * M_PI);
+      cairo_arc(cr, centerX + 1, centerY + 1, radius + 1, 0, 2 * M_PI);
       cairo_stroke(cr);
 
       ge_cairo_set_color(cr, color1); 
-      cairo_arc(cr, centerX, centerY, radius, 0, 2 * M_PI);
+      cairo_arc(cr, centerX, centerY, radius + 1, 0, 2 * M_PI);
       cairo_stroke(cr);
 
       break;
     case GTK_SHADOW_ETCHED_OUT:
       ge_cairo_set_color(cr, color1); 
-      cairo_arc(cr, centerX - 1, centerY - 1, radius, 0, 2 * M_PI);
+      cairo_arc(cr, centerX - 1, centerY - 1, radius + 1, 0, 2 * M_PI);
       cairo_stroke(cr);
 
       ge_cairo_set_color(cr, color2);
-      cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5,  0, 2 * M_PI);
+      cairo_arc(cr, centerX, centerY, radius + 1,  0, 2 * M_PI);
       cairo_stroke(cr);
 
       break;
@@ -1301,7 +1273,7 @@ draw_handle(GtkStyle * style,
 
   cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 
-  if (DETAIL("paned")) 
+  if (CHECK_DETAIL (detail, "paned")) 
     {
       int i, w;
       int start_i, end_i;
@@ -1454,31 +1426,31 @@ thinice_tab(DRAW_ARGS, gint orientation)
     {
     case GTK_POS_TOP:
       ge_cairo_line(cr, light,
-                    x, y + height - 1, x, y);
+                    x, y + height, x, y);
       ge_cairo_line(cr, light,
-                    x, y, x + width - 1, y);
+                    x, y, x + width - 2, y);
       ge_cairo_line(cr, dark,
-                    x + width - 1, y, x + width - 1, y + height - 1);
+                    x + width - 2, y, x + width - 2, y + height - 1);
       break;
     case GTK_POS_BOTTOM:
       ge_cairo_line(cr, light,
-                    x, y, x, y + height - 1);
+                    x, y - 1, x, y + height - 1);
       ge_cairo_line(cr, dark,
-                    x, y + height - 1, x + width - 1, y + height - 1);
+                    x, y + height - 1, x + width - 2, y + height - 1);
       ge_cairo_line(cr, dark,
-                    x + width - 1, y + height - 1, x + width - 1, y);
+                    x + width - 2, y + height - 1, x + width - 2, y);
       break;
     case GTK_POS_LEFT:
       ge_cairo_line(cr, light,
                     x, y + height - 1, x, y);
       ge_cairo_line(cr, light,
-                    x, y, x + width - 1, y);
+                    x, y, x + width, y);
       ge_cairo_line(cr, dark,
                     x, y + height - 1, x + width - 1, y + height - 1);
       break;
     case GTK_POS_RIGHT:
       ge_cairo_line(cr, light,
-                    x, y, x + width - 1, y);
+                    x - 1, y, x + width - 1, y);
       ge_cairo_line(cr, dark,
                     x + width - 1, y, x + width - 1, y + height - 1);
       ge_cairo_line(cr, dark,

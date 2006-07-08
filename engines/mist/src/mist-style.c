@@ -17,31 +17,10 @@ Thinice Authors: Tim Gerla <timg@rrv.net>
 #define YTHICKNESS(style) (style->ythickness)
 #define XTHICKNESS(style) (style->xthickness)
 
-#define CHECK_DETAIL(detail, value) ((detail) && (!strcmp(value, detail)))
-
 static GtkStyleClass *parent_class = NULL;
 
 static void mist_style_init       (MistStyle      *style);
 static void mist_style_class_init (MistStyleClass *klass);
-
-#define IS_TOGGLE_BUTTON(object) ((object) && object_is_a (object, "GtkToggleButton"))
-#define TOGGLE_BUTTON(object) (IS_TOGGLE_BUTTON(object)?(GtkToggleButton *)object:NULL)
-
-/* Widget Type Lookups/Macros */
-gboolean
-object_is_a (gpointer object, gchar * type_name)
-{
-  gboolean result = FALSE;
-
-  if ((object))
-    {
-      GType tmp = g_type_from_name (type_name);
-      if (tmp)
-	result = g_type_check_instance_is_a ((GTypeInstance * )object, tmp);
-    }
-
-  return result;
-}
 
 static GtkShadowType
 get_shadow_type (GtkStyle *style, const char *detail, GtkShadowType requested)
