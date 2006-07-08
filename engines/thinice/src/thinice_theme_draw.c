@@ -88,7 +88,7 @@ draw_vline(GtkStyle * style,
 
 	CHECK_ARGS
 
-	if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
+	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
 
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
@@ -319,7 +319,7 @@ draw_arrow(GtkStyle * style,
 
 	CHECK_ARGS
 
-	if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
+	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
 
 	SANITIZE_SIZE
@@ -685,7 +685,7 @@ draw_box(GtkStyle * style,
     }
 
   if (CHECK_DETAIL(detail, "optionmenu") ||  (CHECK_DETAIL(detail, "button") && 
-       (is_combo_box(widget, FALSE)) && !(is_combo_box_entry(widget))))
+       (ge_is_combo_box(widget, FALSE)) && !(ge_is_combo_box_entry(widget))))
     {
       GtkRequisition indicator_size;
       GtkBorder indicator_spacing;
@@ -694,7 +694,7 @@ draw_box(GtkStyle * style,
       if (state_type != GTK_STATE_INSENSITIVE)
         state_type = GTK_STATE_NORMAL;
  
-      option_menu_get_props (widget, &indicator_size, &indicator_spacing);
+      ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
  
       if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL))
 	vline_x = x + indicator_size.width + indicator_spacing.left + indicator_spacing.right;

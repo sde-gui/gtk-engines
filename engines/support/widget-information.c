@@ -9,7 +9,7 @@
    Smooth-Engine.
 */ 
 gboolean
-object_is_a (GtkWidget * widget, gchar * type_name)
+ge_object_is_a (GtkWidget * widget, gchar * type_name)
 {
   gboolean result = FALSE;
  
@@ -24,7 +24,7 @@ object_is_a (GtkWidget * widget, gchar * type_name)
 }
  
 gboolean
-is_combo_box_entry (GtkWidget * widget)
+ge_is_combo_box_entry (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
@@ -33,13 +33,13 @@ is_combo_box_entry (GtkWidget * widget)
       if (IS_COMBO_BOX_ENTRY (widget->parent))
 	result = TRUE;
       else
-	result = is_combo_box_entry (widget->parent);
+	result = ge_is_combo_box_entry (widget->parent);
     }
   return result;
 }
  
 gboolean
-combo_box_is_using_list (GtkWidget * widget)
+ge_combo_box_is_using_list (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
@@ -57,7 +57,7 @@ combo_box_is_using_list (GtkWidget * widget)
 }
  
 gboolean
-is_combo_box (GtkWidget * widget, gboolean as_list)
+ge_is_combo_box (GtkWidget * widget, gboolean as_list)
 {
   gboolean result = FALSE;
  
@@ -66,18 +66,18 @@ is_combo_box (GtkWidget * widget, gboolean as_list)
       if (IS_COMBO_BOX (widget->parent))
         {
           if (as_list)
-            result = (combo_box_is_using_list(widget));
+            result = (ge_combo_box_is_using_list(widget));
           else
-            result = (!combo_box_is_using_list(widget));
+            result = (!ge_combo_box_is_using_list(widget));
         }
       else
-	result = is_combo_box (widget->parent, as_list);
+	result = ge_is_combo_box (widget->parent, as_list);
     }
   return result;
 }
  
 gboolean
-is_combo (GtkWidget * widget)
+ge_is_combo (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
@@ -86,19 +86,19 @@ is_combo (GtkWidget * widget)
       if (IS_COMBO (widget->parent))
 	result = TRUE;
       else
-	result = is_combo (widget->parent);
+	result = ge_is_combo (widget->parent);
     }
   return result;
 }
  
 gboolean
-is_in_combo_box (GtkWidget * widget)
+ge_is_in_combo_box (GtkWidget * widget)
 {
-  return ((is_combo (widget) || is_combo_box (widget, TRUE) || is_combo_box_entry (widget)));
+  return ((ge_is_combo (widget) || ge_is_combo_box (widget, TRUE) || ge_is_combo_box_entry (widget)));
 }
  
 gboolean
-is_toolbar_item (GtkWidget * widget)
+ge_is_toolbar_item (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
@@ -110,13 +110,13 @@ is_toolbar_item (GtkWidget * widget)
 	|| (IS_HANDLE_BOX (widget->parent)))
       result = TRUE;
     else
-      result = is_toolbar_item (widget->parent);
+      result = ge_is_toolbar_item (widget->parent);
   }
   return result;
 }
  
 gboolean
-is_panel_widget_item (GtkWidget * widget)
+ge_is_panel_widget_item (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
@@ -125,13 +125,13 @@ is_panel_widget_item (GtkWidget * widget)
       if (IS_PANEL_WIDGET (widget->parent))
 	result = TRUE;
       else
-	result = is_panel_widget_item (widget->parent);
+	result = ge_is_panel_widget_item (widget->parent);
     }
   return result;
 }
  
 gboolean 
-is_bonobo_dock_item (GtkWidget * widget)
+ge_is_bonobo_dock_item (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
@@ -174,7 +174,7 @@ static GtkRequisition default_option_indicator_size = { 9, 5 };
 static GtkBorder default_option_indicator_spacing = { 7, 5, 2, 2 }; 
  
 void
-option_menu_get_props (GtkWidget * widget,
+ge_option_menu_get_props (GtkWidget * widget,
 		       GtkRequisition * indicator_size,
 		       GtkBorder * indicator_spacing)
 {

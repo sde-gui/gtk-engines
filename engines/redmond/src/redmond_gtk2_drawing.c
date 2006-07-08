@@ -93,7 +93,7 @@ redmond_draw_vline (GtkStyle * style,
             gint x)
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
-  if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
+  if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
     return;
  
   CHECK_ARGS
@@ -350,7 +350,7 @@ redmond_draw_arrow (GtkStyle * style,
   gboolean button_in = (shadow == GTK_SHADOW_IN);
   gint child_offset_x = 1, child_offset_y = 1;
  
-  if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
+  if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
     return;
  
   CHECK_ARGS
@@ -361,7 +361,7 @@ redmond_draw_arrow (GtkStyle * style,
       || (CHECK_DETAIL (detail, "hscrollbar"))
       || (CHECK_DETAIL (detail, "optionmenu"))
       || IS_SCROLLBAR(widget)
-      || (is_in_combo_box (widget)))
+      || (ge_is_in_combo_box (widget)))
     {
       if (state != GTK_STATE_INSENSITIVE)
         state = GTK_STATE_NORMAL;
@@ -371,7 +371,7 @@ redmond_draw_arrow (GtkStyle * style,
 	  if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 	    x -= 1;
 	}
-      else if (is_in_combo_box (widget) && ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)))
+      else if (ge_is_in_combo_box (widget) && ((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)))
 	{
 	    x += 1;
 	}
@@ -380,7 +380,7 @@ redmond_draw_arrow (GtkStyle * style,
        * for ComboBox/ComboBoxEntry, because its cleaner,
        * even though it seems slightly inconsistant.
        */
-      if (widget && is_in_combo_box (widget))
+      if (widget && ge_is_in_combo_box (widget))
 	{
 	  y += 1;
 	  width -= 2;
@@ -494,7 +494,7 @@ redmond_draw_shadow (GtkStyle * style,
       else if (((CHECK_DETAIL (detail, "entry"))
 		|| (CHECK_DETAIL (detail, "frame")))
 	       && widget && ((IS_SPIN_BUTTON (widget))
-			     || (is_in_combo_box (widget))))
+			     || (ge_is_in_combo_box (widget))))
 	{
 	  /* The Combo/ComboBoxEntry button and the SpingButton Steppers should apear
 	   * to be inset into the entry, as opposed to next to it, so we fake it
@@ -527,7 +527,7 @@ redmond_draw_shadow (GtkStyle * style,
 	       || ((IS_STATUS_BAR (widget)))
 	       || ((CHECK_DETAIL (detail, "frame")))
 	       || ((CHECK_DETAIL (detail, "button"))
-		   && (is_toolbar_item (widget))))
+		   && (ge_is_toolbar_item (widget))))
 	{
 	  /* Toolbar Buttons, Status Bars, Frames, and Troughs are drawn with a thin border */
 	  ge_cairo_simple_border (cr, &redmond_style->color_cube.dark[state_type],
@@ -552,7 +552,7 @@ redmond_draw_shadow (GtkStyle * style,
 	  || (CHECK_DETAIL (detail, "slider"))
 	  || (CHECK_DETAIL (detail, "spinbutton_up"))
 	  || (CHECK_DETAIL (detail, "spinbutton_down"))
-	  || ((CHECK_DETAIL (detail, "button")) && is_in_combo_box (widget)))
+	  || ((CHECK_DETAIL (detail, "button")) && ge_is_in_combo_box (widget)))
 	{
 	  /* In the case of Scrollbars steppers, Sliders, Spinbutton steppers,
 	   * and Combo/ComboBoxEntry buttons, the internal & external borders are 
@@ -567,7 +567,7 @@ redmond_draw_shadow (GtkStyle * style,
 	}
       else if ((CHECK_DETAIL (detail, "frame"))
 	       || ((CHECK_DETAIL (detail, "button"))
-		   && (is_toolbar_item (widget))))
+		   && (ge_is_toolbar_item (widget))))
 	{
 	  /* Toolbar Buttons and Frames are drawn with a thin border */
 	  ge_cairo_simple_border (cr, &redmond_style->color_cube.light[state_type],
@@ -622,10 +622,10 @@ redmond_draw_combobox_button (GtkStyle * style,
 
   if ((!(widget)) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
     {
-      if (is_combo_box_entry (widget)
-          || is_combo_box (widget, TRUE))
+      if (ge_is_combo_box_entry (widget)
+          || ge_is_combo_box (widget, TRUE))
         {
-          if (!is_combo_box_entry (widget))
+          if (!ge_is_combo_box_entry (widget))
             {
               if ((widget->parent))
                 {
@@ -651,7 +651,7 @@ redmond_draw_combobox_button (GtkStyle * style,
           gtk_paint_shadow (style, window, state_type, GTK_SHADOW_IN,
   		            area, widget, "entry", x - 2, y, width, height);
         }
-      else if (is_combo(widget))
+      else if (ge_is_combo(widget))
         {
           GtkWidget *entry = widget;
 
@@ -733,10 +733,10 @@ redmond_draw_combobox_button (GtkStyle * style,
     } 
   else
     {
-      if (is_combo_box_entry (widget)
-          || is_combo_box (widget, TRUE))
+      if (ge_is_combo_box_entry (widget)
+          || ge_is_combo_box (widget, TRUE))
         {
-          if (!is_combo_box_entry (widget))
+          if (!ge_is_combo_box_entry (widget))
             {
               if ((widget->parent))
                 {
@@ -762,7 +762,7 @@ redmond_draw_combobox_button (GtkStyle * style,
           gtk_paint_shadow (style, window, state_type, GTK_SHADOW_IN,
 	  		    area, widget, "entry", x + 2, y, width, height);
         }
-      else if (is_combo(widget))
+      else if (ge_is_combo(widget))
         {
           GtkWidget *entry = widget;
 
@@ -1038,7 +1038,7 @@ redmond_draw_box (GtkStyle * style,
  
       if (((CHECK_DETAIL (detail, "dockitem_bin")) && 
            (IS_BONOBO_DOCK_ITEM(widget))) || 
-          ((widget) && (is_bonobo_dock_item(widget->parent))))
+          ((widget) && (ge_is_bonobo_dock_item(widget->parent))))
 	{	  
 	  GList *children = NULL, *child = NULL;
 	  GtkWidget *dockitem = widget;
@@ -1192,7 +1192,7 @@ redmond_draw_box (GtkStyle * style,
        */
       if ((widget) && (widget->parent) &&
 	  ((!((CHECK_DETAIL (detail, "menubar")) && 
-	  is_panel_widget_item (widget)))))
+	  ge_is_panel_widget_item (widget)))))
         {
           GdkRectangle shadow, clip;
           
@@ -1271,7 +1271,7 @@ redmond_draw_box (GtkStyle * style,
                                     width, height);
     }
   else if ((CHECK_DETAIL (detail, "button")) && widget
-	   && is_in_combo_box (widget))
+	   && ge_is_in_combo_box (widget))
     {
       /* ComboBox Buttons are an especially complex case
        * so call our special function for them.
@@ -1324,7 +1324,7 @@ redmond_draw_box (GtkStyle * style,
     }
  
   if (CHECK_DETAIL(detail, "optionmenu") ||  (CHECK_DETAIL(detail, "button") && 
-       (is_combo_box(widget, FALSE)) && !(is_combo_box_entry(widget))))
+       (ge_is_combo_box(widget, FALSE)) && !(ge_is_combo_box_entry(widget))))
     {
       GtkRequisition indicator_size;
       GtkBorder indicator_spacing;
@@ -1333,7 +1333,7 @@ redmond_draw_box (GtkStyle * style,
       if (state_type != GTK_STATE_INSENSITIVE)
         state_type = GTK_STATE_NORMAL;
  
-      option_menu_get_props (widget, &indicator_size, &indicator_spacing);
+      ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
  
       if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL))
 	vline_x = x + indicator_size.width + indicator_spacing.left + indicator_spacing.right;
@@ -1666,13 +1666,13 @@ redmond_draw_handle (GtkStyle * style,
 	      if (width < height)
 		{
 		  orientation = GTK_ORIENTATION_HORIZONTAL;
-		  if (is_panel_widget_item (widget))
+		  if (ge_is_panel_widget_item (widget))
 		    x += 2;
 		}
 	      else
 		{
 		  orientation = GTK_ORIENTATION_VERTICAL;
-		  if (is_panel_widget_item (widget))
+		  if (ge_is_panel_widget_item (widget))
 		    y += 2;
 		}
 	    }
@@ -1702,7 +1702,7 @@ redmond_draw_handle (GtkStyle * style,
 			          height - style->ythickness - 3, FALSE);
         }
 
-      if (is_panel_widget_item (widget)
+      if (ge_is_panel_widget_item (widget)
 	  && (CHECK_DETAIL (detail, "handlebox")
 	      && (!IS_HANDLE_BOX_ITEM (widget)))
 	  && (!(IS_HANDLE_BOX (widget))))

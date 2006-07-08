@@ -1,5 +1,22 @@
 2006-07-08 Andrew Johnson <acjgenius@earthlink.net>
 
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_vline),
+	(redmond_draw_arrow), (redmond_draw_shadow),
+	(redmond_draw_combobox_button), (redmond_draw_box),
+	(redmond_draw_handle):
+	* engines/support/widget-information.c: (ge_object_is_a),
+	(ge_is_combo_box_entry), (ge_combo_box_is_using_list),
+	(ge_is_combo_box), (ge_is_combo), (ge_is_in_combo_box),
+	(ge_is_toolbar_item), (ge_is_panel_widget_item),
+	(ge_is_bonobo_dock_item), (ge_option_menu_get_props):
+	* engines/support/widget-information.h:
+	* engines/thinice/src/thinice_theme_draw.c: (draw_vline),
+	(draw_arrow), (draw_box):
+
+	- Fix widget-information namespace
+
+2006-07-08 Andrew Johnson <acjgenius@earthlink.net>
+
 	* engines/mist/src/mist-style.c:
 	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_hline),
 	(redmond_draw_vline), (redmond_draw_check), (redmond_draw_option),
