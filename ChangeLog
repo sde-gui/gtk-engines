@@ -1,3 +1,15 @@
+2006-07-09  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (paint_entry_shadow),
+	(draw_shadow), (draw_box), (draw_arrow), (draw_check),
+	(draw_option), (draw_focus), (draw_slider), (draw_handle):
+
+	- Use ge_gdk_drawable_to_cairo (), and remove crux_begin_paint ()
+	- Fix entry inner shadow
+
+	* engines/support/cairo-support.c: (ge_gdk_drawable_to_cairo):
+	Initialise a few more common engine options
+
 2006-07-08 Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_vline),

@@ -220,29 +220,6 @@ debug (const char *fmt, ...)
     }
 }
 
-/* cairo functions */
-
-static cairo_t *
-crux_begin_paint (GdkDrawable *window, GdkRectangle *area)
-{
-	cairo_t *cr;
-
-	cr = (cairo_t*) gdk_cairo_create (window);
-
-	cairo_set_line_width (cr, 1.0);
-	cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
-	cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
-
-	if (area)
-	{
-		cairo_rectangle (cr, area->x, area->y, area->width, area->height);
-		cairo_clip (cr);
-		cairo_new_path (cr);
-	}
-
-	return cr;
-}
-
 static void
 paint_menuitem (cairo_t *cr, GtkStyle *style, GtkStateType state_type,
 	gdouble x, gdouble y, gdouble width, gdouble height)
@@ -633,9 +610,16 @@ paint_entry_shadow (cairo_t *cr, GtkStyle *style,
 	cairo_stroke (cr);
 
 	/* inner shadow */
-	cairo_move_to (cr, x + 2.0, y + height - 4.0);
+
+	/* make sure background is initialised as shadow is only in top left */
+	gdk_cairo_set_source_color (cr, &style->base[(state_type == GTK_STATE_INSENSITIVE) ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);
+	cairo_rectangle (cr, x + 2.0, y + 2.0, width - 4.0, height - 4.0);
+	cairo_stroke (cr);
+
+	/* draw shadow */
+	cairo_move_to (cr, x + 2.0, y + height - 2.0);
 	cairo_line_to (cr, x + 2.0, y + 2.0);
-	cairo_line_to (cr, x + width - 4.0, y + 2.0);
+	cairo_line_to (cr, x + width - 2.0, y + 2.0);
 	cairo_set_source_rgba (cr, 0, 0, 0, 0.12);
 	cairo_stroke (cr);
 }
@@ -1005,7 +989,7 @@ draw_shadow (GtkStyle *style,
 		if (area == NULL)
 			area = &area2;
 	}
-	cr = crux_begin_paint (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 
 	if (DETAIL ("entry"))
@@ -1041,7 +1025,7 @@ draw_box (GtkStyle *style,
     debug ("draw_box: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
-	cr = crux_begin_paint (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	/* no pressed state for scollbar buttons yet... */
 	if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
@@ -1051,6 +1035,8 @@ draw_box (GtkStyle *style,
 	{
 		if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
 		{
+			/* Combobox buttons */
+			/* TODO: need RTL support */
 			if (state_type == GTK_STATE_INSENSITIVE)
 				gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_INSENSITIVE]);
 			else
@@ -1064,6 +1050,7 @@ draw_box (GtkStyle *style,
 		}
 		if (widget && (GTK_IS_TREE_VIEW (widget->parent)))
 		{
+			/* Add some extra padding for treeview column buttons */
 			if (state_type == GTK_STATE_INSENSITIVE)
 				gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_INSENSITIVE]);
 			else
@@ -1078,10 +1065,14 @@ draw_box (GtkStyle *style,
 	}
 	else if (DETAIL ("buttondefault"))
 	{
-		gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
-		cx = x + 0.5; cy = y + 0.5; cw = width - 1.0; ch = height - 1.0;
-		ge_cairo_rounded_rectangle (cr, cx, cy, cw, ch, 3.0, CR_CORNER_ALL);
-		cairo_stroke (cr);
+		/* draw Default Button marking, but only when sensitive */
+		if (GTK_WIDGET_SENSITIVE (widget))
+		{
+			gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+			cx = x + 0.5; cy = y + 0.5; cw = width - 1.0; ch = height - 1.0;
+			ge_cairo_rounded_rectangle (cr, cx, cy, cw, ch, 3.0, CR_CORNER_ALL);
+			cairo_stroke (cr);
+		}
 	}
 	else if (DETAIL ("menuitem"))
 		paint_menuitem (cr, style, state_type, x, y, width, height);
@@ -1652,7 +1643,7 @@ draw_check (GtkStyle *style,
 	debug ("draw_check: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
-	cr = crux_begin_paint (window, NULL);
+	cr = ge_gdk_drawable_to_cairo (window, NULL);
 
 	/* set up for line drawing */
 	cx = x + 0.5; cy = y + 0.5;
@@ -1760,7 +1751,7 @@ draw_option (GtkStyle *style,
 	debug ("draw_option: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
-	cr = crux_begin_paint (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	cx = x + (height / 2);
 	cy = y + (height / 2);
@@ -2111,7 +2102,7 @@ draw_focus (GtkStyle *style,
 	if (DETAIL ("entry"))
 	{
 		cairo_t *cr;
-		cr = crux_begin_paint (window, area);
+		cr = ge_gdk_drawable_to_cairo (window, area);
 		cairo_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
 		gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_SELECTED]);
 		cairo_stroke (cr);
@@ -2157,7 +2148,7 @@ draw_slider (GtkStyle *style,
 		cairo_pattern_t *crp;
 		CairoColor c1, c2;
 
-		cr = crux_begin_paint (window, area);
+		cr = ge_gdk_drawable_to_cairo (window, area);
 
 		cairo_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
 
@@ -2239,7 +2230,7 @@ draw_handle (GtkStyle *style,
 
 /*
 	cairo_t *cr;
-	cr = crux_begin_paint (window, NULL);
+	cr = ge_gdk_drawable_to_cairo (window, NULL);
 	paint_shadow (cr, style, state_type, GTK_SHADOW_OUT,x, y, width, height);
 	cairo_destroy (cr);
 	*/
