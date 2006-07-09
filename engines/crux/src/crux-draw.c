@@ -2,7 +2,6 @@
 #include "crux-style.h"
 #include "crux-rc-style.h"
 #include "crux-common.h"
-#include "crux-pixmaps.h"
 
 #include <ge-support.h>
 
@@ -266,96 +265,6 @@ paint_background_area (GtkStyle *style,
 	gdk_gc_set_clip_rectangle (gc, NULL);
 }
 
-static void
-paint_stock_image (eazel_theme_data *theme_data,
-		   eazel_engine_stock_image type,
-		   gboolean scaled, gboolean setbg,
-		   GtkStyle *style,
-		   GdkWindow *window,
-		   GtkStateType state_type,
-		   GdkRectangle *area,
-		   GtkWidget *widget,
-		   gint x, gint y, gint width, gint height)
-{
-    GdkPixmap *pixmap, *mask;
-
-    if (width == -1 || height == -1)
-    {
-	eazel_engine_stock_get_size (theme_data->stock, type,
-				     width == -1 ? &width : NULL,
-				     height == -1 ? &height : NULL);
-    }
-
-    if (scaled)
-    {
-	eazel_engine_stock_pixmap_and_mask_scaled (theme_data->stock, type,
-						   width, height,
-						   gdk_drawable_get_screen (window),
-						   &pixmap, &mask);
-    }
-    else
-	eazel_engine_stock_pixmap_and_mask (theme_data->stock, type,
-					    gdk_drawable_get_screen (window),
-					    &pixmap, &mask);
-
-    /* FIXME GNOME2
-       if (gdk_window_get_type (window) == GDK_WINDOW_PIXMAP)
-	setbg = FALSE;
-    */
-
-    /* FIXME GNOME2 this is probably bad */
-    setbg = FALSE;
-
-    if (setbg)
-    {
-	gdk_draw_pixmap (window, style->fg_gc[state_type], pixmap,
-			 0, 0, x, y, width, height);
-	if (mask != 0)
-	    gdk_window_shape_combine_mask (window, mask, 0, 0);
-    }
-    else
-    {
-	int xsrc = 0, ysrc = 0;
-
-	/* Install the mask before clipping.. */
-	if (mask != 0)
-	{
-	    gdk_gc_set_clip_mask (style->fg_gc[state_type], mask);
-	    gdk_gc_set_clip_origin (style->fg_gc[state_type], x, y);
-	}
-
-	if (area != 0)
-	{
-	    /* clip by hand to leave gc's clipping for the possible mask */
-	    GdkRectangle src = { x, y, width, height }, dest;
-
-	    if (!gdk_rectangle_intersect (&src, area, &dest))
-		return;
-
-	    xsrc -= x - dest.x;
-	    ysrc -= y - dest.y;
-	    x = dest.x;
-	    y = dest.y;
-	    width = dest.width;
-	    height = dest.height;
-
-	}
-
-	if (width > 0 && height > 0)
-	{
-	    gdk_draw_pixmap (window, style->fg_gc[state_type], pixmap,
-			     xsrc, ysrc, x, y, width, height);
-	}
-
-	if (mask != 0)
-	{
-	    gdk_gc_set_clip_mask (style->fg_gc[state_type], NULL);
-	    gdk_gc_set_clip_origin (style->fg_gc[state_type], 0, 0);
-	}
-   }
-
-    eazel_engine_stock_free_pixmaps (theme_data->stock, type, pixmap, mask);
-}
 
 static void
 paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowType shadow_type,
@@ -630,13 +539,23 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 {
 	cairo_pattern_t *crp;
 	gdouble gradient_size;
-
+	CairoColor tl, br;
 	/* gradient_size is the size of the "shadow" at the ends of the trough
 	 * it needs to be calculated so that it is a fixed size, since cairo takes a ratio when adding gradient stops
 	 */
 
 	#define OFFWHITE 238/255.0, 238/255.0, 238/255.0
 
+
+	ge_gdk_color_to_cairo (&style->white, &br);
+	ge_gdk_color_to_cairo (&style->bg[state_type], &tl);
+	ge_shade_color (&tl, 1.2, &tl);
+	ge_cairo_simple_border (cr, &tl, &br, x, y, width, height, FALSE);
+
+	/* set co-ordinates for line drawing */
+	x += 0.5; y += 0.5; width -= 1.0; height -= 1.0;
+
+	x += 1.0; y += 1.0; width -= 2.0; height -= 2.0;
 	cairo_rectangle (cr, x, y, width, height);
 	gdk_cairo_set_source_color (cr, &style->dark[state_type]);
 	cairo_fill (cr);
@@ -1123,37 +1042,45 @@ draw_box (GtkStyle *style,
 	else if (DETAIL ("trough") && GTK_IS_SCROLLBAR (widget))
 	{
 		if (GTK_IS_HSCROLLBAR (widget))
-			paint_scrollbar_trough (cr, style, state_type, GTK_ORIENTATION_HORIZONTAL, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
+			paint_scrollbar_trough (cr, style, state_type, GTK_ORIENTATION_HORIZONTAL, x, y, width, height);
 		else
-			paint_scrollbar_trough (cr, style, state_type, GTK_ORIENTATION_VERTICAL, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
+			paint_scrollbar_trough (cr, style, state_type, GTK_ORIENTATION_VERTICAL, x, y, width, height);
 	}
 	else
 	{
 		/* fill  */
 		cairo_rectangle (cr, x, y, width, height);
 
-		if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
+		if (DETAIL ("toolbar") || DETAIL ("menubar"))
 		{
-			cairo_pattern_t *crp;
-			CairoColor c1, c2;
+			if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
+			{
+				cairo_pattern_t *crp;
+				CairoColor c1, c2;
 
-			crp = cairo_pattern_create_linear (x, y, x, y + height);
-			ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-			ge_shade_color (&c1, 0.9, &c2);
-			ge_shade_color (&c1, 1.1, &c1);
-			/*
-			cairo_pattern_add_color_stop_rgb (crp, 0.0, 238/255.0, 238/255.0, 236/255.0);
-			cairo_pattern_add_color_stop_rgb (crp, 1.0, 185/255.0, 189/255.0, 182/255.0);
-			*/
-			cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
-			cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
-			cairo_set_source (cr, crp);
-			cairo_fill (cr);
-			cairo_pattern_destroy (crp);
+				crp = cairo_pattern_create_linear (x, y, x, y + height);
+				ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
+				ge_shade_color (&c1, 0.9, &c2);
+				ge_shade_color (&c1, 1.1, &c1);
+				/*
+				cairo_pattern_add_color_stop_rgb (crp, 0.0, 238/255.0, 238/255.0, 236/255.0);
+				cairo_pattern_add_color_stop_rgb (crp, 1.0, 185/255.0, 189/255.0, 182/255.0);
+				*/
+				cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
+				cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
+				cairo_set_source (cr, crp);
+				cairo_fill (cr);
+				cairo_pattern_destroy (crp);
+			}
+			else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
+			{
+				/* cairo_set_source_rgb (cr, 196/255.0, 198/255.0, 192/255.0); */
+				gdk_cairo_set_source_color (cr, &style->bg[state_type]);
+				cairo_fill (cr);
+			}
 		}
-		else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
+		else
 		{
-			/* cairo_set_source_rgb (cr, 196/255.0, 198/255.0, 192/255.0); */
 			gdk_cairo_set_source_color (cr, &style->bg[state_type]);
 			cairo_fill (cr);
 		}
@@ -2012,24 +1939,16 @@ draw_extension (GtkStyle *style,
 		relative_x = x;
 	}
 
-
+#if 0
     if (DETAIL ("tab"))
     {
 	eazel_engine_stock_image type = 0;
 	switch (gap_side)
 	{
 	case GTK_POS_TOP:
-	    type = ((state_type != GTK_STATE_ACTIVE)
-		    ? EAZEL_ENGINE_TAB_BOTTOM_ACTIVE
-		    : (relative_x < style->xthickness*2) ? EAZEL_ENGINE_TAB_BOTTOM_LEFT
-		    : EAZEL_ENGINE_TAB_BOTTOM);
 	    break;
 
 	case GTK_POS_BOTTOM:
-	    type = ((state_type != GTK_STATE_ACTIVE)
-		    ? EAZEL_ENGINE_TAB_TOP_ACTIVE
-		    : (relative_x < style->xthickness*2) ? EAZEL_ENGINE_TAB_TOP_LEFT
-		    : EAZEL_ENGINE_TAB_TOP);
 	    break;
 
 	default:			/* gcc drugging */
@@ -2044,40 +1963,63 @@ draw_extension (GtkStyle *style,
 	    return;
 	}
     }
+#endif
 
-    gtk_paint_box (style, window, state_type, shadow_type, area, widget,
-		   detail, x, y, width, height);
+	cairo_t *cr;
+	cairo_pattern_t *crp;
+	CairoColor c1, c2;
+	CairoCorners corners;
 
-    switch (gap_side)
-    {
-    case GTK_POS_TOP:
-	rect.x = x + style->xthickness;
-	rect.y = y;
-	rect.width = width - style->xthickness * 2;
-	rect.height = style->ythickness;
-	break;
-    case GTK_POS_BOTTOM:
-	rect.x = x + style->xthickness;
-	rect.y = y + height - style->ythickness;
-	rect.width = width - style->xthickness * 2;
-	rect.height = style->ythickness;
-	break;
-    case GTK_POS_LEFT:
-	rect.x = x;
-	rect.y = y + style->ythickness;
-	rect.width = style->xthickness;
-	rect.height = height - style->ythickness * 2;
-	break;
-    case GTK_POS_RIGHT:
-	rect.x = x + width - style->xthickness;
-	rect.y = y + style->ythickness;
-	rect.width = style->xthickness;
-	rect.height = height - style->ythickness * 2;
-	break;
-    }
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
-    gtk_style_apply_default_pixmap (style, window, state_type, area,
-				    rect.x, rect.y, rect.width, rect.height);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_clip_preserve (cr);
+	cairo_new_path (cr);
+
+	ge_gdk_color_to_cairo (&style->bg[state_type], &c2);
+	ge_shade_color (&c2, 1.1, &c1);
+
+	switch (gap_side)
+	{
+		case GTK_POS_TOP:
+			/* bottom tab */
+			y--;
+			corners = CR_CORNER_BOTTOMLEFT + CR_CORNER_BOTTOMRIGHT;
+			crp = cairo_pattern_create_linear (x, y + height, x, y);
+
+			ge_shade_color (&c2, 0.8, &c1);
+			break;
+		case GTK_POS_BOTTOM:
+			/* top tab */
+			height++;
+			corners = CR_CORNER_TOPLEFT + CR_CORNER_TOPRIGHT;
+			crp = cairo_pattern_create_linear (x, y, x, y + height);
+			break;
+		case GTK_POS_LEFT:
+			/* right tab */
+			x--;
+			corners = CR_CORNER_TOPRIGHT + CR_CORNER_BOTTOMRIGHT;
+			crp = cairo_pattern_create_linear (x + width, y, x, y);
+			break;
+		case GTK_POS_RIGHT:
+			/* left tab */
+			width++;
+			corners = CR_CORNER_BOTTOMLEFT + CR_CORNER_TOPLEFT;
+			crp = cairo_pattern_create_linear (x, y, x + width, y);
+			break;
+	}
+
+	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, 2.0, corners);
+
+	cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
+	cairo_pattern_add_color_stop_rgb (crp, 0.3, c2.r, c2.g, c2.b);
+	cairo_set_source (cr, crp);
+	cairo_fill_preserve (cr);
+	cairo_pattern_destroy (crp);
+
+	cairo_set_source_rgb (cr, OUTLINE_GRAY);
+	cairo_stroke (cr);
+	cairo_destroy (cr);
 }
 
 static void
@@ -2142,7 +2084,6 @@ draw_slider (GtkStyle *style,
 
     focused = (widget != 0);
 
-    if (DETAIL ("slider")) {
 	{
 		cairo_t *cr;
 		cairo_pattern_t *crp;
@@ -2188,16 +2129,6 @@ draw_slider (GtkStyle *style,
 
 		cairo_destroy (cr);
 	}
-    } else {
-      paint_stock_image (theme_data,
-			 orientation == GTK_ORIENTATION_HORIZONTAL
-			 ? (focused ? EAZEL_ENGINE_H_SLIDER_THUMB
-			    : EAZEL_ENGINE_H_SLIDER_THUMB_INACTIVE)
-			 : (focused ? EAZEL_ENGINE_V_SLIDER_THUMB
-			    : EAZEL_ENGINE_V_SLIDER_THUMB_INACTIVE),
-			 TRUE, TRUE, style, window, state_type,
-			 area, widget, x, y, width, height);
-    }
     if (area)
 	gdk_gc_set_clip_rectangle (style->black_gc, NULL);
 }

@@ -1,5 +1,15 @@
 2006-07-09  Thomas Wood  <thos@gnome.org>
 
+	* engines/crux/src/crux-draw.c:
+	(paint_scrollbar_trough): Add shadow
+	(draw_box): Set default to solid fill
+	(draw_extension): Cairo goodness
+	(draw_slider): Don't use pixmaps anymore
+	* themes/Crux/gtk-2.0/gtkrc: Set correct scrollbar width, and trough
+	border
+
+2006-07-09  Thomas Wood  <thos@gnome.org>
+
 	* engines/crux/src/crux-draw.c: (paint_entry_shadow),
 	(draw_shadow), (draw_box), (draw_arrow), (draw_check),
 	(draw_option), (draw_focus), (draw_slider), (draw_handle):

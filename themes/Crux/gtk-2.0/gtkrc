@@ -53,9 +53,9 @@ style "default"
 #  GtkWidget::focus_padding = 0
 #  GtkWidget::focus_line_width = 1
 
-  GtkRange::slider_width = 11
-  GtkRange::stepper_size = 11
-  GtkRange::trough_border = 0
+  GtkRange::slider_width = 13
+  GtkRange::stepper_size = 13
+  GtkRange::trough_border = 1
 
   GtkScale::slider_length = 16
   GtkCheckButton::indicator_size = 12
