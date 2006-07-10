@@ -1,3 +1,18 @@
+2006-07-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_fill):
+	- Fix the transformations that got broken by the clipping fix.
+
+	* engines/clearlooks/Makefile.am:
+	* engines/crux/Makefile.am:
+	* engines/hc/Makefile.am:
+	* engines/mist/Makefile.am:
+	* engines/redmond/Makefile.am:
+	* engines/thinice/Makefile.am:
+	- Use top_srcdir instead of top_builddir for to include the support
+	stuff
+
 2006-07-09  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c:

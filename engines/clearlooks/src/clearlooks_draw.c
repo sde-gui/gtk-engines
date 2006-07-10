@@ -756,10 +756,9 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_pattern_t *pattern;
 	CairoColor       shade1;
 	
-	cairo_save (cr);
+	/* This is kind of ugly, but I want to get this fixed now. -- Benjamin
+	 * The problem is that the rotation should not be resetted by the save/restore. */
 	cairo_rectangle (cr, x, y, width, height);
-	cairo_clip (cr);
-	cairo_new_path (cr);
 
 	if (is_horizontal)
 	{
@@ -779,6 +778,9 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 		else
 			rotate_mirror_translate (cr, M_PI/2, x, y+width, TRUE, FALSE);
 	}
+	
+	cairo_save (cr);
+	cairo_clip (cr);
 	
 	stroke_width = height*2;
 
