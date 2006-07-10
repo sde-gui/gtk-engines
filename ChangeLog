@@ -1,5 +1,12 @@
 2006-07-10  Thomas Wood  <thos@gnome.org>
 
+	* NEWS:
+	* configure.ac:
+
+	Update for 2.7.5 release
+
+2006-07-10  Thomas Wood  <thos@gnome.org>
+
 	* engines/crux/src/crux-draw.c: (paint_shadow), (draw_shadow),
 	(draw_box), (draw_arrow), (draw_extension): More cosmetic refinements!
 

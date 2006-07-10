@@ -1,9 +1,38 @@
+Overview of Changes in 2.7.5 (since 2.7.4)
+==========================================
+
+Highlights in this release include:
+
+* Further improvements to the cairo version of Crux, now with a new tango style
+  from a mockup by Lapo Calamandrei
+* Fixed lots of memory leaks in Clearlooks, and several other bugs
+* High Constrast engine conversion to cairo started
+* Redmond, Thinice and Mist engine conversions to cairo almost complete
+* Lighthouseblue and Metal engines have been removed, since no one has
+  volounteered to convert them to cairo, and they are no longer maintained.
+
+Fixed bugs in this release:
+
+	345769 - Clearlooks' gtk_paint_* functions do not correctly obey the 
+	         passed clip rect
+	341694 - Crash in d4x (industrial)
+	338826 - style copy function broken in clearlooks
+	337381 - GtkHScale is improperly displayed in RTL (clearlooks)
+	325760 - panel applets have black background on transparent/solid colour
+	         panels (clearlooks)
+	332639 - Fix memory leaks in draw_flat_box and
+	         gtk_treeview_get_header_index (clearlooks)
+	325932 - "Inconsistent" checkbox state missing (clearlooks)
+
+
+
 Overview of Changes in 2.7.4 (since 2.7.3)
 ==========================================
 
 * Not compiling any animation code in clearlooks anymore
 * Crux updated with radio and check buttons drawn using cairo
 * Crux updated with progress bar bars drawn using cairo
+
 
 Overview of Changes in 2.7.3 (since 2.7.2)
 ==========================================

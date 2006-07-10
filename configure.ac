@@ -1,4 +1,4 @@
-AC_INIT([gtk-engines], [2.7.4])
+AC_INIT([gtk-engines], [2.7.5])
 AC_CONFIG_SRCDIR([README])
 
 AM_INIT_AUTOMAKE
@@ -23,8 +23,6 @@ AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks		skip ClearLooks engine/theme
 AC_ARG_ENABLE(crux, 		[  --disable-crux		skip Crux engine/theme], 		[crux=$enableval], 		[crux=$disableval])
 AC_ARG_ENABLE(hc,		[  --disable-hc 		skip HC(high contrast) engine], 	[hc=$enableval], 		[hc=$disableval])
 AC_ARG_ENABLE(industrial, 	[  --disable-industrial		skip Industrial engine/theme], 		[industrial=$enableval], 	[industrial=$disableval])
-AC_ARG_ENABLE(lighthouseblue, 	[  --disable-lighthouseblue	skip LighthouseBlue engine/theme], 	[lighthouseblue=$enableval], 	[lighthouseblue=$disableval])
-AC_ARG_ENABLE(metal, 		[  --disable-metal		skip Metal engine/theme], 		[metal=$enableval], 		[metal=$disableval])
 AC_ARG_ENABLE(mist, 		[  --disable-mist		skip Mist engine/theme], 		[mist=$enableval], 		[mist=$disableval])
 AC_ARG_ENABLE(redmond,		[  --disable-redmond		skip Redmond engine/theme], 		[redmond=$enableval], 		[redmond=$disableval])
 AC_ARG_ENABLE(smooth, 		[  --disable-smooth		skip Smooth engine], 			[smooth=$enableval], 		[smooth=$disableval])
@@ -59,20 +57,6 @@ if test $industrial = "y"; then
 	BUILD_ENGINES="$BUILD_ENGINES industrial"
 	if test $themes = "y"; then
 		BUILD_THEMES="$BUILD_THEMES Industrial"
-	fi
-fi
-
-if test $lighthouseblue = "y"; then
-	BUILD_ENGINES="$BUILD_ENGINES lighthouseblue"
-	if test $themes = "y"; then
-		BUILD_THEMES="$BUILD_THEMES LighthouseBlue"
-	fi
-fi
-
-if test $metal = "y"; then
-	BUILD_ENGINES="$BUILD_ENGINES metal"
-	if test $themes = "y"; then
-		BUILD_THEMES="$BUILD_THEMES Metal"
 	fi
 fi
 
@@ -130,8 +114,6 @@ engines/crux/Makefile
 engines/crux/pixmaps/Makefile
 engines/hc/Makefile
 engines/industrial/Makefile
-engines/lighthouseblue/Makefile
-engines/metal/Makefile
 engines/mist/Makefile
 engines/redmond/Makefile
 engines/smooth/Makefile
@@ -143,10 +125,6 @@ themes/Crux/Makefile
 themes/Crux/gtk-2.0/Makefile
 themes/Industrial/Makefile
 themes/Industrial/gtk-2.0/Makefile
-themes/LighthouseBlue/Makefile
-themes/LighthouseBlue/gtk-2.0/Makefile
-themes/Metal/Makefile
-themes/Metal/gtk-2.0/Makefile
 themes/Mist/Makefile
 themes/Mist/gtk-2.0/Makefile
 themes/Redmond/Makefile
@@ -194,28 +172,6 @@ fi
 
 echo -n "      Industrial - "
 if test "$industrial" = "y"; then
-	if test $themes = "y"; then
-		echo "Including"
-	else
-		echo "Including(Skipping Theme)"
-	fi
-else
-	echo "Skipping"
-fi
-
-echo -n "      LighthouseBlue - "
-if test "$lighthouseblue" = "y"; then
-	if test $themes = "y"; then
-		echo "Including"
-	else
-		echo "Including(Skipping Theme)"
-	fi
-else
-	echo "Skipping"
-fi
-
-echo -n "      Metal - "
-if test "$metal" = "y"; then
 	if test $themes = "y"; then
 		echo "Including"
 	else
