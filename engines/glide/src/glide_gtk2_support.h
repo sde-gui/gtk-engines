@@ -45,7 +45,7 @@ do_glide_draw_default_fill (GtkStyle *style,
                               gint width, 
                               gint height,
                               gboolean vertical,
-                              gboolean flat);
+                              cairo_pattern_t *pattern);
 
 typedef enum {
 	GLIDE_BEVEL_STYLE_SMOOTH = 1,

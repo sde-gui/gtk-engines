@@ -345,7 +345,7 @@ glide_draw_arrow (GtkStyle * style,
 		height += 1;
  	}
 
-      if (CHECK_DETAIL (detail, "spinbutton") || CHECK_DETAIL (detail, "optionmenu"))
+      if (CHECK_DETAIL (detail, "spinbutton"))
 	{
 	  if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 	    x -= 1;
@@ -562,6 +562,8 @@ glide_draw_combobox_button (GtkStyle * style,
                       gint width, 
                       gint height)
 {
+		GlideStyle *glide_style = GLIDE_STYLE (style);
+
   /* The Combo/ComboBoxEntry button should apear to be inset into the entry, 
    * as opposed to next to it, so we fake it by drawing an entry fill
    * then an entry border - but 2 pixels bigger so it overlaps real border
@@ -727,7 +729,8 @@ glide_draw_combobox_button (GtkStyle * style,
  
       do_glide_draw_default_fill (style, window, widget,
 	  			          state_type, area, x + focus, y + thick + focus,
-                             width - thick - focus*2, height - thick*2 - focus*2, FALSE, FALSE);
+                             width - thick - focus*2, height - thick*2 - focus*2, FALSE, 
+				glide_style->bg_gradient[FALSE][state_type]);
 
         gtk_paint_shadow (style, window, state_type, shadow_type, area,
 		          widget, detail, x + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
@@ -840,7 +843,8 @@ glide_draw_combobox_button (GtkStyle * style,
  
       do_glide_draw_default_fill (style, window, widget,
 				          state_type, area, x + thick + focus, y + thick + focus,
-                             width - thick - focus*2, height - 2*thick - focus*2, FALSE, FALSE);
+                             width - thick - focus*2, height - 2*thick - focus*2, FALSE, 
+				glide_style->bg_gradient[FALSE][state_type]);
  
         gtk_paint_shadow (style, window, state_type, shadow_type, area,
 		          widget, detail, x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
@@ -873,6 +877,8 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
                          gint width, 
                          gint height)
 {
+		GlideStyle *glide_style = GLIDE_STYLE (style);
+
   GdkRectangle spin_area;
  
   /* The SpinButton Steppers should apear to be inset into the entry, 
@@ -930,7 +936,8 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
                                 x - thick, y + focus, width + thick - focus, height + thick - focus);
 
 	  do_glide_draw_default_fill (style, window, widget, state_type, area, 
-                                 	x, y + thick + focus, width - thick - focus, height - thick - focus, FALSE, FALSE);
+                                 	x, y + thick + focus, width - thick - focus, height - thick - focus,
+					FALSE, glide_style->bg_gradient[FALSE][state_type]);
 	  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail,
                                 x, y + thick + focus, width - thick - focus, height - thick - focus);
 
@@ -949,7 +956,8 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 			    x - thick, y - thick, width + thick - focus, height + thick - focus);
 
 	  do_glide_draw_default_fill (style, window, widget, state_type, area, 
-			    x, y + thick, width - thick - focus, height - thick*2 - focus, FALSE, FALSE);
+			    x, y + thick, width - thick - focus, height - thick*2 - focus, 
+				FALSE, glide_style->bg_gradient[FALSE][state_type]);
 
 	  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail,
 			    x, y , width - thick - focus, height - thick - focus);
@@ -970,7 +978,8 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	  gtk_paint_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
 				x + focus, y + focus, width + thick*2 - focus, height + thick - focus);
 	  do_glide_draw_default_fill (style, window, widget, state_type, area, 
-					x + thick + focus, y + thick + focus, width - thick - focus, height - thick - focus, FALSE, FALSE);
+					x + thick + focus, y + thick + focus, width - thick - focus, height - thick - focus,
+					FALSE, glide_style->bg_gradient[FALSE][state_type]);
 	  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail, 
 				x + thick + focus, y + thick + focus , width - thick - focus, height - thick - focus);
 
@@ -987,7 +996,8 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	  gtk_paint_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
 				x + focus , y - thick, width + thick*2 - focus, height + thick - focus);
 	  do_glide_draw_default_fill (style, window, widget, state_type, area, 
-				x + thick + focus, y, width - thick - focus, height - thick - focus, FALSE, FALSE);
+				x + thick + focus, y, width - thick - focus, height - thick - focus, 
+				FALSE, glide_style->bg_gradient[FALSE][state_type]);
 	  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail, 
                                 x + thick + focus, y, width - thick - focus, height - thick - focus);
 
@@ -1040,8 +1050,10 @@ glide_draw_box (GtkStyle * style,
  
   if ((CHECK_DETAIL (detail, "vscrollbar"))  || (CHECK_DETAIL (detail, "hscrollbar")))
     {
+      gboolean vertical = CHECK_DETAIL (detail, "vscrollbar");
       do_glide_draw_default_fill (style, window, widget, state_type, 
-                                        area, x, y, width, height, CHECK_DETAIL (detail, "vscrollbar"), FALSE);
+                                        area, x, y, width, height, 
+					vertical, glide_style->bg_gradient[vertical][state_type]);
  
       glide_draw_shadow (style, window, state_type, shadow_type, area,
 			widget, detail, x, y, width, height);
@@ -1049,7 +1061,7 @@ glide_draw_box (GtkStyle * style,
   else if ((CHECK_DETAIL (detail, "trough")))
     {
       do_glide_draw_default_fill (style, window, widget, state_type, 
-                                        area, x, y, width, height, IS_VSCROLLBAR(widget) || IS_VSCALE(widget), TRUE);
+                                        area, x, y, width, height, FALSE, glide_style->bg_solid[state_type]);
  
       glide_draw_shadow (style, window, state_type, GTK_SHADOW_IN, area,
 			widget, detail, x, y, width-1, height);
@@ -1136,7 +1148,7 @@ glide_draw_box (GtkStyle * style,
   
       do_glide_draw_default_fill (style, window, widget,
 					  state_type, area, x, y, width,
-					  height, FALSE, TRUE);
+					  height, FALSE, glide_style->bg_solid[state_type]);
  
       /* If this is a menu embedded in the gnome-panel, we don't
        *  draw a border since it looks cleaner without one.
@@ -1173,7 +1185,7 @@ glide_draw_box (GtkStyle * style,
     { 
       do_glide_draw_default_fill (style, window, widget,
 					  state_type, area, x, y, width,
-					  height, FALSE, FALSE);
+					  height, FALSE, glide_style->bg_gradient[FALSE][state_type]);
 
       cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
 		 			  
@@ -1187,7 +1199,7 @@ glide_draw_box (GtkStyle * style,
     { 
       do_glide_draw_default_fill (style, window, widget,
                                     GTK_STATE_SELECTED, area, x, y,
-                                    width, height, FALSE, FALSE);
+                                    width, height, FALSE, glide_style->bg_gradient[FALSE][state_type]);
       cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
 		do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_SELECTED],
 					GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
@@ -1215,7 +1227,7 @@ glide_draw_box (GtkStyle * style,
   else if (IS_TOGGLE_BUTTON(widget) && (TOGGLE_BUTTON(widget)->active))
     {
       do_glide_draw_default_fill (style, window, widget, state_type, 
-                                      area, x, y, width, height, FALSE, FALSE);
+                                      area, x, y, width, height, FALSE, glide_style->bg_gradient[FALSE][state_type]);
 
       glide_draw_shadow (style, window, state_type, shadow_type, area,
 			widget, detail, x, y, width, height);
@@ -1225,7 +1237,7 @@ glide_draw_box (GtkStyle * style,
       /* default box apearance */
       do_glide_draw_default_fill (style, window, widget,
                                     state_type, area, x, y, width,
-                                    height, FALSE, FALSE);
+                                    height, FALSE, glide_style->bg_gradient[FALSE][state_type]);
       glide_draw_shadow (style, window, state_type, shadow_type, area,
 			widget, detail, x, y, width, height);
     }
@@ -1347,8 +1359,9 @@ glide_draw_slider (GtkStyle * style,
  
       do_glide_draw_default_fill (style, window, widget,
                                     state_type, area, x, y, width,
-                                    height, orientation == GTK_ORIENTATION_VERTICAL, FALSE);
- 
+                                    height, orientation == GTK_ORIENTATION_VERTICAL, 
+					glide_style->bg_gradient[orientation == GTK_ORIENTATION_VERTICAL][state_type]);
+
       glide_draw_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_OUT, area,
                            widget, detail, x, y, width, height);
 
@@ -1379,10 +1392,12 @@ glide_draw_box_gap (GtkStyle * style,
 		 gint gap_pos, 
 		 gint gap_size)
 {
+	GlideStyle *glide_style = GLIDE_STYLE (style);
+
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	do_glide_draw_default_fill (style, window, widget, state_type, area, x, y, width, height, FALSE, TRUE);
+	do_glide_draw_default_fill (style, window, widget, state_type, area, x, y, width, height, FALSE, glide_style->bg_solid[state_type]);
 
 	glide_draw_shadow_gap (style, window, state_type, shadow_type, area, widget, detail, 
 					x, y, width, height, gap_side, gap_pos, gap_size);
@@ -1443,12 +1458,14 @@ glide_draw_shadow_gap (GtkStyle * style,
 		case GTK_SHADOW_ETCHED_IN:
 			color1 = color4 = glide_style->color_cube.dark[state_type];
 			color2 = color3 = glide_style->color_cube.light[state_type];
+			outer_overlap = FALSE;
 			inner_overlap = FALSE;
 		break;
 
 		case GTK_SHADOW_ETCHED_OUT:
 			color1 = color4 = glide_style->color_cube.light[state_type];
 			color2 = color3 = glide_style->color_cube.dark[state_type];
+			outer_overlap = TRUE;
 			inner_overlap = TRUE;
 		break;
       
@@ -1457,7 +1474,8 @@ glide_draw_shadow_gap (GtkStyle * style,
 			color2 = glide_style->color_cube.dark[state_type];
 			color3 = glide_style->color_cube.light[state_type];
 			color4 = glide_style->color_cube.mid[state_type];
-			inner_overlap = FALSE;
+			outer_overlap = FALSE;
+			inner_overlap = TRUE;
 		break;
 	
 		default:
@@ -1466,7 +1484,8 @@ glide_draw_shadow_gap (GtkStyle * style,
 			color2 = glide_style->color_cube.light[state_type];
 			color3 = glide_style->color_cube.dark[state_type];
 			color4 = glide_style->color_cube.mid[state_type];
-			inner_overlap = TRUE;
+			outer_overlap = TRUE;
+			inner_overlap = (((gap_side==GTK_POS_RIGHT) || (gap_side==GTK_POS_BOTTOM)) && (gap_pos==0));
 		break;
 	}
 
@@ -1522,13 +1541,16 @@ glide_draw_extension (GtkStyle * style,
                 gint height, 
                 GtkPositionType gap_side)
 {
+	GlideStyle *glide_style = GLIDE_STYLE (style);
+
 	gint widget_x = 0, widget_y = 0, widget_width = 0, widget_height = 0;
 
 	CHECK_ARGS
 	SANITIZE_SIZE
 
 	GdkRectangle clip, shadow;
-
+	cairo_pattern_t *pattern;
+	gboolean vertical = FALSE;
 	shadow.x = x;
 	shadow.y = y;
 	shadow.width = width;
@@ -1544,15 +1566,19 @@ glide_draw_extension (GtkStyle * style,
 		To fake the apearance of overlap on edge aligned tabs
 		increase clip by one on gap side. */
 
-  do_glide_draw_default_fill (style, window, widget, state_type, area, 
-                                x, y, width, height, FALSE, state_type!=GTK_STATE_NORMAL);
-
 	if (widget && (GTK_IS_NOTEBOOK (widget)))
 	{
 		widget_x = (widget->allocation.x + GTK_CONTAINER (widget)->border_width);
 		widget_y = (widget->allocation.y + GTK_CONTAINER (widget)->border_width);
 		widget_width = (widget->allocation.width - 2*GTK_CONTAINER (widget)->border_width);
 		widget_height = (widget->allocation.height - 2*GTK_CONTAINER (widget)->border_width);
+	}
+
+	pattern = glide_style->bg_solid[state_type];
+
+	if ((widget && GTK_IS_NOTEBOOK (widget)) && (state_type==GTK_STATE_NORMAL))
+	{ 
+		pattern = glide_style->active_tab_gradient[gap_side][state_type];
 	}
 
 	switch (gap_side)
@@ -1564,8 +1590,9 @@ glide_draw_extension (GtkStyle * style,
 			{
 				shadow.y -= 1;
 				shadow.height += 1;
+				height -= 1;
 			}
-
+			
 			y -= 3;
 			height += 3;
 		break;
@@ -1577,9 +1604,12 @@ glide_draw_extension (GtkStyle * style,
 			{
 				shadow.x -= 1;
 				shadow.width += 1;
+				x -= 1;
 			}
+
 			x -= 3;
 			width += 3;
+			vertical = TRUE;
 		break;
 
 		default:
@@ -1601,6 +1631,7 @@ glide_draw_extension (GtkStyle * style,
 				shadow.width += 1;
 			}
 			width += 3;
+			vertical = TRUE;
 		break;
 	}
 
@@ -1608,6 +1639,9 @@ glide_draw_extension (GtkStyle * style,
 		gdk_rectangle_intersect(area, &shadow, &clip);
 	else
 		clip = shadow;
+
+  do_glide_draw_default_fill (style, window, widget, state_type, &clip, 
+                                x, y, width, height, vertical, pattern);
 
 	glide_draw_shadow (style, window, state_type, shadow_type, &clip, widget, detail, 
 				x, y, width, height);
@@ -1707,9 +1741,9 @@ glide_draw_handle (GtkStyle * style,
 	}
 
   do_glide_draw_default_fill (style, window, widget, state_type, area, 
-                                x, y, width, height, orientation == (GTK_ORIENTATION_VERTICAL), FALSE);
+                                x, y, width, height, orientation == (GTK_ORIENTATION_VERTICAL), 
+				glide_style->bg_gradient[orientation == (GTK_ORIENTATION_VERTICAL)][state_type]);
  
-
       if (ge_is_panel_widget_item (widget)
 	  && (CHECK_DETAIL (detail, "handlebox")
 	      && (!IS_HANDLE_BOX_ITEM (widget)))

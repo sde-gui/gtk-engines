@@ -125,7 +125,7 @@ do_glide_draw_default_fill (GtkStyle *style,
                               gint width, 
                               gint height,
                               gboolean vertical,
-                              gboolean flat)
+                              cairo_pattern_t *pattern)
 {
 	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window)) 
 	{
@@ -133,9 +133,7 @@ do_glide_draw_default_fill (GtkStyle *style,
 
 		cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
 
-		glide_draw_pattern_fill(canvas, (flat)
-						?glide_style->bg_solid[state_type]
-						:glide_style->bg_gradient[vertical][state_type], 
+		glide_draw_pattern_fill(canvas, pattern, 
 					x, y, width, height, vertical);
 
 		cairo_destroy(canvas);
@@ -144,8 +142,7 @@ do_glide_draw_default_fill (GtkStyle *style,
 			(style, window,
 			 widget && !GTK_WIDGET_NO_WINDOW(widget),
 			 state_type, area, x, y, width, height);
-	}
-   
+	}   
 }
 
 void 

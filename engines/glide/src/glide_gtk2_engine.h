@@ -65,7 +65,7 @@ typedef struct
 
   cairo_pattern_t *bg_solid[5];
   cairo_pattern_t *bg_gradient[2][5];
-  cairo_pattern_t *active_tab_gradient[5];
+  cairo_pattern_t *active_tab_gradient[4][5];
 
 } GlideStyle;
  

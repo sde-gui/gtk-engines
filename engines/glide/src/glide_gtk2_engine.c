@@ -123,7 +123,10 @@ glide_style_realize (GtkStyle * style)
 		glide_style->bg_gradient[0][i] = glide_simple_shade_gradient_pattern(&base, 1.05, 0.95, FALSE);
 		glide_style->bg_gradient[1][i] = glide_simple_shade_gradient_pattern(&base, 1.05, 0.95, TRUE);
 
-		glide_style->active_tab_gradient[i] = glide_simple_shade_gradient_pattern(&base, 1.05, 1.0, FALSE);
+		glide_style->active_tab_gradient[GTK_POS_LEFT][i] = glide_simple_shade_gradient_pattern(&base, 1.0, 0.95, TRUE);
+		glide_style->active_tab_gradient[GTK_POS_RIGHT][i] = glide_simple_shade_gradient_pattern(&base, 1.05, 1.0, TRUE);
+		glide_style->active_tab_gradient[GTK_POS_TOP][i] = glide_simple_shade_gradient_pattern(&base, 1.0, 0.95, FALSE);
+		glide_style->active_tab_gradient[GTK_POS_BOTTOM][i] = glide_simple_shade_gradient_pattern(&base, 1.05, 1.0, FALSE);
 	}
 }
 
@@ -140,7 +143,10 @@ glide_style_unrealize (GtkStyle * style)
 		cairo_pattern_destroy(glide_style->bg_gradient[FALSE][i]);
 		cairo_pattern_destroy(glide_style->bg_gradient[TRUE][i]);
 
-		cairo_pattern_destroy(glide_style->active_tab_gradient[i]);
+		cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_LEFT][i]);
+		cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_RIGHT][i]);
+		cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_TOP][i]);
+		cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_BOTTOM][i]);
 	}
  
 	glide_parent_class->unrealize (style);
