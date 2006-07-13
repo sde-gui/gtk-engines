@@ -1,4 +1,4 @@
-SUBDIRS = pixmaps
+SUBDIRS = 
 
 INCLUDES = $(GTK_CFLAGS)				\
            -DDATADIR=\"$(datadir)/themes/Crux/pixmaps\"	\

@@ -1,3 +1,17 @@
+2006-07-13  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/Makefile.am:
+	* engines/crux/src/crux-draw.c: (paint_shadow), (draw_shadow),
+	(draw_extension), (draw_focus), (draw_slider),
+	(crux_draw_style_class_init):
+	* engines/crux/src/crux-rc-parser.c: (theme_data_unref),
+	(crux_parse_rc_style):
+	* engines/crux/src/eazel-theme.h:
+	* themes/Crux/gtk-2.0/gtkrc:
+
+	- Remove redundant code (fix warnings about unused variables, etc.)
+	- Remove pixmap related code
+
 2006-07-12 Andrew Johnson <acjgenius@earthlink.net>
 
 	* configure.ac:

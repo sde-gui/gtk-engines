@@ -29,7 +29,6 @@ enum {
     TOKEN_OUTLINE_SHADOW,
     TOKEN_YES,
     TOKEN_NO,
-    TOKEN_STOCK,
     TOKEN_BORDER,
     TOKEN_RECOLOR,
     TOKEN_PALETTE,
@@ -55,11 +54,9 @@ static struct symbol_struct theme_symbols[] = {
   { "outline_shadow", TOKEN_OUTLINE_SHADOW },			
   { "yes", TOKEN_YES },						
   { "no", TOKEN_NO },						
-  { "stock", TOKEN_STOCK },					
   { "border", TOKEN_BORDER },					
   { "recolor", TOKEN_RECOLOR },					
   { "palette", TOKEN_PALETTE },					
-  { "image", TOKEN_IMAGE },					
   { "fg", TOKEN_FG },						
   { "bg", TOKEN_BG },						
   { "base", TOKEN_BASE },					
@@ -67,94 +64,9 @@ static struct symbol_struct theme_symbols[] = {
   { NULL, G_TOKEN_NONE }
 };
 
-#define STOCK_SYMBOLS 									\
-    { "CHECK", EAZEL_ENGINE_CHECK },							\
-    { "CHECK_FOCUS", EAZEL_ENGINE_CHECK_FOCUS },					\
-    { "CHECK_HI", EAZEL_ENGINE_CHECK_HI },						\
-    { "CHECK_HI_FOCUS", EAZEL_ENGINE_CHECK_HI_FOCUS },					\
-    { "CHECK_PRESSED", EAZEL_ENGINE_CHECK_PRESSED },					\
-    { "CHECK_PRESSED_FOCUS", EAZEL_ENGINE_CHECK_PRESSED_FOCUS },			\
-    { "CHECK_DISABLED", EAZEL_ENGINE_CHECK_DISABLED },					\
-    { "CHECK_ACTIVE", EAZEL_ENGINE_CHECK_ACTIVE },					\
-    { "CHECK_ACTIVE_FOCUS", EAZEL_ENGINE_CHECK_ACTIVE_FOCUS },				\
-    { "CHECK_ACTIVE_HI", EAZEL_ENGINE_CHECK_ACTIVE_HI },				\
-    { "CHECK_ACTIVE_HI_FOCUS", EAZEL_ENGINE_CHECK_ACTIVE_HI_FOCUS },			\
-    { "CHECK_ACTIVE_PRESSED", EAZEL_ENGINE_CHECK_ACTIVE_PRESSED },			\
-    { "CHECK_ACTIVE_PRESSED_FOCUS", EAZEL_ENGINE_CHECK_ACTIVE_PRESSED_FOCUS },		\
-    { "CHECK_ACTIVE_DISABLED", EAZEL_ENGINE_CHECK_ACTIVE_DISABLED },			\
-    { "OPTION", EAZEL_ENGINE_OPTION },							\
-    { "OPTION_FOCUS", EAZEL_ENGINE_OPTION_FOCUS },					\
-    { "OPTION_HI", EAZEL_ENGINE_OPTION_HI },						\
-    { "OPTION_HI_FOCUS", EAZEL_ENGINE_OPTION_HI_FOCUS },				\
-    { "OPTION_PRESSED", EAZEL_ENGINE_OPTION_PRESSED },					\
-    { "OPTION_PRESSED_FOCUS", EAZEL_ENGINE_OPTION_PRESSED_FOCUS },			\
-    { "OPTION_DISABLED", EAZEL_ENGINE_OPTION_DISABLED },				\
-    { "OPTION_ACTIVE", EAZEL_ENGINE_OPTION_ACTIVE },					\
-    { "OPTION_ACTIVE_FOCUS", EAZEL_ENGINE_OPTION_ACTIVE_FOCUS },			\
-    { "OPTION_ACTIVE_HI", EAZEL_ENGINE_OPTION_ACTIVE_HI },				\
-    { "OPTION_ACTIVE_HI_FOCUS", EAZEL_ENGINE_OPTION_ACTIVE_HI_FOCUS },			\
-    { "OPTION_ACTIVE_PRESSED", EAZEL_ENGINE_OPTION_ACTIVE_PRESSED },			\
-    { "OPTION_ACTIVE_PRESSED_FOCUS", EAZEL_ENGINE_OPTION_ACTIVE_PRESSED_FOCUS },	\
-    { "OPTION_ACTIVE_DISABLED", EAZEL_ENGINE_OPTION_ACTIVE_DISABLED },			\
-    { "H_TROUGH", EAZEL_ENGINE_H_TROUGH },						\
-    { "V_TROUGH", EAZEL_ENGINE_V_TROUGH },						\
-    { "ARROW_UP", EAZEL_ENGINE_ARROW_UP },						\
-    { "ARROW_UP_HI", EAZEL_ENGINE_ARROW_UP_HI },					\
-    { "ARROW_UP_ACTIVE", EAZEL_ENGINE_ARROW_UP_ACTIVE },				\
-    { "ARROW_DOWN", EAZEL_ENGINE_ARROW_DOWN },						\
-    { "ARROW_DOWN_HI", EAZEL_ENGINE_ARROW_DOWN_HI },					\
-    { "ARROW_DOWN_ACTIVE", EAZEL_ENGINE_ARROW_DOWN_ACTIVE },				\
-    { "ARROW_RIGHT", EAZEL_ENGINE_ARROW_RIGHT },					\
-    { "ARROW_RIGHT_HI", EAZEL_ENGINE_ARROW_RIGHT_HI },					\
-    { "ARROW_RIGHT_ACTIVE", EAZEL_ENGINE_ARROW_RIGHT_ACTIVE },				\
-    { "ARROW_LEFT", EAZEL_ENGINE_ARROW_LEFT },						\
-    { "ARROW_LEFT_HI", EAZEL_ENGINE_ARROW_LEFT_HI },					\
-    { "ARROW_LEFT_ACTIVE", EAZEL_ENGINE_ARROW_LEFT_ACTIVE },				\
-    { "H_SCROLLBAR", EAZEL_ENGINE_H_SCROLLBAR },					\
-    { "H_SCROLLBAR_HI", EAZEL_ENGINE_H_SCROLLBAR_HI },					\
-    { "H_SCROLLBAR_INACTIVE", EAZEL_ENGINE_H_SCROLLBAR_INACTIVE },			\
-    { "H_SCROLLBAR_THUMB", EAZEL_ENGINE_H_SCROLLBAR_THUMB },				\
-    { "H_SCROLLBAR_THUMB_HI", EAZEL_ENGINE_H_SCROLLBAR_THUMB_HI },			\
-    { "H_SCROLLBAR_THUMB_INACTIVE", EAZEL_ENGINE_H_SCROLLBAR_THUMB_INACTIVE },		\
-    { "V_SCROLLBAR", EAZEL_ENGINE_V_SCROLLBAR },					\
-    { "V_SCROLLBAR_HI", EAZEL_ENGINE_V_SCROLLBAR_HI },					\
-    { "V_SCROLLBAR_INACTIVE", EAZEL_ENGINE_V_SCROLLBAR_INACTIVE },			\
-    { "V_SCROLLBAR_THUMB", EAZEL_ENGINE_V_SCROLLBAR_THUMB },				\
-    { "V_SCROLLBAR_THUMB_HI", EAZEL_ENGINE_V_SCROLLBAR_THUMB_HI },			\
-    { "V_SCROLLBAR_THUMB_INACTIVE", EAZEL_ENGINE_V_SCROLLBAR_THUMB_INACTIVE },		\
-    { "PROGRESS_BAR", EAZEL_ENGINE_PROGRESS_BAR },					\
-    { "PROGRESS_BAR_LEFT", EAZEL_ENGINE_PROGRESS_BAR_LEFT },				\
-    { "PROGRESS_BAR_RIGHT", EAZEL_ENGINE_PROGRESS_BAR_RIGHT },				\
-    { "PROGRESS_BAR_INACTIVE", EAZEL_ENGINE_PROGRESS_BAR_INACTIVE },			\
-    { "PROGRESS_TROUGH", EAZEL_ENGINE_PROGRESS_TROUGH },				\
-    { "H_SLIDER_THUMB", EAZEL_ENGINE_H_SLIDER_THUMB },					\
-    { "H_SLIDER_THUMB_INACTIVE", EAZEL_ENGINE_H_SLIDER_THUMB_INACTIVE },		\
-    { "H_SLIDER_TROUGH", EAZEL_ENGINE_H_SLIDER_TROUGH },				\
-    { "H_SLIDER_TROUGH_ACTIVE", EAZEL_ENGINE_H_SLIDER_TROUGH_ACTIVE },			\
-    { "V_SLIDER_THUMB", EAZEL_ENGINE_V_SLIDER_THUMB },					\
-    { "V_SLIDER_THUMB_INACTIVE", EAZEL_ENGINE_V_SLIDER_THUMB_INACTIVE },		\
-    { "V_SLIDER_TROUGH", EAZEL_ENGINE_V_SLIDER_TROUGH },				\
-    { "V_SLIDER_TROUGH_ACTIVE", EAZEL_ENGINE_V_SLIDER_TROUGH_ACTIVE },			\
-    { "TAB_TOP", EAZEL_ENGINE_TAB_TOP },						\
-    { "TAB_TOP_LEFT", EAZEL_ENGINE_TAB_TOP_LEFT },					\
-    { "TAB_TOP_ACTIVE", EAZEL_ENGINE_TAB_TOP_ACTIVE },					\
-    { "TAB_BOTTOM", EAZEL_ENGINE_TAB_BOTTOM },						\
-    { "TAB_BOTTOM_LEFT", EAZEL_ENGINE_TAB_BOTTOM_LEFT },				\
-    { "TAB_BOTTOM_ACTIVE", EAZEL_ENGINE_TAB_BOTTOM_ACTIVE },				\
-    { "SPIN_ARROW_UP", EAZEL_ENGINE_SPIN_ARROW_UP },					\
-    { "SPIN_ARROW_DOWN", EAZEL_ENGINE_SPIN_ARROW_DOWN },				\
-    { 0, 0 }
-
-//static struct symbol_struct theme_symbols[] = { THEME_SYMBOLS };
-
 static guint n_theme_symbols = (sizeof(theme_symbols) / sizeof(theme_symbols[0])) - 1;
 
-static struct symbol_struct stock_symbols[] = { STOCK_SYMBOLS };
-
-static guint n_stock_symbols = (sizeof(stock_symbols) / sizeof(stock_symbols[0])) - 1;
-
 static eazel_theme_data *default_theme_data;
-static eazel_engine_stock_table *default_stock_data;
 
 static eazel_theme_data original_theme_data = DEFAULT_THEME_DATA;
 
@@ -208,19 +120,6 @@ read_line_from_file (char *filename)
     return ret;
 }
 
-static int
-stock_index (const char *symbol)
-{
-    int i;
-    for (i = 0; i < n_stock_symbols; i++)
-    {
-	if (strcmp (symbol, stock_symbols[i].name) == 0)
-	    return i;
-    }
-    g_error ("Unknown stock symbol: `%s'\n", symbol);
-    exit (1);
-}
-
 void
 theme_data_ref (eazel_theme_data *theme_data)
 {
@@ -230,6 +129,8 @@ theme_data_ref (eazel_theme_data *theme_data)
 void
 theme_data_unref (eazel_theme_data *theme_data)
 {
+	if (theme_data == NULL)
+		return;
     theme_data->refcount--;
     if (theme_data->refcount == 0)
     {
@@ -239,7 +140,6 @@ theme_data_unref (eazel_theme_data *theme_data)
 	    if (theme_data->gradients[i] != NULL)
 		eazel_engine_gradient_unref (theme_data->gradients[i]);
 	}
-	eazel_engine_stock_table_unref (theme_data->stock);
 	g_free (theme_data);
     }
 }
@@ -260,45 +160,6 @@ parse_int_assign (GScanner *scanner, guint *value)
 	return G_TOKEN_INT;
 
     *value = scanner->value.v_int;
-    return G_TOKEN_NONE;
-}
-
-static guint
-parse_int_array_assign (GScanner *scanner, guint *value, int size)
-{
-    guint token;
-    int i;
-
-    (void) g_scanner_get_next_token (scanner);
-
-    token = g_scanner_get_next_token (scanner);
-    if (token != G_TOKEN_EQUAL_SIGN)
-	return G_TOKEN_EQUAL_SIGN;
-
-    token = g_scanner_get_next_token (scanner);
-    if (token != G_TOKEN_LEFT_CURLY)
-	return G_TOKEN_LEFT_CURLY;
-
-    for (i = 0; i < size; i++)
-    {
-	if (i != 0)
-	{
-	    token = g_scanner_get_next_token (scanner);
-	    if (token != G_TOKEN_COMMA)
-		return G_TOKEN_COMMA;
-	}
-
-	token = g_scanner_get_next_token (scanner);
-	if (token != G_TOKEN_INT)
-	    return G_TOKEN_INT;
-
-	value[i] = scanner->value.v_int;
-    }
-
-    token = g_scanner_get_next_token (scanner);
-    if (token != G_TOKEN_RIGHT_CURLY)
-	return G_TOKEN_RIGHT_CURLY;
-
     return G_TOKEN_NONE;
 }
 
@@ -631,135 +492,6 @@ parse_gradient_assign (eazel_theme_data *theme_data, GScanner *scanner,
 }
 
 static guint
-parse_1_gradient_assign (eazel_theme_data *theme_data, GScanner *scanner,
-			 eazel_engine_gradient **gradient)
-{
-    guint token;
-
-    (void) g_scanner_get_next_token (scanner);
-
-    token = g_scanner_get_next_token (scanner);
-    if (token != G_TOKEN_EQUAL_SIGN)
-	return G_TOKEN_EQUAL_SIGN;
-
-    token = parse_gradient (theme_data, scanner, gradient);
-    if (token != G_TOKEN_NONE)
-	return token;
-
-    return G_TOKEN_NONE;
-}
-
-static guint
-parse_stock_stmt (GScanner *scanner, GtkSettings  *settings, eazel_theme_data *theme_data,
-		  eazel_engine_stock_table **table_ptr)
-{
-    eazel_engine_stock_table *table = g_new0 (eazel_engine_stock_table, 1);
-    guint token;
-
-    table->ref_count = 1;
-
-    (void) g_scanner_get_next_token (scanner);
-
-    token = g_scanner_get_next_token (scanner);
-    if (token != G_TOKEN_LEFT_CURLY)
-	return G_TOKEN_LEFT_CURLY;
-
-    token = g_scanner_peek_next_token (scanner);
-    while (token != G_TOKEN_RIGHT_CURLY)
-    {
-	switch (token)
-	{
-	    guint stock;
-	    eazel_engine_image *image;
-
-	case G_TOKEN_STRING:
-	    (void) g_scanner_get_next_token (scanner);
-
-	    stock = stock_index (scanner->value.v_string);
-	    image = &table->images[stock];
-
-	    token = g_scanner_get_next_token (scanner);
-	    if (token != G_TOKEN_LEFT_CURLY)
-		return G_TOKEN_LEFT_CURLY;
-
-	    token = g_scanner_peek_next_token (scanner);
-	    while (token != G_TOKEN_RIGHT_CURLY)
-	    {
-		switch (token)
-		{
-		case TOKEN_IMAGE:
-		    token = g_scanner_get_next_token (scanner);
-		    if (token != TOKEN_IMAGE)
-		    	return TOKEN_IMAGE;
-   
-		    token = g_scanner_get_next_token (scanner);
-		    if (token != G_TOKEN_EQUAL_SIGN)
-		    	return G_TOKEN_EQUAL_SIGN;
-
-		    token = g_scanner_get_next_token (scanner);
-		    		    
-		    if ((token == G_TOKEN_STRING) && (scanner->value.v_string))
-		    	image->filename = gtk_rc_find_pixmap_in_path(settings, scanner, scanner->value.v_string);
-		    else
-			image->filename = NULL;
-		    
-                    token = G_TOKEN_NONE;
-
-		    break;
-
-		case TOKEN_BORDER:
-		    token = parse_int_array_assign (scanner, image->border, 4);
-		    break;
-
-		case TOKEN_RECOLOR:
-		    token = parse_1_gradient_assign (theme_data, scanner,
-						     &image->recolor);
-		    break;
-
-		default:
-		    g_scanner_get_next_token (scanner);
-		    token = G_TOKEN_RIGHT_CURLY;
-		    break;
-		}
-
-		if (token != G_TOKEN_NONE)
-		    goto out;
-
-		token = g_scanner_peek_next_token (scanner);
-	    }
-
-	    token = g_scanner_get_next_token (scanner);
-	    if (token == G_TOKEN_RIGHT_CURLY)
-		token = G_TOKEN_NONE;
-	    else
-		token = G_TOKEN_RIGHT_CURLY;
-	    break;
-
-	default:
-	    g_scanner_get_next_token (scanner);
-	    token = G_TOKEN_RIGHT_CURLY;
-	    break;
-	}
-    
-    out:
-	if (token != G_TOKEN_NONE)
-	{
-	    g_free (table);
-	    return token;
-	}
-
-    	token = g_scanner_peek_next_token (scanner);
-    }
-
-    token = g_scanner_get_next_token (scanner);
-    if (token != G_TOKEN_RIGHT_CURLY)
-	return G_TOKEN_RIGHT_CURLY;
-
-    *table_ptr = table;
-    return G_TOKEN_NONE;
-}
-
-static guint
 parse_palette_assign (GScanner *scanner, eazel_theme_data *theme_data)
 {
     int index;
@@ -808,7 +540,6 @@ crux_parse_rc_style  (GtkRcStyle   *rc_style,
     guint token;
     eazel_theme_data *theme_data;
     gint i;
-    gboolean had_stock_table = FALSE;
 
     /* Set up a new scope in this scanner. */
 
@@ -860,18 +591,12 @@ crux_parse_rc_style  (GtkRcStyle   *rc_style,
 
     theme_data->refcount = 1;
 
-    if (default_stock_data != 0)
-	theme_data->stock = eazel_engine_stock_table_ref (default_stock_data);
-    else
-	theme_data->stock = NULL;
-
     token = g_scanner_peek_next_token(scanner);
     while (token != G_TOKEN_RIGHT_CURLY)
     {
 	switch (token)
 	{
 	    gboolean tem;
-	    eazel_engine_stock_table *stock_tem;
 
 	case TOKEN_THICKNESS:
 	    token = parse_int_assign (scanner, &theme_data->thickness);
@@ -922,18 +647,6 @@ crux_parse_rc_style  (GtkRcStyle   *rc_style,
 	    token = parse_palette_assign (scanner, theme_data);
 	    break;
 
-	case TOKEN_STOCK:
-	    token = parse_stock_stmt (scanner, settings, theme_data, &stock_tem);
-	    if (token == G_TOKEN_NONE)
-	    {
-		if (theme_data->stock != 0)
-		    eazel_engine_stock_table_unref (theme_data->stock);
-
-		theme_data->stock = stock_tem;
-		had_stock_table = TRUE;
-	    }
-	    break;
-
 	case TOKEN_FG:
 	    token = parse_standard_color_assign (theme_data, scanner, rc_style,
 						 rc_style->fg, GTK_RC_FG);
@@ -970,30 +683,6 @@ crux_parse_rc_style  (GtkRcStyle   *rc_style,
     }
 
     g_scanner_get_next_token(scanner);
-
-    if (theme_data->stock == 0)
-	g_error ("First `engine' section must include a `stock' section.");
-
-    if (had_stock_table)
-    {
-	/* Defining a stock table makes it the default for any
-	   engine sections in the future that don't have one.. */
-
-	if (default_stock_data != 0)
-	    eazel_engine_stock_table_unref (default_stock_data);
-
-	default_stock_data = eazel_engine_stock_table_ref (theme_data->stock);
-
-	/* Engine data section with stock table (usually the first in
-	   in the file) sets some other default values. A hack, but
-	   a very useful one! */
-
-	if (default_theme_data != 0)
-	    theme_data_unref (default_theme_data);
-
-	theme_data_ref (theme_data);
-	default_theme_data = theme_data;
-    }
 
     CRUX_RC_STYLE(rc_style)->theme_data = theme_data;
     g_scanner_set_scope (scanner, old_scope);
