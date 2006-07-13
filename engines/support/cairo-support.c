@@ -37,7 +37,7 @@ ge_hsb_from_color (const CairoColor *color,
 	if (max == min)
 	{
 		*hue = 0;
-	*saturation = 0;
+		*saturation = 0;
 	}	
 	else
 	{

@@ -36,6 +36,22 @@ glide_draw_shadow_gap (GtkStyle * style,
 		 gint gap_size);
 
 void
+glide_draw_box_gap (GtkStyle * style, 
+                 GdkWindow * window, 
+		 GtkStateType state_type, 
+		 GtkShadowType shadow_type, 
+		 GdkRectangle * area, 
+		 GtkWidget * widget, 
+		 const gchar * detail, 
+		 gint x, 
+		 gint y, 
+		 gint width, 
+		 gint height, 
+		 GtkPositionType gap_side, 
+		 gint gap_pos, 
+		 gint gap_size);
+
+void
 glide_draw_hline (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,

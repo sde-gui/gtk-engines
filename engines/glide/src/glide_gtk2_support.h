@@ -31,6 +31,8 @@ glide_simple_border_gap_clip(cairo_t *canvas,
 				GtkPositionType gap_side,
 				gint gap_pos,
 				gint gap_size);
+void ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade);
+void ge_cairo_pattern_add_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color);
 
 void
 do_glide_draw_default_fill (GtkStyle *style,

@@ -42,23 +42,71 @@ ge_blend_color(const CairoColor *color1, const CairoColor *color2, CairoColor *c
 }
 
 void
-ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade)
-{
-	g_return_if_fail (pattern && color && (shade >= 0) && (shade <= 3));
-
-	CairoColor shaded;
-
-	ge_shade_color(color, shade, &shaded);
-	
-	cairo_pattern_add_color_stop_rgba(pattern, offset, shaded.r, shaded.g, shaded.b, shaded.a);	
-}
-
-void
 ge_cairo_pattern_add_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color)
 {
 	g_return_if_fail (pattern && color);
 	
 	cairo_pattern_add_color_stop_rgba(pattern, offset, color->r, color->g, color->b, color->a);	
+}
+
+void
+ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade)
+{
+	g_return_if_fail (pattern && color && (shade >= 0) && (shade <= 3));
+
+	CairoColor shaded = *color;
+
+	if (shade != 1)
+	{
+		ge_shade_color(color, shade, &shaded);
+	}
+
+	cairo_pattern_add_color_stop_rgba(pattern, offset, shaded.r, shaded.g, shaded.b, shaded.a);	
+}
+
+typedef struct 
+{
+	cairo_path_t *clip;
+
+	gint num_layers;
+	cairo_pattern_t **layers;
+} GlideFill;
+
+static void glide_draw_pattern_fill(cairo_t *canvas,
+					cairo_pattern_t *pattern,
+					gint x,
+					gint y,
+					gint width,
+					gint height,
+					gboolean vertical)
+{
+	cairo_matrix_t orig;
+
+	cairo_pattern_get_matrix(pattern, &orig);
+
+	if (cairo_pattern_get_type(pattern) == CAIRO_PATTERN_TYPE_LINEAR)
+	{
+		cairo_matrix_t tmp = orig;
+		cairo_matrix_scale(&tmp, vertical?1.0/width:1.0, vertical?1.0:1.0/height);
+		cairo_matrix_translate(&tmp, -x, -y);
+
+		cairo_pattern_set_matrix(pattern, &tmp);
+	}
+
+	cairo_save(canvas);
+
+	cairo_set_source(canvas, pattern);
+
+	cairo_rectangle(canvas, x, y, width, height);
+
+	cairo_fill (canvas);
+
+	cairo_restore(canvas);
+
+	if (pattern)
+	{
+		cairo_pattern_set_matrix(pattern, &orig);
+	}
 }
 
 /***********************************************
@@ -82,30 +130,14 @@ do_glide_draw_default_fill (GtkStyle *style,
 	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window)) 
 	{
 		GlideStyle *glide_style = GLIDE_STYLE (style);
-		CairoColor base = glide_style->color_cube.bg[state_type];
-		cairo_pattern_t *pattern = NULL;
 
 		cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
 
-		ge_cairo_set_color(canvas, &base);	
+		glide_draw_pattern_fill(canvas, (flat)
+						?glide_style->bg_solid[state_type]
+						:glide_style->bg_gradient[vertical][state_type], 
+					x, y, width, height, vertical);
 
-		if (!flat)
-		{
-			pattern = cairo_pattern_create_linear(x, y, x + (vertical*width), y + (!vertical)*height);
-
-			ge_cairo_pattern_add_shade_color_stop(pattern, 0, &base, 1.05);
-			ge_cairo_pattern_add_shade_color_stop(pattern, 1, &base, 0.95);
-
-			cairo_set_source(canvas, pattern);
-		}
-		cairo_rectangle(canvas, x, y, width, height);
-
-		cairo_fill (canvas);
-
-		if (pattern)
-		{
-			cairo_pattern_destroy(pattern);
-		}
 		cairo_destroy(canvas);
 	} else {
 		gtk_style_apply_default_background
@@ -115,58 +147,6 @@ do_glide_draw_default_fill (GtkStyle *style,
 	}
    
 }
-/*
-void	
-SmoothDrawFill(SmoothFill *Fill,
-			SmoothCanvas *Canvas,
-			SmoothInt X,
-			SmoothInt Y,
-			SmoothInt Width,
-			SmoothInt Height)
-{
-	if (Fill->Style == GLIDE_FILL_STYLE_TILE) 
-	{
-		if (!Fill->Tile.ImageFile) 
-			Fill->Style = GLIDE_FILL_STYLE_SOLID;
-	}
-	
-	switch (Fill->Style) {
-		case GLIDE_FILL_STYLE_TILE : 
-			SmoothCanvasRenderTile(Canvas, Fill->Tile, X, Y, Width, Height);
-		break;
-		
-
-		case GLIDE_FILL_STYLE_canvasOSS_HATCH : 
-		break;
-
-		case GLIDE_FILL_STYLE_GRADIENT : 
-		{		
-			SmoothCanvasRenderGradient(Canvas, Fill->Gradient, X, Y, Width - 1, Height - 1);
-		}
-		break;
-		
-		case GLIDE_FILL_STYLE_SHADE_GRADIENT : 
-		{		
-			SmoothCanvasCacheColor(Canvas, &Fill->BaseColor);
-			SmoothCanvasCacheShadedColor(Canvas, Fill->BaseColor, Fill->ColorShade.From, &Fill->Gradient.From);
-			SmoothCanvasCacheShadedColor(Canvas, Fill->BaseColor, Fill->ColorShade.To, &Fill->Gradient.To);
-
-			SmoothCanvasRenderGradient(Canvas, Fill->Gradient, X, Y, Width - 1, Height - 1);
-		}
-		break;
-
-		case GLIDE_FILL_STYLE_SOLID : 
-		default :
-		{
-			SmoothColor color;
-			color = Fill->BaseColor;
-			
-			SmoothCanvasFillRectangle(Canvas, X, Y, Width, Height); 
-		}	
-	}
-}
-*/
-
 
 void 
 glide_simple_border_gap_clip(cairo_t *canvas,
@@ -197,7 +177,15 @@ glide_simple_border_gap_clip(cairo_t *canvas,
 		break;
 
 		case GTK_POS_LEFT:
-			cairo_rectangle(canvas, x - 1.5, y + 0.5 + gap_pos, 3, gap_size - 0.5);
+			cairo_move_to(canvas, x, y);
+			cairo_line_to(canvas, x + width, y);
+			cairo_line_to(canvas, x + width, y + height);
+			cairo_line_to(canvas, x, y + height);
+			cairo_line_to(canvas, x, y + gap_pos + gap_size);
+			cairo_line_to(canvas, x + 3, y + gap_pos + gap_size);
+			cairo_line_to(canvas, x + 3, y + gap_pos);
+			cairo_line_to(canvas, x, y + gap_pos);
+			cairo_line_to(canvas, x, y);
 		break;
 
 		case GTK_POS_BOTTOM:
@@ -213,7 +201,15 @@ glide_simple_border_gap_clip(cairo_t *canvas,
 		break;
 
 		case GTK_POS_RIGHT:
-			cairo_rectangle(canvas, x + width - 1.5, y + 0.5 + gap_pos, width + 1.5, gap_size - 0.5);
+			cairo_line_to(canvas, x + width, y);
+			cairo_line_to(canvas, x, y);
+			cairo_line_to(canvas, x, y + height);
+			cairo_line_to(canvas, x + width, y + height);
+			cairo_line_to(canvas, x + width, y + gap_pos + gap_size);
+			cairo_line_to(canvas, x + width - 3, y + gap_pos + gap_size);
+			cairo_line_to(canvas, x + width - 3, y + gap_pos);
+			cairo_line_to(canvas, x + width, y + gap_pos);
+			cairo_line_to(canvas, x + width, y);
 		break;
 	}
 

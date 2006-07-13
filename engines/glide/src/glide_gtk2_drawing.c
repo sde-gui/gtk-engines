@@ -354,6 +354,11 @@ glide_draw_arrow (GtkStyle * style,
 	{
 	    x += 2;
 	}
+
+      if (ge_is_combo_box_entry(widget))
+        {
+		x += 1;
+        }
  
       /* Glide prefers to have smaller arrows relative too size
        * for ComboBox/ComboBoxEntry, because its cleaner,
@@ -1024,7 +1029,7 @@ glide_draw_box (GtkStyle * style,
  
   CHECK_ARGS
   SANITIZE_SIZE
- 
+
   if (IS_MENU_SHELL(widget))
     {
       gtk_menu_shell_setup_signals(widget);
@@ -1357,6 +1362,31 @@ glide_draw_slider (GtkStyle * style,
 
 	cairo_destroy(canvas);
 }
+
+void
+glide_draw_box_gap (GtkStyle * style, 
+                 GdkWindow * window, 
+		 GtkStateType state_type, 
+		 GtkShadowType shadow_type, 
+		 GdkRectangle * area, 
+		 GtkWidget * widget, 
+		 const gchar * detail, 
+		 gint x, 
+		 gint y, 
+		 gint width, 
+		 gint height, 
+		 GtkPositionType gap_side, 
+		 gint gap_pos, 
+		 gint gap_size)
+{
+	CHECK_ARGS
+	SANITIZE_SIZE
+
+	do_glide_draw_default_fill (style, window, widget, state_type, area, x, y, width, height, FALSE, TRUE);
+
+	glide_draw_shadow_gap (style, window, state_type, shadow_type, area, widget, detail, 
+					x, y, width, height, gap_side, gap_pos, gap_size);
+}
  
 void
 glide_draw_shadow_gap (GtkStyle * style, 
@@ -1374,56 +1404,82 @@ glide_draw_shadow_gap (GtkStyle * style,
 		 gint gap_pos, 
 		 gint gap_size)
 {
-  GlideStyle *glide_style = GLIDE_STYLE (style);
- 
-  CairoColor *color1 = NULL;
-  CairoColor *color2 = NULL;
+	GlideStyle *glide_style = GLIDE_STYLE (style);
 
-  CHECK_ARGS
-  SANITIZE_SIZE
+	CairoColor color1, color2, color3, color4;
+	gboolean overlap = FALSE;
 
-  
-  switch (gap_side)
-  {
-	case GTK_POS_TOP:
-	case GTK_POS_BOTTOM:
-		if ((gap_pos + gap_size) == width)
-		{
-			gap_pos -= 1;
-		}
+	CHECK_ARGS
+	SANITIZE_SIZE
 
-		gap_size += 1;
-	break;
+	if (shadow_type == GTK_SHADOW_NONE)
+		return;
 
-	case GTK_POS_LEFT:
-	case GTK_POS_RIGHT:
-		if ((gap_pos + gap_size) == height)
-		{
-			gap_pos -= 1;
-		}
+	switch (gap_side)
+	{
+		case GTK_POS_TOP:
+		case GTK_POS_BOTTOM:
+			if ((gap_pos + gap_size) == width)
+			{
+				gap_pos -= 1;
+			}
 
-		gap_size += 1;
-	break;
-  }
+			gap_size += 1;
+		break;
 
-  do_glide_draw_default_fill (style, window, widget, GTK_STATE_NORMAL, area, 
-                                x, y, width, height, FALSE, TRUE);
+		case GTK_POS_LEFT:
+		case GTK_POS_RIGHT:
+			if ((gap_pos + gap_size) == height)
+			{
+				gap_pos -= 1;
+			}
 
-      cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
+			gap_size += 1;
+		break;
+	}
+
+	switch (shadow_type)
+	{
+		case GTK_SHADOW_ETCHED_IN:
+			color1 = color4 = glide_style->color_cube.dark[state_type];
+			color2 = color3 = glide_style->color_cube.light[state_type];
+			overlap = FALSE;
+		break;
+
+		case GTK_SHADOW_ETCHED_OUT:
+			color1 = color4 = glide_style->color_cube.light[state_type];
+			color2 = color3 = glide_style->color_cube.dark[state_type];
+			overlap = TRUE;
+		break;
+      
+		case GTK_SHADOW_IN:
+			color1 = glide_style->color_cube.mid[state_type];
+			color2 = glide_style->color_cube.dark[state_type];
+			color3 = glide_style->color_cube.light[state_type];
+			color4 = glide_style->color_cube.mid[state_type];
+			overlap = FALSE;
+		break;
+	
+		default:
+		case GTK_SHADOW_OUT:
+			color1 = glide_style->color_cube.mid[state_type];
+			color2 = glide_style->color_cube.light[state_type];
+			color3 = glide_style->color_cube.dark[state_type];
+			color4 = glide_style->color_cube.mid[state_type];
+			overlap = TRUE;
+		break;
+	}
+
+	cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
 	cairo_reset_clip(canvas);
 	glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos+1, gap_size - 2);
 
-      color1 = &glide_style->color_cube.mid[GTK_STATE_NORMAL];
-      color2 = &glide_style->color_cube.dark[GTK_STATE_NORMAL];
-	ge_cairo_simple_border(canvas, color1, color2, x, y, width, height, TRUE);
+	ge_cairo_simple_border(canvas, &color1, &color3, x, y, width, height, overlap);
 
 	cairo_reset_clip(canvas);
 	glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos + 2, gap_size - 4);
 
-      color1 = &glide_style->color_cube.light[GTK_STATE_NORMAL];
-      color2 = &glide_style->color_cube.mid[GTK_STATE_NORMAL];
-
-	ge_cairo_simple_border(canvas, color1, color2, x+1, y+1, width-2, height-2, FALSE);
+	ge_cairo_simple_border(canvas, &color2, &color4, x+1, y+1, width-2, height-2, overlap);
 
 	cairo_destroy(canvas);
 }
@@ -1580,6 +1636,9 @@ glide_draw_handle (GtkStyle * style,
     
     area = NULL;
   }
+
+      cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
+ 
   if (widget && !(IS_PANED (widget)))
     {
       if (IS_HANDLE_BOX (widget))
@@ -1637,8 +1696,6 @@ glide_draw_handle (GtkStyle * style,
                                 x, y, width, height, orientation == (GTK_ORIENTATION_VERTICAL), FALSE);
  
 
-      cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
- 
       if (ge_is_panel_widget_item (widget)
 	  && (CHECK_DETAIL (detail, "handlebox")
 	      && (!IS_HANDLE_BOX_ITEM (widget)))
@@ -1727,8 +1784,8 @@ glide_draw_handle (GtkStyle * style,
                            widget, detail, x, y, width, height);
             }
 	}
-           cairo_destroy(canvas);			          
     }
+           cairo_destroy(canvas);			          
 }
 
 extern GtkStyleClass *glide_parent_class;

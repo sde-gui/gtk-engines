@@ -83,16 +83,67 @@ glide_rc_style_register_type (GTypeModule * module)
 /***************************************/ 
 GType glide_type_style = 0;
 GtkStyleClass *glide_parent_class;
+
+static cairo_pattern_t *
+glide_simple_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdouble shade2, gboolean vertical)
+{
+	cairo_pattern_t *pattern = NULL;
+
+	if (vertical)
+	{
+		pattern = cairo_pattern_create_linear(0, 0, 1, 0);
+	}
+	else
+	{
+		pattern = cairo_pattern_create_linear(0, 0, 0, 1);
+	}
+
+	ge_cairo_pattern_add_shade_color_stop(pattern, 0, base, shade1);
+	ge_cairo_pattern_add_shade_color_stop(pattern, 1, base, shade2);
+
+	return pattern;
+}
  
 static void
 glide_style_realize (GtkStyle * style)
 {
-  GlideStyle *glide_style = GLIDE_STYLE (style);
-  int i;
+	GlideStyle *glide_style = GLIDE_STYLE (style);
+	int i;
  
-  glide_parent_class->realize (style);
+	glide_parent_class->realize (style);
  
-  ge_gtk_style_to_cairo_color_cube (style, &glide_style->color_cube);
+	ge_gtk_style_to_cairo_color_cube (style, &glide_style->color_cube);
+
+	for (i = 0; i < 5; i++)
+	{
+		CairoColor base = glide_style->color_cube.bg[i];
+		
+		glide_style->bg_solid[i] = cairo_pattern_create_rgba(base.r, base.g, base.b, base.a);
+
+		glide_style->bg_gradient[0][i] = glide_simple_shade_gradient_pattern(&base, 1.05, 0.95, FALSE);
+		glide_style->bg_gradient[1][i] = glide_simple_shade_gradient_pattern(&base, 1.05, 0.95, TRUE);
+
+		glide_style->active_tab_gradient[i] = glide_simple_shade_gradient_pattern(&base, 1.05, 1.0, FALSE);
+	}
+}
+
+static void
+glide_style_unrealize (GtkStyle * style)
+{
+	GlideStyle *glide_style = GLIDE_STYLE (style);
+	int i;
+ 
+	for (i = 0; i < 5; i++)
+	{
+		cairo_pattern_destroy(glide_style->bg_solid[i]);
+
+		cairo_pattern_destroy(glide_style->bg_gradient[FALSE][i]);
+		cairo_pattern_destroy(glide_style->bg_gradient[TRUE][i]);
+
+		cairo_pattern_destroy(glide_style->active_tab_gradient[i]);
+	}
+ 
+	glide_parent_class->unrealize (style);
 }
  
 static void
@@ -103,6 +154,7 @@ glide_style_class_init (GlideStyleClass * klass)
   glide_parent_class = g_type_class_peek_parent (klass);
  
   style_class->realize = glide_style_realize;
+  style_class->unrealize = glide_style_unrealize;
  
   style_class->draw_hline = glide_draw_hline;
   style_class->draw_vline = glide_draw_vline;
@@ -114,7 +166,7 @@ glide_style_class_init (GlideStyleClass * klass)
   style_class->draw_slider = glide_draw_slider;
   style_class->draw_shadow = glide_draw_shadow;
   style_class->draw_shadow_gap = glide_draw_shadow_gap;
-  style_class->draw_box_gap = glide_draw_shadow_gap;
+  style_class->draw_box_gap = glide_draw_box_gap;
   style_class->draw_extension = glide_draw_extension;
   style_class->draw_handle = glide_draw_handle;
   style_class->draw_focus = glide_draw_focus;

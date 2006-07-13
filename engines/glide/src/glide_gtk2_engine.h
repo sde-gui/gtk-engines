@@ -62,6 +62,11 @@ typedef struct
 {
   GtkStyle parent_instance;
   CairoColorCube color_cube;
+
+  cairo_pattern_t *bg_solid[5];
+  cairo_pattern_t *bg_gradient[2][5];
+  cairo_pattern_t *active_tab_gradient[5];
+
 } GlideStyle;
  
 typedef struct
