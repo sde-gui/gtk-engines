@@ -50,7 +50,7 @@ GEStepper ge_get_stepper                (GtkWidget      *widget,
 #define IS_EGG_TOOLBAR(object) ((object) && ge_object_is_a (object, "Toolbar"))
 #define IS_TOOLBAR(object) ((object) && ge_object_is_a (object, "GtkToolbar"))
 #define IS_PANEL_WIDGET(object) ((object) && ge_object_is_a (object, "PanelWidget"))
- 
+
 #define IS_COMBO_BOX_ENTRY(object) ((widget) && ge_object_is_a (widget, "GtkComboBoxEntry"))
 #define IS_COMBO_BOX(object) ((widget) && ge_object_is_a (widget, "GtkComboBox"))
 #define IS_COMBO(object) ((widget) && ge_object_is_a (widget, "GtkCombo"))
@@ -99,6 +99,8 @@ gboolean ge_is_toolbar_item (GtkWidget * widget) G_GNUC_INTERNAL;
 gboolean ge_is_panel_widget_item (GtkWidget * widget) G_GNUC_INTERNAL;
  
 gboolean ge_is_bonobo_dock_item (GtkWidget * widget) G_GNUC_INTERNAL;
+
+GtkWidget *ge_find_combo_box_widget_parent (GtkWidget * widget) G_GNUC_INTERNAL;
 
 void ge_option_menu_get_props (GtkWidget * widget, 
                             GtkRequisition * indicator_size, 

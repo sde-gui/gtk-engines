@@ -26,6 +26,7 @@ AC_ARG_ENABLE(industrial, 	[  --disable-industrial		skip Industrial engine/theme
 AC_ARG_ENABLE(mist, 		[  --disable-mist		skip Mist engine/theme], 		[mist=$enableval], 		[mist=$disableval])
 AC_ARG_ENABLE(redmond,		[  --disable-redmond		skip Redmond engine/theme], 		[redmond=$enableval], 		[redmond=$disableval])
 AC_ARG_ENABLE(smooth, 		[  --disable-smooth		skip Smooth engine], 			[smooth=$enableval], 		[smooth=$disableval])
+AC_ARG_ENABLE(glide,           [  --disable-glide             skip Glide engine],                    [glide=$enableval],            [glide=$disableval])
 AC_ARG_ENABLE(thinice,		[  --disable-thinice		skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice=$disableval])
 
 AC_ARG_ENABLE(animation, 	[  --enable-animation		compile clearlooks with animation support], 	[animation=$disableval], 	[animation=$enableval])
@@ -74,8 +75,12 @@ if test $redmond = "y"; then
 	fi
 fi
 
+if test $glide = "y"; then
+	BUILD_ENGINES="$BUILD_ENGINES glide"
+fi
+
 if test $smooth = "y"; then
-	BUILD_ENGINES="$BUILD_ENGINES smooth"
+        BUILD_ENGINES="$BUILD_ENGINES smooth"
 fi
 
 if test $thinice = "y"; then
@@ -116,6 +121,7 @@ engines/hc/Makefile
 engines/industrial/Makefile
 engines/mist/Makefile
 engines/redmond/Makefile
+engines/glide/Makefile
 engines/smooth/Makefile
 engines/thinice/Makefile
 themes/Makefile
@@ -201,6 +207,13 @@ if test "$redmond" = "y"; then
 	fi
 else
 	echo "Skipping"
+fi
+
+echo -n "      Glide - "
+if test "$glide" = "y"; then
+        echo "Including"
+else
+        echo "Skipping"
 fi
 
 echo -n "      Smooth - "

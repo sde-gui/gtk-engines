@@ -162,7 +162,74 @@ ge_is_bonobo_dock_item (GtkWidget * widget)
   return result;
 }
 
+static GtkWidget *
+ge_find_combo_box_entry_widget (GtkWidget * widget)
+{
+  GtkWidget *result = NULL;
+
+  if (widget)
+    {
+      if (IS_COMBO_BOX_ENTRY (widget))
+	result = widget;
+      else
+	result = ge_find_combo_box_entry_widget (widget->parent);
+    }
+
+  return result;
+}
+
+static GtkWidget *
+ge_find_combo_box_widget (GtkWidget * widget, gboolean as_list)
+{
+  GtkWidget *result = NULL;
  
+  if (widget)
+    {
+      if (IS_COMBO_BOX (widget))
+        {
+          if (as_list)
+            result = (ge_combo_box_is_using_list(widget))?widget:NULL;
+          else
+            result = (!ge_combo_box_is_using_list(widget))?widget:NULL;
+        }
+      else
+	result = ge_find_combo_box_widget (widget->parent, as_list);
+    }
+  return result;
+}
+ 
+static GtkWidget *
+ge_find_combo_widget (GtkWidget * widget)
+{
+  GtkWidget *result = NULL;
+ 
+  if (widget)
+    {
+      if (IS_COMBO (widget))
+	result = widget;
+      else
+	result = ge_find_combo_widget(widget->parent);
+    }
+  return result;
+}
+
+GtkWidget*
+ge_find_combo_box_widget_parent (GtkWidget * widget)
+{
+   GtkWidget *result = NULL;
+   
+   if (!result)
+     result = ge_find_combo_widget(widget);
+  
+   if (!result)
+     result = ge_find_combo_box_widget(widget, TRUE);
+
+   if (!result)
+     result = ge_find_combo_box_entry_widget(widget);
+
+  return result;
+}
+
 /***********************************************
  * option_menu_get_props -
  *  
