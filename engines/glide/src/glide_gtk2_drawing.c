@@ -1407,7 +1407,7 @@ glide_draw_shadow_gap (GtkStyle * style,
 	GlideStyle *glide_style = GLIDE_STYLE (style);
 
 	CairoColor color1, color2, color3, color4;
-	gboolean overlap = FALSE;
+	gboolean inner_overlap = FALSE, outer_overlap = FALSE;
 
 	CHECK_ARGS
 	SANITIZE_SIZE
@@ -1443,13 +1443,13 @@ glide_draw_shadow_gap (GtkStyle * style,
 		case GTK_SHADOW_ETCHED_IN:
 			color1 = color4 = glide_style->color_cube.dark[state_type];
 			color2 = color3 = glide_style->color_cube.light[state_type];
-			overlap = FALSE;
+			inner_overlap = FALSE;
 		break;
 
 		case GTK_SHADOW_ETCHED_OUT:
 			color1 = color4 = glide_style->color_cube.light[state_type];
 			color2 = color3 = glide_style->color_cube.dark[state_type];
-			overlap = TRUE;
+			inner_overlap = TRUE;
 		break;
       
 		case GTK_SHADOW_IN:
@@ -1457,7 +1457,7 @@ glide_draw_shadow_gap (GtkStyle * style,
 			color2 = glide_style->color_cube.dark[state_type];
 			color3 = glide_style->color_cube.light[state_type];
 			color4 = glide_style->color_cube.mid[state_type];
-			overlap = FALSE;
+			inner_overlap = FALSE;
 		break;
 	
 		default:
@@ -1466,20 +1466,34 @@ glide_draw_shadow_gap (GtkStyle * style,
 			color2 = glide_style->color_cube.light[state_type];
 			color3 = glide_style->color_cube.dark[state_type];
 			color4 = glide_style->color_cube.mid[state_type];
-			overlap = TRUE;
+			inner_overlap = TRUE;
 		break;
 	}
 
-	cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
-	cairo_reset_clip(canvas);
+	GdkRectangle shadow, clip;
+
+	shadow.x = x;
+	shadow.y = y;
+	shadow.width = width;
+	shadow.height = height;
+
+	if (area)
+		gdk_rectangle_intersect(area, &shadow, &clip);
+	else
+		clip = shadow;
+
+	cairo_t *canvas = ge_gdk_drawable_to_cairo (window, &clip);
+
+	cairo_save(canvas);
 	glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos+1, gap_size - 2);
 
-	ge_cairo_simple_border(canvas, &color1, &color3, x, y, width, height, overlap);
+	ge_cairo_simple_border(canvas, &color1, &color3, x, y, width, height, outer_overlap);
 
-	cairo_reset_clip(canvas);
+	cairo_restore(canvas);
+
 	glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos + 2, gap_size - 4);
 
-	ge_cairo_simple_border(canvas, &color2, &color4, x+1, y+1, width-2, height-2, overlap);
+	ge_cairo_simple_border(canvas, &color2, &color4, x+1, y+1, width-2, height-2, inner_overlap);
 
 	cairo_destroy(canvas);
 }
@@ -1531,7 +1545,7 @@ glide_draw_extension (GtkStyle * style,
 		increase clip by one on gap side. */
 
   do_glide_draw_default_fill (style, window, widget, state_type, area, 
-                                x, y, width, height+1, FALSE, state_type!=GTK_STATE_NORMAL);
+                                x, y, width, height, FALSE, state_type!=GTK_STATE_NORMAL);
 
 	if (widget && (GTK_IS_NOTEBOOK (widget)))
 	{
