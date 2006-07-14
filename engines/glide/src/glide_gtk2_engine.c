@@ -118,6 +118,11 @@ glide_style_realize (GtkStyle * style)
 	{
 		CairoColor base = glide_style->color_cube.bg[i];
 		
+		/* Use Smooth's alternate shades for Light/Dark/Mid */
+		ge_shade_color(&base, 0.666667, &glide_style->color_cube.dark[i]);
+		ge_shade_color(&base, 1.2, &glide_style->color_cube.light[i]);
+		ge_blend_color(&glide_style->color_cube.dark[i], &glide_style->color_cube.light[i], &glide_style->color_cube.mid[i]);
+
 		glide_style->bg_solid[i] = cairo_pattern_create_rgba(base.r, base.g, base.b, base.a);
 
 		glide_style->bg_gradient[0][i] = glide_simple_shade_gradient_pattern(&base, 1.05, 0.95, FALSE);
@@ -176,6 +181,7 @@ glide_style_class_init (GlideStyleClass * klass)
   style_class->draw_extension = glide_draw_extension;
   style_class->draw_handle = glide_draw_handle;
   style_class->draw_focus = glide_draw_focus;
+  style_class->draw_layout = glide_draw_layout;
 }
   
 static void

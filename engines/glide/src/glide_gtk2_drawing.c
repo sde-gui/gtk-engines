@@ -167,14 +167,29 @@ glide_draw_check (GtkStyle * style,
 			cairo_move_to(canvas, x + line_width, y + floor(height/2));
 			cairo_line_to(canvas, x + width - line_width, y + floor(height/2));
 
-			ge_cairo_set_color(canvas, &glide_style->color_cube.text[state]);	
-			cairo_stroke (canvas);
+			if (state==GTK_STATE_INSENSITIVE)
+			{
+				ge_cairo_set_color(canvas, &glide_style->color_cube.dark[state]);	
+			}
+			else
+			{
+				ge_cairo_set_color(canvas, &glide_style->color_cube.text[state]);	
+			}
 
+			cairo_stroke (canvas);
 		}
 		else
 		{
-	      do_glide_draw_check (canvas, &glide_style->color_cube.text[state],
-			             x + 2, y + 2, width - 4, height - 4);
+			if (state==GTK_STATE_INSENSITIVE)
+			{
+				do_glide_draw_check (canvas, &glide_style->color_cube.dark[state],
+								x + 2, y + 2, width - 4, height - 4);
+			}
+			else
+			{
+				do_glide_draw_check (canvas, &glide_style->color_cube.text[state],
+								x + 2, y + 2, width - 4, height - 4);
+			}
 		}
 	}
  
@@ -190,17 +205,6 @@ glide_draw_check (GtkStyle * style,
  *  
  *   the Function used to draw all Option boxes
  *  
- *   Glide Option box has essentially 3 looks -
- *
- *   Normal/Prelight - 
- *     base[NORMAL] fill, fg[NORMAL] check
- * 
- *   Selected/Active - 
- *     bg[NORMAL] fill, fg[NORMAL] check
- * 
- *   Insensitive - 
- *     bg[NORMAL] fill, fg[INSENSITIVE] check
- * 
  *   The Shadow Always draws with a state NORMAL.
  ***********************************************/
 void
@@ -259,6 +263,15 @@ glide_draw_option (GtkStyle * style,
 
       if ((shadow == GTK_SHADOW_IN) || inconsistent)
 	{
+		if (state==GTK_STATE_INSENSITIVE)
+		{
+			ge_cairo_set_color(cr, &glide_style->color_cube.dark[state]);	
+		}
+		else
+		{
+			ge_cairo_set_color(cr, &glide_style->color_cube.text[state]);	
+		}
+
 		if (inconsistent)
 		{
 			int line_width = ceil(radius*0.66);
@@ -272,13 +285,11 @@ glide_draw_option (GtkStyle * style,
 			cairo_move_to(cr, x + line_width - ((height % 2)?0.5:0), y + floor(height/2));
 			cairo_line_to(cr, x + width - line_width + ((height % 2)?0.5:0), y + floor(height/2));
 
-			ge_cairo_set_color(cr, &glide_style->color_cube.text[state]);	
 			cairo_stroke (cr);
 
 		}
 		else
 		{
-			ge_cairo_set_color(cr, &glide_style->color_cube.text[state]);
 			cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * M_PI);
 			cairo_fill(cr);
 		}
@@ -1687,8 +1698,6 @@ glide_draw_handle (GtkStyle * style,
 
       cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
  
-  if (widget && !(IS_PANED (widget)))
-    {
       if (IS_HANDLE_BOX (widget))
 	{
 	  /* handle box apears to be broken in that
@@ -1741,7 +1750,8 @@ glide_draw_handle (GtkStyle * style,
 	}
 
   do_glide_draw_default_fill (style, window, widget, state_type, area, 
-                                x, y, width, height, orientation == (GTK_ORIENTATION_VERTICAL), 
+                                x, y, width, height, orientation == (GTK_ORIENTATION_VERTICAL),
+				(IS_PANED(widget))?glide_style->bg_solid[state_type]: 
 				glide_style->bg_gradient[orientation == (GTK_ORIENTATION_VERTICAL)][state_type]);
  
       if (ge_is_panel_widget_item (widget)
@@ -1749,40 +1759,39 @@ glide_draw_handle (GtkStyle * style,
 	      && (!IS_HANDLE_BOX_ITEM (widget)))
 	  && (!(IS_HANDLE_BOX (widget))))
 	{
-      /* draw the drag bar */
-      if (orientation == GTK_ORIENTATION_VERTICAL)
-        {
-          
-	  ge_cairo_simple_border (canvas, &glide_style->color_cube.light[state_type],
-			          &glide_style->color_cube.dark[state_type],
-			          x + style->xthickness + 1, y + height / 2 - 1,
-			          width - style->xthickness - 3, 3, FALSE);
-        }
-      else
-        {
-	  ge_cairo_simple_border (canvas, &glide_style->color_cube.light[state_type],
-			          &glide_style->color_cube.dark[state_type], x + width / 2 - 1,
-			          y + style->ythickness + 1, 3,
-			          height - style->ythickness - 3, FALSE);
-        }
+		/* draw the drag bar */
+		if (orientation == GTK_ORIENTATION_VERTICAL)
+		{          
+			ge_cairo_simple_border (canvas, &glide_style->color_cube.light[state_type],
+							&glide_style->color_cube.dark[state_type],
+							x + style->xthickness + 1, y + height / 2 - 1,
+							width - style->xthickness - 3, 3, FALSE);
+		}
+		else
+		{
+			ge_cairo_simple_border (canvas, &glide_style->color_cube.light[state_type],
+							&glide_style->color_cube.dark[state_type], x + width / 2 - 1,
+							y + style->ythickness + 1, 3,
+							height - style->ythickness - 3, FALSE);
+		}
 
-	  /* If this is on a PanelWidget, we draw a line 
-	   * next to it instead of drawing a border around it.
-	   */
-	  if (orientation == GTK_ORIENTATION_VERTICAL)
-	    {
-	      ge_cairo_line (canvas, &glide_style->color_cube.dark[state_type], x + 1, y + 0,
-			     x + width - 2, y + 0);
-	      ge_cairo_line (canvas, &glide_style->color_cube.light[state_type], x + 1,
-			     y + 1, x + width - 2, y + 1);
-	    }
-	  else
-	    {
-	      ge_cairo_line (canvas, &glide_style->color_cube.dark[state_type], x + 0, y + 1,
-			     x + 0, y + height - 2);
-	      ge_cairo_line (canvas, &glide_style->color_cube.light[state_type], x + 1,
-			     y + 1, x + 1, y + height - 2);
-	    }
+		/* If this is on a PanelWidget, we draw a line 
+		* next to it instead of drawing a border around it.
+		*/
+		if (orientation == GTK_ORIENTATION_VERTICAL)
+		{
+			ge_cairo_line (canvas, &glide_style->color_cube.dark[state_type], x + 1, y + 0,
+					x + width - 2, y + 0);
+			ge_cairo_line (canvas, &glide_style->color_cube.light[state_type], x + 1,
+					y + 1, x + width - 2, y + 1);
+		}
+		else
+		{
+			ge_cairo_line (canvas, &glide_style->color_cube.dark[state_type], x + 0, y + 1,
+					x + 0, y + height - 2);
+			ge_cairo_line (canvas, &glide_style->color_cube.light[state_type], x + 1,
+					y + 1, x + 1, y + height - 2);
+		}
 	}
       else
 	{
@@ -1825,15 +1834,17 @@ glide_draw_handle (GtkStyle * style,
   	            g_list_free(children);
                 }
             }  
-             
+          else
+		skip_shadow = IS_PANED(widget);
+
           if (!skip_shadow)
             {
 		glide_draw_shadow (style, window, state_type, GTK_SHADOW_OUT, area,
                            widget, detail, x, y, width, height);
             }
 	}
-    }
-           cairo_destroy(canvas);			          
+ 
+	cairo_destroy(canvas);			          
 }
 
 extern GtkStyleClass *glide_parent_class;
@@ -1973,5 +1984,43 @@ glide_draw_focus(GtkStyle *style,
 		cairo_stroke(canvas);
 
 		cairo_destroy(canvas);
+	}
+}
+
+void
+glide_draw_layout (GtkStyle        *style,
+	     GdkWindow       *window,
+	     GtkStateType     state_type,
+	     gboolean         use_text,
+	     GdkRectangle    *area,
+	     GtkWidget       *widget,
+	     const char      *detail,
+	     int              x,
+	     int              y,
+	     PangoLayout      *layout)
+{
+	CHECK_ARGS
+	use_text &= !ge_is_combo_box(widget, FALSE);
+
+	GdkGC *gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
+	
+	if (area) 
+	{
+		gdk_gc_set_clip_rectangle (gc, area);
+	}
+
+	if ((state_type==GTK_STATE_INSENSITIVE) && !use_text)
+	{
+		gdk_draw_layout_with_colors(window, gc, x+1, y+1, layout, &style->light[state_type], NULL);
+		gdk_draw_layout_with_colors(window, gc, x, y, layout, &style->dark[state_type], NULL);	
+	}
+	else
+	{	
+		gdk_draw_layout (window, gc, x, y, layout);
+	}
+
+	if (area) 
+	{
+		gdk_gc_set_clip_rectangle (gc, NULL);
 	}
 }

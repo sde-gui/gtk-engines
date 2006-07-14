@@ -1,5 +1,17 @@
 2006-07-13  Andrew Johnson <acjgenius@earthlink.net>
 
+	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_check),
+	(glide_draw_option), (glide_draw_handle), (glide_draw_focus),
+	(glide_draw_layout):
+	* engines/glide/src/glide_gtk2_drawing.h:
+	* engines/glide/src/glide_gtk2_engine.c: (glide_style_realize),
+	(glide_style_class_init):
+
+	- Improve Insensitive States For Text, Check, & Option
+	- Enable Drawing Paned Handles 
+
+2006-07-13  Andrew Johnson <acjgenius@earthlink.net>
+
 	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_arrow),
 	(glide_draw_combobox_button), (glide_draw_spinbutton_stepper),
 	(glide_draw_box), (glide_draw_slider), (glide_draw_box_gap),

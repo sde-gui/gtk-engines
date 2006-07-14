@@ -207,3 +207,15 @@ glide_draw_focus(GtkStyle *style,
            gint y,
            gint width,
            gint height);
+
+void
+glide_draw_layout (GtkStyle        *style,
+	     GdkWindow       *window,
+	     GtkStateType     state_type,
+	     gboolean         use_text,
+	     GdkRectangle    *area,
+	     GtkWidget       *widget,
+	     const char      *detail,
+	     int              x,
+	     int              y,
+	     PangoLayout      *layout);
