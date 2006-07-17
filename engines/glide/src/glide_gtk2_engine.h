@@ -23,7 +23,45 @@
 #include <gtk/gtk.h>
  
 #include "ge-support.h"
+
+/*****************************/
+/* Pattern Fills             */
+/*****************************/
+typedef enum {
+	GLIDE_DIRECTION_VERTICAL,
+	GLIDE_DIRECTION_HORIZONTAL,
+	GLIDE_DIRECTION_BOTH,
+	GLIDE_DIRECTION_NONE
+} GlideDirection;
+
+#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+typedef enum _cairo_pattern_type {
+    CAIRO_PATTERN_TYPE_SOLID,
+    CAIRO_PATTERN_TYPE_SURFACE,
+    CAIRO_PATTERN_TYPE_LINEAR,
+    CAIRO_PATTERN_TYPE_RADIAL
+} cairo_pattern_type_t;
+
+
+#	define CAIRO_PATTERN_TYPE(pattern) pattern->type;
+#else
+#	define CAIRO_PATTERN_TYPE(pattern) cairo_pattern_get_type (pattern->handle);
+#endif
+
+typedef struct
+{
+#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+	cairo_pattern_type_t type;
+#endif
+	GlideDirection scale;
+	GlideDirection translate;
+	cairo_pattern_t *handle;
+} CairoPattern;
   
+
+#warning NO MORE MACROS! - Replace with pattern precedence in configuration parsing
+#define DEFAULT_BACKGROUND_PATTERN(glide_style, state, alternate) ((glide_style->bg_pixmap[state].handle)?&glide_style->bg_pixmap[state]:alternate)
+
 /*****************************/
 /* RC Style Declaration      */
 /*****************************/
@@ -63,9 +101,10 @@ typedef struct
   GtkStyle parent_instance;
   CairoColorCube color_cube;
 
-  cairo_pattern_t *bg_solid[5];
-  cairo_pattern_t *bg_gradient[2][5];
-  cairo_pattern_t *active_tab_gradient[4][5];
+  CairoPattern bg_solid[5];
+  CairoPattern bg_pixmap[5];
+  CairoPattern bg_gradient[2][5];
+  CairoPattern active_tab_gradient[4][5];
 
 } GlideStyle;
  

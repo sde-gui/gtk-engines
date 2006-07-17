@@ -72,30 +72,59 @@ typedef struct
 	cairo_pattern_t **layers;
 } GlideFill;
 
-static void glide_draw_pattern_fill(cairo_t *canvas,
-					cairo_pattern_t *pattern,
+void glide_draw_pattern_fill(cairo_t *canvas,
+					CairoPattern *pattern,
 					gint x,
 					gint y,
 					gint width,
-					gint height,
-					gboolean vertical)
+					gint height)
 {
-	cairo_matrix_t orig;
+	cairo_matrix_t original_matrix, current_matrix;
 
-	cairo_pattern_get_matrix(pattern, &orig);
+	cairo_pattern_get_matrix(pattern->handle, &original_matrix);
+	current_matrix = original_matrix;
 
-	if (cairo_pattern_get_type(pattern) == CAIRO_PATTERN_TYPE_LINEAR)
+	if (pattern->scale != GLIDE_DIRECTION_NONE)
 	{
-		cairo_matrix_t tmp = orig;
-		cairo_matrix_scale(&tmp, vertical?1.0/width:1.0, vertical?1.0:1.0/height);
-		cairo_matrix_translate(&tmp, -x, -y);
+		gdouble scale_x = 1.0;
+		gdouble scale_y = 1.0;
 
-		cairo_pattern_set_matrix(pattern, &tmp);
+		if ((pattern->scale == GLIDE_DIRECTION_VERTICAL) || (pattern->scale == GLIDE_DIRECTION_BOTH))
+		{
+			scale_x = 1.0/width;
+		}
+
+		if ((pattern->scale == GLIDE_DIRECTION_HORIZONTAL) || (pattern->scale == GLIDE_DIRECTION_BOTH))
+		{
+			scale_y = 1.0/height;
+		}
+
+		cairo_matrix_scale(&current_matrix, scale_x, scale_y);
 	}
+
+	if (pattern->translate != GLIDE_DIRECTION_NONE)
+	{
+		gdouble translate_x = 0;
+		gdouble translate_y = 0;
+
+		if ((pattern->translate == GLIDE_DIRECTION_VERTICAL) || (pattern->translate == GLIDE_DIRECTION_BOTH))
+		{
+			translate_x = -x;
+		}
+
+		if ((pattern->translate == GLIDE_DIRECTION_HORIZONTAL) || (pattern->translate == GLIDE_DIRECTION_BOTH))
+		{
+			translate_y = -y;
+		}
+
+		cairo_matrix_translate(&current_matrix, translate_x, translate_y);
+	}
+
+	cairo_pattern_set_matrix(pattern->handle, &current_matrix);
 
 	cairo_save(canvas);
 
-	cairo_set_source(canvas, pattern);
+	cairo_set_source(canvas, pattern->handle);
 
 	cairo_rectangle(canvas, x, y, width, height);
 
@@ -103,10 +132,7 @@ static void glide_draw_pattern_fill(cairo_t *canvas,
 
 	cairo_restore(canvas);
 
-	if (pattern)
-	{
-		cairo_pattern_set_matrix(pattern, &orig);
-	}
+	cairo_pattern_set_matrix(pattern->handle, &original_matrix);
 }
 
 /***********************************************
@@ -124,25 +150,14 @@ do_glide_draw_default_fill (GtkStyle *style,
                               gint y, 
                               gint width, 
                               gint height,
-                              gboolean vertical,
-                              cairo_pattern_t *pattern)
+                              CairoPattern *pattern)
 {
-	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window)) 
-	{
-		GlideStyle *glide_style = GLIDE_STYLE (style);
+	cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
 
-		cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
+	glide_draw_pattern_fill(canvas, pattern, 
+				x, y, width, height);
 
-		glide_draw_pattern_fill(canvas, pattern, 
-					x, y, width, height, vertical);
-
-		cairo_destroy(canvas);
-	} else {
-		gtk_style_apply_default_background
-			(style, window,
-			 widget && !GTK_WIDGET_NO_WINDOW(widget),
-			 state_type, area, x, y, width, height);
-	}   
+	cairo_destroy(canvas);
 }
 
 void 
@@ -225,6 +240,7 @@ do_glide_draw_border(cairo_t *canvas,
 
 {
 	CairoColor color1, color2, color3, color4;
+	gboolean inner_overlap = FALSE, outer_overlap = FALSE;
 
 	CairoColor darktone, lighttone, icetone, coldtone, redmondtone;
 	CairoColor midtone, black = {0, 0, 0, 1};
@@ -248,8 +264,11 @@ do_glide_draw_border(cairo_t *canvas,
 
 	switch (border_type)
 	{
-		case GLIDE_BORDER_TYPE_ETCHED:
 		case GLIDE_BORDER_TYPE_ENGRAVED:
+			outer_overlap = TRUE;
+			inner_overlap = TRUE;
+
+		case GLIDE_BORDER_TYPE_ETCHED:
 		{
 			color1 = lighttone;
 			color2 = darktone;
@@ -263,15 +282,15 @@ do_glide_draw_border(cairo_t *canvas,
 				color1 = tmp;							
 			}
 			
-			ge_cairo_simple_border(canvas, &color2, &color1, x, y, width, height, TRUE);
-			ge_cairo_simple_border(canvas, &color1, &color2, x+1, y+1, width-2, height-2, TRUE);
+			ge_cairo_simple_border(canvas, &color2, &color1, x, y, width, height, outer_overlap);
+			ge_cairo_simple_border(canvas, &color1, &color2, x+1, y+1, width-2, height-2, inner_overlap);
 		}	
 		break;
       
 		case GLIDE_BORDER_TYPE_IN:
 		case GLIDE_BORDER_TYPE_OUT:
 		{
-			gboolean line_overlap = FALSE, invert_in = TRUE;
+			gboolean invert_in = TRUE;
 
 			if ((border_style == GLIDE_BEVEL_STYLE_THINICE)) 
 			{
@@ -311,7 +330,8 @@ do_glide_draw_border(cairo_t *canvas,
 							color4 = darktone;
 						}
 						
-						line_overlap = TRUE;
+						outer_overlap = TRUE;
+						inner_overlap = TRUE;
 						invert_in = FALSE;
 					break;
 
@@ -325,6 +345,9 @@ do_glide_draw_border(cairo_t *canvas,
 							color2 = darktone;
 							color3 = lighttone;
 							color4 = midtone;
+
+							outer_overlap = FALSE;
+							inner_overlap = TRUE;
 						}
 						else
 						{						
@@ -332,9 +355,11 @@ do_glide_draw_border(cairo_t *canvas,
 							color2 = lighttone;
 							color3 = darktone;
 							color4 = midtone;
+
+							outer_overlap = TRUE;
+							inner_overlap = FALSE;
 						}
 						
-						line_overlap = TRUE;
 						invert_in = FALSE;
 					break;
 				} 
@@ -352,8 +377,8 @@ do_glide_draw_border(cairo_t *canvas,
 					color2 = tmp;							
 				}
 
-				ge_cairo_simple_border(canvas, &color1, &color3, x, y, width, height, line_overlap);
-				ge_cairo_simple_border(canvas, &color2, &color4, x+1, y+1, width-2, height-2, line_overlap);
+				ge_cairo_simple_border(canvas, &color1, &color3, x, y, width, height, outer_overlap);
+				ge_cairo_simple_border(canvas, &color2, &color4, x+1, y+1, width-2, height-2, outer_overlap);
 			} 	
 		}	
 		break;
@@ -367,7 +392,7 @@ do_glide_draw_border(cairo_t *canvas,
  * do_glide_draw_check -
  *  
  *   A simple routine to draw a redmond style
- *   check mark using the passed GC.
+ *   check mark using the passed Color.
  *  
  *   It originated in Smooth-Engine.
  ***********************************************/
@@ -839,6 +864,7 @@ gtk_menu_shell_motion(GtkWidget *widget,
       GdkModifierType pointer_mask;
       GList *children = NULL, *child = NULL;
      
+		#warning FIXME - gdk_window_get_pointer
       gdk_window_get_pointer(widget->window, &pointer_x, &pointer_y, &pointer_mask);
 	    
       if (IS_CONTAINER(widget))

@@ -22,7 +22,7 @@
 #include "glide_gtk2_engine.h"
 #include "glide_gtk2_support.h"
 #include "glide_gtk2_drawing.h"
-  
+
 /***********************************************
  * glide_draw_vline -
  *  
@@ -392,10 +392,7 @@ glide_draw_arrow (GtkStyle * style,
       x -= 1;
   else if (CHECK_DETAIL (detail, "arrow"))
   {
-      x += 2;
-      y += 2;
-      width -= 2;
-      height -= 2;
+      x += (width%2)?0:1;
   }
 
   cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
@@ -516,36 +513,10 @@ glide_draw_shadow (GtkStyle * style,
 	}
       break;
     case GTK_SHADOW_OUT:
-      if ((CHECK_DETAIL (detail, "vscrollbar"))
-	  || (CHECK_DETAIL (detail, "hscrollbar"))
-	  || (CHECK_DETAIL (detail, "slider"))
-	  || (CHECK_DETAIL (detail, "spinbutton_up"))
-	  || (CHECK_DETAIL (detail, "spinbutton_down"))
-	  || ((CHECK_DETAIL (detail, "button")) && ge_is_in_combo_box (widget)))
-	{
-	  /* In the case of Scrollbars steppers, Sliders, Spinbutton steppers,
-	   * and Combo/ComboBoxEntry buttons, the internal & external borders are 
-	   * inverted when OUT since they are inset into another widgets IN edge.
-	   */
-		do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
-					GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
-					x, y, width, height);
-	}
-      else if ((CHECK_DETAIL (detail, "frame"))
-	       || ((CHECK_DETAIL (detail, "button"))
-		   && (ge_is_toolbar_item (widget))))
-	{
-		do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
-					GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
-					x, y, width, height);
-	}
-      else
-	{
 	  /* Normal OUT Border */
 		do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
 					GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
 					x, y, width, height);
-	}
       break;
     }
 
@@ -652,17 +623,22 @@ glide_draw_combobox_button (GtkStyle * style,
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
+#warning FIXME - gdk_draw_rectangle
 	      gdk_draw_rectangle (window,
 	      	                  parent_style->base_gc[parent_state],
 			          TRUE, x - 2, y, width + 2, height);
 
             }
           else
-            gtk_paint_flat_box (style, window, state_type,
+#warning FIXME - gtk_paint_flat_box
+            gtk_paint_flat_box (style, window, parent_state,
 			        GTK_SHADOW_NONE, area, widget, "entry_bg", x - 2,
 			        y, width + 2, height);
  
-          gtk_paint_shadow (style, window, state_type, GTK_SHADOW_IN,
+	      if (parent_state != GTK_STATE_INSENSITIVE)
+                parent_state = GTK_STATE_NORMAL;
+
+          glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN,
   		            area, widget, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
@@ -690,6 +666,7 @@ glide_draw_combobox_button (GtkStyle * style,
 	  if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
+#warning FIXME - gtk_paint_flat_box
           gtk_paint_flat_box (parent_style, window, parent_state,
 	 		      GTK_SHADOW_NONE, area, entry, "entry_bg", x - 2,
 			      y, width + 2, height);
@@ -702,12 +679,13 @@ glide_draw_combobox_button (GtkStyle * style,
             shadow.width = width + 2;
             shadow.height = height;
           
+		#warning FIXME - gdk_rectangle_intersect
            if (area)
               gdk_rectangle_intersect(area, &shadow, &clip);
             else
               clip = shadow;
 
-            gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+            glide_draw_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 	 	              &clip, entry, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
           }
@@ -730,20 +708,21 @@ glide_draw_combobox_button (GtkStyle * style,
           if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
+#warning FIXME - gtk_paint_flat_box
           gtk_paint_flat_box (parent_style, window, parent_state,
 			      GTK_SHADOW_NONE, area, parent, "entry_bg", x - 2,
 			      y, width + 2, height);
-          gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+          glide_draw_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 		   	    area, parent, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
  
       do_glide_draw_default_fill (style, window, widget,
 	  			          state_type, area, x + focus, y + thick + focus,
-                             width - thick - focus*2, height - thick*2 - focus*2, FALSE, 
-				glide_style->bg_gradient[FALSE][state_type]);
+                             width - thick - focus*2, height - thick*2 - focus*2, 
+				DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]));
 
-        gtk_paint_shadow (style, window, state_type, shadow_type, area,
+        glide_draw_shadow (style, window, state_type, shadow_type, area,
 		          widget, detail, x + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
       if (entry_focused)
@@ -771,7 +750,8 @@ glide_draw_combobox_button (GtkStyle * style,
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-	      gdk_draw_rectangle (window, widget->parent->style->base_gc[parent_state],
+#warning FIXME - gdk_draw_rectangle
+	      gdk_draw_rectangle (window, parent_style->base_gc[parent_state],
 			          TRUE, x + focus - focus_padding, y + focus - focus_padding, 
                                         width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
             }
@@ -780,13 +760,17 @@ glide_draw_combobox_button (GtkStyle * style,
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-            gtk_paint_flat_box (style, window, state_type,
+#warning FIXME - gtk_paint_flat_box
+            gtk_paint_flat_box (style, window, parent_state,
 	  	                GTK_SHADOW_NONE, area, widget, "entry_bg", 
 				x + focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-            }
- 
-          gtk_paint_shadow (style, window, state_type, GTK_SHADOW_IN,
+	     }
+
+	      if (parent_state != GTK_STATE_INSENSITIVE)
+                parent_state = GTK_STATE_NORMAL;
+
+          glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN,
 	  		    area, widget, "combo_box_entry",
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
@@ -815,11 +799,12 @@ glide_draw_combobox_button (GtkStyle * style,
            if (parent_state != GTK_STATE_INSENSITIVE)
              parent_state = GTK_STATE_NORMAL;
 
+#warning FIXME - gtk_paint_flat_box
            gtk_paint_flat_box (parent_style, window, parent_state,
 			       GTK_SHADOW_NONE, area, entry, "entry_bg", 
 				x + focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-           gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+           glide_draw_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 			     area, entry, "combo_box_entry", 
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
@@ -842,11 +827,12 @@ glide_draw_combobox_button (GtkStyle * style,
           if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
+#warning FIXME - gtk_paint_flat_box
           gtk_paint_flat_box (parent_style, window, parent_state,
 			      GTK_SHADOW_NONE, area, parent, "entry_bg", 
 				x + focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-          gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+          glide_draw_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 		   	    area, parent, "combo_box_entry", 
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
@@ -854,10 +840,10 @@ glide_draw_combobox_button (GtkStyle * style,
  
       do_glide_draw_default_fill (style, window, widget,
 				          state_type, area, x + thick + focus, y + thick + focus,
-                             width - thick - focus*2, height - 2*thick - focus*2, FALSE, 
-				glide_style->bg_gradient[FALSE][state_type]);
+                             width - thick - focus*2, height - 2*thick - focus*2, 
+				DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]));
  
-        gtk_paint_shadow (style, window, state_type, shadow_type, area,
+        glide_draw_shadow (style, window, state_type, shadow_type, area,
 		          widget, detail, x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
       if (entry_focused)
@@ -938,18 +924,19 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
    {
       if (CHECK_DETAIL (detail, "spinbutton_up"))
 	{
+#warning FIXME - gtk_paint_flat_box
 	  gtk_paint_flat_box (style, window, parent_state,
 			      GTK_SHADOW_NONE, &spin_area, widget,
 			      "entry_bg", 
 				x - thick, y + focus, width + thick - focus, height - focus*2);
 
-	  gtk_paint_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
+	  glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
                                 x - thick, y + focus, width + thick - focus, height + thick - focus);
 
 	  do_glide_draw_default_fill (style, window, widget, state_type, area, 
                                  	x, y + thick + focus, width - thick - focus, height - thick - focus,
-					FALSE, glide_style->bg_gradient[FALSE][state_type]);
-	  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail,
+					DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]));
+	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
                                 x, y + thick + focus, width - thick - focus, height - thick - focus);
 
           if (entry_focused)
@@ -959,18 +946,19 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	}
       else
 	{
+#warning FIXME - gtk_paint_flat_box
 	  gtk_paint_flat_box (style, window, parent_state,
 			      GTK_SHADOW_NONE, &spin_area, widget,
 			      "entry_bg", x - thick, y, width + thick - focus, height - focus);
 
-	  gtk_paint_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail,  
+	  glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail,  
 			    x - thick, y - thick, width + thick - focus, height + thick - focus);
 
 	  do_glide_draw_default_fill (style, window, widget, state_type, area, 
 			    x, y + thick, width - thick - focus, height - thick*2 - focus, 
-				FALSE, glide_style->bg_gradient[FALSE][state_type]);
+				DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]));
 
-	  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail,
+	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
 			    x, y , width - thick - focus, height - thick - focus);
 
           if (entry_focused)
@@ -983,15 +971,16 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
     {
       if (CHECK_DETAIL (detail, "spinbutton_up"))
 	{
+#warning FIXME - gtk_paint_flat_box
 	  gtk_paint_flat_box (style, window, parent_state,
 			      GTK_SHADOW_NONE, &spin_area, widget,
 			      "entry_bg", x + focus, y + focus, width + thick*2 - focus, height - focus);
-	  gtk_paint_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
+	  glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
 				x + focus, y + focus, width + thick*2 - focus, height + thick - focus);
 	  do_glide_draw_default_fill (style, window, widget, state_type, area, 
 					x + thick + focus, y + thick + focus, width - thick - focus, height - thick - focus,
-					FALSE, glide_style->bg_gradient[FALSE][state_type]);
-	  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail, 
+					DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]));
+	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail, 
 				x + thick + focus, y + thick + focus , width - thick - focus, height - thick - focus);
 
           if (entry_focused)
@@ -1001,15 +990,16 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	}
       else
 	{
+#warning FIXME - gtk_paint_flat_box
 	  gtk_paint_flat_box (style, window, parent_state,
 			      GTK_SHADOW_NONE, &spin_area, widget,
 			      "entry_bg",x + focus, y, width + thick*2 - focus, height - focus);
-	  gtk_paint_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
+	  glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
 				x + focus , y - thick, width + thick*2 - focus, height + thick - focus);
 	  do_glide_draw_default_fill (style, window, widget, state_type, area, 
 				x + thick + focus, y, width - thick - focus, height - thick - focus, 
-				FALSE, glide_style->bg_gradient[FALSE][state_type]);
-	  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail, 
+				DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]));
+	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail, 
                                 x + thick + focus, y, width - thick - focus, height - thick - focus);
 
           if (entry_focused)
@@ -1064,7 +1054,7 @@ glide_draw_box (GtkStyle * style,
       gboolean vertical = CHECK_DETAIL (detail, "vscrollbar");
       do_glide_draw_default_fill (style, window, widget, state_type, 
                                         area, x, y, width, height, 
-					vertical, glide_style->bg_gradient[vertical][state_type]);
+					DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[vertical][state_type]));
  
       glide_draw_shadow (style, window, state_type, shadow_type, area,
 			widget, detail, x, y, width, height);
@@ -1072,7 +1062,7 @@ glide_draw_box (GtkStyle * style,
   else if ((CHECK_DETAIL (detail, "trough")))
     {
       do_glide_draw_default_fill (style, window, widget, state_type, 
-                                        area, x, y, width, height, FALSE, glide_style->bg_solid[state_type]);
+                                        area, x, y, width, height, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_solid[state_type]));
  
       glide_draw_shadow (style, window, state_type, GTK_SHADOW_IN, area,
 			widget, detail, x, y, width-1, height);
@@ -1159,7 +1149,7 @@ glide_draw_box (GtkStyle * style,
   
       do_glide_draw_default_fill (style, window, widget,
 					  state_type, area, x, y, width,
-					  height, FALSE, glide_style->bg_solid[state_type]);
+					  height, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_solid[state_type]));
  
       /* If this is a menu embedded in the gnome-panel, we don't
        *  draw a border since it looks cleaner without one.
@@ -1175,6 +1165,7 @@ glide_draw_box (GtkStyle * style,
           shadow.width = width;
           shadow.height = height;
           
+		#warning FIXME - gdk_rectangle_intersect
           if (area)
             gdk_rectangle_intersect(area, &shadow, &clip);
           else
@@ -1194,12 +1185,10 @@ glide_draw_box (GtkStyle * style,
     }
   else if ((CHECK_DETAIL (detail, "menuitem")))
     { 
-      do_glide_draw_default_fill (style, window, widget,
-					  state_type, area, x, y, width,
-					  height, FALSE, glide_style->bg_gradient[FALSE][state_type]);
-
       cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
-		 			  
+		 		
+	glide_draw_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]), x, y, width, height);
+
 	do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
 					GLIDE_BEVEL_STYLE_FLAT, GLIDE_BORDER_TYPE_IN,
 					x, y, width, height);
@@ -1208,10 +1197,8 @@ glide_draw_box (GtkStyle * style,
   else if ((CHECK_DETAIL (detail, "bar"))
 	   && (widget && IS_PROGRESS_BAR (widget)))
     { 
-      do_glide_draw_default_fill (style, window, widget,
-                                    GTK_STATE_SELECTED, area, x, y,
-                                    width, height, FALSE, glide_style->bg_gradient[FALSE][state_type]);
       cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
+	glide_draw_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, GTK_STATE_SELECTED, &glide_style->bg_gradient[FALSE][GTK_STATE_SELECTED]), x, y, width, height);
 		do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_SELECTED],
 					GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
 					x, y, width, height);
@@ -1238,7 +1225,7 @@ glide_draw_box (GtkStyle * style,
   else if (IS_TOGGLE_BUTTON(widget) && (TOGGLE_BUTTON(widget)->active))
     {
       do_glide_draw_default_fill (style, window, widget, state_type, 
-                                      area, x, y, width, height, FALSE, glide_style->bg_gradient[FALSE][state_type]);
+                                      area, x, y, width, height, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]));
 
       glide_draw_shadow (style, window, state_type, shadow_type, area,
 			widget, detail, x, y, width, height);
@@ -1248,7 +1235,7 @@ glide_draw_box (GtkStyle * style,
       /* default box apearance */
       do_glide_draw_default_fill (style, window, widget,
                                     state_type, area, x, y, width,
-                                    height, FALSE, glide_style->bg_gradient[FALSE][state_type]);
+                                    height, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[FALSE][state_type]));
       glide_draw_shadow (style, window, state_type, shadow_type, area,
 			widget, detail, x, y, width, height);
     }
@@ -1363,26 +1350,23 @@ glide_draw_slider (GtkStyle * style,
              gint height, 
              GtkOrientation orientation)
 {
-  GlideStyle *glide_style = GLIDE_STYLE (style);
+	GlideStyle *glide_style = GLIDE_STYLE (style);
  
-  CHECK_ARGS
-  SANITIZE_SIZE
+	CHECK_ARGS
+	SANITIZE_SIZE
  
-      do_glide_draw_default_fill (style, window, widget,
-                                    state_type, area, x, y, width,
-                                    height, orientation == GTK_ORIENTATION_VERTICAL, 
-					glide_style->bg_gradient[orientation == GTK_ORIENTATION_VERTICAL][state_type]);
+	cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
 
-      glide_draw_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_OUT, area,
-                           widget, detail, x, y, width, height);
+	glide_draw_pattern_fill(canvas,DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[orientation == GTK_ORIENTATION_VERTICAL][state_type]), x, y, width, height);
 
+	glide_draw_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_OUT, area,
+				widget, detail, x, y, width, height);
 
-      cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
 
 	do_glide_draw_grip (canvas,
-			&glide_style->color_cube.light[GTK_STATE_NORMAL],
-			&glide_style->color_cube.dark[GTK_STATE_NORMAL],
-			x, y, width, height, orientation == GTK_ORIENTATION_VERTICAL);
+				&glide_style->color_cube.light[GTK_STATE_NORMAL],
+				&glide_style->color_cube.dark[GTK_STATE_NORMAL],
+				x, y, width, height, orientation == GTK_ORIENTATION_VERTICAL);
 
 	cairo_destroy(canvas);
 }
@@ -1408,7 +1392,7 @@ glide_draw_box_gap (GtkStyle * style,
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	do_glide_draw_default_fill (style, window, widget, state_type, area, x, y, width, height, FALSE, glide_style->bg_solid[state_type]);
+	do_glide_draw_default_fill (style, window, widget, state_type, area, x, y, width, height, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_solid[state_type]));
 
 	glide_draw_shadow_gap (style, window, state_type, shadow_type, area, widget, detail, 
 					x, y, width, height, gap_side, gap_pos, gap_size);
@@ -1443,8 +1427,13 @@ glide_draw_shadow_gap (GtkStyle * style,
 
 	switch (gap_side)
 	{
-		case GTK_POS_TOP:
 		case GTK_POS_BOTTOM:
+			if (((gap_pos + gap_size) != width) && ((gap_pos) != 0))
+			{
+				gap_pos -= 1;
+				gap_size += 1;
+			}
+		case GTK_POS_TOP:
 			if ((gap_pos + gap_size) == width)
 			{
 				gap_pos -= 1;
@@ -1453,8 +1442,13 @@ glide_draw_shadow_gap (GtkStyle * style,
 			gap_size += 1;
 		break;
 
-		case GTK_POS_LEFT:
 		case GTK_POS_RIGHT:
+			if (((gap_pos + gap_size) != height) && ((gap_pos) != 0))
+			{
+				gap_pos -= 1;
+				gap_size += 1;
+			}
+		case GTK_POS_LEFT:
 			if ((gap_pos + gap_size) == height)
 			{
 				gap_pos -= 1;
@@ -1507,6 +1501,7 @@ glide_draw_shadow_gap (GtkStyle * style,
 	shadow.width = width;
 	shadow.height = height;
 
+	#warning FIXME - gdk_rectangle_intersect
 	if (area)
 		gdk_rectangle_intersect(area, &shadow, &clip);
 	else
@@ -1560,8 +1555,8 @@ glide_draw_extension (GtkStyle * style,
 	SANITIZE_SIZE
 
 	GdkRectangle clip, shadow;
-	cairo_pattern_t *pattern;
-	gboolean vertical = FALSE;
+	CairoPattern pattern;
+
 	shadow.x = x;
 	shadow.y = y;
 	shadow.width = width;
@@ -1595,13 +1590,18 @@ glide_draw_extension (GtkStyle * style,
 	switch (gap_side)
 	{
 		case GTK_POS_TOP:
-			if ((widget && GTK_IS_NOTEBOOK (widget)) && 
+			if (GTK_CHECK_VERSION(2,10,0) || 
+				((widget && GTK_IS_NOTEBOOK (widget)) && 
 				((x==widget_x) || 
-				((x + width) == (widget_x + widget_width))))
+				((x + width) == (widget_x + widget_width)))))
 			{
 				shadow.y -= 1;
 				shadow.height += 1;
-				height -= 1;
+
+				if (!GTK_CHECK_VERSION(2,10,0))
+				{
+					height -= 1;
+				}
 			}
 			
 			y -= 3;
@@ -1609,50 +1609,58 @@ glide_draw_extension (GtkStyle * style,
 		break;
 
 		case GTK_POS_LEFT:
-			if ((widget && GTK_IS_NOTEBOOK (widget)) && 
+			if (GTK_CHECK_VERSION(2,10,0) || 
+				((widget && GTK_IS_NOTEBOOK (widget)) && 
 				((y==widget_y) || 
-				((y + height) == (widget_y + widget_height))))
+				((y + height) == (widget_y + widget_height)))))
 			{
 				shadow.x -= 1;
 				shadow.width += 1;
-				x -= 1;
+
+				if (!GTK_CHECK_VERSION(2,10,0))
+				{
+					x -= 1;
+				}
 			}
 
 			x -= 3;
 			width += 3;
-			vertical = TRUE;
 		break;
 
 		default:
 		case GTK_POS_BOTTOM:
-			if ((widget && GTK_IS_NOTEBOOK (widget)) && 
+			if (GTK_CHECK_VERSION(2,10,0) || 
+				((widget && GTK_IS_NOTEBOOK (widget)) && 
 				((x==widget_x) || 
-				((x + width) == (widget_x + widget_width))))
+				((x + width) == (widget_x + widget_width)))))
 			{
 				shadow.height += 1;
 			}
+
 			height += 3;
 		break;
 
 		case GTK_POS_RIGHT:
-			if ((widget && GTK_IS_NOTEBOOK (widget)) && 
+			if (GTK_CHECK_VERSION(2,10,0) || 
+				((widget && GTK_IS_NOTEBOOK (widget)) && 
 				((y==widget_y) || 
-				((y + height) == (widget_y + widget_height))))
+				((y + height) == (widget_y + widget_height)))))
 			{
 				shadow.width += 1;
 			}
 			width += 3;
-			vertical = TRUE;
 		break;
 	}
 
+	#warning FIXME - gdk_rectangle_intersect
 	if (area)
 		gdk_rectangle_intersect(area, &shadow, &clip);
 	else
 		clip = shadow;
 
   do_glide_draw_default_fill (style, window, widget, state_type, &clip, 
-                                x, y, width, height, vertical, pattern);
+                                x, y, width, height, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &pattern));
+
 
 	glide_draw_shadow (style, window, state_type, shadow_type, &clip, widget, detail, 
 				x, y, width, height);
@@ -1750,9 +1758,9 @@ glide_draw_handle (GtkStyle * style,
 	}
 
   do_glide_draw_default_fill (style, window, widget, state_type, area, 
-                                x, y, width, height, orientation == (GTK_ORIENTATION_VERTICAL),
-				(IS_PANED(widget))?glide_style->bg_solid[state_type]: 
-				glide_style->bg_gradient[orientation == (GTK_ORIENTATION_VERTICAL)][state_type]);
+                                x, y, width, height, 
+				DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, (IS_PANED(widget))?&glide_style->bg_solid[state_type]: 
+				&glide_style->bg_gradient[orientation == (GTK_ORIENTATION_VERTICAL)][state_type]));
  
       if (ge_is_panel_widget_item (widget)
 	  && (CHECK_DETAIL (detail, "handlebox")
@@ -1808,6 +1816,7 @@ glide_draw_handle (GtkStyle * style,
           shadow.width = width;
           shadow.height = height;
  
+		#warning FIXME - gdk_rectangle_intersect
           if (area)
             gdk_rectangle_intersect(area, &shadow, &clip);
           else
@@ -2001,6 +2010,8 @@ glide_draw_layout (GtkStyle        *style,
 {
 	CHECK_ARGS
 	use_text &= !ge_is_combo_box(widget, FALSE);
+
+	#warning FIXME - gdk gdk gdk
 
 	GdkGC *gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
 	
