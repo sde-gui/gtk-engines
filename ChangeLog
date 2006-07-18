@@ -1,3 +1,26 @@
+2006-07-18  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/Makefile.am:
+	* engines/crux/pixmaps/*:
+	* engines/crux/src/crux-common.h:
+	* engines/crux/src/crux-draw.c: (draw_box), (draw_arrow):
+	* engines/crux/src/crux-main.c: (theme_init):
+	* engines/crux/src/crux-pixmaps.c:
+	* engines/crux/src/crux-pixmaps.h:
+	* engines/crux/src/crux-rc-parser.c:
+	* engines/crux/src/crux-rc-parser.h:
+	* engines/crux/src/crux-rc-style.c: (crux_rc_style_class_init),
+	(crux_rc_style_register_type):
+	* engines/crux/src/crux-rc-style.h:
+	* engines/crux/src/crux-style.c: (crux_style_register_type),
+	(crux_style_class_init):
+	* engines/crux/src/crux-style.h:
+
+	- Pixmaps removed
+	- Removed old engine options
+
+	* themes/Crux/gtk-2.0/gtkrc: Remove old engine options. Now in lush purple!
+
 2006-07-17   Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_arrow),

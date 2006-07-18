@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 #include "crux-rc-style.h"
-#include "crux-rc-parser.h"
 #include "crux-style.h"
 #include "crux-draw.h"
 
@@ -17,14 +16,13 @@ theme_init (GTypeModule *module)
 {
   crux_rc_style_register_type (module);
   crux_style_register_type (module);
-  crux_rc_parser_init_gradients();
 }
-    
+
 G_MODULE_EXPORT void
 theme_exit(void)
 {
 }
-    
+
 G_MODULE_EXPORT GtkRcStyle *
 theme_create_rc_style (void)
 {

@@ -2,7 +2,6 @@
 #define CRUX_RC_STYLE_H
 
 #include <gtk/gtk.h>
-#include "crux-common.h"
 
 G_BEGIN_DECLS
 
@@ -21,8 +20,6 @@ typedef struct _CruxRcStyleClass CruxRcStyleClass;
 struct _CruxRcStyle
 {
   GtkRcStyle parent_instance;
-  
-  eazel_theme_data *theme_data;
 };
 
 struct _CruxRcStyleClass

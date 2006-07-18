@@ -12,23 +12,16 @@ EXTRA_DIST = \
 	./AUTHORS
 
 libcrux_engine_la_SOURCES = \
-	./src/crux-common.h           \
 	./src/crux.h                  \
 	./src/crux-draw.c             \
 	./src/crux-draw.h             \
 	./src/crux-main.c             \
-	./src/crux-pixmaps.c          \
-	./src/crux-pixmaps.h          \
-	./src/crux-rc-parser.c        \
-	./src/crux-rc-parser.h        \
-	./src/crux-rc-style.c         \
-	./src/crux-rc-style.h         \
 	./src/crux-style.c            \
 	./src/crux-style.h            \
+	./src/crux-rc-style.c            \
+	./src/crux-rc-style.h            \
 	./src/debug.c                 \
 	./src/debug.h                 \
-	./src/crux-gradient.c         \
-	./src/crux-gradient.h         \
 	./src/eazel-theme.h
 
 libcrux_engine_la_LDFLAGS = -module -avoid-version -no-undefined

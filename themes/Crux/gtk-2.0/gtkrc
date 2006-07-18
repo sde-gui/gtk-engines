@@ -22,49 +22,22 @@
 #
 #  Authors: John Harper <jsh@eazel.com>
 
-# The syntax in the engine sections is a mess. Here are some hints:
-
-# gradient : '{' direction gradient-color-list '}'
-#	   | '<' INT '>'				-- palette ref
-
-# direction : /* nothing */
-#	    | VERTICAL
-#	    | HORIZONTAL
-
-# gradient-color-list : color
-#		      : color ',' gradient-color-list
-#		      : color '[' weight ']' gradient-color-list
-
-# weight : FLOAT
-#	 | INT
-
-# color : "#RRGGBB"
-#	| '{' FLOAT ',' FLOAT ',' FLOAT '}'
-#	| '<' color-ext '>'
-
-# color-ext : STRING			-- file in $HOME to read color from
-#	    | '<' INT '>'		-- use indexed palette entry
-#	    | '<' INT ',' FLOAT '>'	-- multiply palette entry
-
 # Default style for all widgets to build from
 style "default"
 {
-#  GtkWidget::interior_focus = 0
-#  GtkWidget::focus_padding = 0
-#  GtkWidget::focus_line_width = 1
 
   GtkRange::slider_width = 13
   GtkRange::stepper_size = 13
   GtkRange::trough_border = 1
 
+  GtkScale::slider_width = 12
+  GtkScale::stepper_size = 12
+  GtkScale::trough_border = 0
+
   GtkScale::slider_length = 16
   GtkCheckButton::indicator_size = 12
   GtkCheckButton::indicator_spacing = 3
   GtkCheckMenuItem::indicator_size = 10
-
-  #GtkMenuBar::shadow_type = GTK_SHADOW_NONE
-  #GtkToolBar::shadow_type = GTK_SHADOW_NONE
-  #GtkSpinButton::shadow_type = GTK_SHADOW_NONE
 
   GtkOptionMenu::indicator_size = { 11, 6 }
   GtkOptionMenu::indicator_spacing = { 30, 5, 2, 2 }
@@ -81,73 +54,29 @@ style "default"
   bg[ACTIVE] = "#a3a69f"
   bg[PRELIGHT] = "#ededeb"
   bg[INSENSITIVE] = "#c4c6c0"
+  bg[SELECTED] = "#75507b"
 
   text[NORMAL] = "#000000"
   text[ACTIVE] = "#000000"
   text[PRELIGHT] = "#000000"
-  text[SELECTED] = "#000000"
   text[INSENSITIVE] = "#000000"
 
   base[NORMAL] = "#ffffff"
   base[PRELIGHT] = "#000000"
   base[INSENSITIVE] = "#dddddd"
+  base[SELECTED] = "#75507b"
 
-  engine "crux-engine" {
-
-    # The focus/selection color
-    palette[0] = { <".eazel-engine-color"> }
-
-    # The gradient used for recoloring images
-    palette[1] = { "#000000", <0>, "#ffffff" }
-
-    # Used for recolouring inactive images
-    palette[2] = { "#000000", "#888888", "#ffffff" }
-
-    # Set these colors here, so we can just reference the palette
-    bg[SELECTED] = <0>
-    base[SELECTED] = <0>
-
-    focus_color = <0>
-    insensitive_colors = "#636563", "#cecfce"
-  }
+  engine "crux-engine" {  }
 }
 
 # common default
 class "GtkWidget" style "default"
 
-
-# Style for widgets that don't want gradient backgrounds
-style "no-gradients"
-{
-  engine "crux-engine"
-  {
-    gradient[NORMAL] = {}
-    gradient[ACTIVE] = {}
-    gradient[PRELIGHT] = {}
-    gradient[SELECTED] = {}
-  }
-}
-
-class "GtkNotebook" style "no-gradients"
-class "GtkRuler" style "no-gradients"
-
-
 # Style used for (prelighted) menu items
 style "menuitem"
 {
   fg[PRELIGHT] = "#ffffff"
-  bg[PRELIGHT] = "#508083"
-
-  engine "crux-engine"
-  {
-#    bg[PRELIGHT] = <0>
-
-#    gradient[NORMAL] = {}
-#    gradient[ACTIVE] = {}
-#    gradient[SELECTED] = {}
-#    # by default menuitem_gradient just references <0>
-#    gradient[PRELIGHT] = { vertical : <0,0.5> [3] <0> [10] <0> [2] <0,0.6> }
-  }
+  bg[PRELIGHT] = "#75507b"
 }
 
 class "GtkMenuItem" style "menuitem"
@@ -157,18 +86,10 @@ widget_class "*.*MenuItem.*" style "menuitem"
 style "menu"
 {
   xthickness = 3
-  engine "crux-engine"
-  {
-    gradient[NORMAL] = {}
-    gradient[ACTIVE] = {}
-    gradient[SELECTED] = {}
-  }
 }
 
 # This enables gradiented menu backgrounds
 class "GtkMenu" style "menu"
-
-
 
 style "entry"
 {
@@ -185,45 +106,8 @@ style "entry"
 class "GtkEntry" style "entry"
 class "GtkText" style "entry"
 
-
-style "slider"
+style "trough"
 {
-  engine "crux-engine"
-  {
-    thickness = 0
-  }
+   bg[NORMAL] = "#c4c6c0"
 }
-
-class "GtkVScale" style "slider"
-class "GtkHScale" style "slider"
-
-
-style "eventbox"
-{
-  # Causes the parent-relative feature of gdk_window_set_back_pixmap ()
-  # to be used.
-  bg_pixmap[NORMAL] = "<parent>"
-  bg_pixmap[INSENSITIVE] = "<parent>"
-  bg_pixmap[PRELIGHT] = "<parent>"
-  bg_pixmap[SELECTED] = "<parent>"
-  bg_pixmap[ACTIVE] = "<parent>"
-  engine "crux-engine" {}
-}
-
-# Ensure that there are no holes in tool bars, etc..
-class "GtkEventBox" style "eventbox"
-class "GtkSocket" style "eventbox"
-class "BonoboSocket" style "eventbox"
-class "NautilusZoomControl" style "eventbox"
-
-# These don't work right with GTK2, ends up drawing black
-#class "GtkPlug" style "eventbox"
-#class "BonoboPlug" style "eventbox"
-
-
-# This sucks, but so far I've found no way to get a gradient drawn
-# in the middle part of the Foobar. Maybe it's possible to hardcode
-# a hack in eazel-theme-draw.c? (draw_flat_box perhaps?)
-
-widget_class "FoobarWidget.*" style "no-gradients"
-
+class "GtkProgressBar" style "trough"

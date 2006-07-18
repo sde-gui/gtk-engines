@@ -1,7 +1,5 @@
 #include "crux-draw.h"
 #include "crux-style.h"
-#include "crux-rc-style.h"
-#include "crux-common.h"
 
 #include <ge-support.h>
 
@@ -953,11 +951,11 @@ draw_box (GtkStyle *style,
 	{
 		if (GTK_IS_VSCALE (widget))
 		{
-			x += 2; width -= 4;
+			x += 1; width -= 2;
 		}
 		else
 		{
-			y += 2; height -= 4;
+			y += 1; height -= 2;
 		}
 		paint_button (cr, style, GTK_STATE_NORMAL, GTK_SHADOW_OUT, x, y, width, height);
 	}
@@ -973,7 +971,7 @@ draw_box (GtkStyle *style,
 		/* fill  */
 		cairo_rectangle (cr, x, y, width, height);
 
-		if (DETAIL ("toolbar") || DETAIL ("menubar") || DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
+		if (DETAIL ("toolbar") || DETAIL ("menubar") || DETAIL ("vscrollbar") || DETAIL ("hscrollbar") || DETAIL ("handle"))
 		{
 			if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
 			{
@@ -1024,7 +1022,7 @@ draw_arrow (GtkStyle *style,
 	    GtkArrowType arrow_type,
 	    gint fill, gint x, gint y, gint width, gint height)
 {
-    eazel_theme_data *theme_data;
+    //eazel_theme_data *theme_data;
 
     /* FIXME GNOME2: bad hack added to make arrows draw large enough */
     width = width + 8;
@@ -1035,8 +1033,8 @@ draw_arrow (GtkStyle *style,
     CHECK_ARGS
     /*SANITIZE_SIZE*/
 
-    theme_data = CRUX_RC_STYLE (style->rc_style)->theme_data;
-    g_assert (theme_data != NULL);
+    //theme_data = CRUX_RC_STYLE (style->rc_style)->theme_data;
+    //g_assert (theme_data != NULL);
 
     debug ("draw_arrow: detail=%s state=%d shadow=%d arrow_type=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, arrow_type, x, y, width, height);

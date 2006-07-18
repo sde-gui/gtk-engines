@@ -5,7 +5,6 @@
 #include <gmodule.h>
 
 #include "crux-draw.h"
-#include "crux-common.h"
 
 G_BEGIN_DECLS
 
