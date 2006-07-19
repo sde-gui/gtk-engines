@@ -24,6 +24,25 @@
 #include "ge-support.h"
  
 /*****************************/
+/* Pattern Fills             */
+/*****************************/
+typedef enum {
+	REDMOND_DIRECTION_VERTICAL,
+	REDMOND_DIRECTION_HORIZONTAL,
+	REDMOND_DIRECTION_BOTH,
+	REDMOND_DIRECTION_NONE
+} RedmondDirection;
+
+typedef struct
+{
+	RedmondDirection scale;
+	RedmondDirection translate;
+	cairo_pattern_t *handle;
+} CairoPattern;
+  
+#define DEFAULT_BACKGROUND_PATTERN(redmond_style, state) ((redmond_style->bg_pixmap[state].handle)?&redmond_style->bg_pixmap[state]:&redmond_style->bg_color[state])
+
+/*****************************/
 /* RC Style Declaration      */
 /*****************************/
 extern GType redmond_type_rc_style;
@@ -38,8 +57,6 @@ extern GType redmond_type_rc_style;
 typedef struct
 {
   GtkRcStyle parent_instance;
- 
-  GList *img_list;
 } RedmondRcStyle;
  
 typedef struct
@@ -62,9 +79,13 @@ extern GType redmond_type_style;
 typedef struct
 {
   GtkStyle parent_instance;
-  GdkGC *black_border_gc[5];
+
   CairoColor black_border[5];
   CairoColorCube color_cube;
+
+  CairoPattern bg_color[5];
+  CairoPattern bg_pixmap[5];
+  CairoPattern hatch_mask;
 } RedmondStyle;
  
 typedef struct

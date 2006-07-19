@@ -19,47 +19,26 @@
  * Written by Owen Taylor <otaylor@redhat.com>
  * modified by Andrew Johnson <ajgenius@ajgenius.us>
  */  
-#define CHECK_SIZE 13 
-#define PART_SIZE 13 
- 
-typedef enum
-{
-  RADIO_BASE,
-  RADIO_BLACK,
-  RADIO_DARK,
-  RADIO_LIGHT,
-  RADIO_MID,
-  RADIO_TEXT,
-  RADIO_NONE
-} Part;
   
-/* Misc Drawing/Colour Functions */ 
-void redmond_draw_part (GdkDrawable * drawable, 
-                        GdkGC * gc, 
-                        GdkRectangle * area, 
-                        gint x, 
-                        gint y, 
-                        Part part);
- 
-void do_redmond_draw_default_fill (GtkStyle *style, 
-                                   GdkWindow *window, 
-                                   GtkStateType state_type, 
-                                   GdkRectangle *area, 
-                                   gint x, 
-                                   gint y, 
-                                   gint width, 
-                                   gint height);
+/* Misc Drawing/Colour Functions */  
+void
+do_redmond_draw_pattern_fill (cairo_t * cr,
+                                  CairoPattern *pattern,
+                                  gint x,
+                                  gint y, 
+                                  gint width, 
+                                  gint height);
                                    
-void do_redmond_draw_cross_hatch_fill (GtkStyle * style, 
-                                       GdkWindow * window, 
-                                       GtkStateType state, 
-                                       GdkRectangle * area, 
-                                       Part part, 
-                                       gint x, 
-                                       gint y, 
-                                       gint width, 
-                                       gint height);
-                                       
+void
+do_redmond_draw_masked_fill (cairo_t * cr,
+                                  CairoPattern *mask,
+                                  CairoColor * background,
+                                  CairoColor * foreground,
+                                  gint x,
+                                  gint y, 
+                                  gint width, 
+                                  gint height);
+
 void do_redmond_draw_check (cairo_t *cr,
                             CairoColor *color, 
                             gint x, 
@@ -74,6 +53,14 @@ void do_redmond_draw_arrow (cairo_t *cr,
                             gint y, 
                             gint width, 
                             gint height);
+
+void
+do_redmond_draw_simple_circle (cairo_t *canvas,
+                     	  		CairoColor * tl,
+                       			CairoColor * br,
+					gint center_x, 
+					gint center_y, 
+					gint radius);
                             
 void do_redmond_draw_line(cairo_t *cr, 
                           CairoColor * dark, 

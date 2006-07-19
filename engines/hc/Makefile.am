@@ -9,11 +9,12 @@ EXTRA_DIST = \
 	./AUTHORS
 
 libhcengine_la_SOURCES = \
-	./src/hc-rc-style.c	\
-	./src/hc-rc-style.h	\
-	./src/hc-style.c	\
-	./src/hc-style.h	\
-	./src/hc-main.c
+	./src/hc_gtk2_engine.c	\
+	./src/hc_gtk2_engine.h	\
+        ./src/hc_gtk2_support.c  \
+        ./src/hc_gtk2_support.h  \
+        ./src/hc_gtk2_drawing.h  \
+	./src/hc-style.c
 
 libhcengine_la_LDFLAGS = -module -avoid-version -no-undefined
 libhcengine_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la

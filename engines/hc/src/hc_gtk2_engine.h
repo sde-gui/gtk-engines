@@ -19,31 +19,53 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtkstyle.h>
+#include <gmodule.h>
+#include <gtk/gtk.h>
+ 
 #include "ge-support.h"
 
-typedef struct _HcStyle HcStyle;
-typedef struct _HcStyleClass HcStyleClass;
-
+/*****************************/
+/* RC Style Declaration      */
+/*****************************/
+extern GType hc_type_rc_style;
+ 
+#define HC_TYPE_RC_STYLE              hc_type_rc_style
+#define HC_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), HC_TYPE_RC_STYLE, HcRcStyle))
+#define HC_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), HC_TYPE_RC_STYLE, HcRcStyleClass))
+#define HC_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), HC_TYPE_RC_STYLE))
+#define HC_IS_RC_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), HC_TYPE_RC_STYLE))
+#define HC_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), HC_TYPE_RC_STYLE, HcRcStyleClass))
+ 
+typedef struct
+{
+  GtkRcStyle parent_instance;
+} HcRcStyle;
+ 
+typedef struct
+{
+  GtkRcStyleClass parent_class;
+} HcRcStyleClass;
+ 
+/*****************************/
+/* Drawing Style Declaration */
+/*****************************/
 extern GType hc_type_style;
-extern GtkStyleClass *style_parent_class;
-
+ 
 #define HC_TYPE_STYLE              hc_type_style
 #define HC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), HC_TYPE_STYLE, HcStyle))
 #define HC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), HC_TYPE_STYLE, HcStyleClass))
 #define HC_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), HC_TYPE_STYLE))
 #define HC_IS_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), HC_TYPE_STYLE))
 #define HC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), HC_TYPE_STYLE, HcStyleClass))
-
-struct _HcStyle
+ 
+typedef struct
 {
   GtkStyle parent_instance;
-  CairoColorCube color_cube;
-};
 
-struct _HcStyleClass
+  CairoColorCube color_cube;
+} HcStyle;
+ 
+typedef struct
 {
   GtkStyleClass parent_class;
-};
-
-void hc_style_register_type (GTypeModule *module);
+} HcStyleClass;

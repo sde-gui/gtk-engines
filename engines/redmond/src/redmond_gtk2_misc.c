@@ -23,196 +23,157 @@
 #include "redmond_gtk2_drawing.h"
 #include "redmond_gtk2_misc.h"
  
-static char radio_base_bits[] = {
-  0x00,0x00,0x00,0x00,0xf0,0x01,0xf8,0x03,0xfc,0x07,0xfc,0x07,0xfc,0x07,0xfc,
-  0x07,0xfc,0x07,0xf8,0x03,0xf0,0x01,0x00,0x00,0x00,0x00,0x00,0x00};
-static char radio_black_bits[] = {
-  0x00,0x00,0xf0,0x01,0x0c,0x02,0x04,0x00,0x02,0x00,0x02,0x00,0x02,0x00,0x02,
-  0x00,0x02,0x00,0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x0d,0x08};
-static char radio_dark_bits[] = {
-  0xf0,0x00,0x0c,0x02,0x02,0x00,0x02,0x00,0x01,0x00,0x01,0x00,0x01,0x00,0x01,
-  0x00,0x00,0x00,0x02,0x00,0x0c,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-static char radio_light_bits[] = {
-  0x00,0x00,0x00,0x04,0x00,0x08,0x00,0x08,0x00,0x10,0x00,0x10,0x00,0x10,0x00,
-  0x10,0x00,0x10,0x00,0x08,0x00,0x08,0x08,0x06,0xf0,0x01,0x00,0x00};
-static char radio_mid_bits[] = {
-  0x00,0x00,0x00,0x00,0x00,0x04,0x00,0x04,0x00,0x08,0x00,0x08,0x00,0x08,0x00,
-  0x08,0x00,0x08,0x00,0x04,0x00,0x06,0xf0,0x01,0x00,0x00,0x00,0x00};
-static char radio_text_bits[] = {
-  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xe0,0x00,0xf0,0x01,0xf0,0x01,0xf0,
-  0x01,0xe0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
- 
-static struct
-{
-  char *bits;
-  GdkBitmap *bmap;
-} parts[] =
-{
-  {
-  radio_base_bits, NULL},
-  {
-  radio_black_bits, NULL},
-  {
-  radio_dark_bits, NULL},
-  {
-  radio_light_bits, NULL},
-  {
-  radio_mid_bits, NULL},
-  {
-  radio_text_bits, NULL}
-};
- 
-/***********************************************
- * redmond_draw_part -
- *  
- *   draw a bits generated pixmap part with a
- *   specific gc.
- ***********************************************/
 void
-redmond_draw_part (GdkDrawable * drawable,
-	   GdkGC * gc, 
-           GdkRectangle * area, 
-           gint x, 
-           gint y, 
-           Part part)
-{
-  if (area)
-    gdk_gc_set_clip_rectangle (gc, area);
- 
-  if (!parts[part].bmap)
-    parts[part].bmap = gdk_bitmap_create_from_data (drawable,
-						    parts[part].bits,
-						    PART_SIZE, PART_SIZE);
- 
-  gdk_gc_set_ts_origin (gc, x, y);
-  gdk_gc_set_stipple (gc, parts[part].bmap);
-  gdk_gc_set_fill (gc, GDK_STIPPLED);
- 
-  gdk_draw_rectangle (drawable, gc, TRUE, x, y, PART_SIZE, PART_SIZE);
- 
-  gdk_gc_set_fill (gc, GDK_SOLID);
- 
-  if (area)
-    gdk_gc_set_clip_rectangle (gc, NULL);
-}
- 
-/***********************************************
- * do_redmond_draw_fill -
- *  
- *   A simple routine to fill with the bg_gc
- ***********************************************/
-void
-do_redmond_draw_default_fill (GtkStyle *style, 
-                              GdkWindow *window, 
-                              GtkStateType state_type, 
-                              GdkRectangle *area, 
-                              gint x, 
-                              gint y, 
-                              gint width, 
-                              gint height)
-{
-      if (area)
-        gdk_gc_set_clip_rectangle(style->bg_gc[state_type], area);
-        
-      gdk_draw_rectangle (window, style->bg_gc[state_type], TRUE,
-                          x, y,width, height);
- 
-      if (area)
-        gdk_gc_set_clip_rectangle(style->bg_gc[state_type], NULL);
-}
- 
-/***********************************************
- * do_redmond_draw_cross_hatch_fill -
- *  
- *   A simple routine to draw a thin cross-hatch 
- *   background fill. This is use for Scrollbar
- *   Trough's and greyed Checkbox's
- *    
- *   It originated in Smooth-Engine.
- ***********************************************/
-void
-do_redmond_draw_cross_hatch_fill (GtkStyle * style,
-                                  GdkWindow * window,
-                                  GtkStateType state,
-                                  GdkRectangle * area,
-                                  Part part,
+do_redmond_draw_pattern_fill (cairo_t * cr,
+                                  CairoPattern *pattern,
                                   gint x,
                                   gint y, 
                                   gint width, 
                                   gint height)
 {
-  GdkGCValues gc_values;
-  GdkGC *gc;
-  GdkPixmap *pixmap;
+	cairo_matrix_t original_matrix, current_matrix;
+
+	cairo_pattern_get_matrix(pattern->handle, &original_matrix);
+	current_matrix = original_matrix;
+
+	if (pattern->scale != REDMOND_DIRECTION_NONE)
+	{
+		gdouble scale_x = 1.0;
+		gdouble scale_y = 1.0;
+
+		if ((pattern->scale == REDMOND_DIRECTION_VERTICAL) || (pattern->scale == REDMOND_DIRECTION_BOTH))
+		{
+			scale_x = 1.0/width;
+		}
+
+		if ((pattern->scale == REDMOND_DIRECTION_HORIZONTAL) || (pattern->scale == REDMOND_DIRECTION_BOTH))
+		{
+			scale_y = 1.0/height;
+		}
+
+		cairo_matrix_scale(&current_matrix, scale_x, scale_y);
+	}
+
+	if (pattern->translate != REDMOND_DIRECTION_NONE)
+	{
+		gdouble translate_x = 0;
+		gdouble translate_y = 0;
+
+		if ((pattern->translate == REDMOND_DIRECTION_VERTICAL) || (pattern->translate == REDMOND_DIRECTION_BOTH))
+		{
+			translate_x = -x;
+		}
+
+		if ((pattern->translate == REDMOND_DIRECTION_HORIZONTAL) || (pattern->translate == REDMOND_DIRECTION_BOTH))
+		{
+			translate_y = -y;
+		}
+
+		cairo_matrix_translate(&current_matrix, translate_x, translate_y);
+	}
+
+	cairo_pattern_set_matrix(pattern->handle, &current_matrix);
+
+	cairo_save(cr);
+
+	cairo_set_source(cr, pattern->handle);
+
+	cairo_rectangle(cr, x, y, width, height);
+
+	cairo_fill (cr);
+
+	cairo_restore(cr);
+
+	cairo_pattern_set_matrix(pattern->handle, &original_matrix);
+}
  
-  pixmap = gdk_pixmap_new (window, 2, 2, -1);
- 
-  gdk_draw_point (pixmap, style->bg_gc[state], 0, 0);
-  gdk_draw_point (pixmap, style->bg_gc[state], 1, 1);
-  gdk_draw_point (pixmap, style->light_gc[state], 1, 0);
-  gdk_draw_point (pixmap, style->light_gc[state], 0, 1);
- 
-  gc_values.fill = GDK_TILED;
-  gc_values.tile = pixmap;
-  gc_values.ts_x_origin = x;
-  gc_values.ts_y_origin = y;
-  gc = gdk_gc_new_with_values (window, &gc_values,
-                               GDK_GC_TS_X_ORIGIN | GDK_GC_TS_Y_ORIGIN |
-                               GDK_GC_FILL | GDK_GC_TILE);
- 
-  if (part != RADIO_NONE)
-  {
-    if (!parts[part].bmap)
-      parts[part].bmap = gdk_bitmap_create_from_data (window,
-  						      parts[part].bits,
- 						      PART_SIZE, PART_SIZE);
-    gdk_gc_set_clip_origin (gc, x, y);	
-    gdk_gc_set_clip_mask(gc, parts[part].bmap);
-  }
-  else if (area)
-    gdk_gc_set_clip_rectangle (gc, area);
- 
-  gdk_draw_rectangle (window, gc, TRUE, x, y, width, height);
- 
-  g_object_unref (gc);
-  g_object_unref (pixmap);
+void
+do_redmond_draw_masked_fill (cairo_t * cr,
+                                  CairoPattern *mask,
+                                  CairoColor * background,
+                                  CairoColor * foreground,
+                                  gint x,
+                                  gint y, 
+                                  gint width, 
+                                  gint height)
+{
+	ge_cairo_set_color(cr, background);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_fill(cr);
+
+	ge_cairo_set_color(cr, foreground);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_mask (cr, mask->handle);
 }
   
 /***********************************************
  * do_redmond_draw_check -
  *  
  *   A simple routine to draw a redmond style
- *   check mark using the passed GC.
+ *   check mark using the passed Color.
  *  
  *   It originated in Smooth-Engine.
  ***********************************************/
 void
-do_redmond_draw_check (cairo_t *cr,
+do_redmond_draw_check (cairo_t *canvas,
                        CairoColor * color,
                        gint x, 
                        gint y, 
                        gint width, 
                        gint height)
 { 
-  double left, top;
-  int scale;
+  gint odd = 0;
+  gdouble left, top;
+  gint scale, factor;
 
   scale = MIN(width, height);
 
-  if (!(scale % 2))
-    scale -= 1;
+  factor = 10;
 
-  if (scale <= 11)
-    scale = 9;
+  if (odd = (scale % 2))
+  {
+    factor -= 1;
+  }
+
+  if (scale <= (factor + 2))
+    scale = factor;
 
   left = x + floor((width - scale) / 2) + 0.5;
   top = y + floor((height - scale) / 2) + 0.5;
 
-  cairo_save(cr);
+  cairo_save(canvas);
 
-  ge_cairo_set_color(cr, color);	
-  cairo_set_line_width(cr, 0.5);
+  ge_cairo_set_color(canvas, color);	
+  cairo_set_line_width(canvas, 0.5);
 /*
+
+EVEN - 
+
+    0   1   2   3   4   5   6   7   8   9
+  +---+---+---+---+---+---+---+---+---+---+
+0 |   |   |   |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+---+
+1 |   |   |   |   |   |   |   |   | x |   |
+  +---+---+---+---+---+---+---+---+---+---+
+2 |   |   |   |   |   |   |   | x | x |   |
+  +---+---+---+---+---+---+---+---+---+---+
+3 |   |   |   |   |   |   | x | x | x |   |
+  +---+---+---+---+---+---+---+---+---+---+
+4 |   | x |   |   |   | x | x | x |   |   |
+  +---+---+---+---+---+---+---+---+---+---+
+5 |   | x | x |   | x | x | x |   |   |   |
+  +---+---+---+---+---+---+---+---+---+---+
+6 |   | x | x | x | x | x |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+---+
+7 |   |   | x | x | x |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+---+
+8 |   |   |   | x |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+---+
+9 |   |   |   |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+---+---+
+
+ODD -
+
     0   1   2   3   4   5   6   7   8
   +---+---+---+---+---+---+---+---+---+
 0 |   |   |   |   |   |   |   |   |   |
@@ -236,26 +197,27 @@ do_redmond_draw_check (cairo_t *cr,
 
 */
 
-  cairo_move_to(cr, left + floor((1*scale)/9), top + floor((3*scale)/9)); //(1,3)
-  cairo_line_to(cr, left + floor((1*scale)/9), top + floor((5*scale)/9)); //(1,5)
-  cairo_line_to(cr, left + floor((3*scale)/9), top + floor((7*scale)/9)); //(3,7)
-  cairo_line_to(cr, left + floor((7*scale)/9), top + floor((3*scale)/9)); //(7,3)
-  cairo_line_to(cr, left + floor((7*scale)/9), top + floor((1*scale)/9)); //(7,1)
-  cairo_line_to(cr, left + floor((3*scale)/9), top + floor((5*scale)/9)); //(3,5)
-  cairo_line_to(cr, left + floor((1*scale)/9), top + floor((3*scale)/9)); //(1,3)
+  cairo_move_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); //(1,4-odd)
+  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((6-odd)*scale)/factor)); //(1,6-odd)
+  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((8-odd)*scale)/factor)); //(3,8-odd)
+  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((3*scale)/factor)); //(8-odd,3)
+  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((1*scale)/factor)); //(8-odd,1)
+  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((6-odd)*scale)/factor)); //(3,6-odd)
+  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); //(1,4-odd)
 
-  cairo_fill(cr);
+  cairo_fill(canvas);
 
-  cairo_move_to(cr, left + floor((1*scale)/9), top + floor((3*scale)/9)); //(1,3)
-  cairo_line_to(cr, left + floor((1*scale)/9), top + floor((5*scale)/9)); //(1,5)
-  cairo_line_to(cr, left + floor((3*scale)/9), top + floor((7*scale)/9)); //(3,7)
-  cairo_line_to(cr, left + floor((7*scale)/9), top + floor((3*scale)/9)); //(7,3)
-  cairo_line_to(cr, left + floor((7*scale)/9), top + floor((1*scale)/9)); //(7,1)
-  cairo_line_to(cr, left + floor((3*scale)/9), top + floor((5*scale)/9)); //(3,5)
-  cairo_line_to(cr, left + floor((1*scale)/9), top + floor((3*scale)/9)); //(1,3)
-  cairo_stroke(cr);
+  cairo_move_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); //(1,4-odd)
+  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((6-odd)*scale)/factor)); //(1,6-odd)
+  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((8-odd)*scale)/factor)); //(3,8-odd)
+  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((3*scale)/factor)); //(8-odd,3)
+  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((1*scale)/factor)); //(8-odd,1)
+  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((6-odd)*scale)/factor)); //(3,6-odd)
+  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); //(1,4-odd)
 
-  cairo_restore(cr);
+  cairo_stroke(canvas);
+
+  cairo_restore(canvas);
 }
  
 /***********************************************
@@ -413,10 +375,45 @@ do_redmond_draw_arrow (cairo_t *cr,
     }
 }
  
-/***********************************************/
-/* MenuShell/MenuBar Item Prelight Workaround  */
-/***********************************************/
- 
+void
+do_redmond_draw_simple_circle (cairo_t *canvas,
+                     	  		CairoColor * tl,
+                       			CairoColor * br,
+					gint center_x, 
+					gint center_y, 
+					gint radius)
+{ 
+      cairo_save(canvas);
+
+      cairo_move_to(canvas, center_x + (radius + 2), center_y + (radius + 2));
+      cairo_line_to(canvas, center_x + (radius + 2)*sin(M_PI/4.0), center_y - (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(canvas, center_x - (radius + 2)*sin(M_PI/4.0), center_y + (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(canvas, center_x + (radius + 2), center_y + (radius + 2));
+
+      cairo_clip (canvas);
+
+      ge_cairo_set_color(canvas, br);
+      cairo_arc(canvas, center_x, center_y, radius, 0,  2*M_PI);
+      cairo_fill(canvas);
+
+      cairo_restore(canvas);
+
+      cairo_save(canvas);
+
+      cairo_move_to(canvas, center_x - (radius + 2), center_y - (radius + 2));
+      cairo_line_to(canvas, center_x + (radius + 2)*sin(M_PI/4.0), center_y - (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(canvas, center_x - (radius + 2)*sin(M_PI/4.0), center_y + (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(canvas, center_x - (radius + 2), center_y - (radius + 2));
+
+      cairo_clip (canvas);
+
+      ge_cairo_set_color(canvas, tl); 
+      cairo_arc(canvas, center_x, center_y, radius, 0, 2*M_PI);
+      cairo_fill(canvas);
+
+      cairo_restore(canvas);
+}
+
 /***********************************************
  * do_redmond_draw_line -
  *  
@@ -460,6 +457,10 @@ do_redmond_draw_line(cairo_t *cr,
       cairo_stroke(cr);
     }
 }
+ 
+/***********************************************/
+/* MenuShell/MenuBar Item Prelight Workaround  */
+/***********************************************/
  
 /***********************************************
  * gtk_menu_shell_style_set -
