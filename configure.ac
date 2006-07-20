@@ -116,7 +116,6 @@ engines/Makefile
 engines/support/Makefile
 engines/clearlooks/Makefile
 engines/crux/Makefile
-engines/crux/pixmaps/Makefile
 engines/hc/Makefile
 engines/industrial/Makefile
 engines/mist/Makefile

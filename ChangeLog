@@ -1,3 +1,7 @@
+2006-07-20  Thomas Wood  <thos@gnome.org>
+
+	* configure.ac: Remove crux/pixmaps directory. Fixes bug 348167
+
 2006-07-20  Benjamin Otte  <in7y118@public.uni-hamburg.de>
 
 	* engines/crux/src/crux-draw.c: (draw_box_gap):
