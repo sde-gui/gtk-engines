@@ -1452,6 +1452,18 @@ draw_box_gap (GtkStyle *style,
 	gap_width -= (1 - gap_x);
 	gap_x = 1;
     }
+    switch (gap_side)
+    {
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
+      gap_width = MIN (gap_width, width - gap_x - 1);
+      break;
+    case GTK_POS_LEFT:
+    case GTK_POS_RIGHT:
+      gap_width = MIN (gap_width, height - gap_x - 1);
+      break;
+    }
+
 
     switch (gap_side)
     {

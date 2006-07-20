@@ -1,5 +1,12 @@
 2006-07-20  Benjamin Otte  <in7y118@public.uni-hamburg.de>
 
+	* engines/crux/src/crux-draw.c: (draw_box_gap):
+	* engines/lighthouseblue/src/lighthouseblue_style.c:
+	(draw_box_gap):
+	  fix drawing issues with box gaps at the end of a line.
+
+2006-07-20  Benjamin Otte  <in7y118@public.uni-hamburg.de>
+
 	* engines/crux/src/crux-draw.c: (draw_extension):
 	* engines/lighthouseblue/src/lighthouseblue_style.c:
 	(draw_extension):
