@@ -1502,9 +1502,9 @@ draw_extension (GtkStyle *style,
 	/* Get x relative to parent widget, not window */
 	GtkWidget* parent_widget;
 	gint relative_x;
-	if (widget != NULL)
+	if (widget != NULL &&
+	    (parent_widget = gtk_widget_get_parent(widget)) != NULL)
 	{
-		parent_widget = gtk_widget_get_parent(widget);
 		relative_x = x - parent_widget->allocation.x;
 		if (GTK_IS_CONTAINER(widget))
 			relative_x = relative_x - gtk_container_get_border_width((GtkContainer*)widget);

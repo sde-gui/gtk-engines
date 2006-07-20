@@ -1128,6 +1128,7 @@ static void draw_extension (GtkStyle *style,
 							gint y,
 							gint width, gint height, GtkPositionType gap_side)
 {
+	GtkWidget *parent;
 	GdkGC *gc1;
 	GdkGC *gc2;
 	GdkGC *outer_gc;
@@ -1141,8 +1142,9 @@ static void draw_extension (GtkStyle *style,
 
 	sanitize_size (window, &width, &height);
   
+	parent = gtk_widget_get_parent (widget);
 	outer_gc = (LIGHTHOUSEBLUE_STYLE (style))->shade_gc[6];
-	bg_gc = (gtk_widget_get_style (gtk_widget_get_parent (widget)))->bg_gc[GTK_STATE_NORMAL];
+	bg_gc = (parent ? gtk_widget_get_style (parent) : style)->bg_gc[GTK_STATE_NORMAL];
 	
 	switch (shadow_type)
 	{

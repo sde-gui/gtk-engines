@@ -1,3 +1,11 @@
+2006-07-20  Benjamin Otte  <in7y118@public.uni-hamburg.de>
+
+	* engines/crux/src/crux-draw.c: (draw_extension):
+	* engines/lighthouseblue/src/lighthouseblue_style.c:
+	(draw_extension):
+	  Fix for new notebook dnd code. Both themes used the parent widget 
+	  witholut checking for NULL before.
+
 2006-07-18   Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/hc/Makefile.am:
