@@ -1,5 +1,13 @@
 2006-07-21  Thomas Wood  <thos@gnome.org>
 
+	* engines/crux/src/crux-draw.c:
+	  (draw_box): fix warning about assignment used as boolean
+	  (draw_check), (draw_option): add inconsistent state
+	  (draw_layout), (crux_draw_style_class_init): Override to prevent
+	shadowed disabled text
+
+2006-07-21  Thomas Wood  <thos@gnome.org>
+
 	* engines/crux/src/crux-draw.c: (paint_progress_bar),
 	(draw_shadow), (draw_box), (draw_extension), (draw_slider):
 

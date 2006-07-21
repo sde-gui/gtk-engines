@@ -887,7 +887,7 @@ draw_box (GtkStyle *style,
 			gboolean focused = FALSE;
 			GtkWidget *entry;
 			/* TODO: need RTL support */
-			if (entry = g_object_get_data ((GObject*) widget->parent, "entry"))
+			if ((entry = g_object_get_data ((GObject*) widget->parent, "entry")))
 			{
 				focused = (GTK_WIDGET_HAS_FOCUS (entry));
 				state_type = GTK_WIDGET_STATE (entry);
@@ -1231,9 +1231,8 @@ draw_check (GtkStyle *style,
 			cx+=1.0; cy+=1.0; cw -= 2.0; ch -= 2.0;
 		}
 	}
-	if (shadow_type != GTK_SHADOW_OUT)
+	if (shadow_type == GTK_SHADOW_IN)
 	{
-
 		cairo_set_line_width (cr, 2.0);
 
 		/* draw check mark shadow first */
@@ -1258,6 +1257,16 @@ draw_check (GtkStyle *style,
 		cairo_line_to (cr, cx + floor(cw / 2), cy + floor(ch * 0.75));
 		cairo_line_to (cr, cx + cw, cy + floor(ch / 4));
 		cairo_stroke (cr);
+	}
+	else if (shadow_type != GTK_SHADOW_OUT)
+	{
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+		cairo_rectangle (cr, x + width / 4, y + (height /3) + 0.5, width - (width / 2), height / 4);
+		cairo_fill (cr);
+
+		gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+		cairo_rectangle (cr, x + width / 4, y + (height /3), width - (width / 2), height / 4);
+		cairo_fill (cr);
 	}
 
 	cairo_destroy (cr);
@@ -1356,6 +1365,18 @@ draw_option (GtkStyle *style,
 			cairo_stroke (cr);
 		}
 	}
+	else if (shadow_type != GTK_SHADOW_OUT)
+	{
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+		cairo_rectangle (cr, x + width / 4, y + (height /3) + 0.5, width - (width / 2), height / 4);
+		cairo_fill (cr);
+
+		gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
+		cairo_rectangle (cr, x + width / 4, y + (height /3), width - (width / 2), height / 4);
+		cairo_fill (cr);
+	}
+
+
 
 	cairo_destroy (cr);
 }
@@ -1779,6 +1800,37 @@ draw_handle (GtkStyle *style,
     gdk_gc_set_clip_rectangle (dark_gc, NULL);
 }
 
+static void
+draw_layout (GtkStyle        *style,
+	     GdkWindow       *window,
+	     GtkStateType     state_type,
+	     gboolean         use_text,
+	     GdkRectangle    *area,
+	     GtkWidget       *widget,
+	     const char      *detail,
+	     int              x,
+	     int              y,
+	     PangoLayout      *layout)
+{
+	GdkGC *gc;
+	
+	g_return_if_fail (GTK_IS_STYLE (style));
+	g_return_if_fail (window != NULL);
+	
+	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
+	
+	if (area) {
+		gdk_gc_set_clip_rectangle (gc, area);
+	}
+	
+	gdk_draw_layout (window, gc, x, y, layout);
+	
+	if (area) {
+		gdk_gc_set_clip_rectangle (gc, NULL);
+	}
+}
+
+
 void
 crux_draw_style_class_init (GtkStyleClass *style_class)
 {
@@ -1799,4 +1851,5 @@ crux_draw_style_class_init (GtkStyleClass *style_class)
   style_class->draw_focus = draw_focus;
   style_class->draw_slider = draw_slider;
   style_class->draw_handle = draw_handle;
+  style_class->draw_layout = draw_layout;
 }
