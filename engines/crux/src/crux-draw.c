@@ -13,6 +13,9 @@
 
 #define OUTLINE_GRAY 46/255.0, 52/255.0, 54/255.0
 
+#define CRUX_LIGHT(xx, yy) yy.r = xx.r + 56/255.0;yy.g = xx.g + 47/255.0;yy.b = xx.b + 45/255.0;
+#define CRUX_DARK(xx, yy) yy.r = xx.r - 25/255.0;yy.g = xx.g - 27/255.0;yy.b = xx.b - 21/255.0;
+
 GtkStyleClass *parent_style_class;
 
 static void
@@ -548,8 +551,8 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	cairo_rectangle (cr, x, y, width, height);
 
 	ge_gdk_color_to_cairo (&style->base[GTK_STATE_SELECTED], &c1);
-	ge_shade_color (&c1, 0.8, &c2); /* darken */
-	ge_shade_color (&c1, 1.4, &c1); /* lighten */
+	CRUX_DARK(c1, c2)
+	CRUX_LIGHT(c1, c1)
 	if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT || orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
 		crp = cairo_pattern_create_linear (x, y, x, y + height);
 	else
@@ -826,9 +829,14 @@ draw_shadow (GtkStyle *style,
 
 	if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
 	{
+		GtkWidget *button;
 		width += 2;
 		if (area == NULL)
 			area = &area2;
+		g_object_set_data ((GObject*) widget->parent, "entry", widget);
+		button = g_object_get_data ((GObject*) widget->parent, "button");
+		if (GTK_IS_WIDGET (button))
+			gtk_widget_queue_draw_area (button,  button->allocation.x, button->allocation.y, button->allocation.width,button->allocation.height);
 	}
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -876,7 +884,16 @@ draw_box (GtkStyle *style,
 		if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
 		{
 			/* Combobox buttons */
+			gboolean focused = FALSE;
+			GtkWidget *entry;
 			/* TODO: need RTL support */
+			if (entry = g_object_get_data ((GObject*) widget->parent, "entry"))
+			{
+				focused = (GTK_WIDGET_HAS_FOCUS (entry));
+				state_type = GTK_WIDGET_STATE (entry);
+			}
+
+
 			if (state_type == GTK_STATE_INSENSITIVE)
 				gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_INSENSITIVE]);
 			else
@@ -884,7 +901,10 @@ draw_box (GtkStyle *style,
 			cairo_rectangle (cr, x, y, width, height);
 			cairo_fill (cr);
 
-			paint_entry_shadow (cr, style, state_type, FALSE, x - 4, y, width + 4, height);
+			g_object_set_data ((GObject*) widget->parent, "button", widget);
+
+			paint_entry_shadow (cr, style, state_type, focused, x - 4, y, width + 4, height);
+
 			x += 3; y += 3;
 			width -= 6; height -= 6;
 		}
@@ -1586,7 +1606,7 @@ draw_extension (GtkStyle *style,
 	
 	x++; y++; width -= 2.0; height -= 2.0;
 	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, 1.0, corners);
-	gdk_cairo_set_source_color (cr, &style->light[state_type]);
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5); /* must be same colour as corresponding draw_box highlight */
 	cairo_stroke (cr);
 	cairo_destroy (cr);
 }
@@ -1646,29 +1666,32 @@ draw_slider (GtkStyle *style,
 	else
 		crp = cairo_pattern_create_linear (x, y, x, y + height);
 
-	ge_gdk_color_to_cairo (&style->light[GTK_STATE_SELECTED], &c1);
-	ge_gdk_color_to_cairo (&style->dark[GTK_STATE_SELECTED], &c2);
+	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &c2);
+
+	/* light */
+	CRUX_LIGHT (c2, c1)
+
+	/* dark */
+	CRUX_DARK (c2, c2)
+
 	cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
 	cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
 	cairo_set_source (cr, crp);
 	cairo_fill_preserve (cr);
 	cairo_pattern_destroy (crp);
 
-	gdk_cairo_set_source_color (cr, &style->dark[GTK_STATE_SELECTED]);
+	cairo_set_source_rgb (cr, c2.r, c2.g, c2.b);
 	cairo_stroke (cr);
-/*
-	cairo_rectangle (cr, x + 1.5, y + 1.5, width - 2.0, height - 2.0);
-	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.3);
-	cairo_stroke (cr);
-*/
+
+
 	/* bevel */
 	cairo_rectangle (cr, x+1.5, y+1.5, width-3.0, height-3.0);
 	if (orientation == GTK_ORIENTATION_VERTICAL)
 		crp = cairo_pattern_create_linear (x, y, x + width, y);
 	else
 		crp = cairo_pattern_create_linear (x, y, x, y + height);
-	cairo_pattern_add_color_stop_rgba (crp, 0.0, 1.0, 1.0, 1.0, .5);
-	cairo_pattern_add_color_stop_rgba (crp, 1.0, 1.0, 1.0, 1.0, 0.2);
+	cairo_pattern_add_color_stop_rgba (crp, 0.0, 1.0, 1.0, 1.0, 0.2);
+	cairo_pattern_add_color_stop_rgba (crp, 1.0, 1.0, 1.0, 1.0, 0.1);
 	cairo_set_source (cr, crp);
 	cairo_stroke (cr);
 

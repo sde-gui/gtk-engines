@@ -1,5 +1,13 @@
 2006-07-21  Thomas Wood  <thos@gnome.org>
 
+	* engines/crux/src/crux-draw.c: (paint_progress_bar),
+	(draw_shadow), (draw_box), (draw_extension), (draw_slider):
+
+	- Improved colours for scroll and progress bars
+	- Fix combobox focus line drawing
+
+2006-07-21  Thomas Wood  <thos@gnome.org>
+
 	* engines/lighthouseblue/*:
 	* engines/metal/*:
 	* themes/LighthouseBlue/*:
