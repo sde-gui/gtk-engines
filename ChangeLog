@@ -1,3 +1,12 @@
+2006-07-21  Thomas Wood  <thos@gnome.org>
+
+	* engines/lighthouseblue/*:
+	* engines/metal/*:
+	* themes/LighthouseBlue/*:
+	* themes/Metal/*:
+	
+	Remove directories no longer used in build
+
 2006-07-20  Thomas Wood  <thos@gnome.org>
 
 	* configure.ac: Remove crux/pixmaps directory. Fixes bug 348167
