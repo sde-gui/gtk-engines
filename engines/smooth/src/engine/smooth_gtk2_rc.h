@@ -82,17 +82,17 @@ typedef struct
   guint quit_handler_id;
 } SmoothRcStyle;
 
-void smooth_rc_style_init (SmoothRcStyle *style);
+void smooth_rc_style_init (SmoothRcStyle *style) G_GNUC_INTERNAL;
 
 void
 smooth_gtkrc_style_merge (SmoothRcStyleData *dest_data,
-                          SmoothRcStyleData *src_data);
+                          SmoothRcStyleData *src_data) G_GNUC_INTERNAL;
 
 guint
 smooth_gtkrc_parse(GScanner   *Scanner,
 			GtkSettings  *Settings,
 			SmoothRcStyle *Style,
-			guint Token);
+			guint Token) G_GNUC_INTERNAL;
 
 #define is_enum(str, value)  (g_ascii_strncasecmp(str, value, strlen(value)) == 0)
 
@@ -100,6 +100,6 @@ guint
 theme_parse_pixmap(GScanner *scanner, 
                    GTokenType wanted_token, 
                    gchar *default_value,
-                   GString **retval);
+                   GString **retval) G_GNUC_INTERNAL;
 
 #endif /*SMOOTH_GTK2_RC*/

@@ -175,4 +175,9 @@ typedef struct
 	/************************************************/
 } SmoothGDKPrivateCanvas;
 
+GdkGC * smooth_internal_drawing_area_use_brush_gc(SmoothGDKPrivateCanvas *Canvas, SmoothBool RequireValidColor) G_GNUC_INTERNAL;
+void smooth_internal_drawing_area_unuse_brush_gc(SmoothGDKPrivateCanvas *Canvas, GdkGC * GC) G_GNUC_INTERNAL;
+void smooth_internal_drawing_area_unuse_pen_gc(SmoothGDKPrivateCanvas *Canvas, GdkGC * GC) G_GNUC_INTERNAL;
+GdkGC * smooth_internal_drawing_area_use_pen_gc(SmoothGDKPrivateCanvas *Canvas, SmoothBool RequireValidColor) G_GNUC_INTERNAL;
+
 #endif /* GDK_PRIVATE_DRAWING_INTERFACE_H */

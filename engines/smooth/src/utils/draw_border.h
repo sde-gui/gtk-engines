@@ -88,7 +88,7 @@ SmoothDrawShadowWithGap(SmoothCanvas *Canvas,
 			SmoothPositionSide GapSide, 
 			SmoothInt GapPos,
 			SmoothInt GapSize,
-			SmoothBool TopLeftOverlap);
+			SmoothBool TopLeftOverlap) G_GNUC_INTERNAL;
 
 void
 SmoothDrawBevelWithGap(SmoothCanvas *Canvas,
@@ -98,20 +98,20 @@ SmoothDrawBevelWithGap(SmoothCanvas *Canvas,
 			SmoothInt BevelThickness,
 			SmoothPositionSide GapSide, 
 			SmoothInt GapPos,
-			SmoothInt GapSize);
+			SmoothInt GapSize) G_GNUC_INTERNAL;
 
 void
 SmoothDrawCirclularShadow(SmoothCanvas *Canvas,
 				SmoothColor TopLeftColor,
 				SmoothColor BottomRightColor,
-				SmoothRectangle Target);
+				SmoothRectangle Target) G_GNUC_INTERNAL;
 	       
 void
 SmoothDrawCirclularBevel(SmoothCanvas *Canvas,
 				SmoothColor TopLeftColor,
 				SmoothColor BottomRightColor,
 				SmoothRectangle Target,
-				SmoothInt BevelThickness);
+				SmoothInt BevelThickness) G_GNUC_INTERNAL;
 
 
 SmoothBool
@@ -124,14 +124,14 @@ SmoothDrawBorderWithGap(SmoothBorder *Border,
 				SmoothInt Height,
 				SmoothPositionSide GapSide, 
 				SmoothInt GapPos,
-				SmoothInt GapSize);
+				SmoothInt GapSize) G_GNUC_INTERNAL;
 
 SmoothBool
 SmoothDrawPolygonBorder(SmoothBorder *Border,
 				SmoothCanvas *Canvas,
 				SmoothColor BaseColor,
 				SmoothPoint *Points,
-				SmoothInt Count);
+				SmoothInt Count) G_GNUC_INTERNAL;
 
 void
 SmoothDrawLineBevel(SmoothLineBevel LineBevel,
@@ -141,6 +141,6 @@ SmoothDrawLineBevel(SmoothLineBevel LineBevel,
 			SmoothInt Start,
 			SmoothInt End,
 			SmoothInt Base,
-			SmoothBool Horizontal);				
+			SmoothBool Horizontal) G_GNUC_INTERNAL;			
 
 #endif /* DRAW_BORDER_H */

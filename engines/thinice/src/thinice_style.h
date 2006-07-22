@@ -24,6 +24,6 @@ struct _ThiniceStyleClass
   GtkStyleClass parent_class;
 };
 
-void thinice_style_register_type (GTypeModule *module);
+void thinice_style_register_type (GTypeModule *module) G_GNUC_INTERNAL;
 
 

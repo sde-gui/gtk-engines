@@ -56,6 +56,6 @@ void	SmoothDrawFill(SmoothFill *Fill,
 			SmoothInt X,
 			SmoothInt Y,
 			SmoothInt Width,
-			SmoothInt Height);
+			SmoothInt Height) G_GNUC_INTERNAL;
 		      
 #endif /* DRAW_FILL_H */

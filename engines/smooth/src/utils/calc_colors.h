@@ -31,6 +31,6 @@
 void
 SmoothCompositeColorShade(SmoothColor *Original, 
 			  SmoothDouble ShadeRatio,
-			  SmoothColor *Composite);
+			  SmoothColor *Composite) G_GNUC_INTERNAL;
 
 #endif /* CALC_COLORS_H */

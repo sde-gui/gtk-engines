@@ -32,11 +32,11 @@
 #include INTERFACE_DEFINES
 #include "gdk2_private_drawing_interface.h"
 
-GdkGC *internal_drawing_area_use_pen_gc(SmoothGDKPrivateCanvas *Canvas, SmoothBool RequireValidColor);
-void internal_drawing_area_unuse_pen_gc(SmoothGDKPrivateCanvas *Canvas, GdkGC * GC);
+GdkGC *smooth_internal_drawing_area_use_pen_gc(SmoothGDKPrivateCanvas *Canvas, SmoothBool RequireValidColor);
+void smooth_internal_drawing_area_unuse_pen_gc(SmoothGDKPrivateCanvas *Canvas, GdkGC * GC);
 
-GdkGC * internal_drawing_area_use_brush_gc(SmoothGDKPrivateCanvas *Canvas, SmoothBool RequireValidColor);
-void internal_drawing_area_unuse_brush_gc(SmoothGDKPrivateCanvas *Canvas, GdkGC * GC);
+GdkGC * smooth_internal_drawing_area_use_brush_gc(SmoothGDKPrivateCanvas *Canvas, SmoothBool RequireValidColor);
+void smooth_internal_drawing_area_unuse_brush_gc(SmoothGDKPrivateCanvas *Canvas, GdkGC * GC);
 
 /* some basic math defines */
 #define SQR(x) x*x
@@ -494,7 +494,7 @@ GDK2CanvasRenderImage(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas && Image.Pixmap)
 	{
-		GdkGC *brush = internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothFalse);
+		GdkGC *brush = smooth_internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothFalse);
 		
 		if (brush)
 		{
@@ -508,7 +508,7 @@ GDK2CanvasRenderImage(SmoothPrivateCanvas *Canvas,
 	        		gdk_draw_drawable(Canvas->GDKPrivateCanvas.Window, brush, Image.Pixmap, 0, 0, X, Y, Width, Height);
 				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
+			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
 
 		result = SmoothTrue;
@@ -528,7 +528,7 @@ GDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas && ImageBuffer)
 	{
-		GdkGC *brush = internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothFalse);
+		GdkGC *brush = smooth_internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothFalse);
 		
 		if (brush)
 		{
@@ -550,7 +550,7 @@ GDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
 							 Width, Height, dither, 0, 0);
 				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
+			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
 
 		result = SmoothTrue;
@@ -568,7 +568,7 @@ GDK2CanvasDrawPoint(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -582,7 +582,7 @@ GDK2CanvasDrawPoint(SmoothPrivateCanvas *Canvas,
 				gdk_draw_point(Canvas->GDKPrivateCanvas.Window, pen, X, Y);
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 		
 		result = SmoothTrue;
@@ -599,7 +599,7 @@ GDK2CanvasDrawPoints(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -613,7 +613,7 @@ GDK2CanvasDrawPoints(SmoothPrivateCanvas *Canvas,
 				gdk_draw_points(Canvas->GDKPrivateCanvas.Window, pen, Points, NumberOfPoints);
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 		
 		result = SmoothTrue;
@@ -633,7 +633,7 @@ GDK2CanvasDrawLine(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -647,7 +647,7 @@ GDK2CanvasDrawLine(SmoothPrivateCanvas *Canvas,
 				gdk_draw_line(Canvas->GDKPrivateCanvas.Window, pen, X1, Y1, X2, Y2);
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 		
 		result = SmoothTrue;
@@ -664,7 +664,7 @@ GDK2CanvasDrawSegment(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -678,7 +678,7 @@ GDK2CanvasDrawSegment(SmoothPrivateCanvas *Canvas,
 				gdk_draw_line(Canvas->GDKPrivateCanvas.Window, pen, _Point1.x, _Point1.y, _Point2.x, _Point2.y);
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 			
 		result = SmoothTrue;
@@ -695,7 +695,7 @@ GDK2CanvasDrawLines(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -709,7 +709,7 @@ GDK2CanvasDrawLines(SmoothPrivateCanvas *Canvas,
 				gdk_draw_lines(Canvas->GDKPrivateCanvas.Window, pen, Points, NumberOfPoints);
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 		
 		result = SmoothTrue;
@@ -731,7 +731,7 @@ GDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -746,7 +746,7 @@ GDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
 						AnglePosition*64, AngleLength*64);
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 
 		result = SmoothTrue;
@@ -766,7 +766,7 @@ GDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -883,7 +883,7 @@ GDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
 			
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 		result = SmoothTrue;
 	}
@@ -899,7 +899,7 @@ GDK2CanvasFramePolygon(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -914,7 +914,7 @@ GDK2CanvasFramePolygon(SmoothPrivateCanvas *Canvas,
 							Points, NumberOfPoints);
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 			
 		result = SmoothTrue;
@@ -935,7 +935,7 @@ GDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *pen = internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *pen = smooth_internal_drawing_area_use_pen_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (pen)
 		{
@@ -951,7 +951,7 @@ GDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
 				/* Connect the end points..... */
 				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
+			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
 
 		result = SmoothTrue;
@@ -971,7 +971,7 @@ GDK2CanvasFillRectangle(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *brush = internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *brush = smooth_internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (brush)
 		{
@@ -986,7 +986,7 @@ GDK2CanvasFillRectangle(SmoothPrivateCanvas *Canvas,
 				
 				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
+			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
 		result = SmoothTrue;
 	}
@@ -1002,7 +1002,7 @@ GDK2CanvasFillPolygon(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *brush = internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *brush = smooth_internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (brush)
 		{
@@ -1017,7 +1017,7 @@ GDK2CanvasFillPolygon(SmoothPrivateCanvas *Canvas,
 							Points, NumberOfPoints);
 				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
+			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
 			
 		result = SmoothTrue;
@@ -1038,7 +1038,7 @@ GDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas)
 	{
-		GdkGC *brush = internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
+		GdkGC *brush = smooth_internal_drawing_area_use_brush_gc(&Canvas->GDKPrivateCanvas, SmoothTrue);
 		
 		if (brush)
 		{
@@ -1056,7 +1056,7 @@ GDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
 
 				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
-			internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
+			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
 
 		result = SmoothTrue;

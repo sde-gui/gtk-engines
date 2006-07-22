@@ -65,7 +65,7 @@ SmoothDrawCheckMark(SmoothCanvas Canvas,
 			SmoothInt Width,
 			SmoothInt Height,
 			SmoothColor Background,
-			SmoothColor Foreground);
+			SmoothColor Foreground) G_GNUC_INTERNAL;
 
 
 #endif /* DRAW_CHECKMARK_H */

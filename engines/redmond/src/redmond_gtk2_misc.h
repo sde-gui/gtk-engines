@@ -27,7 +27,7 @@ do_redmond_draw_pattern_fill (cairo_t * cr,
                                   gint x,
                                   gint y, 
                                   gint width, 
-                                  gint height);
+                                  gint height) G_GNUC_INTERNAL;
                                    
 void
 do_redmond_draw_masked_fill (cairo_t * cr,
@@ -37,14 +37,14 @@ do_redmond_draw_masked_fill (cairo_t * cr,
                                   gint x,
                                   gint y, 
                                   gint width, 
-                                  gint height);
+                                  gint height) G_GNUC_INTERNAL;
 
 void do_redmond_draw_check (cairo_t *cr,
                             CairoColor *color, 
                             gint x, 
                             gint y, 
                             gint width, 
-                            gint height);
+                            gint height) G_GNUC_INTERNAL;
                             
 void do_redmond_draw_arrow (cairo_t *cr,
                             CairoColor *color,
@@ -52,7 +52,7 @@ void do_redmond_draw_arrow (cairo_t *cr,
                             gint x, 
                             gint y, 
                             gint width, 
-                            gint height);
+                            gint height) G_GNUC_INTERNAL;
 
 void
 do_redmond_draw_simple_circle (cairo_t *canvas,
@@ -60,7 +60,7 @@ do_redmond_draw_simple_circle (cairo_t *canvas,
                        			CairoColor * br,
 					gint center_x, 
 					gint center_y, 
-					gint radius);
+					gint radius) G_GNUC_INTERNAL;
                             
 void do_redmond_draw_line(cairo_t *cr, 
                           CairoColor * dark, 
@@ -69,7 +69,7 @@ void do_redmond_draw_line(cairo_t *cr,
                           gint start, 
                           gint end, 
                           gint base, 
-                          gboolean horizontal);
+                          gboolean horizontal) G_GNUC_INTERNAL;
  
-void gtk_menu_shell_setup_signals(GtkWidget *widget);
-void gtk_menu_shell_cleanup_signals(GtkWidget *widget);
+void redmond_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget) G_GNUC_INTERNAL;
+void redmond_gtk2_engine_hack_menu_shell_cleanup_signals(GtkWidget *widget) G_GNUC_INTERNAL;

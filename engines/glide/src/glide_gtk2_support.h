@@ -21,15 +21,18 @@
 
 #include <math.h>
 
-void ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade);
-void ge_cairo_pattern_add_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color);
+void
+ge_blend_color(const CairoColor *color1, const CairoColor *color2, CairoColor *composite) G_GNUC_INTERNAL;
+
+void ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade) G_GNUC_INTERNAL;
+void ge_cairo_pattern_add_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color) G_GNUC_INTERNAL;
 
 void glide_draw_pattern_fill(cairo_t *canvas,
 					CairoPattern *pattern,
 					gint x,
 					gint y,
 					gint width,
-					gint height);
+					gint height) G_GNUC_INTERNAL;
 
 typedef enum {
 	GLIDE_BEVEL_STYLE_SMOOTH = 1,
@@ -74,7 +77,7 @@ void do_glide_draw_border_with_gap(cairo_t *canvas,
 					gint height,
 					GlideSide gap_side,
 					gint gap_pos,
-					gint gap_size);
+					gint gap_size) G_GNUC_INTERNAL;
 
 void do_glide_draw_border(cairo_t *canvas,
                               CairoColor *base,
@@ -83,7 +86,7 @@ void do_glide_draw_border(cairo_t *canvas,
                               gint x,
                               gint y,
                               gint width,
-                              gint height);
+                              gint height) G_GNUC_INTERNAL;
 
 typedef enum {
 	GLIDE_CHECK_INCONSISTENT, 
@@ -96,7 +99,7 @@ void do_glide_draw_check (cairo_t *cr,
                             gint x, 
                             gint y, 
                             gint width, 
-                            gint height);
+                            gint height) G_GNUC_INTERNAL;
                 
 void 
 do_glide_draw_round_option(cairo_t *canvas,
@@ -109,7 +112,7 @@ do_glide_draw_round_option(cairo_t *canvas,
 				gint x,
 				gint y,
 				gint width,
-				gint height);
+				gint height) G_GNUC_INTERNAL;
 
 void
 do_glide_draw_simple_circle (cairo_t *canvas,
@@ -117,7 +120,7 @@ do_glide_draw_simple_circle (cairo_t *canvas,
                        			CairoColor * br,
 					gint center_x, 
 					gint center_y, 
-					gint radius);
+					gint radius) G_GNUC_INTERNAL;
             
 void do_glide_draw_arrow (cairo_t *cr,
                             CairoColor *color,
@@ -125,7 +128,7 @@ void do_glide_draw_arrow (cairo_t *cr,
                             gint x, 
                             gint y, 
                             gint width, 
-                            gint height);
+                            gint height) G_GNUC_INTERNAL;
                             
 void do_glide_draw_line(cairo_t *cr, 
                           CairoColor * dark, 
@@ -134,7 +137,7 @@ void do_glide_draw_line(cairo_t *cr,
                           gint start, 
                           gint end, 
                           gint base, 
-                          gboolean horizontal);
+                          gboolean horizontal) G_GNUC_INTERNAL;
  
 void
 do_glide_draw_grip (cairo_t *canvas,
@@ -144,7 +147,6 @@ do_glide_draw_grip (cairo_t *canvas,
 			gint y,
 			gint width,
 			gint height,
-			gboolean vertical);
+			gboolean vertical) G_GNUC_INTERNAL;
 
-void gtk_menu_shell_setup_signals(GtkWidget *widget);
-void gtk_menu_shell_cleanup_signals(GtkWidget *widget);
+void glide_gtk2_engine_hack_menu_shell_setup(GtkWidget *widget) G_GNUC_INTERNAL;

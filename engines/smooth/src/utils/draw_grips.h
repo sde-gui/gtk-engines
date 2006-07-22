@@ -82,7 +82,7 @@ do_smooth_draw_broken_bars(SmoothCanvas *Canvas,
 			SmoothInt Width, 
 			SmoothInt Height, 
 
-			SmoothBool Horizontal);
+			SmoothBool Horizontal) G_GNUC_INTERNAL;
 
 void
 do_smooth_draw_lines(SmoothGripObjects *GripObjects,
@@ -93,7 +93,7 @@ do_smooth_draw_lines(SmoothGripObjects *GripObjects,
 		SmoothInt Y, 
 		SmoothInt Width, 
 		SmoothInt Height, 
-		SmoothBool Horizontal);
+		SmoothBool Horizontal) G_GNUC_INTERNAL;
 
 void
 do_smooth_draw_dots(SmoothGripObjects *GripObjects,
@@ -105,7 +105,7 @@ do_smooth_draw_dots(SmoothGripObjects *GripObjects,
 		SmoothInt Y, 
 		SmoothInt Width, 
 		SmoothInt Height, 
-		SmoothBool Horizontal);
+		SmoothBool Horizontal) G_GNUC_INTERNAL;
 
 void 
 do_smooth_draw_buds(SmoothCanvas *Canvas,
@@ -118,6 +118,6 @@ do_smooth_draw_buds(SmoothCanvas *Canvas,
 		SmoothInt Height, 
 		SmoothInt ClipOffset,
 		SmoothBool Horizontal,
-		SmoothBool Alternating);
+		SmoothBool Alternating) G_GNUC_INTERNAL;
 		
 #endif /* DRAW_GRIPS_H */

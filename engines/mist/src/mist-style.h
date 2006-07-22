@@ -25,6 +25,5 @@ struct _MistStyleClass
   GtkStyleClass parent_class;
 };
 
-void mist_style_register_type (GTypeModule *module);
-
+void mist_style_register_type (GTypeModule *module) G_GNUC_INTERNAL;
 

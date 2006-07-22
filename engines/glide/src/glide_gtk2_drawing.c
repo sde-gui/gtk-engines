@@ -1202,9 +1202,10 @@ glide_draw_box (GtkStyle * style,
 
   if (IS_MENU_SHELL(widget))
     {
-      gtk_menu_shell_setup_signals(widget);
+      glide_gtk2_engine_hack_menu_shell_setup(widget);
     }  
  
+
   if (CHECK_DETAIL (detail, "menuitem"))
     shadow_type = GTK_SHADOW_OUT;
  

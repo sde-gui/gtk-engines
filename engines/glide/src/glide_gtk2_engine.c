@@ -57,7 +57,7 @@ glide_rc_style_class_init (GlideRcStyleClass * klass)
   rc_style_class->create_style = glide_rc_style_create_style;
 }
  
-void
+static void
 glide_rc_style_register_type (GTypeModule * module)
 {
   static const GTypeInfo object_info = {
@@ -136,7 +136,7 @@ static glide_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
 	pattern->operator = CAIRO_OPERATOR_SOURCE;
 }
 
-void
+static void
 glide_simple_linear_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdouble shade2, gboolean vertical, CairoPattern *pattern)
 {
 	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
@@ -163,7 +163,7 @@ glide_simple_linear_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdo
 	ge_cairo_pattern_add_shade_color_stop(pattern->handle, 1, base, shade2);
 }
 
-void
+static void
 glide_linear_overlay_pattern(gboolean vertical, gboolean EVIL_OVERLAY, CairoPattern *pattern)
 {
 	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))

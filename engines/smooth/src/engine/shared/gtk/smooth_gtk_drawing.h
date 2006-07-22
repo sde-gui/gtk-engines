@@ -44,7 +44,7 @@ smooth_fill_background(SmoothCanvas Canvas,
 	               gboolean invert,
 		       gboolean horizontal,
 		       gboolean arc_fill,
-		       gboolean input_widget);
+		       gboolean input_widget) G_GNUC_INTERNAL;
 
 void
 smooth_parent_fill_background(SmoothCanvas Canvas,
@@ -59,7 +59,7 @@ smooth_parent_fill_background(SmoothCanvas Canvas,
 				gint height,
 				gboolean use_gradient,  
 				gboolean invert,
-				gboolean horizontal);
+				gboolean horizontal) G_GNUC_INTERNAL;
 
 void 
 smooth_draw_grip(SmoothCanvas Canvas,
@@ -71,7 +71,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
 	         SmoothInt Y,
 	         SmoothInt Width,
 	         SmoothInt Height,
-	         SmoothBool Horizontal);
+	         SmoothBool Horizontal) G_GNUC_INTERNAL;
 
 void
 do_smooth_draw_shadow(SmoothCanvas Canvas,
@@ -86,7 +86,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 			SmoothInt x,
 			SmoothInt y,
 			SmoothInt width,
-			SmoothInt height);
+			SmoothInt height) G_GNUC_INTERNAL;
 
 void
 smooth_draw_button_default(SmoothCanvas Canvas,
@@ -100,4 +100,4 @@ smooth_draw_button_default(SmoothCanvas Canvas,
 				gint x,
 				gint y,
 				gint width,
-				gint height);
+				gint height) G_GNUC_INTERNAL;

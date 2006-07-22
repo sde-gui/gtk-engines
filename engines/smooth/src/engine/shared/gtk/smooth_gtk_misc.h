@@ -30,10 +30,10 @@
 #define SMOOTH_GTK_MISC_H
 
 /* Polygon points for Fixed widget shapes*/
-gboolean rounded_extension_points(gint x, gint y, gint width,  gint height, gboolean selected, gboolean fill, GtkPositionType position, GdkPoint points[8]);
-gboolean square_extension_points(gint x, gint y, gint width, gint height, gboolean selected, gboolean fill, GtkPositionType position, GdkPoint points[8]);
-gboolean triangle_extension_points(gint x, gint y, gint width, gint height, gboolean selected, gboolean fill, GtkPositionType position, GdkPoint points[8]);
+gboolean rounded_extension_points(gint x, gint y, gint width,  gint height, gboolean selected, gboolean fill, GtkPositionType position, GdkPoint points[8]) G_GNUC_INTERNAL;
+gboolean square_extension_points(gint x, gint y, gint width, gint height, gboolean selected, gboolean fill, GtkPositionType position, GdkPoint points[8]) G_GNUC_INTERNAL;
+gboolean triangle_extension_points(gint x, gint y, gint width, gint height, gboolean selected, gboolean fill, GtkPositionType position, GdkPoint points[8]) G_GNUC_INTERNAL;
 		
-void rounded_box_points(gint x, gint y, gint width, gint height, GdkPoint points[13], gboolean large);
+void rounded_box_points(gint x, gint y, gint width, gint height, GdkPoint points[13], gboolean large) G_GNUC_INTERNAL;
 
 #endif /* SMOOTH_GTK_MISC_H */

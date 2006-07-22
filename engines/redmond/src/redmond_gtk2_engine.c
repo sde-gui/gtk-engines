@@ -44,7 +44,7 @@ redmond_rc_style_class_init (RedmondRcStyleClass * klass)
   rc_style_class->create_style = redmond_rc_style_create_style;
 }
  
-void
+static void
 redmond_rc_style_register_type (GTypeModule * module)
 {
   static const GTypeInfo object_info = {

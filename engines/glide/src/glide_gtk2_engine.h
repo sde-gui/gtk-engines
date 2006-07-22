@@ -118,6 +118,3 @@ typedef struct
 {
   GtkStyleClass parent_class;
 } GlideStyleClass;
-
-void
-glide_simple_linear_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdouble shade2, gboolean vertical, CairoPattern *pattern);

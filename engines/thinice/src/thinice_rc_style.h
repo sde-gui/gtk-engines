@@ -30,7 +30,7 @@ struct _ThiniceRcStyleClass
   GtkRcStyleClass parent_class;
 };
 
-void thinice_rc_style_register_type (GTypeModule *module);
+void thinice_rc_style_register_type (GTypeModule *module) G_GNUC_INTERNAL;
 
 /* Default stuff */
 #define DEFAULT_SCROLLSHAPE       SCROLL_SHAPED

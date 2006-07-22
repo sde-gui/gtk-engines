@@ -1,3 +1,19 @@
+2006-07-22   Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/glide/src/*:
+	* engines/mist/src/*:
+	* engines/redmond/src/*:
+	* engines/smooth/Makefile.am:
+	* engines/smooth/src/engine/*:
+	* engines/smooth/src/interfaces/*:
+	* engines/smooth/src/utils/*:
+	* engines/support/cairo-support.h:
+	* engines/thinice/src/*:
+
+	- G_GNUC_INTERNAL Everything Glide, Mist, Redmond, Smooth, Thinice & Support
+	- Switch Smooth to use widget-information macros
+	- Rename hack functions in Redmond and Glide
+
 2006-07-21   Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_check),

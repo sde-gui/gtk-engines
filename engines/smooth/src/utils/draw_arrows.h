@@ -108,9 +108,9 @@ SmoothDrawArrow(SmoothCanvas *Canvas,
 			SmoothInt Width,
 			SmoothInt Height,
 			SmoothColor Background,
-			SmoothColor Foreground);
+			SmoothColor Foreground) G_GNUC_INTERNAL;
 
 void 
-SmoothFreeArrowStyles(SmoothArrowPart *arrow);
+SmoothFreeArrowStyles(SmoothArrowPart *arrow) G_GNUC_INTERNAL;
 
 #endif /* DRAW_ARROWS_H */

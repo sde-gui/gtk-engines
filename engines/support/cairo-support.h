@@ -37,8 +37,8 @@ typedef enum
 	CR_CORNER_ALL         = 15
 } CairoCorners;
 
-void ge_hsb_from_color (const CairoColor *color, gdouble *hue, gdouble *saturation, gdouble *brightness);
-void ge_color_from_hsb (gdouble hue, gdouble saturation, gdouble brightness, CairoColor *color);
+void ge_hsb_from_color (const CairoColor *color, gdouble *hue, gdouble *saturation, gdouble *brightness) G_GNUC_INTERNAL;
+void ge_color_from_hsb (gdouble hue, gdouble saturation, gdouble brightness, CairoColor *color) G_GNUC_INTERNAL;
 
 void ge_gdk_color_to_cairo (GdkColor * gc, CairoColor * cc) G_GNUC_INTERNAL;
 void ge_cairo_color_to_gtk (CairoColor *cc, GdkColor *c) G_GNUC_INTERNAL;

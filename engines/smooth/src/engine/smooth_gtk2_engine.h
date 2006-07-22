@@ -75,6 +75,6 @@ typedef struct
 
 extern gint smooth_rc_references;
 
-gboolean smooth_rc_data_unref(GObject *rc_style);
+gboolean smooth_rc_data_unref(GObject *rc_style) G_GNUC_INTERNAL;
 
 #endif /* SMOOTH_GTK_ENGINE_H */

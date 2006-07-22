@@ -1,4 +1,5 @@
-INCLUDES = 								\
+INCLUDES =								\ 
+	-I$(top_srcdir)/engines/support					\
 	-I$(top_srcdir)/engines/smooth/src				\
 	$(GTK_CFLAGS)							\
 	-DINTERFACE_DEFINES="<interfaces/gdk2/gdk2_type_defines.h>" 	\
@@ -67,4 +68,4 @@ libsmooth_la_SOURCES =							\
 	./src/engine/smooth_gtk2_rc.c
 
 libsmooth_la_LDFLAGS= -module -avoid-version -no-undefined
-libsmooth_la_LIBADD = $(GTK_LIBS)
+libsmooth_la_LIBADD = $(GTK_LIBS)  $(top_builddir)/engines/support/libsupport.la

@@ -463,45 +463,45 @@ do_redmond_draw_line(cairo_t *cr,
 /***********************************************/
  
 /***********************************************
- * gtk_menu_shell_style_set -
+ * redmond_gtk2_engine_hack_menu_shell_style_set -
  *  
  *   Style set signal to ensure menushell signals
  *   get cleaned up if the theme changes
  ***********************************************/
 static gboolean 
-gtk_menu_shell_style_set(GtkWidget *widget,
+redmond_gtk2_engine_hack_menu_shell_style_set(GtkWidget *widget,
                          GtkStyle *previous_style,
                          gpointer user_data)
 {
-  gtk_menu_shell_cleanup_signals(widget);
+  redmond_gtk2_engine_hack_menu_shell_cleanup_signals(widget);
   
   return FALSE;
 }
  
 /***********************************************
- * gtk_menu_shell_destroy -
+ * redmond_gtk2_engine_hack_menu_shell_destroy -
  *  
  *   Destroy signal to ensure menushell signals
  *   get cleaned if it is destroyed
  ***********************************************/
 static gboolean    
-gtk_menu_shell_destroy(GtkWidget *widget,
+redmond_gtk2_engine_hack_menu_shell_destroy(GtkWidget *widget,
                        GdkEvent *event,
                        gpointer user_data)
 {
-  gtk_menu_shell_cleanup_signals(widget);
+  redmond_gtk2_engine_hack_menu_shell_cleanup_signals(widget);
   
   return FALSE;
 }
  
 /***********************************************
- * gtk_menu_shell_motion -
+ * redmond_gtk2_engine_hack_menu_shell_motion -
  *  
  *   Motion signal to ensure menushell items
  *   prelight state changes on mouse move.
  ***********************************************/
 static gboolean 
-gtk_menu_shell_motion(GtkWidget *widget, 
+redmond_gtk2_engine_hack_menu_shell_motion(GtkWidget *widget, 
                       GdkEventMotion *event, 
                       gpointer user_data)
 {
@@ -547,13 +547,13 @@ gtk_menu_shell_motion(GtkWidget *widget,
 }
  
 /***********************************************
- * gtk_menu_shell_leave -
+ * redmond_gtk2_engine_hack_menu_shell_leave -
  *  
  *   Leave signal to ensure menushell items
  *   normal state on mouse leave.
  ***********************************************/
 static gboolean 
-gtk_menu_shell_leave(GtkWidget *widget, 
+redmond_gtk2_engine_hack_menu_shell_leave(GtkWidget *widget, 
                       GdkEventCrossing *event,
                       gpointer user_data)
 {
@@ -590,13 +590,13 @@ gtk_menu_shell_leave(GtkWidget *widget,
 }
  
 /***********************************************
- * gtk_menu_shell_setup_signals -
+ * redmond_gtk2_engine_menu_shell_setup_signals -
  *  
  *   Setup Menu Shell with signals to ensure
  *   prelight works on items
  ***********************************************/
 void
-gtk_menu_shell_setup_signals(GtkWidget *widget)
+redmond_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget)
 {
   if (IS_MENU_BAR(widget))
     {
@@ -605,25 +605,25 @@ gtk_menu_shell_setup_signals(GtkWidget *widget)
       if (!g_object_get_data(G_OBJECT(widget), "REDMOND_MENU_SHELL_HACK_SET"))
       {
         id = g_signal_connect(G_OBJECT(widget), "motion-notify-event",
-                                             (GtkSignalFunc)gtk_menu_shell_motion,
+                                             (GtkSignalFunc)redmond_gtk2_engine_hack_menu_shell_motion,
                                              NULL);
                                   
         g_object_set_data(G_OBJECT(widget), "REDMOND_MENU_SHELL_MOTION_ID", (gpointer)id);
         
         id = g_signal_connect(G_OBJECT(widget), "leave-notify-event",
-                                             (GtkSignalFunc)gtk_menu_shell_leave,
+                                             (GtkSignalFunc)redmond_gtk2_engine_hack_menu_shell_leave,
                                              NULL);
         g_object_set_data(G_OBJECT(widget), "REDMOND_MENU_SHELL_LEAVE_ID", (gpointer)id);
                                              
         id = g_signal_connect(G_OBJECT(widget), "destroy-event",
-                                             (GtkSignalFunc)gtk_menu_shell_destroy,
+                                             (GtkSignalFunc)redmond_gtk2_engine_hack_menu_shell_destroy,
                                              NULL);
         g_object_set_data(G_OBJECT(widget), "REDMOND_MENU_SHELL_DESTROY_ID", (gpointer)id);
  
         g_object_set_data(G_OBJECT(widget), "REDMOND_MENU_SHELL_HACK_SET", (gpointer)1);
         
         id = g_signal_connect(G_OBJECT(widget), "style-set",
-                                             (GtkSignalFunc)gtk_menu_shell_style_set,
+                                             (GtkSignalFunc)redmond_gtk2_engine_hack_menu_shell_style_set,
                                              NULL);
         g_object_set_data(G_OBJECT(widget), "REDMOND_MENU_SHELL_STYLE_SET_ID", (gpointer)id);
       }
@@ -631,12 +631,12 @@ gtk_menu_shell_setup_signals(GtkWidget *widget)
 }
  
 /***********************************************
- * gtk_menu_shell_cleanuo_signals -
+ * redmond_gtk2_engine_hack_menu_shell_cleanuo_signals -
  *  
  *   Cleanup/remove Menu Shell signals
  ***********************************************/
 void
-gtk_menu_shell_cleanup_signals(GtkWidget *widget)
+redmond_gtk2_engine_hack_menu_shell_cleanup_signals(GtkWidget *widget)
 {
   if (IS_MENU_BAR(widget))
     {

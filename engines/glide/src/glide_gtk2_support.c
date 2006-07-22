@@ -427,7 +427,7 @@ do_glide_draw_border(cairo_t *canvas,
 }
 
 #warning - do_glide_draw_option_check needs smarter sizing - perhaps draw check at base size, and scale/translate? 
-void 
+static void 
 do_glide_draw_option_check(cairo_t *canvas,
 				CairoColor *check_color,
         	                GlideCheckState check_state,
@@ -1035,7 +1035,7 @@ do_glide_draw_line(cairo_t *canvas,
     }
 }
  
-void
+static void
 do_glide_draw_dot (cairo_t *canvas,
 			CairoColor * light,
 			CairoColor * dark,
@@ -1107,17 +1107,45 @@ do_glide_draw_grip (cairo_t *canvas,
 /***********************************************/
  
 /***********************************************
- * gtk_menu_shell_style_set -
+ * gtk_menu_shell_cleanup_signals -
+ *  
+ *   Cleanup/remove Menu Shell signals
+ ***********************************************/
+static void
+glide_gtk2_engine_hack_menu_shell_cleanup(GtkWidget *widget)
+{
+  if (IS_MENU_BAR(widget))
+    {
+      gint id = 0;
+ 
+      id = (gint)g_object_steal_data (G_OBJECT(widget), "GLIDE_MENU_SHELL_MOTION_ID");
+      g_signal_handler_disconnect(G_OBJECT(widget), id);
+                                             
+      id = (gint)g_object_steal_data (G_OBJECT(widget), "GLIDE_MENU_SHELL_LEAVE_ID");
+      g_signal_handler_disconnect(G_OBJECT(widget), id);
+     
+      id = (gint)g_object_steal_data (G_OBJECT(widget), "GLIDE_MENU_SHELL_DESTROY_ID");
+      g_signal_handler_disconnect(G_OBJECT(widget), id);
+       
+      id = (gint)g_object_steal_data (G_OBJECT(widget), "GLIDE_MENU_SHELL_STYLE_SET_ID");
+      g_signal_handler_disconnect(G_OBJECT(widget), id);
+       
+      g_object_steal_data (G_OBJECT(widget), "GLIDE_MENU_SHELL_HACK_SET");      
+    }
+}
+
+/***********************************************
+ * glide_gtk2_engine_hack_menu_shell_style_set -
  *  
  *   Style set signal to ensure menushell signals
  *   get cleaned up if the theme changes
  ***********************************************/
 static gboolean 
-gtk_menu_shell_style_set(GtkWidget *widget,
+glide_gtk2_engine_hack_menu_shell_style_set(GtkWidget *widget,
                          GtkStyle *previous_style,
                          gpointer user_data)
 {
-  gtk_menu_shell_cleanup_signals(widget);
+  glide_gtk2_engine_hack_menu_shell_cleanup(widget);
   
   return FALSE;
 }
@@ -1129,23 +1157,23 @@ gtk_menu_shell_style_set(GtkWidget *widget,
  *   get cleaned if it is destroyed
  ***********************************************/
 static gboolean    
-gtk_menu_shell_destroy(GtkWidget *widget,
+glide_gtk2_engine_hack_menu_shell_destroy(GtkWidget *widget,
                        GdkEvent *event,
                        gpointer user_data)
 {
-  gtk_menu_shell_cleanup_signals(widget);
+  glide_gtk2_engine_hack_menu_shell_cleanup_signals(widget);
   
   return FALSE;
 }
  
 /***********************************************
- * gtk_menu_shell_motion -
+ * glide_gtk2_engine_hack_menu_shell_motion -
  *  
  *   Motion signal to ensure menushell items
  *   prelight state changes on mouse move.
  ***********************************************/
 static gboolean 
-gtk_menu_shell_motion(GtkWidget *widget, 
+glide_gtk2_engine_hack_menu_shell_motion(GtkWidget *widget, 
                       GdkEventMotion *event, 
                       gpointer user_data)
 {
@@ -1155,7 +1183,6 @@ gtk_menu_shell_motion(GtkWidget *widget,
       GdkModifierType pointer_mask;
       GList *children = NULL, *child = NULL;
      
-		#warning FIXME - gdk_window_get_pointer
       gdk_window_get_pointer(widget->window, &pointer_x, &pointer_y, &pointer_mask);
 	    
       if (IS_CONTAINER(widget))
@@ -1198,7 +1225,7 @@ gtk_menu_shell_motion(GtkWidget *widget,
  *   normal state on mouse leave.
  ***********************************************/
 static gboolean 
-gtk_menu_shell_leave(GtkWidget *widget, 
+glide_gtk2_engine_hack_menu_shell_leave(GtkWidget *widget, 
                       GdkEventCrossing *event,
                       gpointer user_data)
 {
@@ -1241,64 +1268,36 @@ gtk_menu_shell_leave(GtkWidget *widget,
  *   prelight works on items
  ***********************************************/
 void
-gtk_menu_shell_setup_signals(GtkWidget *widget)
+glide_gtk2_engine_hack_menu_shell_setup(GtkWidget *widget)
 {
   if (IS_MENU_BAR(widget))
     {
       gint id = 0;
  
-      if (!g_object_get_data(G_OBJECT(widget), "glide_MENU_SHELL_HACK_SET"))
+      if (!g_object_get_data(G_OBJECT(widget), "GLIDE_MENU_SHELL_HACK_SET"))
       {
         id = g_signal_connect(G_OBJECT(widget), "motion-notify-event",
-                                             (GtkSignalFunc)gtk_menu_shell_motion,
+                                             (GtkSignalFunc)glide_gtk2_engine_hack_menu_shell_motion,
                                              NULL);
                                   
-        g_object_set_data(G_OBJECT(widget), "glide_MENU_SHELL_MOTION_ID", (gpointer)id);
+        g_object_set_data(G_OBJECT(widget), "GLIDE_MENU_SHELL_MOTION_ID", (gpointer)id);
         
         id = g_signal_connect(G_OBJECT(widget), "leave-notify-event",
-                                             (GtkSignalFunc)gtk_menu_shell_leave,
+                                             (GtkSignalFunc)glide_gtk2_engine_hack_menu_shell_leave,
                                              NULL);
-        g_object_set_data(G_OBJECT(widget), "glide_MENU_SHELL_LEAVE_ID", (gpointer)id);
+        g_object_set_data(G_OBJECT(widget), "GLIDE_MENU_SHELL_LEAVE_ID", (gpointer)id);
                                              
         id = g_signal_connect(G_OBJECT(widget), "destroy-event",
-                                             (GtkSignalFunc)gtk_menu_shell_destroy,
+                                             (GtkSignalFunc)glide_gtk2_engine_hack_menu_shell_destroy,
                                              NULL);
-        g_object_set_data(G_OBJECT(widget), "glide_MENU_SHELL_DESTROY_ID", (gpointer)id);
+        g_object_set_data(G_OBJECT(widget), "GLIDE_MENU_SHELL_DESTROY_ID", (gpointer)id);
  
-        g_object_set_data(G_OBJECT(widget), "glide_MENU_SHELL_HACK_SET", (gpointer)1);
+        g_object_set_data(G_OBJECT(widget), "GLIDE_MENU_SHELL_HACK_SET", (gpointer)1);
         
         id = g_signal_connect(G_OBJECT(widget), "style-set",
-                                             (GtkSignalFunc)gtk_menu_shell_style_set,
+                                             (GtkSignalFunc)glide_gtk2_engine_hack_menu_shell_style_set,
                                              NULL);
-        g_object_set_data(G_OBJECT(widget), "glide_MENU_SHELL_STYLE_SET_ID", (gpointer)id);
+        g_object_set_data(G_OBJECT(widget), "GLIDE_MENU_SHELL_STYLE_SET_ID", (gpointer)id);
       }
     }  
-}
- 
-/***********************************************
- * gtk_menu_shell_cleanuo_signals -
- *  
- *   Cleanup/remove Menu Shell signals
- ***********************************************/
-void
-gtk_menu_shell_cleanup_signals(GtkWidget *widget)
-{
-  if (IS_MENU_BAR(widget))
-    {
-      gint id = 0;
- 
-      id = (gint)g_object_steal_data (G_OBJECT(widget), "glide_MENU_SHELL_MOTION_ID");
-      g_signal_handler_disconnect(G_OBJECT(widget), id);
-                                             
-      id = (gint)g_object_steal_data (G_OBJECT(widget), "glide_MENU_SHELL_LEAVE_ID");
-      g_signal_handler_disconnect(G_OBJECT(widget), id);
-     
-      id = (gint)g_object_steal_data (G_OBJECT(widget), "glide_MENU_SHELL_DESTROY_ID");
-      g_signal_handler_disconnect(G_OBJECT(widget), id);
-       
-      id = (gint)g_object_steal_data (G_OBJECT(widget), "glide_MENU_SHELL_STYLE_SET_ID");
-      g_signal_handler_disconnect(G_OBJECT(widget), id);
-       
-      g_object_steal_data (G_OBJECT(widget), "glide_MENU_SHELL_HACK_SET");      
-    }
 }

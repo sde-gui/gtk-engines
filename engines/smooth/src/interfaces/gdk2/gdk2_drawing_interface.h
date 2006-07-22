@@ -36,8 +36,8 @@ void GDKInitializeCanvas(SmoothCanvas *Canvas,
 				SmoothInt Height,				
 				SmoothInt XOffset,
 				SmoothInt YOffset,
-				SmoothColorCube *ColorCube);
+				SmoothColorCube *ColorCube) G_GNUC_INTERNAL;
 
-void GDKFinalizeCanvas(SmoothCanvas *Canvas);
+void GDKFinalizeCanvas(SmoothCanvas *Canvas) G_GNUC_INTERNAL;
 
 #endif /* GDK2_DRAWING_INTERFACE_H */

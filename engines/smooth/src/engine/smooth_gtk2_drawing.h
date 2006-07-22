@@ -40,7 +40,7 @@ smooth_draw_shadow(GtkStyle * style,
 	    gint x,
 	    gint y,
 	    gint width,
-	    gint height);
+	    gint height) G_GNUC_INTERNAL;
 	    
 void
 smooth_draw_hline(GtkStyle * style,
@@ -51,7 +51,7 @@ smooth_draw_hline(GtkStyle * style,
 	   const gchar * detail,
 	   gint x1,
 	   gint x2,
-	   gint y);
+	   gint y) G_GNUC_INTERNAL;
 	   
 void
 smooth_draw_vline(GtkStyle * style,
@@ -62,7 +62,7 @@ smooth_draw_vline(GtkStyle * style,
 	   const gchar * detail,
 	   gint y1,
 	   gint y2,
-	   gint x);
+	   gint x) G_GNUC_INTERNAL;
 
 void
 smooth_draw_polygon(GtkStyle * style,
@@ -74,7 +74,7 @@ smooth_draw_polygon(GtkStyle * style,
 	     const gchar * detail,
 	     GdkPoint * points,
 	     gint npoints,
-	     gint fill);
+	     gint fill) G_GNUC_INTERNAL;
 
 void
 smooth_draw_arrow(GtkStyle * style,
@@ -89,7 +89,7 @@ smooth_draw_arrow(GtkStyle * style,
 	   gint x,
 	   gint y,
 	   gint width,
-	   gint height);
+	   gint height) G_GNUC_INTERNAL;
 
 void
 smooth_draw_focus(GtkStyle *style,
@@ -101,7 +101,7 @@ smooth_draw_focus(GtkStyle *style,
            gint x,
            gint y,
            gint width,
-           gint height);
+           gint height) G_GNUC_INTERNAL;
 
 void
 smooth_draw_slider(GtkStyle * style,
@@ -115,7 +115,7 @@ smooth_draw_slider(GtkStyle * style,
 	    gint y,
 	    gint width,
 	    gint height,
-	    GtkOrientation orientation);
+	    GtkOrientation orientation) G_GNUC_INTERNAL;
 
 void
 smooth_draw_extension(GtkStyle * style,
@@ -129,7 +129,7 @@ smooth_draw_extension(GtkStyle * style,
 	       gint y,
 	       gint width,
 	       gint height,
-	       GtkPositionType gap_side);
+	       GtkPositionType gap_side) G_GNUC_INTERNAL;
 
 void
 smooth_draw_box(GtkStyle * style,
@@ -142,7 +142,7 @@ smooth_draw_box(GtkStyle * style,
 	 gint x,
 	 gint y,
 	 gint width,
-	 gint height);
+	 gint height) G_GNUC_INTERNAL;
 
 void
 smooth_draw_box_gap (GtkStyle * style, 
@@ -158,7 +158,7 @@ smooth_draw_box_gap (GtkStyle * style,
 	      gint height, 
 	      GtkPositionType gap_side, 
 	      gint gap_pos, 
-	      gint gap_width);
+	      gint gap_width) G_GNUC_INTERNAL;
 
 void
 smooth_draw_shadow_gap (GtkStyle * style, 
@@ -174,7 +174,7 @@ smooth_draw_shadow_gap (GtkStyle * style,
 		 gint height, 
 		 GtkPositionType gap_side, 
 		 gint gap_pos, 
-		 gint gap_width);
+		 gint gap_width) G_GNUC_INTERNAL;
 
 void
 smooth_draw_option(GtkStyle * style,
@@ -187,7 +187,7 @@ smooth_draw_option(GtkStyle * style,
             gint X,
             gint Y,
             gint Width,
-            gint Height);
+            gint Height) G_GNUC_INTERNAL;
 
 void
 smooth_draw_check(GtkStyle * style,
@@ -200,7 +200,7 @@ smooth_draw_check(GtkStyle * style,
 	   gint x,
 	   gint y,
 	   gint width,
-	   gint height);
+	   gint height) G_GNUC_INTERNAL;
 
 void
 smooth_draw_diamond(GtkStyle * style,
@@ -213,7 +213,7 @@ smooth_draw_diamond(GtkStyle * style,
 	     gint x,
 	     gint y,
 	     gint width,
-	     gint height);
+	     gint height) G_GNUC_INTERNAL;
 
 void
 smooth_draw_handle(GtkStyle * style,
@@ -227,7 +227,7 @@ smooth_draw_handle(GtkStyle * style,
 	    gint y,
 	    gint width,
 	    gint height,
-	    GtkOrientation orientation);
+	    GtkOrientation orientation) G_GNUC_INTERNAL;
    
 void
 smooth_draw_resize_grip (GtkStyle       *style,
@@ -240,7 +240,7 @@ smooth_draw_resize_grip (GtkStyle       *style,
                               gint            x,
                               gint            y,
                               gint            width,
-                              gint            height);
+                              gint            height) G_GNUC_INTERNAL;
 
 void
 smooth_draw_tab (GtkStyle      *style,
@@ -253,7 +253,7 @@ smooth_draw_tab (GtkStyle      *style,
 		      gint           x,
 		      gint           y,
 		      gint           width,
-		      gint           height);
+		      gint           height) G_GNUC_INTERNAL;
 
 void 
 smooth_draw_flat_box (GtkStyle * style,
@@ -263,4 +263,4 @@ smooth_draw_flat_box (GtkStyle * style,
 	       GdkRectangle * area,
 	       GtkWidget * widget,
 	       const gchar * detail,
-	       gint x, gint y, gint width, gint height);                                             
+	       gint x, gint y, gint width, gint height) G_GNUC_INTERNAL;                                        

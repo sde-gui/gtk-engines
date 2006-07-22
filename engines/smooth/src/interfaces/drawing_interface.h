@@ -454,8 +454,8 @@ struct _DrawingInterfaceClass
 /* ABSTRACT MUST BE DECLARED BY     */
 /* Specific Drawing Interface       */
 /************************************/
-void SmoothDrawingInterfaceInitialize();
-void SmoothDrawingInterfaceFinalize();
+void SmoothDrawingInterfaceInitialize() G_GNUC_INTERNAL;
+void SmoothDrawingInterfaceFinalize() G_GNUC_INTERNAL;
 
 
 /**********************************************/
@@ -464,241 +464,241 @@ void SmoothDrawingInterfaceFinalize();
 void 			SmoothDrawingInterfaceSetup		(
 										SmoothBool(* InitializeInterface)(DrawingInterfaceClass *SmoothDrawingInterface),
 										SmoothBool(* FinalizeInterface)(DrawingInterfaceClass *SmoothDrawingInterface)
-									);
+									) G_GNUC_INTERNAL;
 									
-void 			SmoothDrawingInterfaceCleanup			();
+void 			SmoothDrawingInterfaceCleanup			() G_GNUC_INTERNAL;
 
 /*************************/
 /* Function Declarations */
 /*************************/
 
 /* Callback to Initialize Interface if Required - Always First in Struct*/
-SmoothBool 		SmoothInitializeInterface();
+SmoothBool 		SmoothInitializeInterface() G_GNUC_INTERNAL;
 
 /* Color Value Getions */
 SmoothBool		SmoothColorGetRedValue				(SmoothColor *Color,
-										SmoothDouble *RedValue);
+										SmoothDouble *RedValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothColorGetGreenValue			(SmoothColor *Color,
-										SmoothDouble *GreenValue);
+										SmoothDouble *GreenValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothColorGetBlueValue				(SmoothColor *Color,
-										SmoothDouble *BlueValue);
+										SmoothDouble *BlueValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothColorGetAlphaValue			(SmoothColor *Color,
-										SmoothDouble *AlphaValue);
+										SmoothDouble *AlphaValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothColorGetValues				(SmoothColor *Color, 
 										SmoothDouble *RedValue, 
 										SmoothDouble *GreenValue, 
 										SmoothDouble *BlueValue, 
-										SmoothDouble *AlphaValue);
+										SmoothDouble *AlphaValue) G_GNUC_INTERNAL;
 
 /* Color Value Modifications */
 SmoothBool		SmoothColorSetRedValue				(SmoothColor *Color, 
-										SmoothDouble NewValue);
+										SmoothDouble NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothColorSetGreenValue			(SmoothColor *Color, 
-										SmoothDouble NewValue);
+										SmoothDouble NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothColorSetBlueValue				(SmoothColor *Color, 
-										SmoothDouble NewValue);
+										SmoothDouble NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothColorSetAlphaValue			(SmoothColor *Color, 
-										SmoothDouble NewValue);								
+										SmoothDouble NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothColorSetValues				(SmoothColor *Color, 
 										SmoothDouble RedValue, 
 										SmoothDouble GreenValue, 
 										SmoothDouble BlueValue, 
-										SmoothDouble AlphaValue);
+										SmoothDouble AlphaValue) G_GNUC_INTERNAL;
 
 /* Rectangle Status Functions */
 SmoothBool		SmoothRectangleCreate				(SmoothRectangle *Rectangle, 
 										SmoothInt X, 
 										SmoothInt Y, 
 										SmoothInt Width, 
-										SmoothInt Height);
-SmoothBool		SmoothRectangleDestroy				(SmoothRectangle *Rectangle);
+										SmoothInt Height) G_GNUC_INTERNAL;
+SmoothBool		SmoothRectangleDestroy				(SmoothRectangle *Rectangle) G_GNUC_INTERNAL;
 	
-SmoothBool		SmoothRectangleIsValid				(SmoothRectangle *Rectangle);
+SmoothBool		SmoothRectangleIsValid				(SmoothRectangle *Rectangle) G_GNUC_INTERNAL;
 	
 /* Rectangle Value Getions */
 SmoothBool		SmoothRectangleGetXValue			(SmoothRectangle *Rectangle,
-										SmoothInt *XValue);
+										SmoothInt *XValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothRectangleGetYValue			(SmoothRectangle *Rectangle,
-										SmoothInt *YValue);
+										SmoothInt *YValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothRectangleGetWidthValue			(SmoothRectangle *Rectangle,
-										SmoothInt *WidthValue);
+										SmoothInt *WidthValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothRectangleGetHeightValue			(SmoothRectangle *Rectangle,
-										SmoothInt *HeightValue);
+										SmoothInt *HeightValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothRectangleGetValues			(SmoothRectangle *Rectangle, 
 										SmoothInt *XValue, 
 										SmoothInt *YValue, 
 										SmoothInt *WidthValue, 
-										SmoothInt *HeightValue);
+										SmoothInt *HeightValue) G_GNUC_INTERNAL;
 	
 /* Rectangle Value Modifications */
 SmoothBool		SmoothRectangleSetXValue			(SmoothRectangle *Rectangle, 
-										SmoothInt NewValue);
+										SmoothInt NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothRectangleSetYValue			(SmoothRectangle *Rectangle, 
-										SmoothInt NewValue);
+										SmoothInt NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothRectangleSetWidthValue			(SmoothRectangle *Rectangle, 
-										SmoothInt NewValue);
+										SmoothInt NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothRectangleSetHeightValue			(SmoothRectangle *Rectangle, 
-										SmoothInt NewValue);								
+										SmoothInt NewValue) G_GNUC_INTERNAL;							
 SmoothBool		SmoothRectangleSetValues			(SmoothRectangle *Rectangle, 
 										SmoothInt XValue, 
 										SmoothInt YValue, 
 										SmoothInt WidthValue, 
-										SmoothInt HeightValue);
+										SmoothInt HeightValue) G_GNUC_INTERNAL;
 
 /* Rectangle Misc Functions */
 SmoothBool		SmoothRectangleFindIntersection			(SmoothRectangle Rectangle1, 
 										SmoothRectangle Rectangle2, 
-										SmoothRectangle *IntersectingRectangle);
+										SmoothRectangle *IntersectingRectangle) G_GNUC_INTERNAL;
 
 /* Point Value Getions */
 SmoothBool		SmoothPointGetXValue				(SmoothPoint *Point,
-										SmoothInt *XValue);
+										SmoothInt *XValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothPointGetYValue				(SmoothPoint *Point,
-										SmoothInt *YValue);
+										SmoothInt *YValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothPointGetValues				(SmoothPoint *Point,
 										SmoothInt *XValue, 
-										SmoothInt *YValue);
+										SmoothInt *YValue) G_GNUC_INTERNAL;
 
 /* Point Value Modifications */
 SmoothBool		SmoothPointSetXValue				(SmoothPoint *Point,
-										SmoothInt NewValue);
+										SmoothInt NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothPointSetYValue				(SmoothPoint *Point,
-										SmoothInt NewValue);
+										SmoothInt NewValue) G_GNUC_INTERNAL;
 SmoothBool		SmoothPointSetValues				(SmoothPoint *Point, 
 										SmoothInt XValue, 
-										SmoothInt YValue);
+										SmoothInt YValue) G_GNUC_INTERNAL;
 
 /* Image/Buffer By File name (For caching purposes) */
 SmoothBool		SmoothImageBufferLoadByFile			(SmoothString ImageFile,
-										SmoothImageBuffer *ImageBuffer);
-SmoothBool		SmoothImageBufferUnLoadByFile			(SmoothString ImageFile);
+										SmoothImageBuffer *ImageBuffer) G_GNUC_INTERNAL;
+SmoothBool		SmoothImageBufferUnLoadByFile			(SmoothString ImageFile) G_GNUC_INTERNAL;
 
 /* Canvas Get Image/ImageBuffer Size */
 SmoothBool		SmoothImageBufferGetWidth			(SmoothImageBuffer *ImageBuffer,
-										SmoothInt *Width);
+										SmoothInt *Width) G_GNUC_INTERNAL;
 SmoothBool		SmoothImageBufferGetHeight			(SmoothImageBuffer *ImageBuffer,
-										SmoothInt *Height);
+										SmoothInt *Height) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothImageGetWidth				(SmoothImage *Image,
-										SmoothInt *Width);
+										SmoothInt *Width) G_GNUC_INTERNAL;
 SmoothBool		SmoothImageGetHeight				(SmoothImage *Image,
-										SmoothInt *Height);
+										SmoothInt *Height) G_GNUC_INTERNAL;
 
 /* Canvas Map/Free A Color From The Colormap*/
 SmoothBool		SmoothCanvasAllocateColor			(SmoothCanvas Canvas, 
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasDeallocateColor			(SmoothCanvas Canvas, 
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 /* Canvas cache/uncache a Color */
 SmoothBool		SmoothCanvasCacheColor				(SmoothCanvas Canvas, 
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasUnCacheColor			(SmoothCanvas Canvas, 
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 									
 /* Canvas cache/uncache a shaded Color */
 SmoothBool		SmoothCanvasCacheShadedColor			(SmoothCanvas Canvas, 
 										SmoothColor Base,
 										SmoothDouble Shade,
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasUnCacheShadedColor			(SmoothCanvas Canvas, 
 										SmoothColor Base,
 										SmoothDouble Shade,
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 
 /* Canvas cache/uncache a MidPoint Color */
 SmoothBool		SmoothCanvasCacheMidPointColor			(SmoothCanvas Canvas, 
 										SmoothColor Point1,
 										SmoothColor Color2,
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasUnCacheMidPointColor		(SmoothCanvas Canvas, 
 										SmoothColor Point1,
 										SmoothColor Point2,
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 
 /* Canvas Store/Render */
-SmoothBool		SmoothCanvasStore				(SmoothCanvas Canvas);
+SmoothBool		SmoothCanvasStore				(SmoothCanvas Canvas) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasRender				(SmoothCanvas Canvas,	
-										SmoothBool ClosePathAndFill);
+										SmoothBool ClosePathAndFill) G_GNUC_INTERNAL;
 
 /* Canvas Get/Set/Clear Clip Rectangle */
 SmoothBool		SmoothCanvasGetClipRectangle			(SmoothCanvas Canvas,
-										SmoothRectangle* Rectangle);
+										SmoothRectangle* Rectangle) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasSetClipRectangle			(SmoothCanvas Canvas,
-										SmoothRectangle	Rectangle);
+										SmoothRectangle	Rectangle) G_GNUC_INTERNAL;
 
-SmoothBool		SmoothCanvasClearClipRectangle			(SmoothCanvas Canvas);
+SmoothBool		SmoothCanvasClearClipRectangle			(SmoothCanvas Canvas) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasClipUseIntersectingRectangle	(SmoothCanvas Canvas,
-										SmoothRectangle	Rectangle);
+										SmoothRectangle	Rectangle) G_GNUC_INTERNAL;
 
 /* Canvas Get/Set Pen Properties */
 SmoothBool		SmoothCanvasGetPenColor				(SmoothCanvas Canvas, 
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasSetPenColor				(SmoothCanvas Canvas, 
-										SmoothColor Color);
+										SmoothColor Color) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasGetPenThickness			(SmoothCanvas Canvas,
-										SmoothInt *Thickness);
+										SmoothInt *Thickness) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasSetPenThickness			(SmoothCanvas Canvas, 
-										SmoothInt Thickness);
+										SmoothInt Thickness) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasGetPenStyle				(SmoothCanvas Canvas, 
-										SmoothLineStyle *Style);
+										SmoothLineStyle *Style) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasSetPenStyle				(SmoothCanvas Canvas, 
-										SmoothLineStyle Style);
+										SmoothLineStyle Style) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasGetPenJoin				(SmoothCanvas Canvas, 
-										SmoothLineJoin *Join);
+										SmoothLineJoin *Join) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasSetPenJoin				(SmoothCanvas Canvas, 
-										SmoothLineJoin Join);
+										SmoothLineJoin Join) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasGetPenCap				(SmoothCanvas Canvas, 
-										SmoothLineCap *Cap);
+										SmoothLineCap *Cap) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasSetPenCap				(SmoothCanvas Canvas, 
-										SmoothLineCap Cap);
+										SmoothLineCap Cap) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasGetPenValues			(SmoothCanvas Canvas, 
 										SmoothColor *Color,
 										SmoothInt *Thickness,
 										SmoothLineStyle *Style,
 										SmoothLineCap *Cap,
-										SmoothLineJoin *Join);
+										SmoothLineJoin *Join) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasSetPenValues			(SmoothCanvas Canvas, 
 										SmoothColor Color,
 										SmoothInt Thickness,
 										SmoothLineStyle Style,
 										SmoothLineCap Cap,
-										SmoothLineJoin Join);
+										SmoothLineJoin Join) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasGetPenPattern			(SmoothCanvas Canvas, 
-										SmoothLinePattern *Pattern);
+										SmoothLinePattern *Pattern) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasSetPenPattern			(SmoothCanvas Canvas, 
-										SmoothLinePattern Pattern);
+										SmoothLinePattern Pattern) G_GNUC_INTERNAL;
 
 
 /* Canvas Get/Set Brush Properties */
 SmoothBool		SmoothCanvasGetBrushColor			(SmoothCanvas Canvas, 
-										SmoothColor *Color);
+										SmoothColor *Color) G_GNUC_INTERNAL;
 SmoothBool		SmoothCanvasSetBrushColor			(SmoothCanvas Canvas, 
-										SmoothColor Color);
+										SmoothColor Color) G_GNUC_INTERNAL;
 
 /* Canvas Create/Destroy Image */
 SmoothBool		SmoothCanvasCreateImage				(SmoothCanvas Canvas,
 										SmoothInt Width,
 										SmoothInt Height,
-										SmoothImage *Image);
+										SmoothImage *Image) G_GNUC_INTERNAL;
 										
 SmoothBool 		SmoothCanvasCreateImageFromBuffer		(SmoothCanvas Canvas,
 										SmoothImageBuffer ImageBuffer,
-										SmoothImage *Image);
+										SmoothImage *Image) G_GNUC_INTERNAL;
 
 SmoothBool 		SmoothCanvasDestroyImage			(SmoothCanvas Canvas,
-										SmoothImage *Image);
+										SmoothImage *Image) G_GNUC_INTERNAL;
 																				
 /* Canvas Render Image/ImageBuffer */
 SmoothBool		SmoothCanvasRenderImage				(SmoothCanvas Canvas,
@@ -706,7 +706,7 @@ SmoothBool		SmoothCanvasRenderImage				(SmoothCanvas Canvas,
 										SmoothInt X,
 										SmoothInt Y,
 										SmoothInt Width,
-										SmoothInt Height);
+										SmoothInt Height) G_GNUC_INTERNAL;
 										
 
 SmoothBool		SmoothCanvasRenderImageBuffer			(SmoothCanvas Canvas,
@@ -714,7 +714,7 @@ SmoothBool		SmoothCanvasRenderImageBuffer			(SmoothCanvas Canvas,
 										SmoothInt X,
 										SmoothInt Y,
 										SmoothInt Width,
-										SmoothInt Height);
+										SmoothInt Height) G_GNUC_INTERNAL;
 
 /* Canvas Render Tile */
 SmoothBool		SmoothCanvasRenderTile				(SmoothCanvas Canvas,
@@ -722,7 +722,7 @@ SmoothBool		SmoothCanvasRenderTile				(SmoothCanvas Canvas,
 										SmoothInt X,
 										SmoothInt Y,
 										SmoothInt Width,
-										SmoothInt Height);
+										SmoothInt Height) G_GNUC_INTERNAL;
 
 /* Canvas Render Gradient */
 SmoothBool		SmoothCanvasRenderGradient			(SmoothCanvas Canvas,
@@ -730,35 +730,35 @@ SmoothBool		SmoothCanvasRenderGradient			(SmoothCanvas Canvas,
 										SmoothInt X,
 										SmoothInt Y,
 										SmoothInt Width,
-										SmoothInt Height);
+										SmoothInt Height) G_GNUC_INTERNAL;
 
 /* Canvas Draw Point(s) */
 SmoothBool		SmoothCanvasDrawPoint				(SmoothCanvas Canvas,
 										SmoothInt X, 
-										SmoothInt Y);
+										SmoothInt Y) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasDrawPoints				(SmoothCanvas Canvas,
 										SmoothPoint *Points, 
-										SmoothInt NumberOfPoints);
+										SmoothInt NumberOfPoints) G_GNUC_INTERNAL;
 
 /* Canvas Draw Line(s) */
 SmoothBool		SmoothCanvasDrawLine				(SmoothCanvas Canvas,
 										SmoothInt X1, 
 										SmoothInt Y1, 
 										SmoothInt X2, 
-										SmoothInt Y2);
+										SmoothInt Y2) G_GNUC_INTERNAL;
 	
 SmoothBool		SmoothCanvasDrawSegment				(SmoothCanvas Canvas,
 										SmoothPoint Point1, 
-										SmoothPoint Point2);
+										SmoothPoint Point2) G_GNUC_INTERNAL;
 	
 SmoothBool		SmoothCanvasDrawLines				(SmoothCanvas Canvas,
 										SmoothPoint *Points, 
-										SmoothInt NumberOfPoints);
+										SmoothInt NumberOfPoints) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasDrawSegments			(SmoothCanvas Canvas,
 										SmoothPoint *Points, 
-										SmoothInt NumberOfPoints);
+										SmoothInt NumberOfPoints) G_GNUC_INTERNAL;
 
 /* Canvas Draw Arc(s)/Curve(s) */
 SmoothBool		SmoothCanvasDrawArc				(SmoothCanvas Canvas,
@@ -767,18 +767,18 @@ SmoothBool		SmoothCanvasDrawArc				(SmoothCanvas Canvas,
 										SmoothInt Width, 
 										SmoothInt Height,
 										SmoothDouble AnglePosition,
-										SmoothDouble AngleLength);
+										SmoothDouble AngleLength) G_GNUC_INTERNAL;
 
 /* Canvas Frame Shaped Areas */
 SmoothBool		SmoothCanvasFrameRectangle			(SmoothCanvas Canvas,
 										SmoothInt X, 
 										SmoothInt Y, 
 										SmoothInt Width, 
-										SmoothInt Height);
+										SmoothInt Height) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasFramePolygon			(SmoothCanvas Canvas,
 										SmoothPoint *Points, 
-										SmoothInt NumberOfPoints);
+										SmoothInt NumberOfPoints) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasFrameChord				(SmoothCanvas Canvas,
 										SmoothInt X, 
@@ -786,17 +786,17 @@ SmoothBool		SmoothCanvasFrameChord				(SmoothCanvas Canvas,
 										SmoothInt Width, 
 										SmoothInt Height,
 										SmoothDouble AnglePosition,
-										SmoothDouble AngleLength);
+										SmoothDouble AngleLength) G_GNUC_INTERNAL;
 /* Canvas Fill Shaped Areas */
 SmoothBool		SmoothCanvasFillRectangle			(SmoothCanvas Canvas,
 										SmoothInt X, 
 										SmoothInt Y, 
 										SmoothInt Width, 
-										SmoothInt Height);
+										SmoothInt Height) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasFillPolygon				(SmoothCanvas Canvas,
 										SmoothPoint *Points, 
-										SmoothInt NumberOfPoints);
+										SmoothInt NumberOfPoints) G_GNUC_INTERNAL;
 
 SmoothBool		SmoothCanvasFillChord				(SmoothCanvas Canvas,
 										SmoothInt X, 
@@ -804,9 +804,9 @@ SmoothBool		SmoothCanvasFillChord				(SmoothCanvas Canvas,
 										SmoothInt Width, 
 										SmoothInt Height,
 										SmoothDouble AnglePosition,
-										SmoothDouble AngleLength);
+										SmoothDouble AngleLength) G_GNUC_INTERNAL;
 
 /* Callback to Finalize Interface if Required - Always Last in Struct*/
-SmoothBool		SmoothFinalizeInterface();
+SmoothBool		SmoothFinalizeInterface() G_GNUC_INTERNAL;
 
 #endif /* DRAWING_INTERFACE_H */

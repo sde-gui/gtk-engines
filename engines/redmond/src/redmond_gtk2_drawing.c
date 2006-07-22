@@ -1000,7 +1000,7 @@ redmond_draw_box (GtkStyle * style,
  
   if (IS_MENU_SHELL(widget))
     {
-      gtk_menu_shell_setup_signals(widget);
+      redmond_gtk2_engine_hack_menu_shell_setup_signals(widget);
     }  
  
   if ((CHECK_DETAIL (detail, "trough")) &&

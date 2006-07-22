@@ -23,32 +23,32 @@
 #ifndef GDK_DRAWING_INTERFACE_H
 #define GDK_DRAWING_INTERFACE_H
 
-SmoothBool GDKDrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface);
-SmoothBool GDKDrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface);
+SmoothBool GDKDrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface) G_GNUC_INTERNAL;
+SmoothBool GDKDrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface) G_GNUC_INTERNAL;
 
 void GDKModifyCanvasClipArea(SmoothCanvas *Canvas,
-				GdkRectangle * _Rectangle);
+				GdkRectangle * _Rectangle) G_GNUC_INTERNAL;
 				
 void GDKModifyCanvasClipRegion(SmoothCanvas *Canvas,
-				GdkRegion * _Region);
+				GdkRegion * _Region) G_GNUC_INTERNAL;
 				
 void GDKModifyCanvasClipMask(SmoothCanvas *Canvas,
-				GdkBitmap *ClipMask);
+				GdkBitmap *ClipMask) G_GNUC_INTERNAL;
 				
 void GDKModifyCanvasClipOffset(SmoothCanvas *Canvas,
 				SmoothInt XOffset,
-				SmoothInt YOffset);
+				SmoothInt YOffset) G_GNUC_INTERNAL;
 				
 void GDKModifyCanvasDitherDepth(SmoothCanvas *Canvas,
-				SmoothInt DitherDepth);
+				SmoothInt DitherDepth) G_GNUC_INTERNAL;
 
-void GDKSmoothColorAssignGdkColor(SmoothColor *DestinationColor, GdkColor SourceColor, gint SourceAlpha);
+void GDKSmoothColorAssignGdkColor(SmoothColor *DestinationColor, GdkColor SourceColor, gint SourceAlpha) G_GNUC_INTERNAL;
 
-void GDKInitializeColorCube(SmoothCanvas Canvas, GtkStyle * style, SmoothColorCube *ColorCube);
-void  GDKFinalizeColorCube(SmoothColorCube *ColorCube);
+void GDKInitializeColorCube(SmoothCanvas Canvas, GtkStyle * style, SmoothColorCube *ColorCube) G_GNUC_INTERNAL;
+void  GDKFinalizeColorCube(SmoothColorCube *ColorCube) G_GNUC_INTERNAL;
 
-SmoothWidgetState GDKSmoothWidgetState(GtkStateType State);
+SmoothWidgetState GDKSmoothWidgetState(GtkStateType State) G_GNUC_INTERNAL;
 
-void GDKFinalizeColorCache(GHashTable **ColorCache);
+void GDKFinalizeColorCache(GHashTable **ColorCache) G_GNUC_INTERNAL;
 
 #endif /* GDK_DRAWING_INTERFACE_H */

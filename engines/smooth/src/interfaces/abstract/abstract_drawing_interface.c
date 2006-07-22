@@ -21,6 +21,7 @@
 /* Author(s): Andrew Johnson <ajgenius@ajgenius.us>                           */
 /******************************************************************************/
 #include <interfaces/drawing_interface.h>
+#include "abstract_drawing_interface.h"
 
 /* Declare Abstract Interface Functions */
 
@@ -68,6 +69,7 @@ AbstractRectangleGetValues(SmoothRectangle *Rectangle,
 				SmoothInt *YValue, 
 				SmoothInt *WidthValue, 
 				SmoothInt *HeightValue);
+
 
 static SmoothBool 
 AbstractRectangleSetValues(SmoothRectangle *Rectangle, 

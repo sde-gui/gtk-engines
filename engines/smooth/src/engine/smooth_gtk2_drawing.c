@@ -916,7 +916,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 	else if (((CHECK_DETAIL (detail, "entry"))
 		|| (CHECK_DETAIL (detail, "frame"))) &&
 		(widget && (!GTK_IS_BUTTON(widget)) && 
-                ((is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) && 
+                ((ge_is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) && 
                  (ENTRY_BUTTON_EMBED(style)))))
 	{
 		/* The Combo/ComboBoxEntry button and the SpingButton Steppers should apear
@@ -938,7 +938,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 			SmoothDrawBorderWithGap(&border, Canvas, base, x-thick, y, width+thick, height, GTK_POS_LEFT, 0, height);
 		}
 	}
-	else if (CHECK_DETAIL(detail, "toolbar") && GRIP_OVERLAP_TOOLBAR(style) && (is_toolbar_item(widget)))
+	else if (CHECK_DETAIL(detail, "toolbar") && GRIP_OVERLAP_TOOLBAR(style) && (ge_is_toolbar_item(widget)))
 	{
 		gboolean horiz=TRUE;/*(orientation==GTK_ORIENTATION_HORIZONTAL); FIXME*/
 
@@ -1043,7 +1043,7 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 		gtk_widget_get_focus_props (widget, NULL, NULL, &interior_focus);
 	}
 
- 	if (CHECK_DETAIL(detail, "button") && (is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style))))
+ 	if (CHECK_DETAIL(detail, "button") && (ge_is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style))))
 	{
 		smooth_part_style *part = smooth_button_part(style, FALSE);
 		SmoothInt thick = 2;
@@ -1086,9 +1086,9 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 			SmoothCanvasFrameRectangle(Canvas, x - line_width, y, width + line_width, height);
 		}
 	}
- 	else if (CHECK_DETAIL(detail, "entry") && (is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style))) && (!interior_focus))
+ 	else if (CHECK_DETAIL(detail, "entry") && (ge_is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style))) && (!interior_focus))
 	{
-		GtkWidget *button = g_object_get_data(G_OBJECT(get_combo_box_widget_parent (widget)), "button");
+		GtkWidget *button = g_object_get_data(G_OBJECT(ge_find_combo_box_widget_parent (widget)), "button");
 
 		if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 		{
@@ -1211,7 +1211,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
   else if (EDGE_LINE_STYLE(style, part) == SMOOTH_BEVEL_STYLE_ICED)
     thick = 1;
 
-  g_object_set_data(G_OBJECT(get_combo_box_widget_parent(widget)), "button", widget);
+  g_object_set_data(G_OBJECT(ge_find_combo_box_widget_parent(widget)), "button", widget);
 
 	if (GTK_WIDGET_HAS_FOCUS(widget))
 	{
@@ -1244,10 +1244,10 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
 
   if ((!(widget)) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
     {
-      if (is_combo_box_entry (widget)
-          || is_combo_box (widget, TRUE))
+      if (ge_is_combo_box_entry (widget)
+          || ge_is_combo_box (widget, TRUE))
         {
-          if (!is_combo_box_entry (widget))
+          if (!ge_is_combo_box_entry (widget))
             {
               if ((widget->parent))
                 {
@@ -1280,7 +1280,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
 				x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
-      else if (is_combo(widget))
+      else if (ge_is_combo(widget))
         {
           GtkWidget *entry = widget;
           SmoothRectangle clip;
@@ -1354,10 +1354,10 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
     } 
   else
     {
-      if (is_combo_box_entry (widget)
-          || is_combo_box (widget, TRUE))
+      if (ge_is_combo_box_entry (widget)
+          || ge_is_combo_box (widget, TRUE))
         {
-          if (!is_combo_box_entry (widget))
+          if (!ge_is_combo_box_entry (widget))
             {
               if ((widget->parent))
                 {
@@ -1388,7 +1388,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
         }
-      else if (is_combo(widget))
+      else if (ge_is_combo(widget))
         {
           GtkWidget *entry = widget;
 
@@ -1752,7 +1752,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 	  do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, "smooth_trough", X+PART_XPADDING(part), Y+PART_YPADDING(part), 
 				Width - PART_XPADDING(part)*2, Height - PART_YPADDING(part)*2);
       }
-    } else if ((CHECK_DETAIL (detail, "button")) && widget && is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style)))
+    } else if ((CHECK_DETAIL (detail, "button")) && widget && ge_is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style)))
     {
         smooth_draw_combobox_button (Canvas, style, state_type, shadow_type, widget, detail, X, Y, Width, Height);
     } else if ((CHECK_DETAIL(detail, "spinbutton_up") || CHECK_DETAIL(detail, "spinbutton_down")) && (ENTRY_BUTTON_EMBED(style)))
@@ -1891,9 +1891,9 @@ smooth_draw_shadow(GtkStyle * style,
 	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
 
-	if ((CHECK_DETAIL (detail, "entry")) && (widget) && (is_in_combo_box (widget)) && (ENTRY_BUTTON_EMBED(style)))
+	if ((CHECK_DETAIL (detail, "entry")) && (widget) && (ge_is_in_combo_box (widget)) && (ENTRY_BUTTON_EMBED(style)))
 	{
-		GtkWidget *button = g_object_get_data(G_OBJECT(get_combo_box_widget_parent (widget)), "button");
+		GtkWidget *button = g_object_get_data(G_OBJECT(ge_find_combo_box_widget_parent (widget)), "button");
 
 		if (GTK_IS_WIDGET(button))
 		{
@@ -1903,7 +1903,7 @@ smooth_draw_shadow(GtkStyle * style,
 	}
 
         GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
-	if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT)  && CHECK_DETAIL(detail, "entry") && widget && (GTK_IS_SPIN_BUTTON (widget) || (is_combo_box_entry(widget)) || (is_combo(widget)))) 	
+	if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT)  && CHECK_DETAIL(detail, "entry") && widget && (GTK_IS_SPIN_BUTTON (widget) || (ge_is_combo_box_entry(widget)) || (ge_is_combo(widget)))) 	
 	{
 		gtk_paint_flat_box(style, window, widget->state, GTK_SHADOW_NONE, area, widget, "entry_bg", x, y, width, height);
 
@@ -1964,7 +1964,7 @@ smooth_draw_vline(GtkStyle * style,
 
 	g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
 
-	if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
+	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
 
 
@@ -2041,7 +2041,7 @@ smooth_draw_arrow(GtkStyle * style,
 	
 	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
 
-	if (is_combo_box(widget, FALSE) && (!is_combo_box_entry(widget)))
+	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
 	
 
@@ -2386,7 +2386,7 @@ do_smooth_draw_tab (SmoothCanvas Canvas,
 		}	
 	}	
 
-	option_menu_get_props (widget, &indicator_size, &indicator_spacing);
+	ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 
 	indicator_size.width += 2;
 	arrow_height = indicator_size.width;
@@ -2477,7 +2477,7 @@ draw_default_triangle(GtkStyle * style,
    } 
 }
 
-void
+static void
 smooth_draw_button_default(SmoothCanvas Canvas,
 
 				GtkStyle *style,
@@ -2626,7 +2626,7 @@ smooth_draw_box(GtkStyle * style,
 		GDKFinalizeCanvas(&da);
 	} 
 	else if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT) && CHECK_DETAIL(detail, "entry") && widget 
-				&& (GTK_IS_SPIN_BUTTON (widget) || (is_combo_box_entry(widget)) || (is_combo(widget)))) 
+				&& (GTK_IS_SPIN_BUTTON (widget) || (ge_is_combo_box_entry(widget)) || (ge_is_combo(widget)))) 
 	{
 		SmoothColor fill;
 		SmoothBorder border;
@@ -2747,7 +2747,7 @@ smooth_draw_box(GtkStyle * style,
 
 		do_smooth_draw_box(da, style, state_type, shadow_type, widget, detail, x, y, width, height, horizontal);
 
-		if (CHECK_DETAIL(detail, "optionmenu") ||  (CHECK_DETAIL(detail, "button") && (is_combo_box(widget, FALSE)) && !(is_combo_box_entry(widget))))
+		if (CHECK_DETAIL(detail, "optionmenu") ||  (CHECK_DETAIL(detail, "button") && (ge_is_combo_box(widget, FALSE)) && !(ge_is_combo_box_entry(widget))))
 		{		                  
 			do_smooth_draw_tab (da, style, state_type, shadow_type, widget, x, y, width, height);
 		} 

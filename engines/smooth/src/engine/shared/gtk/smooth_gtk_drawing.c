@@ -576,7 +576,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 	else if (((CHECK_DETAIL (detail, "entry"))
 		|| (CHECK_DETAIL (detail, "frame"))) &&
 		(widget && (!GTK_IS_BUTTON(widget)) && 
-                ((is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) && 
+                ((ge_is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) && 
                  (ENTRY_BUTTON_EMBED(style)))))
 	{
 		/* The Combo/ComboBoxEntry button and the SpingButton Steppers should apear
@@ -602,7 +602,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 		}
 #		endif
 	}
-	else if (CHECK_DETAIL(detail, "toolbar") && GRIP_OVERLAP_TOOLBAR(style) && (is_toolbar_item(widget)))
+	else if (CHECK_DETAIL(detail, "toolbar") && GRIP_OVERLAP_TOOLBAR(style) && (ge_is_toolbar_item(widget)))
 	{
 		gboolean horiz=TRUE;/*(orientation==GTK_ORIENTATION_HORIZONTAL); FIXME*/
 
