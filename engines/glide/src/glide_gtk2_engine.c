@@ -94,6 +94,8 @@ static glide_simple_color_pattern(CairoColor *base, CairoPattern *pattern)
 	pattern->translate = GLIDE_DIRECTION_NONE;
 
 	pattern->handle = cairo_pattern_create_rgba(base->r, base->g, base->b, base->a);
+
+	pattern->operator = CAIRO_OPERATOR_SOURCE;
 }
 
 static glide_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
@@ -130,9 +132,11 @@ static glide_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
 	cairo_surface_destroy(surface);
 
 	cairo_pattern_set_extend (pattern->handle, CAIRO_EXTEND_REPEAT);
+
+	pattern->operator = CAIRO_OPERATOR_SOURCE;
 }
 
-static void
+void
 glide_simple_linear_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdouble shade2, gboolean vertical, CairoPattern *pattern)
 {
 	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
@@ -153,11 +157,58 @@ glide_simple_linear_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdo
 	}
 
 	pattern->translate = GLIDE_DIRECTION_BOTH;
+	pattern->operator = CAIRO_OPERATOR_SOURCE;
 
 	ge_cairo_pattern_add_shade_color_stop(pattern->handle, 0, base, shade1);
 	ge_cairo_pattern_add_shade_color_stop(pattern->handle, 1, base, shade2);
 }
- 
+
+void
+glide_linear_overlay_pattern(gboolean vertical, gboolean EVIL_OVERLAY, CairoPattern *pattern)
+{
+	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+		pattern->type = CAIRO_PATTERN_TYPE_LINEAR;
+	#endif
+
+	if (vertical)
+	{
+		pattern->scale = GLIDE_DIRECTION_VERTICAL;
+
+		pattern->handle = cairo_pattern_create_linear(0, 0, 1, 0);
+	}
+	else
+	{
+		pattern->scale = GLIDE_DIRECTION_HORIZONTAL;
+
+		pattern->handle = cairo_pattern_create_linear(0, 0, 0, 1);
+	}
+
+	pattern->translate = GLIDE_DIRECTION_BOTH;
+
+	if (EVIL_OVERLAY)
+	{
+		pattern->operator = CAIRO_OPERATOR_OVER;
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.000, 1, 1, 1, 0.5);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.500, 1, 1, 1, 0.25);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 1.000, 1, 1, 1, 0.5);
+
+		/* Super Evil Overlay */
+/*		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.000, 1, 1, 1, 0.000);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.085, 1, 1, 1, 0.030);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.330, 1, 1, 1, 0.050);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.500, 1, 1, 1, 0.250);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.770, 1, 1, 1, 0.150);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 1.000, 1, 1, 1, 0.050);*/
+	}
+	else
+	{
+		pattern->operator = CAIRO_OPERATOR_OVER;
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.000, 1, 1, 1, 0.18);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 0.500, 1, 1, 1, 0.09);
+		cairo_pattern_add_color_stop_rgba(pattern->handle, 1.000, 1, 1, 1, 0.18);
+	}
+}
+
 static void
 glide_style_realize (GtkStyle * style)
 {
@@ -167,6 +218,12 @@ glide_style_realize (GtkStyle * style)
 	glide_parent_class->realize (style);
  
 	ge_gtk_style_to_cairo_color_cube (style, &glide_style->color_cube);
+
+	glide_linear_overlay_pattern(FALSE, FALSE, &glide_style->overlay[FALSE][FALSE]);
+       	glide_linear_overlay_pattern(TRUE, FALSE, &glide_style->overlay[FALSE][TRUE]);     
+
+	glide_linear_overlay_pattern(FALSE, TRUE, &glide_style->overlay[TRUE][FALSE]);
+       	glide_linear_overlay_pattern(TRUE, TRUE, &glide_style->overlay[TRUE][TRUE]);     
 
 	for (i = 0; i < 5; i++)
 	{
@@ -207,6 +264,11 @@ glide_style_unrealize (GtkStyle * style)
 	GlideStyle *glide_style = GLIDE_STYLE (style);
 	int i;
  
+	cairo_pattern_destroy(glide_style->overlay[TRUE][FALSE].handle);
+	cairo_pattern_destroy(glide_style->overlay[TRUE][TRUE].handle);
+	cairo_pattern_destroy(glide_style->overlay[FALSE][FALSE].handle);
+	cairo_pattern_destroy(glide_style->overlay[FALSE][TRUE].handle);
+
 	for (i = 0; i < 5; i++)
 	{
 		cairo_pattern_destroy(glide_style->bg_solid[i].handle);

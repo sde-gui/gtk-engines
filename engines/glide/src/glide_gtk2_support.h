@@ -21,17 +21,6 @@
 
 #include <math.h>
 
-void 
-glide_simple_border_gap_clip(cairo_t *canvas,
-				gint x,
-				gint y,
-				gint width,
-				gint height,
-
-				GtkPositionType gap_side,
-				gint gap_pos,
-				gint gap_size);
-
 void ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade);
 void ge_cairo_pattern_add_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color);
 
@@ -42,20 +31,10 @@ void glide_draw_pattern_fill(cairo_t *canvas,
 					gint width,
 					gint height);
 
-void
-do_glide_draw_default_fill (GtkStyle *style,
-                              GdkWindow *window,
-                              GtkWidget *widget,
-                              GtkStateType state_type, 
-                              GdkRectangle *area, 
-                              gint x, 
-                              gint y, 
-                              gint width, 
-                              gint height,
-                              CairoPattern *pattern);
-
 typedef enum {
 	GLIDE_BEVEL_STYLE_SMOOTH = 1,
+
+	GLIDE_BEVEL_STYLE_SMOOTHER,
 
 	GLIDE_BEVEL_STYLE_THINICE,
 
@@ -66,7 +45,7 @@ typedef enum {
 	GLIDE_BEVEL_STYLE_NONE,
 
 	/* Default */
-	GLIDE_BEVEL_STYLE_DEFAULT = GLIDE_BEVEL_STYLE_SMOOTH
+	GLIDE_BEVEL_STYLE_DEFAULT = GLIDE_BEVEL_STYLE_SMOOTHER
 } GlideBevelStyle;
 
 typedef enum {
@@ -77,14 +56,40 @@ typedef enum {
 	GLIDE_BORDER_TYPE_NONE
 } GlideBorderType;
 
+typedef enum {
+	GLIDE_SIDE_TOP,
+	GLIDE_SIDE_LEFT,
+	GLIDE_SIDE_RIGHT,
+	GLIDE_SIDE_BOTTOM,
+	GLIDE_SIDE_NONE
+} GlideSide;
+
+void do_glide_draw_border_with_gap(cairo_t *canvas,
+					CairoColor *base,
+					GlideBevelStyle bevel_style,
+					GlideBorderType border_type,
+					gint x,
+					gint y,
+					gint width,
+					gint height,
+					GlideSide gap_side,
+					gint gap_pos,
+					gint gap_size);
+
 void do_glide_draw_border(cairo_t *canvas,
                               CairoColor *base,
-                              GlideBevelStyle border_style,
+                              GlideBevelStyle bevel_style,
                               GlideBorderType border_type,
                               gint x,
                               gint y,
                               gint width,
                               gint height);
+
+typedef enum {
+	GLIDE_CHECK_INCONSISTENT, 
+	GLIDE_CHECK_ON, 
+	GLIDE_CHECK_OFF 
+} GlideCheckState;
 
 void do_glide_draw_check (cairo_t *cr,
                             CairoColor *color, 
@@ -93,6 +98,19 @@ void do_glide_draw_check (cairo_t *cr,
                             gint width, 
                             gint height);
                 
+void 
+do_glide_draw_round_option(cairo_t *canvas,
+				CairoColor *base,
+				CairoColor *fill_color,
+				CairoColor *check_color,
+        	                GlideBevelStyle bevel_style,
+                	        GlideBorderType border_type,
+				GlideCheckState check_state,
+				gint x,
+				gint y,
+				gint width,
+				gint height);
+
 void
 do_glide_draw_simple_circle (cairo_t *canvas,
                      	  		CairoColor * tl,

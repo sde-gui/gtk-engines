@@ -25,9 +25,11 @@
 
 static gdouble default_shades_table[] = 
 {
-	0.666667,	/* DARK		*/
-	1.2,		/* LIGHT	*/
-	0.112		/* REDMOND	*/
+	0.66667,	/* DARKER	*/
+	1.5,		/* LIGHTER	*/
+	0.112,		/* REDMOND	*/
+	0.8,		/* DARK		*/
+	1.2		/* LIGHT	*/
 };
 
 void
@@ -79,7 +81,13 @@ void glide_draw_pattern_fill(cairo_t *canvas,
 					gint width,
 					gint height)
 {
+
 	cairo_matrix_t original_matrix, current_matrix;
+
+	if (pattern->operator == CAIRO_OPERATOR_DEST)
+	{
+		return;
+	}
 
 	cairo_pattern_get_matrix(pattern->handle, &original_matrix);
 	current_matrix = original_matrix;
@@ -109,12 +117,12 @@ void glide_draw_pattern_fill(cairo_t *canvas,
 
 		if ((pattern->translate == GLIDE_DIRECTION_VERTICAL) || (pattern->translate == GLIDE_DIRECTION_BOTH))
 		{
-			translate_x = -x;
+			translate_x = 0.5-x;
 		}
 
 		if ((pattern->translate == GLIDE_DIRECTION_HORIZONTAL) || (pattern->translate == GLIDE_DIRECTION_BOTH))
 		{
-			translate_y = -y;
+			translate_y = 0.5-y;
 		}
 
 		cairo_matrix_translate(&current_matrix, translate_x, translate_y);
@@ -125,7 +133,7 @@ void glide_draw_pattern_fill(cairo_t *canvas,
 	cairo_save(canvas);
 
 	cairo_set_source(canvas, pattern->handle);
-
+        cairo_set_operator(canvas, pattern->operator);
 	cairo_rectangle(canvas, x, y, width, height);
 
 	cairo_fill (canvas);
@@ -135,48 +143,28 @@ void glide_draw_pattern_fill(cairo_t *canvas,
 	cairo_pattern_set_matrix(pattern->handle, &original_matrix);
 }
 
-/***********************************************
- * do_glide_draw_fill -
- *  
- *   A simple routine to fill with the bg_gc
- ***********************************************/
-void
-do_glide_draw_default_fill (GtkStyle *style,
-                              GdkWindow *window,
-                              GtkWidget *widget,
-                              GtkStateType state_type, 
-                              GdkRectangle *area, 
-                              gint x, 
-                              gint y, 
-                              gint width, 
-                              gint height,
-                              CairoPattern *pattern)
-{
-	cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
-
-	glide_draw_pattern_fill(canvas, pattern, 
-				x, y, width, height);
-
-	cairo_destroy(canvas);
-}
-
-void 
+static void 
 glide_simple_border_gap_clip(cairo_t *canvas,
 				gint x,
 				gint y,
 				gint width,
 				gint height,
 
-				GtkPositionType gap_side,
+				GlideSide gap_side,
 				gint gap_pos,
 				gint gap_size)
 {
+	if (gap_side == GLIDE_SIDE_NONE)
+	{
+		return;
+	}
+
 	cairo_set_line_width(canvas, 1.0);
 
 	switch (gap_side)
 	{
 		default:
-		case GTK_POS_TOP:
+		case GLIDE_SIDE_TOP:
 			cairo_move_to(canvas, x, y);
 			cairo_line_to(canvas, x, y + height);
 			cairo_line_to(canvas, x + width, y + height);
@@ -188,7 +176,7 @@ glide_simple_border_gap_clip(cairo_t *canvas,
 			cairo_line_to(canvas, x, y);
 		break;
 
-		case GTK_POS_LEFT:
+		case GLIDE_SIDE_LEFT:
 			cairo_move_to(canvas, x, y);
 			cairo_line_to(canvas, x + width, y);
 			cairo_line_to(canvas, x + width, y + height);
@@ -200,7 +188,7 @@ glide_simple_border_gap_clip(cairo_t *canvas,
 			cairo_line_to(canvas, x, y);
 		break;
 
-		case GTK_POS_BOTTOM:
+		case GLIDE_SIDE_BOTTOM:
 			cairo_move_to(canvas, x + width, y + height);
 			cairo_line_to(canvas, x + width, y);
 			cairo_line_to(canvas, x, y);
@@ -212,7 +200,7 @@ glide_simple_border_gap_clip(cairo_t *canvas,
 			cairo_line_to(canvas, x + width, y + height);
 		break;
 
-		case GTK_POS_RIGHT:
+		case GLIDE_SIDE_RIGHT:
 			cairo_line_to(canvas, x + width, y);
 			cairo_line_to(canvas, x, y);
 			cairo_line_to(canvas, x, y + height);
@@ -229,15 +217,17 @@ glide_simple_border_gap_clip(cairo_t *canvas,
 }
 
 void 
-do_glide_draw_border(cairo_t *canvas,
-			CairoColor *base,
-                        GlideBevelStyle border_style,
-                        GlideBorderType border_type,
-			gint x,
-			gint y,
-			gint width,
-			gint height)
-
+do_glide_draw_border_with_gap(cairo_t *canvas,
+					CairoColor *base,
+					GlideBevelStyle bevel_style,
+					GlideBorderType border_type,
+					gint x,
+					gint y,
+					gint width,
+					gint height,
+					GlideSide gap_side,
+					gint gap_pos,
+					gint gap_size)
 {
 	CairoColor color1, color2, color3, color4;
 	gboolean inner_overlap = FALSE, outer_overlap = FALSE;
@@ -246,16 +236,22 @@ do_glide_draw_border(cairo_t *canvas,
 	CairoColor midtone, black = {0, 0, 0, 1};
 
 	if ((border_type == GLIDE_BORDER_TYPE_NONE) 
-		|| (border_style == GLIDE_BEVEL_STYLE_NONE)) 
+		|| (bevel_style == GLIDE_BEVEL_STYLE_NONE)) 
 	{
 		return;
   	}
 
 	ge_shade_color(base, default_shades_table[0], &darktone);
 
-	if (border_style == GLIDE_BEVEL_STYLE_FLAT) 
+	if (bevel_style == GLIDE_BEVEL_STYLE_FLAT) 
 	{
-		ge_cairo_simple_border(canvas, &darktone, &darktone, x, y, width, height, TRUE);
+		cairo_save(canvas);
+
+		glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
+
+		ge_cairo_simple_border(canvas, &darktone, &darktone, x, y, width, height, (gap_side == GLIDE_SIDE_NONE) || ((gap_side == GLIDE_SIDE_BOTTOM) && (gap_size != width)) || ((gap_side == GLIDE_SIDE_RIGHT) && (gap_pos != 0)));
+
+		cairo_restore(canvas);
 
 		return;
 	}   
@@ -270,6 +266,12 @@ do_glide_draw_border(cairo_t *canvas,
 
 		case GLIDE_BORDER_TYPE_ETCHED:
 		{
+			if (bevel_style == GLIDE_BEVEL_STYLE_SMOOTHER)
+			{
+				ge_shade_color(base, default_shades_table[3], &darktone);
+				ge_shade_color(base, default_shades_table[4], &lighttone);
+			}
+
 			color1 = lighttone;
 			color2 = darktone;
 	
@@ -281,9 +283,15 @@ do_glide_draw_border(cairo_t *canvas,
 				color2 = color1;
 				color1 = tmp;							
 			}
-			
+			cairo_save(canvas);
+			glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
 			ge_cairo_simple_border(canvas, &color2, &color1, x, y, width, height, outer_overlap);
+			cairo_restore(canvas);
+
+			cairo_save(canvas);
+			glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos + 1, gap_size - 2);
 			ge_cairo_simple_border(canvas, &color1, &color2, x+1, y+1, width-2, height-2, inner_overlap);
+			cairo_restore(canvas);
 		}	
 		break;
       
@@ -292,12 +300,12 @@ do_glide_draw_border(cairo_t *canvas,
 		{
 			gboolean invert_in = TRUE;
 
-			if ((border_style == GLIDE_BEVEL_STYLE_THINICE)) 
+			if ((bevel_style == GLIDE_BEVEL_STYLE_THINICE)) 
 			{
 				color1 = darktone;
 				color2 = lighttone;
 				
-				if (border_type == GLIDE_BORDER_TYPE_IN)
+				if (border_type == GLIDE_BORDER_TYPE_OUT)
 				{
 					CairoColor tmp;
 
@@ -306,11 +314,15 @@ do_glide_draw_border(cairo_t *canvas,
 					color1 = tmp;							
 				}
 
-				ge_cairo_simple_border(canvas, &color2, &color1, x, y, width, height, TRUE);
+				cairo_save(canvas);
+				glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
+				ge_cairo_simple_border(canvas, &color1, &color2, x, y, width, height, 						(gap_side == GLIDE_SIDE_NONE) || ((gap_side == GLIDE_SIDE_BOTTOM) && (gap_size != width)) || ((gap_side == GLIDE_SIDE_RIGHT) && (gap_pos != 0))
+);
+				cairo_restore(canvas);
 			} 
 			else 
 			{
-				switch (border_style)
+				switch (bevel_style)
 				{            
 					case GLIDE_BEVEL_STYLE_REDMOND :
 						ge_shade_color(base, default_shades_table[2], &redmondtone);
@@ -325,16 +337,19 @@ do_glide_draw_border(cairo_t *canvas,
 						else
 						{
 							color1 = lighttone;
-							color2.a = 0;
+							color2 = *base;
 							color3 = redmondtone;
 							color4 = darktone;
 						}
 						
-						outer_overlap = TRUE;
-						inner_overlap = TRUE;
+						outer_overlap = (gap_side == GLIDE_SIDE_NONE) || ((gap_side == GLIDE_SIDE_BOTTOM) && (gap_size != width)) || ((gap_side == GLIDE_SIDE_RIGHT) && (gap_pos != 0));
+						inner_overlap = FALSE;
 						invert_in = FALSE;
 					break;
 
+					case GLIDE_BEVEL_STYLE_SMOOTHER :
+						ge_shade_color(base, default_shades_table[3], &darktone);
+						ge_shade_color(base, default_shades_table[4], &lighttone);
 					case GLIDE_BEVEL_STYLE_SMOOTH :
 					default :
 						ge_blend_color(&darktone, &lighttone, &midtone);
@@ -344,7 +359,7 @@ do_glide_draw_border(cairo_t *canvas,
 							color1 = midtone;
 							color2 = darktone;
 							color3 = lighttone;
-							color4 = midtone;
+							color4 = (border_type==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
 
 							outer_overlap = FALSE;
 							inner_overlap = TRUE;
@@ -354,10 +369,11 @@ do_glide_draw_border(cairo_t *canvas,
 							color1 = midtone;
 							color2 = lighttone;
 							color3 = darktone;
-							color4 = midtone;
+							color4 = (border_type==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
 
 							outer_overlap = TRUE;
-							inner_overlap = FALSE;
+							inner_overlap = (gap_side == GLIDE_SIDE_NONE) || 
+										((gap_side == GLIDE_SIDE_BOTTOM) && (gap_size != width)) || ((gap_side == GLIDE_SIDE_RIGHT) && (gap_pos != 0));
 						}
 						
 						invert_in = FALSE;
@@ -377,8 +393,15 @@ do_glide_draw_border(cairo_t *canvas,
 					color2 = tmp;							
 				}
 
+				cairo_save(canvas);
+				glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
 				ge_cairo_simple_border(canvas, &color1, &color3, x, y, width, height, outer_overlap);
-				ge_cairo_simple_border(canvas, &color2, &color4, x+1, y+1, width-2, height-2, outer_overlap);
+				cairo_restore(canvas);
+
+				cairo_save(canvas);
+				glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos + 1, gap_size - 2);
+				ge_cairo_simple_border(canvas, &color2, &color4, x+1, y+1, width-2, height-2, inner_overlap);
+				cairo_restore(canvas);
 			} 	
 		}	
 		break;
@@ -386,6 +409,274 @@ do_glide_draw_border(cairo_t *canvas,
 		default:
 		break;
 	}
+}
+
+void 
+do_glide_draw_border(cairo_t *canvas,
+			CairoColor *base,
+                        GlideBevelStyle bevel_style,
+                        GlideBorderType border_type,
+			gint x,
+			gint y,
+			gint width,
+			gint height)
+
+{
+	do_glide_draw_border_with_gap(canvas, base, bevel_style, border_type, 
+					x, y, width, height, GLIDE_SIDE_NONE, 0, 0);
+}
+
+#warning - do_glide_draw_option_check needs smarter sizing - perhaps draw check at base size, and scale/translate? 
+void 
+do_glide_draw_option_check(cairo_t *canvas,
+				CairoColor *check_color,
+        	                GlideCheckState check_state,
+				gint center_x,
+				gint center_y,
+				gint radius)
+{
+	cairo_save(canvas);
+
+	ge_cairo_set_color(canvas, check_color);	
+
+	switch (check_state)
+	{
+		case GLIDE_CHECK_ON:
+		{
+			cairo_arc(canvas, center_x, center_y, radius*0.68, 0, 2 * M_PI);
+			cairo_fill(canvas);
+		}
+		break;
+
+		case GLIDE_CHECK_INCONSISTENT:
+		{
+			gdouble line_width = radius;
+
+			cairo_set_line_cap(canvas, CAIRO_LINE_CAP_ROUND);
+			cairo_set_line_width (canvas, line_width);
+
+			cairo_move_to(canvas, center_x - radius + line_width/2, center_y);
+			cairo_line_to(canvas, center_x + radius - line_width/2, center_y);
+
+			cairo_stroke (canvas);
+		}
+		break;
+
+		case GLIDE_CHECK_OFF:
+		default:
+		{
+		}
+		break;
+	}
+	
+	cairo_restore(canvas);
+}
+
+void 
+do_glide_draw_round_option(cairo_t *canvas,
+				CairoColor *base,
+				CairoColor *fill_color,
+				CairoColor *check_color,
+        	                GlideBevelStyle bevel_style,
+                	        GlideBorderType border_type,
+				GlideCheckState check_state,
+				gint x,
+				gint y,
+				gint width,
+				gint height)
+{
+	CairoColor outer_color1, outer_color2, inner_color1, inner_color2;
+
+	CairoColor darktone, lighttone, icetone, coldtone, redmondtone;
+	CairoColor midtone, black = {0, 0, 0, 1};
+
+	gint center_x = x + floor(width/2);
+	gint center_y = y + floor(height/2);
+	gint radius = floor(MIN(width,height)/2) + 1.5;
+
+
+	cairo_save(canvas);
+
+	if ((border_type == GLIDE_BORDER_TYPE_NONE) 
+		|| (bevel_style == GLIDE_BEVEL_STYLE_NONE)) 
+	{
+		ge_cairo_set_color(canvas, fill_color);
+		cairo_arc(canvas, center_x, center_y, radius, 0, 2 * M_PI);
+		cairo_fill(canvas);
+
+		do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 1);
+
+		cairo_restore(canvas);
+
+		return;
+  	}
+
+	ge_shade_color(base, default_shades_table[0], &darktone);
+
+	if (bevel_style == GLIDE_BEVEL_STYLE_FLAT) 
+	{
+		do_glide_draw_simple_circle (canvas, &darktone, &darktone, 
+						center_x, center_y, radius);
+
+		ge_cairo_set_color(canvas, fill_color);
+		cairo_arc(canvas, center_x, center_y, radius - 1, 0, 2 * M_PI);
+		cairo_fill(canvas);
+
+		do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 2);
+
+		cairo_restore(canvas);
+		return;
+	}   
+    	
+	ge_shade_color(base, default_shades_table[1], &lighttone);
+	cairo_set_line_width (canvas, 1);
+
+	switch (border_type)
+	{
+		case GLIDE_BORDER_TYPE_ENGRAVED:
+		case GLIDE_BORDER_TYPE_ETCHED:
+		{
+			if (border_type == GLIDE_BORDER_TYPE_ENGRAVED)
+			{
+				outer_color1 = lighttone;
+				outer_color2 = darktone;
+
+				inner_color1 = darktone;
+				inner_color2 = lighttone;	
+			}
+			else			
+			{
+				outer_color1 = darktone;
+				outer_color2 = lighttone;
+
+				inner_color1 = lighttone;
+				inner_color2 = darktone;	
+			}
+
+			do_glide_draw_simple_circle (canvas, &outer_color1, &outer_color2, 
+								center_x, center_y, radius);
+			do_glide_draw_simple_circle (canvas, &inner_color1, &inner_color2, 
+								center_x, center_y, radius - 1);		
+
+			ge_cairo_set_color(canvas, fill_color);
+			cairo_arc(canvas, center_x, center_y, radius - 2, 0, 2 * M_PI);
+			cairo_fill(canvas);
+
+			do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 3);
+		}	
+		break;
+      
+		case GLIDE_BORDER_TYPE_IN:
+		case GLIDE_BORDER_TYPE_OUT:
+		{
+			gboolean invert_in = TRUE;
+
+			if ((bevel_style == GLIDE_BEVEL_STYLE_THINICE)) 
+			{
+				outer_color1 = darktone;
+				outer_color2 = lighttone;
+				
+				if (border_type == GLIDE_BORDER_TYPE_OUT)
+				{
+					CairoColor tmp;
+
+					tmp = outer_color1;
+					outer_color1 = outer_color2;
+					outer_color2 = tmp;							
+				}
+
+				do_glide_draw_simple_circle (canvas, &outer_color1, &outer_color2, 
+								center_x, center_y, radius);
+
+				ge_cairo_set_color(canvas, fill_color);
+				cairo_arc(canvas, center_x, center_y, radius - 1, 0, 2 * M_PI);
+				cairo_fill(canvas);
+
+				do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 2);
+			} 
+			else 
+			{
+				switch (bevel_style)
+				{            
+					case GLIDE_BEVEL_STYLE_REDMOND :
+						ge_shade_color(base, default_shades_table[2], &redmondtone);
+
+						if (border_type == GLIDE_BORDER_TYPE_IN)
+						{
+							outer_color1 = darktone;
+							inner_color1 = redmondtone;
+							outer_color2 = lighttone;
+							inner_color2 = *base;
+						} 
+						else
+						{
+							outer_color1 = lighttone;
+							inner_color1 = *base;
+							outer_color2 = redmondtone;
+							inner_color2 = darktone;
+						}
+						
+						invert_in = FALSE;
+					break;
+
+					case GLIDE_BEVEL_STYLE_SMOOTHER :
+						ge_shade_color(base, default_shades_table[3], &darktone);
+						ge_shade_color(base, default_shades_table[4], &lighttone);
+					case GLIDE_BEVEL_STYLE_SMOOTH :
+					default :
+						ge_blend_color(&darktone, &lighttone, &midtone);
+
+						if (border_type == GLIDE_BORDER_TYPE_IN)
+						{
+							outer_color1 = midtone;
+							inner_color1 = darktone;
+							outer_color2 = lighttone;
+							inner_color2 = (border_type==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
+						}
+						else
+						{						
+							outer_color1 = midtone;
+							inner_color1 = lighttone;
+							outer_color2 = darktone;
+							inner_color2 = (border_type==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
+						}
+						
+						invert_in = FALSE;
+					break;
+				} 
+
+				if ((invert_in) && (border_type == GLIDE_BORDER_TYPE_IN))
+				{
+					CairoColor tmp;
+
+					tmp = outer_color2;
+					outer_color2 = outer_color1;
+					outer_color1 = tmp;							
+
+					tmp = inner_color2;
+					inner_color2 = inner_color1;
+					inner_color1 = tmp;							
+				}
+
+				do_glide_draw_simple_circle (canvas, &outer_color1, &outer_color2, 
+								center_x, center_y, radius);
+				do_glide_draw_simple_circle (canvas, &inner_color1, &inner_color2, 
+								center_x, center_y, radius - 1);
+
+				ge_cairo_set_color(canvas, fill_color);
+				cairo_arc(canvas, center_x, center_y, radius - 2, 0, 2 * M_PI);
+				cairo_fill(canvas);
+
+				do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 3);
+			} 	
+		}	
+		break;
+
+		default:
+		break;
+	}
+
+	cairo_restore(canvas);
 }
 
 /***********************************************
