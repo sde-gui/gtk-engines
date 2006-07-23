@@ -219,7 +219,20 @@ hc_draw_check (GtkStyle      *style,
 	gint line_width = 1;
 	gboolean invert_checkboxes = FALSE; /* TODO: read this from RC file in engine-specific data? */
 
+	CHECK_ARGS
 	SANITIZE_SIZE
+
+	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL("cellcheck",detail))
+	{
+		x -= 1;
+		y -= 1;
+		width += 2;
+		height += 2;
+	}
+
+	gboolean inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
+	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
+	inconsistent |= (CHECK_DETAIL("cellcheck",detail) && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -227,9 +240,10 @@ hc_draw_check (GtkStyle      *style,
 				"focus-line-width", &line_width,
 				NULL);
 
+	
 	cairo_save(cr);
 
-	cairo_set_line_width (cr, MIN(width,height)*0.15);
+	cairo_set_line_width (cr, line_width + ((line_width%2)?1:0.5));
 	
 	ge_cairo_set_color(cr, &hc_style->color_cube.base[state_type]);	
 
@@ -239,7 +253,7 @@ hc_draw_check (GtkStyle      *style,
 
 	ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);	
  
-	cairo_rectangle (cr, x+0.5, y+0.5, width-1, height-1);
+	cairo_rectangle (cr, x, y, width, height);
 
 	cairo_stroke(cr);
 
@@ -249,27 +263,21 @@ hc_draw_check (GtkStyle      *style,
 	{
 		ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);	
 
-		gint off_1, off_2;
-		gint line_width = ceil(((width + 1)/5));
-	
-		if (!(line_width % 2)) 
-			line_width -= 1;
+		gint x_off, y_off;
 
-		cairo_set_line_width (cr, line_width + 0.5);
-		cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE);
-
-		off_2 = line_width + 2;
-		off_1 = off_2;
+		x_off = ceil((((3*line_width)/2.0)*sin(M_PI/4.0)) + line_width);
+		y_off = ceil((((3*line_width)/2.0)*cos(M_PI/4.0)) + line_width);
 
 		/* Backward Diagonal */
-		cairo_move_to(cr, x+off_1, y+off_1);
-		cairo_line_to(cr, x+width-off_2, y+height-off_2);
-		
-		cairo_stroke (cr);
+		cairo_move_to(cr, x + x_off, y + y_off);
+		cairo_line_to(cr, x + width - x_off, y + height - y_off);
 
 		/* Forward Diagonal */
-		cairo_move_to(cr, x+off_1, y+height - off_2);
-		cairo_line_to(cr, x+width-off_2, y+off_1);
+		cairo_move_to(cr, x + x_off, y + height - y_off);
+		cairo_line_to(cr, x + width - x_off, y + y_off);
+
+		cairo_set_line_width (cr, line_width + (((width - x_off*2)%2)?1:0.5));
+		cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE);
 
 		cairo_stroke (cr);
 	}
@@ -309,7 +317,16 @@ hc_draw_option (GtkStyle      *style,
 {
 	HcStyle *hc_style = HC_STYLE (style);
 
+	CHECK_ARGS
 	SANITIZE_SIZE
+
+	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL("cellcheck",detail))
+	{
+		x -= 1;
+		y -= 1;
+		width += 2;
+		height += 2;
+	}
 
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -330,7 +347,7 @@ hc_draw_option (GtkStyle      *style,
 
 	gboolean inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
-	inconsistent |= (CHECK_DETAIL("cellradio",detail) && (shadow_type == GTK_SHADOW_ETCHED_IN));
+	inconsistent |= (CHECK_DETAIL("cellcheck",detail) && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow_type == GTK_SHADOW_IN) || inconsistent)
 	{
@@ -395,12 +412,12 @@ hc_draw_tab (GtkStyle      *style,
   y += (height - (2 * arrow_height + ARROW_SPACE)) / 2;
 
   do_hc_draw_arrow (cr, &hc_style->color_cube.fg[state_type],
-	      GTK_ARROW_UP, x, y,
+	      GTK_ARROW_UP, TRUE, x, y,
 	      indicator_size.width, arrow_height);
   
   
   do_hc_draw_arrow (cr, &hc_style->color_cube.fg[state_type],
-	      GTK_ARROW_DOWN, x, y + arrow_height + ARROW_SPACE,
+	      GTK_ARROW_DOWN,TRUE, x, y + arrow_height + ARROW_SPACE,
 	      indicator_size.width, arrow_height);
 
   cairo_destroy(cr);
@@ -548,7 +565,7 @@ hc_draw_arrow (GtkStyle      *style,
       && gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
     x = original_x + original_width - width;
 
-  do_hc_draw_arrow (cr, &hc_style->color_cube.fg[state], arrow_type,
+  do_hc_draw_arrow (cr, &hc_style->color_cube.fg[state], arrow_type, TRUE,
 	      x, y, width+1, height+1);
 
   cairo_destroy(cr);

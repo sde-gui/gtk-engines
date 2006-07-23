@@ -1178,6 +1178,9 @@ draw_arrow (GtkStyle  *style,
 		
 	sanitize_size (window, &width, &height);
 
+	if (arrow_type == (GtkArrowType)4)//NONE - new in GTK 2.10
+		return;
+
 	if (DETAIL ("arrow"))
 	{
 		WidgetParameters params;

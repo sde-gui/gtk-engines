@@ -26,9 +26,10 @@ thinice_dot(cairo_t *cr,
             gint x,
             gint y) G_GNUC_INTERNAL;
 
-void thinice_arrow (cairo_t *cr,
+void thinice_arrow (cairo_t *canvas,
 			CairoColor *color,
 			GtkArrowType arrow_type, 
+                        gboolean fill,
 			gint x, 
 			gint y, 
 			gint width, 

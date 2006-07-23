@@ -423,11 +423,11 @@ redmond_draw_arrow (GtkStyle * style,
 
   if (state == GTK_STATE_INSENSITIVE)
     {
-      do_redmond_draw_arrow (cr, &redmond_style->color_cube.light[state], arrow_type, x+1, y+1, width, height);
-      do_redmond_draw_arrow (cr, &redmond_style->color_cube.fg[state], arrow_type, x, y, width, height);
+      do_redmond_draw_arrow (cr, &redmond_style->color_cube.light[state], arrow_type, TRUE, x+1, y+1, width, height);
+      do_redmond_draw_arrow (cr, &redmond_style->color_cube.fg[state], arrow_type, TRUE, x, y, width, height);
     }
   else
-    do_redmond_draw_arrow (cr, &redmond_style->color_cube.fg[state], arrow_type, x, y, width, height);
+    do_redmond_draw_arrow (cr, &redmond_style->color_cube.fg[state], arrow_type, TRUE, x, y, width, height);
 
   cairo_destroy(cr);
 }

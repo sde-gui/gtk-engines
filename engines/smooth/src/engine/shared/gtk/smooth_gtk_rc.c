@@ -2340,7 +2340,7 @@ smooth_style_get_arrow(SmoothArrowPart *Part,
 				...
 			}
 	*/
-	SmoothArrowType type = SMOOTH_ARROW_TYPE_DOWN;
+	SmoothArrowType type = SMOOTH_ARROW_TYPE_NONE;
 
 	switch (ArrowType)
 	{

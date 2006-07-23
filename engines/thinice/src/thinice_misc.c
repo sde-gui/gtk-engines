@@ -31,148 +31,142 @@ thinice_shadow_type (GtkStyle *style, const char *detail, GtkShadowType requeste
  *  
  *    borrowed from redmond till shareable
  ***********************************************/
-void thinice_arrow (cairo_t *cr,
-			CairoColor *color,
-			GtkArrowType arrow_type, 
-			gint x, 
-			gint y, 
-			gint width, 
-			gint height)
+void thinice_arrow (cairo_t *canvas,
+               CairoColor * color,
+               GtkArrowType arrow_type,
+               gboolean fill,
+               gint x, 
+               gint y, 
+               gint width, 
+               gint height)
 {
-  gint i;
- 
-  gint steps, extra;
-  gint start, increment;
-  gint aw = width, ah = height;
- 	
-  if ((arrow_type == GTK_ARROW_UP) || (arrow_type == GTK_ARROW_DOWN))
-    {
-      gdouble tmp=((aw+1)/2) - ((height%2)?1:0);
+	gint steps, extra;
+	gint start, increment;
+	gint aw = width, ah = height;
+ 	GdkPoint points[3];
+
+	switch (arrow_type)
+	{
+		case GTK_ARROW_UP:
+		case GTK_ARROW_DOWN:
+		{
+			gdouble tmp=((aw+1)/2) - ((height%2)?1:0);
        
-      if (tmp > ah) 
-        {
-          aw = 2*ah - 1 - ((height%2)?1:0);
-          ah = (aw+1)/2;
-        } 
-      else 
-        {
-          ah = (gint) tmp;
-          aw = 2*ah - 1;
-        }  
+			if (tmp > ah) 
+			{
+				aw = 2*ah - 1 - ((height%2)?1:0);
+				ah = (aw+1)/2;
+			} 
+			else 
+			{
+				ah = (gint) tmp;
+				aw = 2*ah - 1;
+			}  
  
-      if ((aw < 5) || (ah < 3)) 
-        {
-          aw = 5;
-          ah = 3;
-        }
+			if ((aw < 5) || (ah < 3)) 
+			{
+				aw = 5;
+				ah = 3;
+			}
  
-      x += (width - aw) / 2 ;
-      y += (height - ah) / 2;
-      width = aw;
-      height = ah;
+			x += (width - aw) / 2 ;
+			y += (height - ah) / 2;
+			width = aw;
+			height = ah;
  		
-      width += width % 2 - 1;
+			width += width % 2 - 1;
+
+			points[0].x = x;
+			points[1].x = x + width - 1;
+			points[2].x = x + ((height - 1) - (height - (1 + width / 2)));
+
+			points[0].y = points[1].y = y;
+			points[2].y = y + height - 1;
+
+			if (arrow_type == GTK_ARROW_UP)
+			{
+				gint flip = points[1].y;
+
+				points[0].y = points[1].y = points[2].y;
+				points[2].y = flip;
+			}
+		}
+		break;
+
+		case GTK_ARROW_LEFT:
+		case GTK_ARROW_RIGHT:
+		{
+			gdouble tmp=((ah+1)/2) - ((width%2)?1:0);
  
-      steps = 1 + width / 2;
-      extra = height - steps;
+			if (tmp > aw) 
+			{
+				ah = 2*aw - 1 - ((width%2)?1:0);
+				aw = (ah+1)/2;
+			} 
+			else 
+			{
+				aw = (gint) tmp;
+				ah = 2*aw - 1;
+			}  
  
-      if (arrow_type == GTK_ARROW_DOWN)
-        {
-          start = y;
-          increment = 1;
-        }
-      else
-        {
-          start = y + height - 1;
-          increment = -1;
-        }
+			if ((ah < 5) || (aw < 3)) 
+			{
+				ah = 5;
+				aw = 3;
+			}
  
-      cairo_save(cr);
-
-      ge_cairo_set_color(cr, color);	
-      cairo_set_line_width (cr, 0.5);
-
-      cairo_move_to(cr, x + 0.5, start + 0.5);
-      cairo_line_to(cr, x + width - 0.5, start + 0.5);
-      cairo_line_to(cr, x + ((height - 1) - extra) + 0.5, start + (height - 1)*increment + 0.5);
-      cairo_line_to(cr, x + 0.5, start + 0.5);
-
-      cairo_stroke(cr);
-
-
-      cairo_move_to(cr, x + 0.5, start + 0.5);
-      cairo_line_to(cr, x + width - 0.5, start + 0.5);
-      cairo_line_to(cr, x + ((height - 1) - extra) + 0.5, start + (height - 1)*increment + 0.5);
-      cairo_line_to(cr, x + 0.5, start + 0.5);
-
-      cairo_fill(cr);
-
-      cairo_restore(cr);
-    }
-  else
-    {
-      gdouble tmp=((ah+1)/2) - ((width%2)?1:0);
+			x += (width - aw) / 2 ;
+			y += (height - ah) / 2;
+			width = aw;
+			height = ah;
  
-      if (tmp > aw) 
-        {
-          ah = 2*aw - 1 - ((width%2)?1:0);
-          aw = (ah+1)/2;
-        } 
-      else 
-        {
-          aw = (gint) tmp;
-          ah = 2*aw - 1;
-        }  
- 
-      if ((ah < 5) || (aw < 3)) 
-        {
-          ah = 5;
-          aw = 3;
-        }
- 
-      x += (width - aw) / 2 ;
-      y += (height - ah) / 2;
-      width = aw;
-      height = ah;
- 
-      height += height % 2 - 1;
- 
-      steps = 1 + height / 2;
-      extra = width - steps;
- 
-      if (arrow_type == GTK_ARROW_RIGHT)
-        {
-          start = x;
-          increment = 1;
-        }
-      else
-        {
-          start = x + width - 1;
-          increment = -1;
-        }
- 
-      cairo_save(cr);
+			height += height % 2 - 1;
 
-      ge_cairo_set_color(cr, color);	
-      cairo_set_line_width (cr, 0.5);
+			points[0].y = y;
+			points[1].y = y + height - 1;
+			points[2].y = y + ((width - 1) - (width - (1 + height / 2)));
 
-      cairo_move_to(cr, start + 0.5, y + 0.5);
-      cairo_line_to(cr, start + 0.5, y + height - 0.5);
-      cairo_line_to(cr, start + (width - 1)*increment + 0.5, y + ((width - 1) - extra) + 0.5);
-      cairo_line_to(cr, start + 0.5, y + 0.5);
+			points[0].x = points[1].x = x;
+			points[2].x = x + width - 1;
 
-      cairo_stroke(cr);
+			if (arrow_type == GTK_ARROW_LEFT)
+			{
+				gint flip = points[0].x;
 
+				points[0].x = points[1].x = points[2].x;
+				points[2].x = flip;
+			}
+		}
+		break;
 
-      cairo_move_to(cr, start + 0.5, y + 0.5);
-      cairo_line_to(cr, start + 0.5, y + height - 0.5);
-      cairo_line_to(cr, start + (width - 1)*increment + 0.5, y + ((width - 1) - extra) + 0.5);
-      cairo_line_to(cr, start + 0.5, y + 0.5);
+		default:
+		{
+			return;
+		}
+	}
 
-      cairo_fill(cr);
+	cairo_save(canvas);
 
-      cairo_restore(cr);
-    }
+	ge_cairo_set_color(canvas, color);	
+	cairo_set_line_width (canvas, 0.5);
+
+	cairo_move_to(canvas, points[0].x + 0.5, points[0].y + 0.5);
+	cairo_line_to(canvas, points[1].x + 0.5, points[1].y + 0.5);
+	cairo_line_to(canvas, points[2].x + 0.5, points[2].y + 0.5);
+	cairo_line_to(canvas, points[0].x + 0.5, points[0].y + 0.5);
+
+	if (fill)
+	{
+		cairo_stroke_preserve(canvas);
+
+		cairo_fill(canvas);
+	}
+	else
+	{
+		cairo_stroke(canvas);
+	}
+
+	cairo_restore(canvas);
 }
 
 void

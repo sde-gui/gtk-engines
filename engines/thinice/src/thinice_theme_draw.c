@@ -382,8 +382,8 @@ draw_arrow(GtkStyle * style,
 
 			case MARKS_ARROW:
 				if (state_type == GTK_STATE_INSENSITIVE)
-					thinice_arrow (cr, &thinice_style->color_cube.white, arrow_type, x+1, y+1, width, height);
-				thinice_arrow (cr, &thinice_style->color_cube.fg[state_type], arrow_type, x, y, width, height);
+					thinice_arrow (cr, &thinice_style->color_cube.white, arrow_type, TRUE, x+1, y+1, width, height);
+				thinice_arrow (cr, &thinice_style->color_cube.fg[state_type], arrow_type, TRUE, x, y, width, height);
           		break;
 
 			case MARKS_SLASH:
@@ -395,8 +395,8 @@ draw_arrow(GtkStyle * style,
 	else
 	{
 		if (state_type == GTK_STATE_INSENSITIVE)
-			thinice_arrow (cr, &thinice_style->color_cube.white, arrow_type, x+1, y+1, width, height);
-		thinice_arrow (cr, &thinice_style->color_cube.fg[state_type], arrow_type, x, y, width, height);
+			thinice_arrow (cr, &thinice_style->color_cube.white, arrow_type, TRUE, x+1, y+1, width, height);
+		thinice_arrow (cr, &thinice_style->color_cube.fg[state_type], arrow_type, TRUE, x, y, width, height);
 	}
 
 	cairo_destroy(cr);

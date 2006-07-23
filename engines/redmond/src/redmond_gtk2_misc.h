@@ -46,9 +46,10 @@ void do_redmond_draw_check (cairo_t *cr,
                             gint width, 
                             gint height) G_GNUC_INTERNAL;
                             
-void do_redmond_draw_arrow (cairo_t *cr,
+void do_redmond_draw_arrow (cairo_t *canvas,
                             CairoColor *color,
                             GtkArrowType arrow_type, 
+                            gboolean fill,
                             gint x, 
                             gint y, 
                             gint width, 

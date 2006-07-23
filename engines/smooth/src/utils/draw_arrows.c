@@ -532,6 +532,11 @@ SmoothDrawArrow(SmoothCanvas *Canvas,
 	SmoothRectangle ta;
 	SmoothColor border, fill;
 
+	if (Arrow.Type == SMOOTH_ARROW_TYPE_NONE)
+	{
+		return;
+	}
+
 	if (Arrow.Etched) 
 	{
 		SmoothCanvasCacheShadedColor(Canvas, Background, default_shades_table[0], &fill);
