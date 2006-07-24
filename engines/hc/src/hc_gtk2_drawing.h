@@ -33,7 +33,7 @@ hc_draw_shadow_gap (GtkStyle * style,
 		 gint height, 
 		 GtkPositionType gap_side, 
 		 gint gap_pos, 
-		 gint gap_size);
+		 gint gap_size) G_GNUC_INTERNAL;
 
 void
 hc_draw_box_gap (GtkStyle * style, 
@@ -49,7 +49,7 @@ hc_draw_box_gap (GtkStyle * style,
 		 gint height, 
 		 GtkPositionType gap_side, 
 		 gint gap_pos, 
-		 gint gap_size);
+		 gint gap_size) G_GNUC_INTERNAL;
 
 void
 hc_draw_hline (GtkStyle * style,
@@ -60,7 +60,7 @@ hc_draw_hline (GtkStyle * style,
 	    const gchar * detail, 
             gint x1,
             gint x2, 
-            gint y);
+            gint y) G_GNUC_INTERNAL;
  
 void
 hc_draw_vline (GtkStyle * style,
@@ -71,7 +71,7 @@ hc_draw_vline (GtkStyle * style,
 	    const gchar * detail, 
             gint y1, 
             gint y2, 
-            gint x);
+            gint x) G_GNUC_INTERNAL;
  
 void
 hc_draw_check (GtkStyle * style,
@@ -84,7 +84,7 @@ hc_draw_check (GtkStyle * style,
             gint x, 
             gint y, 
             gint width, 
-            gint height);
+            gint height) G_GNUC_INTERNAL;
  
 void
 hc_draw_option (GtkStyle * style,
@@ -97,7 +97,7 @@ hc_draw_option (GtkStyle * style,
              gint x,
              gint y, 
              gint width, 
-             gint height);
+             gint height) G_GNUC_INTERNAL;
  
 void
 hc_draw_arrow (GtkStyle * style,
@@ -112,7 +112,7 @@ hc_draw_arrow (GtkStyle * style,
             gint x, 
             gint y, 
             gint width, 
-            gint height);
+            gint height) G_GNUC_INTERNAL;
  
 void
 hc_draw_shadow (GtkStyle * style,
@@ -125,7 +125,7 @@ hc_draw_shadow (GtkStyle * style,
              gint x, 
              gint y, 
              gint width, 
-             gint height);
+             gint height) G_GNUC_INTERNAL;
  
 void
 hc_draw_box (GtkStyle * style,
@@ -138,7 +138,7 @@ hc_draw_box (GtkStyle * style,
           gint x, 
           gint y, 
           gint width, 
-          gint height);
+          gint height) G_GNUC_INTERNAL;
  
 void
 hc_draw_flat_box (GtkStyle	*style,
@@ -151,7 +151,7 @@ hc_draw_flat_box (GtkStyle	*style,
                   gint		 x,
                   gint		 y,
                   gint		 width,
-                  gint		 height);
+                  gint		 height) G_GNUC_INTERNAL;
 
 void
 hc_draw_tab (GtkStyle * style,
@@ -164,7 +164,7 @@ hc_draw_tab (GtkStyle * style,
           gint x, 
           gint y, 
           gint width, 
-          gint height);
+          gint height) G_GNUC_INTERNAL;
  
 void
 hc_draw_slider (GtkStyle * style,
@@ -178,7 +178,7 @@ hc_draw_slider (GtkStyle * style,
 	     gint y, 
              gint width, 
              gint height, 
-             GtkOrientation orientation);
+             GtkOrientation orientation) G_GNUC_INTERNAL;
  
 void
 hc_draw_extension (GtkStyle * style,
@@ -192,7 +192,7 @@ hc_draw_extension (GtkStyle * style,
 		gint y, 
                 gint width, 
                 gint height, 
-                GtkPositionType gap_side);
+                GtkPositionType gap_side) G_GNUC_INTERNAL;
                 
 void
 hc_draw_handle (GtkStyle * style,
@@ -206,7 +206,7 @@ hc_draw_handle (GtkStyle * style,
 	     gint y, 
              gint width, 
              gint height, 
-             GtkOrientation orientation);
+             GtkOrientation orientation) G_GNUC_INTERNAL;
 
 
 void
@@ -219,7 +219,7 @@ hc_draw_focus(GtkStyle *style,
            gint x,
            gint y,
            gint width,
-           gint height);
+           gint height) G_GNUC_INTERNAL;
 
 void
 hc_draw_layout (GtkStyle        *style,
@@ -231,7 +231,7 @@ hc_draw_layout (GtkStyle        *style,
 	     const char      *detail,
 	     int              x,
 	     int              y,
-	     PangoLayout      *layout);
+	     PangoLayout      *layout) G_GNUC_INTERNAL;
 
 void
 hc_draw_diamond (GtkStyle      *style,
@@ -244,7 +244,7 @@ hc_draw_diamond (GtkStyle      *style,
 		 gint           x,
 		 gint           y,
 		 gint           width,
-		 gint           height);
+		 gint           height) G_GNUC_INTERNAL;
 
 void
 hc_draw_polygon (GtkStyle      *style,
@@ -256,5 +256,5 @@ hc_draw_polygon (GtkStyle      *style,
 		 const gchar   *detail,
 		 GdkPoint      *points,
 		 gint           npoints,
-		 gboolean       fill);
+		 gboolean       fill) G_GNUC_INTERNAL;
 

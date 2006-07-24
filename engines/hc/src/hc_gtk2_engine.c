@@ -189,8 +189,10 @@ hc_style_class_init (HcStyleClass *klass)
   style_class->draw_shadow_gap = hc_draw_shadow_gap;
   style_class->draw_arrow = hc_draw_arrow;
   style_class->draw_flat_box = hc_draw_flat_box;
+  style_class->draw_box = hc_draw_box;
   style_class->draw_box_gap = hc_draw_box_gap;
   style_class->draw_handle = hc_draw_handle;  
+  style_class->draw_slider = hc_draw_slider;  
   style_class->draw_hline = hc_draw_hline; 
   style_class->draw_vline = hc_draw_vline; 
   style_class->draw_diamond = hc_draw_diamond;

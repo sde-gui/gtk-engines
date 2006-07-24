@@ -1,3 +1,32 @@
+2006-07-24 Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/hc/src/hc-style.c: (hc_draw_shadow),
+	(hc_draw_shadow_gap), (hc_draw_extension), (hc_draw_flat_box),
+	(hc_draw_box), (hc_draw_box_gap), (hc_draw_handle),
+	(hc_draw_slider), (hc_draw_check), (hc_draw_option), (hc_draw_tab),
+	(hc_draw_arrow), (hc_draw_hline), (hc_draw_vline):
+	* engines/hc/src/hc_gtk2_drawing.h:
+	* engines/hc/src/hc_gtk2_engine.c: (hc_style_class_init):
+
+	- Improve Slider, Tabs/Notebooks, Options, Checks, Arrows
+	- Prevent Double Lines in Combo's and Spin's
+	- Ensure Entry's Match State (for insensitive)
+	- Obsessively start reorganizing code
+	- Begin Commenting things
+	- #Warning woohoo!
+
+
+	* engines/hc/src/hc_gtk2_support.c: (do_hc_draw_dot),
+	(hc_gtk2_engine_hack_menu_shell_style_set),
+	(hc_gtk2_engine_hack_menu_shell_destroy),
+	(hc_gtk2_engine_hack_menu_shell_motion),
+	(hc_gtk2_engine_hack_menu_shell_leave),
+	(hc_gtk2_engine_hack_menu_shell_setup_signals),
+	(hc_gtk2_engine_hack_menu_shell_cleanup_signals):
+	* engines/hc/src/hc_gtk2_support.h:
+	
+	- Add menu shell prelight hack from redmond
+
 2006-07-23  Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_arrow):
