@@ -1,3 +1,18 @@
+Overview of Changes in 2.7.6 (since 2.7.5)
+==========================================
+
+Highlights in this release include:
+
+* More improvements to the cairo version of Crux, now using purple highlights.
+* Further improvements to the cairo version of the High Constrast engine
+* New cairo based Engine called Glide for the Glider theme
+
+Fixed bugs in this release:
+
+	343893 - Engines need to handle GTK_ARROW_NONE.
+	348167 - Remove crux/pixmaps directory.
+
+
 Overview of Changes in 2.7.5 (since 2.7.4)
 ==========================================
 
