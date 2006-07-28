@@ -40,7 +40,7 @@ typedef struct
 	cairo_pattern_t *handle;
 } CairoPattern;
   
-#define DEFAULT_BACKGROUND_PATTERN(redmond_style, state) ((redmond_style->bg_pixmap[state].handle)?&redmond_style->bg_pixmap[state]:&redmond_style->bg_color[state])
+#define DEFAULT_BACKGROUND_PATTERN(redmond_style, state) ((redmond_style->bg_image[state].handle)?&redmond_style->bg_image[state]:&redmond_style->bg_color[state])
 
 /*****************************/
 /* RC Style Declaration      */
@@ -84,7 +84,7 @@ typedef struct
   CairoColorCube color_cube;
 
   CairoPattern bg_color[5];
-  CairoPattern bg_pixmap[5];
+  CairoPattern bg_image[5];
   CairoPattern hatch_mask;
 } RedmondStyle;
  

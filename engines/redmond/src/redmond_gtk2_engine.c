@@ -161,10 +161,11 @@ redmond_style_realize (GtkStyle * style)
 
       redmond_simple_color_pattern(&(redmond_style->color_cube.bg[i]), &redmond_style->bg_color[i]);
 
-      redmond_style->bg_pixmap[i].handle = NULL;
-      if (style->bg_pixmap[i])
+      redmond_style->bg_image[i].handle = NULL;
+
+      if ((style->bg_pixmap[i]) && (style->bg_pixmap[i] != (GdkPixmap*) GDK_PARENT_RELATIVE))
       {
-        redmond_simple_pixmap_pattern(style->bg_pixmap[i], &redmond_style->bg_pixmap[i]);
+        redmond_simple_pixmap_pattern(style->bg_pixmap[i], &redmond_style->bg_image[i]);
       }
     }
 }
@@ -182,9 +183,9 @@ redmond_style_unrealize (GtkStyle * style)
 	{
 		cairo_pattern_destroy(redmond_style->bg_color[i].handle);
 
-		if (redmond_style->bg_pixmap[i].handle)
+		if (redmond_style->bg_image[i].handle)
 		{
-			cairo_pattern_destroy(redmond_style->bg_pixmap[i].handle);
+			cairo_pattern_destroy(redmond_style->bg_image[i].handle);
 		}
         }
 

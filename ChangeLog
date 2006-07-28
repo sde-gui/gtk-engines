@@ -1,3 +1,24 @@
+2006-07-28 Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/glide/src/glide_gtk2_engine.c: (glide_style_realize),
+	(glide_style_unrealize):
+	* engines/glide/src/glide_gtk2_engine.h:
+	* engines/redmond/src/redmond_gtk2_engine.c:
+	(redmond_style_realize), (redmond_style_unrealize):
+	* engines/redmond/src/redmond_gtk2_engine.h:
+
+	- rename bg_pixmap[] patterns to bg_image[] so gdb knows whats what
+	- add special check so that bg_pixmap == parent_relative doesn't crash gnome-power-manager
+
+	Thanks for the heads up on this rtcm
+
+2006-07-24 Andrew Johnson <acjgenius@earthlink.net>
+
+        * NEWS:
+        * configure.ac:
+
+        Update for 2.7.6 release
+
 2006-07-24 Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/hc/src/hc-style.c: (hc_draw_shadow),

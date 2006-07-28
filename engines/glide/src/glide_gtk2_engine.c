@@ -236,10 +236,10 @@ glide_style_realize (GtkStyle * style)
 
 		glide_simple_color_pattern(&base, &glide_style->bg_solid[i]);
 
-		glide_style->bg_pixmap[i].handle = NULL;
-		if (style->bg_pixmap[i])
+		glide_style->bg_image[i].handle = NULL;
+		if ((style->bg_pixmap[i]) && (style->bg_pixmap[i] != (GdkPixmap*) GDK_PARENT_RELATIVE))
 		{
-			glide_simple_pixmap_pattern(style->bg_pixmap[i], &glide_style->bg_pixmap[i]);
+			glide_simple_pixmap_pattern(style->bg_pixmap[i], &glide_style->bg_image[i]);
 		}
 
 		glide_simple_linear_shade_gradient_pattern(&base, 1.05, 0.95, FALSE, 
@@ -273,9 +273,9 @@ glide_style_unrealize (GtkStyle * style)
 	{
 		cairo_pattern_destroy(glide_style->bg_solid[i].handle);
 
-		if (glide_style->bg_pixmap[i].handle)
+		if (glide_style->bg_image[i].handle)
 		{
-			cairo_pattern_destroy(glide_style->bg_pixmap[i].handle);
+			cairo_pattern_destroy(glide_style->bg_image[i].handle);
 		}
 
 		cairo_pattern_destroy(glide_style->bg_gradient[FALSE][i].handle);
