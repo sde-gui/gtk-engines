@@ -251,6 +251,14 @@ ge_cairo_set_color (cairo_t *cr, CairoColor *color)
 	cairo_set_source_rgba (cr, color->r, color->g, color->b, color->a);	
 }
 
+void 
+ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, gfloat offset, CairoColor *color)
+{
+	g_return_if_fail (pattern && color);
+
+	cairo_pattern_add_color_stop_rgba (pattern, offset, color->r, color->g, color->b, color->a);	
+}
+
 void
 ge_cairo_rounded_rectangle (cairo_t *cr,
                                  double x, double y, double w, double h,
@@ -396,6 +404,32 @@ void ge_cairo_line (cairo_t *cr,
 	cairo_stroke(cr);
 
 	cairo_restore(cr);
+}
+
+void
+ge_cairo_mirror (cairo_t     *cr,
+                 CairoMirror  mirror,
+                 gint        *x,
+                 gint        *y,
+                 gint        *width,
+                 gint        *height)
+{
+	cairo_matrix_t matrix;
+	
+	cairo_matrix_init_identity (&matrix);
+	
+	if (mirror & CR_MIRROR_HORIZONTAL)
+	{
+		cairo_matrix_scale (&matrix, -1, 1);
+		cairo_matrix_translate (&matrix, *width, 0);
+	}
+	if (mirror & CR_MIRROR_VERTICAL)
+	{
+		cairo_matrix_scale (&matrix, 1, -1);
+		cairo_matrix_translate (&matrix, 0, *height);
+	}
+
+	cairo_transform (cr, &matrix);
 }
 
 /* The following function will be called by GTK+ when the module

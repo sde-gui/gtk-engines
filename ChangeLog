@@ -1,3 +1,24 @@
+2006-08-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/*:
+
+	- Initial port to cairo, there are still a lot of things missing
+	(inconsistent states, the contrast option, etc.)
+	- reindented everything. Pretty much all code was touched by the
+	  port anyways.
+	- removed the xpm images
+	
+	* engines/support/cairo-support.c:
+
+	(ge_cairo_pattern_add_color_stop_color), (ge_cairo_mirror):
+	* engines/support/cairo-support.h:
+	* engines/support/widget-information.c: (ge_widget_is_ltr):
+	* engines/support/widget-information.h:
+	- Added some more helper functions (ge_cairo_mirror,
+	  ge_widget_is_ltr, ge_cairo_pattern_add_color_stop_color)
+	- Removed ge_cairo_rotate_mirror_translate
+	- Removed #if 0'ed code.
+
 2006-08-01 Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/clearlooks/src/animation.c:

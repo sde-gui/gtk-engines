@@ -37,27 +37,25 @@ extern GType industrial_type_rc_style;
 #define INDUSTRIAL_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), INDUSTRIAL_TYPE_RC_STYLE, IndustrialRcStyleClass))
 
 typedef enum {
-  INDUSTRIAL_FIELDS_CONTRAST,
-  INDUSTRIAL_FIELDS_CONTRAST_CENTER,
-  INDUSTRIAL_FIELDS_ROUNDED_BUTTONS,
-  INDUSTRIAL_FIELDS_WIDE
+	INDUSTRIAL_FIELDS_CONTRAST,
+	INDUSTRIAL_FIELDS_CONTRAST_CENTER,
+	INDUSTRIAL_FIELDS_ROUNDED_BUTTONS,
+	INDUSTRIAL_FIELDS_WIDE
 } IndustrialFields;
 
-struct _IndustrialRcStyle
-{
-  GtkRcStyle parent_instance;
+struct _IndustrialRcStyle {
+	GtkRcStyle parent_instance;
 
-  double contrast;
-  double contrast_center;
-  gboolean rounded_buttons;
-  gboolean wide;
+	double contrast;
+	double contrast_center;
+	gboolean rounded_buttons;
+	gboolean wide;
 
-  IndustrialFields fields;
+	IndustrialFields fields;
 };
 
-struct _IndustrialRcStyleClass
-{
-  GtkRcStyleClass parent_class;
+struct _IndustrialRcStyleClass {
+	GtkRcStyleClass parent_class;
 };
 
-void industrial_rc_style_register_type (GTypeModule *module);
+void industrial_rc_style_register_type (GTypeModule * module);

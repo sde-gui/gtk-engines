@@ -35,21 +35,16 @@ extern GType industrial_type_style;
 #define INDUSTRIAL_IS_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), INDUSTRIAL_TYPE_STYLE))
 #define INDUSTRIAL_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), INDUSTRIAL_TYPE_STYLE, IndustrialStyleClass))
 
-struct _IndustrialStyle
-{
-  GtkStyle parent_instance;
+struct _IndustrialStyle {
+	GtkStyle parent_instance;
 
-  double contrast;
-  double contrast_center;
-  gboolean rounded_buttons;
-
-  /* from light to dark */
-  GHashTable *shading_hash; /* Of type Shading */
+	double contrast;
+	double contrast_center;
+	gboolean rounded_buttons;
 };
 
-struct _IndustrialStyleClass
-{
-  GtkStyleClass parent_class;
+struct _IndustrialStyleClass {
+	GtkStyleClass parent_class;
 };
 
-void industrial_style_register_type (GTypeModule *module);
+void industrial_style_register_type (GTypeModule * module);

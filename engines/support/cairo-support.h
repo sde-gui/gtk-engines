@@ -37,6 +37,13 @@ typedef enum
 	CR_CORNER_ALL         = 15
 } CairoCorners;
 
+typedef enum
+{
+	CR_MIRROR_NONE       = 0,
+	CR_MIRROR_HORIZONTAL = 1 << 0,
+	CR_MIRROR_VERTICAL   = 1 << 1,
+} CairoMirror;
+
 void ge_hsb_from_color (const CairoColor *color, gdouble *hue, gdouble *saturation, gdouble *brightness) G_GNUC_INTERNAL;
 void ge_color_from_hsb (gdouble hue, gdouble saturation, gdouble brightness, CairoColor *color) G_GNUC_INTERNAL;
 
@@ -49,6 +56,7 @@ void ge_saturate_color (const CairoColor * base, gdouble saturate_level, CairoCo
 
 cairo_t * ge_gdk_drawable_to_cairo (GdkDrawable  *window, GdkRectangle *area) G_GNUC_INTERNAL;
 void ge_cairo_set_color (cairo_t *cr, CairoColor *color) G_GNUC_INTERNAL;
+void ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, gfloat offset, CairoColor *color) G_GNUC_INTERNAL;
 
 void ge_cairo_rounded_rectangle (cairo_t *cr, double x, double y, double w, double h, double radius, CairoCorners corners) G_GNUC_INTERNAL;
 
@@ -56,3 +64,5 @@ void ge_cairo_simple_border (cairo_t *cr, CairoColor * tl, CairoColor * br, gint
 
 void ge_cairo_line (cairo_t *cr, CairoColor *color, gint x1, gint y1, gint x2, gint y2) G_GNUC_INTERNAL;
 void ge_cairo_polygon (cairo_t *cr, CairoColor *color, GdkPoint *points, gint npoints) G_GNUC_INTERNAL;
+
+void ge_cairo_mirror (cairo_t *cr, CairoMirror mirror, gint *x, gint *y, gint *width, gint *height) G_GNUC_INTERNAL;

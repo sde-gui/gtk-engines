@@ -270,3 +270,19 @@ ge_option_menu_get_props (GtkWidget * widget,
     *indicator_spacing = default_option_indicator_spacing;
 }
   
+gboolean
+ge_widget_is_ltr (GtkWidget *widget)
+{
+	GtkTextDirection dir = GTK_TEXT_DIR_NONE;
+	
+	if (GTK_IS_WIDGET (widget))
+		dir = gtk_widget_get_direction (widget);
+
+	if (dir == GTK_TEXT_DIR_NONE)
+		dir = gtk_widget_get_default_direction ();
+
+	if (dir == GTK_TEXT_DIR_RTL)
+		return FALSE;
+	else
+		return TRUE;
+}
