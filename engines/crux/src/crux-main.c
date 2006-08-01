@@ -28,12 +28,3 @@ theme_create_rc_style (void)
 {
   return GTK_RC_STYLE (g_object_new (CRUX_TYPE_RC_STYLE, NULL));
 }
-
-const gchar*
-g_module_check_init (GModule *module)
-{
-  return gtk_check_version (GTK_MAJOR_VERSION,
-			    GTK_MINOR_VERSION,
-			    GTK_MICRO_VERSION - GTK_INTERFACE_AGE);
-}
-

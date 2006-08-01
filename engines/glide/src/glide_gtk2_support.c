@@ -1155,7 +1155,7 @@ glide_gtk2_engine_hack_menu_shell_destroy(GtkWidget *widget,
                        GdkEvent *event,
                        gpointer user_data)
 {
-  glide_gtk2_engine_hack_menu_shell_cleanup_signals(widget);
+ glide_gtk2_engine_hack_menu_shell_cleanup (widget);
   
   return FALSE;
 }

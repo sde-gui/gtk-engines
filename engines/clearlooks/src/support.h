@@ -7,71 +7,30 @@
 
 #include "clearlooks_types.h"
 
-/* GTK 2.2 compatibility */
-#ifndef GTK_IS_COMBO_BOX_ENTRY
-	#define GTK_IS_COMBO_BOX_ENTRY(x) 0
-#endif
-#ifndef GTK_IS_COMBO_BOX
-	#define GTK_IS_COMBO_BOX(x) 0
-#endif
-
 #define RADIO_SIZE 13
 #define CHECK_SIZE 13
 
 GtkTextDirection get_direction     (GtkWidget *widget);
-
-gboolean   sanitize_size (          GdkWindow    *window,
-                                    gint         *width,
-                                    gint         *height);
-
-GtkWidget *special_get_ancestor    (GtkWidget    *widget,
-                                    GType         widget_type);
-
-void       shade                   (const CairoColor *a,
-                                    CairoColor       *b,
-                                    float             k);
-					   
-void       blend                   (GdkColormap  *colormap,
-                                    GdkColor     *a,
-                                    GdkColor     *b,
-                                    GdkColor     *c,
-                                    int           alpha);
 			
-GtkWidget*        get_parent_window       (GtkWidget    *widget);
-GdkColor*         get_parent_bgcolor      (GtkWidget    *widget);
-gboolean          cl_is_combo_box         (GtkWidget    *widget);
-GtkWidget*        cl_find_combo_box_widget(GtkWidget    *widget);
-
-void              clearlooks_gdk_color_to_rgb   (GdkColor     *c,
-                                                 double       *r,
-                                                 double       *g,
-                                                 double       *b);
-
-void              gtk_treeview_get_header_index (GtkTreeView  *tv,
+void              clearlooks_treeview_get_header_index (GtkTreeView  *tv,
                                                  GtkWidget    *header,
                                                  gint         *column_index,
                                                  gint         *columns,
-                                                 gboolean     *resizable);
+                                                 gboolean     *resizable) G_GNUC_INTERNAL;
 
-void              gtk_clist_get_header_index    (GtkCList     *clist,
+void              clearlooks_clist_get_header_index    (GtkCList     *clist,
                                                  GtkWidget    *button,
                                                  gint         *column_index,
-                                                 gint         *columns);
+                                                 gint         *columns) G_GNUC_INTERNAL;
 
+#warning clearlooks_get_parent_bg is a bad hack - find out why its needed, and figure out a better way.
 void              clearlooks_get_parent_bg      (const GtkWidget *widget,
-                                                 CairoColor      *color);
+                                                 CairoColor      *color) G_GNUC_INTERNAL;
 
-void              option_menu_get_props         (GtkWidget       *widget,
-                                                 GtkRequisition  *indicator_size,
-                                                 GtkBorder       *indicator_spacing);
-
-ClearlooksStepper scrollbar_get_stepper         (GtkWidget       *widget,
-                                                 GdkRectangle    *stepper);
-ClearlooksStepper scrollbar_visible_steppers    (GtkWidget       *widget);
-ClearlooksJunction scrollbar_get_junction       (GtkWidget    *widget);
-
-
-gboolean          cl_is_panel_widget            (GtkWidget *widget);
+ClearlooksStepper clearlooks_scrollbar_get_stepper         (GtkWidget       *widget,
+                                                 GdkRectangle    *stepper) G_GNUC_INTERNAL;
+ClearlooksStepper clearlooks_scrollbar_visible_steppers    (GtkWidget       *widget) G_GNUC_INTERNAL;
+ClearlooksJunction clearlooks_scrollbar_get_junction       (GtkWidget    *widget) G_GNUC_INTERNAL;
 
 GtkTextDirection  cl_get_parent_direction       (const GtkWidget *widget);
 

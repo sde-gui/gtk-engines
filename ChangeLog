@@ -1,3 +1,32 @@
+2006-08-01 Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/clearlooks/src/animation.c:
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/clearlooks_theme_main.c:
+	* engines/clearlooks/src/support.c:
+	* engines/clearlooks/src/support.h:
+	* engines/crux/src/crux-main.c:
+	* engines/glide/src/glide_gtk2_drawing.c:
+	* engines/glide/src/glide_gtk2_drawing.h:
+	* engines/glide/src/glide_gtk2_engine.c:
+	* engines/glide/src/glide_gtk2_support.c:
+	* engines/hc/src/hc_gtk2_engine.c:
+	* engines/support/cairo-support.c:
+	* engines/support/widget-information.h:
+
+	- Fixed tooltip and scrollbars and scales in Glide	
+	- Fixed invalid symbol in Glide
+	- More Clearlooks -> support integration
+	- Moved GTK verson check too support and removed from crux and clearlooks (all engines need it)
+	- More Symbol Cleanup - all but a few unprefixed in crux, 
+				2 private exported in industrial, 
+				and 2 unprefixed in clearlooks are left
+				The rest should be quick.
+
 2006-07-28 Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/glide/src/glide_gtk2_engine.c: (glide_style_realize),

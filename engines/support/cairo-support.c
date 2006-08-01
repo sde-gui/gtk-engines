@@ -251,39 +251,6 @@ ge_cairo_set_color (cairo_t *cr, CairoColor *color)
 	cairo_set_source_rgba (cr, color->r, color->g, color->b, color->a);	
 }
 
-/* KEEP IN MIND, MIRROR TAKES PLACE BEFORE ROTATION */
-/* ROTATES ANTI-CLOCKWISE, I THINK :P */
-/* TODO: Do I really need THREE matrices? */
-void
-ge_cairo_rotate_mirror_translate (cairo_t *cr, 
-					double radius, double x, double y,
-					gboolean mirror_horizontally, 
-					gboolean mirror_vertically)
-{
-	cairo_matrix_t matrix_rotate;
-	cairo_matrix_t matrix_mirror;
-	cairo_matrix_t matrix_result;
-	
-	double r_cos = cos(radius);
-	double r_sin = sin(radius);
-	
-	cairo_matrix_init (&matrix_rotate, r_cos,
-	                                   r_sin,
-	                                   r_sin,
-	                                   r_cos,
-	                                   x, y);
-	
-	cairo_matrix_init (&matrix_mirror, mirror_horizontally ? -1 : 1,
-	                                   0,
-	                                   0,
-	                                   mirror_vertically ? -1 : 1,
-									   0, 0);
-
-	cairo_matrix_multiply (&matrix_result, &matrix_mirror, &matrix_rotate);
-
-	cairo_set_matrix (cr, &matrix_result);
-}
-
 void
 ge_cairo_rounded_rectangle (cairo_t *cr,
                                  double x, double y, double w, double h,
@@ -429,4 +396,17 @@ void ge_cairo_line (cairo_t *cr,
 	cairo_stroke(cr);
 
 	cairo_restore(cr);
+}
+
+/* The following function will be called by GTK+ when the module
+ * is loaded and checks to see if we are compatible with the
+ * version of GTK+ that loads us.
+ */
+G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
+const gchar*
+g_module_check_init (GModule *module)
+{
+  return gtk_check_version (GTK_MAJOR_VERSION,
+			    GTK_MINOR_VERSION,
+			    GTK_MICRO_VERSION - GTK_INTERFACE_AGE);
 }

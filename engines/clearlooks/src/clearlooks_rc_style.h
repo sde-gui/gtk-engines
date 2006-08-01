@@ -57,4 +57,4 @@ struct _ClearlooksRcStyleClass
   GtkRcStyleClass parent_class;
 };
 
-void clearlooks_rc_style_register_type (GTypeModule *module);
+void clearlooks_rc_style_register_type (GTypeModule *module) G_GNUC_INTERNAL;

@@ -35,7 +35,7 @@ static gboolean animation_timeout_handler (gpointer data);
 static gboolean
 force_widget_redraw (GtkWidget *widget)
 {
-	if (GTK_IS_PROGRESS_BAR (widget))
+	if (IS_PROGRESS_BAR (widget))
 		gtk_widget_queue_resize (widget);
 	else
 		gtk_widget_queue_draw (widget);
@@ -150,7 +150,7 @@ update_animation_info (gpointer key, gpointer value, gpointer user_data)
 	if (!GTK_WIDGET_DRAWABLE (widget))
 		return TRUE;
 	
-	if (GTK_IS_PROGRESS_BAR (widget))
+	if (IS_PROGRESS_BAR (widget))
 	{
 		gfloat fraction = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (widget));
 		
@@ -260,7 +260,7 @@ clearlooks_animation_progressbar_add (GtkWidget *progressbar)
 void
 clearlooks_animation_connect_checkbox (GtkWidget *widget)
 {
-	if (GTK_IS_CHECK_BUTTON (widget))
+	if (IS_CHECK_BUTTON (widget))
 	{
 		if (!g_slist_find_custom (connected_widgets, widget, find_signal_info))
 		{

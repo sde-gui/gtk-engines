@@ -139,6 +139,19 @@ glide_draw_box (GtkStyle * style,
           gint y, 
           gint width, 
           gint height) G_GNUC_INTERNAL;
+
+void
+glide_draw_flat_box (GtkStyle * style,
+	  GdkWindow * window,
+	  GtkStateType state_type,
+	  GtkShadowType shadow_type,
+	  GdkRectangle * area,
+	  GtkWidget * widget,
+	  const gchar * detail, 
+          gint x, 
+          gint y, 
+          gint width, 
+          gint height) G_GNUC_INTERNAL;
  
 void
 glide_draw_tab (GtkStyle * style,

@@ -58,4 +58,4 @@ struct _ClearlooksStyleClass
 };
 
 
-void clearlooks_style_register_type (GTypeModule *module);
+void clearlooks_style_register_type (GTypeModule *module) G_GNUC_INTERNAL;

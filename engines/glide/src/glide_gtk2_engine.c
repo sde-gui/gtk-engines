@@ -46,7 +46,7 @@ GType glide_type_rc_style = 0;
 static GtkStyle *
 glide_rc_style_create_style (GtkRcStyle * rc_style)
 {
-  return GTK_STYLE (g_object_new (GLIDE_TYPE_STYLE, NULL));;
+  return GTK_STYLE (g_object_new (GLIDE_TYPE_STYLE, NULL));
 }
  
 static void
@@ -304,6 +304,7 @@ glide_style_class_init (GlideStyleClass * klass)
   style_class->draw_vline = glide_draw_vline;
   style_class->draw_arrow = glide_draw_arrow;
   style_class->draw_box = glide_draw_box;
+  style_class->draw_flat_box = glide_draw_flat_box;
   style_class->draw_check = glide_draw_check;
   style_class->draw_option = glide_draw_option;
   style_class->draw_tab = glide_draw_tab;

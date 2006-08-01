@@ -49,7 +49,7 @@ GEStepper ge_get_stepper                (GtkWidget      *widget,
 #define IS_BONOBO_TOOLBAR(object) ((object) && ge_object_is_a (object, "BonoboUIToolbar"))
 #define IS_EGG_TOOLBAR(object) ((object) && ge_object_is_a (object, "Toolbar"))
 #define IS_TOOLBAR(object) ((object) && ge_object_is_a (object, "GtkToolbar"))
-#define IS_PANEL_WIDGET(object) ((object) && ge_object_is_a (object, "PanelWidget"))
+#define IS_PANEL_WIDGET(object) ((object) && (ge_object_is_a (object, "PanelWidget") || ge_object_is_a (object, "PanelApplet")))
 
 #define IS_COMBO_BOX_ENTRY(object) ((widget) && ge_object_is_a (widget, "GtkComboBoxEntry"))
 #define IS_COMBO_BOX(object) ((widget) && ge_object_is_a (widget, "GtkComboBox"))
@@ -66,6 +66,8 @@ GEStepper ge_get_stepper                (GtkWidget      *widget,
 #define IS_MENU(object) ((object) && ge_object_is_a (object, "GtkMenu"))
 #define IS_MENU_BAR(object) ((object) && ge_object_is_a (object, "GtkMenuBar"))
 #define IS_MENU_ITEM(object) ((object) && ge_object_is_a (object, "GtkMenuItem"))
+
+#define IS_RANGE(object) ((object) && ge_object_is_a (object, "GtkRange"))
  
 #define IS_SCROLLBAR(object) ((object) && ge_object_is_a (object, "GtkScrollbar"))
 #define IS_VSCROLLBAR(object) ((object) && ge_object_is_a (object, "GtkVScrollbar"))
@@ -82,6 +84,12 @@ GEStepper ge_get_stepper                (GtkWidget      *widget,
 #define IS_BOX(object) ((object) && ge_object_is_a (object, "GtkBox"))
 #define IS_VBOX(object) ((object) && ge_object_is_a (object, "GtkVBox"))
 #define IS_HBOX(object) ((object) && ge_object_is_a (object, "GtkHBox"))
+
+#define IS_CLIST(object) ((object) && ge_object_is_a (object, "GtkCList"))
+#define IS_TREE_VIEW(object) ((object) && ge_object_is_a (object, "GtkTreeView"))
+#define IS_ENTRY(object) ((object) && ge_object_is_a (object, "GtkEntry"))
+#define IS_BUTTON(object) ((object) && ge_object_is_a (object, "GtkButton"))
+#define IS_FIXED(object) ((object) && ge_object_is_a (object, "GtkFixed"))
  
 #define TOGGLE_BUTTON(object) (IS_TOGGLE_BUTTON(object)?(GtkToggleButton *)object:NULL)
  

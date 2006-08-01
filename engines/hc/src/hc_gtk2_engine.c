@@ -42,7 +42,7 @@ static void hc_rc_style_class_init (HcRcStyleClass *klass)
   rc_style_class->create_style = hc_rc_style_create_style;
 }
 
-void hc_rc_style_register_type (GTypeModule *module)
+static void hc_rc_style_register_type (GTypeModule *module)
 {
   static const GTypeInfo object_info =
   {
@@ -201,7 +201,7 @@ hc_style_class_init (HcStyleClass *klass)
 
 GType hc_type_style = 0;
 
-void
+static void
 hc_style_register_type (GTypeModule *module)
 {
   static const GTypeInfo object_info =
