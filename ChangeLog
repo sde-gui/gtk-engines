@@ -1,3 +1,19 @@
+2006-08-02 Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/glide/src/glide_gtk2_drawing.c:
+	* engines/glide/src/glide_gtk2_engine.c:
+	* engines/glide/src/glide_gtk2_support.c:
+	* engines/hc/src/hc-style.c:
+	* engines/hc/src/hc_gtk2_support.c:
+	* engines/mist/src/mist-style.c:
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	* engines/redmond/src/redmond_gtk2_engine.c:
+	* engines/support/cairo-support.c:
+	* engines/thinice/src/thinice_theme_draw.c:
+
+	- C89 Fixes from #349575
+
 2006-08-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/animation.h:

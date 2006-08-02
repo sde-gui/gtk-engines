@@ -98,10 +98,13 @@ mist_tab (GtkStyle *style,
 	GtkNotebook *notebook;
 	int orientation;
 	
+	cairo_t *cr;
+	CairoColor *light, *dark;
+
 	notebook = GTK_NOTEBOOK(widget);
 	orientation = notebook->tab_pos;
 		
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window)) 
 	{
@@ -116,9 +119,6 @@ mist_tab (GtkStyle *style,
 			 state_type, area, x, y, width, height);
 	}
 	
-
-	CairoColor *light, *dark;
-
 	light = &mist_style->color_cube.light[state_type];
 	dark = &mist_style->color_cube.dark[state_type];
 
@@ -243,11 +243,12 @@ draw_hline(GtkStyle *style,
 	int thickness_light;
 	int thickness_dark;
 	int i;
-	
+	cairo_t *cr;
+
 	g_return_if_fail(style != NULL);
 	g_return_if_fail(window != NULL);
 	
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (CHECK_DETAIL(detail, "hseparator") 
 	    || CHECK_DETAIL(detail, "menuitem") 
@@ -312,11 +313,12 @@ draw_vline(GtkStyle *style,
 	int thickness_light;
 	int thickness_dark;
 	int i;
+	cairo_t *cr;
 
 	g_return_if_fail(style != NULL);
 	g_return_if_fail(window != NULL);
 	
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 	
 	if (CHECK_DETAIL(detail, "vseparator") 
 	    || CHECK_DETAIL(detail, "toolbar") 
@@ -379,6 +381,7 @@ draw_shadow(GtkStyle *style,
 	    int height)
 {
 	MistStyle *mist_style = MIST_STYLE (style);
+	cairo_t *cr;
 
 	g_return_if_fail(style != NULL);
 	g_return_if_fail(window != NULL);
@@ -387,7 +390,7 @@ draw_shadow(GtkStyle *style,
 
 	shadow_type = get_shadow_type (style, detail, shadow_type);
 
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (state_type == GTK_STATE_INSENSITIVE && shadow_type != GTK_SHADOW_NONE) {
 		shadow_type = GTK_SHADOW_ETCHED_IN;
@@ -440,6 +443,7 @@ draw_polygon(GtkStyle *style,
 	int                xadjust;
 	int                yadjust;
 	int                i;
+	cairo_t           *cr;
 
 	g_return_if_fail(style != NULL);
 	g_return_if_fail(window != NULL);
@@ -474,7 +478,7 @@ draw_polygon(GtkStyle *style,
 		return;
 	}
 
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 	
 	if (fill)
 		ge_cairo_polygon(cr, &mist_style->color_cube.bg[state_type], points, npoints);
@@ -548,6 +552,7 @@ draw_diamond(GtkStyle * style,
 
 	int half_width;
 	int half_height;
+	cairo_t *cr;
 	
 	g_return_if_fail(style != NULL);
 	g_return_if_fail(window != NULL);	
@@ -557,7 +562,7 @@ draw_diamond(GtkStyle * style,
 	half_width = width / 2;
 	half_height = height / 2;
 
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	switch (shadow_type) {
 	case GTK_SHADOW_IN:
@@ -661,6 +666,7 @@ draw_box(GtkStyle *style,
 	MistStyle *mist_style = MIST_STYLE (style);
 
 	CairoColor *light, *dark;
+	cairo_t *cr;
 	GtkOrientation orientation;
 	
 	g_return_if_fail (style != NULL);
@@ -675,7 +681,7 @@ draw_box(GtkStyle *style,
 	light = &mist_style->color_cube.light[state_type];
 	dark = &mist_style->color_cube.dark[state_type];
 
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 	
 	if (CHECK_DETAIL(detail, "optionmenutab")) {
 		ge_cairo_line(cr, dark, x - 5, y, x - 5, y + height);
@@ -787,10 +793,11 @@ draw_check(GtkStyle *style,
            int height)
 {
 	MistStyle *mist_style = MIST_STYLE (style);
+	cairo_t *cr;
 
 	SANITIZE_SIZE
 
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	ge_cairo_set_color(cr, &mist_style->color_cube.base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL ]);	
 	cairo_rectangle(cr, x + 1, y + 1, width - 3, height - 3);
@@ -848,10 +855,11 @@ draw_option(GtkStyle *style,
             int height)
 {
 	MistStyle *mist_style = MIST_STYLE (style);
+	cairo_t *cr;
 
 	SANITIZE_SIZE
 
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
 	ge_cairo_set_color(cr, &mist_style->color_cube.dark[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
@@ -918,13 +926,14 @@ draw_shadow_gap(GtkStyle *style,
 
 	CairoColor *color1 = NULL;
 	CairoColor *color2 = NULL;
+	cairo_t *cr;
 	
 	g_return_if_fail (window != NULL);
 	
 	SANITIZE_SIZE
 	shadow_type = get_shadow_type (style, detail, shadow_type);
 	
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	switch (shadow_type) {
 	case GTK_SHADOW_NONE:
@@ -1141,6 +1150,7 @@ draw_handle(GtkStyle *style,
 	CairoColor *light, *dark;
 	GdkRectangle dest;
 	int modx, mody;
+	cairo_t *cr;
 	
 	g_return_if_fail(style != NULL);
 	g_return_if_fail(window != NULL);
@@ -1170,7 +1180,7 @@ draw_handle(GtkStyle *style,
 		modx = 0; mody = 4;
 	}
 	
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, &dest);
+	cr = ge_gdk_drawable_to_cairo (window, &dest);
 
 	mist_dot(cr,
 		 light, dark,
@@ -1207,6 +1217,7 @@ draw_resize_grip(GtkStyle *style,
 	int xi, yi;
 	int max_x, max_y;
 	int threshold;
+	cairo_t *cr;
 	
 	g_return_if_fail(style != NULL);
 	g_return_if_fail(window != NULL);
@@ -1291,8 +1302,7 @@ draw_resize_grip(GtkStyle *style,
 	
 	threshold = max_x;
 	
-
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	for (xi = 0; xi <= max_x; xi++) {
 		for (yi = 0; yi <= max_y; yi++) {

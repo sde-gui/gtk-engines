@@ -81,13 +81,13 @@ static void redmond_simple_color_pattern(CairoColor *base, CairoPattern *pattern
 
 static void redmond_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
 {	
-	pattern->scale = REDMOND_DIRECTION_NONE;
-	pattern->translate = REDMOND_DIRECTION_BOTH;
-
 	cairo_t *cr;
 	cairo_surface_t * surface;
 	GdkPixbuf * pixbuf;
 	gint width, height;
+
+	pattern->scale = REDMOND_DIRECTION_NONE;
+	pattern->translate = REDMOND_DIRECTION_BOTH;
 
 	gdk_drawable_get_size (GDK_DRAWABLE (pixmap), &width, &height);
 
@@ -114,11 +114,11 @@ static void redmond_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *patte
 static void
 redmond_simple_hatch_mask_pattern(CairoPattern *pattern)
 {
-	pattern->scale = REDMOND_DIRECTION_NONE;
-	pattern->translate = REDMOND_DIRECTION_NONE;
-
 	cairo_t * cr;
 	cairo_surface_t *surface;
+
+	pattern->scale = REDMOND_DIRECTION_NONE;
+	pattern->translate = REDMOND_DIRECTION_NONE;
 
 	surface = cairo_image_surface_create(CAIRO_FORMAT_A8, 2, 2);
 
@@ -174,11 +174,10 @@ static void
 redmond_style_unrealize (GtkStyle * style)
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
+  int i;
 
   cairo_pattern_destroy(redmond_style->hatch_mask.handle);
 
-	int i;
- 
 	for (i = 0; i < 5; i++)
 	{
 		cairo_pattern_destroy(redmond_style->bg_color[i].handle);

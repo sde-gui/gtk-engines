@@ -54,9 +54,11 @@ ge_cairo_pattern_add_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoC
 void
 ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade)
 {
+	CairoColor shaded;
+
 	g_return_if_fail (pattern && color && (shade >= 0) && (shade <= 3));
 
-	CairoColor shaded = *color;
+	shaded = *color;
 
 	if (shade != 1)
 	{
@@ -1036,6 +1038,8 @@ do_glide_draw_dot (cairo_t *canvas,
 			gint x,
 			gint y)
 {
+	CairoColor mid;
+
 	cairo_save(canvas);
 
 	cairo_set_line_width (canvas, 0.5);
@@ -1052,8 +1056,6 @@ do_glide_draw_dot (cairo_t *canvas,
 	cairo_rectangle (canvas, x + 1, y + 1, 0.5, 0.5);
 	cairo_rectangle (canvas, x, y + 1, 0.5, 0.5);
 	cairo_stroke(canvas);
-
-	CairoColor mid;
 
 	ge_blend_color(dark, light, &mid);	
 

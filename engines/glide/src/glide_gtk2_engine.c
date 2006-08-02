@@ -100,17 +100,17 @@ static glide_simple_color_pattern(CairoColor *base, CairoPattern *pattern)
 
 static glide_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
 {	
+	cairo_t *cr;
+	cairo_surface_t * surface;
+	GdkPixbuf * pixbuf;
+	gint width, height;
+
 	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
 		pattern->type = CAIRO_PATTERN_TYPE_SURFACE;
 	#endif
 
 	pattern->scale = GLIDE_DIRECTION_NONE;
 	pattern->translate = GLIDE_DIRECTION_BOTH;
-
-	cairo_t *cr;
-	cairo_surface_t * surface;
-	GdkPixbuf * pixbuf;
-	gint width, height;
 
 	gdk_drawable_get_size (GDK_DRAWABLE (pixmap), &width, &height);
 

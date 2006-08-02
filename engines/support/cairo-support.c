@@ -306,12 +306,14 @@ ge_cairo_simple_border (cairo_t *cr,
 				gint x,	gint y, gint width, gint height, 
 				gboolean topleft_overlap)
 {
+	gboolean solid_color;
+
 	g_return_if_fail (cr != NULL);
 	g_return_if_fail (tl != NULL);
 	g_return_if_fail (br != NULL);
 	
 
-	gboolean solid_color = (tl == br) || ((tl->r == br->r) && (tl->g == br->g) && (tl->b == br->b) && (tl->a == br->a));
+	solid_color = (tl == br) || ((tl->r == br->r) && (tl->g == br->g) && (tl->b == br->b) && (tl->a == br->a));
 
 	topleft_overlap &= !solid_color;
 

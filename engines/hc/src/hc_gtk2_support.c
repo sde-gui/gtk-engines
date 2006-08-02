@@ -287,8 +287,6 @@ do_hc_draw_dot (cairo_t *canvas,
 	cairo_rectangle (canvas, x + 1, y + 1, 0.5, 0.5);
 	cairo_rectangle (canvas, x, y + 1, 0.5, 0.5);
 	cairo_stroke(canvas);
-
-	CairoColor mid;
 }
 
 /***********************************************/

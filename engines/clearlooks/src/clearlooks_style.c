@@ -1132,12 +1132,11 @@ draw_resize_grip (GtkStyle       *style,
 	ClearlooksColors *colors = &clearlooks_style->colors;
 
 	cairo_t *cr;
+	int lx, ly;
 
 	WidgetParameters params;
 	ResizeGripParameters grip;
 	grip.edge = (ClearlooksWindowEdge)edge;
-
-	int lx, ly;
 
 	g_return_if_fail (window != NULL);
 
