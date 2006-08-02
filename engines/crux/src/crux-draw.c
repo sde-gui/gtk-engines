@@ -830,7 +830,14 @@ draw_shadow (GtkStyle *style,
 	if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
 	{
 		GtkWidget *button;
-		width += 2;
+		if (ge_widget_is_ltr (widget))
+			width += 2;
+		else
+		{
+			x -= 3;
+			width += 3;
+		}
+
 		if (area == NULL)
 			area = &area2;
 		g_object_set_data ((GObject*) widget->parent, "entry", widget);
@@ -903,7 +910,11 @@ draw_box (GtkStyle *style,
 
 			g_object_set_data ((GObject*) widget->parent, "button", widget);
 
-			paint_entry_shadow (cr, style, state_type, focused, x - 4, y, width + 4, height);
+			if (ge_widget_is_ltr (widget))
+				paint_entry_shadow (cr, style, state_type, focused, x - 4, y, width + 4, height);
+			else
+				paint_entry_shadow (cr, style, state_type, focused, x, y, width + 4, height);
+
 
 			x += 3; y += 3;
 			width -= 6; height -= 6;
