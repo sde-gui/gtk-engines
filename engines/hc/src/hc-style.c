@@ -31,8 +31,6 @@
 #include <math.h>
 #include <string.h>
 
-extern GtkStyleClass *hc_parent_class;
-
 /* Standard Border Function */
 void
 hc_draw_shadow(GtkStyle * style,

@@ -80,12 +80,15 @@ smooth_rc_style_parse (GtkRcStyle *rc_style,
   old_scope = g_scanner_set_scope (scanner, scope_id);
 
   /* Check if we already added our symbols to this scope */
-  if (!g_scanner_lookup_symbol (scanner, theme_symbols[0].name))
+  if (!g_scanner_lookup_symbol (scanner, smooth_theme_symbols[0].name))
     {
-      for (i = 0; i < n_theme_symbols; i++)
+      i = 0;
+      
+      while (smooth_theme_symbols[i].name != NULL)
 	{
-	  g_scanner_scope_add_symbol (scanner, scope_id, theme_symbols[i].name, 
-				      GINT_TO_POINTER (theme_symbols[i].token));
+	  g_scanner_scope_add_symbol (scanner, scope_id, smooth_theme_symbols[i].name, 
+				      GINT_TO_POINTER (smooth_theme_symbols[i].token));
+          i++;
 	}
     }
 

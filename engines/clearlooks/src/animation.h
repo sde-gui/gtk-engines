@@ -25,9 +25,9 @@
 #define ANIMATION_DELAY 100
 #define CHECK_ANIMATION_TIME 0.5
 
-void     clearlooks_animation_progressbar_add (GtkWidget *progressbar);
-void     clearlooks_animation_connect_checkbox (GtkWidget *widget);
-gboolean clearlooks_animation_is_animated (GtkWidget *widget);
-gdouble  clearlooks_animation_elapsed (gpointer data);
-void     clearlooks_animation_cleanup ();
+void     clearlooks_animation_progressbar_add (GtkWidget *progressbar) G_GNUC_INTERNAL;
+void     clearlooks_animation_connect_checkbox (GtkWidget *widget) G_GNUC_INTERNAL;
+gboolean clearlooks_animation_is_animated (GtkWidget *widget) G_GNUC_INTERNAL;
+gdouble  clearlooks_animation_elapsed (gpointer data) G_GNUC_INTERNAL;
+void     clearlooks_animation_cleanup () G_GNUC_INTERNAL;
 #endif /* HAVE_ANIMATION */

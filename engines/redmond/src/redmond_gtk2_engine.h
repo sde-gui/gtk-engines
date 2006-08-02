@@ -45,7 +45,7 @@ typedef struct
 /*****************************/
 /* RC Style Declaration      */
 /*****************************/
-extern GType redmond_type_rc_style;
+extern GType redmond_type_rc_style G_GNUC_INTERNAL;
  
 #define REDMOND_TYPE_RC_STYLE              redmond_type_rc_style
 #define REDMOND_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), REDMOND_TYPE_RC_STYLE, RedmondRcStyle))
@@ -67,7 +67,7 @@ typedef struct
 /*****************************/
 /* Drawing Style Declaration */
 /*****************************/
-extern GType redmond_type_style;
+extern GType redmond_type_style G_GNUC_INTERNAL;
  
 #define REDMOND_TYPE_STYLE              redmond_type_style
 #define REDMOND_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), REDMOND_TYPE_STYLE, RedmondStyle))

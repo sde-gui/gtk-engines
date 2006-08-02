@@ -80,5 +80,5 @@ void ge_option_menu_get_props (GtkWidget * widget,
                             GtkRequisition * indicator_size, 
                             GtkBorder * indicator_spacing) G_GNUC_INTERNAL;
 
-gboolean ge_widget_is_ltr (GtkWidget *widget);
+gboolean ge_widget_is_ltr (GtkWidget *widget) G_GNUC_INTERNAL;
 

@@ -23,8 +23,6 @@
 #include "glide_gtk2_support.h"
 #include "glide_gtk2_drawing.h"
 
-
-extern GtkStyleClass *glide_parent_class;
 /***********************************************
  * glide_draw_vline -
  *  

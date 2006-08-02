@@ -3,7 +3,7 @@
 typedef struct _ThiniceRcStyle ThiniceRcStyle;
 typedef struct _ThiniceRcStyleClass ThiniceRcStyleClass;
 
-extern GType thinice_type_rc_style;
+extern GType thinice_type_rc_style G_GNUC_INTERNAL;
 
 #define THINICE_TYPE_RC_STYLE              thinice_type_rc_style
 #define THINICE_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), THINICE_TYPE_RC_STYLE, ThiniceRcStyle))

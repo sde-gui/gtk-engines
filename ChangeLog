@@ -1,5 +1,40 @@
 2006-08-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/animation.h:
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters), (draw_box):
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/support.c:
+	(clearlooks_scrollbar_get_junction):
+	* engines/clearlooks/src/support.h:
+	* engines/crux/src/crux-draw.h:
+	* engines/crux/src/crux-rc-style.h:
+	* engines/crux/src/crux-style.h:
+	* engines/glide/src/glide_gtk2_drawing.c:
+	* engines/glide/src/glide_gtk2_engine.h:
+	* engines/hc/src/hc-style.c:
+	* engines/hc/src/hc_gtk2_engine.h:
+	* engines/industrial/src/industrial_rc_style.h:
+	* engines/industrial/src/industrial_style.h:
+	* engines/mist/src/mist-rc-style.h:
+	* engines/mist/src/mist-style.h:
+	* engines/redmond/src/redmond_gtk2_engine.h:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.h:
+	* engines/smooth/src/engine/smooth_gtk2_engine.c:
+	(smooth_rc_style_parse):
+	* engines/smooth/src/engine/smooth_gtk2_engine.h:
+	* engines/support/widget-information.h:
+	* engines/thinice/src/thinice_rc_style.h:
+	* engines/thinice/src/thinice_style.h:
+
+	- Marked loads of things G_GNUC_INTERNAL
+	- smooths theme_symbols array is now NULL terminated to save a variable
+	- Changed clearlooks to use ge_widget_is_ltr
+
+2006-08-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/industrial/*:
 
 	- Initial port to cairo, there are still a lot of things missing

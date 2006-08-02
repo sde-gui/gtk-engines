@@ -36,7 +36,7 @@
 
 #define CHECK_DETAIL(detail, value) ((detail) && (!strcmp(value, detail)))
 
-ThemeSymbols theme_symbols[] =
+ThemeSymbols smooth_theme_symbols[] =
 {
   { "real_sliders",        TOKEN_REAL_SLIDERS },
   { "resize_grip",         TOKEN_RESIZE_GRIP },
@@ -110,10 +110,9 @@ ThemeSymbols theme_symbols[] =
   { "etched_arrow",        TOKEN_DEPRECATED_ETCHEDARROW },
 
   /* backward compatibility for <= 0.4.0 */
-  { "use_gradient",        TOKEN_DEPRECATED_GRADIENT }
+  { "use_gradient",        TOKEN_DEPRECATED_GRADIENT },
+  { NULL,                  0 }
 };
-
-guint n_theme_symbols = sizeof(theme_symbols) / sizeof(theme_symbols[0]);
 
 /* fill parts */
 gint

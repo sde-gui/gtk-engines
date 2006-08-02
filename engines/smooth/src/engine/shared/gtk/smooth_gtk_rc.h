@@ -319,8 +319,7 @@ enum
     TOKEN_LAST = TOKEN_DEPRECATED_GRADIENT
   };
 
-extern ThemeSymbols theme_symbols[];
-extern guint n_theme_symbols;
+extern ThemeSymbols smooth_theme_symbols[] G_GNUC_INTERNAL;
 
 /* fill part */
 gint smooth_fill_style(GtkStyle * style, void *part) G_GNUC_INTERNAL;

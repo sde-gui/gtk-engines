@@ -10,8 +10,6 @@
 #define RADIO_SIZE 13
 #define CHECK_SIZE 13
 
-GtkTextDirection get_direction     (GtkWidget *widget);
-			
 void              clearlooks_treeview_get_header_index (GtkTreeView  *tv,
                                                  GtkWidget    *header,
                                                  gint         *column_index,
@@ -31,7 +29,5 @@ ClearlooksStepper clearlooks_scrollbar_get_stepper         (GtkWidget       *wid
                                                  GdkRectangle    *stepper) G_GNUC_INTERNAL;
 ClearlooksStepper clearlooks_scrollbar_visible_steppers    (GtkWidget       *widget) G_GNUC_INTERNAL;
 ClearlooksJunction clearlooks_scrollbar_get_junction       (GtkWidget    *widget) G_GNUC_INTERNAL;
-
-GtkTextDirection  cl_get_parent_direction       (const GtkWidget *widget);
 
 #endif /* SUPPORT_H */

@@ -65,7 +65,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->disabled   = (state_type == GTK_STATE_INSENSITIVE);			
 	params->state_type = (ClearlooksStateType)state_type;
 	params->corners    = CL_CORNER_ALL;
-	params->rtl        = (cl_get_parent_direction (widget) == GTK_TEXT_DIR_RTL);
+	params->rtl        = !ge_widget_is_ltr (widget);
 	params->focus      = widget && GTK_WIDGET_HAS_FOCUS (widget);
 	params->is_default = widget && GTK_WIDGET_HAS_DEFAULT (widget);
 		
@@ -587,8 +587,8 @@ draw_box (DRAW_ARGS)
 		slider.inverted   = gtk_range_get_inverted (GTK_RANGE (widget));
 		slider.horizontal = (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL);
 		slider.fill_size  = ((slider.horizontal ? width : height) - slider_length) * (1 / ((adjustment->upper - adjustment->lower) / (adjustment->value - adjustment->lower))) + slider_length / 2;
-		if (slider.horizontal)
-			slider.inverted = slider.inverted != (get_direction (widget) == GTK_TEXT_DIR_RTL);
+		if (slider.horizontal && !ge_widget_is_ltr (widget))
+			slider.inverted = !slider.inverted;
 		clearlooks_draw_scale_trough (cr, &clearlooks_style->colors,
 		                              &params, &slider,
 		                              x, y, width, height);
@@ -695,10 +695,10 @@ draw_box (DRAW_ARGS)
 
 		ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 		
-		if (widget && get_direction (widget) == GTK_TEXT_DIR_RTL)
-			optionmenu.linepos = (indicator_size.width + indicator_spacing.left + indicator_spacing.right) + style->xthickness;
-		else
+		if (ge_widget_is_ltr (widget))
 			optionmenu.linepos = width - (indicator_size.width + indicator_spacing.left + indicator_spacing.right) - style->xthickness;
+		else
+			optionmenu.linepos = (indicator_size.width + indicator_spacing.left + indicator_spacing.right) + style->xthickness;
 		
 		clearlooks_draw_optionmenu (cr, colors, &params, &optionmenu,
 		                            x, y, width, height);

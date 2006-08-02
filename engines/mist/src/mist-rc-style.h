@@ -3,7 +3,7 @@
 typedef struct _MistRcStyle MistRcStyle;
 typedef struct _MistRcStyleClass MistRcStyleClass;
 
-extern GType mist_type_rc_style;
+extern GType mist_type_rc_style G_GNUC_INTERNAL;
 
 #define MIST_TYPE_RC_STYLE              mist_type_rc_style
 #define MIST_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), MIST_TYPE_RC_STYLE, MistRcStyle))

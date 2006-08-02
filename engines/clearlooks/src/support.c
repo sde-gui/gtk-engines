@@ -1,18 +1,5 @@
 #include "support.h"
 
-GtkTextDirection
-get_direction (GtkWidget *widget)
-{
-	GtkTextDirection dir;
-	
-	if (widget)
-		dir = gtk_widget_get_direction (widget);
-	else
-		dir = GTK_TEXT_DIR_LTR;
-	
-	return dir;
-}
-
 void clearlooks_treeview_get_header_index (GtkTreeView *tv, GtkWidget *header,
                                     gint *column_index, gint *columns,
                                     gboolean *resizable)
@@ -183,19 +170,4 @@ clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 	}
 	
 	return junction;
-}
-
-GtkTextDirection
-cl_get_parent_direction (const GtkWidget *widget)
-{
-	GtkTextDirection dir;
-
-	if (widget && widget->parent)
-		dir = gtk_widget_get_direction (widget->parent);
-	else if (widget)
-		dir = gtk_widget_get_direction (widget);
-	else
-		dir = gtk_widget_get_default_direction ();
-
-	return dir;
 }

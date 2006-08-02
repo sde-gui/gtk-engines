@@ -28,7 +28,7 @@
 typedef struct _ClearlooksStyle ClearlooksStyle;
 typedef struct _ClearlooksStyleClass ClearlooksStyleClass;
 
-extern GType clearlooks_type_style;
+extern GType clearlooks_type_style G_GNUC_INTERNAL;
 
 #define CLEARLOOKS_TYPE_STYLE              clearlooks_type_style
 #define CLEARLOOKS_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), CLEARLOOKS_TYPE_STYLE, ClearlooksStyle))

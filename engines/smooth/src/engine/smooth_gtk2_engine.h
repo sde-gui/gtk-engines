@@ -37,9 +37,9 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-extern GType smooth_type_style;
-extern GtkStyleClass *smooth_theme_parent_class;
-extern GType smooth_type_rc_style;
+extern GType smooth_type_style G_GNUC_INTERNAL;
+extern GtkStyleClass *smooth_theme_parent_class G_GNUC_INTERNAL;
+extern GType smooth_type_rc_style G_GNUC_INTERNAL;
 
 #define SMOOTH_TYPE_STYLE              smooth_type_style
 #define SMOOTH_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SMOOTH_TYPE_STYLE, SmoothStyle))
@@ -73,7 +73,7 @@ typedef struct
   GtkRcStyleClass parent_class;
 } SmoothRcStyleClass;
 
-extern gint smooth_rc_references;
+extern gint smooth_rc_references G_GNUC_INTERNAL;
 
 gboolean smooth_rc_data_unref(GObject *rc_style) G_GNUC_INTERNAL;
 

@@ -26,7 +26,7 @@
 typedef struct _IndustrialStyle IndustrialStyle;
 typedef struct _IndustrialStyleClass IndustrialStyleClass;
 
-extern GType industrial_type_style;
+extern GType industrial_type_style G_GNUC_INTERNAL;
 
 #define INDUSTRIAL_TYPE_STYLE              industrial_type_style
 #define INDUSTRIAL_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), INDUSTRIAL_TYPE_STYLE, IndustrialStyle))
@@ -47,4 +47,4 @@ struct _IndustrialStyleClass {
 	GtkStyleClass parent_class;
 };
 
-void industrial_style_register_type (GTypeModule * module);
+void industrial_style_register_type (GTypeModule * module) G_GNUC_INTERNAL;
