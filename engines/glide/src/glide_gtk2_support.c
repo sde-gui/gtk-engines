@@ -848,14 +848,17 @@ do_glide_draw_simple_circle (cairo_t *canvas,
 
       cairo_close_path (canvas);
 
+      cairo_save(canvas);
+
       cairo_clip (canvas);
 
       ge_cairo_set_color(canvas, br);
       cairo_arc(canvas, center_x, center_y, radius, 0,  2*M_PI);
       cairo_fill(canvas);
 
-      cairo_reset_clip(canvas);
+      cairo_restore(canvas);
 
+      cairo_save(canvas);
       cairo_new_path (canvas);
 
       cairo_move_to(canvas, center_x - (radius + 2), center_y - (radius + 2));
@@ -871,7 +874,7 @@ do_glide_draw_simple_circle (cairo_t *canvas,
       cairo_arc(canvas, center_x, center_y, radius, 0, 2*M_PI);
       cairo_fill(canvas);
 
-      cairo_reset_clip(canvas);
+      cairo_restore(canvas);
 }
 
 /***********************************************

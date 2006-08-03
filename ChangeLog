@@ -1,5 +1,14 @@
 2006-08-03 Andrew Johnson <acjgenius@earthlink.net>
 
+	* engines/glide/src/glide_gtk2_support.c:
+	(do_glide_draw_simple_circle):
+	* engines/thinice/src/thinice_theme_draw.c:
+	(thinice_style_draw_option):
+
+	- Remove evil reset clip code
+
+2006-08-03 Andrew Johnson <acjgenius@earthlink.net>
+
 	* engines/thinice/src/thinice_theme_draw.c:
 	- Quick fix to Use Min(width, height)/2 for option radius
 

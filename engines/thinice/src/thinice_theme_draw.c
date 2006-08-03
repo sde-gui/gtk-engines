@@ -866,13 +866,14 @@ thinice_style_draw_option(GtkStyle * style,
 
       cairo_close_path (cr);
 
+      cairo_save(cr);
       cairo_clip (cr);
 
       ge_cairo_set_color(cr, color2);
       cairo_arc(cr, centerX, centerY, radius + 1, 0,  2*M_PI);
       cairo_fill(cr);
 
-      cairo_reset_clip(cr);
+      cairo_restore(cr);
 
       cairo_new_path (cr);
 
@@ -883,13 +884,15 @@ thinice_style_draw_option(GtkStyle * style,
 
       cairo_close_path (cr);
 
+      cairo_save(cr);
+
       cairo_clip (cr);
 
       ge_cairo_set_color(cr, color1); 
       cairo_arc(cr, centerX, centerY, radius + 1, 0,  2*M_PI);
       cairo_fill(cr);
 
-      cairo_reset_clip(cr);
+      cairo_restore(cr);
 
       ge_cairo_set_color(cr, color3);
       cairo_arc(cr, centerX, centerY, radius, 0, 2 * M_PI);
