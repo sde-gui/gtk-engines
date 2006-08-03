@@ -9,7 +9,7 @@
    Smooth-Engine.
 */ 
 gboolean
-ge_object_is_a (GtkWidget * widget, gchar * type_name)
+ge_object_is_a (const GtkWidget * widget, const gchar * type_name)
 {
   gboolean result = FALSE;
  
@@ -227,6 +227,16 @@ ge_find_combo_box_widget_parent (GtkWidget * widget)
    if (!result)
      result = ge_find_combo_box_entry_widget(widget);
 
+  return result;
+}
+
+gboolean
+ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget)
+{
+  gboolean result = FALSE;
+  
+  g_object_get (widget, "inconsistent", &result, NULL);
+  
   return result;
 }
 

@@ -19,6 +19,7 @@
  * Written by Andrew Johnson <acjgenius@earthlink.net>
  */ 
 
+#include <string.h>
 #include "glide_gtk2_engine.h"
 #include "glide_gtk2_support.h"
 #include "glide_gtk2_drawing.h"
@@ -143,7 +144,7 @@ glide_draw_check (GtkStyle * style,
 
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 
-	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
+	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
 	inconsistent |= (CHECK_DETAIL("cellcheck",detail) && (shadow == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow == GTK_SHADOW_IN) || (inconsistent))
@@ -258,7 +259,7 @@ glide_draw_option (GtkStyle * style,
 		check_state = GLIDE_CHECK_INCONSISTENT;
 	}
 
-	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget))
+	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
 	{
 		check_state = GLIDE_CHECK_INCONSISTENT;
 	}

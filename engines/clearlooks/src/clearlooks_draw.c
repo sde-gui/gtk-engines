@@ -241,7 +241,6 @@ clearlooks_draw_button (cairo_t *cr,
 	const CairoColor *fill            = &colors->bg[params->state_type];
 	const CairoColor *border_normal   = &colors->shade[7];
 	const CairoColor *border_disabled = &colors->shade[4];
-	const CairoColor *gradient_bottom = &colors->shade[3];
 	
 	/* Set colors and stuff */
 //	if (params->focus && !params->active)
@@ -668,10 +667,6 @@ clearlooks_draw_slider_button (cairo_t *cr,
                                const SliderParameters *slider,
                                int x, int y, int width, int height)
 {
-	const CairoColor *border = &colors->shade[6];
-	CairoColor        top, bottom;
-	cairo_pattern_t *pattern;
-
 	cairo_set_line_width (cr, 1.0);
 	
 	if (slider->horizontal)
@@ -688,7 +683,8 @@ clearlooks_draw_slider_button (cairo_t *cr,
 	clearlooks_draw_slider (cr, colors, params, 1, 1, width-2, height-2);
 
 	if (width > 24)
-		clearlooks_draw_gripdots (cr, 0, 0, width-2, height-2, 3, 3, 0);}
+		clearlooks_draw_gripdots (cr, 0, 0, width-2, height-2, 3, 3, 0);
+}
 
 void
 clearlooks_draw_progressbar_trough (cairo_t *cr,
@@ -1687,7 +1683,7 @@ clearlooks_draw_handle (cairo_t *cr,
 		num_bars    = 12;
 		bar_spacing = 2;
 	}
-	else if (handle->type == CL_HANDLE_SPLITTER)
+	else /* if (handle->type == CL_HANDLE_SPLITTER) */
 	{
 		num_bars    = 20;
 		bar_spacing = 2;

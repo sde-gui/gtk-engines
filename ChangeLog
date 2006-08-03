@@ -1,3 +1,25 @@
+2006-08-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/animation.c: (update_animation_info):
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button), (clearlooks_draw_slider_button),
+	(clearlooks_draw_handle):
+	* engines/clearlooks/src/clearlooks_style.c: (draw_resize_grip):
+	* engines/clearlooks/src/support.c:
+	(clearlooks_scrollbar_visible_steppers):
+	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_check),
+	(glide_draw_option):
+	* engines/hc/src/hc-style.c: (hc_draw_check), (hc_draw_option):
+	* engines/smooth/src/engine/smooth_gtk2_misc.c:
+	(gtk_cell_renderer_toggle_get_inconsistent):
+	* engines/support/cairo-support.c: (ge_gdk_drawable_to_cairo):
+	* engines/support/widget-information.c: (ge_object_is_a),
+	(ge_find_combo_box_widget_parent),
+	(ge_cell_renderer_toggle_get_inconsistent):
+	* engines/support/widget-information.h:
+	* engines/thinice/src/thinice_theme_draw.c: (draw_arrow):
+	- Small bug/warning fixes all over the place.
+
 2006-08-02  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (draw_shadow), (draw_box): Fix RTL

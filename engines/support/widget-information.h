@@ -7,6 +7,12 @@
 #define IS_WIDGET(object) ((object)  && ge_object_is_a (object, "GtkWidget"))
 #define IS_CONTAINER(object) ((object)  && ge_object_is_a (object, "GtkContainer"))
 #define IS_BIN(object) ((object)  && ge_object_is_a (object, "GtkBin"))
+
+#define IS_ARROW(object) ((object)  && ge_object_is_a (object, "GtkArrow"))
+
+#define IS_SEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkSeparator"))
+#define IS_VSEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkVSeparator"))
+#define IS_HSEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkHSeparator"))
  
 #define IS_HANDLE_BOX(object) ((object) && ge_object_is_a (object, "GtkHandleBox"))
 #define IS_HANDLE_BOX_ITEM(object) ((object) && IS_HANDLE_BOX(object->parent))
@@ -23,6 +29,7 @@
 #define IS_OPTION_MENU(object) ((widget) && ge_object_is_a (widget, "GtkOptionMenu"))
  
 #define IS_TOGGLE_BUTTON(object) ((object) && ge_object_is_a (object, "GtkToggleButton"))
+#define IS_CHECK_BUTTON(object) ((object) && ge_object_is_a (object, "GtkCheckButton"))
 #define IS_SPIN_BUTTON(object) ((object) && ge_object_is_a (object, "GtkSpinButton"))
  
 #define IS_STATUS_BAR(object) ((object) && ge_object_is_a (object, "GtkStatusBar"))
@@ -59,7 +66,7 @@
  
 #define TOGGLE_BUTTON(object) (IS_TOGGLE_BUTTON(object)?(GtkToggleButton *)object:NULL)
  
-gboolean ge_object_is_a (GtkWidget * widget, gchar * type_name) G_GNUC_INTERNAL;
+gboolean ge_object_is_a (const GtkWidget * widget, const gchar * type_name) G_GNUC_INTERNAL;
  
 gboolean ge_combo_box_is_using_list (GtkWidget * widget) G_GNUC_INTERNAL;
 
@@ -75,6 +82,8 @@ gboolean ge_is_panel_widget_item (GtkWidget * widget) G_GNUC_INTERNAL;
 gboolean ge_is_bonobo_dock_item (GtkWidget * widget) G_GNUC_INTERNAL;
 
 GtkWidget *ge_find_combo_box_widget_parent (GtkWidget * widget) G_GNUC_INTERNAL;
+
+gboolean ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget) G_GNUC_INTERNAL;
 
 void ge_option_menu_get_props (GtkWidget * widget, 
                             GtkRequisition * indicator_size, 

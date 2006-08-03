@@ -373,42 +373,6 @@ draw_handle (DRAW_ARGS, GtkOrientation orientation)
 	cairo_destroy (cr);
 }
 
-static int
-combo_box_get_seperator_pos (GtkWidget *widget)
-{
-	GList *children, *children_start;
-	GtkWidget *child;
-	int pos = 0;
-	
-	if (widget && IS_COMBO_BOX (widget->parent))
-	{
-		children = children_start = gtk_container_get_children (GTK_CONTAINER (widget));
-		
-		if (children && IS_HBOX (children->data))
-		{
-			child = GTK_WIDGET (children->data);
-			g_list_free (children_start);
-			children = children_start = gtk_container_get_children (GTK_CONTAINER (child));
-		}
-
-		if (children)
-		{
-			do
-			{
-				if (IS_ARROW (children->data) || IS_VSEPARATOR (children->data))
-					pos += GTK_WIDGET (children->data)->allocation.width;
-				
-			} while ((children = g_list_next (children)));
-		}
-	}
-	
-	pos += 2; /* don't ask me why.... widget->style->xthickness - 1 ? */
-	
-	g_list_free (children_start);	
-
-	return pos;
-}
-
 static void
 draw_box (DRAW_ARGS)
 {
@@ -1132,7 +1096,6 @@ draw_resize_grip (GtkStyle       *style,
 	ClearlooksColors *colors = &clearlooks_style->colors;
 
 	cairo_t *cr;
-	int lx, ly;
 
 	WidgetParameters params;
 	ResizeGripParameters grip;

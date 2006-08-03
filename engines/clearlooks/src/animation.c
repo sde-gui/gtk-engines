@@ -7,6 +7,7 @@
 #include "animation.h"
 
 #ifdef HAVE_ANIMATION
+#include <ge-support.h>
 #include <glib/gtimer.h>
 
 struct _AnimationInfo {
@@ -32,7 +33,7 @@ static int         animation_timer_id = 0;
 static gboolean animation_timeout_handler (gpointer data);
 
 /* This forces a redraw on a widget */
-static gboolean
+static void
 force_widget_redraw (GtkWidget *widget)
 {
 	if (IS_PROGRESS_BAR (widget))
@@ -141,7 +142,6 @@ update_animation_info (gpointer key, gpointer value, gpointer user_data)
 {
 	AnimationInfo *animation_info = value;
 	GtkWidget *widget = key;
-	gdouble elapsed;
 	
 	if ((widget == NULL) || (animation_info == NULL))
 		g_assert_not_reached ();

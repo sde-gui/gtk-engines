@@ -329,6 +329,9 @@ draw_arrow(GtkStyle * style,
 
 	SANITIZE_SIZE
 
+	half_width = width / 2;
+	half_height = height / 2;
+
 	switch (shadow_type)
 	{
 		case GTK_SHADOW_IN:

@@ -387,7 +387,7 @@ gtk_cell_renderer_toggle_get_inconsistent (GtkWidget *widget)
 {
   gboolean result = FALSE;
 
-  gtk_widget_style_get (widget, "inconsistent", result, NULL);
+  g_object_get (widget, "inconsistent", result, NULL);
 
   return result;
 }
