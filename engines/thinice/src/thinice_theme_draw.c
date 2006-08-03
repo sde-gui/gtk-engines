@@ -593,7 +593,7 @@ draw_box(GtkStyle * style,
         }
       /* Paint a triangle here instead of in "buttondefault"
          which is drawn _behind_ the current button */
-      if (GTK_WIDGET_HAS_DEFAULT (widget))
+      if (widget && GTK_WIDGET_HAS_DEFAULT (widget))
         {
           cairo_set_line_width (cr, 1);
 

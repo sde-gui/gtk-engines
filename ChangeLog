@@ -1,3 +1,14 @@
+2006-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow):
+	* engines/glide/src/glide_gtk2_drawing.c:
+	(glide_draw_spinbutton_stepper):
+	* engines/hc/src/hc-style.c: (hc_draw_shadow):
+	* engines/mist/src/mist-style.c: (mist_tab), (draw_shadow),
+	(draw_box), (draw_extension):
+	* engines/thinice/src/thinice_theme_draw.c: (draw_box):
+	- Fix potential crasher all over the place.
+
 2006-08-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_check),

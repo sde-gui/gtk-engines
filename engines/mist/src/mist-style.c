@@ -91,18 +91,13 @@ mist_tab (GtkStyle *style,
 	  int x,
 	  int y,
 	  int width,
-	  int height)
+	  int height,
+	  GtkPositionType gap_side)
 {
 	MistStyle *mist_style = MIST_STYLE (style);
 
-	GtkNotebook *notebook;
-	int orientation;
-	
 	cairo_t *cr;
 	CairoColor *light, *dark;
-
-	notebook = GTK_NOTEBOOK(widget);
-	orientation = notebook->tab_pos;
 		
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -122,8 +117,8 @@ mist_tab (GtkStyle *style,
 	light = &mist_style->color_cube.light[state_type];
 	dark = &mist_style->color_cube.dark[state_type];
 
-	switch(orientation) {
-	case GTK_POS_TOP:
+	switch(gap_side) {
+	case GTK_POS_BOTTOM:
 		ge_cairo_set_color(cr, light);	
 	
 		cairo_move_to (cr, x + 0.5, y + height - 0.5);
@@ -138,7 +133,7 @@ mist_tab (GtkStyle *style,
 		cairo_stroke (cr);
 
 		break;
-	case GTK_POS_BOTTOM:
+	case GTK_POS_TOP:
 		ge_cairo_set_color(cr, light);	
 	
 		cairo_move_to (cr, x + 0.5, y + 0.5);
@@ -152,7 +147,7 @@ mist_tab (GtkStyle *style,
 		cairo_line_to (cr, x + width - 0.5, y + 0.5);
 		cairo_stroke (cr);
 		break;
-	case GTK_POS_LEFT:
+	case GTK_POS_RIGHT:
 		ge_cairo_set_color(cr, light);	
 	
 		cairo_move_to (cr, x + 0.5, y + height - 0.5);
@@ -167,7 +162,7 @@ mist_tab (GtkStyle *style,
 		cairo_stroke (cr);
 
 		break;
-	case GTK_POS_RIGHT:
+	case GTK_POS_LEFT:
 		ge_cairo_set_color(cr, light);	
 	
 		cairo_move_to (cr, x + 0.5, y + 0.5);
@@ -396,7 +391,7 @@ draw_shadow(GtkStyle *style,
 		shadow_type = GTK_SHADOW_ETCHED_IN;
 	}
 	
-	if (CHECK_DETAIL(detail, "frame") && widget->parent && GTK_IS_STATUSBAR (widget->parent)) {
+	if (CHECK_DETAIL(detail, "frame") && widget && widget->parent && GTK_IS_STATUSBAR (widget->parent)) {
 		if (shadow_type != GTK_SHADOW_NONE) {
 			ge_cairo_set_color(cr, &mist_style->color_cube.dark[GTK_STATE_NORMAL]);	
 	
@@ -667,7 +662,6 @@ draw_box(GtkStyle *style,
 
 	CairoColor *light, *dark;
 	cairo_t *cr;
-	GtkOrientation orientation;
 	
 	g_return_if_fail (style != NULL);
 	g_return_if_fail (window != NULL);
@@ -709,10 +703,6 @@ draw_box(GtkStyle *style,
 				       x + width - 1, y + height - 1);
 
 		}
-	} else if (CHECK_DETAIL(detail, "tab")) {
-		mist_tab(style, window, state_type, 
-			 shadow_type, area, widget,
-			 detail, x, y, width, height);
 	} else  if (CHECK_DETAIL(detail, "bar")) {
 		if (width > 1 && height > 1) {
 			ge_cairo_set_color(cr, &mist_style->color_cube.base[GTK_STATE_SELECTED]);	
@@ -1095,9 +1085,8 @@ draw_extension(GtkStyle *style,
 	
 	SANITIZE_SIZE
 
-	gtk_paint_box(style, window, state_type, shadow_type, 
-		      area, widget, detail,
-		      x, y, width, height);
+	mist_tab(style, window, state_type, shadow_type, area,
+		 widget, detail, x, y, width, height, gap_side);
 	
 	switch (gap_side) {
 	case GTK_POS_TOP:

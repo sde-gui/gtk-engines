@@ -990,7 +990,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
    * more complicated because we can only do half for each stepper.
    */
  
-  GtkStateType parent_state = GTK_WIDGET_STATE(widget);
+  GtkStateType parent_state = widget ? GTK_WIDGET_STATE(widget) : GTK_STATE_NORMAL;
   gboolean entry_focused = FALSE;
   gint focus_line_width = 0, focus_padding = 0, focus = 0, thick = 2;
   gboolean interior_focus = TRUE;
@@ -1001,7 +1001,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
   spin_area.width = width;
   spin_area.height = height;
  
-  if (GTK_WIDGET_HAS_FOCUS(widget))
+  if (widget && GTK_WIDGET_HAS_FOCUS(widget))
   {
 	gtk_widget_style_get (widget, "focus_line_width", &focus_line_width, NULL);
 	gtk_widget_style_get (widget, "focus_padding", &focus_padding, NULL);
@@ -1049,7 +1049,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
                                 x, y + thick + focus, width - thick - focus, height - thick - focus);
 
-	if ((widget->requisition.height / 2) != (widget->requisition.height + 1) / 2)
+	if (!widget || (widget->requisition.height / 2) != (widget->requisition.height + 1) / 2)
 	{
 		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
 					x + thick/2, y + thick + 1, width - thick*2, height - thick*2 + 1);
@@ -1090,7 +1090,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
 			    x, y , width - thick - focus, height - thick - focus);
 
-	if ((widget->requisition.height / 2) != (widget->requisition.height + 1) / 2)
+	if (!widget || (widget->requisition.height / 2) != (widget->requisition.height + 1) / 2)
 	{
 		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
 					x + thick/2, y + thick/2 + 1 - focus, width - thick*2, height - thick*2 - 2);

@@ -185,7 +185,7 @@ draw_shadow (DRAW_ARGS)
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
 	
-		if (!g_str_equal ("XfcePanelWindow", gtk_widget_get_name (gtk_widget_get_toplevel (widget))))
+		if (widget && !g_str_equal ("XfcePanelWindow", gtk_widget_get_name (gtk_widget_get_toplevel (widget))))
 			clearlooks_draw_frame (cr, colors, &params, &frame,
 			                       x, y, width, height);
 	}

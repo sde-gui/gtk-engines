@@ -99,7 +99,7 @@ hc_draw_shadow(GtkStyle * style,
 	{
                	gtk_widget_ensure_style(widget);
 
-		foreground = &HC_STYLE(widget->style)->color_cube.fg[widget->state];
+		foreground = &HC_STYLE(style)->color_cube.fg[widget ? widget->state : GTK_STATE_NORMAL];
 	}
 
 
