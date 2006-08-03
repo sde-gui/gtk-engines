@@ -830,7 +830,7 @@ thinice_style_draw_option(GtkStyle * style,
 
   centerX = x + floor(width/2);
   centerY = y + floor(height/2);
-  radius = floor(width/2) - 0.5;
+  radius = floor(MIN(width, height)/2) - 0.5;
 
   switch (shadow_type)
     {
