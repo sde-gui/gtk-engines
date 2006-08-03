@@ -937,7 +937,7 @@ draw_box (GtkStyle *style,
 	else if (DETAIL ("buttondefault"))
 	{
 		/* draw Default Button marking, but only when sensitive */
-		if (GTK_WIDGET_SENSITIVE (widget))
+		if (widget && GTK_WIDGET_SENSITIVE (widget))
 		{
 			gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
 			cx = x + 0.5; cy = y + 0.5; cw = width - 1.0; ch = height - 1.0;

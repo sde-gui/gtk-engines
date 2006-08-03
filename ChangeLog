@@ -1,3 +1,8 @@
+2006-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/crux/src/crux-draw.c: (draw_box):
+	- Fix another possible crash bug.
+
 2006-08-03 Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/glide/src/glide_gtk2_support.c:
