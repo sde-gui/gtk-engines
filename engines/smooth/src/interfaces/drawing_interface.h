@@ -81,9 +81,9 @@ typedef struct
 /********************************/
 /* Define DrawingInterfaceClass */
 /********************************/
-typedef struct _DrawingInterfaceClass DrawingInterfaceClass;
+typedef struct _SmoothDrawingInterfaceClass DrawingInterfaceClass;
 
-struct _DrawingInterfaceClass
+struct _SmoothDrawingInterfaceClass
 {
 	/* Callback to Initialize Interface if Required - Always First in Struct*/
 	SmoothBool (* InitializeInterface)			(DrawingInterfaceClass *SmoothDrawingInterface);

@@ -27,7 +27,7 @@
 /******************************************************************************/
 /* Canvas Tile Image/ImageBuffer */
 static SmoothBool
-AbstractCanvasTileImageBuffer(SmoothCanvas Canvas,
+SmoothAbstractCanvasTileImageBuffer(SmoothCanvas Canvas,
 						SmoothImageBuffer ImageBuffer,
 						SmoothInt XOffset, 
 						SmoothInt YOffset,
@@ -122,7 +122,7 @@ AbstractCanvasTileImageBuffer(SmoothCanvas Canvas,
 }
 
 static SmoothBool
-AbstractCanvasTileImage(SmoothCanvas Canvas,
+SmoothAbstractCanvasTileImage(SmoothCanvas Canvas,
 					SmoothImage Image,
 					SmoothInt XOffset, 
 					SmoothInt YOffset,
@@ -217,7 +217,7 @@ AbstractCanvasTileImage(SmoothCanvas Canvas,
 }
 
 static void
-AbstractCanvasRenderTile(SmoothCanvas *Canvas,
+SmoothAbstractCanvasRenderTile(SmoothCanvas *Canvas,
 				SmoothTile Tile,
 				SmoothInt X,
 				SmoothInt Y,
@@ -237,7 +237,7 @@ AbstractCanvasRenderTile(SmoothCanvas *Canvas,
 	  		{
 	  			if (SmoothCanvasCreateImageFromBuffer(Canvas, ImageBuffer, &Image))
 	  			{
-					AbstractCanvasTileImage(Canvas, Image, 
+					SmoothAbstractCanvasTileImage(Canvas, Image, 
 								Tile.XOffset, Tile.YOffset, 
 								X, Y, Width, Height);
 					SmoothCanvasDestroyImage(Canvas, &Image);
@@ -245,7 +245,7 @@ AbstractCanvasRenderTile(SmoothCanvas *Canvas,
 			}
 			else 
 			{
-				AbstractCanvasTileImageBuffer(Canvas, ImageBuffer, 
+				SmoothAbstractCanvasTileImageBuffer(Canvas, ImageBuffer, 
 								Tile.XOffset, Tile.YOffset, 
 								X, Y, Width, Height);
 			}

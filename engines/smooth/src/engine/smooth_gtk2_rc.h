@@ -97,7 +97,7 @@ smooth_gtkrc_parse(GScanner   *Scanner,
 #define is_enum(str, value)  (g_ascii_strncasecmp(str, value, strlen(value)) == 0)
 
 guint 
-theme_parse_pixmap(GScanner *scanner, 
+smooth_rc_parse_pixmap(GScanner *scanner, 
                    GTokenType wanted_token, 
                    gchar *default_value,
                    GString **retval) G_GNUC_INTERNAL;

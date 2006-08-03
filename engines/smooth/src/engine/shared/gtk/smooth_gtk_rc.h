@@ -69,7 +69,7 @@ typedef enum
 #define DEFAULT_TROUGH_SHOW_VALUE	FALSE
 #define DEFAULT_GRIPOVERLAP		FALSE
 
-typedef gboolean (*SmoothTranslateEnumFunc) (gchar * str, guint *retval);
+typedef gboolean (*SmoothSmoothTranslateEnumFunc) (gchar * str, guint *retval);
 
 #define THEME_PART(part)                 ((smooth_part_style *) (part))
 
@@ -356,22 +356,22 @@ SmoothBevelStyle smooth_button_edge_line_style(GtkStyle * style, gboolean for_de
 gint smooth_button_edge_line_thickness(GtkStyle * style, gboolean for_default_button) G_GNUC_INTERNAL;
 
 /* Custom Enum Translators */
-gboolean TranslateFillStyleName (gchar * str, SmoothFillStyle *retval) G_GNUC_INTERNAL;
-gboolean TranslateGradientDirectionName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean TranslateLineStyleName (gchar * str, SmoothBevelStyle *retval) G_GNUC_INTERNAL;
-gboolean TranslateButtonDefaultStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean TranslateTabStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean TranslateGripStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean TranslateCheckStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean TranslateEdgeStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean TranslateArrowStyleName (gchar * str, SmoothArrowStyle *retval) G_GNUC_INTERNAL;
-gboolean TranslateArrowTypeName (gchar * str, SmoothArrowStyle *retval) G_GNUC_INTERNAL;
-gboolean TranslateStateName (gchar * str, int *retval) G_GNUC_INTERNAL;
-gboolean TranslateBooleanName (gchar * str, gint *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateFillStyleName (gchar * str, SmoothFillStyle *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateGradientDirectionName (gchar * str, gint *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateLineStyleName (gchar * str, SmoothBevelStyle *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateButtonDefaultStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateTabStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateGripStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateCheckStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateEdgeStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateArrowStyleName (gchar * str, SmoothArrowStyle *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateArrowTypeName (gchar * str, SmoothArrowStyle *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateStateName (gchar * str, int *retval) G_GNUC_INTERNAL;
+gboolean SmoothTranslateBooleanName (gchar * str, gint *retval) G_GNUC_INTERNAL;
 
 /* General Parsing Functions */
 guint 
-theme_parse_int (GScanner *scanner, 
+smooth_rc_parse_int (GScanner *scanner, 
                  GTokenType wanted_token, 
 		 guint return_default,
 		 gint *retval, 
@@ -379,7 +379,7 @@ theme_parse_int (GScanner *scanner,
 		 gint upper_limit) G_GNUC_INTERNAL;
 		 
 guint  
-theme_parse_float (GScanner *scanner, 
+smooth_rc_parse_float (GScanner *scanner, 
                  GTokenType wanted_token, 
 		 gdouble return_default, 
 		 gdouble *retval, 
@@ -387,90 +387,90 @@ theme_parse_float (GScanner *scanner,
 		 gdouble upper_limit) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_custom_enum (GScanner *scanner, 
+smooth_rc_parse_custom_enum (GScanner *scanner, 
                          GTokenType wanted_token, 
-			 SmoothTranslateEnumFunc translate_enum,
+			 SmoothSmoothTranslateEnumFunc translate_enum,
 			 guint return_default,
 			 guint *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_boolean(GScanner *scanner,  
+smooth_rc_parse_boolean(GScanner *scanner,  
                     GTokenType wanted_token, 
 		    gboolean return_default, 
 		    guint *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_line (GScanner *scanner, 
+smooth_rc_parse_line (GScanner *scanner, 
                   GTokenType wanted_token, 
                   SmoothLinePart *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_focus(GScanner *scanner, 
+smooth_rc_parse_focus(GScanner *scanner, 
                   GTokenType wanted_token, 
                   smooth_focus_style *retval) G_GNUC_INTERNAL;
                   
 guint 
-theme_parse_arrow_part(GScanner *scanner, 
+smooth_rc_parse_arrow_part(GScanner *scanner, 
                        GTokenType wanted_token, 
                        SmoothArrowPart *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_fill(GScanner *scanner, 
+smooth_rc_parse_fill(GScanner *scanner, 
                  GTokenType wanted_token, 
                  SmoothFillPart *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_edge(GScanner *scanner, 
+smooth_rc_parse_edge(GScanner *scanner, 
                  GTokenType wanted_token, 
                  smooth_edge_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_button_default(GScanner *scanner, 
+smooth_rc_parse_button_default(GScanner *scanner, 
                            GTokenType wanted_token, 
                            smooth_part_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_button(GScanner *scanner, 
+smooth_rc_parse_button(GScanner *scanner, 
                    GTokenType wanted_token, 
                    smooth_button_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_active_tab(GScanner *scanner, 
+smooth_rc_parse_active_tab(GScanner *scanner, 
                        GTokenType wanted_token, 
                        smooth_part_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_tab(GScanner *scanner, 
+smooth_rc_parse_tab(GScanner *scanner, 
                 GTokenType wanted_token, 
                 smooth_tab_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_option(GScanner *scanner, 
+smooth_rc_parse_option(GScanner *scanner, 
                    GTokenType wanted_token, 
                    smooth_check_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_grip(GScanner *scanner, 
+smooth_rc_parse_grip(GScanner *scanner, 
                  GTokenType wanted_token, 
                  smooth_grip_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_stepper(GScanner *scanner, 
+smooth_rc_parse_stepper(GScanner *scanner, 
                  GTokenType wanted_token, 
                  SmoothStepperStyle *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_check(GScanner *scanner, 
+smooth_rc_parse_check(GScanner *scanner, 
                   GTokenType wanted_token,
                   smooth_check_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_generic_part(GScanner *scanner, 
+smooth_rc_parse_generic_part(GScanner *scanner, 
                          GTokenType wanted_token, 
                          smooth_part_style *retval) G_GNUC_INTERNAL;
 
 guint 
-theme_parse_trough_part(GScanner *scanner, 
+smooth_rc_parse_trough_part(GScanner *scanner, 
                         GTokenType wanted_token, 
                         smooth_trough_style *retval) G_GNUC_INTERNAL;
 
@@ -482,7 +482,7 @@ part_merge (smooth_part_style *dest_part,
             smooth_part_style *src_part) G_GNUC_INTERNAL;
 
 void
-arrow_merge (SmoothArrowPart *dest_arrow,
+smooth_arrow_merge (SmoothArrowPart *dest_arrow,
              SmoothArrowPart *src_arrow) G_GNUC_INTERNAL;
 
 void

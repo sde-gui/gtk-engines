@@ -27,36 +27,36 @@
 
 /* Color Get/Set Values */
 #ifndef SMOOTHCOLOR
-static SmoothBool AbstractColorGetRedValue(SmoothColor *_Color,
+static SmoothBool SmoothAbstractColorGetRedValue(SmoothColor *_Color,
 						SmoothDouble *RedValue);
-static SmoothBool AbstractColorSetRedValue(SmoothColor *_Color, 
+static SmoothBool SmoothAbstractColorSetRedValue(SmoothColor *_Color, 
 						SmoothDouble NewValue);
 
-static SmoothBool AbstractColorGetGreenValue(SmoothColor *_Color,
+static SmoothBool SmoothAbstractColorGetGreenValue(SmoothColor *_Color,
 						SmoothDouble *GreenValue);
-static SmoothBool AbstractColorSetGreenValue(SmoothColor *_Color, 
+static SmoothBool SmoothAbstractColorSetGreenValue(SmoothColor *_Color, 
 						SmoothDouble NewValue);
 
-static SmoothBool AbstractColorGetBlueValue(SmoothColor *_Color,
+static SmoothBool SmoothAbstractColorGetBlueValue(SmoothColor *_Color,
 						SmoothDouble *BlueValue);
-static SmoothBool AbstractColorSetBlueValue(SmoothColor *_Color,
+static SmoothBool SmoothAbstractColorSetBlueValue(SmoothColor *_Color,
 						SmoothDouble NewValue);
 
-static SmoothBool AbstractColorGetAlphaValue(SmoothColor *_Color,
+static SmoothBool SmoothAbstractColorGetAlphaValue(SmoothColor *_Color,
 						SmoothDouble *AlphaValue);
-static SmoothBool AbstractColorSetAlphaValue(SmoothColor *_Color, 
+static SmoothBool SmoothAbstractColorSetAlphaValue(SmoothColor *_Color, 
 						SmoothDouble NewValue);
 #endif
 
 static SmoothBool 
-AbstractColorGetValues(SmoothColor *Color, 
+SmoothAbstractColorGetValues(SmoothColor *Color, 
 				SmoothDouble *RedValue, 
 				SmoothDouble *GreenValue, 
 				SmoothDouble *BlueValue, 
 				SmoothDouble *AlphaValue);
 
 static SmoothBool 
-AbstractColorSetValues(SmoothColor *Color, 
+SmoothAbstractColorSetValues(SmoothColor *Color, 
 				SmoothDouble RedValue, 
 				SmoothDouble GreenValue, 
 				SmoothDouble BlueValue, 
@@ -64,7 +64,7 @@ AbstractColorSetValues(SmoothColor *Color,
 
 /* Rectangle Get/Set Values */
 static SmoothBool 
-AbstractRectangleGetValues(SmoothRectangle *Rectangle, 
+SmoothAbstractRectangleGetValues(SmoothRectangle *Rectangle, 
 				SmoothInt *XValue, 
 				SmoothInt *YValue, 
 				SmoothInt *WidthValue, 
@@ -72,7 +72,7 @@ AbstractRectangleGetValues(SmoothRectangle *Rectangle,
 
 
 static SmoothBool 
-AbstractRectangleSetValues(SmoothRectangle *Rectangle, 
+SmoothAbstractRectangleSetValues(SmoothRectangle *Rectangle, 
 				SmoothInt XValue, 
 				SmoothInt YValue, 
 				SmoothInt WidthValue, 
@@ -80,23 +80,23 @@ AbstractRectangleSetValues(SmoothRectangle *Rectangle,
 
 /* Point Get/Set Values */
 static SmoothBool 
-AbstractPointGetValues(SmoothPoint *Point, 
+SmoothAbstractPointGetValues(SmoothPoint *Point, 
 				SmoothInt *XValue, 
 				SmoothInt *YValue);
 
 static SmoothBool 
-AbstractPointSetValues(SmoothPoint *Point, 
+SmoothAbstractPointSetValues(SmoothPoint *Point, 
 				SmoothInt XValue, 
 				SmoothInt YValue);
 
 /* Canvas Get/Set Clip Rectangle */
 static SmoothBool
-AbstractCanvasClipUseIntersectingRectangle(SmoothCanvas Canvas,
+SmoothAbstractCanvasClipUseIntersectingRectangle(SmoothCanvas Canvas,
 						SmoothRectangle Rectangle);
 
 /* Canvas Get/Set Pen Properties */
 static SmoothBool 
-AbstractCanvasGetPenValues(SmoothCanvas Canvas,
+SmoothAbstractCanvasGetPenValues(SmoothCanvas Canvas,
 					SmoothColor *Color,
 					SmoothInt *Thickness,
 					SmoothLineStyle *Style,
@@ -104,7 +104,7 @@ AbstractCanvasGetPenValues(SmoothCanvas Canvas,
 					SmoothLineJoin *Join);
 
 static SmoothBool 
-AbstractCanvasSetPenValues(SmoothCanvas Canvas,
+SmoothAbstractCanvasSetPenValues(SmoothCanvas Canvas,
 					SmoothColor Color,
 					SmoothInt Thickness,
 					SmoothLineStyle Style,
@@ -121,173 +121,173 @@ AbstractCanvasSetPenValues(SmoothCanvas Canvas,
 #include "src/abstract_gradient_routines.h"
 #endif
 
-/* Initialize drawingInterface */
+/* Initialize smoothDrawingInterface */
 SmoothBool 
-AbstractDrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface)
+SmoothAbstractDrawingInterfaceInitialize(DrawingInterfaceClass *_SmoothDrawingInterface)
 {
 	/* Color Get/Set Values */
-	_DrawingInterface->ColorGetRedValue = (void *) NULL;
-	_DrawingInterface->ColorSetRedValue = (void *) NULL;
+	_SmoothDrawingInterface->ColorGetRedValue = (void *) NULL;
+	_SmoothDrawingInterface->ColorSetRedValue = (void *) NULL;
 
-	_DrawingInterface->ColorGetGreenValue = (void *) NULL;
-	_DrawingInterface->ColorSetGreenValue = (void *) NULL;
+	_SmoothDrawingInterface->ColorGetGreenValue = (void *) NULL;
+	_SmoothDrawingInterface->ColorSetGreenValue = (void *) NULL;
 
-	_DrawingInterface->ColorGetBlueValue = (void *) NULL;
-	_DrawingInterface->ColorSetBlueValue = (void *) NULL;
+	_SmoothDrawingInterface->ColorGetBlueValue = (void *) NULL;
+	_SmoothDrawingInterface->ColorSetBlueValue = (void *) NULL;
 
-	_DrawingInterface->ColorGetAlphaValue = (void *) NULL;
-	_DrawingInterface->ColorSetAlphaValue = (void *) NULL;
+	_SmoothDrawingInterface->ColorGetAlphaValue = (void *) NULL;
+	_SmoothDrawingInterface->ColorSetAlphaValue = (void *) NULL;
 
-	_DrawingInterface->ColorGetValues = AbstractColorGetValues;
-	_DrawingInterface->ColorSetValues = AbstractColorSetValues;
+	_SmoothDrawingInterface->ColorGetValues = SmoothAbstractColorGetValues;
+	_SmoothDrawingInterface->ColorSetValues = SmoothAbstractColorSetValues;
 
 	/* Rectangle Status Functions */
-	_DrawingInterface->RectangleCreate = (void *) NULL;
-	_DrawingInterface->RectangleDestroy = (void *) NULL;
-	_DrawingInterface->RectangleIsValid = (void *) NULL;
+	_SmoothDrawingInterface->RectangleCreate = (void *) NULL;
+	_SmoothDrawingInterface->RectangleDestroy = (void *) NULL;
+	_SmoothDrawingInterface->RectangleIsValid = (void *) NULL;
 
 	/* Rectangle Get/Set Values */
-	_DrawingInterface->RectangleGetXValue = (void *) NULL;
-	_DrawingInterface->RectangleSetXValue = (void *) NULL;
+	_SmoothDrawingInterface->RectangleGetXValue = (void *) NULL;
+	_SmoothDrawingInterface->RectangleSetXValue = (void *) NULL;
 
-	_DrawingInterface->RectangleGetYValue = (void *) NULL;
-	_DrawingInterface->RectangleSetYValue = (void *) NULL;
+	_SmoothDrawingInterface->RectangleGetYValue = (void *) NULL;
+	_SmoothDrawingInterface->RectangleSetYValue = (void *) NULL;
 
-	_DrawingInterface->RectangleGetWidthValue = (void *) NULL;
-	_DrawingInterface->RectangleSetWidthValue = (void *) NULL;
+	_SmoothDrawingInterface->RectangleGetWidthValue = (void *) NULL;
+	_SmoothDrawingInterface->RectangleSetWidthValue = (void *) NULL;
 
-	_DrawingInterface->RectangleGetHeightValue = (void *) NULL;
-	_DrawingInterface->RectangleSetHeightValue = (void *) NULL;
+	_SmoothDrawingInterface->RectangleGetHeightValue = (void *) NULL;
+	_SmoothDrawingInterface->RectangleSetHeightValue = (void *) NULL;
 
-	_DrawingInterface->RectangleGetValues = AbstractRectangleGetValues;	
-	_DrawingInterface->RectangleSetValues = AbstractRectangleSetValues;
+	_SmoothDrawingInterface->RectangleGetValues = SmoothAbstractRectangleGetValues;	
+	_SmoothDrawingInterface->RectangleSetValues = SmoothAbstractRectangleSetValues;
 
 	/* Rectangle Misc Functions */
-	_DrawingInterface->RectangleFindIntersection = (void *) NULL;
+	_SmoothDrawingInterface->RectangleFindIntersection = (void *) NULL;
 
 	/* Point Get/Set Values */
-	_DrawingInterface->PointGetXValue = (void *) NULL;
-	_DrawingInterface->PointSetXValue = (void *) NULL;
+	_SmoothDrawingInterface->PointGetXValue = (void *) NULL;
+	_SmoothDrawingInterface->PointSetXValue = (void *) NULL;
 
-	_DrawingInterface->PointGetYValue = (void *) NULL;
-	_DrawingInterface->PointSetYValue = (void *) NULL;
+	_SmoothDrawingInterface->PointGetYValue = (void *) NULL;
+	_SmoothDrawingInterface->PointSetYValue = (void *) NULL;
 
-	_DrawingInterface->PointGetValues = AbstractPointGetValues;
-	_DrawingInterface->PointSetValues = AbstractPointSetValues;
+	_SmoothDrawingInterface->PointGetValues = SmoothAbstractPointGetValues;
+	_SmoothDrawingInterface->PointSetValues = SmoothAbstractPointSetValues;
 
 	/* Image/Buffer By File name (For caching purposes) */
-	_DrawingInterface->ImageBufferLoadByFile = (void *) NULL;
-	_DrawingInterface->ImageBufferUnLoadByFile = (void *) NULL;
+	_SmoothDrawingInterface->ImageBufferLoadByFile = (void *) NULL;
+	_SmoothDrawingInterface->ImageBufferUnLoadByFile = (void *) NULL;
 
 	/* Canvas Get Image/ImageBuffer Size */
-	_DrawingInterface->ImageBufferGetWidth = (void *) NULL;
-	_DrawingInterface->ImageBufferGetHeight = (void *) NULL;
-	_DrawingInterface->ImageGetWidth = (void *) NULL;
-	_DrawingInterface->ImageGetHeight = (void *) NULL;
+	_SmoothDrawingInterface->ImageBufferGetWidth = (void *) NULL;
+	_SmoothDrawingInterface->ImageBufferGetHeight = (void *) NULL;
+	_SmoothDrawingInterface->ImageGetWidth = (void *) NULL;
+	_SmoothDrawingInterface->ImageGetHeight = (void *) NULL;
 
 	/* Canvas Map/Free A Color From The Colormap*/
-	_DrawingInterface->CanvasAllocateColor = (void *) NULL;
-	_DrawingInterface->CanvasDeallocateColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasAllocateColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasDeallocateColor = (void *) NULL;
 
 	/* Canvas cache/uncache a Color */
-	_DrawingInterface->CanvasCacheColor = (void *) NULL;
-	_DrawingInterface->CanvasUnCacheColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasCacheColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasUnCacheColor = (void *) NULL;
 			
 	/* Canvas cache/uncache a shaded Color */
-	_DrawingInterface->CanvasCacheShadedColor = (void *) NULL;
-	_DrawingInterface->CanvasUnCacheShadedColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasCacheShadedColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasUnCacheShadedColor = (void *) NULL;
 	
 	/* Canvas cache/uncache a midpoint Color */
-	_DrawingInterface->CanvasCacheMidPointColor = (void *) NULL;
-	_DrawingInterface->CanvasUnCacheMidPointColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasCacheMidPointColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasUnCacheMidPointColor = (void *) NULL;
 
 	/* Canvas Store/Render */
-	_DrawingInterface->CanvasStore =  (void *) NULL;
-	_DrawingInterface->CanvasRender =  (void *) NULL;
+	_SmoothDrawingInterface->CanvasStore =  (void *) NULL;
+	_SmoothDrawingInterface->CanvasRender =  (void *) NULL;
 
 	/* Canvas Get/Set Clip Rectangle */
-	_DrawingInterface->CanvasGetClipRectangle = (void *) NULL;
-	_DrawingInterface->CanvasSetClipRectangle = (void *) NULL;
-	_DrawingInterface->CanvasClearClipRectangle = (void *) NULL;
-	_DrawingInterface->CanvasClipUseIntersectingRectangle = (void *)AbstractCanvasClipUseIntersectingRectangle;
+	_SmoothDrawingInterface->CanvasGetClipRectangle = (void *) NULL;
+	_SmoothDrawingInterface->CanvasSetClipRectangle = (void *) NULL;
+	_SmoothDrawingInterface->CanvasClearClipRectangle = (void *) NULL;
+	_SmoothDrawingInterface->CanvasClipUseIntersectingRectangle = (void *)SmoothAbstractCanvasClipUseIntersectingRectangle;
 
 	/* Canvas Get/Set Pen Properties */
-	_DrawingInterface->CanvasGetPenColor = (void *) NULL;
-	_DrawingInterface->CanvasSetPenColor = (void *) NULL;	
+	_SmoothDrawingInterface->CanvasGetPenColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasSetPenColor = (void *) NULL;	
 	
-	_DrawingInterface->CanvasGetPenThickness = (void *) NULL;
-	_DrawingInterface->CanvasSetPenThickness = (void *) NULL;
+	_SmoothDrawingInterface->CanvasGetPenThickness = (void *) NULL;
+	_SmoothDrawingInterface->CanvasSetPenThickness = (void *) NULL;
 	
-	_DrawingInterface->CanvasGetPenStyle = (void *) NULL;
-	_DrawingInterface->CanvasSetPenStyle = (void *) NULL;
+	_SmoothDrawingInterface->CanvasGetPenStyle = (void *) NULL;
+	_SmoothDrawingInterface->CanvasSetPenStyle = (void *) NULL;
 	
-	_DrawingInterface->CanvasGetPenCap = (void *) NULL;
-	_DrawingInterface->CanvasSetPenCap = (void *) NULL;
+	_SmoothDrawingInterface->CanvasGetPenCap = (void *) NULL;
+	_SmoothDrawingInterface->CanvasSetPenCap = (void *) NULL;
 	
-	_DrawingInterface->CanvasGetPenJoin = (void *) NULL;
-	_DrawingInterface->CanvasSetPenJoin = (void *) NULL;
+	_SmoothDrawingInterface->CanvasGetPenJoin = (void *) NULL;
+	_SmoothDrawingInterface->CanvasSetPenJoin = (void *) NULL;
 	
-	_DrawingInterface->CanvasGetPenPattern = (void *) NULL;
-	_DrawingInterface->CanvasSetPenPattern = (void *) NULL;
+	_SmoothDrawingInterface->CanvasGetPenPattern = (void *) NULL;
+	_SmoothDrawingInterface->CanvasSetPenPattern = (void *) NULL;
 
-	_DrawingInterface->CanvasGetPenValues = (void *)AbstractCanvasGetPenValues;
-	_DrawingInterface->CanvasSetPenValues = (void *)AbstractCanvasSetPenValues;
+	_SmoothDrawingInterface->CanvasGetPenValues = (void *)SmoothAbstractCanvasGetPenValues;
+	_SmoothDrawingInterface->CanvasSetPenValues = (void *)SmoothAbstractCanvasSetPenValues;
 
 	/* Canvas Get/Set Brush Properties */
-	_DrawingInterface->CanvasGetBrushColor = (void *) NULL;
-	_DrawingInterface->CanvasSetBrushColor = (void *) NULL;	
+	_SmoothDrawingInterface->CanvasGetBrushColor = (void *) NULL;
+	_SmoothDrawingInterface->CanvasSetBrushColor = (void *) NULL;	
 
 	/* Canvas Create Image */
-	_DrawingInterface->CanvasCreateImage = (void *) NULL;
-	_DrawingInterface->CanvasCreateImageFromBuffer = (void *) NULL;
-	_DrawingInterface->CanvasDestroyImage = (void *) NULL;
+	_SmoothDrawingInterface->CanvasCreateImage = (void *) NULL;
+	_SmoothDrawingInterface->CanvasCreateImageFromBuffer = (void *) NULL;
+	_SmoothDrawingInterface->CanvasDestroyImage = (void *) NULL;
 
 	/* Canvas Render Image/ImageBuffer */
-	_DrawingInterface->CanvasRenderImage = (void *) NULL;						
-	_DrawingInterface->CanvasRenderImageBuffer = (void *) NULL;						
+	_SmoothDrawingInterface->CanvasRenderImage = (void *) NULL;						
+	_SmoothDrawingInterface->CanvasRenderImageBuffer = (void *) NULL;						
 
 	/* Canvas Render Tile */
 	#ifndef SMOOTHTILE
-	_DrawingInterface->CanvasRenderTile = (void *)AbstractCanvasRenderTile;
+	_SmoothDrawingInterface->CanvasRenderTile = (void *)SmoothAbstractCanvasRenderTile;
 	#else
-	_DrawingInterface->CanvasRenderTile = (void *)NULL;
+	_SmoothDrawingInterface->CanvasRenderTile = (void *)NULL;
 	#endif
 
 	/* Canvas Render Gradient */
 	#ifndef SMOOTHGRADIENT
-	_DrawingInterface->CanvasRenderGradient = (void *)AbstractCanvasRenderGradient;
+	_SmoothDrawingInterface->CanvasRenderGradient = (void *)SmoothAbstractCanvasRenderGradient;
 	#else
-	_DrawingInterface->CanvasRenderGradient = (void *)NULL;
+	_SmoothDrawingInterface->CanvasRenderGradient = (void *)NULL;
 	#endif
 
 	/* Canvas Draw Point(s) */
-	_DrawingInterface->CanvasDrawPoint = (void *) NULL;
-	_DrawingInterface->CanvasDrawPoints = (void *) NULL;
+	_SmoothDrawingInterface->CanvasDrawPoint = (void *) NULL;
+	_SmoothDrawingInterface->CanvasDrawPoints = (void *) NULL;
 
 	/* Canvas Draw Line(s) */
-	_DrawingInterface->CanvasDrawLine = (void *) NULL;
-	_DrawingInterface->CanvasDrawSegment = (void *) NULL;
-	_DrawingInterface->CanvasDrawLines = (void *) NULL;
-/*	_DrawingInterface->CanvasDrawSegments = (void *) NULL;*/
+	_SmoothDrawingInterface->CanvasDrawLine = (void *) NULL;
+	_SmoothDrawingInterface->CanvasDrawSegment = (void *) NULL;
+	_SmoothDrawingInterface->CanvasDrawLines = (void *) NULL;
+/*	_SmoothDrawingInterface->CanvasDrawSegments = (void *) NULL;*/
 	
 	/* Canvas Draw Arc(s)/Curve(s) */
-	_DrawingInterface->CanvasDrawArc = (void *) NULL;
+	_SmoothDrawingInterface->CanvasDrawArc = (void *) NULL;
 
 	/* Canvas Frame Shaped Areas */
-	_DrawingInterface->CanvasFrameRectangle = (void *) NULL;
-	_DrawingInterface->CanvasFramePolygon = (void *) NULL;
-	_DrawingInterface->CanvasFrameChord = (void *) NULL;
+	_SmoothDrawingInterface->CanvasFrameRectangle = (void *) NULL;
+	_SmoothDrawingInterface->CanvasFramePolygon = (void *) NULL;
+	_SmoothDrawingInterface->CanvasFrameChord = (void *) NULL;
 
 	/* Canvas Fill Shaped Areas */
-	_DrawingInterface->CanvasFillRectangle = (void *) NULL;
-	_DrawingInterface->CanvasFillPolygon = (void *) NULL;
-	_DrawingInterface->CanvasFillChord = (void *) NULL;
+	_SmoothDrawingInterface->CanvasFillRectangle = (void *) NULL;
+	_SmoothDrawingInterface->CanvasFillPolygon = (void *) NULL;
+	_SmoothDrawingInterface->CanvasFillChord = (void *) NULL;
 	
 	return SmoothTrue;
 }
 
 SmoothBool 
-AbstractDrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface)
+SmoothAbstractDrawingInterfaceFinalize(DrawingInterfaceClass *_SmoothDrawingInterface)
 {
 	return SmoothTrue;
 }
@@ -297,7 +297,7 @@ AbstractDrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface)
 /* Color Get/Set Values */
 #ifndef SMOOTHCOLOR
 static SmoothBool 
-AbstractColorGetRedValue(SmoothColor *Color,
+SmoothAbstractColorGetRedValue(SmoothColor *Color,
 				SmoothDouble *RedValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -311,7 +311,7 @@ AbstractColorGetRedValue(SmoothColor *Color,
 }
 
 static SmoothBool 
-AbstractColorSetRedValue(SmoothColor *Color, 
+SmoothAbstractColorSetRedValue(SmoothColor *Color, 
 				SmoothDouble NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -325,7 +325,7 @@ AbstractColorSetRedValue(SmoothColor *Color,
 }
 
 static SmoothBool 
-AbstractColorGetGreenValue(SmoothColor *Color,
+SmoothAbstractColorGetGreenValue(SmoothColor *Color,
 				SmoothDouble *GreenValue);
 {
 	SmoothBool result = SmoothFalse;
@@ -339,7 +339,7 @@ AbstractColorGetGreenValue(SmoothColor *Color,
 }
 
 static SmoothBool 
-AbstractColorSetGreenValue(SmoothColor *Color, 
+SmoothAbstractColorSetGreenValue(SmoothColor *Color, 
 				SmoothDouble NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -353,7 +353,7 @@ AbstractColorSetGreenValue(SmoothColor *Color,
 }
 
 static SmoothBool 
-AbstractColorGetBlueValue(SmoothColor *Color,
+SmoothAbstractColorGetBlueValue(SmoothColor *Color,
 				SmoothDouble *BlueValue);
 {
 	SmoothBool result = SmoothFalse;
@@ -367,7 +367,7 @@ AbstractColorGetBlueValue(SmoothColor *Color,
 }
 
 static SmoothBool 
-AbstractColorSetBlueValue(SmoothColor *Color,
+SmoothAbstractColorSetBlueValue(SmoothColor *Color,
 				SmoothDouble NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -381,7 +381,7 @@ AbstractColorSetBlueValue(SmoothColor *Color,
 }
 
 static SmoothBool 
-AbstractColorGetAlphaValue(SmoothColor *_Color,
+SmoothAbstractColorGetAlphaValue(SmoothColor *_Color,
 				SmoothDouble *AlphaValue);
 {
 	SmoothBool result = SmoothFalse;
@@ -395,7 +395,7 @@ AbstractColorGetAlphaValue(SmoothColor *_Color,
 }
 
 static SmoothBool 
-AbstractColorSetAlphaValue(SmoothColor *_Color, 
+SmoothAbstractColorSetAlphaValue(SmoothColor *_Color, 
 				SmoothDouble NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -411,7 +411,7 @@ AbstractColorSetAlphaValue(SmoothColor *_Color,
 #endif
 
 static SmoothBool 
-AbstractColorGetValues(SmoothColor *Color, 
+SmoothAbstractColorGetValues(SmoothColor *Color, 
 				SmoothDouble *RedValue, 
 				SmoothDouble *GreenValue, 
 				SmoothDouble *BlueValue, 
@@ -443,7 +443,7 @@ AbstractColorGetValues(SmoothColor *Color,
 }
 
 static SmoothBool 
-AbstractColorSetValues(SmoothColor *Color, 
+SmoothAbstractColorSetValues(SmoothColor *Color, 
 				SmoothDouble RedValue, 
 				SmoothDouble GreenValue, 
 				SmoothDouble BlueValue, 
@@ -492,7 +492,7 @@ AbstractColorSetValues(SmoothColor *Color,
 
 /* Rectangle Get/Set Values */
 static SmoothBool 
-AbstractRectangleGetValues(SmoothRectangle *Rectangle, 
+SmoothAbstractRectangleGetValues(SmoothRectangle *Rectangle, 
 				SmoothInt *XValue, 
 				SmoothInt *YValue, 
 				SmoothInt *WidthValue, 
@@ -524,7 +524,7 @@ AbstractRectangleGetValues(SmoothRectangle *Rectangle,
 }
 
 static SmoothBool 
-AbstractRectangleSetValues(SmoothRectangle *Rectangle, 
+SmoothAbstractRectangleSetValues(SmoothRectangle *Rectangle, 
 				SmoothInt XValue, 
 				SmoothInt YValue, 
 				SmoothInt WidthValue, 
@@ -573,7 +573,7 @@ AbstractRectangleSetValues(SmoothRectangle *Rectangle,
 
 /* Point Get/Set Values */
 static SmoothBool 
-AbstractPointGetValues(SmoothPoint *Point, 
+SmoothAbstractPointGetValues(SmoothPoint *Point, 
 				SmoothInt *XValue, 
 				SmoothInt *YValue)
 {
@@ -593,7 +593,7 @@ AbstractPointGetValues(SmoothPoint *Point,
 }
 
 static SmoothBool 
-AbstractPointSetValues(SmoothPoint *Point, 
+SmoothAbstractPointSetValues(SmoothPoint *Point, 
 				SmoothInt XValue, 
 				SmoothInt YValue)
 {
@@ -622,7 +622,7 @@ AbstractPointSetValues(SmoothPoint *Point,
 
 /* Canvas Get/Set Clip Rectangle */
 static SmoothBool
-AbstractCanvasClipUseIntersectingRectangle(SmoothCanvas Canvas,
+SmoothAbstractCanvasClipUseIntersectingRectangle(SmoothCanvas Canvas,
 						SmoothRectangle Rectangle)
 {
 	SmoothBool result = SmoothTrue;
@@ -651,7 +651,7 @@ AbstractCanvasClipUseIntersectingRectangle(SmoothCanvas Canvas,
 
 /* Canvas Get/Set Pen Properties */
 static SmoothBool 
-AbstractCanvasGetPenValues(SmoothCanvas Canvas,
+SmoothAbstractCanvasGetPenValues(SmoothCanvas Canvas,
 					SmoothColor *Color,
 					SmoothInt *Thickness,
 					SmoothLineStyle *Style,
@@ -689,7 +689,7 @@ AbstractCanvasGetPenValues(SmoothCanvas Canvas,
 }
 
 static SmoothBool 
-AbstractCanvasSetPenValues(SmoothCanvas Canvas,
+SmoothAbstractCanvasSetPenValues(SmoothCanvas Canvas,
 					SmoothColor Color,
 					SmoothInt Thickness,
 					SmoothLineStyle Style,

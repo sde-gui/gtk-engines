@@ -40,7 +40,7 @@ static void      clearlooks_rc_style_merge        (GtkRcStyle             *dest,
 						   GtkRcStyle             *src);
 
 
-static GtkRcStyleClass *parent_class;
+static GtkRcStyleClass *clearlooks_parent_rc_class;
 
 GType clearlooks_type_rc_style = 0;
 
@@ -64,7 +64,7 @@ static struct
     const gchar        *name;
     guint               token;
   }
-theme_symbols[] =
+clearlooks_gtk2_rc_symbols[] =
 {
   { "scrollbar_color",   TOKEN_SCROLLBARCOLOR  },
   { "contrast", 		 TOKEN_CONTRAST  },
@@ -123,8 +123,8 @@ clearlooks_rc_style_finalize (GObject *object)
 	/* cleanup all the animation stuff */
 	clearlooks_animation_cleanup ();
 	
-	if (G_OBJECT_CLASS (parent_class)->finalize != NULL)
-		G_OBJECT_CLASS (parent_class)->finalize(object);
+	if (G_OBJECT_CLASS (clearlooks_parent_rc_class)->finalize != NULL)
+		G_OBJECT_CLASS (clearlooks_parent_rc_class)->finalize(object);
 }
 #endif
 
@@ -137,7 +137,7 @@ clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
   GObjectClass    *g_object_class = G_OBJECT_CLASS (klass);
 #endif
 
-  parent_class = g_type_class_peek_parent (klass);
+  clearlooks_parent_rc_class = g_type_class_peek_parent (klass);
 
   rc_style_class->parse = clearlooks_rc_style_parse;
   rc_style_class->create_style = clearlooks_rc_style_create_style;
@@ -149,7 +149,7 @@ clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
 }
 
 static guint
-theme_parse_boolean (GtkSettings *settings,
+clearlooks_gtk2_rc_parse_boolean (GtkSettings *settings,
                      GScanner     *scanner,
                      gboolean *retval)
 {
@@ -172,7 +172,7 @@ theme_parse_boolean (GtkSettings *settings,
 }
 
 static guint
-theme_parse_color(GtkSettings  *settings,
+clearlooks_gtk2_rc_parse_color(GtkSettings  *settings,
 		  GScanner     *scanner,
 		  GdkColor     *color)
 {
@@ -189,7 +189,7 @@ theme_parse_color(GtkSettings  *settings,
 }
 
 static guint
-theme_parse_contrast(GtkSettings  *settings,
+clearlooks_gtk2_rc_parse_contrast(GtkSettings  *settings,
 		     GScanner     *scanner,
 		     double       *contrast)
 {
@@ -212,7 +212,7 @@ theme_parse_contrast(GtkSettings  *settings,
 }
 
 static guint
-theme_parse_int (GtkSettings  *settings,
+clearlooks_gtk2_rc_parse_int (GtkSettings  *settings,
 		         GScanner     *scanner,
 		         guint8       *progressbarstyle)
 {
@@ -262,13 +262,13 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
    * same scanner.
    */
 
-  if (!g_scanner_lookup_symbol(scanner, theme_symbols[0].name))
+  if (!g_scanner_lookup_symbol(scanner, clearlooks_gtk2_rc_symbols[0].name))
     {
       g_scanner_freeze_symbol_table(scanner);
-      for (i = 0; i < G_N_ELEMENTS (theme_symbols); i++)
+      for (i = 0; i < G_N_ELEMENTS (clearlooks_gtk2_rc_symbols); i++)
 	g_scanner_scope_add_symbol(scanner, scope_id,
-				   theme_symbols[i].name,
-				   GINT_TO_POINTER(theme_symbols[i].token));
+				   clearlooks_gtk2_rc_symbols[i].name,
+				   GINT_TO_POINTER(clearlooks_gtk2_rc_symbols[i].token));
       g_scanner_thaw_symbol_table(scanner);
     }
 
@@ -280,29 +280,29 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
       switch (token)
 	{
 	case TOKEN_SCROLLBARCOLOR:
-	  token = theme_parse_color (settings, scanner, &clearlooks_style->scrollbar_color);
+	  token = clearlooks_gtk2_rc_parse_color (settings, scanner, &clearlooks_style->scrollbar_color);
 	  clearlooks_style->has_scrollbar_color = TRUE;
 	  break;
 	case TOKEN_CONTRAST:
-	  token = theme_parse_contrast (settings, scanner, &clearlooks_style->contrast);
+	  token = clearlooks_gtk2_rc_parse_contrast (settings, scanner, &clearlooks_style->contrast);
 	  break;
 	case TOKEN_SUNKENMENU:
-	  token = theme_parse_int (settings, scanner, &clearlooks_style->sunkenmenubar);
+	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->sunkenmenubar);
 	  break;
 	case TOKEN_PROGRESSBARSTYLE:
-	  token = theme_parse_int (settings, scanner, &clearlooks_style->progressbarstyle);
+	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->progressbarstyle);
 	  break;
 	case TOKEN_MENUBARSTYLE:
-	  token = theme_parse_int (settings, scanner, &clearlooks_style->menubarstyle);
+	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->menubarstyle);
 	  break;
 	case TOKEN_MENUITEMSTYLE:
-	  token = theme_parse_int (settings, scanner, &clearlooks_style->menuitemstyle);
+	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->menuitemstyle);
 	  break;
 	case TOKEN_LISTVIEWITEMSTYLE:
-	  token = theme_parse_int (settings, scanner, &clearlooks_style->listviewitemstyle);
+	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->listviewitemstyle);
 	  break;
 	case TOKEN_ANIMATION:
-	  token = theme_parse_boolean (settings, scanner, &clearlooks_style->animation);
+	  token = clearlooks_gtk2_rc_parse_boolean (settings, scanner, &clearlooks_style->animation);
 	  break;
 	default:
 	  g_scanner_get_next_token(scanner);
@@ -329,7 +329,7 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 {
 	ClearlooksRcStyle *dest_w, *src_w;
 	
-	parent_class->merge (dest, src);
+	clearlooks_parent_rc_class->merge (dest, src);
 	
 	if (!CLEARLOOKS_IS_RC_STYLE (src))
 		return;

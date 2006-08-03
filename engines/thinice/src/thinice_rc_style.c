@@ -17,7 +17,7 @@ static struct
     gchar       *name;
     guint        token;
   }
-theme_symbols[] =
+thinice_rc_symbols[] =
 {
   { "rect_scrollbar",      TOKEN_RECTSCROLLBAR },
   { "scrollbar_marks",     TOKEN_SCROLLBARMARKS },
@@ -43,9 +43,9 @@ theme_symbols[] =
 
 };
 
-static guint n_theme_symbols = sizeof(theme_symbols) / sizeof(theme_symbols[0]);
+static guint n_thinice_rc_symbols = sizeof(thinice_rc_symbols) / sizeof(thinice_rc_symbols[0]);
 
-static GtkRcStyleClass *parent_class;
+static GtkRcStyleClass *thinice_parent_rc_style_class;
 
 GType thinice_type_rc_style = 0;
 
@@ -81,7 +81,7 @@ thinice_rc_style_class_init (ThiniceRcStyleClass *klass)
 {
   GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
+  thinice_parent_rc_style_class = g_type_class_peek_parent (klass);
 
   rc_style_class->parse = thinice_rc_style_parse;
   rc_style_class->merge = thinice_rc_style_merge;
@@ -90,7 +90,7 @@ thinice_rc_style_class_init (ThiniceRcStyleClass *klass)
 
 #if 0
 static guint
-theme_parse_int(GScanner *scanner,
+thinice_rc_parse_int(GScanner *scanner,
                 GTokenType wanted_token,
                 guint *retval)
 {
@@ -115,7 +115,7 @@ theme_parse_int(GScanner *scanner,
 #endif
 
 static guint
-theme_parse_boolean(GScanner *scanner,
+thinice_rc_parse_boolean(GScanner *scanner,
                     GTokenType wanted_token,
                     guint *retval)
 {
@@ -141,7 +141,7 @@ theme_parse_boolean(GScanner *scanner,
 }
 
 static guint
-theme_parse_marktype(GScanner *scanner,
+thinice_rc_parse_marktype(GScanner *scanner,
 		     GTokenType wanted_token,
 		     guint *retval)
 {
@@ -184,7 +184,7 @@ theme_parse_marktype(GScanner *scanner,
 }
 
 static guint
-theme_parse_paned(GScanner *scanner,
+thinice_rc_parse_paned(GScanner *scanner,
 		  GTokenType wanted_token,
 		  guint *retval)
 {
@@ -231,7 +231,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
   /* Set up a new scope in this scanner. */
 
   /*
-  g_print("theme_parse_rc_style(\"%s\")\n", rc_style->name);
+  g_print("thinice_rc_parse_rc_style(\"%s\")\n", rc_style->name);
   */
   if (!scope_id)
     scope_id = g_quark_from_string("theme_engine");
@@ -242,18 +242,18 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
   old_scope = g_scanner_set_scope(scanner, scope_id);
   
   /* Now check if we already added our symbols to this scope
-   * (in some previous call to theme_parse_rc_style for the
+   * (in some previous call to thinice_rc_parse_rc_style for the
    * same scanner.
    */
 
-  if (!g_scanner_lookup_symbol(scanner, theme_symbols[0].name))
+  if (!g_scanner_lookup_symbol(scanner, thinice_rc_symbols[0].name))
     {
       g_scanner_freeze_symbol_table(scanner);
-      for (i = 0; i < n_theme_symbols; i++)
+      for (i = 0; i < n_thinice_rc_symbols; i++)
         {
           g_scanner_scope_add_symbol(scanner, scope_id,
-              theme_symbols[i].name,
-              GINT_TO_POINTER(theme_symbols[i].token));
+              thinice_rc_symbols[i].name,
+              GINT_TO_POINTER(thinice_rc_symbols[i].token));
         }
       g_scanner_thaw_symbol_table(scanner);
     }
@@ -274,7 +274,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
       switch (token)
 	{
         case TOKEN_RECTSCROLLBAR:
-          token = theme_parse_boolean(scanner, TOKEN_RECTSCROLLBAR, &i);
+          token = thinice_rc_parse_boolean(scanner, TOKEN_RECTSCROLLBAR, &i);
           if (token != G_TOKEN_NONE)
             break;
           if (i == FALSE)
@@ -284,7 +284,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
           break;
 
         case TOKEN_SCROLLBUTTONMARKS:
-          token = theme_parse_boolean(scanner, TOKEN_SCROLLBUTTONMARKS, &i);
+          token = thinice_rc_parse_boolean(scanner, TOKEN_SCROLLBUTTONMARKS, &i);
           if (token != G_TOKEN_NONE)
             break;
           if (i == TRUE)
@@ -300,7 +300,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
           break;
 
         case TOKEN_SCROLLBARMARKS:
-          token = theme_parse_boolean(scanner, TOKEN_SCROLLBARMARKS, &i);
+          token = thinice_rc_parse_boolean(scanner, TOKEN_SCROLLBARMARKS, &i);
           if (token != G_TOKEN_NONE)
             break;
           if (i == TRUE)
@@ -316,7 +316,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
           break;
 
         case TOKEN_HANDLEBOXMARKS:
-          token = theme_parse_boolean(scanner, TOKEN_HANDLEBOXMARKS, &i);
+          token = thinice_rc_parse_boolean(scanner, TOKEN_HANDLEBOXMARKS, &i);
           if (token != G_TOKEN_NONE)
             break;
           if (i == TRUE)
@@ -326,21 +326,21 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
           break;
 
         case TOKEN_MARKTYPE1:
-          token = theme_parse_marktype(scanner, TOKEN_MARKTYPE1, &i);
+          token = thinice_rc_parse_marktype(scanner, TOKEN_MARKTYPE1, &i);
           if (token != G_TOKEN_NONE)
             break;
           theme_data->mark_type1 = i;
           break;
 
         case TOKEN_MARKTYPE2:
-          token = theme_parse_marktype(scanner, TOKEN_MARKTYPE2, &i);
+          token = thinice_rc_parse_marktype(scanner, TOKEN_MARKTYPE2, &i);
           if (token != G_TOKEN_NONE)
             break;
           theme_data->mark_type2 = i;
           break;
 
         case TOKEN_PANEDDOTS:
-          token = theme_parse_paned(scanner, TOKEN_PANEDDOTS, &i);
+          token = thinice_rc_parse_paned(scanner, TOKEN_PANEDDOTS, &i);
           if (token != G_TOKEN_NONE)
             break;
           theme_data->paned_dots = i;
@@ -388,7 +388,7 @@ thinice_rc_style_merge (GtkRcStyle * dest,
     dest_data->paned_dots = src_data->paned_dots;
   }
   
-  parent_class->merge (dest, src);
+  thinice_parent_rc_style_class->merge (dest, src);
 }
 
 /* Create an empty style suitable to this RC style

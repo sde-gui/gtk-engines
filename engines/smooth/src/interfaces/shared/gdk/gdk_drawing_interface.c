@@ -34,7 +34,7 @@
 
 /* _Color Value Getions */
 static SmoothBool
-GDKColorGetRedValue(SmoothColor *_Color, 
+SmoothGDKColorGetRedValue(SmoothColor *_Color, 
 				SmoothDouble *RedValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -48,7 +48,7 @@ GDKColorGetRedValue(SmoothColor *_Color,
 }
 
 static SmoothBool
-GDKColorGetGreenValue(SmoothColor *_Color, 
+SmoothGDKColorGetGreenValue(SmoothColor *_Color, 
 				SmoothDouble *GreenValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -62,7 +62,7 @@ GDKColorGetGreenValue(SmoothColor *_Color,
 }
 
 static SmoothBool
-GDKColorGetBlueValue(SmoothColor *_Color, 
+SmoothGDKColorGetBlueValue(SmoothColor *_Color, 
 				SmoothDouble *BlueValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -76,7 +76,7 @@ GDKColorGetBlueValue(SmoothColor *_Color,
 }
 
 static SmoothBool
-GDKColorGetAlphaValue(SmoothColor *_Color, 
+SmoothGDKColorGetAlphaValue(SmoothColor *_Color, 
 				SmoothDouble *AlphaValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -91,7 +91,7 @@ GDKColorGetAlphaValue(SmoothColor *_Color,
 
 /* _Color Value Modifications */
 static SmoothBool
-GDKColorSetRedValue(SmoothColor *_Color, 
+SmoothGDKColorSetRedValue(SmoothColor *_Color, 
 				SmoothDouble NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -106,7 +106,7 @@ GDKColorSetRedValue(SmoothColor *_Color,
 }
 
 static SmoothBool
-GDKColorSetGreenValue(SmoothColor *_Color, 
+SmoothGDKColorSetGreenValue(SmoothColor *_Color, 
 				SmoothDouble NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -120,7 +120,7 @@ GDKColorSetGreenValue(SmoothColor *_Color,
 }
 
 static SmoothBool
-GDKColorSetBlueValue(SmoothColor *_Color, 
+SmoothGDKColorSetBlueValue(SmoothColor *_Color, 
 				SmoothDouble NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -134,7 +134,7 @@ GDKColorSetBlueValue(SmoothColor *_Color,
 }
 
 static SmoothBool
-GDKColorSetAlphaValue(SmoothColor *_Color, 
+SmoothGDKColorSetAlphaValue(SmoothColor *_Color, 
 				SmoothDouble NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -149,7 +149,7 @@ GDKColorSetAlphaValue(SmoothColor *_Color,
 
 /* _Rectangle Status Functions */
 static SmoothBool 
-GDKRectangleCreate(SmoothRectangle *_Rectangle, 
+SmoothGDKRectangleCreate(SmoothRectangle *_Rectangle, 
 			SmoothInt X, 
 			SmoothInt Y, 
 			SmoothInt Width, 
@@ -171,7 +171,7 @@ GDKRectangleCreate(SmoothRectangle *_Rectangle,
 }
 
 static SmoothBool 
-GDKRectangleDestroy(SmoothRectangle *_Rectangle)
+SmoothGDKRectangleDestroy(SmoothRectangle *_Rectangle)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -184,7 +184,7 @@ GDKRectangleDestroy(SmoothRectangle *_Rectangle)
 }
 
 static SmoothBool 
-GDKRectangleIsValid(SmoothRectangle *_Rectangle)
+SmoothGDKRectangleIsValid(SmoothRectangle *_Rectangle)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -198,7 +198,7 @@ GDKRectangleIsValid(SmoothRectangle *_Rectangle)
 
 /* _Rectangle Value Getions */
 static SmoothBool
-GDKRectangleGetXValue(SmoothRectangle *_Rectangle, SmoothInt *_XValue)
+SmoothGDKRectangleGetXValue(SmoothRectangle *_Rectangle, SmoothInt *_XValue)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -211,7 +211,7 @@ GDKRectangleGetXValue(SmoothRectangle *_Rectangle, SmoothInt *_XValue)
 }
 
 static SmoothBool
-GDKRectangleGetYValue(SmoothRectangle *_Rectangle, SmoothInt *_YValue)
+SmoothGDKRectangleGetYValue(SmoothRectangle *_Rectangle, SmoothInt *_YValue)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -224,7 +224,7 @@ GDKRectangleGetYValue(SmoothRectangle *_Rectangle, SmoothInt *_YValue)
 }
 
 static SmoothBool
-GDKRectangleGetWidthValue(SmoothRectangle *_Rectangle, SmoothInt *_WidthValue)
+SmoothGDKRectangleGetWidthValue(SmoothRectangle *_Rectangle, SmoothInt *_WidthValue)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -237,7 +237,7 @@ GDKRectangleGetWidthValue(SmoothRectangle *_Rectangle, SmoothInt *_WidthValue)
 }
 
 static SmoothBool
-GDKRectangleGetHeightValue(SmoothRectangle *_Rectangle, SmoothInt *_HeightValue)
+SmoothGDKRectangleGetHeightValue(SmoothRectangle *_Rectangle, SmoothInt *_HeightValue)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -251,7 +251,7 @@ GDKRectangleGetHeightValue(SmoothRectangle *_Rectangle, SmoothInt *_HeightValue)
 
 /* _Rectangle Value Modifications */
 static SmoothBool
-GDKRectangleSetXValue(SmoothRectangle *_Rectangle, 
+SmoothGDKRectangleSetXValue(SmoothRectangle *_Rectangle, 
 				SmoothInt NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -266,7 +266,7 @@ GDKRectangleSetXValue(SmoothRectangle *_Rectangle,
 }
 
 static SmoothBool
-GDKRectangleSetYValue(SmoothRectangle *_Rectangle, 
+SmoothGDKRectangleSetYValue(SmoothRectangle *_Rectangle, 
 				SmoothInt NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -281,7 +281,7 @@ GDKRectangleSetYValue(SmoothRectangle *_Rectangle,
 }
 
 static SmoothBool
-GDKRectangleSetWidthValue(SmoothRectangle *_Rectangle, 
+SmoothGDKRectangleSetWidthValue(SmoothRectangle *_Rectangle, 
 				SmoothInt NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -296,7 +296,7 @@ GDKRectangleSetWidthValue(SmoothRectangle *_Rectangle,
 }
 
 static SmoothBool
-GDKRectangleSetHeightValue(SmoothRectangle *_Rectangle, 
+SmoothGDKRectangleSetHeightValue(SmoothRectangle *_Rectangle, 
 				SmoothInt NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -312,7 +312,7 @@ GDKRectangleSetHeightValue(SmoothRectangle *_Rectangle,
 
 /* _Rectangle Misc Functions */
 static SmoothBool 
-GDKRectangleFindIntersection(SmoothRectangle _Rectangle1, 
+SmoothGDKRectangleFindIntersection(SmoothRectangle _Rectangle1, 
 					SmoothRectangle _Rectangle2, 
 					SmoothRectangle *IntersectingRectangle)
 {
@@ -328,7 +328,7 @@ GDKRectangleFindIntersection(SmoothRectangle _Rectangle1,
 
 /* _Point Value Getions */
 static SmoothBool
-GDKPointGetXValue(SmoothPoint *_Point,
+SmoothGDKPointGetXValue(SmoothPoint *_Point,
 			SmoothInt *_XValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -342,7 +342,7 @@ GDKPointGetXValue(SmoothPoint *_Point,
 }
 
 static SmoothBool
-GDKPointGetYValue(SmoothPoint *_Point, 
+SmoothGDKPointGetYValue(SmoothPoint *_Point, 
 			SmoothInt *_YValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -358,7 +358,7 @@ GDKPointGetYValue(SmoothPoint *_Point,
 
 /* _Point Value Modifications */
 static SmoothBool
-GDKPointSetXValue(SmoothPoint *_Point,
+SmoothGDKPointSetXValue(SmoothPoint *_Point,
 			SmoothInt NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -373,7 +373,7 @@ GDKPointSetXValue(SmoothPoint *_Point,
 }
 
 static SmoothBool
-GDKPointSetYValue(SmoothPoint *_Point,
+SmoothGDKPointSetYValue(SmoothPoint *_Point,
 			SmoothInt NewValue)
 {
 	SmoothBool result = SmoothFalse;
@@ -389,7 +389,7 @@ GDKPointSetYValue(SmoothPoint *_Point,
 
 /* Canvas Map/Free A _Color From The Colormap*/
 static SmoothBool
-GDKCanvasAllocateColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasAllocateColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor *_Color)
 {
 	SmoothBool result = SmoothFalse;
@@ -404,7 +404,7 @@ GDKCanvasAllocateColor(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool 
-GDKCanvasDeallocateColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasDeallocateColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor *_Color)
 {
 	SmoothBool result = SmoothFalse;
@@ -433,7 +433,7 @@ cached_color_hash(SmoothColor *_Color, SmoothDouble Shade)
 	return (hash & 0x7FFFFFFF);
 }
 
-static GHashTable* color_cache = NULL;
+static GHashTable* smooth_color_cache = NULL;
 
 typedef struct
 {
@@ -444,7 +444,7 @@ typedef struct
 } GdkCachedColor;
 
 static void
-free_color_cache(GdkCachedColor *Cache)
+smooth_free_color_cache(GdkCachedColor *Cache)
 {
 	gdk_colormap_free_colors(Cache->Colormap, &Cache->_Color.RGB, 1);
 	g_free(Cache);
@@ -477,29 +477,29 @@ new_color_cache(GdkColormap *Colormap, SmoothColor _Color, SmoothDouble Shade)
 }
 
 static SmoothBool 
-force_cleanup_color_cache(gpointer key, gpointer value, gpointer user_data)
+smooth_force_smooth_cleanup_color_cache(gpointer key, gpointer value, gpointer user_data)
 {
 	if (value) 
 	{
-		free_color_cache((GdkCachedColor *)value);
+		smooth_free_color_cache((GdkCachedColor *)value);
 	}	
 	return SmoothTrue;
 }
 
 static void
-cleanup_color_cache(SmoothBool Force)
+smooth_cleanup_color_cache(SmoothBool Force)
 {
-	if (color_cache) 
+	if (smooth_color_cache) 
 	{
 		if (Force)
 		{
-			g_hash_table_foreach_remove(color_cache, force_cleanup_color_cache, NULL);
+			g_hash_table_foreach_remove(smooth_color_cache, smooth_force_smooth_cleanup_color_cache, NULL);
 		}
 		
-		if (g_hash_table_size(color_cache)<=0) 
+		if (g_hash_table_size(smooth_color_cache)<=0) 
 		{
-			g_hash_table_destroy(color_cache);
-			color_cache = NULL;
+			g_hash_table_destroy(smooth_color_cache);
+			smooth_color_cache = NULL;
 		}  
 	}   
 }
@@ -515,12 +515,12 @@ smooth_internal_color_get_color(GdkColormap *Colormap, SmoothColor *_Color, Smoo
 		index = cached_color_hash(_Color, Shade);
 	}	
 
-	if (!(color_cache))
+	if (!(smooth_color_cache))
 	{
-		color_cache = g_hash_table_new(g_int_hash, g_int_equal);
+		smooth_color_cache = g_hash_table_new(g_int_hash, g_int_equal);
 	}
 	
-	cache = g_hash_table_lookup(color_cache, &index);
+	cache = g_hash_table_lookup(smooth_color_cache, &index);
    
 	if (cache) 
 	{
@@ -534,7 +534,7 @@ smooth_internal_color_get_color(GdkColormap *Colormap, SmoothColor *_Color, Smoo
 		cache->_Color.CacheIndex = index;
 
 		if (cache) 
-			g_hash_table_insert(color_cache, &cache->_Color.CacheIndex, cache);
+			g_hash_table_insert(smooth_color_cache, &cache->_Color.CacheIndex, cache);
 			
 		result = &cache->_Color;
 	}
@@ -547,9 +547,9 @@ smooth_internal_color_unref(SmoothInt index)
 {  
 	GdkCachedColor *cache = NULL;
 
-	if (color_cache) 
+	if (smooth_color_cache) 
 	{
-		cache = g_hash_table_lookup(color_cache, &index);
+		cache = g_hash_table_lookup(smooth_color_cache, &index);
 
 		if (cache) 
 		{
@@ -557,11 +557,11 @@ smooth_internal_color_unref(SmoothInt index)
    
 			if (cache->ref_count == 0) 
 			{
-				g_hash_table_remove(color_cache, &index);
-				free_color_cache(cache);
+				g_hash_table_remove(smooth_color_cache, &index);
+				smooth_free_color_cache(cache);
 			}
 		}
-		cleanup_color_cache(SmoothFalse);  
+		smooth_cleanup_color_cache(SmoothFalse);  
 	}   
 }
 
@@ -713,7 +713,7 @@ smooth_internal_drawing_area_unuse_brush_gc(SmoothGDKPrivateCanvas *Canvas, GdkG
 
 /* Canvas cache/uncache a shaded _Color */
 static SmoothBool
-GDKCanvasCacheShadedColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasCacheShadedColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor Base,
 					SmoothDouble Shade,
 					SmoothColor *_Color)
@@ -744,7 +744,7 @@ GDKCanvasCacheShadedColor(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDKCanvasUnCacheShadedColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasUnCacheShadedColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor Base,
 					SmoothDouble Shade,
 					SmoothColor *_Color)
@@ -766,16 +766,16 @@ GDKCanvasUnCacheShadedColor(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDKCanvasCacheColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasCacheColor(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothColor *_Color)
 {
 	SmoothColor tmp = *_Color;
 	
-	return GDKCanvasCacheShadedColor(Canvas, tmp, 1.0, _Color);
+	return SmoothGDKCanvasCacheShadedColor(Canvas, tmp, 1.0, _Color);
 }
 
 static SmoothBool
-GDKCanvasUnCacheColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasUnCacheColor(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothColor *_Color)
 {
 	SmoothBool result = SmoothFalse;
@@ -797,7 +797,7 @@ GDKCanvasUnCacheColor(SmoothGDKPrivateCanvas *Canvas,
 
 /* Canvas cache/uncache a midpoint _Color */
 static SmoothBool
-GDKCanvasCacheMidPointColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasCacheMidPointColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor _Point1,
 					SmoothColor _Point2,
 					SmoothColor *_Color)
@@ -812,14 +812,14 @@ GDKCanvasCacheMidPointColor(SmoothGDKPrivateCanvas *Canvas,
 		_Color->Alpha = (_Point1.Alpha + _Point2.Alpha) / 2;
 		_Color->CacheIndex = -1;
 
-		result = GDKCanvasCacheShadedColor(Canvas, *_Color, 1.0, _Color);
+		result = SmoothGDKCanvasCacheShadedColor(Canvas, *_Color, 1.0, _Color);
 	}
 	
 	return result;
 }
 
 static SmoothBool
-GDKCanvasUnCacheMidPointColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasUnCacheMidPointColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor _Point1,
 					SmoothColor _Point2,
 					SmoothColor *_Color)
@@ -828,7 +828,7 @@ GDKCanvasUnCacheMidPointColor(SmoothGDKPrivateCanvas *Canvas,
 	
 	if (Canvas && _Color)
 	{
-		result = GDKCanvasUnCacheColor(Canvas, _Color);
+		result = SmoothGDKCanvasUnCacheColor(Canvas, _Color);
 	}
 	
 	return result;
@@ -836,7 +836,7 @@ GDKCanvasUnCacheMidPointColor(SmoothGDKPrivateCanvas *Canvas,
 
 /* Canvas Get/Set/Clear Clip _Rectangle */
 static SmoothBool
-GDKCanvasGetClipRectangle(SmoothGDKPrivateCanvas *Canvas,
+SmoothGDKCanvasGetClipRectangle(SmoothGDKPrivateCanvas *Canvas,
 					SmoothRectangle *_Rectangle)
 {
 	SmoothBool result = SmoothFalse;
@@ -850,7 +850,7 @@ GDKCanvasGetClipRectangle(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDKCanvasSetClipRectangle(SmoothGDKPrivateCanvas *Canvas,
+SmoothGDKCanvasSetClipRectangle(SmoothGDKPrivateCanvas *Canvas,
 					SmoothRectangle _Rectangle)
 {
 	SmoothBool result = SmoothFalse;
@@ -865,7 +865,7 @@ GDKCanvasSetClipRectangle(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDKCanvasClearClipRectangle(SmoothGDKPrivateCanvas *Canvas)
+SmoothGDKCanvasClearClipRectangle(SmoothGDKPrivateCanvas *Canvas)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -879,7 +879,7 @@ GDKCanvasClearClipRectangle(SmoothGDKPrivateCanvas *Canvas)
 
 /* Canvas Get/Set Pen Properties */
 static SmoothBool
-GDKCanvasGetPenColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasGetPenColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor *_Color)
 {
 	SmoothBool result = SmoothFalse;
@@ -893,7 +893,7 @@ GDKCanvasGetPenColor(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDKCanvasSetPenColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasSetPenColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor _Color)
 {
 	SmoothBool result = SmoothFalse;
@@ -907,7 +907,7 @@ GDKCanvasSetPenColor(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDKCanvasGetPenThickness(SmoothGDKPrivateCanvas *Canvas,
+SmoothGDKCanvasGetPenThickness(SmoothGDKPrivateCanvas *Canvas,
 					SmoothInt *Thickness)
 {
 	SmoothBool result = SmoothFalse;
@@ -921,7 +921,7 @@ GDKCanvasGetPenThickness(SmoothGDKPrivateCanvas *Canvas,
 }
 	
 static SmoothBool
-GDKCanvasSetPenThickness(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasSetPenThickness(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothInt Thickness)
 {
 	SmoothBool result = SmoothFalse;
@@ -937,7 +937,7 @@ GDKCanvasSetPenThickness(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool 
-GDKCanvasGetPenStyle(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasGetPenStyle(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothLineStyle *Style)
 {
 	SmoothBool result = SmoothFalse;
@@ -951,7 +951,7 @@ GDKCanvasGetPenStyle(SmoothGDKPrivateCanvas *Canvas,
 }
 				
 static SmoothBool 
-GDKCanvasSetPenStyle(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasSetPenStyle(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothLineStyle Style)
 {
 	SmoothBool result = SmoothFalse;
@@ -966,7 +966,7 @@ GDKCanvasSetPenStyle(SmoothGDKPrivateCanvas *Canvas,
 }				
 
 static SmoothBool 
-GDKCanvasGetPenJoin(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasGetPenJoin(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothLineJoin *Join)
 {
 	SmoothBool result = SmoothFalse;
@@ -980,7 +980,7 @@ GDKCanvasGetPenJoin(SmoothGDKPrivateCanvas *Canvas,
 }
 				
 static SmoothBool 
-GDKCanvasSetPenJoin(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasSetPenJoin(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothLineJoin Join)
 {
 	SmoothBool result = SmoothFalse;
@@ -995,7 +995,7 @@ GDKCanvasSetPenJoin(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool 
-GDKCanvasGetPenCap(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasGetPenCap(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothLineCap *Cap)
 {
 	SmoothBool result = SmoothFalse;
@@ -1009,7 +1009,7 @@ GDKCanvasGetPenCap(SmoothGDKPrivateCanvas *Canvas,
 }
 				
 static SmoothBool 
-GDKCanvasSetPenCap(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasSetPenCap(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothLineCap Cap)
 {
 	SmoothBool result = SmoothFalse;
@@ -1025,7 +1025,7 @@ GDKCanvasSetPenCap(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool 
-GDKCanvasGetPenPattern(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasGetPenPattern(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothLinePattern *Pattern)
 {
 	SmoothBool result = SmoothFalse;
@@ -1039,7 +1039,7 @@ GDKCanvasGetPenPattern(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool 
-GDKCanvasSetPenPattern(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasSetPenPattern(SmoothGDKPrivateCanvas *Canvas, 
 				SmoothLinePattern Pattern)
 {
 	SmoothBool result = SmoothFalse;
@@ -1056,7 +1056,7 @@ GDKCanvasSetPenPattern(SmoothGDKPrivateCanvas *Canvas,
 
 /* Canvas Get/Set Brush Properties */
 static SmoothBool
-GDKCanvasGetBrushColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasGetBrushColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor *_Color)
 {
 	SmoothBool result = SmoothFalse;
@@ -1070,7 +1070,7 @@ GDKCanvasGetBrushColor(SmoothGDKPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDKCanvasSetBrushColor(SmoothGDKPrivateCanvas *Canvas, 
+SmoothGDKCanvasSetBrushColor(SmoothGDKPrivateCanvas *Canvas, 
 					SmoothColor _Color)
 {
 	SmoothBool result = SmoothFalse;
@@ -1083,102 +1083,102 @@ GDKCanvasSetBrushColor(SmoothGDKPrivateCanvas *Canvas,
 	return result;
 }
 
-/* Initialize drawingInterface */
+/* Initialize smoothDrawingInterface */
 SmoothBool 
-GDKDrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface)
+SmoothGDKDrawingInterfaceInitialize(DrawingInterfaceClass *_SmoothDrawingInterface)
 {
 	/* _Color Value Getions */
-	_DrawingInterface->ColorGetRedValue = (void *) GDKColorGetRedValue;
-	_DrawingInterface->ColorGetGreenValue = (void *) GDKColorGetGreenValue;
-	_DrawingInterface->ColorGetBlueValue = (void *) GDKColorGetBlueValue;
-	_DrawingInterface->ColorGetAlphaValue = (void *) GDKColorGetAlphaValue;
+	_SmoothDrawingInterface->ColorGetRedValue = (void *) SmoothGDKColorGetRedValue;
+	_SmoothDrawingInterface->ColorGetGreenValue = (void *) SmoothGDKColorGetGreenValue;
+	_SmoothDrawingInterface->ColorGetBlueValue = (void *) SmoothGDKColorGetBlueValue;
+	_SmoothDrawingInterface->ColorGetAlphaValue = (void *) SmoothGDKColorGetAlphaValue;
 
 	/* _Color Value Modifications */
-	_DrawingInterface->ColorSetRedValue = (void *) GDKColorSetRedValue;
-	_DrawingInterface->ColorSetGreenValue = (void *) GDKColorSetGreenValue;
-	_DrawingInterface->ColorSetBlueValue = (void *) GDKColorSetBlueValue;
-	_DrawingInterface->ColorSetAlphaValue = (void *) GDKColorSetAlphaValue;
+	_SmoothDrawingInterface->ColorSetRedValue = (void *) SmoothGDKColorSetRedValue;
+	_SmoothDrawingInterface->ColorSetGreenValue = (void *) SmoothGDKColorSetGreenValue;
+	_SmoothDrawingInterface->ColorSetBlueValue = (void *) SmoothGDKColorSetBlueValue;
+	_SmoothDrawingInterface->ColorSetAlphaValue = (void *) SmoothGDKColorSetAlphaValue;
 
 	/* _Rectangle Status Functions */
-	_DrawingInterface->RectangleCreate = (void *) GDKRectangleCreate;
-	_DrawingInterface->RectangleDestroy = (void *) GDKRectangleDestroy;
-	_DrawingInterface->RectangleIsValid = (void *) GDKRectangleIsValid;
+	_SmoothDrawingInterface->RectangleCreate = (void *) SmoothGDKRectangleCreate;
+	_SmoothDrawingInterface->RectangleDestroy = (void *) SmoothGDKRectangleDestroy;
+	_SmoothDrawingInterface->RectangleIsValid = (void *) SmoothGDKRectangleIsValid;
 
 	/* _Rectangle Value Getions */
-	_DrawingInterface->RectangleGetXValue = (void *) GDKRectangleGetXValue;
-	_DrawingInterface->RectangleGetYValue = (void *) GDKRectangleGetYValue;
-	_DrawingInterface->RectangleGetWidthValue = (void *) GDKRectangleGetWidthValue;
-	_DrawingInterface->RectangleGetHeightValue = (void *) GDKRectangleGetHeightValue;
+	_SmoothDrawingInterface->RectangleGetXValue = (void *) SmoothGDKRectangleGetXValue;
+	_SmoothDrawingInterface->RectangleGetYValue = (void *) SmoothGDKRectangleGetYValue;
+	_SmoothDrawingInterface->RectangleGetWidthValue = (void *) SmoothGDKRectangleGetWidthValue;
+	_SmoothDrawingInterface->RectangleGetHeightValue = (void *) SmoothGDKRectangleGetHeightValue;
 	
 	/* _Rectangle Value Modifications */
-	_DrawingInterface->RectangleSetXValue = (void *) GDKRectangleSetXValue;
-	_DrawingInterface->RectangleSetYValue = (void *) GDKRectangleSetYValue;
-	_DrawingInterface->RectangleSetWidthValue = (void *) GDKRectangleSetWidthValue;
-	_DrawingInterface->RectangleSetHeightValue = (void *) GDKRectangleSetHeightValue;
+	_SmoothDrawingInterface->RectangleSetXValue = (void *) SmoothGDKRectangleSetXValue;
+	_SmoothDrawingInterface->RectangleSetYValue = (void *) SmoothGDKRectangleSetYValue;
+	_SmoothDrawingInterface->RectangleSetWidthValue = (void *) SmoothGDKRectangleSetWidthValue;
+	_SmoothDrawingInterface->RectangleSetHeightValue = (void *) SmoothGDKRectangleSetHeightValue;
 
 	/* _Rectangle Misc Functions */
-	_DrawingInterface->RectangleFindIntersection = (void *) GDKRectangleFindIntersection;
+	_SmoothDrawingInterface->RectangleFindIntersection = (void *) SmoothGDKRectangleFindIntersection;
 
 	/* _Point Value Getions */
-	_DrawingInterface->PointGetXValue = (void *) GDKPointGetXValue;
-	_DrawingInterface->PointGetYValue = (void *) GDKPointGetYValue;
+	_SmoothDrawingInterface->PointGetXValue = (void *) SmoothGDKPointGetXValue;
+	_SmoothDrawingInterface->PointGetYValue = (void *) SmoothGDKPointGetYValue;
 
 	/* _Point Value Modifications */
-	_DrawingInterface->PointSetXValue = (void *) GDKPointSetXValue;
-	_DrawingInterface->PointSetYValue = (void *) GDKPointSetYValue;
+	_SmoothDrawingInterface->PointSetXValue = (void *) SmoothGDKPointSetXValue;
+	_SmoothDrawingInterface->PointSetYValue = (void *) SmoothGDKPointSetYValue;
 
 	/* Canvas Map/Free A _Color From The Colormap*/
-	_DrawingInterface->CanvasAllocateColor = (void *) GDKCanvasAllocateColor;
-	_DrawingInterface->CanvasDeallocateColor = (void *) GDKCanvasDeallocateColor;
+	_SmoothDrawingInterface->CanvasAllocateColor = (void *) SmoothGDKCanvasAllocateColor;
+	_SmoothDrawingInterface->CanvasDeallocateColor = (void *) SmoothGDKCanvasDeallocateColor;
 
 	/* Canvas cache/uncache a _Color */
-	_DrawingInterface->CanvasCacheColor = (void *) GDKCanvasCacheColor;
-	_DrawingInterface->CanvasUnCacheColor = (void *) GDKCanvasUnCacheColor;
+	_SmoothDrawingInterface->CanvasCacheColor = (void *) SmoothGDKCanvasCacheColor;
+	_SmoothDrawingInterface->CanvasUnCacheColor = (void *) SmoothGDKCanvasUnCacheColor;
 			
 	/* Canvas cache/uncache a shaded _Color */
-	_DrawingInterface->CanvasCacheShadedColor = (void *) GDKCanvasCacheShadedColor;
-	_DrawingInterface->CanvasUnCacheShadedColor = (void *) GDKCanvasUnCacheShadedColor;
+	_SmoothDrawingInterface->CanvasCacheShadedColor = (void *) SmoothGDKCanvasCacheShadedColor;
+	_SmoothDrawingInterface->CanvasUnCacheShadedColor = (void *) SmoothGDKCanvasUnCacheShadedColor;
 	
 	/* Canvas cache/uncache a midpoint _Color */
-	_DrawingInterface->CanvasCacheMidPointColor = (void *) GDKCanvasCacheMidPointColor;
-	_DrawingInterface->CanvasUnCacheMidPointColor = (void *) GDKCanvasUnCacheMidPointColor;
+	_SmoothDrawingInterface->CanvasCacheMidPointColor = (void *) SmoothGDKCanvasCacheMidPointColor;
+	_SmoothDrawingInterface->CanvasUnCacheMidPointColor = (void *) SmoothGDKCanvasUnCacheMidPointColor;
 
 	/* Canvas Get/Set Clip _Rectangle */
-	_DrawingInterface->CanvasGetClipRectangle = (void *) GDKCanvasGetClipRectangle;
-	_DrawingInterface->CanvasSetClipRectangle = (void *) GDKCanvasSetClipRectangle;
-	_DrawingInterface->CanvasClearClipRectangle = (void *) GDKCanvasClearClipRectangle;
+	_SmoothDrawingInterface->CanvasGetClipRectangle = (void *) SmoothGDKCanvasGetClipRectangle;
+	_SmoothDrawingInterface->CanvasSetClipRectangle = (void *) SmoothGDKCanvasSetClipRectangle;
+	_SmoothDrawingInterface->CanvasClearClipRectangle = (void *) SmoothGDKCanvasClearClipRectangle;
 
 	/* Canvas Get/Set Pen Properties */
-	_DrawingInterface->CanvasGetPenColor = (void *) GDKCanvasGetPenColor;
-	_DrawingInterface->CanvasSetPenColor = (void *) GDKCanvasSetPenColor;	
-	_DrawingInterface->CanvasGetPenThickness = (void *) GDKCanvasGetPenThickness;
-	_DrawingInterface->CanvasSetPenThickness = (void *) GDKCanvasSetPenThickness;
-	_DrawingInterface->CanvasGetPenStyle = (void *) GDKCanvasGetPenStyle;
-	_DrawingInterface->CanvasSetPenStyle = (void *) GDKCanvasSetPenStyle;
-	_DrawingInterface->CanvasGetPenCap = (void *) GDKCanvasGetPenCap;
-	_DrawingInterface->CanvasSetPenCap = (void *) GDKCanvasSetPenCap;
-	_DrawingInterface->CanvasGetPenJoin = (void *) GDKCanvasGetPenJoin;
-	_DrawingInterface->CanvasSetPenJoin = (void *) GDKCanvasSetPenJoin;
-	_DrawingInterface->CanvasGetPenPattern = (void *) GDKCanvasGetPenPattern;
-	_DrawingInterface->CanvasSetPenPattern = (void *) GDKCanvasSetPenPattern;
+	_SmoothDrawingInterface->CanvasGetPenColor = (void *) SmoothGDKCanvasGetPenColor;
+	_SmoothDrawingInterface->CanvasSetPenColor = (void *) SmoothGDKCanvasSetPenColor;	
+	_SmoothDrawingInterface->CanvasGetPenThickness = (void *) SmoothGDKCanvasGetPenThickness;
+	_SmoothDrawingInterface->CanvasSetPenThickness = (void *) SmoothGDKCanvasSetPenThickness;
+	_SmoothDrawingInterface->CanvasGetPenStyle = (void *) SmoothGDKCanvasGetPenStyle;
+	_SmoothDrawingInterface->CanvasSetPenStyle = (void *) SmoothGDKCanvasSetPenStyle;
+	_SmoothDrawingInterface->CanvasGetPenCap = (void *) SmoothGDKCanvasGetPenCap;
+	_SmoothDrawingInterface->CanvasSetPenCap = (void *) SmoothGDKCanvasSetPenCap;
+	_SmoothDrawingInterface->CanvasGetPenJoin = (void *) SmoothGDKCanvasGetPenJoin;
+	_SmoothDrawingInterface->CanvasSetPenJoin = (void *) SmoothGDKCanvasSetPenJoin;
+	_SmoothDrawingInterface->CanvasGetPenPattern = (void *) SmoothGDKCanvasGetPenPattern;
+	_SmoothDrawingInterface->CanvasSetPenPattern = (void *) SmoothGDKCanvasSetPenPattern;
 
 	/* Canvas Get/Set Brush Properties */
-	_DrawingInterface->CanvasGetBrushColor = (void *) GDKCanvasGetBrushColor;
-	_DrawingInterface->CanvasSetBrushColor = (void *) GDKCanvasSetBrushColor;	
+	_SmoothDrawingInterface->CanvasGetBrushColor = (void *) SmoothGDKCanvasGetBrushColor;
+	_SmoothDrawingInterface->CanvasSetBrushColor = (void *) SmoothGDKCanvasSetBrushColor;	
 
 
 	return SmoothTrue;
 }
 
 SmoothBool 
-GDKDrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface)
+SmoothGDKDrawingInterfaceFinalize(DrawingInterfaceClass *_SmoothDrawingInterface)
 {
-	cleanup_color_cache(SmoothTrue);
+	smooth_cleanup_color_cache(SmoothTrue);
 	
 	return SmoothTrue;
 }
 
-void GDKModifyCanvasClipArea(SmoothCanvas *Canvas,
+void SmoothGDKModifyCanvasClipArea(SmoothCanvas *Canvas,
 				GdkRectangle * _Rectangle)
 {
 	SmoothGDKPrivateCanvas *PrivateCanvas;
@@ -1188,7 +1188,7 @@ void GDKModifyCanvasClipArea(SmoothCanvas *Canvas,
 	PrivateCanvas->EngineClip.Rectangle = _Rectangle;
 }
 
-void GDKModifyCanvasClipRegion(SmoothCanvas *Canvas,
+void SmoothGDKModifyCanvasClipRegion(SmoothCanvas *Canvas,
 				GdkRegion * _Region)
 {
 	SmoothGDKPrivateCanvas *PrivateCanvas;
@@ -1198,7 +1198,7 @@ void GDKModifyCanvasClipRegion(SmoothCanvas *Canvas,
 	PrivateCanvas->EngineClip.Region = _Region;
 }
 
-void GDKModifyCanvasClipMask(SmoothCanvas *Canvas,
+void SmoothGDKModifyCanvasClipMask(SmoothCanvas *Canvas,
 				GdkBitmap *ClipMask)
 {
 	SmoothGDKPrivateCanvas *PrivateCanvas;
@@ -1208,7 +1208,7 @@ void GDKModifyCanvasClipMask(SmoothCanvas *Canvas,
 	PrivateCanvas->EngineClip.BitmapMask = ClipMask;
 }
 
-void GDKModifyCanvasClipOffset(SmoothCanvas *Canvas,
+void SmoothGDKModifyCanvasClipOffset(SmoothCanvas *Canvas,
 				SmoothInt XOffset,
 				SmoothInt YOffset)
 {
@@ -1220,7 +1220,7 @@ void GDKModifyCanvasClipOffset(SmoothCanvas *Canvas,
 	PrivateCanvas->EngineClip.YOffset = YOffset;
 }
 
-void GDKModifyCanvasDitherDepth(SmoothCanvas *Canvas,
+void SmoothGDKModifyCanvasDitherDepth(SmoothCanvas *Canvas,
 				SmoothInt DitherDepth)
 {
 	SmoothGDKPrivateCanvas *PrivateCanvas = *Canvas;
@@ -1228,7 +1228,7 @@ void GDKModifyCanvasDitherDepth(SmoothCanvas *Canvas,
 	PrivateCanvas->DitherDepth = DitherDepth;
 }
 
-void GDKSmoothColorAssignGdkColor(SmoothColor *DestinationColor, GdkColor SourceColor, SmoothInt SourceAlpha)
+void SmoothColorAssignGdkColor(SmoothColor *DestinationColor, GdkColor SourceColor, SmoothInt SourceAlpha)
 {
  	DestinationColor->RGB = SourceColor;
 	DestinationColor->Alpha = SourceAlpha;
@@ -1236,7 +1236,7 @@ void GDKSmoothColorAssignGdkColor(SmoothColor *DestinationColor, GdkColor Source
 }
 
 SmoothWidgetState
-GDKSmoothWidgetState(GtkStateType State)
+SmoothGtkWidgetState(GtkStateType State)
 {
 	SmoothWidgetState result = SMOOTH_STATE_DEFAULT;
 	
@@ -1267,7 +1267,7 @@ GDKSmoothWidgetState(GtkStateType State)
 }
 
 void 
-GDKInitializeColorCube(SmoothCanvas Canvas, 
+SmoothGDKInitializeColorCube(SmoothCanvas Canvas, 
 			GtkStyle * style,
 			SmoothColorCube *ColorCube)
 {
@@ -1276,28 +1276,28 @@ GDKInitializeColorCube(SmoothCanvas Canvas,
 		SmoothInt i;
 		for (i = 0; i< 5; i++)
 		{
-			SmoothWidgetState state = GDKSmoothWidgetState(i);
+			SmoothWidgetState state = SmoothGtkWidgetState(i);
 			
 			/* Interaction Pairs */
-			GDKSmoothColorAssignGdkColor(&ColorCube->Interaction[state].Background, style->bg[i], 1.0);
-			GDKCanvasCacheColor(Canvas, &ColorCube->Interaction[state].Background);
+			SmoothColorAssignGdkColor(&ColorCube->Interaction[state].Background, style->bg[i], 1.0);
+			SmoothGDKCanvasCacheColor(Canvas, &ColorCube->Interaction[state].Background);
 			
-			GDKSmoothColorAssignGdkColor(&ColorCube->Interaction[state].Foreground, style->fg[i], 1.0);
-			GDKCanvasCacheColor(Canvas, &ColorCube->Interaction[state].Foreground);
+			SmoothColorAssignGdkColor(&ColorCube->Interaction[state].Foreground, style->fg[i], 1.0);
+			SmoothGDKCanvasCacheColor(Canvas, &ColorCube->Interaction[state].Foreground);
 
 			/* Input Pairs */
-			GDKSmoothColorAssignGdkColor(&ColorCube->Input[state].Background, style->base[i], 1.0);
-			GDKCanvasCacheColor(Canvas, &ColorCube->Input[state].Background);
+			SmoothColorAssignGdkColor(&ColorCube->Input[state].Background, style->base[i], 1.0);
+			SmoothGDKCanvasCacheColor(Canvas, &ColorCube->Input[state].Background);
 
-			GDKSmoothColorAssignGdkColor(&ColorCube->Input[state].Foreground, style->text[i], 1.0);
-			GDKCanvasCacheColor(Canvas, &ColorCube->Input[state].Foreground);
+			SmoothColorAssignGdkColor(&ColorCube->Input[state].Foreground, style->text[i], 1.0);
+			SmoothGDKCanvasCacheColor(Canvas, &ColorCube->Input[state].Foreground);
 		}
 		ColorCube->ReferenceCount++;
 	}
 }
 
 void 
-GDKFinalizeColorCube(SmoothColorCube *ColorCube)
+SmoothGDKFinalizeColorCube(SmoothColorCube *ColorCube)
 {
 	ColorCube->ReferenceCount--;
 	if (ColorCube->ReferenceCount <= 0)
@@ -1305,17 +1305,17 @@ GDKFinalizeColorCube(SmoothColorCube *ColorCube)
 		SmoothInt i;
 		for (i = 0; i< 5; i++)
 		{
-			SmoothWidgetState state = GDKSmoothWidgetState(i);
+			SmoothWidgetState state = SmoothGtkWidgetState(i);
 			
 			/* Interaction Pairs */
-			GDKCanvasUnCacheColor(NULL, &ColorCube->Interaction[state].Background);
+			SmoothGDKCanvasUnCacheColor(NULL, &ColorCube->Interaction[state].Background);
 			
-			GDKCanvasUnCacheColor(NULL, &ColorCube->Interaction[state].Foreground);
+			SmoothGDKCanvasUnCacheColor(NULL, &ColorCube->Interaction[state].Foreground);
 
 			/* Input Pairs */
-			GDKCanvasUnCacheColor(NULL, &ColorCube->Input[state].Background);
+			SmoothGDKCanvasUnCacheColor(NULL, &ColorCube->Input[state].Background);
 
-			GDKCanvasUnCacheColor(NULL, &ColorCube->Input[state].Foreground);
+			SmoothGDKCanvasUnCacheColor(NULL, &ColorCube->Input[state].Foreground);
 		}
 	}
 }

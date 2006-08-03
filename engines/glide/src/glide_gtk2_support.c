@@ -83,7 +83,6 @@ void glide_draw_pattern_fill(cairo_t *canvas,
 					gint width,
 					gint height)
 {
-
 	cairo_matrix_t original_matrix, current_matrix;
 
 	if (pattern->operator == CAIRO_OPERATOR_DEST)
@@ -247,13 +246,19 @@ do_glide_draw_border_with_gap(cairo_t *canvas,
 
 	if (bevel_style == GLIDE_BEVEL_STYLE_FLAT) 
 	{
-		cairo_save(canvas);
+		if (gap_size)
+		{
+			cairo_save(canvas);
 
-		glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
+			glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
+		}
 
 		ge_cairo_simple_border(canvas, &darktone, &darktone, x, y, width, height, (gap_side == GLIDE_SIDE_NONE) || ((gap_side == GLIDE_SIDE_BOTTOM) && (gap_size != width)) || ((gap_side == GLIDE_SIDE_RIGHT) && (gap_pos != 0)));
 
-		cairo_restore(canvas);
+		if (gap_size)
+		{
+			cairo_restore(canvas);
+		}
 
 		return;
 	}   
@@ -285,15 +290,28 @@ do_glide_draw_border_with_gap(cairo_t *canvas,
 				color2 = color1;
 				color1 = tmp;							
 			}
-			cairo_save(canvas);
-			glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
-			ge_cairo_simple_border(canvas, &color2, &color1, x, y, width, height, outer_overlap);
-			cairo_restore(canvas);
 
-			cairo_save(canvas);
-			glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos + 1, gap_size - 2);
+			if (gap_size)
+			{
+				cairo_save(canvas);
+				glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
+			}
+
+			ge_cairo_simple_border(canvas, &color2, &color1, x, y, width, height, outer_overlap);
+
+			if (gap_size)
+			{
+				cairo_restore(canvas);
+				cairo_save(canvas);
+				glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos + 1, gap_size - 2);
+			}
+
 			ge_cairo_simple_border(canvas, &color1, &color2, x+1, y+1, width-2, height-2, inner_overlap);
-			cairo_restore(canvas);
+
+			if (gap_size)
+			{
+				cairo_restore(canvas);
+			}
 		}	
 		break;
       
@@ -316,11 +334,17 @@ do_glide_draw_border_with_gap(cairo_t *canvas,
 					color1 = tmp;							
 				}
 
-				cairo_save(canvas);
-				glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
-				ge_cairo_simple_border(canvas, &color1, &color2, x, y, width, height, 						(gap_side == GLIDE_SIDE_NONE) || ((gap_side == GLIDE_SIDE_BOTTOM) && (gap_size != width)) || ((gap_side == GLIDE_SIDE_RIGHT) && (gap_pos != 0))
-);
-				cairo_restore(canvas);
+				if (gap_size)
+				{
+					cairo_save(canvas);
+					glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
+				}
+
+				ge_cairo_simple_border(canvas, &color1, &color2, x, y, width, height, 						(gap_side == GLIDE_SIDE_NONE) || ((gap_side == GLIDE_SIDE_BOTTOM) && (gap_size != width)) || ((gap_side == GLIDE_SIDE_RIGHT) && (gap_pos != 0)));
+				if (gap_size)
+				{
+					cairo_restore(canvas);
+				}
 			} 
 			else 
 			{
@@ -395,15 +419,27 @@ do_glide_draw_border_with_gap(cairo_t *canvas,
 					color2 = tmp;							
 				}
 
-				cairo_save(canvas);
-				glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
-				ge_cairo_simple_border(canvas, &color1, &color3, x, y, width, height, outer_overlap);
-				cairo_restore(canvas);
+				if (gap_size)
+				{
+					cairo_save(canvas);
+					glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos, gap_size);
+				}
 
-				cairo_save(canvas);
-				glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos + 1, gap_size - 2);
+				ge_cairo_simple_border(canvas, &color1, &color3, x, y, width, height, outer_overlap);
+
+				if (gap_size)
+				{
+					cairo_restore(canvas);
+					cairo_save(canvas);
+					glide_simple_border_gap_clip(canvas, x, y, width, height, gap_side, gap_pos + 1, gap_size - 2);
+				}
+		
 				ge_cairo_simple_border(canvas, &color2, &color4, x+1, y+1, width-2, height-2, inner_overlap);
-				cairo_restore(canvas);
+
+				if (gap_size)
+				{
+					cairo_restore(canvas);
+				}
 			} 	
 		}	
 		break;

@@ -23,52 +23,52 @@
 #include <interfaces/drawing_interface.h>
 #include <interfaces/abstract/abstract_drawing_interface.h>
 
-/* drawingInterface */
-static DrawingInterfaceClass drawingInterface;
-static SmoothBool drawingInterfaceInitialized = SmoothFalse;
+/* smoothDrawingInterface */
+static DrawingInterfaceClass smoothDrawingInterface;
+static SmoothBool smoothDrawingInterfaceInitialized = SmoothFalse;
 
-/* Setup drawingInterface, aka reset and then callback to initialize specific implementation */
+/* Setup smoothDrawingInterface, aka reset and then callback to initialize specific implementation */
 void SmoothDrawingInterfaceSetup	(
 						SmoothBool(* InitializeInterface)(DrawingInterfaceClass *SmoothDrawingInterface),
 						SmoothBool(* FinalizeInterface)(DrawingInterfaceClass *SmoothDrawingInterface)
 					)
 {
 	/* Make sure Implementation specific Finalize is NULL here before Finalizing */
-	drawingInterface.FinalizeInterface = NULL;
+	smoothDrawingInterface.FinalizeInterface = NULL;
 
 	/* Reset all values to defaults */
 	SmoothDrawingInterfaceFinalize();
-	AbstractDrawingInterfaceInitialize(&drawingInterface);
+	SmoothAbstractDrawingInterfaceInitialize(&smoothDrawingInterface);
 
 	/* Assign Implementation Specific Initialize if any */
 	if (InitializeInterface)
-		drawingInterface.InitializeInterface = InitializeInterface;
+		smoothDrawingInterface.InitializeInterface = InitializeInterface;
 		
 	/* Assign Implementation Specific Finalize if any */
 	if (FinalizeInterface)
-		drawingInterface.FinalizeInterface = FinalizeInterface;
+		smoothDrawingInterface.FinalizeInterface = FinalizeInterface;
 
 	/* Run Implementation Specific Initialize if any */
-	if (drawingInterface.InitializeInterface)
-		drawingInterface.InitializeInterface(&drawingInterface);
+	if (smoothDrawingInterface.InitializeInterface)
+		smoothDrawingInterface.InitializeInterface(&smoothDrawingInterface);
 
-	drawingInterfaceInitialized = SmoothTrue;
+	smoothDrawingInterfaceInitialized = SmoothTrue;
 }
 
-/* Cleanup drawingInterface, aka reset to initial Values */
+/* Cleanup smoothDrawingInterface, aka reset to initial Values */
 void SmoothDrawingInterfaceCleanup()
 {
 	/* Call to Implementation specific finalize if one exists */
-	if (drawingInterface.FinalizeInterface)
-		drawingInterface.FinalizeInterface(&drawingInterface);
+	if (smoothDrawingInterface.FinalizeInterface)
+		smoothDrawingInterface.FinalizeInterface(&smoothDrawingInterface);
 
 	/* Always First in Struct */
-	drawingInterface.InitializeInterface = NULL;
+	smoothDrawingInterface.InitializeInterface = NULL;
 
-	AbstractDrawingInterfaceFinalize(&drawingInterface);
+	SmoothAbstractDrawingInterfaceFinalize(&smoothDrawingInterface);
 	
 	/* Always Last in Struct */
-	drawingInterface.FinalizeInterface = NULL;
+	smoothDrawingInterface.FinalizeInterface = NULL;
 }
 
 /* Begin Interface Wrapper Functions Implementation */
@@ -81,9 +81,9 @@ SmoothColorGetRedValue(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorGetRedValue)
+	if (smoothDrawingInterface.ColorGetRedValue)
 	{
-		result = drawingInterface.ColorGetRedValue(Color, RedValue);
+		result = smoothDrawingInterface.ColorGetRedValue(Color, RedValue);
 	}
 	return result;
 }
@@ -94,9 +94,9 @@ SmoothColorGetGreenValue(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorGetGreenValue)
+	if (smoothDrawingInterface.ColorGetGreenValue)
 	{
-		result = drawingInterface.ColorGetGreenValue(Color, GreenValue);
+		result = smoothDrawingInterface.ColorGetGreenValue(Color, GreenValue);
 	}
 	return result;
 }
@@ -107,9 +107,9 @@ SmoothColorGetBlueValue(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorGetBlueValue)
+	if (smoothDrawingInterface.ColorGetBlueValue)
 	{
-		result = drawingInterface.ColorGetBlueValue(Color, BlueValue);
+		result = smoothDrawingInterface.ColorGetBlueValue(Color, BlueValue);
 	}
 	return result;
 }
@@ -120,9 +120,9 @@ SmoothColorGetAlphaValue(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorGetAlphaValue)
+	if (smoothDrawingInterface.ColorGetAlphaValue)
 	{
-		result = drawingInterface.ColorGetAlphaValue(Color, AlphaValue);
+		result = smoothDrawingInterface.ColorGetAlphaValue(Color, AlphaValue);
 	}
 	return result;
 }
@@ -136,9 +136,9 @@ SmoothColorGetValues(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorGetValues)
+	if (smoothDrawingInterface.ColorGetValues)
 	{
-		result = drawingInterface.ColorGetValues(Color, RedValue, GreenValue, BlueValue, AlphaValue);
+		result = smoothDrawingInterface.ColorGetValues(Color, RedValue, GreenValue, BlueValue, AlphaValue);
 	}
 	return result;
 }		
@@ -150,9 +150,9 @@ SmoothColorSetRedValue(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorSetRedValue)
+	if (smoothDrawingInterface.ColorSetRedValue)
 	{
-		result = drawingInterface.ColorSetRedValue(Color, NewValue);
+		result = smoothDrawingInterface.ColorSetRedValue(Color, NewValue);
 	}
 	
 	return result;
@@ -164,9 +164,9 @@ SmoothColorSetGreenValue(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorSetGreenValue)
+	if (smoothDrawingInterface.ColorSetGreenValue)
 	{
-		result = drawingInterface.ColorSetGreenValue(Color, NewValue);
+		result = smoothDrawingInterface.ColorSetGreenValue(Color, NewValue);
 	}
 	
 	return result;
@@ -178,9 +178,9 @@ SmoothColorSetBlueValue(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorSetBlueValue)
+	if (smoothDrawingInterface.ColorSetBlueValue)
 	{
-		result = drawingInterface.ColorSetBlueValue(Color, NewValue);
+		result = smoothDrawingInterface.ColorSetBlueValue(Color, NewValue);
 	}
 	
 	return result;
@@ -192,9 +192,9 @@ SmoothColorSetAlphaValue(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorSetAlphaValue)
+	if (smoothDrawingInterface.ColorSetAlphaValue)
 	{
-		result = drawingInterface.ColorSetAlphaValue(Color, NewValue);
+		result = smoothDrawingInterface.ColorSetAlphaValue(Color, NewValue);
 	}
 	
 	return result;
@@ -209,9 +209,9 @@ SmoothColorSetValues(SmoothColor *Color,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ColorSetValues)
+	if (smoothDrawingInterface.ColorSetValues)
 	{
-		result = drawingInterface.ColorSetValues(Color, RedValue, GreenValue, BlueValue, AlphaValue);
+		result = smoothDrawingInterface.ColorSetValues(Color, RedValue, GreenValue, BlueValue, AlphaValue);
 	}
 	return result;
 }		
@@ -227,9 +227,9 @@ SmoothRectangleCreate(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleCreate)
+	if (smoothDrawingInterface.RectangleCreate)
 	{
-		result = drawingInterface.RectangleCreate(Rectangle, X, Y, Width, Height);
+		result = smoothDrawingInterface.RectangleCreate(Rectangle, X, Y, Width, Height);
 	}
 	
 	return result;
@@ -240,9 +240,9 @@ SmoothRectangleDestroy(SmoothRectangle *Rectangle)
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (Rectangle && drawingInterface.RectangleDestroy)
+	if (Rectangle && smoothDrawingInterface.RectangleDestroy)
 	{
-		result = drawingInterface.RectangleDestroy(Rectangle);
+		result = smoothDrawingInterface.RectangleDestroy(Rectangle);
 	}
 	
 	return result;
@@ -253,9 +253,9 @@ SmoothRectangleIsValid(SmoothRectangle *Rectangle)
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (Rectangle && drawingInterface.RectangleIsValid)
+	if (Rectangle && smoothDrawingInterface.RectangleIsValid)
 	{
-		result = drawingInterface.RectangleIsValid(Rectangle);
+		result = smoothDrawingInterface.RectangleIsValid(Rectangle);
 	}
 	
 	return result;
@@ -268,9 +268,9 @@ SmoothRectangleGetXValue(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleGetXValue)
+	if (smoothDrawingInterface.RectangleGetXValue)
 	{
-		result = drawingInterface.RectangleGetXValue(Rectangle, XValue);
+		result = smoothDrawingInterface.RectangleGetXValue(Rectangle, XValue);
 	}
 	return result;
 }
@@ -281,9 +281,9 @@ SmoothRectangleGetYValue(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleGetYValue)
+	if (smoothDrawingInterface.RectangleGetYValue)
 	{
-		result = drawingInterface.RectangleGetYValue(Rectangle, YValue);
+		result = smoothDrawingInterface.RectangleGetYValue(Rectangle, YValue);
 	}
 	return result;
 }
@@ -294,9 +294,9 @@ SmoothRectangleGetWidthValue(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleGetWidthValue)
+	if (smoothDrawingInterface.RectangleGetWidthValue)
 	{
-		result = drawingInterface.RectangleGetWidthValue(Rectangle, WidthValue);
+		result = smoothDrawingInterface.RectangleGetWidthValue(Rectangle, WidthValue);
 	}
 	return result;
 }
@@ -307,9 +307,9 @@ SmoothRectangleGetHeightValue(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleGetHeightValue)
+	if (smoothDrawingInterface.RectangleGetHeightValue)
 	{
-		result = drawingInterface.RectangleGetHeightValue(Rectangle, HeightValue);
+		result = smoothDrawingInterface.RectangleGetHeightValue(Rectangle, HeightValue);
 	}
 	return result;
 }
@@ -323,9 +323,9 @@ SmoothRectangleGetValues(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleGetValues)
+	if (smoothDrawingInterface.RectangleGetValues)
 	{
-		result = drawingInterface.RectangleGetValues(Rectangle, XValue, YValue, WidthValue, HeightValue);
+		result = smoothDrawingInterface.RectangleGetValues(Rectangle, XValue, YValue, WidthValue, HeightValue);
 	}
 	return result;
 }		
@@ -337,9 +337,9 @@ SmoothRectangleSetXValue(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleSetXValue)
+	if (smoothDrawingInterface.RectangleSetXValue)
 	{
-		result = drawingInterface.RectangleSetXValue(Rectangle, NewValue);
+		result = smoothDrawingInterface.RectangleSetXValue(Rectangle, NewValue);
 	}
 	
 	return result;
@@ -351,9 +351,9 @@ SmoothRectangleSetYValue(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleSetYValue)
+	if (smoothDrawingInterface.RectangleSetYValue)
 	{
-		result = drawingInterface.RectangleSetYValue(Rectangle, NewValue);
+		result = smoothDrawingInterface.RectangleSetYValue(Rectangle, NewValue);
 	}
 	
 	return result;
@@ -365,9 +365,9 @@ SmoothRectangleSetWidthValue(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleSetWidthValue)
+	if (smoothDrawingInterface.RectangleSetWidthValue)
 	{
-		result = drawingInterface.RectangleSetWidthValue(Rectangle, NewValue);
+		result = smoothDrawingInterface.RectangleSetWidthValue(Rectangle, NewValue);
 	}
 	
 	return result;
@@ -379,9 +379,9 @@ SmoothRectangleSetHeightValue(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleSetHeightValue)
+	if (smoothDrawingInterface.RectangleSetHeightValue)
 	{
-		result = drawingInterface.RectangleSetHeightValue(Rectangle, NewValue);
+		result = smoothDrawingInterface.RectangleSetHeightValue(Rectangle, NewValue);
 	}
 	
 	return result;
@@ -396,9 +396,9 @@ SmoothRectangleSetValues(SmoothRectangle *Rectangle,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.RectangleSetValues)
+	if (smoothDrawingInterface.RectangleSetValues)
 	{
-		result = drawingInterface.RectangleSetValues(Rectangle, XValue, YValue, WidthValue, HeightValue);
+		result = smoothDrawingInterface.RectangleSetValues(Rectangle, XValue, YValue, WidthValue, HeightValue);
 	}
 	return result;
 }		
@@ -411,13 +411,13 @@ SmoothRectangleFindIntersection(SmoothRectangle Rectangle1,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (IntersectingRectangle && drawingInterface.RectangleFindIntersection)
+	if (IntersectingRectangle && smoothDrawingInterface.RectangleFindIntersection)
 	{
-		if (drawingInterface.RectangleIsValid)
+		if (smoothDrawingInterface.RectangleIsValid)
 		{
-			result = drawingInterface.RectangleIsValid(&Rectangle1) && 
-					drawingInterface.RectangleIsValid(&Rectangle2) && 
-					drawingInterface.RectangleIsValid(IntersectingRectangle);
+			result = smoothDrawingInterface.RectangleIsValid(&Rectangle1) && 
+					smoothDrawingInterface.RectangleIsValid(&Rectangle2) && 
+					smoothDrawingInterface.RectangleIsValid(IntersectingRectangle);
 		}
 		else
 		{
@@ -426,7 +426,7 @@ SmoothRectangleFindIntersection(SmoothRectangle Rectangle1,
 	
 		if (result)
 		{
-			result = drawingInterface.RectangleFindIntersection(Rectangle1, Rectangle2, IntersectingRectangle);
+			result = smoothDrawingInterface.RectangleFindIntersection(Rectangle1, Rectangle2, IntersectingRectangle);
 		}		
 	}
 	
@@ -440,9 +440,9 @@ SmoothPointGetXValue(SmoothPoint *Point,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.PointGetXValue)
+	if (smoothDrawingInterface.PointGetXValue)
 	{
-		result = drawingInterface.PointGetXValue(Point, XValue);
+		result = smoothDrawingInterface.PointGetXValue(Point, XValue);
 	}
 	return result;
 }
@@ -453,9 +453,9 @@ SmoothPointGetYValue(SmoothPoint *Point,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.PointGetYValue)
+	if (smoothDrawingInterface.PointGetYValue)
 	{
-		result = drawingInterface.PointGetYValue(Point, YValue);
+		result = smoothDrawingInterface.PointGetYValue(Point, YValue);
 	}
 	return result;
 }
@@ -467,9 +467,9 @@ SmoothPointGetValues(SmoothPoint *Point,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.PointGetValues)
+	if (smoothDrawingInterface.PointGetValues)
 	{
-		result = drawingInterface.PointGetValues(Point, XValue, YValue);
+		result = smoothDrawingInterface.PointGetValues(Point, XValue, YValue);
 	}
 	return result;
 }
@@ -482,9 +482,9 @@ SmoothPointSetXValue(SmoothPoint *Point,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.PointSetXValue)
+	if (smoothDrawingInterface.PointSetXValue)
 	{
-		result = drawingInterface.PointSetXValue(Point, NewValue);
+		result = smoothDrawingInterface.PointSetXValue(Point, NewValue);
 	}
 	return result;
 }
@@ -496,9 +496,9 @@ SmoothPointSetYValue(SmoothPoint *Point,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.PointSetYValue)
+	if (smoothDrawingInterface.PointSetYValue)
 	{
-		result = drawingInterface.PointSetYValue(Point, NewValue);
+		result = smoothDrawingInterface.PointSetYValue(Point, NewValue);
 	}
 	return result;
 }
@@ -511,9 +511,9 @@ SmoothPointSetValues(SmoothPoint *Point,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.PointSetValues)
+	if (smoothDrawingInterface.PointSetValues)
 	{
-		result = drawingInterface.PointSetValues(Point, XValue, YValue);
+		result = smoothDrawingInterface.PointSetValues(Point, XValue, YValue);
 	}
 	return result;
 }
@@ -526,9 +526,9 @@ SmoothImageBufferLoadByFile(SmoothString ImageFile,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ImageBufferLoadByFile)
+	if (smoothDrawingInterface.ImageBufferLoadByFile)
 	{
-		result = drawingInterface.ImageBufferLoadByFile(ImageFile, ImageBuffer);
+		result = smoothDrawingInterface.ImageBufferLoadByFile(ImageFile, ImageBuffer);
 	}
 	
 	return result;
@@ -539,9 +539,9 @@ SmoothImageBufferUnLoadByFile(SmoothString ImageFile)
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ImageBufferUnLoadByFile)
+	if (smoothDrawingInterface.ImageBufferUnLoadByFile)
 	{
-		result = drawingInterface.ImageBufferUnLoadByFile(ImageFile);
+		result = smoothDrawingInterface.ImageBufferUnLoadByFile(ImageFile);
 	}
 	
 	return result;
@@ -554,9 +554,9 @@ SmoothImageBufferGetWidth(SmoothImageBuffer *ImageBuffer,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ImageBufferGetWidth && ImageBuffer && Width)
+	if (smoothDrawingInterface.ImageBufferGetWidth && ImageBuffer && Width)
 	{
-		result = drawingInterface.ImageBufferGetWidth(ImageBuffer, Width);
+		result = smoothDrawingInterface.ImageBufferGetWidth(ImageBuffer, Width);
 	}
 	return result;
 }
@@ -567,9 +567,9 @@ SmoothImageBufferGetHeight(SmoothImageBuffer *ImageBuffer,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ImageBufferGetHeight && ImageBuffer && Height)
+	if (smoothDrawingInterface.ImageBufferGetHeight && ImageBuffer && Height)
 	{
-		result = drawingInterface.ImageBufferGetHeight(ImageBuffer, Height);
+		result = smoothDrawingInterface.ImageBufferGetHeight(ImageBuffer, Height);
 	}
 	return result;
 }
@@ -580,9 +580,9 @@ SmoothImageGetWidth(SmoothImage *Image,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ImageGetWidth && Image && Width)
+	if (smoothDrawingInterface.ImageGetWidth && Image && Width)
 	{
-		result = drawingInterface.ImageGetWidth(Image, Width);
+		result = smoothDrawingInterface.ImageGetWidth(Image, Width);
 	}
 	return result;
 }
@@ -593,9 +593,9 @@ SmoothImageGetHeight(SmoothImage *Image,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.ImageGetHeight && Image && Height)
+	if (smoothDrawingInterface.ImageGetHeight && Image && Height)
 	{
-		result = drawingInterface.ImageGetHeight(Image, Height);
+		result = smoothDrawingInterface.ImageGetHeight(Image, Height);
 	}
 	return result;
 }
@@ -607,9 +607,9 @@ SmoothCanvasAllocateColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasAllocateColor)
+	if (smoothDrawingInterface.CanvasAllocateColor)
 	{
-		result = drawingInterface.CanvasAllocateColor(Canvas, Color);
+		result = smoothDrawingInterface.CanvasAllocateColor(Canvas, Color);
 	}
 	
 	return result;
@@ -621,9 +621,9 @@ SmoothCanvasDeallocateColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasAllocateColor)
+	if (smoothDrawingInterface.CanvasAllocateColor)
 	{
-		result = drawingInterface.CanvasDeallocateColor(Canvas, Color);
+		result = smoothDrawingInterface.CanvasDeallocateColor(Canvas, Color);
 	}
 	
 	return result;
@@ -636,9 +636,9 @@ SmoothCanvasCacheColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasCacheColor)
+	if (smoothDrawingInterface.CanvasCacheColor)
 	{
-		result = drawingInterface.CanvasCacheColor(Canvas, Color);
+		result = smoothDrawingInterface.CanvasCacheColor(Canvas, Color);
 	}
 	
 	return result;
@@ -650,9 +650,9 @@ SmoothCanvasUnCacheColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasUnCacheColor)
+	if (smoothDrawingInterface.CanvasUnCacheColor)
 	{
-		result = drawingInterface.CanvasUnCacheColor(Canvas, Color);
+		result = smoothDrawingInterface.CanvasUnCacheColor(Canvas, Color);
 	}
 	
 	return result;
@@ -667,9 +667,9 @@ SmoothCanvasCacheShadedColor(SmoothCanvas Canvas,
 {					
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasCacheShadedColor)
+	if (smoothDrawingInterface.CanvasCacheShadedColor)
 	{
-		result = drawingInterface.CanvasCacheShadedColor(Canvas, Base, Shade, Color);
+		result = smoothDrawingInterface.CanvasCacheShadedColor(Canvas, Base, Shade, Color);
 	}
 	
 	return result;
@@ -683,9 +683,9 @@ SmoothCanvasUnCacheShadedColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasUnCacheShadedColor)
+	if (smoothDrawingInterface.CanvasUnCacheShadedColor)
 	{
-		result = drawingInterface.CanvasUnCacheShadedColor(Canvas, Base, Shade, Color);
+		result = smoothDrawingInterface.CanvasUnCacheShadedColor(Canvas, Base, Shade, Color);
 	}
 	
 	return result;
@@ -700,9 +700,9 @@ SmoothCanvasCacheMidPointColor(SmoothCanvas Canvas,
 {					
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasCacheMidPointColor)
+	if (smoothDrawingInterface.CanvasCacheMidPointColor)
 	{
-		result = drawingInterface.CanvasCacheMidPointColor(Canvas, Point1, Point2, Color);
+		result = smoothDrawingInterface.CanvasCacheMidPointColor(Canvas, Point1, Point2, Color);
 	}
 	
 	return result;
@@ -716,9 +716,9 @@ SmoothCanvasUnCacheMidPointColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasUnCacheMidPointColor)
+	if (smoothDrawingInterface.CanvasUnCacheMidPointColor)
 	{
-		result = drawingInterface.CanvasUnCacheMidPointColor(Canvas, Point1, Point2, Color);
+		result = smoothDrawingInterface.CanvasUnCacheMidPointColor(Canvas, Point1, Point2, Color);
 	}
 	
 	return result;
@@ -730,9 +730,9 @@ SmoothCanvasStore(SmoothCanvas Canvas)
 {
 	SmoothBool result = SmoothTrue;
 	
-	if (drawingInterface.CanvasStore)
+	if (smoothDrawingInterface.CanvasStore)
 	{
-		result = drawingInterface.CanvasStore(Canvas);
+		result = smoothDrawingInterface.CanvasStore(Canvas);
 	}
 	return result;
 }
@@ -743,9 +743,9 @@ SmoothCanvasRender(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothTrue;
 	
-	if (drawingInterface.CanvasRender)
+	if (smoothDrawingInterface.CanvasRender)
 	{
-		result = drawingInterface.CanvasRender(Canvas, ClosePathAndFill);
+		result = smoothDrawingInterface.CanvasRender(Canvas, ClosePathAndFill);
 	}
 	return result;
 }
@@ -757,9 +757,9 @@ SmoothCanvasGetClipRectangle(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasGetClipRectangle)
+	if (smoothDrawingInterface.CanvasGetClipRectangle)
 	{
-		result = drawingInterface.CanvasGetClipRectangle(Canvas, Rectangle);
+		result = smoothDrawingInterface.CanvasGetClipRectangle(Canvas, Rectangle);
 	}
 	return result;
 }
@@ -770,16 +770,16 @@ SmoothCanvasSetClipRectangle(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetClipRectangle)
+	if (smoothDrawingInterface.CanvasSetClipRectangle)
 	{
-		if (drawingInterface.RectangleIsValid)
+		if (smoothDrawingInterface.RectangleIsValid)
 		{
-			if (drawingInterface.RectangleIsValid(&Rectangle))
-				result = drawingInterface.CanvasSetClipRectangle(Canvas, Rectangle);
+			if (smoothDrawingInterface.RectangleIsValid(&Rectangle))
+				result = smoothDrawingInterface.CanvasSetClipRectangle(Canvas, Rectangle);
 		}
 		else
 		{
-			result = drawingInterface.CanvasSetClipRectangle(Canvas, Rectangle);
+			result = smoothDrawingInterface.CanvasSetClipRectangle(Canvas, Rectangle);
 		}
 	}
 	return result;
@@ -790,9 +790,9 @@ SmoothCanvasClearClipRectangle(SmoothCanvas Canvas)
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasClearClipRectangle)
+	if (smoothDrawingInterface.CanvasClearClipRectangle)
 	{
-		result = drawingInterface.CanvasClearClipRectangle(Canvas);
+		result = smoothDrawingInterface.CanvasClearClipRectangle(Canvas);
 	}
 	return result;
 }
@@ -803,9 +803,9 @@ SmoothCanvasClipUseIntersectingRectangle(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasClipUseIntersectingRectangle)
+	if (smoothDrawingInterface.CanvasClipUseIntersectingRectangle)
 	{
-		result = drawingInterface.CanvasClipUseIntersectingRectangle(Canvas, Rectangle);
+		result = smoothDrawingInterface.CanvasClipUseIntersectingRectangle(Canvas, Rectangle);
 	}
 	return result;
 }
@@ -817,9 +817,9 @@ SmoothCanvasGetPenColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = FALSE;
 	
-	if (drawingInterface.CanvasGetPenColor && Color)
+	if (smoothDrawingInterface.CanvasGetPenColor && Color)
 	{
-		result = drawingInterface.CanvasGetPenColor(Canvas, Color);
+		result = smoothDrawingInterface.CanvasGetPenColor(Canvas, Color);
 	}
 	return result;
 }
@@ -830,9 +830,9 @@ SmoothCanvasSetPenColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetPenColor)
+	if (smoothDrawingInterface.CanvasSetPenColor)
 	{
-		result = drawingInterface.CanvasSetPenColor(Canvas, Color);
+		result = smoothDrawingInterface.CanvasSetPenColor(Canvas, Color);
 	}
 	return result;
 }
@@ -843,9 +843,9 @@ SmoothCanvasGetPenThickness(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasGetPenThickness)
+	if (smoothDrawingInterface.CanvasGetPenThickness)
 	{
-		result = drawingInterface.CanvasGetPenThickness(Canvas, Thickness);
+		result = smoothDrawingInterface.CanvasGetPenThickness(Canvas, Thickness);
 	}
 	return result;
 }
@@ -856,9 +856,9 @@ SmoothCanvasSetPenThickness(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetPenThickness)
+	if (smoothDrawingInterface.CanvasSetPenThickness)
 	{
-		result = drawingInterface.CanvasSetPenThickness(Canvas, Thickness);
+		result = smoothDrawingInterface.CanvasSetPenThickness(Canvas, Thickness);
 	}
 	return result;
 }
@@ -869,9 +869,9 @@ SmoothCanvasGetPenStyle(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasGetPenStyle)
+	if (smoothDrawingInterface.CanvasGetPenStyle)
 	{
-		result = drawingInterface.CanvasGetPenStyle(Canvas, Style);
+		result = smoothDrawingInterface.CanvasGetPenStyle(Canvas, Style);
 	}
 	return result;
 }				
@@ -882,9 +882,9 @@ SmoothCanvasSetPenStyle(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetPenStyle)
+	if (smoothDrawingInterface.CanvasSetPenStyle)
 	{
-		result = drawingInterface.CanvasSetPenStyle(Canvas, Style);
+		result = smoothDrawingInterface.CanvasSetPenStyle(Canvas, Style);
 	}
 	return result;
 }				
@@ -895,9 +895,9 @@ SmoothCanvasGetPenJoin(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasGetPenJoin)
+	if (smoothDrawingInterface.CanvasGetPenJoin)
 	{
-		result = drawingInterface.CanvasGetPenJoin(Canvas, Join);
+		result = smoothDrawingInterface.CanvasGetPenJoin(Canvas, Join);
 	}
 	return result;
 }				
@@ -908,9 +908,9 @@ SmoothCanvasSetPenJoin(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetPenJoin)
+	if (smoothDrawingInterface.CanvasSetPenJoin)
 	{
-		result = drawingInterface.CanvasSetPenJoin(Canvas, Join);
+		result = smoothDrawingInterface.CanvasSetPenJoin(Canvas, Join);
 	}
 	return result;
 }				
@@ -921,9 +921,9 @@ SmoothCanvasGetPenCap(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasGetPenCap)
+	if (smoothDrawingInterface.CanvasGetPenCap)
 	{
-		result = drawingInterface.CanvasGetPenCap(Canvas, Cap);
+		result = smoothDrawingInterface.CanvasGetPenCap(Canvas, Cap);
 	}
 	return result;
 }				
@@ -934,9 +934,9 @@ SmoothCanvasSetPenCap(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetPenCap)
+	if (smoothDrawingInterface.CanvasSetPenCap)
 	{
-		result = drawingInterface.CanvasSetPenCap(Canvas, Cap);
+		result = smoothDrawingInterface.CanvasSetPenCap(Canvas, Cap);
 	}
 	return result;
 }				
@@ -951,9 +951,9 @@ SmoothCanvasGetPenValues(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasGetPenValues)
+	if (smoothDrawingInterface.CanvasGetPenValues)
 	{
-		result = drawingInterface.CanvasGetPenValues(Canvas, Color, Thickness, Style, Cap, Join);
+		result = smoothDrawingInterface.CanvasGetPenValues(Canvas, Color, Thickness, Style, Cap, Join);
 	}
 	return result;
 }				
@@ -968,9 +968,9 @@ SmoothCanvasSetPenValues(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetPenValues)
+	if (smoothDrawingInterface.CanvasSetPenValues)
 	{
-		result = drawingInterface.CanvasSetPenValues(Canvas, Color, Thickness, Style, Cap, Join);
+		result = smoothDrawingInterface.CanvasSetPenValues(Canvas, Color, Thickness, Style, Cap, Join);
 	}
 	return result;
 }				
@@ -981,9 +981,9 @@ SmoothCanvasGetPenPattern(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasGetPenPattern)
+	if (smoothDrawingInterface.CanvasGetPenPattern)
 	{
-		result = drawingInterface.CanvasGetPenPattern(Canvas, Pattern);
+		result = smoothDrawingInterface.CanvasGetPenPattern(Canvas, Pattern);
 	}
 	return result;
 }				
@@ -994,9 +994,9 @@ SmoothCanvasSetPenPattern(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetPenPattern)
+	if (smoothDrawingInterface.CanvasSetPenPattern)
 	{
-		result = drawingInterface.CanvasSetPenPattern(Canvas, Pattern);
+		result = smoothDrawingInterface.CanvasSetPenPattern(Canvas, Pattern);
 	}
 	return result;
 }				
@@ -1009,9 +1009,9 @@ SmoothCanvasGetBrushColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = FALSE;
 	
-	if (drawingInterface.CanvasGetBrushColor && Color)
+	if (smoothDrawingInterface.CanvasGetBrushColor && Color)
 	{
-		result = drawingInterface.CanvasGetBrushColor(Canvas, Color);
+		result = smoothDrawingInterface.CanvasGetBrushColor(Canvas, Color);
 	}
 	return result;
 }
@@ -1022,9 +1022,9 @@ SmoothCanvasSetBrushColor(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasSetBrushColor)
+	if (smoothDrawingInterface.CanvasSetBrushColor)
 	{
-		result = drawingInterface.CanvasSetBrushColor(Canvas, Color);
+		result = smoothDrawingInterface.CanvasSetBrushColor(Canvas, Color);
 	}
 	return result;
 }
@@ -1039,9 +1039,9 @@ SmoothCanvasCreateImage(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasCreateImage)
+	if (smoothDrawingInterface.CanvasCreateImage)
 	{
-		result = drawingInterface.CanvasCreateImage(Canvas, Width, Height, Image);
+		result = smoothDrawingInterface.CanvasCreateImage(Canvas, Width, Height, Image);
 	}
 	return result;
 }
@@ -1053,9 +1053,9 @@ SmoothCanvasCreateImageFromBuffer(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasCreateImageFromBuffer)
+	if (smoothDrawingInterface.CanvasCreateImageFromBuffer)
 	{
-		result = drawingInterface.CanvasCreateImageFromBuffer(Canvas, ImageBuffer, Image);
+		result = smoothDrawingInterface.CanvasCreateImageFromBuffer(Canvas, ImageBuffer, Image);
 	}
 	return result;
 }
@@ -1066,9 +1066,9 @@ SmoothCanvasDestroyImage(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasDestroyImage)
+	if (smoothDrawingInterface.CanvasDestroyImage)
 	{
-		result = drawingInterface.CanvasDestroyImage(Canvas, Image);
+		result = smoothDrawingInterface.CanvasDestroyImage(Canvas, Image);
 	}
 	return result;
 
@@ -1085,9 +1085,9 @@ SmoothCanvasRenderImage(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasRenderImage && Canvas)
+	if (smoothDrawingInterface.CanvasRenderImage && Canvas)
 	{
-		result = drawingInterface.CanvasRenderImage(Canvas, Image, 
+		result = smoothDrawingInterface.CanvasRenderImage(Canvas, Image, 
 									X, Y, Width, Height);
 	}
 	return result;
@@ -1103,9 +1103,9 @@ SmoothCanvasRenderImageBuffer(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasRenderImageBuffer && Canvas)
+	if (smoothDrawingInterface.CanvasRenderImageBuffer && Canvas)
 	{
-		result = drawingInterface.CanvasRenderImageBuffer(Canvas, ImageBuffer, 
+		result = smoothDrawingInterface.CanvasRenderImageBuffer(Canvas, ImageBuffer, 
 									X, Y, Width, Height);
 	}
 	return result;
@@ -1122,9 +1122,9 @@ SmoothCanvasRenderTile(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasRenderTile && Canvas)
+	if (smoothDrawingInterface.CanvasRenderTile && Canvas)
 	{
-		result = drawingInterface.CanvasRenderTile(Canvas, Tile, 
+		result = smoothDrawingInterface.CanvasRenderTile(Canvas, Tile, 
 								X, Y, Width, Height);
 	}
 	return result;
@@ -1141,9 +1141,9 @@ SmoothCanvasRenderGradient(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasRenderGradient && Canvas)
+	if (smoothDrawingInterface.CanvasRenderGradient && Canvas)
 	{
-		result = drawingInterface.CanvasRenderGradient(Canvas, Gradient, 
+		result = smoothDrawingInterface.CanvasRenderGradient(Canvas, Gradient, 
 								X, Y, Width, Height);
 	}
 	return result;
@@ -1157,9 +1157,9 @@ SmoothCanvasDrawPoint(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasDrawPoint)
+	if (smoothDrawingInterface.CanvasDrawPoint)
 	{
-		result = drawingInterface.CanvasDrawPoint(Canvas, X, Y);
+		result = smoothDrawingInterface.CanvasDrawPoint(Canvas, X, Y);
 	}
 	return result;
 }				
@@ -1171,9 +1171,9 @@ SmoothCanvasDrawPoints(SmoothCanvas Canvas,
 {				
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasDrawPoints)
+	if (smoothDrawingInterface.CanvasDrawPoints)
 	{
-		result = drawingInterface.CanvasDrawPoints(Canvas, Points, NumberOfPoints);
+		result = smoothDrawingInterface.CanvasDrawPoints(Canvas, Points, NumberOfPoints);
 	}
 	return result;
 }
@@ -1189,9 +1189,9 @@ SmoothCanvasDrawLine(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasDrawLine)
+	if (smoothDrawingInterface.CanvasDrawLine)
 	{
-		result = drawingInterface.CanvasDrawLine(Canvas, X1, Y1, X2, Y2);
+		result = smoothDrawingInterface.CanvasDrawLine(Canvas, X1, Y1, X2, Y2);
 	}
 	return result;
 }				
@@ -1203,9 +1203,9 @@ SmoothCanvasDrawSegment(SmoothCanvas Canvas,
 {				
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasDrawSegment)
+	if (smoothDrawingInterface.CanvasDrawSegment)
 	{
-		result = drawingInterface.CanvasDrawSegment(Canvas, Point1, Point2);
+		result = smoothDrawingInterface.CanvasDrawSegment(Canvas, Point1, Point2);
 	}
 	return result;
 }
@@ -1217,9 +1217,9 @@ SmoothCanvasDrawLines(SmoothCanvas Canvas,
 {				
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasDrawLines)
+	if (smoothDrawingInterface.CanvasDrawLines)
 	{
-		result = drawingInterface.CanvasDrawLines(Canvas, Points, NumberOfPoints);
+		result = smoothDrawingInterface.CanvasDrawLines(Canvas, Points, NumberOfPoints);
 	}
 	return result;
 }
@@ -1231,9 +1231,9 @@ SmoothCanvasDrawSegments(SmoothCanvas Canvas,
 {				
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasDrawSegments)
+	if (smoothDrawingInterface.CanvasDrawSegments)
 	{
-		result = drawingInterface.CanvasDrawSegments(Canvas, Points, NumberOfPoints);
+		result = smoothDrawingInterface.CanvasDrawSegments(Canvas, Points, NumberOfPoints);
 	}
 	return result;
 }
@@ -1250,9 +1250,9 @@ SmoothCanvasDrawArc(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasDrawArc)
+	if (smoothDrawingInterface.CanvasDrawArc)
 	{
-		result = drawingInterface.CanvasDrawArc(Canvas, X, Y, Width, Height, 
+		result = smoothDrawingInterface.CanvasDrawArc(Canvas, X, Y, Width, Height, 
 								AnglePosition, AngleLength);
 	}
 	return result;
@@ -1268,9 +1268,9 @@ SmoothCanvasFrameRectangle(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasFrameRectangle)
+	if (smoothDrawingInterface.CanvasFrameRectangle)
 	{
-		result = drawingInterface.CanvasFrameRectangle(Canvas, X, Y, Width, Height);
+		result = smoothDrawingInterface.CanvasFrameRectangle(Canvas, X, Y, Width, Height);
 	}
 	return result;
 }				
@@ -1282,9 +1282,9 @@ SmoothCanvasFramePolygon(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasFramePolygon)
+	if (smoothDrawingInterface.CanvasFramePolygon)
 	{
-		result = drawingInterface.CanvasFramePolygon(Canvas, Points, NumberOfPoints);
+		result = smoothDrawingInterface.CanvasFramePolygon(Canvas, Points, NumberOfPoints);
 	}
 	return result;
 }				
@@ -1300,9 +1300,9 @@ SmoothCanvasFrameChord(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasFrameChord)
+	if (smoothDrawingInterface.CanvasFrameChord)
 	{
-		result = drawingInterface.CanvasFrameChord(Canvas, X, Y, Width, Height, 
+		result = smoothDrawingInterface.CanvasFrameChord(Canvas, X, Y, Width, Height, 
 								AnglePosition, AngleLength);
 	}
 	return result;
@@ -1318,9 +1318,9 @@ SmoothCanvasFillRectangle(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasFillRectangle)
+	if (smoothDrawingInterface.CanvasFillRectangle)
 	{
-		result = drawingInterface.CanvasFillRectangle(Canvas, X, Y, Width, Height);
+		result = smoothDrawingInterface.CanvasFillRectangle(Canvas, X, Y, Width, Height);
 	}
 	return result;
 }				
@@ -1332,9 +1332,9 @@ SmoothCanvasFillPolygon(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasFillPolygon)
+	if (smoothDrawingInterface.CanvasFillPolygon)
 	{
-		result = drawingInterface.CanvasFillPolygon(Canvas, Points, NumberOfPoints);
+		result = smoothDrawingInterface.CanvasFillPolygon(Canvas, Points, NumberOfPoints);
 	}
 	return result;
 }				
@@ -1350,9 +1350,9 @@ SmoothCanvasFillChord(SmoothCanvas Canvas,
 {
 	SmoothBool result = SmoothFalse;
 	
-	if (drawingInterface.CanvasFillChord)
+	if (smoothDrawingInterface.CanvasFillChord)
 	{
-		result = drawingInterface.CanvasFillChord(Canvas, X, Y, Width, Height, 
+		result = smoothDrawingInterface.CanvasFillChord(Canvas, X, Y, Width, Height, 
 								AnglePosition, AngleLength);
 	}
 	return result;

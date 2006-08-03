@@ -21,7 +21,7 @@
 /* Author(s): Andrew Johnson <ajgenius@ajgenius.us>                           */
 /******************************************************************************/
 static void
-AbstractCanvasRenderTile(SmoothCanvas *Canvas,
+SmoothAbstractCanvasRenderTile(SmoothCanvas *Canvas,
 				SmoothTile Tile,
 				SmoothInt X,
 				SmoothInt Y,

@@ -17,13 +17,13 @@ Thinice Authors: Tim Gerla <timg@rrv.net>
 #define YTHICKNESS(style) (style->ythickness)
 #define XTHICKNESS(style) (style->xthickness)
 
-static GtkStyleClass *parent_class = NULL;
+static GtkStyleClass *mist_parent_style_class = NULL;
 
 static void mist_style_init       (MistStyle      *style);
 static void mist_style_class_init (MistStyleClass *klass);
 
 static GtkShadowType
-get_shadow_type (GtkStyle *style, const char *detail, GtkShadowType requested)
+mist_get_shadow_type (GtkStyle *style, const char *detail, GtkShadowType requested)
 {
 	GtkShadowType retval = GTK_SHADOW_NONE;
 	
@@ -223,7 +223,7 @@ mist_draw_border (GtkStyle *style,
 }
 
 static void
-draw_hline(GtkStyle *style,
+mist_style_draw_hline(GtkStyle *style,
            GdkWindow *window,
            GtkStateType state_type,
            GdkRectangle *area,
@@ -293,7 +293,7 @@ draw_hline(GtkStyle *style,
 }
 
 static void
-draw_vline(GtkStyle *style,
+mist_style_draw_vline(GtkStyle *style,
            GdkWindow *window,
            GtkStateType state_type,
            GdkRectangle *area,
@@ -363,7 +363,7 @@ draw_vline(GtkStyle *style,
 }
 
 static void
-draw_shadow(GtkStyle *style,
+mist_style_draw_shadow(GtkStyle *style,
 	    GdkWindow *window,
 	    GtkStateType state_type,
 	    GtkShadowType shadow_type,
@@ -383,7 +383,7 @@ draw_shadow(GtkStyle *style,
 	
 	SANITIZE_SIZE
 
-	shadow_type = get_shadow_type (style, detail, shadow_type);
+	shadow_type = mist_get_shadow_type (style, detail, shadow_type);
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -408,7 +408,7 @@ draw_shadow(GtkStyle *style,
 }
 
 static void
-draw_polygon(GtkStyle *style,
+mist_style_draw_polygon(GtkStyle *style,
              GdkWindow *window,
              GtkStateType state_type,
              GtkShadowType shadow_type,
@@ -531,7 +531,7 @@ draw_polygon(GtkStyle *style,
 }
 
 static void
-draw_diamond(GtkStyle * style,
+mist_style_draw_diamond(GtkStyle * style,
              GdkWindow * window,
              GtkStateType state_type,
              GtkShadowType shadow_type,
@@ -646,7 +646,7 @@ draw_diamond(GtkStyle * style,
 }
 
 static void
-draw_box(GtkStyle *style,
+mist_style_draw_box(GtkStyle *style,
          GdkWindow *window,
          GtkStateType state_type,
          GtkShadowType shadow_type,
@@ -754,7 +754,7 @@ draw_box(GtkStyle *style,
 						   state_type, area,
 						   x, y, width, height);
 
-		shadow_type = get_shadow_type (style, detail, shadow_type);
+		shadow_type = mist_get_shadow_type (style, detail, shadow_type);
 		if (state_type == GTK_STATE_INSENSITIVE && shadow_type != GTK_SHADOW_NONE) {
 			shadow_type = GTK_SHADOW_ETCHED_IN;
 		}
@@ -770,7 +770,7 @@ draw_box(GtkStyle *style,
 }
 
 static void
-draw_check(GtkStyle *style,
+mist_style_draw_check(GtkStyle *style,
            GdkWindow *window,
            GtkStateType state_type,
            GtkShadowType shadow_type,
@@ -832,7 +832,7 @@ draw_check(GtkStyle *style,
 }
 
 static void
-draw_option(GtkStyle *style,
+mist_style_draw_option(GtkStyle *style,
             GdkWindow *window,
             GtkStateType state_type,
             GtkShadowType shadow_type,
@@ -897,7 +897,7 @@ draw_option(GtkStyle *style,
 }
 
 static void
-draw_shadow_gap(GtkStyle *style,
+mist_style_draw_shadow_gap(GtkStyle *style,
                 GdkWindow *window,
                 GtkStateType state_type,
                 GtkShadowType shadow_type,
@@ -921,7 +921,7 @@ draw_shadow_gap(GtkStyle *style,
 	g_return_if_fail (window != NULL);
 	
 	SANITIZE_SIZE
-	shadow_type = get_shadow_type (style, detail, shadow_type);
+	shadow_type = mist_get_shadow_type (style, detail, shadow_type);
 	
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -1037,7 +1037,7 @@ draw_shadow_gap(GtkStyle *style,
 }
 
 static void
-draw_box_gap(GtkStyle *style,
+mist_style_draw_box_gap(GtkStyle *style,
 	     GdkWindow *window,
 	     GtkStateType state_type,
 	     GtkShadowType shadow_type,
@@ -1059,13 +1059,13 @@ draw_box_gap(GtkStyle *style,
 					   state_type, area,
 					   x, y, width, height);
 
-	draw_shadow_gap (style, window, state_type, shadow_type,
+	mist_style_draw_shadow_gap (style, window, state_type, shadow_type,
 			 area, widget, detail, x, y, width, height, 
 			 gap_side, gap_x, gap_width);
 }
 
 static void
-draw_extension(GtkStyle *style,
+mist_style_draw_extension(GtkStyle *style,
                GdkWindow *window,
                GtkStateType state_type,
                GtkShadowType shadow_type,
@@ -1121,7 +1121,7 @@ draw_extension(GtkStyle *style,
 }
 
 static void
-draw_handle(GtkStyle *style,
+mist_style_draw_handle(GtkStyle *style,
             GdkWindow *window,
             GtkStateType state_type,
             GtkShadowType shadow_type,
@@ -1188,7 +1188,7 @@ draw_handle(GtkStyle *style,
 }
 
 static void
-draw_resize_grip(GtkStyle *style,
+mist_style_draw_resize_grip(GtkStyle *style,
 		 GdkWindow *window,
 		 GtkStateType state_type,
 		 GdkRectangle *area,
@@ -1333,7 +1333,7 @@ draw_resize_grip(GtkStyle *style,
 }
 
 static void
-draw_string (GtkStyle      *style,
+mist_style_draw_string (GtkStyle      *style,
 	     GdkWindow     *window,
 	     GtkStateType   state_type,
 	     GdkRectangle  *area,
@@ -1360,7 +1360,7 @@ draw_string (GtkStyle      *style,
 }
 
 static void
-draw_layout (GtkStyle        *style,
+mist_style_draw_layout (GtkStyle        *style,
 	     GdkWindow       *window,
 	     GtkStateType     state_type,
 	     gboolean         use_text,
@@ -1439,7 +1439,7 @@ scale_or_ref (GdkPixbuf *src,
 }
 
 static GdkPixbuf *
-render_icon (GtkStyle            *style,
+mist_style_render_icon (GtkStyle            *style,
 	     const GtkIconSource *source,
 	     GtkTextDirection     direction,
 	     GtkStateType         state,
@@ -1549,7 +1549,7 @@ mist_style_realize (GtkStyle * style)
   MistStyle *mist_style = MIST_STYLE (style);
   int i;
  
-  parent_class->realize (style);
+  mist_parent_style_class->realize (style);
  
   ge_gtk_style_to_cairo_color_cube (style, &mist_style->color_cube);
 }
@@ -1559,25 +1559,25 @@ mist_style_class_init (MistStyleClass *klass)
 {
 	GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
 	
-	parent_class = g_type_class_peek_parent (klass);
+	mist_parent_style_class = g_type_class_peek_parent (klass);
 	
 	style_class->realize = mist_style_realize;
 
-	style_class->draw_hline = draw_hline;
-	style_class->draw_vline = draw_vline;
-	style_class->draw_shadow = draw_shadow;
-	style_class->draw_polygon = draw_polygon;
-	style_class->draw_diamond = draw_diamond;
-	style_class->draw_box = draw_box;
-	style_class->draw_tab = draw_box;
-	style_class->draw_check = draw_check;
-	style_class->draw_option = draw_option;
-	style_class->draw_shadow_gap = draw_shadow_gap;
-	style_class->draw_box_gap = draw_box_gap;
-	style_class->draw_extension = draw_extension;
-	style_class->draw_handle = draw_handle;
-	style_class->draw_resize_grip = draw_resize_grip;
-	style_class->draw_string = draw_string;
-	style_class->draw_layout = draw_layout;
-	style_class->render_icon = render_icon;
+	style_class->draw_hline = mist_style_draw_hline;
+	style_class->draw_vline = mist_style_draw_vline;
+	style_class->draw_shadow = mist_style_draw_shadow;
+	style_class->draw_polygon = mist_style_draw_polygon;
+	style_class->draw_diamond = mist_style_draw_diamond;
+	style_class->draw_box = mist_style_draw_box;
+	style_class->draw_tab = mist_style_draw_box;
+	style_class->draw_check = mist_style_draw_check;
+	style_class->draw_option = mist_style_draw_option;
+	style_class->draw_shadow_gap = mist_style_draw_shadow_gap;
+	style_class->draw_box_gap = mist_style_draw_box_gap;
+	style_class->draw_extension = mist_style_draw_extension;
+	style_class->draw_handle = mist_style_draw_handle;
+	style_class->draw_resize_grip = mist_style_draw_resize_grip;
+	style_class->draw_string = mist_style_draw_string;
+	style_class->draw_layout = mist_style_draw_layout;
+	style_class->render_icon = mist_style_render_icon;
 }

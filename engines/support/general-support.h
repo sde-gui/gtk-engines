@@ -13,9 +13,9 @@
   g_return_if_fail (height >= -1);			\
                                                         \
   if ((width == -1) && (height == -1))			\
-    gdk_window_get_size (window, &width, &height);	\
+    gdk_drawable_get_size (window, &width, &height);	\
   else if (width == -1)					\
-    gdk_window_get_size (window, &width, NULL);		\
+    gdk_drawable_get_size (window, &width, NULL);	\
   else if (height == -1)				\
-    gdk_window_get_size (window, NULL, &height);
+    gdk_drawable_get_size (window, NULL, &height);
 

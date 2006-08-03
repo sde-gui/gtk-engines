@@ -38,7 +38,7 @@ static gboolean smooth_finalized = FALSE;
 /**********************************/
 /* Register & Initialize RC Style */
 /**********************************/
-static GtkRcStyleClass *parent_rc_class;
+static GtkRcStyleClass *smooth_parent_rc_class;
 GType smooth_type_rc_style = 0;
 gint smooth_rc_references = 0;
 
@@ -54,7 +54,7 @@ smooth_rc_style_merge (GtkRcStyle * dest,
 		smooth_gtkrc_style_merge (dest_data, src_data);
 	}
 
-	parent_rc_class->merge (dest, src);  
+	smooth_parent_rc_class->merge (dest, src);  
 }
 
 static guint 
@@ -116,7 +116,7 @@ smooth_rc_style_parse (GtkRcStyle *rc_style,
   return G_TOKEN_NONE;
 }
 
-static void part_finalize (smooth_part_style *part)
+static void smooth_part_finalize (smooth_part_style *part)
 {
   gint i;
   for (i=0; i < 5; i++) {
@@ -141,19 +141,19 @@ static void smooth_rc_style_real_dispose (GObject *rc_style)
           if (data->focus.pattern[i])
             g_free(data->focus.pattern[i]);
         }
-        part_finalize(THEME_PART(&data->grip));
-        part_finalize(THEME_PART(&data->check));
-        part_finalize(THEME_PART(&data->option));
-        part_finalize(THEME_PART(&data->trough));
-        part_finalize(&data->progress);
-        part_finalize(THEME_PART(&data->button));
-        part_finalize(&data->button.button_default);
-        part_finalize(THEME_PART(&data->tabs));
-        part_finalize(&data->tabs.active_tab);
+        smooth_part_finalize(THEME_PART(&data->grip));
+        smooth_part_finalize(THEME_PART(&data->check));
+        smooth_part_finalize(THEME_PART(&data->option));
+        smooth_part_finalize(THEME_PART(&data->trough));
+        smooth_part_finalize(&data->progress);
+        smooth_part_finalize(THEME_PART(&data->button));
+        smooth_part_finalize(&data->button.button_default);
+        smooth_part_finalize(THEME_PART(&data->tabs));
+        smooth_part_finalize(&data->tabs.active_tab);
         
 	SmoothFreeArrowStyles(&data->arrow);
 
-        GDKFinalizeColorCube(&data->colors);
+        SmoothGDKFinalizeColorCube(&data->colors);
 
         g_free(data);
         
@@ -167,7 +167,7 @@ static void smooth_rc_style_real_dispose (GObject *rc_style)
 static void smooth_rc_style_dispose (GObject *rc_style)
 {
   smooth_rc_style_real_dispose(rc_style);
-  G_OBJECT_CLASS(parent_rc_class)->dispose(G_OBJECT(rc_style));
+  G_OBJECT_CLASS(smooth_parent_rc_class)->dispose(G_OBJECT(rc_style));
 }
 
 gboolean smooth_rc_data_unref(GObject *rc_style)
@@ -215,7 +215,7 @@ static void smooth_rc_style_class_init (SmoothRcStyleClass *klass)
 {
   GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
 
-  parent_rc_class = g_type_class_peek_parent (klass);
+  smooth_parent_rc_class = g_type_class_peek_parent (klass);
 
   G_OBJECT_CLASS(klass)->dispose = smooth_rc_style_dispose;
 

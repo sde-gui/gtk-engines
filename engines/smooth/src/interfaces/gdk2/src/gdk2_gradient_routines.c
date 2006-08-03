@@ -35,7 +35,7 @@
 /*       Copyright (C) 1997-2000 Dan Pascu and Alfredo Kojima                 */
 /******************************************************************************/
 static void 
-internal_color_get_as_uchars(SmoothColor Color, 
+smooth_internal_color_get_as_uchars(SmoothColor Color, 
 				SmoothUChar *Red, 
 				SmoothUChar *Green, 
 				SmoothUChar *Blue, 
@@ -66,7 +66,7 @@ internal_create_horizontal_gradient_image_buffer (SmoothInt Width, SmoothInt Hei
 	SmoothUChar rf, gf, bf, af;
 	int rowstride;
 
-	buffer = internal_image_buffer_new (Width, Height);
+	buffer = smooth_internal_image_buffer_new (Width, Height);
 	if (buffer == NULL)
 		return NULL;
     
@@ -74,8 +74,8 @@ internal_create_horizontal_gradient_image_buffer (SmoothInt Width, SmoothInt Hei
 	ptr = pixels;
 	rowstride = gdk_pixbuf_get_rowstride (buffer);
   
-	internal_color_get_as_uchars(From, &r0, &g0, &b0, &a0);
-	internal_color_get_as_uchars(To, &rf, &gf, &bf, &af);
+	smooth_internal_color_get_as_uchars(From, &r0, &g0, &b0, &a0);
+	smooth_internal_color_get_as_uchars(To, &rf, &gf, &bf, &af);
   
 	r = r0 << 16;
 	g = g0 << 16;
@@ -147,15 +147,15 @@ internal_create_vertical_gradient_image_buffer (SmoothInt Width, SmoothInt Heigh
 	SmoothInt rowstride;
 	SmoothUChar *pixels;
   
-	buffer = internal_image_buffer_new (Width, Height);
+	buffer = smooth_internal_image_buffer_new (Width, Height);
 	if (buffer == NULL)
 		return NULL;
     
 	pixels = gdk_pixbuf_get_pixels (buffer);
 	rowstride = gdk_pixbuf_get_rowstride (buffer);
   
-	internal_color_get_as_uchars(From, &r0, &g0, &b0, &a0);
-	internal_color_get_as_uchars(To, &rf, &gf, &bf, &af);
+	smooth_internal_color_get_as_uchars(From, &r0, &g0, &b0, &a0);
+	smooth_internal_color_get_as_uchars(To, &rf, &gf, &bf, &af);
 
 	r = r0<<16;
 	g = g0<<16;
@@ -298,7 +298,7 @@ SmoothAllocateGradientStepColor(SmoothCanvas *Canvas,
 }
 
 static SmoothBool
-GDK2CanvasRenderGradient(SmoothCanvas Canvas,
+SmoothGDK2CanvasRenderGradient(SmoothCanvas Canvas,
 				SmoothGradient Gradient,
 				SmoothInt X,
 				SmoothInt Y,

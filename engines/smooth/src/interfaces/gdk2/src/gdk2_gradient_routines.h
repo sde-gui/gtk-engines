@@ -23,7 +23,7 @@
 #define ALWAYSDITHER
 
 static SmoothBool
-GDK2CanvasRenderGradient(SmoothCanvas Canvas,
+SmoothGDK2CanvasRenderGradient(SmoothCanvas Canvas,
 				SmoothGradient Gradient,
 				SmoothInt X,
 				SmoothInt Y,

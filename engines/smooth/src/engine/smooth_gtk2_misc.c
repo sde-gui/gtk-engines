@@ -55,7 +55,7 @@
 
 /* Misc Functions */
 GdkBitmap *
-arc_clip_mask(gint width,
+smooth_arc_clip_mask(gint width,
 	      gint height)
 {
   GdkBitmap *result;
@@ -82,29 +82,7 @@ arc_clip_mask(gint width,
   return result;
 }
 
-/* The following is based on a similar routine found in most 
- * GTK2 engines, I have no idea which one came up with it first...
- */
-gboolean
-sanitize_parameters(GtkStyle * style,
-  	            GdkWindow * window,
-	            gint * width,
-	            gint * height)
-{
-  if (!style) return FALSE;
-  if (!window) return FALSE;
-
-  if ((width) && (height)) {
-    if ((*width == -1) && (*height == -1))
-      gdk_drawable_get_size (window, width, height);
-    else if (*width == -1)
-      gdk_drawable_get_size(window, width, NULL);
-    else if (*height == -1)
-      gdk_drawable_get_size (window, NULL, height);  
-  }
-  return TRUE;  
-}
-
+/*
 GtkWidget *
 get_notebook_page(GtkWidget * widget)
 {
@@ -171,7 +149,7 @@ tab_label_is_current_page(GtkWidget *page, GtkWidget * widget)
 
   return TRUE;
 }
-
+*/
 /* From GTK-Engines Metal 2.0:
  * 
  * This function makes up for some brokeness in gtkrange.c
@@ -182,7 +160,7 @@ tab_label_is_current_page(GtkWidget *page, GtkWidget * widget)
  * to the point we don't have room for full-sized steppers.
  */
 void
-reverse_engineer_stepper_box (GtkWidget    *range,
+smooth_reverse_engineer_stepper_box (GtkWidget    *range,
 			      GtkArrowType  arrow_type,
 			      gint         *x,
 			      gint         *y,
@@ -218,7 +196,7 @@ reverse_engineer_stepper_box (GtkWidget    *range,
   *height = box_height - 3;
 }
 
-/* This function is based on reverse_engineer_stepper_box
+/* This function is based on smooth_reverse_engineer_stepper_box
  * (and gtk2 sources) except it is for getting spin button 
  * size instead. It is not always right, and only returns 
  * a (hopefully more accurate) arrow box, not the entire
@@ -226,7 +204,7 @@ reverse_engineer_stepper_box (GtkWidget    *range,
  * to paint_box and so only paint_arrow needs this.
  */
 void
-reverse_engineer_spin_button (GtkWidget    *widget,
+smooth_reverse_engineer_spin_button (GtkWidget    *widget,
 			      GtkArrowType  arrow_type,
 			      gint         *x,
 			      gint         *y,
@@ -269,7 +247,7 @@ reverse_engineer_spin_button (GtkWidget    *widget,
  * inspired by the metal, ThinIce, & Wonderland GTK2 engines
  */
 void
-reverse_engineer_arrow_box (GtkWidget    *widget,
+smooth_reverse_engineer_arrow_box (GtkWidget    *widget,
                             const gchar * detail,
 			    GtkArrowType  arrow_type,
 			    gint         *x,
@@ -279,11 +257,11 @@ reverse_engineer_arrow_box (GtkWidget    *widget,
 {
   if (CHECK_DETAIL(detail, "hscrollbar") || CHECK_DETAIL(detail, "vscrollbar"))
     {
-      reverse_engineer_stepper_box (widget, arrow_type,
+      smooth_reverse_engineer_stepper_box (widget, arrow_type,
 				    x, y, width, height);
  
     } else if (CHECK_DETAIL(detail, "spinbutton")) {
-      reverse_engineer_spin_button (widget, arrow_type,
+      smooth_reverse_engineer_spin_button (widget, arrow_type,
 				    x, y, width, height);
    }
   else if (CHECK_DETAIL(detail, "menuitem"))
@@ -315,11 +293,8 @@ reverse_engineer_arrow_box (GtkWidget    *widget,
   }  
 }
 
-static const GtkBorder default_default_border = { 1, 1, 1, 1 };
-static const GtkBorder default_default_outside_border = { 0, 0, 0, 0 };
-
 void
-gtk_button_get_props (GtkWidget *widget,
+smooth_gtk_button_get_props (GtkWidget *widget,
 		      GtkBorder *default_border,
 		      GtkBorder *default_outside_border,
 		      gboolean  *interior_focus)
@@ -341,7 +316,7 @@ gtk_button_get_props (GtkWidget *widget,
 	  g_free (tmp_border);
 	}
       else
-	*default_border = default_default_border;
+	*default_border = (GtkBorder){ 1, 1, 1, 1 };
     }
 
   if (default_outside_border)
@@ -359,7 +334,7 @@ gtk_button_get_props (GtkWidget *widget,
 	  g_free (tmp_border);
 	}
       else
-	*default_outside_border = default_default_outside_border;
+	*default_outside_border = (GtkBorder){ 0, 0, 0, 0 };
     }
 
   if (interior_focus)
@@ -367,7 +342,7 @@ gtk_button_get_props (GtkWidget *widget,
 }
 
 void
-gtk_widget_get_focus_props (GtkWidget *widget,
+smooth_gtk_widget_get_focus_props (GtkWidget *widget,
 		      gint *focus_line_width,
 		      gint *focus_padding,
 		      gboolean  *interior_focus)

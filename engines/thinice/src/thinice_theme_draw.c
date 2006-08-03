@@ -50,10 +50,10 @@ thinice_tab(GtkStyle * style,
             gint height,
 	    gint orientation);
 
-static GtkStyleClass *parent_class = NULL;
+static GtkStyleClass *thinice_parent_style_class = NULL;
 
 static void
-draw_hline(GtkStyle * style,
+thinice_style_draw_hline(GtkStyle * style,
            GdkWindow * window,
            GtkStateType state_type,
            GdkRectangle * area,
@@ -75,7 +75,7 @@ draw_hline(GtkStyle * style,
 }
 
 static void
-draw_vline(GtkStyle * style,
+thinice_style_draw_vline(GtkStyle * style,
            GdkWindow * window,
            GtkStateType state_type,
            GdkRectangle * area,
@@ -101,7 +101,7 @@ draw_vline(GtkStyle * style,
 }
 
 static void
-draw_shadow(GtkStyle     *style,
+thinice_style_draw_shadow(GtkStyle     *style,
 	    GdkWindow    *window,
 	    GtkStateType  state_type,
 	    GtkShadowType shadow_type,
@@ -172,7 +172,7 @@ draw_shadow(GtkStyle     *style,
 }
 
 static void
-draw_polygon(GtkStyle * style,
+thinice_style_draw_polygon(GtkStyle * style,
              GdkWindow * window,
              GtkStateType state_type,
              GtkShadowType shadow_type,
@@ -305,7 +305,7 @@ draw_polygon(GtkStyle * style,
 }
 
 static void
-draw_arrow(GtkStyle * style,
+thinice_style_draw_arrow(GtkStyle * style,
            GdkWindow * window,
            GtkStateType state_type,
            GtkShadowType shadow_type,
@@ -411,7 +411,7 @@ draw_arrow(GtkStyle * style,
 }
 
 static void
-draw_diamond(GtkStyle * style,
+thinice_style_draw_diamond(GtkStyle * style,
              GdkWindow * window,
              GtkStateType state_type,
              GtkShadowType shadow_type,
@@ -525,7 +525,7 @@ draw_diamond(GtkStyle * style,
 }
 
 static void
-draw_box(GtkStyle * style,
+thinice_style_draw_box(GtkStyle * style,
          GdkWindow * window,
          GtkStateType state_type,
          GtkShadowType shadow_type,
@@ -562,7 +562,7 @@ draw_box(GtkStyle * style,
 
            cairo_fill(cr);
 
-      draw_shadow(style, window, state_type, shadow_type, area, widget,
+      thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
                        detail, x, y, width, height);
     }
   else if (CHECK_DETAIL (detail, "slider"))
@@ -617,7 +617,7 @@ draw_box(GtkStyle * style,
 	  cairo_stroke(cr);
         }
 
-      draw_shadow(style, window, state_type, shadow_type, area, widget,
+      thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
                        detail, x, y, width, height);
     }
   else if (CHECK_DETAIL (detail, "bar"))
@@ -669,7 +669,7 @@ draw_box(GtkStyle * style,
                                              state_type, area,
                                              x, y, width, height);
         }
-      draw_shadow(style, window, state_type, shadow_type, area, widget,
+      thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
                        detail, x, y, width, height);
     }
   else
@@ -690,7 +690,7 @@ draw_box(GtkStyle * style,
                                              state_type, area,
                                              x, y, width, height);
         }
-      draw_shadow(style, window, state_type, shadow_type, area, widget,
+      thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
                        detail, x, y, width, height);
     }
 
@@ -724,7 +724,7 @@ draw_box(GtkStyle * style,
       width = indicator_size.width;
       height = indicator_size.height;
  
-      draw_arrow (style, window, state_type, shadow_type, area, NULL, "optionmenu", 
+      thinice_style_draw_arrow (style, window, state_type, shadow_type, area, NULL, "optionmenu", 
 	                      GTK_ARROW_DOWN, TRUE,  x,  y,  width,  height);
    }
 
@@ -732,7 +732,7 @@ draw_box(GtkStyle * style,
 }
 
 static void
-draw_check(GtkStyle * style,
+thinice_style_draw_check(GtkStyle * style,
            GdkWindow * window,
            GtkStateType state_type,
            GtkShadowType shadow_type,
@@ -769,7 +769,7 @@ draw_check(GtkStyle * style,
 	}
 	else
 	{
-		draw_box(style, window, state_type, shadow_type, area, widget,
+		thinice_style_draw_box(style, window, state_type, shadow_type, area, widget,
                 			detail, x, y, width, height);
 		if (color1)
 		{
@@ -787,7 +787,7 @@ draw_check(GtkStyle * style,
 
 /* Thanks to Evan Lawrence */
 static void
-draw_option(GtkStyle * style,
+thinice_style_draw_option(GtkStyle * style,
             GdkWindow * window,
             GtkStateType state_type,
             GtkShadowType shadow_type,
@@ -902,7 +902,7 @@ draw_option(GtkStyle * style,
 }
 
 static void
-draw_shadow_gap(GtkStyle * style,
+thinice_style_draw_shadow_gap(GtkStyle * style,
                 GdkWindow * window,
                 GtkStateType state_type,
                 GtkShadowType shadow_type,
@@ -1044,7 +1044,7 @@ draw_shadow_gap(GtkStyle * style,
 
 
 static void
-draw_box_gap(GtkStyle * style,
+thinice_style_draw_box_gap(GtkStyle * style,
              GdkWindow * window,
              GtkStateType state_type,
              GtkShadowType shadow_type,
@@ -1065,14 +1065,14 @@ draw_box_gap(GtkStyle * style,
             widget && !GTK_WIDGET_NO_WINDOW(widget),
             state_type, area,
             x, y, width, height);
-    draw_shadow_gap (style, window, state_type, shadow_type,
+    thinice_style_draw_shadow_gap (style, window, state_type, shadow_type,
             area, widget, detail, x, y, width, height,
             gap_side, gap_x, gap_width);
 }
 
 
 static void
-draw_extension(DRAW_ARGS, GtkPositionType gap_side)
+thinice_style_draw_extension(DRAW_ARGS, GtkPositionType gap_side)
 {
 	switch (gap_side)
 	{
@@ -1086,7 +1086,7 @@ draw_extension(DRAW_ARGS, GtkPositionType gap_side)
 }
 
 static void
-draw_slider(GtkStyle * style,
+thinice_style_draw_slider(GtkStyle * style,
             GdkWindow * window,
             GtkStateType state_type,
             GtkShadowType shadow_type,
@@ -1171,7 +1171,7 @@ draw_slider(GtkStyle * style,
 
            cairo_fill(cr);
 
-           draw_shadow(style, window, state_type, shadow_type, area,
+           thinice_style_draw_shadow(style, window, state_type, shadow_type, area,
                             widget, detail, x, y, width, height);
         }
       else
@@ -1260,7 +1260,7 @@ draw_slider(GtkStyle * style,
 }
 
 static void
-draw_handle(GtkStyle * style,
+thinice_style_draw_handle(GtkStyle * style,
             GdkWindow * window,
             GtkStateType state_type,
             GtkShadowType shadow_type,
@@ -1344,7 +1344,7 @@ draw_handle(GtkStyle * style,
       return;
     }
 
-  draw_box(style, window, state_type, shadow_type, area, widget,
+  thinice_style_draw_box(style, window, state_type, shadow_type, area, widget,
                 detail, x, y, width, height);
 
   ge_cairo_line(cr, &thinice_style->color_cube.light[state_type],
@@ -1515,7 +1515,7 @@ thinice_style_realize (GtkStyle * style)
   ThiniceStyle *thinice_style = THINICE_STYLE (style);
   int i;
  
-  parent_class->realize (style);
+  thinice_parent_style_class->realize (style);
  
   ge_gtk_style_to_cairo_color_cube (style, &thinice_style->color_cube);
 }
@@ -1525,26 +1525,26 @@ thinice_style_class_init (ThiniceStyleClass *klass)
 {
   GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
+  thinice_parent_style_class = g_type_class_peek_parent (klass);
 
   style_class->realize = thinice_style_realize;
 
-  style_class->draw_hline = draw_hline;
-  style_class->draw_vline = draw_vline;
-  style_class->draw_shadow = draw_shadow;
-  style_class->draw_polygon = draw_polygon;
-  style_class->draw_arrow = draw_arrow;
-  style_class->draw_diamond = draw_diamond;
-  style_class->draw_box = draw_box;
-  style_class->draw_tab = draw_box;
+  style_class->draw_hline = thinice_style_draw_hline;
+  style_class->draw_vline = thinice_style_draw_vline;
+  style_class->draw_shadow = thinice_style_draw_shadow;
+  style_class->draw_polygon = thinice_style_draw_polygon;
+  style_class->draw_arrow = thinice_style_draw_arrow;
+  style_class->draw_diamond = thinice_style_draw_diamond;
+  style_class->draw_box = thinice_style_draw_box;
+  style_class->draw_tab = thinice_style_draw_box;
 
-  style_class->draw_check = draw_check;
-  style_class->draw_option = draw_option;
-  style_class->draw_shadow_gap = draw_shadow_gap;
-  style_class->draw_box_gap = draw_box_gap;
-  style_class->draw_extension = draw_extension;
-  style_class->draw_slider = draw_slider;
-  style_class->draw_handle = draw_handle;
+  style_class->draw_check = thinice_style_draw_check;
+  style_class->draw_option = thinice_style_draw_option;
+  style_class->draw_shadow_gap = thinice_style_draw_shadow_gap;
+  style_class->draw_box_gap = thinice_style_draw_box_gap;
+  style_class->draw_extension = thinice_style_draw_extension;
+  style_class->draw_slider = thinice_style_draw_slider;
+  style_class->draw_handle = thinice_style_draw_handle;
 }
 
 

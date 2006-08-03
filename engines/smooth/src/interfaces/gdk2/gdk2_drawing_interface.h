@@ -26,7 +26,7 @@
 #include <interfaces/drawing_interface.h>
 #include <interfaces/shared/gdk/gdk_drawing_interface.h>
 
-void GDKInitializeCanvas(SmoothCanvas *Canvas,
+void SmoothGDKInitializeCanvas(SmoothCanvas *Canvas,
 				GtkStyle * Style,
 				GdkWindow * _Window,
 				GdkRectangle * Area,
@@ -38,6 +38,6 @@ void GDKInitializeCanvas(SmoothCanvas *Canvas,
 				SmoothInt YOffset,
 				SmoothColorCube *ColorCube) G_GNUC_INTERNAL;
 
-void GDKFinalizeCanvas(SmoothCanvas *Canvas) G_GNUC_INTERNAL;
+void SmoothGDKFinalizeCanvas(SmoothCanvas *Canvas) G_GNUC_INTERNAL;
 
 #endif /* GDK2_DRAWING_INTERFACE_H */

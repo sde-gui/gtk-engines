@@ -10,7 +10,7 @@ static void      mist_rc_style_merge        (GtkRcStyle       *dest,
 					     GtkRcStyle       *src);
 static GtkStyle *mist_rc_style_create_style (GtkRcStyle       *rc_style);
 
-static GtkRcStyleClass *parent_class;
+static GtkRcStyleClass *mist_parent_rc_style_class;
 
 GType mist_type_rc_style = 0;
 
@@ -45,7 +45,7 @@ static void
 mist_rc_style_class_init (MistRcStyleClass *klass)
 {
 	GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
-	parent_class = g_type_class_peek_parent (klass);
+	mist_parent_rc_style_class = g_type_class_peek_parent (klass);
 	
 	rc_style_class->parse = mist_rc_style_parse;
 	rc_style_class->merge = mist_rc_style_merge;
@@ -96,7 +96,7 @@ static void
 mist_rc_style_merge (GtkRcStyle * dest,
 		     GtkRcStyle * src)
 {
-	parent_class->merge (dest, src);
+	mist_parent_rc_style_class->merge (dest, src);
 }
 
 /* Create an empty style suitable to this RC style

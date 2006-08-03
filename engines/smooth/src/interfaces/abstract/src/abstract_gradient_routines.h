@@ -21,7 +21,7 @@
 /* Author(s): Andrew Johnson <ajgenius@ajgenius.us>                           */
 /******************************************************************************/
 static SmoothBool
-AbstractCanvasRenderGradient(SmoothCanvas *Canvas,
+SmoothAbstractCanvasRenderGradient(SmoothCanvas *Canvas,
 				SmoothGradient Gradient,
 				SmoothInt X,
 				SmoothInt Y,

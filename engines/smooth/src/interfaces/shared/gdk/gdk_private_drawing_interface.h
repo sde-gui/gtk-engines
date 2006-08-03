@@ -27,7 +27,7 @@ typedef struct
 {
 
 	/************************************************/
-	/* SmoothGDKCanvas.Window:			*/
+	/* SmoothSmoothGDKCanvas.Window:			*/
 	/*						*/
 	/* 	This is the GDK abstraction around the	*/
 	/* 	X handle of the virtual canvas.		*/
@@ -44,7 +44,7 @@ typedef struct
 	} Drawable;
 
 	/************************************************/
-	/* SmoothGDKCanvas.Pen:				*/
+	/* SmoothSmoothGDKCanvas.Pen:				*/
 	/*						*/
 	/*	Pen Color/Thickness - seperate from GC	*/
 	/*	to allow caching GC's by color hash.	*/
@@ -71,7 +71,7 @@ typedef struct
 	} Pen;
 
 	/************************************************/
-	/* SmoothGDKCanvas.Brush:			*/
+	/* SmoothSmoothGDKCanvas.Brush:			*/
 	/*						*/
 	/*	Brush Color/Thickness - seperate from GC*/
 	/*	to allow caching GC's by color hash.	*/
@@ -84,7 +84,7 @@ typedef struct
 	} Brush;
 
 	/************************************************/
-	/* SmoothGDKCanvas.Colormap :			*/
+	/* SmoothSmoothGDKCanvas.Colormap :			*/
 	/*						*/
 	/* 	Every color used in GDK is allocated 	*/
 	/* 	within a a colormap which is always	*/
@@ -104,7 +104,7 @@ typedef struct
 	SmoothColorCube	*ColorCube;
 	
 	/************************************************/
-	/* SmoothGDKCanvas.EngineClip :			*/
+	/* SmoothSmoothGDKCanvas.EngineClip :			*/
 	/*						*/
 	/* 	It may be necesary to always ensure a 	*/
 	/* 	clip which has been preset by the engine*/
@@ -123,7 +123,7 @@ typedef struct
 	} EngineClip;
 
 	/************************************************/
-	/* SmoothGDKCanvas.Clip :			*/
+	/* SmoothSmoothGDKCanvas.Clip :			*/
 	/*						*/
 	/* 	Many functions require the ability	*/
 	/* 	to modify or ignore the clipping	*/

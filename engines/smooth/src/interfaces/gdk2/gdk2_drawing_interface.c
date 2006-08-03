@@ -41,54 +41,54 @@ void smooth_internal_drawing_area_unuse_brush_gc(SmoothGDKPrivateCanvas *Canvas,
 /* some basic math defines */
 #define SQR(x) x*x
 
-static SmoothBool _DrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface);
-static SmoothBool _DrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface);
+static SmoothBool _SmoothDrawingInterfaceInitialize(DrawingInterfaceClass *_SmoothDrawingInterface);
+static SmoothBool _SmoothDrawingInterfaceFinalize(DrawingInterfaceClass *_SmoothDrawingInterface);
 
 /* Image/Buffer By File name (For caching purposes) */
-static void cleanup_gdk_pixbuf_cache(SmoothBool force);/* not part of class */
+static void smooth_cleanup_gdk_pixbuf_cache(SmoothBool force);/* not part of class */
 
-static SmoothBool GDK2ImageBufferLoadByFile(SmoothString ImageFile, SmoothImageBuffer *ImageBuffer);
-static SmoothBool GDK2ImageBufferUnLoadByFile(SmoothString ImageFile);
+static SmoothBool SmoothGDK2ImageBufferLoadByFile(SmoothString ImageFile, SmoothImageBuffer *ImageBuffer);
+static SmoothBool SmoothGDK2ImageBufferUnLoadByFile(SmoothString ImageFile);
 
 /* Canvas Get ImageBuffer Size */
-static SmoothBool GDK2ImageBufferGetWidth(SmoothImageBuffer *ImageBuffer,
+static SmoothBool SmoothGDK2ImageBufferGetWidth(SmoothImageBuffer *ImageBuffer,
 						SmoothInt *Width);
-static SmoothBool GDK2ImageBufferGetHeight(SmoothImageBuffer *ImageBuffer,
+static SmoothBool SmoothGDK2ImageBufferGetHeight(SmoothImageBuffer *ImageBuffer,
 						SmoothInt *Height);
 
 /* Canvas Get Image Size */
-static SmoothBool GDK2ImageGetWidth(SmoothImage *Image,
+static SmoothBool SmoothGDK2ImageGetWidth(SmoothImage *Image,
 						SmoothInt *Width);
-static SmoothBool GDK2ImageGetHeight(SmoothImage *Image,
+static SmoothBool SmoothGDK2ImageGetHeight(SmoothImage *Image,
 						SmoothInt *Height);
 
 /* Canvas Store/Render */
-static SmoothBool GDK2CanvasStore(SmoothPrivateCanvas *Canvas);
-static SmoothBool GDK2CanvasRender(SmoothPrivateCanvas *Canvas,	
+static SmoothBool SmoothGDK2CanvasStore(SmoothPrivateCanvas *Canvas);
+static SmoothBool SmoothGDK2CanvasRender(SmoothPrivateCanvas *Canvas,	
 					SmoothBool ClosePathAndFill);
 
 /* Canvas Create Image */
-static SmoothBool GDK2CanvasCreateImage(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasCreateImage(SmoothPrivateCanvas *Canvas,
 						SmoothInt Width,
 						SmoothInt Height,
 						SmoothImage *Image);
 						
-static SmoothBool GDK2CanvasCreateImageFromBuffer(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasCreateImageFromBuffer(SmoothPrivateCanvas *Canvas,
 							SmoothImageBuffer ImageBuffer,
 							SmoothImage *Image);
 							
-static SmoothBool GDK2CanvasDestroyImage(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasDestroyImage(SmoothPrivateCanvas *Canvas,
 						SmoothImage *Image);
 
 /* Canvas Tile Image/ImageBuffer */
-static SmoothBool GDK2CanvasRenderImage(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasRenderImage(SmoothPrivateCanvas *Canvas,
 						SmoothImage Image,
 						SmoothInt X,
 						SmoothInt Y,
 						SmoothInt Width,
 						SmoothInt Height);
 						
-static SmoothBool GDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
 							SmoothImageBuffer ImageBuffer,
 							SmoothInt X,
 							SmoothInt Y,
@@ -96,31 +96,31 @@ static SmoothBool GDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
 							SmoothInt Height);
 
 /* Canvas Draw _Point(s) */
-static SmoothBool GDK2CanvasDrawPoint(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasDrawPoint(SmoothPrivateCanvas *Canvas,
 						SmoothInt X,
 						SmoothInt Y);
 						
-static SmoothBool GDK2CanvasDrawPoints(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasDrawPoints(SmoothPrivateCanvas *Canvas,
 						SmoothPoint *Points, 
 						SmoothInt NumberOfPoints);
 
 /* Canvas Draw Line(s) */
-static SmoothBool GDK2CanvasDrawLine(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasDrawLine(SmoothPrivateCanvas *Canvas,
 						SmoothInt X1,
 						SmoothInt Y1,
 						SmoothInt X2,
 						SmoothInt Y2);
 						
-static SmoothBool GDK2CanvasDrawSegment(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasDrawSegment(SmoothPrivateCanvas *Canvas,
 						SmoothPoint _Point1, 
 						SmoothPoint _Point2);
 
-static SmoothBool GDK2CanvasDrawLines(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasDrawLines(SmoothPrivateCanvas *Canvas,
 						SmoothPoint *Points, 
 						SmoothInt NumberOfPoints);
 
 /* Canvas Draw Arc(s)/Curve(s) */
-static SmoothBool GDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
 					SmoothInt X, 
 					SmoothInt Y, 
 					SmoothInt Width, 
@@ -129,17 +129,17 @@ static SmoothBool GDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
 					SmoothDouble AngleLength);
 
 /* Canvas Frame Shaped Areas */
-static SmoothBool GDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
 						SmoothInt X, 
 						SmoothInt Y, 
 						SmoothInt Width, 
 						SmoothInt Height);
 						
-static SmoothBool GDK2CanvasFramePolygon(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasFramePolygon(SmoothPrivateCanvas *Canvas,
 						SmoothPoint *Points, 
 						SmoothInt NumberOfPoints);
 
-static SmoothBool GDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
 						SmoothInt X, 
 						SmoothInt Y, 
 						SmoothInt Width, 
@@ -148,17 +148,17 @@ static SmoothBool GDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
 						SmoothDouble AngleLength);
 
 /* Canvas Fill Shaped Areas */
-static SmoothBool GDK2CanvasFillRectangle(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasFillRectangle(SmoothPrivateCanvas *Canvas,
 						SmoothInt X, 
 						SmoothInt Y, 
 						SmoothInt Width, 
 						SmoothInt Height);
 						
-static SmoothBool GDK2CanvasFillPolygon(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasFillPolygon(SmoothPrivateCanvas *Canvas,
 						SmoothPoint *Points, 
 						SmoothInt NumberOfPoints);
 
-static SmoothBool GDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
+static SmoothBool SmoothGDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
 						SmoothInt X, 
 						SmoothInt Y, 
 						SmoothInt Width, 
@@ -173,18 +173,18 @@ static SmoothBool GDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
 /* Internal Clip EVILNESS */
 typedef enum {GDK2_CLIP_NONE, GDK2_CLIP_EMPTY, GDK2_CLIP_RECTANGLE, GDK2_CLIP_REGION, GDK2_CLIP_BITMAP} GDK2ClipType;
 
-static void *  GCSetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, GDK2ClipType *clip_type);
-static void GCUnsetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, void *ClipArea, GDK2ClipType clip_type);
+static void *  SmoothGDKGCSetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, GDK2ClipType *clip_type);
+static void SmoothGDKGCUnsetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, void *ClipArea, GDK2ClipType clip_type);
 
 /* Internal Image Buffers */
 static void
-internel_image_buffer_free_pixels (guchar *pixels, gpointer data)
+smooth_internal_image_buffer_free_pixels (guchar *pixels, gpointer data)
 {
 	g_free (pixels);
 }
 
 static SmoothImageBuffer
-internal_image_buffer_new (SmoothInt width, SmoothInt height)
+smooth_internal_image_buffer_new (SmoothInt width, SmoothInt height)
 {
   SmoothUChar *buf;
   int rowstride;
@@ -202,11 +202,11 @@ internal_image_buffer_new (SmoothInt width, SmoothInt height)
   return gdk_pixbuf_new_from_data (buf, GDK_COLORSPACE_RGB,
                                    FALSE, 8,
                                    width, height, rowstride,
-                                   internel_image_buffer_free_pixels, NULL);
+                                   smooth_internal_image_buffer_free_pixels, NULL);
 }
 
 /* the following are routines for caching images by file name */
-static GHashTable* pixbuf_cache = NULL;
+static GHashTable* smooth_pixbuf_cache = NULL;
 
 typedef struct
 {
@@ -216,7 +216,7 @@ typedef struct
 } GdkCachedImageBuffer;
 
 static void
-free_pixbuf_cache(GdkCachedImageBuffer *cache)
+smooth_free_pixbuf_cache(GdkCachedImageBuffer *cache)
 {
 	g_object_unref(cache->ImageBuffer);
 	g_string_free(cache->FileName, SmoothTrue);
@@ -224,7 +224,7 @@ free_pixbuf_cache(GdkCachedImageBuffer *cache)
 }
 
 static GdkCachedImageBuffer *
-new_pixbuf_cache(SmoothString FileName)
+smooth_new_pixbuf_cache(SmoothString FileName)
 {
 	GdkCachedImageBuffer *result=NULL;
 
@@ -238,29 +238,29 @@ new_pixbuf_cache(SmoothString FileName)
 }
 
 static SmoothBool 
-force_cleanup_pixbuf_cache(gpointer key, gpointer value, gpointer user_data)
+smooth_force_cleanup_pixbuf_cache(gpointer key, gpointer value, gpointer user_data)
 {
 	if (value) 
 	{
-		free_pixbuf_cache((GdkCachedImageBuffer *)value);
+		smooth_free_pixbuf_cache((GdkCachedImageBuffer *)value);
 	}	
 	return SmoothTrue;
 }
 
 static void
-cleanup_gdk_pixbuf_cache(SmoothBool force)
+smooth_cleanup_gdk_pixbuf_cache(SmoothBool force)
 {
-	if (pixbuf_cache) 
+	if (smooth_pixbuf_cache) 
 	{
 		if (force)
 		{
-			g_hash_table_foreach_remove(pixbuf_cache, force_cleanup_pixbuf_cache, NULL);
+			g_hash_table_foreach_remove(smooth_pixbuf_cache, smooth_force_cleanup_pixbuf_cache, NULL);
 		}
 		
-		if (g_hash_table_size(pixbuf_cache)<=0) 
+		if (g_hash_table_size(smooth_pixbuf_cache)<=0) 
 		{
-			g_hash_table_destroy(pixbuf_cache);
-			pixbuf_cache = NULL;
+			g_hash_table_destroy(smooth_pixbuf_cache);
+			smooth_pixbuf_cache = NULL;
 		}  
 	}   
 }
@@ -271,19 +271,19 @@ internal_gdk_pixbuf_get_by_name(SmoothString file_name)
 	GdkCachedImageBuffer *cache=NULL;
 	GdkPixbuf *result=NULL;
    
-	if (!pixbuf_cache)
+	if (!smooth_pixbuf_cache)
 	{
-		pixbuf_cache=g_hash_table_new(g_str_hash, g_str_equal);
+		smooth_pixbuf_cache=g_hash_table_new(g_str_hash, g_str_equal);
 	}
 	
-	cache = g_hash_table_lookup(pixbuf_cache, file_name->str);
+	cache = g_hash_table_lookup(smooth_pixbuf_cache, file_name->str);
    
 	if (!cache) 
 	{
-		cache = new_pixbuf_cache(file_name);
+		cache = smooth_new_pixbuf_cache(file_name);
 
 		if (cache) 
-			g_hash_table_insert(pixbuf_cache, cache->FileName->str, cache);
+			g_hash_table_insert(smooth_pixbuf_cache, cache->FileName->str, cache);
 	}
   
 	if (cache) 
@@ -300,23 +300,23 @@ internal_gdk_pixbuf_unref(SmoothString file_name)
 {  
 	GdkCachedImageBuffer *cache = NULL;
 
-	if (pixbuf_cache) {
-		cache = g_hash_table_lookup(pixbuf_cache, file_name->str);
+	if (smooth_pixbuf_cache) {
+		cache = g_hash_table_lookup(smooth_pixbuf_cache, file_name->str);
 
 		if (cache) {
 			cache->ref_count--;
    
 			if (cache->ref_count == 0) {
-				g_hash_table_remove(pixbuf_cache, file_name->str);
-				free_pixbuf_cache(cache);
+				g_hash_table_remove(smooth_pixbuf_cache, file_name->str);
+				smooth_free_pixbuf_cache(cache);
 			}   
 		}
-		cleanup_gdk_pixbuf_cache(SmoothFalse);  
+		smooth_cleanup_gdk_pixbuf_cache(SmoothFalse);  
 	}   
 }
 
 static SmoothBool 
-GDK2ImageBufferLoadByFile(SmoothString ImageFile,
+SmoothGDK2ImageBufferLoadByFile(SmoothString ImageFile,
 				SmoothImageBuffer *ImageBuffer)
 {
 	SmoothBool result = SmoothFalse;
@@ -330,7 +330,7 @@ GDK2ImageBufferLoadByFile(SmoothString ImageFile,
 }
 
 static SmoothBool
-GDK2ImageBufferUnLoadByFile(SmoothString ImageFile)
+SmoothGDK2ImageBufferUnLoadByFile(SmoothString ImageFile)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -345,7 +345,7 @@ GDK2ImageBufferUnLoadByFile(SmoothString ImageFile)
 
 /* Canvas Get ImageBuffer Size */
 static SmoothBool
-GDK2ImageBufferGetWidth(SmoothImageBuffer *ImageBuffer,
+SmoothGDK2ImageBufferGetWidth(SmoothImageBuffer *ImageBuffer,
 				SmoothInt *Width)
 {
 	SmoothBool result = SmoothFalse;
@@ -359,7 +359,7 @@ GDK2ImageBufferGetWidth(SmoothImageBuffer *ImageBuffer,
 }
 
 static SmoothBool
-GDK2ImageBufferGetHeight(SmoothImageBuffer *ImageBuffer,
+SmoothGDK2ImageBufferGetHeight(SmoothImageBuffer *ImageBuffer,
 				SmoothInt *Height)
 {
 	SmoothBool result = SmoothFalse;
@@ -374,7 +374,7 @@ GDK2ImageBufferGetHeight(SmoothImageBuffer *ImageBuffer,
 
 /* Canvas Get Image Size */
 static SmoothBool
-GDK2ImageGetWidth(SmoothImage *Image,
+SmoothGDK2ImageGetWidth(SmoothImage *Image,
 			SmoothInt *Width)
 {
 	SmoothBool result = SmoothFalse;
@@ -388,7 +388,7 @@ GDK2ImageGetWidth(SmoothImage *Image,
 }
 
 static SmoothBool
-GDK2ImageGetHeight(SmoothImage *Image,
+SmoothGDK2ImageGetHeight(SmoothImage *Image,
 				SmoothInt *Height)
 {
 	SmoothBool result = SmoothFalse;
@@ -403,7 +403,7 @@ GDK2ImageGetHeight(SmoothImage *Image,
 
 /* Canvas Store/Render */
 static SmoothBool 
-GDK2CanvasStore(SmoothPrivateCanvas *Canvas)
+SmoothGDK2CanvasStore(SmoothPrivateCanvas *Canvas)
 {
 	SmoothBool result = SmoothFalse;
 	
@@ -415,7 +415,7 @@ GDK2CanvasStore(SmoothPrivateCanvas *Canvas)
 }
 
 static SmoothBool 
-GDK2CanvasRender(SmoothPrivateCanvas *Canvas,	
+SmoothGDK2CanvasRender(SmoothPrivateCanvas *Canvas,	
 			SmoothBool ClosePathAndFill)
 {
 	SmoothBool result = SmoothFalse;
@@ -429,7 +429,7 @@ GDK2CanvasRender(SmoothPrivateCanvas *Canvas,
 
 /* Canvas Create/Destroy Image */
 static SmoothBool
-GDK2CanvasCreateImage(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasCreateImage(SmoothPrivateCanvas *Canvas,
 				SmoothInt Width,
 				SmoothInt Height,
 				SmoothImage *Image)
@@ -448,7 +448,7 @@ GDK2CanvasCreateImage(SmoothPrivateCanvas *Canvas,
 }
 										
 static SmoothBool
-GDK2CanvasCreateImageFromBuffer(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasCreateImageFromBuffer(SmoothPrivateCanvas *Canvas,
 					SmoothImageBuffer ImageBuffer,
 					SmoothImage *Image)
 {
@@ -456,7 +456,7 @@ GDK2CanvasCreateImageFromBuffer(SmoothPrivateCanvas *Canvas,
 	
 	if (Canvas && ImageBuffer && Image)
 	{
-		if (GDK2CanvasCreateImage(Canvas,  gdk_pixbuf_get_width(ImageBuffer), gdk_pixbuf_get_height(ImageBuffer), Image))
+		if (SmoothGDK2CanvasCreateImage(Canvas,  gdk_pixbuf_get_width(ImageBuffer), gdk_pixbuf_get_height(ImageBuffer), Image))
 		{
 			gdk_draw_pixbuf(Image->Pixmap, Image->GC, ImageBuffer, 0, 0, 0, 0, -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
 			result = SmoothTrue;
@@ -466,7 +466,7 @@ GDK2CanvasCreateImageFromBuffer(SmoothPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDK2CanvasDestroyImage(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasDestroyImage(SmoothPrivateCanvas *Canvas,
 				SmoothImage *Image)
 {
 	SmoothBool result = SmoothFalse;
@@ -483,7 +483,7 @@ GDK2CanvasDestroyImage(SmoothPrivateCanvas *Canvas,
 
 /* Canvas Tile Image/ImageBuffer */
 static SmoothBool		
-GDK2CanvasRenderImage(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasRenderImage(SmoothPrivateCanvas *Canvas,
 				SmoothImage Image,
 				SmoothInt X,
 				SmoothInt Y,
@@ -501,12 +501,12 @@ GDK2CanvasRenderImage(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, brush, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, brush, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 	        		gdk_draw_drawable(Canvas->GDKPrivateCanvas.Window, brush, Image.Pixmap, 0, 0, X, Y, Width, Height);
-				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
@@ -517,7 +517,7 @@ GDK2CanvasRenderImage(SmoothPrivateCanvas *Canvas,
 }													
 
 static SmoothBool		
-GDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
 					SmoothImageBuffer ImageBuffer,
 					SmoothInt X,
 					SmoothInt Y,
@@ -535,7 +535,7 @@ GDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, brush, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, brush, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
@@ -548,7 +548,7 @@ GDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
 
 				gdk_draw_pixbuf(Canvas->GDKPrivateCanvas.Window, brush, ImageBuffer, 0, 0, X, Y,
 							 Width, Height, dither, 0, 0);
-				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
@@ -560,7 +560,7 @@ GDK2CanvasRenderImageBuffer(SmoothPrivateCanvas *Canvas,
 
 /* Canvas Draw _Point(s) */
 static SmoothBool		
-GDK2CanvasDrawPoint(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasDrawPoint(SmoothPrivateCanvas *Canvas,
 				SmoothInt X,
 				SmoothInt Y)
 {
@@ -575,12 +575,12 @@ GDK2CanvasDrawPoint(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_point(Canvas->GDKPrivateCanvas.Window, pen, X, Y);
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -591,7 +591,7 @@ GDK2CanvasDrawPoint(SmoothPrivateCanvas *Canvas,
 }				
 
 static SmoothBool
-GDK2CanvasDrawPoints(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasDrawPoints(SmoothPrivateCanvas *Canvas,
 				SmoothPoint *Points, 
 				SmoothInt NumberOfPoints)
 {				
@@ -606,12 +606,12 @@ GDK2CanvasDrawPoints(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_points(Canvas->GDKPrivateCanvas.Window, pen, Points, NumberOfPoints);
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -623,7 +623,7 @@ GDK2CanvasDrawPoints(SmoothPrivateCanvas *Canvas,
 
 /* Canvas Draw Line(s) */
 static SmoothBool		
-GDK2CanvasDrawLine(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasDrawLine(SmoothPrivateCanvas *Canvas,
 				SmoothInt X1,
 				SmoothInt Y1,
 				SmoothInt X2,
@@ -640,12 +640,12 @@ GDK2CanvasDrawLine(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_line(Canvas->GDKPrivateCanvas.Window, pen, X1, Y1, X2, Y2);
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -656,7 +656,7 @@ GDK2CanvasDrawLine(SmoothPrivateCanvas *Canvas,
 }				
 
 static SmoothBool
-GDK2CanvasDrawSegment(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasDrawSegment(SmoothPrivateCanvas *Canvas,
 				SmoothPoint _Point1, 
 				SmoothPoint _Point2)
 {				
@@ -671,12 +671,12 @@ GDK2CanvasDrawSegment(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_line(Canvas->GDKPrivateCanvas.Window, pen, _Point1.x, _Point1.y, _Point2.x, _Point2.y);
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -687,7 +687,7 @@ GDK2CanvasDrawSegment(SmoothPrivateCanvas *Canvas,
 }
 
 static SmoothBool
-GDK2CanvasDrawLines(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasDrawLines(SmoothPrivateCanvas *Canvas,
 				SmoothPoint *Points, 
 				SmoothInt NumberOfPoints)
 {				
@@ -702,12 +702,12 @@ GDK2CanvasDrawLines(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_lines(Canvas->GDKPrivateCanvas.Window, pen, Points, NumberOfPoints);
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -719,7 +719,7 @@ GDK2CanvasDrawLines(SmoothPrivateCanvas *Canvas,
 
 /* Canvas Draw Arc(s)/Curve(s) */
 static SmoothBool
-GDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
 				SmoothInt X, 
 				SmoothInt Y, 
 				SmoothInt Width, 
@@ -738,13 +738,13 @@ GDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_arc(Canvas->GDKPrivateCanvas.Window, pen, SmoothFalse, X, Y, Width, Height,
 						AnglePosition*64, AngleLength*64);
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -756,7 +756,7 @@ GDK2CanvasDrawArc(SmoothPrivateCanvas *Canvas,
 
 /* Canvas Frame Shaped Areas */
 static SmoothBool
-GDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
 				SmoothInt X, 
 				SmoothInt Y, 
 				SmoothInt Width, 
@@ -773,7 +773,7 @@ GDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
@@ -881,7 +881,7 @@ GDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
 					SmoothCanvasSetPenPattern(Canvas, Canvas->GDKPrivateCanvas.Pen.Pattern);
 				}
 			
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -891,7 +891,7 @@ GDK2CanvasFrameRectangle(SmoothPrivateCanvas *Canvas,
 }				
 
 static SmoothBool
-GDK2CanvasFramePolygon(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasFramePolygon(SmoothPrivateCanvas *Canvas,
 				SmoothPoint *Points, 
 				SmoothInt NumberOfPoints)
 {
@@ -906,13 +906,13 @@ GDK2CanvasFramePolygon(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_polygon(Canvas->GDKPrivateCanvas.Window, pen, SmoothFalse, 
 							Points, NumberOfPoints);
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -923,7 +923,7 @@ GDK2CanvasFramePolygon(SmoothPrivateCanvas *Canvas,
 }				
 
 static SmoothBool
-GDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
 				SmoothInt X, 
 				SmoothInt Y, 
 				SmoothInt Width, 
@@ -942,14 +942,14 @@ GDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, pen, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, pen, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_arc(Canvas->GDKPrivateCanvas.Window, pen, SmoothFalse, X, Y, Width, Height,
 						AnglePosition*64, AngleLength*64);
 				/* Connect the end points..... */
-				GCUnsetClipArea(Canvas, pen, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, pen, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_pen_gc(&Canvas->GDKPrivateCanvas, pen);
 		}
@@ -961,7 +961,7 @@ GDK2CanvasFrameChord(SmoothPrivateCanvas *Canvas,
 
 /* Canvas Fill Shaped Areas */
 static SmoothBool
-GDK2CanvasFillRectangle(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasFillRectangle(SmoothPrivateCanvas *Canvas,
 				SmoothInt X, 
 				SmoothInt Y, 
 				SmoothInt Width, 
@@ -978,13 +978,13 @@ GDK2CanvasFillRectangle(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, brush, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, brush, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_rectangle(Canvas->GDKPrivateCanvas.Window, brush, SmoothTrue, X, Y, Width, Height);
 				
-				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
@@ -994,7 +994,7 @@ GDK2CanvasFillRectangle(SmoothPrivateCanvas *Canvas,
 }				
 
 static SmoothBool
-GDK2CanvasFillPolygon(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasFillPolygon(SmoothPrivateCanvas *Canvas,
 				SmoothPoint *Points, 
 				SmoothInt NumberOfPoints)
 {
@@ -1009,13 +1009,13 @@ GDK2CanvasFillPolygon(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, brush, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, brush, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
 				gdk_draw_polygon(Canvas->GDKPrivateCanvas.Window, brush, SmoothTrue, 
 							Points, NumberOfPoints);
-				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
@@ -1026,7 +1026,7 @@ GDK2CanvasFillPolygon(SmoothPrivateCanvas *Canvas,
 }				
 
 static SmoothBool
-GDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
+SmoothGDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
 				SmoothInt X, 
 				SmoothInt Y, 
 				SmoothInt Width, 
@@ -1045,7 +1045,7 @@ GDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
 			GDK2ClipType clip_type;
 			void *clip_area=NULL;
 		
-			clip_area = GCSetClipArea(Canvas, brush, &clip_type);
+			clip_area = SmoothGDKGCSetClipArea(Canvas, brush, &clip_type);
 
 			if (clip_type != GDK2_CLIP_EMPTY)
 			{
@@ -1054,7 +1054,7 @@ GDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
 				gdk_draw_arc(Canvas->GDKPrivateCanvas.Window, brush, SmoothFalse, X, Y, Width, Height,
 						AnglePosition*64, AngleLength*64);
 
-				GCUnsetClipArea(Canvas, brush, clip_area, clip_type);
+				SmoothGDKGCUnsetClipArea(Canvas, brush, clip_area, clip_type);
 			}	
 			smooth_internal_drawing_area_unuse_brush_gc(&Canvas->GDKPrivateCanvas, brush);
 		}
@@ -1068,7 +1068,7 @@ GDK2CanvasFillChord(SmoothPrivateCanvas *Canvas,
 /* Interface Internal code to set and unset Clipping mask */
 /* EVILNESS EVILNESS EVILNESS EVILNESS EVILNESS EVILNESS  */
 static void * 
-GCSetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, GDK2ClipType *ClipType)
+SmoothGDKGCSetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, GDK2ClipType *ClipType)
 {
 	void * result = NULL;
  	GdkBitmap *bmp = NULL;
@@ -1078,7 +1078,7 @@ GCSetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, GDK2ClipType *ClipType)
 	{
 		*ClipType = GDK2_CLIP_NONE;
 		
-		GCUnsetClipArea(Canvas, GC, NULL, GDK2_CLIP_NONE);
+		SmoothGDKGCUnsetClipArea(Canvas, GC, NULL, GDK2_CLIP_NONE);
 
 		if (Canvas->GDKPrivateCanvas.EngineClip.Region)
 		{
@@ -1213,7 +1213,7 @@ GCSetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, GDK2ClipType *ClipType)
 }
 
 static void
-GCUnsetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, void *ClipArea, GDK2ClipType ClipType)
+SmoothGDKGCUnsetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, void *ClipArea, GDK2ClipType ClipType)
 {
 	if (Canvas && GC)
 	{
@@ -1244,7 +1244,7 @@ GCUnsetClipArea(SmoothPrivateCanvas *Canvas, GdkGC *GC, void *ClipArea, GDK2Clip
 }
 
 void 
-GDKInitializeCanvas(SmoothCanvas *Canvas,
+SmoothGDKInitializeCanvas(SmoothCanvas *Canvas,
 				GtkStyle * Style,
 				GdkWindow * _Window,
 				GdkRectangle * Area,
@@ -1287,11 +1287,11 @@ GDKInitializeCanvas(SmoothCanvas *Canvas,
 	
       	*Canvas = PrivateCanvas;
 
-	GDKInitializeColorCube(*Canvas, Style, ColorCube);
+	SmoothGDKInitializeColorCube(*Canvas, Style, ColorCube);
 }
 
 void 
-GDKFinalizeCanvas(SmoothCanvas *Canvas)
+SmoothGDKFinalizeCanvas(SmoothCanvas *Canvas)
 {
 	SmoothPrivateCanvas *PrivateCanvas = *Canvas;
 	
@@ -1299,74 +1299,74 @@ GDKFinalizeCanvas(SmoothCanvas *Canvas)
 	*Canvas = NULL;
 }
 
-/* Initialize drawingInterface */
+/* Initialize smoothDrawingInterface */
 static SmoothBool 
-_DrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface)
+_SmoothDrawingInterfaceInitialize(DrawingInterfaceClass *_SmoothDrawingInterface)
 {
-	GDKDrawingInterfaceInitialize(_DrawingInterface);
+	SmoothGDKDrawingInterfaceInitialize(_SmoothDrawingInterface);
 
 	/* Image/Buffer By File name (For caching purposes) */
-	_DrawingInterface->ImageBufferLoadByFile = (void *) GDK2ImageBufferLoadByFile;
-	_DrawingInterface->ImageBufferUnLoadByFile = (void *) GDK2ImageBufferUnLoadByFile;
+	_SmoothDrawingInterface->ImageBufferLoadByFile = (void *) SmoothGDK2ImageBufferLoadByFile;
+	_SmoothDrawingInterface->ImageBufferUnLoadByFile = (void *) SmoothGDK2ImageBufferUnLoadByFile;
 
 	/* Canvas Get ImageBuffer Size */
-	_DrawingInterface->ImageBufferGetWidth = (void *) GDK2ImageBufferGetWidth;
-	_DrawingInterface->ImageBufferGetHeight = (void *) GDK2ImageBufferGetHeight;
+	_SmoothDrawingInterface->ImageBufferGetWidth = (void *) SmoothGDK2ImageBufferGetWidth;
+	_SmoothDrawingInterface->ImageBufferGetHeight = (void *) SmoothGDK2ImageBufferGetHeight;
 
 	/* Canvas Get Image Size */
-	_DrawingInterface->ImageGetWidth = (void *) GDK2ImageGetWidth;
-	_DrawingInterface->ImageGetHeight = (void *) GDK2ImageGetHeight;
+	_SmoothDrawingInterface->ImageGetWidth = (void *) SmoothGDK2ImageGetWidth;
+	_SmoothDrawingInterface->ImageGetHeight = (void *) SmoothGDK2ImageGetHeight;
 
 	/* Canvas Store/Render */
-	_DrawingInterface->CanvasStore =  (void *) GDK2CanvasStore;
-	_DrawingInterface->CanvasRender =  (void *) GDK2CanvasRender;
+	_SmoothDrawingInterface->CanvasStore =  (void *) SmoothGDK2CanvasStore;
+	_SmoothDrawingInterface->CanvasRender =  (void *) SmoothGDK2CanvasRender;
 
 	/* Canvas Create Image */
-	_DrawingInterface->CanvasCreateImage = (void *) GDK2CanvasCreateImage;
-	_DrawingInterface->CanvasCreateImageFromBuffer = (void *) GDK2CanvasCreateImageFromBuffer;
-	_DrawingInterface->CanvasDestroyImage = (void *) GDK2CanvasDestroyImage;
+	_SmoothDrawingInterface->CanvasCreateImage = (void *) SmoothGDK2CanvasCreateImage;
+	_SmoothDrawingInterface->CanvasCreateImageFromBuffer = (void *) SmoothGDK2CanvasCreateImageFromBuffer;
+	_SmoothDrawingInterface->CanvasDestroyImage = (void *) SmoothGDK2CanvasDestroyImage;
 
 	/* Canvas Tile Image/ImageBuffer */
-	_DrawingInterface->CanvasRenderImage = (void *) GDK2CanvasRenderImage;						
-	_DrawingInterface->CanvasRenderImageBuffer = (void *) GDK2CanvasRenderImageBuffer;						
+	_SmoothDrawingInterface->CanvasRenderImage = (void *) SmoothGDK2CanvasRenderImage;						
+	_SmoothDrawingInterface->CanvasRenderImageBuffer = (void *) SmoothGDK2CanvasRenderImageBuffer;						
 
 
 	/* Canvas Render Gradient */
 	#ifdef SMOOTHGRADIENT
-	_DrawingInterface->CanvasRenderGradient = (void *)GDK2CanvasRenderGradient;
+	_SmoothDrawingInterface->CanvasRenderGradient = (void *)SmoothGDK2CanvasRenderGradient;
 	#endif
 	
 	/* Canvas Draw _Point(s) */
-	_DrawingInterface->CanvasDrawPoint = (void *) GDK2CanvasDrawPoint;
-	_DrawingInterface->CanvasDrawPoints = (void *) GDK2CanvasDrawPoints;
+	_SmoothDrawingInterface->CanvasDrawPoint = (void *) SmoothGDK2CanvasDrawPoint;
+	_SmoothDrawingInterface->CanvasDrawPoints = (void *) SmoothGDK2CanvasDrawPoints;
 
 	/* Canvas Draw Line(s) */
-	_DrawingInterface->CanvasDrawLine = (void *) GDK2CanvasDrawLine;
-	_DrawingInterface->CanvasDrawSegment = (void *) (void *) GDK2CanvasDrawSegment;
-	_DrawingInterface->CanvasDrawLines = (void *) GDK2CanvasDrawLines;
-/*	_DrawingInterface->CanvasDrawSegments = (void *) NULL;*/
+	_SmoothDrawingInterface->CanvasDrawLine = (void *) SmoothGDK2CanvasDrawLine;
+	_SmoothDrawingInterface->CanvasDrawSegment = (void *) (void *) SmoothGDK2CanvasDrawSegment;
+	_SmoothDrawingInterface->CanvasDrawLines = (void *) SmoothGDK2CanvasDrawLines;
+/*	_SmoothDrawingInterface->CanvasDrawSegments = (void *) NULL;*/
 	
 	/* Canvas Draw Arc(s)/Curve(s) */
-	_DrawingInterface->CanvasDrawArc = (void *) GDK2CanvasDrawArc;
+	_SmoothDrawingInterface->CanvasDrawArc = (void *) SmoothGDK2CanvasDrawArc;
 
 	/* Canvas Frame Shaped Areas */
-	_DrawingInterface->CanvasFrameRectangle = (void *) GDK2CanvasFrameRectangle;
-	_DrawingInterface->CanvasFramePolygon = (void *) GDK2CanvasFramePolygon;
-	_DrawingInterface->CanvasFrameChord = (void *) GDK2CanvasFrameChord;
+	_SmoothDrawingInterface->CanvasFrameRectangle = (void *) SmoothGDK2CanvasFrameRectangle;
+	_SmoothDrawingInterface->CanvasFramePolygon = (void *) SmoothGDK2CanvasFramePolygon;
+	_SmoothDrawingInterface->CanvasFrameChord = (void *) SmoothGDK2CanvasFrameChord;
 
 	/* Canvas Fill Shaped Areas */
-	_DrawingInterface->CanvasFillRectangle = (void *) GDK2CanvasFillRectangle;
-	_DrawingInterface->CanvasFillPolygon = (void *) GDK2CanvasFillPolygon;
-	_DrawingInterface->CanvasFillChord = (void *) GDK2CanvasFillChord;
+	_SmoothDrawingInterface->CanvasFillRectangle = (void *) SmoothGDK2CanvasFillRectangle;
+	_SmoothDrawingInterface->CanvasFillPolygon = (void *) SmoothGDK2CanvasFillPolygon;
+	_SmoothDrawingInterface->CanvasFillChord = (void *) SmoothGDK2CanvasFillChord;
 	
 	return SmoothTrue;
 }
 
-static SmoothBool _DrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface)
+static SmoothBool _SmoothDrawingInterfaceFinalize(DrawingInterfaceClass *_SmoothDrawingInterface)
 {
-	cleanup_gdk_pixbuf_cache(SmoothTrue);
+	smooth_cleanup_gdk_pixbuf_cache(SmoothTrue);
 
-	GDKDrawingInterfaceFinalize(_DrawingInterface);
+	SmoothGDKDrawingInterfaceFinalize(_SmoothDrawingInterface);
 	
 	return SmoothTrue;
 }
@@ -1374,7 +1374,7 @@ static SmoothBool _DrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInter
 /* Main Functions for Engine to Setup and Finalize - Each interface must provide these */
 void SmoothDrawingInterfaceInitialize()
 {
-	SmoothDrawingInterfaceSetup(_DrawingInterfaceInitialize, _DrawingInterfaceFinalize);
+	SmoothDrawingInterfaceSetup(_SmoothDrawingInterfaceInitialize, _SmoothDrawingInterfaceFinalize);
 }
 
 void SmoothDrawingInterfaceFinalize()

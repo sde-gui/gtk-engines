@@ -45,7 +45,7 @@ clearlooks_rounded_rectangle (cairo_t *cr,
 /* ROTATES ANTI-CLOCKWISE, I THINK :P */
 /* TODO: Do I really need THREE matrices? */
 static void
-rotate_mirror_translate (cairo_t *cr, double radius, double x, double y,
+clearlooks_rotate_mirror_translate (cairo_t *cr, double radius, double x, double y,
                          boolean mirror_horizontally, boolean mirror_vertically)
 {
 	cairo_matrix_t matrix_rotate;
@@ -670,11 +670,11 @@ clearlooks_draw_slider_button (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);
 	
 	if (slider->horizontal)
-		rotate_mirror_translate (cr, 0, x+0.5, y+0.5, FALSE, FALSE);
+		clearlooks_rotate_mirror_translate (cr, 0, x+0.5, y+0.5, FALSE, FALSE);
 	else
 	{
 		int tmp = height;
-		rotate_mirror_translate (cr, M_PI/2, x+0.5, y+0.5, FALSE, FALSE);
+		clearlooks_rotate_mirror_translate (cr, M_PI/2, x+0.5, y+0.5, FALSE, FALSE);
 		height = width;
 		width = tmp;
 	}
@@ -759,9 +759,9 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	if (is_horizontal)
 	{
 		if (progressbar->orientation == CL_ORIENTATION_LEFT_TO_RIGHT)
-			rotate_mirror_translate (cr, 0, x, y, FALSE, FALSE);
+			clearlooks_rotate_mirror_translate (cr, 0, x, y, FALSE, FALSE);
 		else
-			rotate_mirror_translate (cr, 0, x+width, y, TRUE, FALSE);
+			clearlooks_rotate_mirror_translate (cr, 0, x+width, y, TRUE, FALSE);
 	}
 	else
 	{
@@ -770,9 +770,9 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 		width   = tmp;
 
 		if (progressbar->orientation == CL_ORIENTATION_TOP_TO_BOTTOM)
-			rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+			clearlooks_rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
 		else
-			rotate_mirror_translate (cr, M_PI/2, x, y+width, TRUE, FALSE);
+			clearlooks_rotate_mirror_translate (cr, M_PI/2, x, y+width, TRUE, FALSE);
 	}
 	
 	cairo_save (cr);
@@ -976,7 +976,7 @@ clearlooks_draw_menubar1 (cairo_t *cr,
 }
 
 
-static menubar_draw_proto menubar_draw[3] = { clearlooks_draw_menubar0, 
+static menubar_draw_proto clearlooks_menubar_draw[3] = { clearlooks_draw_menubar0, 
                                               clearlooks_draw_menubar1,
                                               clearlooks_draw_menubar2 };
 
@@ -992,7 +992,7 @@ clearlooks_draw_menubar (cairo_t *cr,
 	if (menubar->style < 0 || menubar->style > 3)
 		return;
 
-	menubar_draw[menubar->style](cr, colors, params, menubar,
+	clearlooks_menubar_draw[menubar->style](cr, colors, params, menubar,
 	                             x, y, width, height);
 }
 
@@ -1441,7 +1441,7 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	if (scrollbar->horizontal)
 	{
 		int tmp = height;
-		rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+		clearlooks_rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
 		height = width;
 		width = tmp;
 	}
@@ -1576,7 +1576,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		else
 		{
 			int tmp = height;
-			rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+			clearlooks_rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
 			height = width;
 			width = tmp;
 		}
@@ -1694,7 +1694,7 @@ clearlooks_draw_handle (cairo_t *cr,
 	if (handle->horizontal)
 	{
 		int tmp = height;
-		rotate_mirror_translate (cr, M_PI/2,
+		clearlooks_rotate_mirror_translate (cr, M_PI/2,
 		                         x + 0.5 + width/2 - bar_height/2,
 		                         y + height/2 - bar_width/2,
 		                         FALSE, FALSE);
@@ -1787,7 +1787,7 @@ _clearlooks_draw_arrow (cairo_t *cr, CairoColor *color,
 	
 	if (type == CL_ARROW_NORMAL)
 	{		
-		rotate_mirror_translate (cr, rotate, x, y, FALSE, FALSE);		
+		clearlooks_rotate_mirror_translate (cr, rotate, x, y, FALSE, FALSE);		
 		clearlooks_draw_normal_arrow (cr, color, 0, 0, width, height);
 	}
 	else if (type == CL_ARROW_COMBO)

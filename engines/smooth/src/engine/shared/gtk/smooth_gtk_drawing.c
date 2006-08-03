@@ -94,7 +94,7 @@ smooth_fill_background(SmoothCanvas Canvas,
 	GdkBitmap * clip_mask = NULL;
 	gint fill_style;
   	
-  	SmoothWidgetState widget_state = GDKSmoothWidgetState(state_type);
+  	SmoothWidgetState widget_state = SmoothGtkWidgetState(state_type);
   	
 	if (!part) part = THEME_PART(BACKGROUND_PART(style));
   
@@ -108,7 +108,7 @@ smooth_fill_background(SmoothCanvas Canvas,
 	
 	if (arc_fill)
 	{
-		clip_mask = arc_clip_mask(width+1, height+1);
+		clip_mask = smooth_arc_clip_mask(width+1, height+1);
 
 		if ((fill_style == SMOOTH_FILL_STYLE_GRADIENT) || (fill_style == SMOOTH_FILL_STYLE_SHADE_GRADIENT))
 		{
@@ -116,8 +116,8 @@ smooth_fill_background(SmoothCanvas Canvas,
 		        height += 3;
 	        }
 
-		GDKModifyCanvasClipMask(&Canvas, clip_mask);
-		GDKModifyCanvasClipOffset(&Canvas, x, y);
+		SmoothGDKModifyCanvasClipMask(&Canvas, clip_mask);
+		SmoothGDKModifyCanvasClipOffset(&Canvas, x, y);
 
 		fill.Roundness = 1.0;
 	}	
@@ -125,8 +125,8 @@ smooth_fill_background(SmoothCanvas Canvas,
 	{
 		fill.Roundness = 0.0;
 
-		GDKModifyCanvasClipMask(&Canvas, NULL);
-		GDKModifyCanvasClipOffset(&Canvas, 0, 0);
+		SmoothGDKModifyCanvasClipMask(&Canvas, NULL);
+		SmoothGDKModifyCanvasClipOffset(&Canvas, 0, 0);
 	}
 	
 	fill.Style = fill_style;
@@ -185,13 +185,13 @@ smooth_fill_background(SmoothCanvas Canvas,
 			if (THEME_DATA(style)->fill.use_dither_depth[state_type])
 				dither_depth = THEME_DATA(style)->fill.dither_depth[state_type];
 		
-		GDKModifyCanvasDitherDepth(&Canvas, dither_depth);
+		SmoothGDKModifyCanvasDitherDepth(&Canvas, dither_depth);
 	}
 	
 	SmoothDrawFill(&fill, Canvas, x, y, width, height);
 	
-	GDKModifyCanvasClipMask(&Canvas, NULL);
-	GDKModifyCanvasClipOffset(&Canvas, 0, 0);
+	SmoothGDKModifyCanvasClipMask(&Canvas, NULL);
+	SmoothGDKModifyCanvasClipOffset(&Canvas, 0, 0);
 
 	if (clip_mask)
 		clip_mask_unref(clip_mask);
@@ -262,7 +262,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
 	if (PART_STYLE(grip) == NO_GRIP)
 		return;
 
- 	base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+ 	base = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
 	SmoothCanvasCacheColor(Canvas, &base);
 	SmoothCanvasCacheShadedColor(Canvas, base, default_shades_table[0], &darktone);
@@ -554,7 +554,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 	if (shadow_type == GTK_SHADOW_NONE)
 		return;
 
- 	base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+ 	base = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 	
 	if (CHECK_DETAIL(detail, "smooth_trough"))
 		part = THEME_PART(TROUGH_PART(style));	
@@ -663,7 +663,7 @@ smooth_draw_button_default(SmoothCanvas Canvas,
 			gradient_fill_background(Canvas, style, GTK_SHADOW_IN, part, x, y, width, height, TRUE, FALSE);
 
 			/* paint shadow */
-		 	base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+		 	base = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
 			part = smooth_button_part(style, TRUE);
 			smooth_style_get_border(style, state_type, GTK_SHADOW_IN, NULL, part, roundness, &border);
@@ -697,7 +697,7 @@ smooth_draw_button_default(SmoothCanvas Canvas,
 		SmoothRectangle ta;
 		SmoothColor base, shade;
 		
-	 	base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+	 	base = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
 		SmoothRectangleSetValues(&ta, button_area.x+1, button_area.y+1,  button_area.width-2, button_area.height-2);
 

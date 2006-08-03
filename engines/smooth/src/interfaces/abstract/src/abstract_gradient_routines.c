@@ -104,7 +104,7 @@ SmoothAllocateGradientStepColor(SmoothCanvas *Canvas,
  * It still needs more work, and better support for multiple gradients.
  */
 static SmoothBool
-AbstractCanvasRenderGradient(SmoothCanvas *Canvas,
+SmoothAbstractCanvasRenderGradient(SmoothCanvas *Canvas,
 				SmoothGradient Gradient,
 				SmoothInt X,
 				SmoothInt Y,

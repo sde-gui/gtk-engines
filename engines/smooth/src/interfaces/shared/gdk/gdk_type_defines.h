@@ -75,7 +75,7 @@ typedef struct
 
 	gdouble	 Alpha;
 	SmoothInt CacheIndex;
-} SmoothGDKColor;
+} SmoothSmoothGDKColor;
 
 typedef enum 
 {

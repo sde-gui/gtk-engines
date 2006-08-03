@@ -30,7 +30,7 @@
 
 /* This function is based on a portion of Xenophilia's xeno_draw_extension */
 gboolean
-rounded_extension_points(gint x,
+smooth_rounded_extension_points(gint x,
                          gint y, 
 			 gint width, 
 			 gint height,
@@ -99,7 +99,7 @@ rounded_extension_points(gint x,
 
 /* This function is based on a portion of Xenophilia's xeno_draw_extension */
 gboolean
-square_extension_points(gint x,
+smooth_square_extension_points(gint x,
                          gint y, 
 			 gint width, 
 			 gint height,
@@ -169,7 +169,7 @@ square_extension_points(gint x,
 
 /* This function is based on a portion of Xenophilia's xeno_draw_extension */
 gboolean
-triangle_extension_points(gint x,
+smooth_triangle_extension_points(gint x,
                          gint y, 
 			 gint width, 
 			 gint height,
@@ -185,7 +185,7 @@ triangle_extension_points(gint x,
     case GTK_POS_BOTTOM:
       i = (height - 5 + 2) / 3;
 
-      if (!(i > 0)) return square_extension_points(x, y, width, height, selected, fill, position, points);
+      if (!(i > 0)) return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
 
       y2 = y + i*3 + 5 + ((fill)?1:0) + ((selected)?0:-1);
          
@@ -201,7 +201,7 @@ triangle_extension_points(gint x,
 	
     case GTK_POS_RIGHT:
       i = (width- 5 + 2) / 3;
-      if (!(i > 0)) return square_extension_points(x, y, width, height, selected, fill, position, points);
+      if (!(i > 0)) return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
 
       x2 = x + i*3 + 5 + ((fill)?1:0) + ((selected)?0:-1);
       points[0].y = y;		points[0].x = x2;
@@ -216,7 +216,7 @@ triangle_extension_points(gint x,
 
     case GTK_POS_TOP:
       i = (height - 5 + 2) / 3;
-      if (!(i > 0)) return square_extension_points(x, y, width, height, selected, fill, position, points);
+      if (!(i > 0)) return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
 
       y -= (i*3 + 5 - height) + ((fill)?1:0) + ((selected)?1:0);
       y2 += ((selected)?-1:0) - 1;
@@ -232,7 +232,7 @@ triangle_extension_points(gint x,
              
     case GTK_POS_LEFT:
       i = (width- 5 + 2) / 3;
-      if (!(i > 0)) return square_extension_points(x, y, width, height, selected, fill, position, points);
+      if (!(i > 0)) return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
 
       x -= (i*3 + 5 - width) + ((fill)?1:0) + ((selected)?1:0);
       x2 += ((selected)?-1:0) - 1;
@@ -247,7 +247,7 @@ triangle_extension_points(gint x,
       break;
 
     default :
-      return square_extension_points(x, y, width, height, selected, fill, position, points);
+      return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
   }  
   return TRUE;     
 }

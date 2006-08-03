@@ -69,7 +69,7 @@ redmond_rc_style_register_type (GTypeModule * module)
 /* Register & Initialize Drawing Style */ 
 /***************************************/ 
 GType redmond_type_style = 0;
-static GtkStyleClass *parent_class;
+static GtkStyleClass *redmond_style_parent_class;
 
 static void redmond_simple_color_pattern(CairoColor *base, CairoPattern *pattern)
 {	
@@ -149,7 +149,7 @@ redmond_style_realize (GtkStyle * style)
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
   int i;
  
-  parent_class->realize (style);
+  redmond_style_parent_class->realize (style);
  
   ge_gtk_style_to_cairo_color_cube (style, &redmond_style->color_cube);
 
@@ -188,7 +188,7 @@ redmond_style_unrealize (GtkStyle * style)
 		}
         }
 
-  parent_class->unrealize (style);
+  redmond_style_parent_class->unrealize (style);
 }
  
 static void
@@ -196,7 +196,7 @@ redmond_style_class_init (RedmondStyleClass * klass)
 {
   GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
  
-  parent_class = g_type_class_peek_parent (klass);
+  redmond_style_parent_class = g_type_class_peek_parent (klass);
  
   style_class->realize = redmond_style_realize;
   style_class->unrealize = redmond_style_unrealize;

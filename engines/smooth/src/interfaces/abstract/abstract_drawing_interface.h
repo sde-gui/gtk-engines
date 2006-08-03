@@ -23,7 +23,7 @@
 #ifndef ABSTRACT_DRAWING_INTERFACE_H
 #define ABSTRACT_DRAWING_INTERFACE_H
 
-SmoothBool AbstractDrawingInterfaceInitialize(DrawingInterfaceClass *_DrawingInterface) G_GNUC_INTERNAL;
-SmoothBool AbstractDrawingInterfaceFinalize(DrawingInterfaceClass *_DrawingInterface) G_GNUC_INTERNAL;
+SmoothBool SmoothAbstractDrawingInterfaceInitialize(DrawingInterfaceClass *_SmoothDrawingInterface) G_GNUC_INTERNAL;
+SmoothBool SmoothAbstractDrawingInterfaceFinalize(DrawingInterfaceClass *_SmoothDrawingInterface) G_GNUC_INTERNAL;
 
 #endif /* ABSTRACT_DRAWING_INTERFACE_H */

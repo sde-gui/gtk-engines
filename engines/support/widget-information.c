@@ -247,9 +247,6 @@ ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget)
  *
  *   Taken from Smooth
  ***********************************************/ 
-static GtkRequisition default_option_indicator_size = { 9, 5 }; 
-static GtkBorder default_option_indicator_spacing = { 7, 5, 2, 2 }; 
- 
 void
 ge_option_menu_get_props (GtkWidget * widget,
 		       GtkRequisition * indicator_size,
@@ -269,7 +266,7 @@ ge_option_menu_get_props (GtkWidget * widget,
       g_free (tmp_size);
     }
   else
-    *indicator_size = default_option_indicator_size;
+    *indicator_size = (GtkRequisition){ 9, 5 };
  
   if (tmp_spacing)
     {
@@ -277,7 +274,7 @@ ge_option_menu_get_props (GtkWidget * widget,
       g_free (tmp_spacing);
     }
   else
-    *indicator_spacing = default_option_indicator_spacing;
+    *indicator_spacing = (GtkBorder){ 7, 5, 2, 2 };
 }
   
 gboolean

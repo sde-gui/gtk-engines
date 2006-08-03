@@ -84,38 +84,38 @@ static void smooth_rc_style_init_data (SmoothRcStyleData *style)
   style->arrow.DefaultStyle->Etched    = DEFAULT_ETCHEDARROW;
   style->arrow.DefaultStyle->Tail      = DEFAULT_TAILARROW;
 
-  part_init(THEME_PART(&style->grip), DEFAULT_GRIPSTYLE);
+  smooth_part_init(THEME_PART(&style->grip), DEFAULT_GRIPSTYLE);
 
   style->grip.count      = DEFAULT_GRIPCOUNT;
   style->grip.spacing    = DEFAULT_GRIPSPACING;
   style->grip.overlap    = DEFAULT_GRIPOVERLAP;
 
 
-  part_init(THEME_PART(&style->check), SMOOTH_CHECKMARK_STYLE_DEFAULT);
+  smooth_part_init(THEME_PART(&style->check), SMOOTH_CHECKMARK_STYLE_DEFAULT);
   style->check.motif = TRUE;
 
-  part_init(THEME_PART(&style->option), SMOOTH_CHECKMARK_STYLE_DEFAULT_OPTION);
+  smooth_part_init(THEME_PART(&style->option), SMOOTH_CHECKMARK_STYLE_DEFAULT_OPTION);
   style->option.motif = TRUE;
 
-  part_init(&style->progress, 0);
+  smooth_part_init(&style->progress, 0);
 
-  part_init(THEME_PART(&style->trough), 0);
+  smooth_part_init(THEME_PART(&style->trough), 0);
   style->trough.show_value = DEFAULT_TROUGH_SHOW_VALUE;
 
-  part_init(THEME_PART(&style->stepper), 0);
+  smooth_part_init(THEME_PART(&style->stepper), 0);
   memset(&(style->stepper.Arrow), 0, sizeof(SmoothArrowPart));
   style->stepper.Arrow.Inherited = &style->arrow;
   
-  part_init(THEME_PART(&style->button), 0);
+  smooth_part_init(THEME_PART(&style->button), 0);
 
-  part_init(&style->button.button_default, SMOOTH_BUTTON_DEFAULT_STYLE_DEFAULT);
+  smooth_part_init(&style->button.button_default, SMOOTH_BUTTON_DEFAULT_STYLE_DEFAULT);
   style->button.default_triangle = SMOOTH_BUTTON_DEFAULT_STYLE_DEFAULT;
   style->button.embeddable = FALSE;
   style->button.use_button_default = FALSE;
   
-  part_init(THEME_PART(&style->tabs), DEFAULT_TABSTYLE);
+  smooth_part_init(THEME_PART(&style->tabs), DEFAULT_TABSTYLE);
 
-  part_init(&style->tabs.active_tab, DEFAULT_TABSTYLE);
+  smooth_part_init(&style->tabs.active_tab, DEFAULT_TABSTYLE);
   style->tabs.use_active_tab	= FALSE;
 }
 
@@ -132,10 +132,10 @@ void smooth_rc_style_init (SmoothRcStyle *style)
 	smooth_rc_references += 1;
 }
 
-static GtkSettings  *settings = NULL;
+static GtkSettings  *smooth_rc_settings = NULL;
 
 guint 
-theme_parse_pixmap(GScanner *scanner, 
+smooth_rc_parse_pixmap(GScanner *scanner, 
                    GTokenType wanted_token, 
                    gchar *default_value,
                    GString **retval)
@@ -162,7 +162,7 @@ theme_parse_pixmap(GScanner *scanner,
 		
 	token = g_scanner_get_next_token (scanner);
 	if (token == G_TOKEN_STRING)
-		tmpstr = gtk_rc_find_pixmap_in_path(settings, scanner, scanner->value.v_string);	
+		tmpstr = gtk_rc_find_pixmap_in_path(smooth_rc_settings, scanner, scanner->value.v_string);	
 
 	if (tmpstr == NULL)
 		tmpstr = default_value;
@@ -181,73 +181,73 @@ smooth_gtkrc_parse(GScanner   *Scanner,
 			SmoothRcStyle *Style,
 			guint Token)
 {
-	settings = Settings;
+	smooth_rc_settings = Settings;
 	
 	switch (Token)
 	{
 		case TOKEN_EDGE:
-			Token = theme_parse_edge (Scanner, TOKEN_EDGE, &SMOOTH_RC_DATA(Style)->edge);
+			Token = smooth_rc_parse_edge (Scanner, TOKEN_EDGE, &SMOOTH_RC_DATA(Style)->edge);
 		break;
 
 		case TOKEN_FILL :
-			Token = theme_parse_fill (Scanner, TOKEN_FILL, &SMOOTH_RC_DATA(Style)->fill);
+			Token = smooth_rc_parse_fill (Scanner, TOKEN_FILL, &SMOOTH_RC_DATA(Style)->fill);
 		break;
 
 		case TOKEN_TABS:
-			Token = theme_parse_tab (Scanner, TOKEN_TABS, &SMOOTH_RC_DATA(Style)->tabs);
+			Token = smooth_rc_parse_tab (Scanner, TOKEN_TABS, &SMOOTH_RC_DATA(Style)->tabs);
 		break;
 
 		case TOKEN_BUTTON:
-			Token = theme_parse_button (Scanner, TOKEN_BUTTON, &SMOOTH_RC_DATA(Style)->button);
+			Token = smooth_rc_parse_button (Scanner, TOKEN_BUTTON, &SMOOTH_RC_DATA(Style)->button);
 		break;
 
 		case TOKEN_REAL_SLIDERS:
-			Token = theme_parse_boolean (Scanner, TOKEN_REAL_SLIDERS, DEFAULT_REAL_SLIDERS, &SMOOTH_RC_DATA(Style)->real_sliders);
+			Token = smooth_rc_parse_boolean (Scanner, TOKEN_REAL_SLIDERS, DEFAULT_REAL_SLIDERS, &SMOOTH_RC_DATA(Style)->real_sliders);
 		break;
 
 		case TOKEN_RESIZE_GRIP:
-			Token = theme_parse_boolean (Scanner, TOKEN_RESIZE_GRIP, DEFAULT_RESIZE_GRIP, &SMOOTH_RC_DATA(Style)->resize_grip);
+			Token = smooth_rc_parse_boolean (Scanner, TOKEN_RESIZE_GRIP, DEFAULT_RESIZE_GRIP, &SMOOTH_RC_DATA(Style)->resize_grip);
 		break;
 
 		case TOKEN_LINE:
-			Token = theme_parse_line (Scanner, TOKEN_LINE, &SMOOTH_RC_DATA(Style)->line);
+			Token = smooth_rc_parse_line (Scanner, TOKEN_LINE, &SMOOTH_RC_DATA(Style)->line);
 		break;
 
 		case TOKEN_GRIP:
-			Token = theme_parse_grip (Scanner, TOKEN_GRIP, &SMOOTH_RC_DATA(Style)->grip);
+			Token = smooth_rc_parse_grip (Scanner, TOKEN_GRIP, &SMOOTH_RC_DATA(Style)->grip);
 		break;
 
 		case TOKEN_STEPPER:
-			Token = theme_parse_stepper (Scanner, TOKEN_STEPPER, &SMOOTH_RC_DATA(Style)->stepper);
+			Token = smooth_rc_parse_stepper (Scanner, TOKEN_STEPPER, &SMOOTH_RC_DATA(Style)->stepper);
 		break;
 
 		case TOKEN_ARROW:
-			Token = theme_parse_arrow_part (Scanner, TOKEN_ARROW, &SMOOTH_RC_DATA(Style)->arrow);
+			Token = smooth_rc_parse_arrow_part (Scanner, TOKEN_ARROW, &SMOOTH_RC_DATA(Style)->arrow);
 		break;	  
 
 		case TOKEN_FOCUS:
-			Token = theme_parse_focus (Scanner, TOKEN_FOCUS, &SMOOTH_RC_DATA(Style)->focus);
+			Token = smooth_rc_parse_focus (Scanner, TOKEN_FOCUS, &SMOOTH_RC_DATA(Style)->focus);
 		break;
 
 		case TOKEN_PROGRESS:
-			Token = theme_parse_generic_part (Scanner, TOKEN_PROGRESS, &SMOOTH_RC_DATA(Style)->progress);
+			Token = smooth_rc_parse_generic_part (Scanner, TOKEN_PROGRESS, &SMOOTH_RC_DATA(Style)->progress);
 		break;
 
 		case TOKEN_TROUGH:
-			Token = theme_parse_trough_part (Scanner, TOKEN_TROUGH, &SMOOTH_RC_DATA(Style)->trough);
+			Token = smooth_rc_parse_trough_part (Scanner, TOKEN_TROUGH, &SMOOTH_RC_DATA(Style)->trough);
 		break;
 
 		case TOKEN_CHECK:
-			Token = theme_parse_check (Scanner, TOKEN_CHECK, &SMOOTH_RC_DATA(Style)->check);
+			Token = smooth_rc_parse_check (Scanner, TOKEN_CHECK, &SMOOTH_RC_DATA(Style)->check);
 		break;
 
 		case TOKEN_OPTION:
-			Token = theme_parse_option (Scanner, TOKEN_OPTION, &SMOOTH_RC_DATA(Style)->option);
+			Token = smooth_rc_parse_option (Scanner, TOKEN_OPTION, &SMOOTH_RC_DATA(Style)->option);
 		break;
 
 		/* backward compatibility for <=0.5.4 */
 		case TOKEN_DEPRECATED_TABSTYLE:
-			Token = theme_parse_custom_enum(Scanner, TOKEN_DEPRECATED_TABSTYLE, TranslateTabStyleName, DEFAULT_TABSTYLE, 
+			Token = smooth_rc_parse_custom_enum(Scanner, TOKEN_DEPRECATED_TABSTYLE, SmoothTranslateTabStyleName, DEFAULT_TABSTYLE, 
 							&THEME_PART(&SMOOTH_RC_DATA(Style)->tabs)->style);
 		break;
 
@@ -257,8 +257,8 @@ smooth_gtkrc_parse(GScanner   *Scanner,
 			if (!SMOOTH_RC_DATA(Style)->arrow.DefaultStyle)
 				SMOOTH_RC_DATA(Style)->arrow.DefaultStyle = g_new0(SmoothArrow, 1);
 
-			Token = theme_parse_custom_enum(Scanner, TOKEN_DEPRECATED_ARROWSTYLE, 
-							(SmoothTranslateEnumFunc)TranslateArrowStyleName, 
+			Token = smooth_rc_parse_custom_enum(Scanner, TOKEN_DEPRECATED_ARROWSTYLE, 
+							(SmoothSmoothTranslateEnumFunc)SmoothTranslateArrowStyleName, 
 							SMOOTH_ARROW_STYLE_DEFAULT, 
 							&SMOOTH_RC_DATA(Style)->arrow.DefaultStyle->Style);
 			SMOOTH_RC_DATA(Style)->arrow.DefaultStyle->HasStyle = SmoothTrue;
@@ -294,7 +294,7 @@ smooth_gtkrc_parse(GScanner   *Scanner,
 			if (!SMOOTH_RC_DATA(Style)->arrow.DefaultStyle)
 				SMOOTH_RC_DATA(Style)->arrow.DefaultStyle = g_new0(SmoothArrow, 1);
 
-			Token = theme_parse_boolean (Scanner, TOKEN_DEPRECATED_SOLIDARROW, 
+			Token = smooth_rc_parse_boolean (Scanner, TOKEN_DEPRECATED_SOLIDARROW, 
 							DEFAULT_SOLIDARROW, 
 							&SMOOTH_RC_DATA(Style)->arrow.DefaultStyle->Solid);
 			SMOOTH_RC_DATA(Style)->arrow.DefaultStyle->HasSolid = SmoothTrue;
@@ -306,7 +306,7 @@ smooth_gtkrc_parse(GScanner   *Scanner,
 			if (!SMOOTH_RC_DATA(Style)->arrow.DefaultStyle)
 				SMOOTH_RC_DATA(Style)->arrow.DefaultStyle = g_new0(SmoothArrow, 1);
 
-			Token = theme_parse_boolean (Scanner, TOKEN_DEPRECATED_ETCHEDARROW, 
+			Token = smooth_rc_parse_boolean (Scanner, TOKEN_DEPRECATED_ETCHEDARROW, 
 							DEFAULT_ETCHEDARROW, &SMOOTH_RC_DATA(Style)->arrow.DefaultStyle->Etched);
 			SMOOTH_RC_DATA(Style)->arrow.DefaultStyle->HasEtched = SmoothTrue;
 		}
@@ -317,7 +317,7 @@ smooth_gtkrc_parse(GScanner   *Scanner,
 		{
 			gboolean use_gradient=FALSE;
 	
-			Token = theme_parse_boolean (Scanner, TOKEN_DEPRECATED_GRADIENT, TRUE, &use_gradient);
+			Token = smooth_rc_parse_boolean (Scanner, TOKEN_DEPRECATED_GRADIENT, TRUE, &use_gradient);
 	    
 			if (use_gradient) 
 			{
@@ -402,40 +402,40 @@ smooth_gtkrc_style_merge (SmoothRcStyleData *dest_data,
 
       }
 
-      arrow_merge (&dest_data->arrow, &src_data->arrow);
+      smooth_arrow_merge (&dest_data->arrow, &src_data->arrow);
 
-      part_merge(THEME_PART(&dest_data->grip),THEME_PART(&src_data->grip));
+      smooth_part_merge(THEME_PART(&dest_data->grip),THEME_PART(&src_data->grip));
       dest_data->grip.count = src_data->grip.count;
       dest_data->grip.spacing = src_data->grip.spacing;
       dest_data->grip.overlap = src_data->grip.overlap;
 
-      part_merge(THEME_PART(&dest_data->check),THEME_PART(&src_data->check));
+      smooth_part_merge(THEME_PART(&dest_data->check),THEME_PART(&src_data->check));
       dest_data->check.motif = src_data->check.motif;
       
-      part_merge(THEME_PART(&dest_data->option),THEME_PART(&src_data->option));
+      smooth_part_merge(THEME_PART(&dest_data->option),THEME_PART(&src_data->option));
       dest_data->option.motif = src_data->option.motif;
 
-      part_merge(THEME_PART(&dest_data->trough),THEME_PART(&src_data->trough));
+      smooth_part_merge(THEME_PART(&dest_data->trough),THEME_PART(&src_data->trough));
       dest_data->trough.show_value = src_data->trough.show_value;
       
-      part_merge(THEME_PART(&dest_data->stepper),THEME_PART(&src_data->stepper));
-      arrow_merge (&dest_data->stepper.Arrow, &src_data->stepper.Arrow);
+      smooth_part_merge(THEME_PART(&dest_data->stepper),THEME_PART(&src_data->stepper));
+      smooth_arrow_merge (&dest_data->stepper.Arrow, &src_data->stepper.Arrow);
       dest_data->stepper.Arrow.Inherited = &dest_data->arrow;
       
-      part_merge(&dest_data->progress,&src_data->progress);
+      smooth_part_merge(&dest_data->progress,&src_data->progress);
  
-      part_merge(THEME_PART(&dest_data->button), THEME_PART(&src_data->button));
+      smooth_part_merge(THEME_PART(&dest_data->button), THEME_PART(&src_data->button));
       dest_data->button.default_triangle = src_data->button.default_triangle;
       dest_data->button.embeddable = src_data->button.embeddable;
       dest_data->button.use_button_default = src_data->button.use_button_default;
 
-      part_merge(&dest_data->button.button_default,&src_data->button.button_default);
+      smooth_part_merge(&dest_data->button.button_default,&src_data->button.button_default);
 
-      part_merge(THEME_PART(&dest_data->tabs), THEME_PART(&src_data->tabs));
+      smooth_part_merge(THEME_PART(&dest_data->tabs), THEME_PART(&src_data->tabs));
       
       dest_data->tabs.highlight = src_data->tabs.highlight;
       dest_data->tabs.use_active_tab = src_data->tabs.use_active_tab;
-      part_merge(&dest_data->tabs.active_tab,&src_data->tabs.active_tab);
+      smooth_part_merge(&dest_data->tabs.active_tab,&src_data->tabs.active_tab);
 
       dest_data->buffered_fill = src_data->buffered_fill;
 }

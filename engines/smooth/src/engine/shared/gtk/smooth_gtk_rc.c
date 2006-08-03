@@ -164,7 +164,7 @@ SmoothColor
 smooth_fill_color1(GtkStyle * style, void *part, GtkStateType state)
 {
 	SmoothColor result;
-	SmoothWidgetState widget_state = GDKSmoothWidgetState(state);
+	SmoothWidgetState widget_state = SmoothGtkWidgetState(state);
 	
 	if ((part) && (THEME_PART(part)->use_fill))
 	{
@@ -175,7 +175,7 @@ smooth_fill_color1(GtkStyle * style, void *part, GtkStateType state)
 			if (THEME_DATA(style)->fill.use_color1[widget_state])
 				result = THEME_DATA(style)->fill.color1[widget_state];
 			else 
-				GDKSmoothColorAssignGdkColor(&result, style->bg[state], 1.0);
+				SmoothColorAssignGdkColor(&result, style->bg[state], 1.0);
 		}
 	}
 	else
@@ -183,7 +183,7 @@ smooth_fill_color1(GtkStyle * style, void *part, GtkStateType state)
 		if (THEME_DATA(style)->fill.use_color1[widget_state])
 			result = THEME_DATA(style)->fill.color1[widget_state];
 		else 
-			GDKSmoothColorAssignGdkColor(&result, style->bg[state], 1.0);
+			SmoothColorAssignGdkColor(&result, style->bg[state], 1.0);
 	}
 	
 	return result;
@@ -193,7 +193,7 @@ SmoothColor
 smooth_fill_color2(GtkStyle * style, void *part, GtkStateType state)
 {
 	SmoothColor result;
-	SmoothWidgetState widget_state = GDKSmoothWidgetState(state);
+	SmoothWidgetState widget_state = SmoothGtkWidgetState(state);
 
 	if ((part) && (THEME_PART(part)->use_fill))
 	{
@@ -204,7 +204,7 @@ smooth_fill_color2(GtkStyle * style, void *part, GtkStateType state)
 			if (THEME_DATA(style)->fill.use_color2[widget_state])
 				result = THEME_DATA(style)->fill.color2[widget_state];
 			else 
-				GDKSmoothColorAssignGdkColor(&result, style->bg[state], 1.0);
+				SmoothColorAssignGdkColor(&result, style->bg[state], 1.0);
 		}
 	}
 	else
@@ -212,7 +212,7 @@ smooth_fill_color2(GtkStyle * style, void *part, GtkStateType state)
 		if (THEME_DATA(style)->fill.use_color2[widget_state])
 			result = THEME_DATA(style)->fill.color2[widget_state];
 		else 
-			GDKSmoothColorAssignGdkColor(&result, style->bg[state], 1.0);
+			SmoothColorAssignGdkColor(&result, style->bg[state], 1.0);
 	}
 	
 	return result;
@@ -380,7 +380,7 @@ smooth_button_edge_line_thickness(GtkStyle * style, gboolean for_button_default)
 
 /* Custom Enums */
 gboolean 
-TranslateFillStyleName (gchar * str, SmoothFillStyle *retval)
+SmoothTranslateFillStyleName (gchar * str, SmoothFillStyle *retval)
 {
   if (is_enum(str, "flat") || is_enum(str, "solid"))
     *retval = SMOOTH_FILL_STYLE_SOLID;
@@ -396,7 +396,7 @@ TranslateFillStyleName (gchar * str, SmoothFillStyle *retval)
 }
 
 gboolean 
-TranslateGradientDirectionName (gchar * str, gint *retval)
+SmoothTranslateGradientDirectionName (gchar * str, gint *retval)
 {
   if (is_enum(str, "horizontal"))
     *retval = SMOOTH_GRADIENT_HORIZONTAL;
@@ -412,7 +412,7 @@ TranslateGradientDirectionName (gchar * str, gint *retval)
 }
 
 gboolean 
-TranslateLineStyleName (gchar * str, SmoothBevelStyle *retval)
+SmoothTranslateLineStyleName (gchar * str, SmoothBevelStyle *retval)
 {
 	if (is_enum(str, "smooth") ||is_enum(str, "smoothed"))
 		*retval = SMOOTH_BEVEL_STYLE_SMOOTHED;
@@ -455,7 +455,7 @@ TranslateLineStyleName (gchar * str, SmoothBevelStyle *retval)
 }
 
 gboolean 
-TranslateButtonDefaultStyleName (gchar * str, gint *retval)
+SmoothTranslateButtonDefaultStyleName (gchar * str, gint *retval)
 {
   if (is_enum(str, "gtk") || is_enum(str, "gtk1") || is_enum(str, "normal") || is_enum(str, "standard"))
     *retval = SMOOTH_BUTTON_DEFAULT_STYLE_GTK;
@@ -474,7 +474,7 @@ TranslateButtonDefaultStyleName (gchar * str, gint *retval)
 }
 
 gboolean 
-TranslateTabStyleName (gchar * str, gint *retval)
+SmoothTranslateTabStyleName (gchar * str, gint *retval)
 {
   if (is_enum(str, "square") || is_enum(str, "default") || is_enum(str, "normal") || is_enum(str, "standard"))
     *retval = SMOOTH_TAB_NORMAL;
@@ -491,7 +491,7 @@ TranslateTabStyleName (gchar * str, gint *retval)
 }
 
 gboolean 
-TranslateGripStyleName (gchar * str, gint *retval)
+SmoothTranslateGripStyleName (gchar * str, gint *retval)
 {
   if (is_enum(str, "none"))
     *retval = NO_GRIP;
@@ -548,7 +548,7 @@ TranslateGripStyleName (gchar * str, gint *retval)
 }
 
 gboolean 
-TranslateCheckStyleName (gchar * str, gint *retval)
+SmoothTranslateCheckStyleName (gchar * str, gint *retval)
 {
   if (is_enum(str, "clean"))
     *retval = SMOOTH_CHECKMARK_STYLE_CLEAN;
@@ -583,7 +583,7 @@ TranslateCheckStyleName (gchar * str, gint *retval)
 }
 
 gboolean 
-TranslateEdgeStyleName (gchar * str, gint *retval)
+SmoothTranslateEdgeStyleName (gchar * str, gint *retval)
 {
   if (is_enum(str, "none"))
     *retval = SMOOTH_EDGE_NONE;
@@ -604,7 +604,7 @@ TranslateEdgeStyleName (gchar * str, gint *retval)
 }
 
 gboolean 
-TranslateArrowStyleName (gchar * str, SmoothArrowStyle *retval)
+SmoothTranslateArrowStyleName (gchar * str, SmoothArrowStyle *retval)
 {
   if (is_enum(str, "clean"))
     *retval = SMOOTH_ARROW_STYLE_CLEAN;
@@ -639,7 +639,7 @@ TranslateArrowStyleName (gchar * str, SmoothArrowStyle *retval)
 }
 
 gboolean 
-TranslateArrowTypeName (gchar * str, SmoothArrowStyle *retval)
+SmoothTranslateArrowTypeName (gchar * str, SmoothArrowStyle *retval)
 {
   if (is_enum(str, "up"))
     *retval = SMOOTH_ARROW_TYPE_UP;
@@ -656,7 +656,7 @@ TranslateArrowTypeName (gchar * str, SmoothArrowStyle *retval)
 }
 
 gboolean 
-TranslateStateName (gchar * str, int *retval)
+SmoothTranslateStateName (gchar * str, int *retval)
 {
   if (is_enum(str, "normal"))
     *retval = 0;
@@ -675,7 +675,7 @@ TranslateStateName (gchar * str, int *retval)
 }
 
 gboolean 
-TranslateBooleanName (gchar * str, gint *retval)
+SmoothTranslateBooleanName (gchar * str, gint *retval)
 {
   if (is_enum(str, "TRUE") || is_enum(str, "T") || is_enum(str, "YES") || is_enum(str, "Y"))
     *retval = TRUE;
@@ -689,7 +689,7 @@ TranslateBooleanName (gchar * str, gint *retval)
 
 /* General Parsing Functions */
 guint 
-theme_parse_int (GScanner *scanner, 
+smooth_rc_parse_int (GScanner *scanner, 
                  GTokenType wanted_token, 
 		 guint return_default,
 		 gint *retval, 
@@ -740,7 +740,7 @@ theme_parse_int (GScanner *scanner,
 }
 
 guint 
-theme_parse_float (GScanner *scanner, 
+smooth_rc_parse_float (GScanner *scanner, 
                  GTokenType wanted_token, 
 		 gdouble return_default, 
 		 gdouble *retval, 
@@ -779,9 +779,9 @@ theme_parse_float (GScanner *scanner,
 }
 
 guint 
-theme_parse_custom_enum (GScanner *scanner, 
+smooth_rc_parse_custom_enum (GScanner *scanner, 
                          GTokenType wanted_token, 
-			 SmoothTranslateEnumFunc translate_enum,
+			 SmoothSmoothTranslateEnumFunc translate_enum,
 			 guint return_default,
 			 guint *retval)
 {
@@ -816,7 +816,7 @@ theme_parse_custom_enum (GScanner *scanner,
 }
 
 guint 
-theme_parse_boolean(GScanner *scanner,  
+smooth_rc_parse_boolean(GScanner *scanner,  
                     GTokenType wanted_token, 
 		    gboolean return_default, 
 		    guint *retval)
@@ -824,7 +824,7 @@ theme_parse_boolean(GScanner *scanner,
   guint token;
   guint result=0;
 
-  token = theme_parse_custom_enum (scanner, wanted_token, (SmoothTranslateEnumFunc)TranslateBooleanName, return_default, &result);	
+  token = smooth_rc_parse_custom_enum (scanner, wanted_token, (SmoothSmoothTranslateEnumFunc)SmoothTranslateBooleanName, return_default, &result);	
   
   *retval = result;
   
@@ -832,7 +832,7 @@ theme_parse_boolean(GScanner *scanner,
 }
 
 guint 
-theme_parse_line(GScanner *scanner, 
+smooth_rc_parse_line(GScanner *scanner, 
                  GTokenType wanted_token, 
                  SmoothLinePart *retval)
 {
@@ -856,10 +856,10 @@ theme_parse_line(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateLineStyleName, SMOOTH_BEVEL_STYLE_DEFAULT,  &retval->style);
+      token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateLineStyleName, SMOOTH_BEVEL_STYLE_DEFAULT,  &retval->style);
       break;
     case TOKEN_THICKNESS:
-      token = theme_parse_int (scanner, TOKEN_THICKNESS, 2, &retval->thickness, 1, 10);
+      token = smooth_rc_parse_int (scanner, TOKEN_THICKNESS, 2, &retval->thickness, 1, 10);
       break;
     default:
       g_scanner_get_next_token (scanner);
@@ -877,7 +877,7 @@ theme_parse_line(GScanner *scanner,
 }
 
 guint 
-theme_parse_focus(GScanner *scanner, 
+smooth_rc_parse_focus(GScanner *scanner, 
                   GTokenType wanted_token, 
                   smooth_focus_style *retval)
 {
@@ -971,9 +971,9 @@ theme_parse_focus(GScanner *scanner,
         if (token != G_TOKEN_EQUAL_SIGN)
           return G_TOKEN_EQUAL_SIGN;
 
-        retval->use_foreground[GDKSmoothWidgetState(state)] = TRUE;
+        retval->use_foreground[SmoothGtkWidgetState(state)] = TRUE;
         token = gtk_rc_parse_color (scanner, &color);        
-	GDKSmoothColorAssignGdkColor(&retval->foreground[GDKSmoothWidgetState(state)], color, 1.0);
+	SmoothColorAssignGdkColor(&retval->foreground[SmoothGtkWidgetState(state)], color, 1.0);
       }
       break;
     default:
@@ -993,7 +993,7 @@ theme_parse_focus(GScanner *scanner,
 
 
 static guint 
-theme_parse_arrow(GScanner *scanner, 
+smooth_rc_parse_arrow(GScanner *scanner, 
                   SmoothArrow *retval)
 {
   guint token;
@@ -1002,7 +1002,7 @@ theme_parse_arrow(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
       case TOKEN_STYLE:
-	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateArrowStyleName, SMOOTH_ARROW_STYLE_DEFAULT, &retval->Style);
+	token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateArrowStyleName, SMOOTH_ARROW_STYLE_DEFAULT, &retval->Style);
 	retval->HasStyle = SmoothTrue;
 
 	switch (retval->Style)
@@ -1031,24 +1031,24 @@ theme_parse_arrow(GScanner *scanner,
 	break;
 	
       case TOKEN_SOLID:
-	token = theme_parse_boolean (scanner, TOKEN_SOLID, DEFAULT_SOLIDARROW, &retval->Solid);
+	token = smooth_rc_parse_boolean (scanner, TOKEN_SOLID, DEFAULT_SOLIDARROW, &retval->Solid);
 	retval->HasSolid = SmoothTrue;
 	break;	  
 	
       case TOKEN_ETCHED:
-	token = theme_parse_boolean (scanner, TOKEN_ETCHED, DEFAULT_ETCHEDARROW, &retval->Etched);
+	token = smooth_rc_parse_boolean (scanner, TOKEN_ETCHED, DEFAULT_ETCHEDARROW, &retval->Etched);
 	retval->HasEtched = SmoothTrue;
 	break;	  
       case TOKEN_TAIL:
-        token = theme_parse_int (scanner, TOKEN_TAIL, 0, &retval->Tail, 0, 3);
+        token = smooth_rc_parse_int (scanner, TOKEN_TAIL, 0, &retval->Tail, 0, 3);
 	retval->HasTail = SmoothTrue;
         break;
       case TOKEN_XPADDING:
-        token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &retval->XPadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &retval->XPadding, -25, 25);
 	retval->HasXPadding = SmoothTrue;
         break;
       case TOKEN_YPADDING:
-        token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &retval->YPadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &retval->YPadding, -25, 25);
 	retval->HasYPadding = SmoothTrue;
         break;
     default:
@@ -1067,7 +1067,7 @@ theme_parse_arrow(GScanner *scanner,
 }
 
 guint 
-theme_parse_arrow_part(GScanner *scanner, 
+smooth_rc_parse_arrow_part(GScanner *scanner, 
                        GTokenType wanted_token, 
                        SmoothArrowPart *retval)
 {
@@ -1090,7 +1090,7 @@ theme_parse_arrow_part(GScanner *scanner,
 	if (!retval->DefaultStyle)
 		retval->DefaultStyle = g_new0(SmoothArrow, 1);
 
-	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateArrowStyleName, SMOOTH_ARROW_STYLE_DEFAULT, &retval->DefaultStyle->Style);
+	token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateArrowStyleName, SMOOTH_ARROW_STYLE_DEFAULT, &retval->DefaultStyle->Style);
 	retval->DefaultStyle->HasStyle = SmoothTrue;
 
 	switch (retval->DefaultStyle->Style)
@@ -1122,35 +1122,35 @@ theme_parse_arrow_part(GScanner *scanner,
 	if (!retval->DefaultStyle)
 		retval->DefaultStyle = g_new0(SmoothArrow, 1);
 
-	token = theme_parse_boolean (scanner, TOKEN_SOLID, DEFAULT_SOLIDARROW, &retval->DefaultStyle->Solid);
+	token = smooth_rc_parse_boolean (scanner, TOKEN_SOLID, DEFAULT_SOLIDARROW, &retval->DefaultStyle->Solid);
 	retval->DefaultStyle->HasSolid = SmoothTrue;
 	break;	  
       case TOKEN_ETCHED:
 	if (!retval->DefaultStyle)
 		retval->DefaultStyle = g_new0(SmoothArrow, 1);
 
-	token = theme_parse_boolean (scanner, TOKEN_ETCHED, DEFAULT_ETCHEDARROW, &retval->DefaultStyle->Etched);
+	token = smooth_rc_parse_boolean (scanner, TOKEN_ETCHED, DEFAULT_ETCHEDARROW, &retval->DefaultStyle->Etched);
 	retval->DefaultStyle->HasEtched = SmoothTrue;
 	break;	  
       case TOKEN_TAIL:
 	if (!retval->DefaultStyle)
 		retval->DefaultStyle = g_new0(SmoothArrow, 1);
 
-        token = theme_parse_int (scanner, TOKEN_TAIL, 0, &retval->DefaultStyle->Tail, 0, 3);
+        token = smooth_rc_parse_int (scanner, TOKEN_TAIL, 0, &retval->DefaultStyle->Tail, 0, 3);
 	retval->DefaultStyle->HasTail = SmoothTrue;
         break;
       case TOKEN_XPADDING:
 	if (!retval->DefaultStyle)
 		retval->DefaultStyle = g_new0(SmoothArrow, 1);
 
-        token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &retval->DefaultStyle->XPadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &retval->DefaultStyle->XPadding, -25, 25);
 	retval->DefaultStyle->HasXPadding = SmoothTrue;
         break;
       case TOKEN_YPADDING:
 	if (!retval->DefaultStyle)
 		retval->DefaultStyle = g_new0(SmoothArrow, 1);
 
-        token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &retval->DefaultStyle->YPadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &retval->DefaultStyle->YPadding, -25, 25);
 	retval->DefaultStyle->HasYPadding = SmoothTrue;
         break;
 
@@ -1158,13 +1158,13 @@ theme_parse_arrow_part(GScanner *scanner,
 	{
 		int type = SMOOTH_ARROW_TYPE_NONE;
 
-		token = theme_parse_custom_enum(scanner, G_TOKEN_IDENTIFIER, (SmoothTranslateEnumFunc)TranslateArrowTypeName, SMOOTH_ARROW_TYPE_NONE, &type);
+		token = smooth_rc_parse_custom_enum(scanner, G_TOKEN_IDENTIFIER, (SmoothSmoothTranslateEnumFunc)SmoothTranslateArrowTypeName, SMOOTH_ARROW_TYPE_NONE, &type);
 		
 		if (type == SMOOTH_ARROW_TYPE_NONE) 
 		{
 		       	int state;
 
-			token = theme_parse_custom_enum(scanner, G_TOKEN_IDENTIFIER, (SmoothTranslateEnumFunc)TranslateStateName, -1, &state);
+			token = smooth_rc_parse_custom_enum(scanner, G_TOKEN_IDENTIFIER, (SmoothSmoothTranslateEnumFunc)SmoothTranslateStateName, -1, &state);
 			
 			if (state == -1)
 				return token;
@@ -1177,7 +1177,7 @@ theme_parse_arrow_part(GScanner *scanner,
 			if (!retval->DefaultStateStyles)
 				retval->DefaultStateStyles = g_new0(SmoothArrow, 5);
 
-			token = theme_parse_arrow (scanner, &retval->DefaultStateStyles[state]);
+			token = smooth_rc_parse_arrow (scanner, &retval->DefaultStateStyles[state]);
 		}
 		else
 		{		
@@ -1189,7 +1189,7 @@ theme_parse_arrow_part(GScanner *scanner,
 		  
 				token = g_scanner_get_next_token(scanner);
 				
-				token = theme_parse_custom_enum(scanner, G_TOKEN_IDENTIFIER, (SmoothTranslateEnumFunc)TranslateStateName, -1, &state);
+				token = smooth_rc_parse_custom_enum(scanner, G_TOKEN_IDENTIFIER, (SmoothSmoothTranslateEnumFunc)SmoothTranslateStateName, -1, &state);
 			
 				token = g_scanner_get_next_token (scanner);
 	
@@ -1204,7 +1204,7 @@ theme_parse_arrow_part(GScanner *scanner,
 				if (!retval->Styles[state])
 					retval->Styles[state] = g_new0(SmoothArrow, SMOOTH_ARROW_TYPE_COUNT);
 
-				token = theme_parse_arrow (scanner, &retval->Styles[state][type]);
+				token = smooth_rc_parse_arrow (scanner, &retval->Styles[state][type]);
 			}
 			else
 			{
@@ -1215,7 +1215,7 @@ theme_parse_arrow_part(GScanner *scanner,
 							if (!retval->DefaultTypeStyles)
 								retval->DefaultTypeStyles = g_new0(SmoothArrow, SMOOTH_ARROW_TYPE_COUNT);
 
-							token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateArrowStyleName, SMOOTH_ARROW_STYLE_DEFAULT, 	&retval->DefaultTypeStyles[type].Style);
+							token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateArrowStyleName, SMOOTH_ARROW_STYLE_DEFAULT, 	&retval->DefaultTypeStyles[type].Style);
 							retval->DefaultTypeStyles[type].HasStyle = SmoothTrue;
 	
 							switch (retval->DefaultTypeStyles[type].Style)
@@ -1247,7 +1247,7 @@ theme_parse_arrow_part(GScanner *scanner,
 							if (!retval->DefaultTypeStyles)
 								retval->DefaultTypeStyles = g_new0(SmoothArrow, SMOOTH_ARROW_TYPE_COUNT);
 
-							token = theme_parse_boolean (scanner, TOKEN_SOLID, DEFAULT_SOLIDARROW, &retval->DefaultTypeStyles[type].Solid);
+							token = smooth_rc_parse_boolean (scanner, TOKEN_SOLID, DEFAULT_SOLIDARROW, &retval->DefaultTypeStyles[type].Solid);
 							retval->DefaultTypeStyles[type].HasSolid = SmoothTrue;
 						break;	  
 	
@@ -1255,7 +1255,7 @@ theme_parse_arrow_part(GScanner *scanner,
 							if (!retval->DefaultTypeStyles)
 								retval->DefaultTypeStyles = g_new0(SmoothArrow, SMOOTH_ARROW_TYPE_COUNT);
 
-							token = theme_parse_boolean (scanner, TOKEN_ETCHED, DEFAULT_ETCHEDARROW, &retval->DefaultTypeStyles[type].Etched);
+							token = smooth_rc_parse_boolean (scanner, TOKEN_ETCHED, DEFAULT_ETCHEDARROW, &retval->DefaultTypeStyles[type].Etched);
 							retval->DefaultTypeStyles[type].HasEtched = SmoothTrue;
 						break;	  
 	
@@ -1263,7 +1263,7 @@ theme_parse_arrow_part(GScanner *scanner,
 							if (!retval->DefaultTypeStyles)
 								retval->DefaultTypeStyles = g_new0(SmoothArrow, SMOOTH_ARROW_TYPE_COUNT);
 
-							token = theme_parse_int (scanner, TOKEN_TAIL, 0, &retval->DefaultTypeStyles[type].Tail, 0, 3);
+							token = smooth_rc_parse_int (scanner, TOKEN_TAIL, 0, &retval->DefaultTypeStyles[type].Tail, 0, 3);
 							retval->DefaultTypeStyles[type].HasTail = SmoothTrue;
 						break;
 	
@@ -1271,7 +1271,7 @@ theme_parse_arrow_part(GScanner *scanner,
 						{
 					        	GtkStateType state;
 		  
-							token = theme_parse_custom_enum(scanner, G_TOKEN_IDENTIFIER, (SmoothTranslateEnumFunc)TranslateStateName, -1, &state);
+							token = smooth_rc_parse_custom_enum(scanner, G_TOKEN_IDENTIFIER, (SmoothSmoothTranslateEnumFunc)SmoothTranslateStateName, -1, &state);
 
 							if (state == -1)
 								return token;
@@ -1284,7 +1284,7 @@ theme_parse_arrow_part(GScanner *scanner,
 							if (!retval->Styles[state])
 								retval->Styles[state] = g_new0(SmoothArrow, SMOOTH_ARROW_TYPE_COUNT);
 	
-							token = theme_parse_arrow (scanner, &retval->Styles[state][type]);
+							token = smooth_rc_parse_arrow (scanner, &retval->Styles[state][type]);
 						}
 						break;
 	
@@ -1317,7 +1317,7 @@ theme_parse_arrow_part(GScanner *scanner,
 }
 
 guint 
-theme_parse_fill(GScanner *scanner, 
+smooth_rc_parse_fill(GScanner *scanner, 
                  GTokenType wanted_token, 
                  SmoothFillPart *retval)
 {
@@ -1341,7 +1341,7 @@ theme_parse_fill(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateFillStyleName, SMOOTH_FILL_STYLE_DEFAULT,  &THEME_PART(retval)->style);
+      token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateFillStyleName, SMOOTH_FILL_STYLE_DEFAULT,  &THEME_PART(retval)->style);
       break;
     case TOKEN_DITHER_DEPTH:
     {
@@ -1358,27 +1358,27 @@ theme_parse_fill(GScanner *scanner,
           if (token != G_TOKEN_NONE)
             return token;
   
-          token = theme_parse_int (scanner, G_TOKEN_EQUAL_SIGN, 8, &retval->dither_depth[state], 0, 24);
+          token = smooth_rc_parse_int (scanner, G_TOKEN_EQUAL_SIGN, 8, &retval->dither_depth[state], 0, 24);
           retval->use_dither_depth[state] = TRUE;
         }
         else
         {
-          token = theme_parse_int (scanner, TOKEN_DITHER_DEPTH, 8, &retval->default_dither_depth, 0, 24);
+          token = smooth_rc_parse_int (scanner, TOKEN_DITHER_DEPTH, 8, &retval->default_dither_depth, 0, 24);
           retval->default_dither_depth_set = TRUE;
         }
     }
     break;
     case TOKEN_HDIRECTION:
-      token = theme_parse_custom_enum(scanner, TOKEN_HDIRECTION, (SmoothTranslateEnumFunc)TranslateGradientDirectionName, DEFAULT_HGRADIENTDIRECTION,  &retval->gradient_direction[TRUE]);
+      token = smooth_rc_parse_custom_enum(scanner, TOKEN_HDIRECTION, (SmoothSmoothTranslateEnumFunc)SmoothTranslateGradientDirectionName, DEFAULT_HGRADIENTDIRECTION,  &retval->gradient_direction[TRUE]);
       break;
     case TOKEN_VDIRECTION:
-      token = theme_parse_custom_enum(scanner, TOKEN_VDIRECTION, (SmoothTranslateEnumFunc)TranslateGradientDirectionName, DEFAULT_VGRADIENTDIRECTION,  &retval->gradient_direction[FALSE]);
+      token = smooth_rc_parse_custom_enum(scanner, TOKEN_VDIRECTION, (SmoothSmoothTranslateEnumFunc)SmoothTranslateGradientDirectionName, DEFAULT_VGRADIENTDIRECTION,  &retval->gradient_direction[FALSE]);
       break;
     case TOKEN_SHADE1_VALUE:
-      token = theme_parse_float (scanner, TOKEN_SHADE1_VALUE, 1.3, &retval->shade1, 0.0, 2.5);
+      token = smooth_rc_parse_float (scanner, TOKEN_SHADE1_VALUE, 1.3, &retval->shade1, 0.0, 2.5);
       break;
     case TOKEN_SHADE2_VALUE:
-      token = theme_parse_float (scanner, TOKEN_SHADE2_VALUE, 0.7, &retval->shade2, 0.0, 2.5);
+      token = smooth_rc_parse_float (scanner, TOKEN_SHADE2_VALUE, 0.7, &retval->shade2, 0.0, 2.5);
       break;
     case TOKEN_COLOR1:
       {
@@ -1399,9 +1399,9 @@ theme_parse_fill(GScanner *scanner,
 
         color.pixel = -1;
 	token = gtk_rc_parse_color (scanner, &color);        
-	GDKSmoothColorAssignGdkColor(&retval->color1[GDKSmoothWidgetState(state)], color, 1.0);
+	SmoothColorAssignGdkColor(&retval->color1[SmoothGtkWidgetState(state)], color, 1.0);
 
-        retval->use_color1[GDKSmoothWidgetState(state)] = TRUE;
+        retval->use_color1[SmoothGtkWidgetState(state)] = TRUE;
       }
       break;
     case TOKEN_COLOR2:
@@ -1423,9 +1423,9 @@ theme_parse_fill(GScanner *scanner,
 
         color.pixel = -1;
 	token = gtk_rc_parse_color (scanner, &color);        
-	GDKSmoothColorAssignGdkColor(&retval->color2[GDKSmoothWidgetState(state)], color, 1.0);
+	SmoothColorAssignGdkColor(&retval->color2[SmoothGtkWidgetState(state)], color, 1.0);
 	
-        retval->use_color2[GDKSmoothWidgetState(state)] = TRUE;
+        retval->use_color2[SmoothGtkWidgetState(state)] = TRUE;
       }
       break;
     case TOKEN_FILE:
@@ -1440,11 +1440,11 @@ theme_parse_fill(GScanner *scanner,
         if (token != G_TOKEN_NONE)
           return token;
   
-	token = theme_parse_pixmap(scanner, G_TOKEN_EQUAL_SIGN, NULL, &retval->file_name[state]);
+	token = smooth_rc_parse_pixmap(scanner, G_TOKEN_EQUAL_SIGN, NULL, &retval->file_name[state]);
       }	
       break;
     case TOKEN_QUADRATIC_GRADIENT:
-      token = theme_parse_boolean (scanner, TOKEN_QUADRATIC_GRADIENT, FALSE, &retval->quadratic_gradient);
+      token = smooth_rc_parse_boolean (scanner, TOKEN_QUADRATIC_GRADIENT, FALSE, &retval->quadratic_gradient);
       break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1462,7 +1462,7 @@ theme_parse_fill(GScanner *scanner,
 }
 
 guint 
-theme_parse_edge(GScanner *scanner, 
+smooth_rc_parse_edge(GScanner *scanner, 
                  GTokenType wanted_token, 
                  smooth_edge_style *retval)
 {
@@ -1484,17 +1484,17 @@ theme_parse_edge(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateEdgeStyleName, DEFAULT_EDGESTYLE, &retval->style);
+      token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateEdgeStyleName, DEFAULT_EDGESTYLE, &retval->style);
       break;
     case TOKEN_LINE:
-      token = theme_parse_line (scanner, TOKEN_LINE, &retval->line);
+      token = smooth_rc_parse_line (scanner, TOKEN_LINE, &retval->line);
       retval->use_line = TRUE;
       break;
     case TOKEN_EDGE:    
-      token = theme_parse_edge (scanner, TOKEN_EDGE, &junk_edge);
+      token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &junk_edge);
       break;
     case TOKEN_FILL :
-      token = theme_parse_fill (scanner, TOKEN_FILL, &junk_fill);
+      token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &junk_fill);
       break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1512,7 +1512,7 @@ theme_parse_edge(GScanner *scanner,
 }
 
 guint 
-theme_parse_button_default(GScanner *scanner, 
+smooth_rc_parse_button_default(GScanner *scanner, 
                            GTokenType wanted_token, 
                            smooth_part_style *retval)
 {
@@ -1532,29 +1532,29 @@ theme_parse_button_default(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
       case TOKEN_STYLE:
-	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateButtonDefaultStyleName, SMOOTH_BUTTON_DEFAULT_STYLE_DEFAULT, &THEME_PART(retval)->style);
+	token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateButtonDefaultStyleName, SMOOTH_BUTTON_DEFAULT_STYLE_DEFAULT, &THEME_PART(retval)->style);
 	break;
 	
       case TOKEN_LINE:
-        token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+        token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
         THEME_PART(retval)->use_line = TRUE;
         break;
 
       case TOKEN_FILL :
-        token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+        token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
         THEME_PART(retval)->use_fill = TRUE;
         break;
   
       case TOKEN_EDGE:
-        token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+        token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
         break;
 
       case TOKEN_XPADDING:
-        token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
         break;
 
       case TOKEN_YPADDING:
-        token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
         break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1572,7 +1572,7 @@ theme_parse_button_default(GScanner *scanner,
 }
 
 guint 
-theme_parse_button(GScanner *scanner, 
+smooth_rc_parse_button(GScanner *scanner, 
                    GTokenType wanted_token, 
                    smooth_button_style *retval)
 {
@@ -1592,38 +1592,38 @@ theme_parse_button(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
       case TOKEN_BUTTON_DEFAULT:
-	token = theme_parse_button_default (scanner, TOKEN_BUTTON_DEFAULT, &retval->button_default);
+	token = smooth_rc_parse_button_default (scanner, TOKEN_BUTTON_DEFAULT, &retval->button_default);
 	retval->use_button_default = TRUE;
 	break;	  
 
       case TOKEN_BUTTON_EMBEDDABLE:
-	token = theme_parse_boolean (scanner, TOKEN_BUTTON_EMBEDDABLE, FALSE,  &retval->embeddable);
+	token = smooth_rc_parse_boolean (scanner, TOKEN_BUTTON_EMBEDDABLE, FALSE,  &retval->embeddable);
 	break;	  
 
       case TOKEN_DEFAULT_TRIANGLE:
-	token = theme_parse_boolean (scanner, TOKEN_DEFAULT_TRIANGLE, DEFAULT_BUTTONDEFAULTTRIANGLE,  &retval->default_triangle);
+	token = smooth_rc_parse_boolean (scanner, TOKEN_DEFAULT_TRIANGLE, DEFAULT_BUTTONDEFAULTTRIANGLE,  &retval->default_triangle);
 	break;	  
 
       case TOKEN_LINE:
-        token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+        token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
         THEME_PART(retval)->use_line = TRUE;
         break;
 
       case TOKEN_FILL :
-        token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+        token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
         THEME_PART(retval)->use_fill = TRUE;
         break;
 
       case TOKEN_EDGE:
-        token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+        token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
         break;
 
       case TOKEN_XPADDING:
-        token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
         break;
 
       case TOKEN_YPADDING:
-        token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
         break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1641,7 +1641,7 @@ theme_parse_button(GScanner *scanner,
 }
 
 guint 
-theme_parse_active_tab(GScanner *scanner, 
+smooth_rc_parse_active_tab(GScanner *scanner, 
                        GTokenType wanted_token, 
                        smooth_part_style *retval)
 {
@@ -1661,29 +1661,29 @@ theme_parse_active_tab(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
       case TOKEN_STYLE:
-	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateTabStyleName, DEFAULT_TABSTYLE, &THEME_PART(retval)->style);
+	token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateTabStyleName, DEFAULT_TABSTYLE, &THEME_PART(retval)->style);
 	break;
 	
       case TOKEN_LINE:
-        token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+        token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
         THEME_PART(retval)->use_line = TRUE;
         break;
 
       case TOKEN_FILL :
-        token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+        token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
         THEME_PART(retval)->use_fill = TRUE;
         break;
   
       case TOKEN_EDGE:
-        token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+        token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
         break;
 
       case TOKEN_XPADDING:
-        token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
         break;
 
       case TOKEN_YPADDING:
-        token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
         break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1701,7 +1701,7 @@ theme_parse_active_tab(GScanner *scanner,
 }
 
 guint 
-theme_parse_tab(GScanner *scanner, 
+smooth_rc_parse_tab(GScanner *scanner, 
                 GTokenType wanted_token, 
                 smooth_tab_style *retval)
 {
@@ -1721,38 +1721,38 @@ theme_parse_tab(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
       case TOKEN_STYLE:
-	token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateTabStyleName, DEFAULT_TABSTYLE, &THEME_PART(retval)->style);
+	token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateTabStyleName, DEFAULT_TABSTYLE, &THEME_PART(retval)->style);
 	break;
 	
       case TOKEN_ACTIVE_TAB:
-	token = theme_parse_active_tab (scanner, TOKEN_ACTIVE_TAB, &retval->active_tab);
+	token = smooth_rc_parse_active_tab (scanner, TOKEN_ACTIVE_TAB, &retval->active_tab);
 	retval->use_active_tab = TRUE;
 	break;	  
 
       case TOKEN_HIGHLIGHT:
-	token = theme_parse_boolean (scanner, TOKEN_HIGHLIGHT, FALSE, &retval->highlight);
+	token = smooth_rc_parse_boolean (scanner, TOKEN_HIGHLIGHT, FALSE, &retval->highlight);
 	break;	  
 
       case TOKEN_LINE:
-        token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+        token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
         THEME_PART(retval)->use_line = TRUE;
         break;
 
       case TOKEN_FILL :
-        token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+        token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
         THEME_PART(retval)->use_fill = TRUE;
         break;
 
       case TOKEN_EDGE:
-        token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+        token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
         break;
 
       case TOKEN_XPADDING:
-        token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
         break;
 
       case TOKEN_YPADDING:
-        token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+        token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
         break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1770,7 +1770,7 @@ theme_parse_tab(GScanner *scanner,
 }
 
 guint 
-theme_parse_option(GScanner *scanner, 
+smooth_rc_parse_option(GScanner *scanner, 
                    GTokenType wanted_token, 
                    smooth_check_style *retval)
 {
@@ -1790,27 +1790,27 @@ theme_parse_option(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateCheckStyleName, SMOOTH_CHECKMARK_STYLE_DEFAULT_OPTION, &THEME_PART(retval)->style);
+      token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateCheckStyleName, SMOOTH_CHECKMARK_STYLE_DEFAULT_OPTION, &THEME_PART(retval)->style);
       break;
     case TOKEN_FILL :
-      token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+      token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
       THEME_PART(retval)->use_fill = TRUE;
       break;
     case TOKEN_EDGE:
-      token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+      token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
       break;
     case TOKEN_MOTIF:
-      token = theme_parse_boolean (scanner, TOKEN_MOTIF, TRUE, &retval->motif);
+      token = smooth_rc_parse_boolean (scanner, TOKEN_MOTIF, TRUE, &retval->motif);
       break;
     case TOKEN_LINE:
-      token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+      token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
       THEME_PART(retval)->use_line = TRUE;
       break;
     case TOKEN_XPADDING:
-      token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
       break;
     case TOKEN_YPADDING:
-      token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
       break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1828,7 +1828,7 @@ theme_parse_option(GScanner *scanner,
 }
 
 guint 
-theme_parse_grip(GScanner *scanner, 
+smooth_rc_parse_grip(GScanner *scanner, 
                  GTokenType wanted_token, 
                  smooth_grip_style *retval)
 {
@@ -1848,33 +1848,33 @@ theme_parse_grip(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateGripStyleName, DEFAULT_GRIPSTYLE,  &THEME_PART(retval)->style);
+      token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateGripStyleName, DEFAULT_GRIPSTYLE,  &THEME_PART(retval)->style);
       break;
     case TOKEN_LINE:
-      token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+      token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
       THEME_PART(retval)->use_line = TRUE;
       break;
     case TOKEN_EDGE:
-      token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+      token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
       break;
     case TOKEN_FILL :
-      token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+      token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
       THEME_PART(retval)->use_fill = TRUE;
       break;
     case TOKEN_XPADDING:
-      token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
       break;
     case TOKEN_YPADDING:
-      token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
       break;
     case TOKEN_COUNT:
-      token = theme_parse_int (scanner, TOKEN_COUNT, DEFAULT_GRIPCOUNT, &retval->count, 1, -1);
+      token = smooth_rc_parse_int (scanner, TOKEN_COUNT, DEFAULT_GRIPCOUNT, &retval->count, 1, -1);
       break;
     case TOKEN_SPACING:
-      token = theme_parse_int (scanner, TOKEN_SPACING, DEFAULT_GRIPSPACING, &retval->spacing, 0, -1);
+      token = smooth_rc_parse_int (scanner, TOKEN_SPACING, DEFAULT_GRIPSPACING, &retval->spacing, 0, -1);
       break;
     case TOKEN_TOOLBAR_OVERLAP:
-      token = theme_parse_boolean (scanner, TOKEN_TOOLBAR_OVERLAP, DEFAULT_GRIPOVERLAP, &retval->overlap);
+      token = smooth_rc_parse_boolean (scanner, TOKEN_TOOLBAR_OVERLAP, DEFAULT_GRIPOVERLAP, &retval->overlap);
       break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1892,7 +1892,7 @@ theme_parse_grip(GScanner *scanner,
 }
 
 guint 
-theme_parse_stepper(GScanner *scanner, 
+smooth_rc_parse_stepper(GScanner *scanner, 
                  GTokenType wanted_token, 
                  SmoothStepperStyle *retval)
 {
@@ -1912,24 +1912,24 @@ theme_parse_stepper(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_LINE:
-      token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+      token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
       THEME_PART(retval)->use_line = TRUE;
       break;
     case TOKEN_EDGE:
-      token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+      token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
       break;
     case TOKEN_FILL :
-      token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+      token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
       THEME_PART(retval)->use_fill = TRUE;
       break;
     case TOKEN_XPADDING:
-      token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
       break;
     case TOKEN_YPADDING:
-      token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
       break;
     case TOKEN_ARROW:
-      token = theme_parse_arrow_part (scanner, TOKEN_ARROW, &retval->Arrow);
+      token = smooth_rc_parse_arrow_part (scanner, TOKEN_ARROW, &retval->Arrow);
       break;
     default:
       g_scanner_get_next_token (scanner);
@@ -1947,7 +1947,7 @@ theme_parse_stepper(GScanner *scanner,
 }
 
 guint 
-theme_parse_check(GScanner *scanner, 
+smooth_rc_parse_check(GScanner *scanner, 
                   GTokenType wanted_token,
                   smooth_check_style *retval)
 {
@@ -1967,26 +1967,26 @@ theme_parse_check(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_STYLE:
-      token = theme_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothTranslateEnumFunc)TranslateCheckStyleName, SMOOTH_CHECKMARK_STYLE_DEFAULT,  &THEME_PART(retval)->style);
+      token = smooth_rc_parse_custom_enum(scanner, TOKEN_STYLE, (SmoothSmoothTranslateEnumFunc)SmoothTranslateCheckStyleName, SMOOTH_CHECKMARK_STYLE_DEFAULT,  &THEME_PART(retval)->style);
       break;
     case TOKEN_FILL :
-      token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+      token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
       THEME_PART(retval)->use_fill = TRUE;
       break;
     case TOKEN_MOTIF:
-      token = theme_parse_boolean (scanner, TOKEN_MOTIF, TRUE, &retval->motif);
+      token = smooth_rc_parse_boolean (scanner, TOKEN_MOTIF, TRUE, &retval->motif);
       break;
     case TOKEN_EDGE:
-      token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+      token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
       break;
     case TOKEN_XPADDING:
-      token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
       break;
     case TOKEN_YPADDING:
-      token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
       break;
     case TOKEN_LINE:
-      token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+      token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
       THEME_PART(retval)->use_line = TRUE;
       break;
     default:
@@ -2005,7 +2005,7 @@ theme_parse_check(GScanner *scanner,
 }
 
 guint 
-theme_parse_generic_part(GScanner *scanner, 
+smooth_rc_parse_generic_part(GScanner *scanner, 
                          GTokenType wanted_token, 
                          smooth_part_style *retval)
 {
@@ -2025,21 +2025,21 @@ theme_parse_generic_part(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_FILL :
-      token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+      token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
       THEME_PART(retval)->use_fill = TRUE;
       break;
     case TOKEN_LINE:
-      token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+      token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
       THEME_PART(retval)->use_line = TRUE;
       break;
     case TOKEN_EDGE:
-      token = theme_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
+      token = smooth_rc_parse_edge (scanner, TOKEN_EDGE, &THEME_PART(retval)->edge);
       break;
     case TOKEN_XPADDING:
-      token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
       break;
     case TOKEN_YPADDING:
-      token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
       break;
     default:
       g_scanner_get_next_token (scanner);
@@ -2057,7 +2057,7 @@ theme_parse_generic_part(GScanner *scanner,
 }
 
 guint 
-theme_parse_trough_part(GScanner *scanner, 
+smooth_rc_parse_trough_part(GScanner *scanner, 
                         GTokenType wanted_token, 
                         smooth_trough_style *retval)
 {
@@ -2077,21 +2077,21 @@ theme_parse_trough_part(GScanner *scanner,
   while (token != G_TOKEN_RIGHT_CURLY) {
     switch (token) {
     case TOKEN_TROUGH_SHOW_VALUE:
-      token = theme_parse_boolean (scanner, TOKEN_TROUGH_SHOW_VALUE, DEFAULT_TROUGH_SHOW_VALUE, &retval->show_value);
+      token = smooth_rc_parse_boolean (scanner, TOKEN_TROUGH_SHOW_VALUE, DEFAULT_TROUGH_SHOW_VALUE, &retval->show_value);
       break;
     case TOKEN_FILL :
-      token = theme_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
+      token = smooth_rc_parse_fill (scanner, TOKEN_FILL, &THEME_PART(retval)->fill);
       THEME_PART(retval)->use_fill = TRUE;
       break;
     case TOKEN_LINE:
-      token = theme_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
+      token = smooth_rc_parse_line (scanner, TOKEN_LINE, &THEME_PART(retval)->line);
       THEME_PART(retval)->use_line = TRUE;
       break;
     case TOKEN_XPADDING:
-      token = theme_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_XPADDING, 0, &THEME_PART(retval)->xpadding, -25, 25);
       break;
     case TOKEN_YPADDING:
-      token = theme_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
+      token = smooth_rc_parse_int (scanner, TOKEN_YPADDING, 0, &THEME_PART(retval)->ypadding, -25, 25);
       break;
     default:
       g_scanner_get_next_token (scanner);
@@ -2109,7 +2109,7 @@ theme_parse_trough_part(GScanner *scanner,
 }
 
 void 
-part_init(smooth_part_style *part, 
+smooth_part_init(smooth_part_style *part, 
           gint partstyle)
 {
   gint i;
@@ -2150,7 +2150,7 @@ part_init(smooth_part_style *part,
 }
 
 void 
-part_merge (smooth_part_style *dest_part, 
+smooth_part_merge (smooth_part_style *dest_part, 
             smooth_part_style *src_part)
 {
   gint i;
@@ -2202,7 +2202,7 @@ part_merge (smooth_part_style *dest_part,
 }
 
 void
-arrow_merge (SmoothArrowPart *dest_arrow,
+smooth_arrow_merge (SmoothArrowPart *dest_arrow,
              SmoothArrowPart *src_arrow)
 {
   SmoothArrow dummy;

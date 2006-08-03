@@ -37,7 +37,7 @@ typedef GdkPixbuf* SmoothImageBuffer;
 typedef SmoothGDKImage SmoothImage;
 
 #define SMOOTHCOLOR	1
-typedef SmoothGDKColor SmoothColor;
+typedef SmoothSmoothGDKColor SmoothColor;
 
 #define SMOOTHBRUSHTYPE	1
 typedef SmoothGDKBrushType SmoothBrushType;

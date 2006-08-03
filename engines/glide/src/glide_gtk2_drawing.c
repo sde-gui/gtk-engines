@@ -254,7 +254,7 @@ glide_draw_option (GtkStyle * style,
 	/***********************************************/
 	check_state = GLIDE_CHECK_OFF;
 
-	if (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+	if (GTK_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
 	{
 		check_state = GLIDE_CHECK_INCONSISTENT;
 	}

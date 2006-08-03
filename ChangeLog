@@ -1,3 +1,51 @@
+2006-08-03 Andrew Johnson <acjgenius@earthlink.net>
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/glide/src/glide_gtk2_drawing.c:
+	* engines/glide/src/glide_gtk2_support.c:
+	* engines/mist/src/mist-rc-style.c:
+	* engines/mist/src/mist-style.c:
+	* engines/redmond/src/redmond_gtk2_engine.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_drawing.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_misc.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_misc.h:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.h:
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	* engines/smooth/src/engine/smooth_gtk2_engine.c:
+	* engines/smooth/src/engine/smooth_gtk2_misc.c:
+	* engines/smooth/src/engine/smooth_gtk2_misc.h:
+	* engines/smooth/src/engine/smooth_gtk2_rc.c:
+	* engines/smooth/src/engine/smooth_gtk2_rc.h:
+	* engines/smooth/src/interfaces/abstract/abstract_drawing_interface.c:
+	* engines/smooth/src/interfaces/abstract/abstract_drawing_interface.h:
+	* engines/smooth/src/interfaces/abstract/src/abstract_gradient_routines.c:
+	* engines/smooth/src/interfaces/abstract/src/abstract_gradient_routines.h:
+	* engines/smooth/src/interfaces/abstract/src/abstract_tile_routines.c:
+	* engines/smooth/src/interfaces/abstract/src/abstract_tile_routines.h:
+	* engines/smooth/src/interfaces/drawing_interface.c:
+	* engines/smooth/src/interfaces/drawing_interface.h:
+	* engines/smooth/src/interfaces/gdk2/gdk2_drawing_interface.c:
+	* engines/smooth/src/interfaces/gdk2/gdk2_drawing_interface.h:
+	* engines/smooth/src/interfaces/gdk2/gdk2_type_defines.h:
+	* engines/smooth/src/interfaces/gdk2/src/gdk2_gradient_routines.c:
+	* engines/smooth/src/interfaces/gdk2/src/gdk2_gradient_routines.h:
+	* engines/smooth/src/interfaces/shared/gdk/gdk_drawing_interface.c:
+	* engines/smooth/src/interfaces/shared/gdk/gdk_drawing_interface.h:
+	* engines/smooth/src/interfaces/shared/gdk/gdk_private_drawing_interface.h:
+	* engines/smooth/src/interfaces/shared/gdk/gdk_type_defines.h:
+	* engines/smooth/src/utils/draw_grips.c:
+	* engines/support/cairo-support.c:
+	* engines/support/general-support.h:
+	* engines/support/widget-information.c:
+	* engines/thinice/src/thinice_rc_style.c:
+	* engines/thinice/src/thinice_theme_draw.c:
+
+	- Namespace all engine symbols for thinice, smooth, mist, redmond, clearlooks
+	- Make Smooth use more Support functions/Macros
+	- Start adding missing IS_* Macros
+
 2006-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c: (draw_shadow):

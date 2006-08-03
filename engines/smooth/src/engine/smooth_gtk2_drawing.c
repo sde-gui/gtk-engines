@@ -76,7 +76,7 @@ static SmoothDouble default_shades_table[] =
 
 /* This function is based on a portion of Xenophilia's xeno_draw_extension */
 static gboolean
-rounded_extension_points(gint x,
+smooth_rounded_extension_points(gint x,
                          gint y, 
 			 gint width, 
 			 gint height,
@@ -145,7 +145,7 @@ rounded_extension_points(gint x,
 
 /* This function is based on a portion of Xenophilia's xeno_draw_extension */
 static gboolean
-square_extension_points(gint x,
+smooth_square_extension_points(gint x,
                          gint y, 
 			 gint width, 
 			 gint height,
@@ -215,7 +215,7 @@ square_extension_points(gint x,
 
 /* This function is based on a portion of Xenophilia's xeno_draw_extension */
 static gboolean
-triangle_extension_points(gint x,
+smooth_triangle_extension_points(gint x,
                          gint y, 
 			 gint width, 
 			 gint height,
@@ -231,7 +231,7 @@ triangle_extension_points(gint x,
     case GTK_POS_BOTTOM:
       i = (height - 5 + 2) / 3;
 
-      if (!(i > 0)) return square_extension_points(x, y, width, height, selected, fill, position, points);
+      if (!(i > 0)) return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
 
       y2 = y + i*3 + 5 + ((fill)?1:0) + ((selected)?0:-1);
          
@@ -247,7 +247,7 @@ triangle_extension_points(gint x,
 	
     case GTK_POS_RIGHT:
       i = (width- 5 + 2) / 3;
-      if (!(i > 0)) return square_extension_points(x, y, width, height, selected, fill, position, points);
+      if (!(i > 0)) return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
 
       x2 = x + i*3 + 5 + ((fill)?1:0) + ((selected)?0:-1);
       points[0].y = y;		points[0].x = x2;
@@ -262,7 +262,7 @@ triangle_extension_points(gint x,
 
     case GTK_POS_TOP:
       i = (height - 5 + 2) / 3;
-      if (!(i > 0)) return square_extension_points(x, y, width, height, selected, fill, position, points);
+      if (!(i > 0)) return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
 
       y -= (i*3 + 5 - height) + ((fill)?1:0) + ((selected)?1:0);
       y2 += ((selected)?-1:0) - 1;
@@ -278,7 +278,7 @@ triangle_extension_points(gint x,
              
     case GTK_POS_LEFT:
       i = (width- 5 + 2) / 3;
-      if (!(i > 0)) return square_extension_points(x, y, width, height, selected, fill, position, points);
+      if (!(i > 0)) return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
 
       x -= (i*3 + 5 - width) + ((fill)?1:0) + ((selected)?1:0);
       x2 += ((selected)?-1:0) - 1;
@@ -293,7 +293,7 @@ triangle_extension_points(gint x,
       break;
 
     default :
-      return square_extension_points(x, y, width, height, selected, fill, position, points);
+      return smooth_square_extension_points(x, y, width, height, selected, fill, position, points);
   }  
   return TRUE;     
 }
@@ -321,7 +321,7 @@ smooth_fill_background(SmoothCanvas Canvas,
 	GdkBitmap * clip_mask = NULL;
 	gint fill_style;
   	
-  	SmoothWidgetState widget_state = GDKSmoothWidgetState(state_type);
+  	SmoothWidgetState widget_state = SmoothGtkWidgetState(state_type);
   	
 	if (!part) part = THEME_PART(BACKGROUND_PART(style));
   
@@ -335,7 +335,7 @@ smooth_fill_background(SmoothCanvas Canvas,
 	
 	if (arc_fill)
 	{
-		clip_mask = arc_clip_mask(width+1, height+1);
+		clip_mask = smooth_arc_clip_mask(width+1, height+1);
 
 		if ((fill_style == SMOOTH_FILL_STYLE_GRADIENT) || (fill_style == SMOOTH_FILL_STYLE_SHADE_GRADIENT))
 		{
@@ -343,8 +343,8 @@ smooth_fill_background(SmoothCanvas Canvas,
 		        height += 3;
 	        }
 
-		GDKModifyCanvasClipMask(&Canvas, clip_mask);
-		GDKModifyCanvasClipOffset(&Canvas, x, y);
+		SmoothGDKModifyCanvasClipMask(&Canvas, clip_mask);
+		SmoothGDKModifyCanvasClipOffset(&Canvas, x, y);
 
 		fill.Roundness = 1.0;
 	}	
@@ -352,8 +352,8 @@ smooth_fill_background(SmoothCanvas Canvas,
 	{
 		fill.Roundness = 0.0;
 
-		GDKModifyCanvasClipMask(&Canvas, NULL);
-		GDKModifyCanvasClipOffset(&Canvas, 0, 0);
+		SmoothGDKModifyCanvasClipMask(&Canvas, NULL);
+		SmoothGDKModifyCanvasClipOffset(&Canvas, 0, 0);
 	}
 	
 	fill.Style = fill_style;
@@ -412,13 +412,13 @@ smooth_fill_background(SmoothCanvas Canvas,
 			if (THEME_DATA(style)->fill.use_dither_depth[state_type])
 				dither_depth = THEME_DATA(style)->fill.dither_depth[state_type];
 		
-		GDKModifyCanvasDitherDepth(&Canvas, dither_depth);
+		SmoothGDKModifyCanvasDitherDepth(&Canvas, dither_depth);
 	}
 	
 	SmoothDrawFill(&fill, Canvas, x, y, width, height);
 	
-	GDKModifyCanvasClipMask(&Canvas, NULL);
-	GDKModifyCanvasClipOffset(&Canvas, 0, 0);
+	SmoothGDKModifyCanvasClipMask(&Canvas, NULL);
+	SmoothGDKModifyCanvasClipOffset(&Canvas, 0, 0);
 
 	if (clip_mask)
 		clip_mask_unref(clip_mask);
@@ -430,10 +430,10 @@ smooth_draw_grip(SmoothCanvas Canvas,
                 GtkStyle * style,
                  GtkStateType state_type,
 
-                SmoothInt X,
-                SmoothInt Y,
-                SmoothInt Width,
-                SmoothInt Height,
+                SmoothInt x,
+                SmoothInt y,
+                SmoothInt width,
+                SmoothInt height,
                 SmoothBool Horizontal)
 {
        SmoothColor base, white, darktone, lighttone, midtone;
@@ -444,7 +444,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
        if (PART_STYLE(grip) == NO_GRIP)
                return;
 
-       base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+       base = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
        SmoothCanvasCacheColor(Canvas, &base);
        SmoothCanvasCacheShadedColor(Canvas, base, default_shades_table[0], &darktone);
@@ -489,7 +489,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
                                color1 = tmp;
                        }
 
-                       do_smooth_draw_broken_bars(Canvas, color1, color2, color3, X + 2, Y + 2, Width - 4, Height - 4, Horizontal);
+                       do_smooth_draw_broken_bars(Canvas, color1, color2, color3, x + 2, y + 2, width - 4, height - 4, Horizontal);
                }
                break;
 
@@ -509,17 +509,17 @@ smooth_draw_grip(SmoothCanvas Canvas,
                        sgo.Alternating = 0;
                        sgo.CutOff = EDGE_LINE_THICKNESS(style, grip) + 1;
 
-                       sgo.Size = (((Horizontal)?Height:Width) >> 1) - 1;
+                       sgo.Size = (((Horizontal)?height:width) >> 1) - 1;
 
                        if ((PART_STYLE(grip)==LINES_OUT_GRIP) || (PART_STYLE(grip)==LINES_IN_GRIP))
                        {
                                if (Horizontal)
                                {
-                                       sgo.Count = (Width - ((Width % (sgo.Spacing))))/(sgo.Spacing + 2) - 1;
+                                       sgo.Count = (width - ((width % (sgo.Spacing))))/(sgo.Spacing + 2) - 1;
                                }
                                else
                                {
-                                       sgo.Count = (Height - ((Height % (sgo.Spacing))))/(sgo.Spacing + 2) - 1;
+                                       sgo.Count = (height - ((height % (sgo.Spacing))))/(sgo.Spacing + 2) - 1;
                                }
                        }
 
@@ -550,7 +550,7 @@ smooth_draw_grip(SmoothCanvas Canvas,
                                color1 = tmp;
                        }
 
-                       do_smooth_draw_lines(&sgo, Canvas, color1, color2, X, Y, Width, Height, Horizontal);
+                       do_smooth_draw_lines(&sgo, Canvas, color1, color2, x, y, width, height, Horizontal);
                }
                break;
 
@@ -585,11 +585,11 @@ smooth_draw_grip(SmoothCanvas Canvas,
                        {
                                if (Horizontal)
                                {
-                                       sgo.Count = (Width - ((Width % (sgo.Spacing))))/(sgo.Spacing + 2) - 1;
+                                       sgo.Count = (width - ((width % (sgo.Spacing))))/(sgo.Spacing + 2) - 1;
                                }
                                else
                                {
-                                       sgo.Count = (Height - ((Height % (sgo.Spacing))))/(sgo.Spacing + 2) - 1;
+                                       sgo.Count = (height - ((height % (sgo.Spacing))))/(sgo.Spacing + 2) - 1;
                                }
                        }
 
@@ -627,12 +627,12 @@ smooth_draw_grip(SmoothCanvas Canvas,
                                color1 = tmp;
 
                                if (Horizontal)
-                                       Y -= 1;
+                                       y -= 1;
                                else
-                                       X -= 1;
+                                       x -= 1;
                        }
 
-                       do_smooth_draw_dots(&sgo, Canvas, color1, color2, color3, X, Y, Width, Height, Horizontal);
+                       do_smooth_draw_dots(&sgo, Canvas, color1, color2, color3, x, y, width, height, Horizontal);
                }
                break;
 
@@ -684,15 +684,15 @@ smooth_draw_grip(SmoothCanvas Canvas,
                        else
                        {
                                if (Horizontal)
-                                       Y -= 1;
+                                       y -= 1;
                                else
-                                       X -= 1;
+                                       x -= 1;
                        }
 
 
                        do_smooth_draw_buds(Canvas, color1, color2, color3,
 
-                                       X, Y, Width, Height,
+                                       x, y, width, height,
 
                                        EDGE_LINE_THICKNESS(style, grip), Horizontal,
 
@@ -718,10 +718,10 @@ smooth_draw_slider_grip(SmoothCanvas Canvas,
 	 		   GtkStyle *style,
 		           GtkStateType state_type,
 
-		           SmoothInt X,
-		           SmoothInt Y,
-		           SmoothInt Width,
-		           SmoothInt Height,
+		           SmoothInt x,
+		           SmoothInt y,
+		           SmoothInt width,
+		           SmoothInt height,
 	
 		           SmoothBool Horizontal)
 {
@@ -736,28 +736,28 @@ smooth_draw_slider_grip(SmoothCanvas Canvas,
 		case BARS_IN_GRIP:
 		case BARS_OUT_GRIP:
 		{
-			SmoothInt w = Width, h = Height;
+			SmoothInt w = width, h = height;
 
 			if (Horizontal) 
 			{
-				h = MIN(Height, Width + Height/7);
-				Y = Y + (Height - h)/2;
+				h = MIN(height, width + height/7);
+				y = y + (height - h)/2;
 	
 				Horizontal = TRUE;
 			} 
 			else 
 			{
-				w = MIN(Width, Width/7 + Height);
-				X = X + (Width - w)/2;
+				w = MIN(width, width/7 + height);
+				x = x + (width - w)/2;
 	
 				Horizontal = FALSE;
 			}
 		
-			Width = w;
-			Height = h;
+			width = w;
+			height = h;
 
 			/* too small no bars */
-			if ((Width <= 13) && (Height <= 11))
+			if ((width <= 13) && (height <= 11))
 				BAIL = TRUE;
 		} 
 		break;
@@ -765,24 +765,24 @@ smooth_draw_slider_grip(SmoothCanvas Canvas,
 		case LINES_IN_GRIP:
 		case LINES_OUT_GRIP:
 		{
-			SmoothInt w = Width, h = Height;
+			SmoothInt w = width, h = height;
 
 			if (Horizontal) 
 			{
-				h = MIN(Height, Width + Height/7);
-				Y = Y + (Height - h)/2;
+				h = MIN(height, width + height/7);
+				y = y + (height - h)/2;
 			} 
 			else 
 			{
-				w = MIN(Width, Width/7 + Height);
-				X = X + (Width - w)/2;
+				w = MIN(width, width/7 + height);
+				x = x + (width - w)/2;
 			}
 		
-			Width = w;
-			Height = h;
+			width = w;
+			height = h;
 
 			/* too small no lines */
-			if ((Width <= 13) && (Height <= 11))
+			if ((width <= 13) && (height <= 11))
 				BAIL = TRUE;
 		} 
 		break;
@@ -791,14 +791,14 @@ smooth_draw_slider_grip(SmoothCanvas Canvas,
 		case FIXEDLINES_OUT_GRIP:
 		{
 			/* too small no midlines */
-			if (((Width <= 13) && (Horizontal)) || ((Height <= 13) && (!Horizontal)))
+			if (((width <= 13) && (Horizontal)) || ((height <= 13) && (!Horizontal)))
 				BAIL = TRUE;
 		}
 		break;
 
 		case SLASHES_GRIP:
 		{
-			if (((Width <= 13) && (Horizontal)) || ((Height <= 13) && (!Horizontal)))
+			if (((width <= 13) && (Horizontal)) || ((height <= 13) && (!Horizontal)))
 				BAIL = TRUE;
 		}
 		break;
@@ -807,7 +807,7 @@ smooth_draw_slider_grip(SmoothCanvas Canvas,
 		case SMALLDOTS_IN_GRIP :
 		case AUTODOTS_IN_GRIP :
 		{
-			if ((Width <= 7) && (Height <= 7))
+			if ((width <= 7) && (height <= 7))
 				BAIL = TRUE;
 		}
 		break;
@@ -817,11 +817,11 @@ smooth_draw_slider_grip(SmoothCanvas Canvas,
 		case AUTODOTS_OUT_GRIP :
 		{
 			if (Horizontal)
-				Y += 1;
+				y += 1;
 			else
-				X += 1;
+				x += 1;
 
-			if ((Width <= 7) && (Height <= 7))
+			if ((width <= 7) && (height <= 7))
 				BAIL = TRUE;
 		}
 		break;
@@ -832,32 +832,32 @@ smooth_draw_slider_grip(SmoothCanvas Canvas,
 		case NS_BUDS_OUT_GRIP:
 		{
 			SmoothBool ns = ((PART_STYLE(grip) == NS_BUDS_OUT_GRIP) || (PART_STYLE(grip) == NS_BUDS_IN_GRIP));
-			SmoothInt w = Width, h = Height;
+			SmoothInt w = width, h = height;
 
 			if (!Horizontal) 
 			{
-				h = MIN(Height, Width + Height/7);
+				h = MIN(height, width + height/7);
 
-				X += 0;
-				Y += (Height - h)/2 + 3 + (gint)(ns);
+				x += 0;
+				y += (height - h)/2 + 3 + (gint)(ns);
 				
-				Width = w;
-				Height = h - 6;
+				width = w;
+				height = h - 6;
 			} 
 			else 
 			{
-				w = MIN(Width, Width/7 + Height);
+				w = MIN(width, width/7 + height);
 
-				X += (Width - w)/2 + 2 + (gint)(ns);
-				Y += 1;
-				Width = w - 4;
-				Height = h;
+				x += (width - w)/2 + 2 + (gint)(ns);
+				y += 1;
+				width = w - 4;
+				height = h;
 			}
 
 			Horizontal = !Horizontal;
 			
 			/* too small no buds */
-			if ((Width <= 13) && (Height <= 11))
+			if ((width <= 13) && (height <= 11))
 				BAIL = TRUE;
 		}
 		break;
@@ -867,8 +867,8 @@ smooth_draw_slider_grip(SmoothCanvas Canvas,
 	}	  
 
 	if (!BAIL)
-		smooth_draw_grip(Canvas, style, state_type, X+PART_XPADDING(grip), Y+PART_YPADDING(grip), 
-					Width-PART_XPADDING(grip)*2, Height-PART_YPADDING(grip)*2, Horizontal);      
+		smooth_draw_grip(Canvas, style, state_type, x+PART_XPADDING(grip), y+PART_YPADDING(grip), 
+					width-PART_XPADDING(grip)*2, height-PART_YPADDING(grip)*2, Horizontal);      
 }
 
 static void
@@ -894,7 +894,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 	if (shadow_type == GTK_SHADOW_NONE)
 		return;
 
- 	base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+ 	base = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 	
 	if (CHECK_DETAIL(detail, "smooth_trough"))
 		part = THEME_PART(TROUGH_PART(style));	
@@ -973,23 +973,23 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 	SmoothInt line_width = 1;
 	SmoothBool interior_focus = TRUE;
 
-	/* Setup Pen Color, Line Pattern, & Width */
+	/* Setup Pen Color, Line Pattern, & width */
 	{
 		/* Get Style's Focus Color */
 		{
 			if (FOCUS_USE_FOREGROUND(style, state_type)) 
 			{
-				color = FOCUS_FOREGROUND(style, GDKSmoothWidgetState(state_type));
+				color = FOCUS_FOREGROUND(style, SmoothGtkWidgetState(state_type));
 			} 
 			else
 			{
-				color = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Foreground;
+				color = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Foreground;
 			}
 	
 			SmoothCanvasCacheColor(Canvas, &color);		
 		}
 
-		/* Check for a Smooth Focus Part Line Width and Pattern */
+		/* Check for a Smooth Focus Part Line width and Pattern */
 		if (FOCUS_USE_PATTERN(style, state_type))
 		{
 			dash_pattern.Pattern = FOCUS_PATTERN(style, state_type);
@@ -1016,7 +1016,7 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 		}
 		else 
 		{
-			/* Fallback on GTK's Line Width and Pattern */
+			/* Fallback on GTK's Line width and Pattern */
 			if (widget)
 			{
 				gtk_widget_style_get (widget, "focus-line-width", &line_width, NULL);
@@ -1040,7 +1040,7 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 	
 	if (widget)
 	{
-		gtk_widget_get_focus_props (widget, NULL, NULL, &interior_focus);
+		smooth_gtk_widget_get_focus_props (widget, NULL, NULL, &interior_focus);
 	}
 
  	if (CHECK_DETAIL(detail, "button") && (ge_is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style))))
@@ -1215,7 +1215,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
 
 	if (GTK_WIDGET_HAS_FOCUS(widget))
 	{
-		gtk_widget_get_focus_props (widget, &focus_line_width, &focus_padding, &interior_focus);
+		smooth_gtk_widget_get_focus_props (widget, &focus_line_width, &focus_padding, &interior_focus);
 		if (!interior_focus)
 			focus = -(focus_line_width);
 		else
@@ -1229,7 +1229,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
 		{
 			if (GTK_IS_ENTRY(child->data) && GTK_WIDGET_HAS_FOCUS(child->data))
 			{
-				gtk_widget_get_focus_props (GTK_WIDGET(child->data), &focus_line_width, &focus_padding, &interior_focus);
+				smooth_gtk_widget_get_focus_props (GTK_WIDGET(child->data), &focus_line_width, &focus_padding, &interior_focus);
 				
 				if (!interior_focus)
 				{
@@ -1260,7 +1260,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-              SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(parent_style).Input[GDKSmoothWidgetState(parent_state)].Background));
+              SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(parent_style).Input[SmoothGtkWidgetState(parent_state)].Background));
 
               SmoothCanvasFillRectangle(Canvas, x - thick*2 - focus - focus_padding*2, y + focus - focus_padding, 
 					width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
@@ -1270,7 +1270,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-              SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[GDKSmoothWidgetState(parent_state)].Background));
+              SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[SmoothGtkWidgetState(parent_state)].Background));
 
               SmoothCanvasFillRectangle(Canvas, x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 					width + thick*2 - focus + focus_padding*2, height - focus*2  + focus_padding*2);
@@ -1300,7 +1300,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
           SmoothRectangleSetValues(&clip, x - thick, y, width + thick, height);
           SmoothCanvasSetClipRectangle(Canvas, clip);
 
-          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[GDKSmoothWidgetState(state_type)].Background));
+          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[SmoothGtkWidgetState(state_type)].Background));
 	  SmoothCanvasFillRectangle(Canvas, x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				    width + thick*2 - focus + focus_padding*2, height - focus*2  + focus_padding*2);
 
@@ -1326,7 +1326,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
           if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
-          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[GDKSmoothWidgetState(state_type)].Background));
+          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[SmoothGtkWidgetState(state_type)].Background));
 	  SmoothCanvasFillRectangle(Canvas, x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				    width + thick*2 - focus + focus_padding*2, height - focus*2  + focus_padding*2);
 
@@ -1370,7 +1370,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-              SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(parent_style).Input[GDKSmoothWidgetState(parent_state)].Background));
+              SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(parent_style).Input[SmoothGtkWidgetState(parent_state)].Background));
               SmoothCanvasFillRectangle(Canvas, x + focus - focus_padding, y + focus - focus_padding, 
                                         width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
             }
@@ -1379,7 +1379,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-              SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[GDKSmoothWidgetState(parent_state)].Background));
+              SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(style).Input[SmoothGtkWidgetState(parent_state)].Background));
               SmoothCanvasFillRectangle(Canvas, x + focus - focus_padding, y + focus - focus_padding, 
                                         width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
             }
@@ -1404,7 +1404,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
            if (parent_state != GTK_STATE_INSENSITIVE)
              parent_state = GTK_STATE_NORMAL;
 
-          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(parent_style).Input[GDKSmoothWidgetState(parent_state)].Background));
+          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(parent_style).Input[SmoothGtkWidgetState(parent_state)].Background));
           SmoothCanvasFillRectangle(Canvas, x + focus - focus_padding, y + focus - focus_padding, 
                                     width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
 
@@ -1430,7 +1430,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
           if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
-          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(parent_style).Input[GDKSmoothWidgetState(parent_state)].Background));
+          SmoothCanvasSetPenColor(Canvas, (COLOR_CUBE(parent_style).Input[SmoothGtkWidgetState(parent_state)].Background));
           SmoothCanvasFillRectangle(Canvas, x + focus - focus_padding, y + focus - focus_padding, 
                                     width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
 
@@ -1511,7 +1511,7 @@ smooth_draw_spinbutton_stepper (SmoothCanvas Canvas,
 
 	if (GTK_WIDGET_HAS_FOCUS(widget))
 	{
-		gtk_widget_get_focus_props (widget, &focus_line_width, &focus_padding, &interior_focus);
+		smooth_gtk_widget_get_focus_props (widget, &focus_line_width, &focus_padding, &interior_focus);
 		if (!interior_focus)
 		{
 			focus = focus_line_width;
@@ -1645,24 +1645,24 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 		GtkWidget * widget,
 		const gchar * detail,
 
-		SmoothInt X,
-		SmoothInt Y,
-		SmoothInt Width,
-		SmoothInt Height,
+		SmoothInt x,
+		SmoothInt y,
+		SmoothInt width,
+		SmoothInt height,
 
 		SmoothBool Horizontal)
 {
 	SmoothColor base, darktone, lighttone;
 	smooth_part_style *part = NULL;
 
-	base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+	base =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
 	SmoothCanvasCacheShadedColor(Canvas, base, default_shades_table[0], &darktone);
 	SmoothCanvasCacheShadedColor(Canvas, base, default_shades_table[1], &lighttone);		
 
    if (CHECK_DETAIL(detail, "handlebox_bin")) {
 		if (!part) part = THEME_PART(BACKGROUND_PART(style));
-		FLAT_FILL_BACKGROUND(Canvas, style, state_type, part, X, Y, Width, Height);
+		FLAT_FILL_BACKGROUND(Canvas, style, state_type, part, x, y, width, height);
     } else if (CHECK_DETAIL(detail, "menubar")) {
         gint thick = 0;
 
@@ -1670,8 +1670,8 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 	  thick = EDGE_LINE_THICKNESS(style, NULL);
  
 	if (!part) part = THEME_PART(BACKGROUND_PART(style));
-        gradient_fill_background(Canvas, style, state_type, part, -thick, Y, X + Width + thick, Height, TRUE, Horizontal);
-	do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, X, Y, Width, Height);
+        gradient_fill_background(Canvas, style, state_type, part, -thick, y, x + width + thick, height, TRUE, Horizontal);
+	do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, x, y, width, height);
     } else if (CHECK_DETAIL(detail, "toolbar")) {
 	gboolean toolbar_overlap = (GRIP_OVERLAP_TOOLBAR(style) && (IS_BONOBO_DOCK_ITEM(widget)));
 	gint hthick = 0, vthick = 0;
@@ -1684,31 +1684,31 @@ do_smooth_draw_box(SmoothCanvas Canvas,
         }
 
 	if (!part) part = THEME_PART(BACKGROUND_PART(style));
-        FLAT_FILL_BACKGROUND(Canvas, style, state_type, part, X, Y, Width, Height);
+        FLAT_FILL_BACKGROUND(Canvas, style, state_type, part, x, y, width, height);
 	  
-	gradient_fill_background(Canvas, style, state_type, part, X-hthick, Y-vthick, Width+hthick, Height+vthick, TRUE, Horizontal);
-	do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, X-hthick, Y-vthick, Width+hthick, Height+vthick);
+	gradient_fill_background(Canvas, style, state_type, part, x-hthick, y-vthick, width+hthick, height+vthick, TRUE, Horizontal);
+	do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, x-hthick, y-vthick, width+hthick, height+vthick);
     } else if (CHECK_DETAIL(detail, "trough")) {
         if (GTK_IS_SCALE (widget) && REAL_SLIDERS(style)) {
 		SmoothLineBevel line_bevel;
 
 	  if (!part) part = THEME_PART(BACKGROUND_PART(style));
 
-          FLAT_FILL_BACKGROUND(Canvas, style, GTK_STATE_NORMAL, part, X, Y, Width, Height);
+          FLAT_FILL_BACKGROUND(Canvas, style, GTK_STATE_NORMAL, part, x, y, width, height);
 
 	  line_bevel.Style = LINE_STYLE(style, NULL);
 	  line_bevel.Thickness = ythickness(style);
 
           if GTK_IS_HSCALE (widget) 
-	    SmoothDrawLineBevel (line_bevel, Canvas, base, X, X + Width, Y + (Height / 2), TRUE);
+	    SmoothDrawLineBevel (line_bevel, Canvas, base, x, x + width, y + (height / 2), TRUE);
           else
-	    SmoothDrawLineBevel (line_bevel, Canvas, base, Y, Y + Height, X + (Width / 2), FALSE);
+	    SmoothDrawLineBevel (line_bevel, Canvas, base, y, y + height, x + (width / 2), FALSE);
         } else {
   	  part = THEME_PART(TROUGH_PART(style));
 			if (!part) part = THEME_PART(BACKGROUND_PART(style));	 
 			gradient_fill_background(Canvas, style, state_type, part, 
-	                           X+PART_XPADDING(part), Y+PART_YPADDING(part), 
-	                           Width-PART_XPADDING(part)*2, Height-PART_YPADDING(part)*2, 
+	                           x+PART_XPADDING(part), y+PART_YPADDING(part), 
+	                           width-PART_XPADDING(part)*2, height-PART_YPADDING(part)*2, 
 	                           shadow_type == GTK_SHADOW_IN, Horizontal);
 
           if (GTK_IS_SCALE(widget) && TROUGH_SHOW_VALUE(style)) {	    
@@ -1721,43 +1721,43 @@ do_smooth_draw_box(SmoothCanvas Canvas,
               gint w=0;           
               
               if (gtk_range_get_inverted(GTK_RANGE(widget)))
-  	        w = (Width-PART_XPADDING(part)*2)*(1-(value- adjustment->lower) / (adjustment->upper - adjustment->lower));
+  	        w = (width-PART_XPADDING(part)*2)*(1-(value- adjustment->lower) / (adjustment->upper - adjustment->lower));
 	      else  
-  	        w = (Width-PART_XPADDING(part)*2)*((value- adjustment->lower) / (adjustment->upper - adjustment->lower));
+  	        w = (width-PART_XPADDING(part)*2)*((value- adjustment->lower) / (adjustment->upper - adjustment->lower));
 	      w = MAX (2, w);
-	      w = MIN(w, Width-PART_XPADDING(part)*2);              
+	      w = MIN(w, width-PART_XPADDING(part)*2);              
               
 	      gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
-	                               X+PART_XPADDING(part), Y+PART_YPADDING(part), 
-	                               w, Height-PART_YPADDING(part)*2, 
+	                               x+PART_XPADDING(part), y+PART_YPADDING(part), 
+	                               w, height-PART_YPADDING(part)*2, 
 	                               shadow_type == GTK_SHADOW_IN, Horizontal);
             } else {
               gint h;           
               
               if (gtk_range_get_inverted(GTK_RANGE(widget)))
-	        h = (Height-PART_YPADDING(part)*2)*((value - adjustment->lower) / (adjustment->upper - adjustment->lower));
+	        h = (height-PART_YPADDING(part)*2)*((value - adjustment->lower) / (adjustment->upper - adjustment->lower));
 	      else  
-	        h = (Height-PART_YPADDING(part)*2)*(1-(value - adjustment->lower) / (adjustment->upper - adjustment->lower));
+	        h = (height-PART_YPADDING(part)*2)*(1-(value - adjustment->lower) / (adjustment->upper - adjustment->lower));
 
               h = MAX (2, h);
-              h = MIN(h, Height-PART_YPADDING(part)*2);
+              h = MIN(h, height-PART_YPADDING(part)*2);
 	      
               gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
-	                               X + PART_XPADDING(part), Y + Height-PART_YPADDING(part)-h, 
-	                               Width - PART_XPADDING(part)*2, h,
+	                               x + PART_XPADDING(part), y + height-PART_YPADDING(part)-h, 
+	                               width - PART_XPADDING(part)*2, h,
 	                               shadow_type == GTK_SHADOW_IN, Horizontal);
             }
           }
 	  
-	  do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, "smooth_trough", X+PART_XPADDING(part), Y+PART_YPADDING(part), 
-				Width - PART_XPADDING(part)*2, Height - PART_YPADDING(part)*2);
+	  do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, "smooth_trough", x+PART_XPADDING(part), y+PART_YPADDING(part), 
+				width - PART_XPADDING(part)*2, height - PART_YPADDING(part)*2);
       }
     } else if ((CHECK_DETAIL (detail, "button")) && widget && ge_is_in_combo_box (widget) && (ENTRY_BUTTON_EMBED(style)))
     {
-        smooth_draw_combobox_button (Canvas, style, state_type, shadow_type, widget, detail, X, Y, Width, Height);
+        smooth_draw_combobox_button (Canvas, style, state_type, shadow_type, widget, detail, x, y, width, height);
     } else if ((CHECK_DETAIL(detail, "spinbutton_up") || CHECK_DETAIL(detail, "spinbutton_down")) && (ENTRY_BUTTON_EMBED(style)))
     {
-        smooth_draw_spinbutton_stepper (Canvas, style, state_type, shadow_type, widget, detail, X, Y, Width, Height);
+        smooth_draw_spinbutton_stepper (Canvas, style, state_type, shadow_type, widget, detail, x, y, width, height);
     } else if (CHECK_DETAIL(detail, "hruler") || CHECK_DETAIL(detail, "vruler") || CHECK_DETAIL(detail, "metacity") || CHECK_DETAIL(detail, "bar") || CHECK_DETAIL(detail, "spinbutton_up") || CHECK_DETAIL(detail, "spinbutton_down") || 
                CHECK_DETAIL(detail, "optionmenu") || CHECK_DETAIL(detail, "slider") || CHECK_DETAIL(detail, "menuitem") || 
                CHECK_DETAIL(detail, "togglebutton") || CHECK_DETAIL(detail, "button") || CHECK_DETAIL(detail, "hscrollbar") || CHECK_DETAIL(detail, "vscrollbar")) 
@@ -1774,8 +1774,8 @@ do_smooth_draw_box(SmoothCanvas Canvas,
         }
 	else if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT) && CHECK_DETAIL(detail, "spinbutton_down")) 
           {
-            Y -= 1;
-            Height += 1;
+            y -= 1;
+            height += 1;
           } 
         else if ((shadow_type == GTK_SHADOW_NONE) && (EDGE_LINE_STYLE(style, NULL) != SMOOTH_BEVEL_STYLE_NONE) && CHECK_DETAIL(detail, "menuitem"))
 	  shadow_type = GTK_SHADOW_OUT;
@@ -1783,10 +1783,10 @@ do_smooth_draw_box(SmoothCanvas Canvas,
           {
             part = PROGRESS_PART(style);
 
-	    X += PART_XPADDING(part);
-            Y += PART_YPADDING(part), 
-	    Width -= PART_XPADDING(part)*2;
-            Height -= PART_YPADDING(part)*2; 
+	    x += PART_XPADDING(part);
+            y += PART_YPADDING(part), 
+	    width -= PART_XPADDING(part)*2;
+            height -= PART_YPADDING(part)*2; 
           } 
         else if (CHECK_DETAIL(detail, "hscrollbar") || CHECK_DETAIL(detail, "vscrollbar"))
 	  {
@@ -1805,12 +1805,12 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 
         /*paint fill of orientation with a gradient, invert if GTK_SHADOW_IN */
 	if (!part) part = THEME_PART(BACKGROUND_PART(style));
-	smooth_fill_background(Canvas, style, state_type, shadow_type, part, X, Y, Width, Height, 
+	smooth_fill_background(Canvas, style, state_type, shadow_type, part, x, y, width, height, 
 				TRUE, shadow_type == GTK_SHADOW_IN, Horizontal, FALSE, FALSE);
 
         /* per widget special drawing */ 
         if (CHECK_DETAIL(detail, "slider") || CHECK_DETAIL(detail, "smooth_slider"))
-          smooth_draw_slider_grip(Canvas, style, state_type, X, Y, Width, Height, Horizontal);
+          smooth_draw_slider_grip(Canvas, style, state_type, x, y, width, height, Horizontal);
         else if (CHECK_DETAIL(detail, "button") && (smooth_button_default_triangle(style)) & GTK_WIDGET_HAS_DEFAULT (widget)) 
 	{
 		/* Paint a triangle here instead of in "buttondefault"
@@ -1821,15 +1821,15 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 		SmoothPoint points1[4]; /* dark */
 		SmoothPoint points2[4]; /* light */
 	  
-		SmoothPointSetValues(&points1[0], X + 2 ,  Y + 2 );
-		SmoothPointSetValues(&points1[1], X + 10,  Y + 2 );
-		SmoothPointSetValues(&points1[2], X + 2 ,  Y + 10);
-		SmoothPointSetValues(&points1[3], X + 2 ,  Y + 2 );
+		SmoothPointSetValues(&points1[0], x + 2 ,  y + 2 );
+		SmoothPointSetValues(&points1[1], x + 10,  y + 2 );
+		SmoothPointSetValues(&points1[2], x + 2 ,  y + 10);
+		SmoothPointSetValues(&points1[3], x + 2 ,  y + 2 );
 
-		SmoothPointSetValues(&points2[0], X + 3 ,  Y + 3 );
-		SmoothPointSetValues(&points2[1], X + 10,  Y + 3 );
-		SmoothPointSetValues(&points2[2], X + 3 ,  Y + 10);
-		SmoothPointSetValues(&points2[3], X + 3 ,  Y + 3 );
+		SmoothPointSetValues(&points2[0], x + 3 ,  y + 3 );
+		SmoothPointSetValues(&points2[1], x + 10,  y + 3 );
+		SmoothPointSetValues(&points2[2], x + 3 ,  y + 10);
+		SmoothPointSetValues(&points2[3], x + 3 ,  y + 3 );
 
 		SmoothCanvasSetPenColor(Canvas, darktone);
 		SmoothCanvasDrawLines(Canvas, points1, 4);
@@ -1857,12 +1857,12 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 	}
           
         /* paint shadow */
-	  do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, X, Y, Width, Height);
+	  do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, x, y, width, height);
 
     } else {
 		if (!part) part = THEME_PART(BACKGROUND_PART(style));
-		FLAT_FILL_BACKGROUND(Canvas, style, state_type, part, X, Y, Width, Height);
-		do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, X, Y, Width, Height);
+		FLAT_FILL_BACKGROUND(Canvas, style, state_type, part, x, y, width, height);
+		do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, x, y, width, height);
     }
 
 	SmoothCanvasUnCacheShadedColor(Canvas, base, default_shades_table[0], &darktone);
@@ -1888,8 +1888,8 @@ smooth_draw_shadow(GtkStyle * style,
 {
 	SmoothCanvas da;
 
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
-
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 	if ((CHECK_DETAIL (detail, "entry")) && (widget) && (ge_is_in_combo_box (widget)) && (ENTRY_BUTTON_EMBED(style)))
 	{
@@ -1902,7 +1902,7 @@ smooth_draw_shadow(GtkStyle * style,
 		}
 	}
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 	if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT)  && CHECK_DETAIL(detail, "entry") && widget && (GTK_IS_SPIN_BUTTON (widget) || (ge_is_combo_box_entry(widget)) || (ge_is_combo(widget)))) 	
 	{
 		gtk_paint_flat_box(style, window, widget->state, GTK_SHADOW_NONE, area, widget, "entry_bg", x, y, width, height);
@@ -1914,7 +1914,7 @@ smooth_draw_shadow(GtkStyle * style,
 		do_smooth_draw_shadow(da, style, state_type, shadow_type, widget, detail, x, y, width, height);
 	}	
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -1932,18 +1932,18 @@ smooth_draw_hline(GtkStyle * style,
 	SmoothColor base;
 	SmoothLineBevel line_bevel;
 
-	g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
+	CHECK_ARGS
 
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, x2-x1, x2-x1, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, x2-x1, x2-x1, 0, 0, &COLOR_CUBE(style));
 
-	base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+	base =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 	
 	line_bevel.Style = LINE_STYLE(style, NULL);
 	line_bevel.Thickness = ythickness(style);
 	SmoothDrawLineBevel(line_bevel, da, base, x1, x2, y, TRUE);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 
@@ -1962,21 +1962,21 @@ smooth_draw_vline(GtkStyle * style,
 	SmoothColor base;
 	SmoothLineBevel line_bevel;
 
-	g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
+	CHECK_ARGS
 
 	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
 
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, y2-y1, y2-y1, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, y2-y1, y2-y1, 0, 0, &COLOR_CUBE(style));
 
-	base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+	base =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
 	line_bevel.Style = LINE_STYLE(style, NULL);
 	line_bevel.Thickness = ythickness(style);
 	SmoothDrawLineBevel(line_bevel, da, base, y1, y2, x, FALSE);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -1998,13 +1998,13 @@ smooth_draw_polygon(GtkStyle * style,
 	SmoothDouble roundness = 0.0;
 	SmoothInt width, height;
 
-	g_return_if_fail(sanitize_parameters(style, window, NULL, NULL));
+	CHECK_ARGS
 
 
 	gdk_drawable_get_size(window, &width, &height);
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
-	base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+	base =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 	
 	if (fill)
 	{
@@ -2015,7 +2015,7 @@ smooth_draw_polygon(GtkStyle * style,
 	smooth_style_get_border(style, state_type, shadow_type, detail, part, roundness, &border);
 	SmoothDrawPolygonBorder(&border, da, base, points, npoints);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -2037,13 +2037,13 @@ smooth_draw_arrow(GtkStyle * style,
 	SmoothArrowPart *part = NULL;
 	SmoothArrow arrow;
 	SmoothColor background, foreground;
-	SmoothWidgetState widget_state = GDKSmoothWidgetState(state_type);
+	SmoothWidgetState widget_state = SmoothGtkWidgetState(state_type);
 	
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
-	
 
 	if (IS_SCROLLBAR(widget) || IS_SPIN_BUTTON(widget))
 		part = &(STEPPER_PART(style)->Arrow);
@@ -2052,7 +2052,7 @@ smooth_draw_arrow(GtkStyle * style,
 
 	smooth_style_get_arrow(part, state_type, arrow_type, &arrow);
 
-	GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+	SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
     
 	background =  COLOR_CUBE(style).Interaction[widget_state].Background;
 
@@ -2077,7 +2077,7 @@ smooth_draw_arrow(GtkStyle * style,
 		foreground = COLOR_CUBE(style).Interaction[widget_state].Foreground;
 	}
 	
-	reverse_engineer_arrow_box (widget, detail, arrow_type, &x, &y, &width, &height);
+	smooth_reverse_engineer_arrow_box (widget, detail, arrow_type, &x, &y, &width, &height);
 
 	x += arrow.XPadding; 
 	y += arrow.YPadding; 
@@ -2092,7 +2092,7 @@ smooth_draw_arrow(GtkStyle * style,
 	SmoothCanvasUnCacheColor(da, &foreground);
 	SmoothCanvasUnCacheColor(da, &background);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -2109,14 +2109,15 @@ smooth_draw_focus(GtkStyle *style,
 {
 	SmoothCanvas da;
 
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
 	do_smooth_draw_focus(da, style, state_type, widget, detail, x, y, width, height);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -2135,13 +2136,14 @@ smooth_draw_slider(GtkStyle * style,
 {
 	SmoothCanvas da;
 
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
 	do_smooth_draw_box(da, style, state_type, shadow_type, widget, "slider", x, y, width, height, orientation == GTK_ORIENTATION_HORIZONTAL);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -2173,7 +2175,8 @@ smooth_draw_extension(GtkStyle * style,
   gint               tab_stripe_off = 0;
   GdkRegion         *cliprgn = NULL;
 
-  g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+  CHECK_ARGS
+	SANITIZE_SIZE
     
   if (GTK_IS_NOTEBOOK(widget)) {
     notebook = GTK_NOTEBOOK(widget);
@@ -2196,9 +2199,9 @@ smooth_draw_extension(GtkStyle * style,
   tab = &THEME_DATA(style)->tabs;
 
 
-	GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+	SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
-	base_color =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;	
+	base_color =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;	
 	smooth_style_get_border(style, state_type, shadow_type, detail, part, 0.0, &border);
 
 
@@ -2208,8 +2211,8 @@ smooth_draw_extension(GtkStyle * style,
       goto square;
     case SMOOTH_TAB_ROUND:
       tab_stripe_off = 1;
-      if ((rounded_extension_points(x, y, width, height, selected, TRUE, gap_side, fill_points)) && 
-          (rounded_extension_points(x, y, width, height, selected, FALSE, gap_side, edge_points))) 
+      if ((smooth_rounded_extension_points(x, y, width, height, selected, TRUE, gap_side, fill_points)) && 
+          (smooth_rounded_extension_points(x, y, width, height, selected, FALSE, gap_side, edge_points))) 
         goto draw;	    
       else
         return;
@@ -2254,8 +2257,8 @@ smooth_draw_extension(GtkStyle * style,
                }
                break;
           }
-          if ((triangle_extension_points(x, y, width, height, selected, TRUE, gap_side, fill_points)) && 
-             (triangle_extension_points(x, y, width, height, selected, FALSE, gap_side, edge_points))) 
+          if ((smooth_triangle_extension_points(x, y, width, height, selected, TRUE, gap_side, fill_points)) && 
+             (smooth_triangle_extension_points(x, y, width, height, selected, FALSE, gap_side, edge_points))) 
             goto draw;	    
           else
             return;
@@ -2263,8 +2266,8 @@ smooth_draw_extension(GtkStyle * style,
     }
     
     square:
-      if ((square_extension_points(x, y, width, height, selected, TRUE, gap_side, fill_points)) && 
-          (square_extension_points(x, y, width, height, selected, FALSE, gap_side, edge_points))) 
+      if ((smooth_square_extension_points(x, y, width, height, selected, TRUE, gap_side, fill_points)) && 
+          (smooth_square_extension_points(x, y, width, height, selected, FALSE, gap_side, edge_points))) 
         goto draw;	    
       else
         return;
@@ -2288,7 +2291,7 @@ smooth_draw_extension(GtkStyle * style,
 	  
 	cliprgn = gdk_region_polygon(fill_points, 8, GDK_EVEN_ODD_RULE);
 
-	GDKModifyCanvasClipRegion(&da, cliprgn);
+	SmoothGDKModifyCanvasClipRegion(&da, cliprgn);
 	smooth_fill_background(da, style, state_type, GTK_SHADOW_NONE, part, x, y, width, height, FALSE, FALSE,
 				 GTK_ORIENTATION_VERTICAL,FALSE, FALSE);
 
@@ -2330,13 +2333,13 @@ smooth_draw_extension(GtkStyle * style,
 					   FALSE, FALSE);		
 		}
 	}
-	GDKModifyCanvasClipRegion(&da, NULL);
+	SmoothGDKModifyCanvasClipRegion(&da, NULL);
 	gdk_region_destroy(cliprgn);
 
 	/* draw inner shadow line(s)  */	
 	SmoothDrawPolygonBorder(&border, da, base_color, edge_points, 8);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 static void
@@ -2367,7 +2370,7 @@ do_smooth_draw_tab (SmoothCanvas Canvas,
 	part = (SmoothArrowPart *)&ARROW_PART(style);
 	smooth_style_get_arrow(part, state_type, GTK_ARROW_UP, &arrow);
 
-	widget_state = GDKSmoothWidgetState(state_type);
+	widget_state = SmoothGtkWidgetState(state_type);
 	base =  COLOR_CUBE(style).Interaction[widget_state].Background;	
  	
 	background =  COLOR_CUBE(style).Input[widget_state].Background;	
@@ -2523,7 +2526,7 @@ smooth_draw_button_default(SmoothCanvas Canvas,
 			gradient_fill_background(Canvas, style, GTK_SHADOW_IN, part, x, y, width, height, TRUE, FALSE);
 
 			/* paint shadow */
-		 	base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+		 	base = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
 			part = smooth_button_part(style, TRUE);
 			smooth_style_get_border(style, state_type, GTK_SHADOW_IN, NULL, part, roundness, &border);
@@ -2557,7 +2560,7 @@ smooth_draw_button_default(SmoothCanvas Canvas,
 		SmoothRectangle ta;
 		SmoothColor base, shade;
 		
-	 	base = COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+	 	base = COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
 		SmoothRectangleSetValues(&ta, button_area.x+1, button_area.y+1,  button_area.width-2, button_area.height-2);
 
@@ -2586,7 +2589,8 @@ smooth_draw_box(GtkStyle * style,
 
 	SmoothBool horizontal = SmoothTrue;
   
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 
 	if (CHECK_DETAIL(detail, "buttondefault"))
@@ -2600,7 +2604,7 @@ smooth_draw_box(GtkStyle * style,
 		gint focus_width;
 		gint focus_pad;
 
-		gtk_button_get_props (widget, &default_border, &default_outside_border, &interior_focus);
+		smooth_gtk_button_get_props (widget, &default_border, &default_outside_border, &interior_focus);
 		gtk_widget_style_get (widget,
 					"focus-line-width", &focus_width,
 					"focus-padding", &focus_pad,
@@ -2619,11 +2623,11 @@ smooth_draw_box(GtkStyle * style,
 			button.height -= 2 * (focus_width + focus_pad);
 		}
 		
-		GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+		SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
 		smooth_draw_button_default(da, style, state_type, &button, widget, x, y, width, height);
 
-		GDKFinalizeCanvas(&da);
+		SmoothGDKFinalizeCanvas(&da);
 	} 
 	else if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT) && CHECK_DETAIL(detail, "entry") && widget 
 				&& (GTK_IS_SPIN_BUTTON (widget) || (ge_is_combo_box_entry(widget)) || (ge_is_combo(widget)))) 
@@ -2634,10 +2638,10 @@ smooth_draw_box(GtkStyle * style,
 		smooth_part_style *part = NULL;
 		SmoothDouble roundness = 0.0;
 
-		fill =  COLOR_CUBE(style).Input[GDKSmoothWidgetState(state_type)].Background;
-		base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;
+		fill =  COLOR_CUBE(style).Input[SmoothGtkWidgetState(state_type)].Background;
+		base =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;
 
-		GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+		SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
 		smooth_style_get_border(style, state_type, shadow_type, detail, part, roundness, &border);
 
@@ -2655,7 +2659,7 @@ smooth_draw_box(GtkStyle * style,
 		else
 			SmoothDrawBorderWithGap(&border, da, base, x, y, width, height, GTK_POS_LEFT, 0, height);
 
-		GDKFinalizeCanvas(&da);
+		SmoothGDKFinalizeCanvas(&da);
 	}
 	else	
 	{
@@ -2743,7 +2747,7 @@ smooth_draw_box(GtkStyle * style,
 			horizontal = TRUE;
 
 
-		GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+		SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
 		do_smooth_draw_box(da, style, state_type, shadow_type, widget, detail, x, y, width, height, horizontal);
 
@@ -2758,7 +2762,7 @@ smooth_draw_box(GtkStyle * style,
 			draw_default_triangle(style, window, state_type, shadow_type, area, widget, detail, x, y, width, height);
 		}
 		
-		GDKFinalizeCanvas(&da);
+		SmoothGDKFinalizeCanvas(&da);
 	}
 }
 
@@ -2783,19 +2787,20 @@ smooth_draw_box_gap (GtkStyle * style,
 	SmoothColor base;
 	smooth_part_style *part = NULL;
 
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
-	base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;	
+	base =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;	
 
 	FLAT_FILL_BACKGROUND(da, style, state_type, NULL, x, y, width, height);
 
 	smooth_style_get_border(style, state_type, shadow_type, detail, part, 0.0, &border);
 	SmoothDrawBorderWithGap(&border, da, base, x, y, width, height, gap_side, gap_pos - 1, gap_width + 1);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -2819,19 +2824,20 @@ smooth_draw_shadow_gap (GtkStyle * style,
 	SmoothColor base;
 	smooth_part_style *part = NULL;
 
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
-	base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;	
+	base =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;	
 
 	FLAT_FILL_BACKGROUND(da, style, state_type,  NULL, x, y, width, height);
 
 	smooth_style_get_border(style, state_type, shadow_type, detail, part, 0.0, &border);
 	SmoothDrawBorderWithGap(&border, da, base, x, y, width, height, gap_side, gap_pos, gap_width);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -2842,10 +2848,10 @@ smooth_draw_option(GtkStyle * style,
             GdkRectangle * area,
             GtkWidget * widget,
             const gchar *detail,
-            gint X,
-            gint Y,
-            gint Width,
-            gint Height)
+            gint x,
+            gint y,
+            gint width,
+            gint height)
 {
 	SmoothCanvas da;
 	SmoothColor basecolor, color;
@@ -2856,21 +2862,20 @@ smooth_draw_option(GtkStyle * style,
 	SmoothLinePart * line_style;
 	SmoothWidgetState widget_state;
 	
-	g_return_if_fail(sanitize_parameters(style, window, &Width, &Height));
-
-
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellradio"))
         {
-		X -= 1;
-		Y -= 1;
-		Width += 2;
-		Height += 2;
+		x -= 1;
+		y -= 1;
+		width += 2;
+		height += 2;
 	}
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, Width, Height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
   
-  	widget_state = GDKSmoothWidgetState(state_type);
+  	widget_state = SmoothGtkWidgetState(state_type);
 	basecolor =  COLOR_CUBE(style).Interaction[widget_state].Background;	
 
 	color =  COLOR_CUBE(style).Input[widget_state].Foreground;	
@@ -2889,22 +2894,22 @@ smooth_draw_option(GtkStyle * style,
 		state_type = GTK_STATE_ACTIVE;
 
 	if ((line_style->style != SMOOTH_BEVEL_STYLE_BEVELED) && (line_style->style != SMOOTH_BEVEL_STYLE_THIN) && (line_style->style != SMOOTH_BEVEL_STYLE_SOFT))
-		{X++; Y++; Width-=2; Height-=2;}     
+		{x++; y++; width-=2; height-=2;}     
 
-	smooth_fill_background(da, style, state_type, shadow_type, THEME_PART(option), X, Y, Width, Height, 
+	smooth_fill_background(da, style, state_type, shadow_type, THEME_PART(option), x, y, width, height, 
 				(OPTION_MOTIF(style)), TRUE, FALSE, TRUE, !((OPTION_MOTIF(style)) || (shadow_type == GTK_SHADOW_NONE)));
       
 	if ((line_style->style != SMOOTH_BEVEL_STYLE_BEVELED) && (line_style->style != SMOOTH_BEVEL_STYLE_THIN) && (line_style->style != SMOOTH_BEVEL_STYLE_SOFT))
-		{X--; Y--; Width+=2; Height+=2;}
+		{x--; y--; width+=2; height+=2;}
 
 	smooth_style_get_border(style, state_type, OPTION_MOTIF(style)?shadow_type:GTK_SHADOW_IN, detail, THEME_PART(option), 1.0, &border);
 
-	SmoothDrawBorderWithGap(&border, da, basecolor, X, Y, Width, Height, 0, 0, 0);
+	SmoothDrawBorderWithGap(&border, da, basecolor, x, y, width, height, 0, 0, 0);
 
 	if ((line_style->style != SMOOTH_BEVEL_STYLE_BEVELED) && (line_style->style != SMOOTH_BEVEL_STYLE_THIN) && (line_style->style != SMOOTH_BEVEL_STYLE_SOFT))
-		{X+=2; Y+=2; Width-=3; Height-=3;}
+		{x+=2; y+=2; width-=3; height-=3;}
 	else
-		{X++; Y++; Width-=2; Height-=2;}   
+		{x++; y++; width-=2; height-=2;}   
 	
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
@@ -2921,12 +2926,12 @@ smooth_draw_option(GtkStyle * style,
 		else
 			cm.Style = PART_STYLE(option); 
 
-		SmoothDrawCheckMark(da, cm, X, Y, Width, Height, color, color);
+		SmoothDrawCheckMark(da, cm, x, y, width, height, color, color);
 	}		      
 
 	SmoothCanvasUnCacheColor(da, &color);		
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 static void
@@ -2956,7 +2961,8 @@ smooth_draw_check(GtkStyle * style,
 	SmoothWidgetState widget_state;
 	gboolean inconsistent = FALSE;
 
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 
 
@@ -2976,9 +2982,9 @@ smooth_draw_check(GtkStyle * style,
 		height += 2;
 	}
   	
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
-	widget_state = GDKSmoothWidgetState(state_type);
+	widget_state = SmoothGtkWidgetState(state_type);
   
 	if (!((GTK_IS_CHECK_MENU_ITEM(widget) && (EDGE_LINE_STYLE(style, check) == SMOOTH_BEVEL_STYLE_NONE))))
 	{
@@ -3033,7 +3039,7 @@ smooth_draw_check(GtkStyle * style,
 	else  
 		do_smooth_draw_shadow(da, style, state_type, shadow_type, widget, detail, x, y, width, height);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 /* Ancient crap almost never used. 
@@ -3058,16 +3064,17 @@ smooth_draw_diamond(GtkStyle * style,
 	SmoothColor basecolor, darktone, lighttone;
 	SmoothInt half_width, half_height;
 
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 
 
 	half_width = width / 2;
 	half_height = height / 2;
 
-	GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+	SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
  
-	basecolor =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;	
+	basecolor =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;	
 	
 	SmoothCanvasCacheShadedColor(da, basecolor, default_shades_table[1], &lighttone);		
 	SmoothCanvasCacheShadedColor(da, basecolor, default_shades_table[0], &darktone);
@@ -3121,7 +3128,7 @@ smooth_draw_diamond(GtkStyle * style,
 	SmoothCanvasUnCacheShadedColor(da, basecolor, default_shades_table[1], &lighttone);		
 	SmoothCanvasUnCacheShadedColor(da, basecolor, default_shades_table[0], &darktone);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -3151,13 +3158,14 @@ smooth_draw_handle(GtkStyle * style,
     gint gap_size=(!horiz)?y+height:x+width, thick=0;
     gboolean vert=(!horiz);
 
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 
 
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
 
-	base =  COLOR_CUBE(style).Interaction[GDKSmoothWidgetState(state_type)].Background;		
+	base =  COLOR_CUBE(style).Interaction[SmoothGtkWidgetState(state_type)].Background;		
 	
     aw=width; ah=height;
      
@@ -3304,7 +3312,7 @@ smooth_draw_handle(GtkStyle * style,
 
 	SmoothDrawBorderWithGap(&border, da, base, x, y, width+horiz*thick, height+vert*thick, vert?GTK_POS_BOTTOM:GTK_POS_RIGHT, 0, gap_size);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
 }
 
 void
@@ -3320,7 +3328,8 @@ smooth_draw_resize_grip (GtkStyle       *style,
                               gint            width,
                               gint            height)
 {
-	g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
   
 	if (widget && GTK_IS_STATUSBAR(widget) && !RESIZE_GRIP(style)) 
 	{
@@ -3359,7 +3368,8 @@ smooth_draw_flat_box (GtkStyle * style,
 {
 	SmoothCanvas da;
 
-   g_return_if_fail(sanitize_parameters(style, window, &width, &height));
+	CHECK_ARGS
+	SANITIZE_SIZE
 
    /* we always want call to the default for treeviews and such */  
  
@@ -3371,13 +3381,13 @@ smooth_draw_flat_box (GtkStyle * style,
                                                area, widget, detail, x, y, width, height);
    } 
    else {
-        GDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0,&COLOR_CUBE(style));
+        SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0,&COLOR_CUBE(style));
 
 	FLAT_FILL_BACKGROUND(da, style, state_type, NULL, x, y, width, height);
 
 	if (CHECK_DETAIL(detail, "tooltip")) 
 		gdk_draw_rectangle(window, style->dark_gc[state_type], FALSE, x, y, width - 1, height - 1);
 
-	GDKFinalizeCanvas(&da);
+	SmoothGDKFinalizeCanvas(&da);
    }
 }                                             
