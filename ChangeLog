@@ -1,5 +1,16 @@
 2006-08-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_check),
+	(glide_draw_option):
+	* engines/hc/src/hc-style.c: (hc_draw_check), (hc_draw_option):
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	(redmond_draw_option):
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(smooth_draw_option), (smooth_draw_check):
+	- Fixes cases where the arguments to CHECK_DETAIL were swapped.
+
+2006-08-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/animation.c: (update_animation_info):
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_button), (clearlooks_draw_slider_button),

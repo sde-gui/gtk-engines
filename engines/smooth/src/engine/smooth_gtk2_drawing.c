@@ -2860,7 +2860,7 @@ smooth_draw_option(GtkStyle * style,
 
 
 
-	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL("cellradio",detail))
+	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellradio"))
         {
 		X -= 1;
 		Y -= 1;
@@ -2908,7 +2908,7 @@ smooth_draw_option(GtkStyle * style,
 	
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
-        inconsistent |= (CHECK_DETAIL("cellradio",detail) && (shadow_type == GTK_SHADOW_ETCHED_IN));
+        inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow_type == GTK_SHADOW_IN) || (inconsistent))
 	{
@@ -2968,7 +2968,7 @@ smooth_draw_check(GtkStyle * style,
 		y -= 1;
 		width += 2;
 		height += 2;
-	} else if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL("cellcheck",detail))
+	} else if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellcheck"))
         {
 		x -= 1;
 		y -= 1;
@@ -2993,7 +2993,7 @@ smooth_draw_check(GtkStyle * style,
 
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
-        inconsistent |= (CHECK_DETAIL("cellcheck",detail) && (shadow_type == GTK_SHADOW_ETCHED_IN));
+        inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow_type == GTK_SHADOW_IN) || (inconsistent))
 	{

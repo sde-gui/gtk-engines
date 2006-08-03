@@ -297,7 +297,7 @@ redmond_draw_option (GtkStyle * style,
 
       inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
       inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
-      inconsistent |= (CHECK_DETAIL("cellradio",detail) && (shadow == GTK_SHADOW_ETCHED_IN));
+      inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow == GTK_SHADOW_ETCHED_IN));
  
       switch (state)
 	{

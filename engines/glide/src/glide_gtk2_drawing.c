@@ -125,7 +125,7 @@ glide_draw_check (GtkStyle * style,
 		width += 2;
 		height += 2;
 	} 
-	else if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL("cellcheck",detail))
+	else if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellcheck"))
 	{
 		x -= 1;
 		y -= 1;
@@ -145,7 +145,7 @@ glide_draw_check (GtkStyle * style,
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 
 	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
-	inconsistent |= (CHECK_DETAIL("cellcheck",detail) && (shadow == GTK_SHADOW_ETCHED_IN));
+	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow == GTK_SHADOW_IN) || (inconsistent))
 	{
@@ -240,7 +240,7 @@ glide_draw_option (GtkStyle * style,
 	/***********************************************/
 	/* GTK Special Cases - adjust Size/Offset      */
 	/***********************************************/
-	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL("cellradio",detail))
+	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellradio"))
         {
 		x -= 1;
 		y -= 1;
@@ -264,7 +264,7 @@ glide_draw_option (GtkStyle * style,
 		check_state = GLIDE_CHECK_INCONSISTENT;
 	}
 
-	if (CHECK_DETAIL("cellradio",detail) && (shadow == GTK_SHADOW_ETCHED_IN))
+	if (CHECK_DETAIL(detail, "cellradio") && (shadow == GTK_SHADOW_ETCHED_IN))
 	{
 		check_state = GLIDE_CHECK_INCONSISTENT;
 	}
