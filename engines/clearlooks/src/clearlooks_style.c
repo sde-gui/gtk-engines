@@ -764,10 +764,17 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	CairoColor *border;
 	CairoColor *dot;
 	double trans = 1.0;
+	gboolean inconsistent; 
 	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN);
 
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 	cairo_pattern_t *pt;
+
+	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
+	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
+	inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
+
+	draw_bullet |= inconsistent;
 
 #ifdef HAVE_ANIMATION
 	if (clearlooks_style->animation)
@@ -831,15 +838,32 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	/* inconsistent state is missing? */
 	if (draw_bullet)
 	{
-		cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
-		//cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
-		cairo_set_source_rgba (cr, dot->r, dot->g, dot->b,trans);
-		cairo_fill (cr);
+		if (inconsistent)
+		{
+			cairo_pattern_t *pt;
+
+			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+			cairo_set_line_width (cr, 4);
+
+			cairo_move_to(cr, 5, 7);
+			cairo_line_to(cr, 9, 7);
+
+			cairo_set_source_rgba (cr, dot->r, dot->g, dot->b, trans);
+			cairo_stroke (cr);
+
+		}
+		else
+		{
+			cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
+			//cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+			cairo_set_source_rgba (cr, dot->r, dot->g, dot->b,trans);
+			cairo_fill (cr);
 		
-		cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
-		//cairo_set_source_rgba (cr, 1,1,1, 0.5);
-		cairo_set_source_rgba (cr, 1,1,1, 0.5+trans);		
-		cairo_fill (cr);
+			cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
+			//cairo_set_source_rgba (cr, 1,1,1, 0.5);
+			cairo_set_source_rgba (cr, 1,1,1, 0.5+trans);		
+			cairo_fill (cr);
+		}
 	}
 
 	cairo_destroy (cr);
@@ -852,10 +876,18 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	CairoColor *border;
 	CairoColor *dot;
 	double trans = 1.0;
-	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN);
+	gboolean inconsistent = FALSE;
+	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN);
+
+	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
+	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
+	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
+
+	draw_bullet |= inconsistent;
 
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 	cairo_pattern_t *pt;
+
 
 #ifdef HAVE_ANIMATION
 	if (clearlooks_style->animation)
@@ -926,7 +958,7 @@ clearlooks_style_draw_check (DRAW_ARGS)
 
 	if (draw_bullet)
 	{
-		if (shadow_type == GTK_SHADOW_ETCHED_IN) /* Inconsistent */
+		if (inconsistent) /* Inconsistent */
 		{
 			cairo_set_line_width (cr, 2.0);
 			cairo_move_to (cr, 3, height*0.5);

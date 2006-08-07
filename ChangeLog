@@ -1,3 +1,10 @@
+2006-08-07 Andrew Johnson <acjgenius@earthlink.net>
+	* engines/clearlooks/src/clearlooks_style.c:
+	- Add inconsistent state for option buttons per bug #347227
+
+	* engines/clearlooks/src/config.h.in:
+	- Stupid autoheader
+
 2006-08-07  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (draw_box), (draw_arrow),
