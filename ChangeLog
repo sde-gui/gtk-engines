@@ -1,3 +1,18 @@
+2006-08-07  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (draw_box), (draw_arrow),
+	(draw_tab):
+	- cairo based arrow drawing
+	- improved scrollbar steppers
+	- draw gradients on handle boxes
+
+	(draw_extension): Match the inner stroke colour on bottom tabs to the
+	colour in draw_box.
+
+	(draw_handle): Don't draw boxes around handles that
+	are on the panel
+
+
 2006-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/crux/src/crux-draw.c: (draw_box):

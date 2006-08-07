@@ -633,77 +633,6 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	}
 }
 
-static void
-paint_arrow (GdkWindow *window, GdkGC *gc, GtkArrowType arrow_type,
-	     int x, int y, int width, int height)
-{
-    int half_width, half_height;
-    int center_x, center_y;
-
-    if ((width & 1) == 0)
-	width = width - 1;
-    if ((height & 1) == 0)
-	height = height - 1;
-
-    half_width = width / 2;
-    half_height = height / 2;
-
-    center_x = x + half_width;
-    center_y = y + half_height;
-
-    switch (arrow_type)
-    {
-	int i;
-	static int offset[5] = { 0, -1, -2, -3, -4 };
-	static int length[5] = { 0, 2, 4, 6, 8 };
-	static const int size = 4;
-
-    case GTK_ARROW_UP:
-	for (i = 0; i < size; i++)
-	{
-	    gdk_draw_line (window, gc,
-			   center_x + offset[i],
-			   center_y - 2 + i,
-			   center_x + offset[i] + length[i],
-			   center_y - 2 + i);
-	}
-	break;
-
-    case GTK_ARROW_DOWN:
-	for (i = 0; i < size; i++)
-	{
-	    gdk_draw_line (window, gc,
-			   center_x + offset[i],
-			   center_y + 2 - i,
-			   center_x + offset[i] + length[i],
-			   center_y + 2 - i);
-	}
-	break;
-
-    case GTK_ARROW_LEFT:
-	for (i = 0; i < size; i++)
-	{
-	    gdk_draw_line (window, gc,
-			   center_x - 2 + i,
-			   center_y + offset[i],
-			   center_x - 2 + i,
-			   center_y + offset[i] + length[i]);
-	}
-	break;
-
-    case GTK_ARROW_RIGHT:
-	for (i = 0; i < size; i++)
-	{
-	    gdk_draw_line (window, gc,
-			   center_x + 2 - i,
-			   center_y + offset[i],
-			   center_x + 2 - i,
-			   center_y + offset[i] + length[i]);
-	}
-	break;
-    }
-}
-
 /* style functions */
 
 static void
@@ -870,15 +799,14 @@ draw_box (GtkStyle *style,
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-    if (DETAIL ("spinbutton")) {
-      if (y > (height / 3)) {
-	/* this is a down arrow shadow */
-	y += 2;
-      }
-    }
-
     debug ("draw_box: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
+
+	if (DETAIL ("spinbutton"))
+	{
+		/* this is a border round spin buttons - we don't want anything here */
+		return;
+	}
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -886,8 +814,18 @@ draw_box (GtkStyle *style,
 	if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
 		shadow_type = GTK_SHADOW_OUT;
 
-	if (DETAIL ("button") || DETAIL ("optionmenu"))
+	if (DETAIL ("button") || DETAIL ("optionmenu") || DETAIL ("spinbutton_down") || DETAIL ("spinbutton_up"))
 	{
+		if (DETAIL ("spinbutton_down") || DETAIL ("spinbutton_up"))
+		{
+			/* add some padding */
+			x++; y++; width -= 2;
+			if (DETAIL ("spinbutton_up")) 
+				height--;
+			else
+				height -= 2;
+		}
+		
 		if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
 		{
 			/* Combobox buttons */
@@ -1002,17 +940,20 @@ draw_box (GtkStyle *style,
 		/* fill  */
 		cairo_rectangle (cr, x, y, width, height);
 
-		if (DETAIL ("toolbar") || DETAIL ("menubar") || DETAIL ("vscrollbar") || DETAIL ("hscrollbar") || DETAIL ("handle"))
+		if (DETAIL ("toolbar") || DETAIL ("menubar") || DETAIL ("vscrollbar") || DETAIL ("hscrollbar") || DETAIL ("handlebox") || DETAIL ("dockitem"))
 		{
 			if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
 			{
 				cairo_pattern_t *crp;
 				CairoColor c1, c2;
+				gdouble shade_v = 0.1;
 
 				crp = cairo_pattern_create_linear (x, y, x, y + height);
 				ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-				ge_shade_color (&c1, 0.9, &c2);
-				ge_shade_color (&c1, 1.1, &c1);
+				if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar")) 
+					shade_v = 0.3;
+				ge_shade_color (&c1, 1.0 - shade_v, &c2);
+				ge_shade_color (&c1, 1.0 + shade_v, &c1);
 				/*
 				cairo_pattern_add_color_stop_rgb (crp, 0.0, 238/255.0, 238/255.0, 236/255.0);
 				cairo_pattern_add_color_stop_rgb (crp, 1.0, 185/255.0, 189/255.0, 182/255.0);
@@ -1053,117 +994,103 @@ draw_arrow (GtkStyle *style,
 	    GtkArrowType arrow_type,
 	    gint fill, gint x, gint y, gint width, gint height)
 {
-    //eazel_theme_data *theme_data;
+	cairo_t *cr;
+	gboolean is_combo_box_entry;
 
-    /* FIXME GNOME2: bad hack added to make arrows draw large enough */
-    width = width + 8;
-    height = height + 6;
-    x = x - 4;
-    y = y - 3;
-
-    CHECK_ARGS
-    /*SANITIZE_SIZE*/
-
-    //theme_data = CRUX_RC_STYLE (style->rc_style)->theme_data;
-    //g_assert (theme_data != NULL);
-
-    debug ("draw_arrow: detail=%s state=%d shadow=%d arrow_type=%d x=%d y=%d w=%d h=%d\n",
+	CHECK_ARGS;
+	debug ("draw_arrow: detail=%s state=%d shadow=%d arrow_type=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, arrow_type, x, y, width, height);
 
-    if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
-    {
-	x++;y++; width--; height--;
-	    /*
-	int type = 0;
-	switch (arrow_type)
+	if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
 	{
-	case GTK_ARROW_UP:
-	    type = EAZEL_ENGINE_ARROW_UP;
-	    break;
+		/* add some padding */
+		x++; y++; height--; width--; 
+		if (DETAIL ("hscrollbar"))
+			width--;
+		else
+			height--;
 
-	case GTK_ARROW_DOWN:
-	    type = EAZEL_ENGINE_ARROW_DOWN;
-	    break;
-
-	case GTK_ARROW_LEFT:
-	    type = EAZEL_ENGINE_ARROW_LEFT;
-	    break;
-
-	case GTK_ARROW_RIGHT:
-	    type = EAZEL_ENGINE_ARROW_RIGHT;
-	    break;
+		/* random adjustments... */
+		if (arrow_type == GTK_ARROW_DOWN)
+			y++;
+		else if (arrow_type == GTK_ARROW_RIGHT)
+			x++;
+			
 	}
-	*/
-	}
-    if (DETAIL ("spinbutton"))
-    {
-	int window_width, window_height;
-	int tem_x, tem_y;
-
-	if (widget != 0 && !GTK_WIDGET_IS_SENSITIVE (widget))
-	    state_type = GTK_STATE_INSENSITIVE;
-
-	gdk_window_get_size (window, &window_width, &window_height);
-
-	if (state_type != GTK_STATE_INSENSITIVE)
+	else if (DETAIL ("spinbutton"))
 	{
-	    draw_box (style, window, state_type, shadow_type,
-		      area, widget, detail,
-		      x, y - (arrow_type == GTK_ARROW_DOWN),
-		      width, height + 1);
+		if (arrow_type == GTK_ARROW_DOWN)
+			y+=2;
+		else if (arrow_type == GTK_ARROW_UP)
+			y--;
+
+		x++; width--;
+
 	}
-
-	/*
-	  else if (arrow_type == GTK_ARROW_UP)
-	  {
-	  XXX A hack, assumes that up arrow is drawn before
-	  XXX down arrow. (Currently it is)
-
-	  draw_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_OUT,
-	  NULL, widget, "entry", x - 2, 0,
-	  width + 4, window_height);
-	  }
-	*/
-
-	tem_x = x + (width / 2);
-	tem_y = y + (height / 2);
-	if (arrow_type == GTK_ARROW_UP)
+	else if (DETAIL ("menuitem"))
 	{
-	    int i;
-	    tem_y--;
-	    for (i = 0; i < 4; i++)
-	    {
-		gdk_draw_line (window, style->fg_gc[state_type],
-			       tem_x - i, tem_y + i,
-			       tem_x + i, tem_y + i);
-	    }
+		/* make slightly smaller... */
+		x++;
+		height-=2;
+	} else if (ge_is_combo_box_entry (widget) || ge_is_combo (widget) || ge_is_combo_box (widget, FALSE))
+	{
+		x+=2; y+=3; width -= 4; height -= 4;
+		if (ge_is_combo_box (widget, FALSE))
+			x++;
+		if (ge_is_combo_box_entry (widget))
+			x--;
 	}
 	else
 	{
-	    int i;
-	    tem_y -= 2;
-	    for (i = 0; i < 4; i++)
-	    {
-		gdk_draw_line (window, style->fg_gc[state_type],
-			       tem_x - i, tem_y + (4 - i),
-			       tem_x + i, tem_y + (4 - i));
-	    }
+		/* catch all to add some padding... */
+		x++;
+		y++;
+		width -= 2;
+		height -= 2;
 	}
-	if (state_type != GTK_STATE_INSENSITIVE)
-	{
-	  draw_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_OUT,
-		       NULL, widget, "entry", x - 2, 0,
-		       width + 4, window_height);
-	}
-    }
-    else
-    {
-	if (widget != 0 && !GTK_WIDGET_IS_SENSITIVE (widget))
-	    state_type = GTK_STATE_INSENSITIVE;
 
-	paint_arrow (window, style->fg_gc[state_type],
-		     arrow_type, x, y, width, height);
-    }
+	/* make triangle equilateral */
+	if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
+		height = sin (60.0 * 0.017453) * width;
+	else if (arrow_type == GTK_ARROW_LEFT || GTK_ARROW_RIGHT)
+		width = sin (60.0 * 0.017453) * height;
+
+
+	cr = ge_gdk_drawable_to_cairo (window, area);
+
+	switch (arrow_type)
+	{
+		case GTK_ARROW_UP:
+			cairo_move_to (cr, x, y + height);
+			cairo_line_to (cr, x + width, y + height);
+			cairo_line_to (cr, x + (width / 2.0), y);
+			cairo_line_to (cr, x, y + height);
+			break;
+		case GTK_ARROW_DOWN:
+			cairo_move_to (cr, x, y);
+			cairo_line_to (cr, x + width, y);
+			cairo_line_to (cr, x + (width / 2.0), y + height);
+			cairo_line_to (cr, x, y);
+			break;
+		case GTK_ARROW_LEFT:
+			cairo_move_to (cr, x + width, y);
+			cairo_line_to (cr, x, y + (height / 2.0));
+			cairo_line_to (cr, x + width, y + height);
+			cairo_line_to (cr, x + width, y);
+			break;
+		case GTK_ARROW_RIGHT:
+			cairo_move_to (cr, x, y);
+			cairo_line_to (cr, x + width, y + (height / 2.0));
+			cairo_line_to (cr, x, y + height);
+			cairo_line_to (cr, x, y);
+			break;
+	}
+
+	gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+	cairo_fill (cr);
+	
+	cairo_destroy (cr);
+
 }
 
 static void
@@ -1407,12 +1334,14 @@ draw_tab (GtkStyle *style,
 	/* Draws an option menu tab (the up and down pointing arrows)
 	 * TODO: Make this look neater
 	 */
+    	debug ("draw_tab: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
+	    detail, state_type, shadow_type, x, y, width, height);
 
 	draw_arrow (style, window, state_type, shadow_type, area, widget, detail,
-		    GTK_ARROW_UP, FALSE, x, y - 2, width, height);
+		    GTK_ARROW_UP, FALSE, x + width / 2, y - height / 2, height, height - 1);
 
 	draw_arrow (style, window, state_type, shadow_type, area, widget, detail,
-		    GTK_ARROW_DOWN, FALSE, x, y + 3, width, height);
+		    GTK_ARROW_DOWN, FALSE, x + width / 2, y + height / 2 + 1, height, height - 1);
 }
 
 static void
@@ -1638,7 +1567,10 @@ draw_extension (GtkStyle *style,
 	
 	x++; y++; width -= 2.0; height -= 2.0;
 	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, 1.0, corners);
-	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5); /* must be same colour as corresponding draw_box highlight */
+	if (gap_side == GTK_POS_TOP)
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+	else
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5); /* must be same colour as corresponding draw_box highlight */
 	cairo_stroke (cr);
 	cairo_destroy (cr);
 }
@@ -1766,8 +1698,8 @@ draw_handle (GtkStyle *style,
 	cairo_destroy (cr);
 	*/
 
-
-	draw_box (style, window, state_type, shadow_type, area, widget, detail, x, y, width, height);
+	if (!ge_is_panel_widget_item (widget) && !ge_object_is_a (widget, "PanelToplevel"))
+		draw_box (style, window, state_type, shadow_type, area, widget, detail, x, y, width, height);
 
     light_gc = style->light_gc[state_type];
     dark_gc = style->dark_gc[state_type];
