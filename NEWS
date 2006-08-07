@@ -1,3 +1,18 @@
+Overview of Changes in 2.7.7 (since 2.7.6)
+==========================================
+
+Highlights in this release include:
+
+* RTL fixes and other enhancements in Crux
+* Lots of namespace and symbol precautions
+* Port of Industrial to cairo
+
+Fixed bugs in this release:
+
+	349575 - C89 Fixes
+	347227 - Add inconsistent state for option buttons (Clearlooks)
+
+
 Overview of Changes in 2.7.6 (since 2.7.5)
 ==========================================
 

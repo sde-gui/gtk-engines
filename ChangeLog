@@ -1,3 +1,10 @@
+2006-08-07  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+
+	Update for 2.7.7 release
+
 2006-08-07 Andrew Johnson <acjgenius@earthlink.net>
 	* engines/clearlooks/src/clearlooks_style.c:
 	- Add inconsistent state for option buttons per bug #347227
