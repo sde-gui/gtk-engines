@@ -1489,12 +1489,18 @@ draw_extension (GtkStyle *style,
 		gint x,
 		gint y, gint width, gint height, GtkPositionType gap_side)
 {
+	GtkWidget* parent_widget;
+	gint relative_x;
+
+	cairo_t *cr;
+	cairo_pattern_t *crp;
+	CairoColor c1, c2;
+	CairoCorners corners;
+
     debug ("draw_extension: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
 	/* Get x relative to parent widget, not window */
-	GtkWidget* parent_widget;
-	gint relative_x;
 	if (widget != NULL &&
 	    (parent_widget = gtk_widget_get_parent(widget)) != NULL)
 	{
@@ -1506,11 +1512,6 @@ draw_extension (GtkStyle *style,
 	{
 		relative_x = x;
 	}
-
-	cairo_t *cr;
-	cairo_pattern_t *crp;
-	CairoColor c1, c2;
-	CairoCorners corners;
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 

@@ -1613,11 +1613,12 @@ glide_draw_flat_box (GtkStyle * style,
 	if (CHECK_DETAIL(detail, "tooltip"))
 	{
 		GlideStyle *glide_style = GLIDE_STYLE (style);
+		cairo_t *canvas;
 
 		CHECK_ARGS
 		SANITIZE_SIZE
 
-		cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
+		canvas = ge_gdk_drawable_to_cairo (window, area);
 
 		glide_draw_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_solid[state_type]), 
 						x, y, width, height);

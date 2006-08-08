@@ -1,3 +1,11 @@
+2006-08-07 Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/crux/src/crux-draw.c:
+	* engines/glide/src/glide_gtk2_drawing.c:
+
+	- Last C89 Patch too close bug #349575
+
 2006-08-07  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

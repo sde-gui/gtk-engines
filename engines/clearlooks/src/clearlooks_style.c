@@ -73,16 +73,20 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 	    !strncmp ("cell_even", detail, 9) ||
 	    !strncmp ("cell_odd", detail, 8)))
 	{
-		CHECK_ARGS
-		SANITIZE_SIZE
-
-		ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
-		ClearlooksColors *colors = &clearlooks_style->colors;
-		cairo_t          *cr = ge_gdk_drawable_to_cairo (window, area);
+		ClearlooksStyle  *clearlooks_style;
+		ClearlooksColors *colors;
+		cairo_t          *cr;
 
 		cairo_pattern_t *pattern;
 		CairoColor       lower_color;
 		CairoColor       upper_color;
+
+		CHECK_ARGS
+		SANITIZE_SIZE
+
+		clearlooks_style = CLEARLOOKS_STYLE (style);
+		colors = &clearlooks_style->colors;
+		cr = ge_gdk_drawable_to_cairo (window, area);
 
 		cairo_translate (cr, x, y);
 
@@ -878,6 +882,8 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	double trans = 1.0;
 	gboolean inconsistent = FALSE;
 	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN);
+	cairo_t *cr;
+	cairo_pattern_t *pt;
 
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
@@ -885,8 +891,7 @@ clearlooks_style_draw_check (DRAW_ARGS)
 
 	draw_bullet |= inconsistent;
 
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
-	cairo_pattern_t *pt;
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 
 #ifdef HAVE_ANIMATION
