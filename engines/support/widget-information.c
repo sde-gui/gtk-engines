@@ -252,6 +252,8 @@ ge_option_menu_get_props (GtkWidget * widget,
 		       GtkRequisition * indicator_size,
 		       GtkBorder * indicator_spacing)
 {
+  GtkRequisition default_size = { 9, 5 };
+  GtkBorder default_spacing = { 7, 5, 2, 2 };
   GtkRequisition *tmp_size = NULL;
   GtkBorder *tmp_spacing = NULL;
  
@@ -266,7 +268,7 @@ ge_option_menu_get_props (GtkWidget * widget,
       g_free (tmp_size);
     }
   else
-    *indicator_size = (GtkRequisition){ 9, 5 };
+    *indicator_size = default_size;
  
   if (tmp_spacing)
     {
@@ -274,7 +276,7 @@ ge_option_menu_get_props (GtkWidget * widget,
       g_free (tmp_spacing);
     }
   else
-    *indicator_spacing = (GtkBorder){ 7, 5, 2, 2 };
+    *indicator_spacing = default_spacing;
 }
   
 gboolean

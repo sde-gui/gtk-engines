@@ -130,7 +130,7 @@ do_redmond_draw_check (cairo_t *canvas,
 
   factor = 10;
 
-  if (odd = (scale % 2))
+  if ((odd = (scale % 2)))
   {
     factor -= 1;
   }
@@ -197,23 +197,15 @@ ODD -
 
 */
 
-  cairo_move_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); //(1,4-odd)
-  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((6-odd)*scale)/factor)); //(1,6-odd)
-  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((8-odd)*scale)/factor)); //(3,8-odd)
-  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((3*scale)/factor)); //(8-odd,3)
-  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((1*scale)/factor)); //(8-odd,1)
-  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((6-odd)*scale)/factor)); //(3,6-odd)
-  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); //(1,4-odd)
+  cairo_move_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); /*(1,4-odd)*/
+  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((6-odd)*scale)/factor)); /*(1,6-odd)*/
+  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((8-odd)*scale)/factor)); /*(3,8-odd)*/
+  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((3*scale)/factor)); /*(8-odd,3)*/
+  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((1*scale)/factor)); /*(8-odd,1)*/
+  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((6-odd)*scale)/factor)); /*(3,6-odd)*/
+  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); /*(1,4-odd)*/
 
-  cairo_fill(canvas);
-
-  cairo_move_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); //(1,4-odd)
-  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((6-odd)*scale)/factor)); //(1,6-odd)
-  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((8-odd)*scale)/factor)); //(3,8-odd)
-  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((3*scale)/factor)); //(8-odd,3)
-  cairo_line_to(canvas, left + floor(((8-odd)*scale)/factor), top + floor((1*scale)/factor)); //(8-odd,1)
-  cairo_line_to(canvas, left + floor((3*scale)/factor), top + floor(((6-odd)*scale)/factor)); //(3,6-odd)
-  cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); //(1,4-odd)
+  cairo_fill_preserve(canvas);
 
   cairo_stroke(canvas);
 
@@ -240,8 +232,6 @@ do_redmond_draw_arrow (cairo_t *canvas,
                gint width, 
                gint height)
 {
-	gint steps, extra;
-	gint start, increment;
 	gint aw = width, ah = height;
  	GdkPoint points[3];
 

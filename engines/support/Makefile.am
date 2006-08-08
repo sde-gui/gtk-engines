@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES=libsupport.la
 
-INCLUDES = $(GTK_CFLAGS)
+INCLUDES = $(GTK_CFLAGS) $(PARANOIA_CFLAGS)
 
 libsupport_la_SOURCES = \
 	./cairo-support.c	\

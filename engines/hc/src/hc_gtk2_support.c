@@ -113,8 +113,6 @@ do_hc_draw_arrow (cairo_t *canvas,
                gint width, 
                gint height)
 {
-	gint steps, extra;
-	gint start, increment;
 	gint aw = width, ah = height;
  	GdkPoint points[3];
 

@@ -388,7 +388,7 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 	}
 	else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
 	{
-		// TODO: Find a way to calculate this value (same as shadow out outer line)
+		/*TODO: Find a way to calculate this value (same as shadow out outer line)*/
 		cairo_set_source_rgb (cr, OUTLINE_GRAY);
 		cairo_stroke (cr);
 
@@ -741,11 +741,16 @@ draw_shadow (GtkStyle *style,
 	     const gchar *detail, gint x, gint y, gint width, gint height)
 {
 	cairo_t *cr;
-	GdkRectangle area2 = {x, y, width, height};
+	GdkRectangle area2;
 	gboolean focused = FALSE;
 
 	CHECK_ARGS
 	SANITIZE_SIZE
+
+	area2.x = x;
+	area2.y = y;
+	area2.width = width;
+	area2.height = height;
 
 	if (widget != 0 && !GTK_WIDGET_IS_SENSITIVE (widget))
 		state_type = GTK_STATE_INSENSITIVE;
@@ -756,7 +761,7 @@ draw_shadow (GtkStyle *style,
 	if (widget != NULL && GTK_WIDGET_HAS_FOCUS (widget))
 		focused = TRUE;
 
-	if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
+	if (widget && (IS_COMBO (widget->parent) || IS_COMBO_BOX_ENTRY (widget->parent)))
 	{
 		GtkWidget *button;
 		if (ge_widget_is_ltr (widget))
@@ -826,7 +831,7 @@ draw_box (GtkStyle *style,
 				height -= 2;
 		}
 		
-		if (widget && (GTK_IS_COMBO (widget->parent) || GTK_IS_COMBO_BOX_ENTRY (widget->parent)))
+		if (widget && (IS_COMBO (widget->parent) || IS_COMBO_BOX_ENTRY (widget->parent)))
 		{
 			/* Combobox buttons */
 			gboolean focused = FALSE;
@@ -995,11 +1000,13 @@ draw_arrow (GtkStyle *style,
 	    gint fill, gint x, gint y, gint width, gint height)
 {
 	cairo_t *cr;
-	gboolean is_combo_box_entry;
 
 	CHECK_ARGS;
 	debug ("draw_arrow: detail=%s state=%d shadow=%d arrow_type=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, arrow_type, x, y, width, height);
+
+	if (arrow_type == (GtkArrowType)4)/*NONE - new in GTK 2.10*/
+		return;
 
 	if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
 	{
@@ -1066,6 +1073,7 @@ draw_arrow (GtkStyle *style,
 			cairo_line_to (cr, x + (width / 2.0), y);
 			cairo_line_to (cr, x, y + height);
 			break;
+		default:
 		case GTK_ARROW_DOWN:
 			cairo_move_to (cr, x, y);
 			cairo_line_to (cr, x + width, y);
@@ -1377,6 +1385,7 @@ draw_shadow_gap (GtkStyle *style,
 	rect.width = gap_width;
 	rect.height = 2;
 	break;
+    default:
     case GTK_POS_BOTTOM:
 	rect.x = x + gap_x;
 	rect.y = y + height - 2;
@@ -1454,6 +1463,7 @@ draw_box_gap (GtkStyle *style,
 	rect.width = gap_width;
 	rect.height = 2;
 	break;
+    default:
     case GTK_POS_BOTTOM:
 	rect.x = x + gap_x;
 	rect.y = y + height - 2;
@@ -1532,6 +1542,7 @@ draw_extension (GtkStyle *style,
 			crp = cairo_pattern_create_linear (x, y + height, x, y);
 			ge_shade_color (&c2, 0.8, &c1);
 			break;
+		default:
 		case GTK_POS_BOTTOM:
 			/* top tab */
 			height++;

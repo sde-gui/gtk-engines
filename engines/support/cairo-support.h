@@ -1,6 +1,19 @@
 /* Helpful functions when dealing with cairo in gtk engines */
 
 #include <gtk/gtk.h>
+#include <math.h>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+#ifndef M_PI_2
+#define M_PI_2 1.57079632679489661923
+#endif
+
+#ifndef M_PI_4
+#define M_PI_4 0.78539816339744830962
+#endif
 
 typedef struct
 {
@@ -41,7 +54,7 @@ typedef enum
 {
 	CR_MIRROR_NONE       = 0,
 	CR_MIRROR_HORIZONTAL = 1 << 0,
-	CR_MIRROR_VERTICAL   = 1 << 1,
+	CR_MIRROR_VERTICAL   = 1 << 1
 } CairoMirror;
 
 void ge_hsb_from_color (const CairoColor *color, gdouble *hue, gdouble *saturation, gdouble *brightness) G_GNUC_INTERNAL;

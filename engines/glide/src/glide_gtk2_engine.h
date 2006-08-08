@@ -61,7 +61,7 @@ typedef struct
 } CairoPattern;
   
 
-#warning NO MORE MACROS! - Replace with pattern precedence in configuration parsing
+/*#warning NO MORE MACROS! - Replace with pattern precedence in configuration parsing*/
 #define DEFAULT_BACKGROUND_PATTERN(glide_style, state, alternate) ((glide_style->bg_image[state].handle)?&glide_style->bg_image[state]:alternate)
 
 #define DEFAULT_OVERLAY_PATTERN(glide_style, detail, vertical) &glide_style->overlay[CHECK_DETAIL(detail, "menuitem")][vertical]

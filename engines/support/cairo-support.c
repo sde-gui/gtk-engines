@@ -1,5 +1,4 @@
 #include "cairo-support.h"
-#include <math.h>
 
 /***********************************************
  * ge_hsb_from_color -
@@ -226,7 +225,7 @@ ge_gdk_drawable_to_cairo (GdkDrawable  *window, GdkRectangle *area)
 {
 	cairo_t *cr;
 
-	g_return_if_fail (window != NULL);
+	g_return_val_if_fail (window != NULL, NULL);
 
 	cr = (cairo_t*) gdk_cairo_create (window);
 	cairo_set_line_width (cr, 1.0);

@@ -23,10 +23,130 @@
 #include "hc_gtk2_support.h"
 #include "hc_gtk2_drawing.h"
 
+
+/**********************************/ 
+/* Parse RC Style                 */ 
+/**********************************/ 
+enum {
+	TOKEN_EDGE_THICKNESS = G_TOKEN_LAST + 1
+};
+
+static struct {
+	const gchar *name;
+	guint token;
+} hc_rc_symbols[] = {
+	{ "edge_thickness",		TOKEN_EDGE_THICKNESS }
+};
+
+guint 
+hc_rc_parse_int (GScanner *scanner, 
+                 GTokenType wanted_token, 
+		 guint return_default,
+		 gint *retval, 
+		 gint lower_limit, 
+		 gint upper_limit)
+{
+  guint token;
+  gboolean negate=FALSE;
+  
+  token = g_scanner_cur_token (scanner);
+  if (token != wanted_token)
+  {
+	  token = g_scanner_get_next_token (scanner);
+	  if (token != wanted_token)
+	    {
+	      return wanted_token;
+	    }
+  }
+
+  if (token != G_TOKEN_EQUAL_SIGN)
+  {
+    token = g_scanner_get_next_token (scanner);
+    if (token != G_TOKEN_EQUAL_SIGN)
+      {
+        return G_TOKEN_EQUAL_SIGN;
+      }
+  }
+  
+  if (g_scanner_peek_next_token (scanner) == '-')
+    {
+      g_scanner_get_next_token (scanner); /* eat sign */
+      negate = TRUE;
+    }
+
+  token = g_scanner_get_next_token (scanner);
+
+  if (token != G_TOKEN_INT)
+    *retval = return_default;
+  else
+    *retval = (guint) scanner->value.v_int;
+
+  if (negate) *retval = -(*retval); 
+
+  if (*retval < lower_limit) *retval = lower_limit; 
+  if ((*retval > upper_limit) && (upper_limit > lower_limit)) *retval = upper_limit; 
+  
+  return G_TOKEN_NONE;
+}
+
+static guint
+hc_rc_style_parse (GtkRcStyle  *rc_style,
+			   GtkSettings *settings,
+			   GScanner    *scanner)
+{
+	HcRcStyle *hc_rc_style = HC_RC_STYLE (rc_style);
+
+	static GQuark scope_id = 0;
+	guint old_scope;
+	guint token;
+	guint i;
+
+	/* Set up a new scope in this scanner. */
+
+	if (!scope_id)
+		scope_id = g_quark_from_string ("hc_theme_engine");
+
+	/* If we bail out due to errors, we *don't* reset the scope, so the
+	 * error messaging code can make sense of our tokens.
+	 */
+	old_scope = g_scanner_set_scope (scanner, scope_id);
+
+	if (!g_scanner_lookup_symbol (scanner, hc_rc_symbols[0].name)) {
+		for (i = 0; i < G_N_ELEMENTS (hc_rc_symbols); i++)
+			g_scanner_scope_add_symbol (scanner, scope_id, hc_rc_symbols[i].name,
+						    GINT_TO_POINTER (hc_rc_symbols[i].token));
+	}
+
+	token = g_scanner_peek_next_token (scanner);
+	while (token != G_TOKEN_RIGHT_CURLY) {
+		switch (token) {
+		case TOKEN_EDGE_THICKNESS:
+			token = hc_rc_parse_int (scanner, TOKEN_EDGE_THICKNESS, 2, &hc_rc_style->edge_thickness, 1, 25);
+			break;
+		default:
+			g_scanner_get_next_token (scanner);
+			token = G_TOKEN_RIGHT_CURLY;
+			break;
+		}
+
+		if (token != G_TOKEN_NONE)
+			return token;
+
+		token = g_scanner_peek_next_token (scanner);
+	}
+
+	g_scanner_get_next_token (scanner);
+
+	g_scanner_set_scope (scanner, old_scope);
+
+	return G_TOKEN_NONE;
+}
+
 /**********************************/ 
 /* Register & Initialize RC Style */ 
 /**********************************/ 
 GType hc_type_rc_style = 0;
+static GtkRcStyleClass *hc_parent_rc_class = NULL;
 
 /* Create an empty style suitable to this RC style */ 
 static GtkStyle *
@@ -35,11 +155,39 @@ hc_rc_style_create_style (GtkRcStyle *rc_style)
   return GTK_STYLE (g_object_new (HC_TYPE_STYLE, NULL));;
 }
 
+static void
+hc_rc_style_merge (GtkRcStyle *dest,
+			   GtkRcStyle *src)
+{
+	HcRcStyle *dest_w, *src_w;
+
+	hc_parent_rc_class->merge (dest, src);
+
+	if (!HC_IS_RC_STYLE (src))
+		return;
+
+	src_w = HC_RC_STYLE (src);
+	dest_w = HC_RC_STYLE (dest);
+
+	dest_w->edge_thickness = src_w->edge_thickness;
+}
+
+
 static void hc_rc_style_class_init (HcRcStyleClass *klass)
 {
   GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
 
+  hc_parent_rc_class = g_type_class_peek_parent (klass);
+
   rc_style_class->create_style = hc_rc_style_create_style;
+  rc_style_class->parse = hc_rc_style_parse;
+  rc_style_class->merge = hc_rc_style_merge;
+}
+
+static void
+hc_rc_style_init (HcRcStyle *hc_rc_style)
+{
+	hc_rc_style->edge_thickness = -1;
 }
 
 static void hc_rc_style_register_type (GTypeModule *module)
@@ -54,7 +202,7 @@ static void hc_rc_style_register_type (GTypeModule *module)
     NULL,           /* class_data */
     sizeof (HcRcStyle),
     0,              /* n_preallocs */
-    (GInstanceInitFunc) NULL,
+    (GInstanceInitFunc) hc_rc_style_init,
   };
   
   hc_type_rc_style = g_type_module_register_type (module,
@@ -67,6 +215,7 @@ static void hc_rc_style_register_type (GTypeModule *module)
 /* Register & Initialize Drawing Style */ 
 /***************************************/ 
 GtkStyleClass *hc_parent_class = NULL;
+
 
 static void
 hc_style_realize (GtkStyle *style)
@@ -171,6 +320,30 @@ hc_style_realize (GtkStyle *style)
 }
 
 static void
+hc_style_copy (GtkStyle * style, GtkStyle * src)
+{
+	HcStyle *hc_style = HC_STYLE (style);
+	HcStyle *hc_src = HC_STYLE (src);
+
+	hc_style->edge_thickness = hc_src->edge_thickness;
+
+	hc_parent_class->copy (style, src);
+}
+
+static void
+hc_style_init_from_rc (GtkStyle * style, GtkRcStyle * rc_style)
+{
+	HcStyle *hc_style = HC_STYLE (style);
+
+	hc_parent_class->init_from_rc (style, rc_style);
+
+	if (HC_RC_STYLE (rc_style)->edge_thickness > 0)
+	{
+		hc_style->edge_thickness = HC_RC_STYLE (rc_style)->edge_thickness;
+	}
+}
+
+static void
 hc_style_class_init (HcStyleClass *klass)
 {
   GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
@@ -178,6 +351,8 @@ hc_style_class_init (HcStyleClass *klass)
   hc_parent_class = g_type_class_peek_parent (klass);
  
   style_class->realize = hc_style_realize;
+  style_class->copy = hc_style_copy;
+  style_class->init_from_rc = hc_style_init_from_rc;
 
   style_class->draw_shadow = hc_draw_shadow;
   style_class->realize = hc_style_realize;
@@ -199,6 +374,12 @@ hc_style_class_init (HcStyleClass *klass)
   style_class->draw_polygon = hc_draw_polygon;
 }
 
+static void
+hc_style_init (HcStyle * style)
+{
+	style->edge_thickness = floor(MIN(GTK_STYLE(style)->xthickness,GTK_STYLE(style)->ythickness)*1.5);
+}
+
 GType hc_type_style = 0;
 
 static void
@@ -214,7 +395,7 @@ hc_style_register_type (GTypeModule *module)
     NULL,           /* class_data */
     sizeof (HcStyle),
     0,              /* n_preallocs */
-    (GInstanceInitFunc) NULL,
+    (GInstanceInitFunc) hc_style_init,
   };
   
   hc_type_style = g_type_module_register_type (module,

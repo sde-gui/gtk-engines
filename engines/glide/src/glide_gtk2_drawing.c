@@ -310,7 +310,7 @@ glide_draw_option (GtkStyle * style,
 
 		if (observe_shadow)
 		{
-			border_type = glide_gtk_shadow(shadow);
+			/*border_type = glide_gtk_shadow(shadow);*/
 
 			/***********************************************/
 			/* Convert Shadow Type To Border Type          */
@@ -721,7 +721,7 @@ glide_draw_combobox_button (GtkStyle * style,
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-#warning FIXME - gdk_draw_rectangle
+/*#warning FIXME - gdk_draw_rectangle*/
 	      gdk_draw_rectangle (window,
 	      	                  parent_style->base_gc[parent_state],
 			          TRUE, x - 2, y, width + 2, height);
@@ -774,7 +774,7 @@ glide_draw_combobox_button (GtkStyle * style,
             shadow.width = width + 2;
             shadow.height = height;
           
-		#warning FIXME - gdk_rectangle_intersect
+/*		#warning FIXME - gdk_rectangle_intersect*/
            if (area)
               gdk_rectangle_intersect(area, &shadow, &clip);
             else
@@ -819,8 +819,9 @@ glide_draw_combobox_button (GtkStyle * style,
         glide_draw_shadow (style, window, state_type, shadow_type, area,
 		          widget, detail, x + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
-//      glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "comboarrow", GTK_ARROW_DOWN, TRUE,  x + focus + 6, y + thick + focus + 5, width - thick - focus*2 - 12, height - 2*thick - focus*2 - 10);
-
+#if 0
+      glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "comboarrow", GTK_ARROW_DOWN, TRUE,  x + focus + 6, y + thick + focus + 5, width - thick - focus*2 - 12, height - 2*thick - focus*2 - 10);
+#endif
 	glide_draw_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
       cairo_destroy(canvas);
@@ -852,7 +853,7 @@ glide_draw_combobox_button (GtkStyle * style,
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-#warning FIXME - gdk_draw_rectangle
+/*#warning FIXME - gdk_draw_rectangle*/
 	      gdk_draw_rectangle (window, parent_style->base_gc[parent_state],
 			          TRUE, x + focus - focus_padding, y + focus - focus_padding, 
                                         width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
@@ -944,8 +945,9 @@ glide_draw_combobox_button (GtkStyle * style,
         glide_draw_shadow (style, window, state_type, shadow_type, area,
 		          widget, detail, x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
-//      glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "comboarrow", GTK_ARROW_DOWN, TRUE,  x + thick + focus + 6, y + thick + focus + 5, width - thick - focus*2 - 12, height - 2*thick - focus*2 - 10);
-
+#if 0
+      glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "comboarrow", GTK_ARROW_DOWN, TRUE,  x + thick + focus + 6, y + thick + focus + 5, width - thick - focus*2 - 12, height - 2*thick - focus*2 - 10);
+#endif
 	glide_draw_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
 	cairo_destroy(canvas);
@@ -1609,7 +1611,7 @@ glide_draw_flat_box (GtkStyle * style,
           gint width, 
           gint height)
 {
-	#warning FIXME - FINISH draw_flat_box
+	/*#warning FIXME - FINISH draw_flat_box*/
 	if (CHECK_DETAIL(detail, "tooltip"))
 	{
 		GlideStyle *glide_style = GLIDE_STYLE (style);
@@ -1869,7 +1871,6 @@ glide_draw_shadow_gap (GtkStyle * style,
 	/* Draw Border                                 */
 	/***********************************************/
 	bevel_style = GLIDE_BEVEL_STYLE_DEFAULT;
-//	inner_overlap = (((gap_side==GTK_POS_RIGHT) || (gap_side==GTK_POS_BOTTOM)) && (gap_pos==0));
 
 	canvas = ge_gdk_drawable_to_cairo (window, area);
 
@@ -2439,7 +2440,7 @@ glide_draw_layout (GtkStyle        *style,
 	CHECK_ARGS
 	use_text &= !ge_is_combo_box(widget, FALSE);
 
-	#warning FIXME - gdk gdk gdk
+/*	#warning FIXME - gdk gdk gdk*/
 
 	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
 	

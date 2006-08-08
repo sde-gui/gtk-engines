@@ -1,7 +1,4 @@
-SUBDIRS = 
-
-INCLUDES = $(GTK_CFLAGS)				\
-           -DDATADIR=\"$(datadir)/themes/Crux/pixmaps\"	\
+INCLUDES = $(GTK_CFLAGS) $(PARANOIA_CFLAGS) \
            -I$(top_srcdir)/engines/support
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines

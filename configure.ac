@@ -33,6 +33,10 @@ AC_ARG_ENABLE(animation, 	[  --enable-animation		compile clearlooks with animati
 
 AC_ARG_ENABLE(themes, 		[  --disable-themes		skip installing default themes], 	[themes=$enableval], 		[themes=$disableval])
 
+AC_ARG_ENABLE(paranoia,           [  --enable-paranoia-checks		use wall, werror, ansi, pedantic compiler flags],        [paranoia=$disableval],            [paranoia=$enableval])
+
+AC_ARG_ENABLE(deprecated,           [  --disable-deprecated           disable deprecated functions in gtk et al],        [deprecated=$disableval],            [deprecated=$enableval])
+
 BUILD_ENGINES=""
 BUILD_THEMES=""
 
@@ -106,6 +110,17 @@ if test $animation = "y"; then
 	AC_DEFINE_UNQUOTED(HAVE_ANIMATION, 1, [Defines whether to compile with animation support])
 fi
 
+PARANOIA_CFLAGS=
+if test $paranoia = "y"; then
+	PARANOIA_CFLAGS="-Wall -Werror -ansi -pedantic"
+fi
+
+if test $deprecated = "y"; then
+	PARANOIA_CFLAGS+=" -DG_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED"
+fi
+
+AC_SUBST(PARANOIA_CFLAGS)
+
 AM_CONFIG_HEADER([engines/clearlooks/src/config.h])
 AM_CONFIG_HEADER([engines/crux/src/config.h])
 AM_CONFIG_HEADER([engines/smooth/src/config.h])
@@ -142,6 +157,25 @@ gtk-engines.spec
 ]) 
 
 AC_OUTPUT
+
+
+echo -e "\nSpecial Flags:"
+
+echo -n "      Paranoia Flags - "
+
+if test "$paranoia" = "y"; then
+        echo "Enabled"
+else
+        echo "Disabled"
+fi
+
+echo -n "      Disable Deprecated - "
+
+if test "$deprecated" = "y"; then
+	echo "Enabled"
+else
+	echo "Disabled"
+fi
 
 echo -e "\nEngines and Themes:"
 

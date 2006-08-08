@@ -378,7 +378,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	else if (height == -1)
 		gdk_window_get_size (window, NULL, &height);
 
-	if (DETAIL ("menubar") && ge_is_panel_widget_item(widget))
+	if (DETAIL ("menubar") && !ge_is_panel_widget_item(widget))
 	{
 		WidgetParameters params;
 		MenuBarParameters menubar;

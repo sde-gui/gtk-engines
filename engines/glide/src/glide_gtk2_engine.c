@@ -22,6 +22,8 @@
 #include "glide_gtk2_engine.h"
 #include "glide_gtk2_support.h"
 #include "glide_gtk2_drawing.h"
+
+#if 0
 enum
   {
     TOKEN_PROFILE = G_TOKEN_LAST + 1,
@@ -36,6 +38,7 @@ theme_symbols[] =
 {
   { "profile",      TOKEN_PROFILE }
 };
+#endif
  
 /**********************************/ 
 /* Register & Initialize RC Style */ 
@@ -84,7 +87,7 @@ glide_rc_style_register_type (GTypeModule * module)
 GType glide_type_style = 0;
 GtkStyleClass *glide_parent_class;
 
-static glide_simple_color_pattern(CairoColor *base, CairoPattern *pattern)
+static void glide_simple_color_pattern(CairoColor *base, CairoPattern *pattern)
 {	
 	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
 		pattern->type = CAIRO_PATTERN_TYPE_SOLID;
@@ -98,7 +101,7 @@ static glide_simple_color_pattern(CairoColor *base, CairoPattern *pattern)
 	pattern->operator = CAIRO_OPERATOR_SOURCE;
 }
 
-static glide_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
+static void glide_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
 {	
 	cairo_t *cr;
 	cairo_surface_t * surface;

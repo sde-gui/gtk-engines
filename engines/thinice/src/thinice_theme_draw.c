@@ -63,7 +63,6 @@ thinice_style_draw_hline(GtkStyle * style,
            gint x2,
            gint y)
 {
-	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 	cairo_t *cr;
 	
 	CHECK_ARGS
@@ -85,7 +84,6 @@ thinice_style_draw_vline(GtkStyle * style,
            gint y2,
            gint x)
 {
-	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 	cairo_t *cr;
 
 	CHECK_ARGS
@@ -319,7 +317,6 @@ thinice_style_draw_arrow(GtkStyle * style,
 
 	CairoColor *color1, *color2, *color3=NULL,*color4=NULL;
 	gint half_width, half_height;
-        gint ax, ay, aw, ah;
 	cairo_t *cr;
 
 	CHECK_ARGS
@@ -1281,7 +1278,6 @@ thinice_style_draw_handle(GtkStyle * style,
   cairo_t *cr;
   CairoColor              *light=NULL, *dark=NULL;
   GdkRectangle        dest;
-//  ThemeStyleData     *data = NULL;//style->engine_data;
   gint                modx, mody;
 
   CHECK_ARGS
@@ -1516,7 +1512,6 @@ static void
 thinice_style_realize (GtkStyle * style)
 {
   ThiniceStyle *thinice_style = THINICE_STYLE (style);
-  int i;
  
   thinice_parent_style_class->realize (style);
  

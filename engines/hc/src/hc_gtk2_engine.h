@@ -40,6 +40,7 @@ extern GtkStyleClass *hc_parent_class G_GNUC_INTERNAL;
 typedef struct
 {
   GtkRcStyle parent_instance;
+  gint edge_thickness;
 } HcRcStyle;
  
 typedef struct
@@ -64,6 +65,8 @@ typedef struct
   GtkStyle parent_instance;
 
   CairoColorCube color_cube;
+
+  gint edge_thickness;
 } HcStyle;
  
 typedef struct

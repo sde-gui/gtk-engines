@@ -419,12 +419,6 @@ mist_style_draw_polygon(GtkStyle *style,
              int npoints,
              int fill)
 {
-#ifndef M_PI
-#define M_PI    3.14159265358979323846
-#endif /* M_PI */
-#ifndef M_PI_4
-#define M_PI_4  0.78539816339744830962
-#endif /* M_PI_4 */
 	MistStyle *mist_style = MIST_STYLE (style);
 
 	static const gdouble pi_over_4 = M_PI_4;
@@ -1095,12 +1089,6 @@ mist_style_draw_extension(GtkStyle *style,
 		rect.width = width - XTHICKNESS(style) * 2;
 		rect.height = YTHICKNESS(style);
 		break;
-	case GTK_POS_BOTTOM:
-		rect.x = x + XTHICKNESS(style);
-		rect.y = y + height - YTHICKNESS(style);
-		rect.width = width - XTHICKNESS(style) * 2;
-		rect.height = YTHICKNESS(style);
-		break;
 	case GTK_POS_LEFT:
 		rect.x = x;
 		rect.y = y + YTHICKNESS(style);
@@ -1112,6 +1100,13 @@ mist_style_draw_extension(GtkStyle *style,
 		rect.y = y + YTHICKNESS(style);
 		rect.width = XTHICKNESS(style);
 		rect.height = height - YTHICKNESS(style) * 2;
+		break;
+	default:
+	case GTK_POS_BOTTOM:
+		rect.x = x + XTHICKNESS(style);
+		rect.y = y + height - YTHICKNESS(style);
+		rect.width = width - XTHICKNESS(style) * 2;
+		rect.height = YTHICKNESS(style);
 		break;
 	}
 	
@@ -1547,7 +1542,6 @@ static void
 mist_style_realize (GtkStyle * style)
 {
   MistStyle *mist_style = MIST_STYLE (style);
-  int i;
  
   mist_parent_style_class->realize (style);
  

@@ -264,12 +264,10 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 
   if (!g_scanner_lookup_symbol(scanner, clearlooks_gtk2_rc_symbols[0].name))
     {
-      g_scanner_freeze_symbol_table(scanner);
       for (i = 0; i < G_N_ELEMENTS (clearlooks_gtk2_rc_symbols); i++)
 	g_scanner_scope_add_symbol(scanner, scope_id,
 				   clearlooks_gtk2_rc_symbols[i].name,
 				   GINT_TO_POINTER(clearlooks_gtk2_rc_symbols[i].token));
-      g_scanner_thaw_symbol_table(scanner);
     }
 
   /* We're ready to go, now parse the top level */
