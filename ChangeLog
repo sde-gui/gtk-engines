@@ -1,5 +1,10 @@
 2006-08-09 Andrew Johnson <acjgenius@earthlink.net>
 
+	* engines/smooth/Makefile.am:
+	- Fix "trailing whitespace" silly automake
+
+2006-08-09 Andrew Johnson <acjgenius@earthlink.net>
+
 	* engines/clearlooks/src/animation.h:
 	* engines/clearlooks/src/clearlooks_draw.h:
 	* engines/clearlooks/src/clearlooks_rc_style.h:

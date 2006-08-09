@@ -1,14 +1,14 @@
-INCLUDES =								\ 
+INCLUDES =								\
 	-I$(top_srcdir)/engines/support					\
 	-I$(top_srcdir)/engines/smooth/src				\
-	$(GTK_CFLAGS) 							\
+	$(GTK_CFLAGS)							\
 	-DINTERFACE_DEFINES="<interfaces/gdk2/gdk2_type_defines.h>" 	\
 	-DENGINE_HEADER="<engine/smooth_gtk2_engine.h>"			\
 	-DENGINE_RC_HEADER="<engine/smooth_gtk2_rc.h>"			\
 	-DENGINE_MISC_HEADER="<engine/smooth_gtk2_misc.h>"
 
 AM_CFLAGS =								\
-	$(GTK_CFLAGS) 							\
+	$(GTK_CFLAGS)							\
 	-DG_DISABLE_DEPRECATED 						\
 	-DGDK_DISABLE_DEPRECATED 					\
 	-DGDK_PIXBUF_DISABLE_DEPRECATED					\
