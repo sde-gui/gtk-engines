@@ -65,6 +65,11 @@ hc_draw_shadow(GtkStyle * style,
 	/***********************************************/
 	line_width = HC_STYLE(style)->edge_thickness;
 
+	if (CHECK_DETAIL (detail, "menubar") && ge_is_panel_widget_item(widget))
+	{
+		return;
+	}
+
 	/* Spin Button */
 	if ((CHECK_DETAIL(detail, "spinbutton_up")) || (CHECK_DETAIL(detail, "spinbutton_down")))
 	{

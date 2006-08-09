@@ -1,5 +1,10 @@
 2006-08-08 Andrew Johnson <acjgenius@earthlink.net>
 
+	* engines/hc/src/hc-style.c: (hc_draw_shadow):
+	- disable border for menus on panel
+	
+2006-08-08 Andrew Johnson <acjgenius@earthlink.net>
+
 	* configure.ac:
 	* engines/clearlooks/Makefile.am:
 	* engines/clearlooks/src/clearlooks_rc_style.c:
