@@ -70,7 +70,7 @@ typedef struct
 	SmoothInt CutOff;
 } SmoothGripObjects;
 
-void 
+GE_INTERNAL void 
 do_smooth_draw_broken_bars(SmoothCanvas *Canvas,
 
 			SmoothColor Highlight,
@@ -82,9 +82,9 @@ do_smooth_draw_broken_bars(SmoothCanvas *Canvas,
 			SmoothInt Width, 
 			SmoothInt Height, 
 
-			SmoothBool Horizontal) G_GNUC_INTERNAL;
+			SmoothBool Horizontal);
 
-void
+GE_INTERNAL void
 do_smooth_draw_lines(SmoothGripObjects *GripObjects,
 		SmoothCanvas *Canvas,
 		SmoothColor Highlight,
@@ -93,9 +93,9 @@ do_smooth_draw_lines(SmoothGripObjects *GripObjects,
 		SmoothInt Y, 
 		SmoothInt Width, 
 		SmoothInt Height, 
-		SmoothBool Horizontal) G_GNUC_INTERNAL;
+		SmoothBool Horizontal);
 
-void
+GE_INTERNAL void
 do_smooth_draw_dots(SmoothGripObjects *GripObjects,
 		SmoothCanvas *Canvas,
 		SmoothColor Highlight,
@@ -105,9 +105,9 @@ do_smooth_draw_dots(SmoothGripObjects *GripObjects,
 		SmoothInt Y, 
 		SmoothInt Width, 
 		SmoothInt Height, 
-		SmoothBool Horizontal) G_GNUC_INTERNAL;
+		SmoothBool Horizontal);
 
-void 
+GE_INTERNAL void 
 do_smooth_draw_buds(SmoothCanvas *Canvas,
 		SmoothColor Highlight,
 		SmoothColor Shadow,
@@ -118,6 +118,6 @@ do_smooth_draw_buds(SmoothCanvas *Canvas,
 		SmoothInt Height, 
 		SmoothInt ClipOffset,
 		SmoothBool Horizontal,
-		SmoothBool Alternating) G_GNUC_INTERNAL;
+		SmoothBool Alternating);
 		
 #endif /* DRAW_GRIPS_H */

@@ -21,7 +21,7 @@
 
 #include <math.h>
 
-void 
+GE_INTERNAL void 
 hc_simple_border_gap_clip(cairo_t *canvas,
 				gint border_thickness,
 
@@ -32,31 +32,31 @@ hc_simple_border_gap_clip(cairo_t *canvas,
 
 				GtkPositionType gap_side,
 				gint gap_pos,
-				gint gap_size) G_GNUC_INTERNAL;
+				gint gap_size);
 
-void do_hc_draw_arrow (cairo_t *cr,
+GE_INTERNAL void do_hc_draw_arrow (cairo_t *cr,
                             CairoColor *color,
                             GtkArrowType arrow_type, 
                             gboolean fill,
                             gint x, 
                             gint y, 
                             gint width, 
-                            gint height) G_GNUC_INTERNAL;
+                            gint height);
                             
-void do_hc_draw_line (cairo_t *cr,
+GE_INTERNAL void do_hc_draw_line (cairo_t *cr,
 			CairoColor *color,
 			gdouble thickness,
 			gdouble x1,
 			gdouble y1,
 			gdouble x2,
-			gdouble y2) G_GNUC_INTERNAL;
+			gdouble y2);
  
-void do_hc_draw_dot (cairo_t *canvas,
+GE_INTERNAL void do_hc_draw_dot (cairo_t *canvas,
 			CairoColor * light,
 			CairoColor * dark,
 			gint x,
-			gint y) G_GNUC_INTERNAL;
+			gint y);
 
  
-void hc_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget) G_GNUC_INTERNAL;
-void hc_gtk2_engine_hack_menu_shell_cleanup_signals(GtkWidget *widget) G_GNUC_INTERNAL;
+GE_INTERNAL void hc_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget);
+GE_INTERNAL void hc_gtk2_engine_hack_menu_shell_cleanup_signals(GtkWidget *widget);

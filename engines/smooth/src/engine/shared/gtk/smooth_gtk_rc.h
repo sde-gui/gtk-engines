@@ -319,188 +319,188 @@ enum
     TOKEN_LAST = TOKEN_DEPRECATED_GRADIENT
   };
 
-extern ThemeSymbols smooth_theme_symbols[] G_GNUC_INTERNAL;
+GE_INTERNAL extern ThemeSymbols smooth_theme_symbols[];
 
 /* fill part */
-gint smooth_fill_style(GtkStyle * style, void *part) G_GNUC_INTERNAL;
-gint smooth_fill_gradient_direction(GtkStyle * style, void *part, gboolean horizontal) G_GNUC_INTERNAL;
-gboolean smooth_fill_quadratic_gradient(GtkStyle * style, void *part) G_GNUC_INTERNAL;
-gdouble smooth_fill_shade1_value(GtkStyle * style, void *part) G_GNUC_INTERNAL;
-gdouble smooth_fill_shade2_value(GtkStyle * style, void *part) G_GNUC_INTERNAL;
+GE_INTERNAL gint smooth_fill_style(GtkStyle * style, void *part);
+GE_INTERNAL gint smooth_fill_gradient_direction(GtkStyle * style, void *part, gboolean horizontal);
+GE_INTERNAL gboolean smooth_fill_quadratic_gradient(GtkStyle * style, void *part);
+GE_INTERNAL gdouble smooth_fill_shade1_value(GtkStyle * style, void *part);
+GE_INTERNAL gdouble smooth_fill_shade2_value(GtkStyle * style, void *part);
 
-SmoothColor smooth_fill_color1(GtkStyle * style, void *part, GtkStateType state) G_GNUC_INTERNAL;
-SmoothColor smooth_fill_color2(GtkStyle * style, void *part, GtkStateType state) G_GNUC_INTERNAL;
+GE_INTERNAL SmoothColor smooth_fill_color1(GtkStyle * style, void *part, GtkStateType state);
+GE_INTERNAL SmoothColor smooth_fill_color2(GtkStyle * style, void *part, GtkStateType state);
 
-GString *smooth_fill_file_name(GtkStyle * style, void *part, GtkStateType state) G_GNUC_INTERNAL;
+GE_INTERNAL GString *smooth_fill_file_name(GtkStyle * style, void *part, GtkStateType state);
 
 /* tab part styles*/
-smooth_part_style *smooth_tab_part(GtkStyle * style, gboolean for_active_tab) G_GNUC_INTERNAL;
+GE_INTERNAL smooth_part_style *smooth_tab_part(GtkStyle * style, gboolean for_active_tab);
 
-gint smooth_tab_get_style(GtkStyle * style, gboolean for_active_tab) G_GNUC_INTERNAL;
+GE_INTERNAL gint smooth_tab_get_style(GtkStyle * style, gboolean for_active_tab);
 
-SmoothFillPart *smooth_tab_fill(GtkStyle * style, gboolean for_active_tab) G_GNUC_INTERNAL;
+GE_INTERNAL SmoothFillPart *smooth_tab_fill(GtkStyle * style, gboolean for_active_tab);
 
-SmoothBevelStyle smooth_tab_edge_line_style(GtkStyle * style, gboolean for_active_tab) G_GNUC_INTERNAL;
-gint smooth_tab_edge_line_thickness(GtkStyle * style, gboolean for_active_tab) G_GNUC_INTERNAL;
+GE_INTERNAL SmoothBevelStyle smooth_tab_edge_line_style(GtkStyle * style, gboolean for_active_tab);
+GE_INTERNAL gint smooth_tab_edge_line_thickness(GtkStyle * style, gboolean for_active_tab);
 
 /* button part styles*/
-smooth_part_style *smooth_button_part(GtkStyle * style, gboolean for_default_button) G_GNUC_INTERNAL;
+GE_INTERNAL smooth_part_style *smooth_button_part(GtkStyle * style, gboolean for_default_button);
 
-gint smooth_button_get_style(GtkStyle * style, gboolean for_default_button) G_GNUC_INTERNAL;
+GE_INTERNAL gint smooth_button_get_style(GtkStyle * style, gboolean for_default_button);
 
-gboolean smooth_button_default_triangle(GtkStyle * style) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean smooth_button_default_triangle(GtkStyle * style);
 
-SmoothFillPart *smooth_button_fill(GtkStyle * style, gboolean for_default_button) G_GNUC_INTERNAL;
+GE_INTERNAL SmoothFillPart *smooth_button_fill(GtkStyle * style, gboolean for_default_button);
 
-SmoothBevelStyle smooth_button_edge_line_style(GtkStyle * style, gboolean for_default_button) G_GNUC_INTERNAL;
-gint smooth_button_edge_line_thickness(GtkStyle * style, gboolean for_default_button) G_GNUC_INTERNAL;
+GE_INTERNAL SmoothBevelStyle smooth_button_edge_line_style(GtkStyle * style, gboolean for_default_button);
+GE_INTERNAL gint smooth_button_edge_line_thickness(GtkStyle * style, gboolean for_default_button);
 
 /* Custom Enum Translators */
-gboolean SmoothTranslateFillStyleName (gchar * str, SmoothFillStyle *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateGradientDirectionName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateLineStyleName (gchar * str, SmoothBevelStyle *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateButtonDefaultStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateTabStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateGripStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateCheckStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateEdgeStyleName (gchar * str, gint *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateArrowStyleName (gchar * str, SmoothArrowStyle *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateArrowTypeName (gchar * str, SmoothArrowStyle *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateStateName (gchar * str, int *retval) G_GNUC_INTERNAL;
-gboolean SmoothTranslateBooleanName (gchar * str, gint *retval) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean SmoothTranslateFillStyleName (gchar * str, SmoothFillStyle *retval);
+GE_INTERNAL gboolean SmoothTranslateGradientDirectionName (gchar * str, gint *retval);
+GE_INTERNAL gboolean SmoothTranslateLineStyleName (gchar * str, SmoothBevelStyle *retval);
+GE_INTERNAL gboolean SmoothTranslateButtonDefaultStyleName (gchar * str, gint *retval);
+GE_INTERNAL gboolean SmoothTranslateTabStyleName (gchar * str, gint *retval);
+GE_INTERNAL gboolean SmoothTranslateGripStyleName (gchar * str, gint *retval);
+GE_INTERNAL gboolean SmoothTranslateCheckStyleName (gchar * str, gint *retval);
+GE_INTERNAL gboolean SmoothTranslateEdgeStyleName (gchar * str, gint *retval);
+GE_INTERNAL gboolean SmoothTranslateArrowStyleName (gchar * str, SmoothArrowStyle *retval);
+GE_INTERNAL gboolean SmoothTranslateArrowTypeName (gchar * str, SmoothArrowStyle *retval);
+GE_INTERNAL gboolean SmoothTranslateStateName (gchar * str, int *retval);
+GE_INTERNAL gboolean SmoothTranslateBooleanName (gchar * str, gint *retval);
 
 /* General Parsing Functions */
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_int (GScanner *scanner, 
                  GTokenType wanted_token, 
 		 guint return_default,
 		 gint *retval, 
 		 gint lower_limit, 
-		 gint upper_limit) G_GNUC_INTERNAL;
+		 gint upper_limit);
 		 
-guint  
+GE_INTERNAL guint  
 smooth_rc_parse_float (GScanner *scanner, 
                  GTokenType wanted_token, 
 		 gdouble return_default, 
 		 gdouble *retval, 
 		 gdouble lower_limit, 
-		 gdouble upper_limit) G_GNUC_INTERNAL;
+		 gdouble upper_limit);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_custom_enum (GScanner *scanner, 
                          GTokenType wanted_token, 
 			 SmoothSmoothTranslateEnumFunc translate_enum,
 			 guint return_default,
-			 guint *retval) G_GNUC_INTERNAL;
+			 guint *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_boolean(GScanner *scanner,  
                     GTokenType wanted_token, 
 		    gboolean return_default, 
-		    guint *retval) G_GNUC_INTERNAL;
+		    guint *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_line (GScanner *scanner, 
                   GTokenType wanted_token, 
-                  SmoothLinePart *retval) G_GNUC_INTERNAL;
+                  SmoothLinePart *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_focus(GScanner *scanner, 
                   GTokenType wanted_token, 
-                  smooth_focus_style *retval) G_GNUC_INTERNAL;
+                  smooth_focus_style *retval);
                   
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_arrow_part(GScanner *scanner, 
                        GTokenType wanted_token, 
-                       SmoothArrowPart *retval) G_GNUC_INTERNAL;
+                       SmoothArrowPart *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_fill(GScanner *scanner, 
                  GTokenType wanted_token, 
-                 SmoothFillPart *retval) G_GNUC_INTERNAL;
+                 SmoothFillPart *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_edge(GScanner *scanner, 
                  GTokenType wanted_token, 
-                 smooth_edge_style *retval) G_GNUC_INTERNAL;
+                 smooth_edge_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_button_default(GScanner *scanner, 
                            GTokenType wanted_token, 
-                           smooth_part_style *retval) G_GNUC_INTERNAL;
+                           smooth_part_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_button(GScanner *scanner, 
                    GTokenType wanted_token, 
-                   smooth_button_style *retval) G_GNUC_INTERNAL;
+                   smooth_button_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_active_tab(GScanner *scanner, 
                        GTokenType wanted_token, 
-                       smooth_part_style *retval) G_GNUC_INTERNAL;
+                       smooth_part_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_tab(GScanner *scanner, 
                 GTokenType wanted_token, 
-                smooth_tab_style *retval) G_GNUC_INTERNAL;
+                smooth_tab_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_option(GScanner *scanner, 
                    GTokenType wanted_token, 
-                   smooth_check_style *retval) G_GNUC_INTERNAL;
+                   smooth_check_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_grip(GScanner *scanner, 
                  GTokenType wanted_token, 
-                 smooth_grip_style *retval) G_GNUC_INTERNAL;
+                 smooth_grip_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_stepper(GScanner *scanner, 
                  GTokenType wanted_token, 
-                 SmoothStepperStyle *retval) G_GNUC_INTERNAL;
+                 SmoothStepperStyle *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_check(GScanner *scanner, 
                   GTokenType wanted_token,
-                  smooth_check_style *retval) G_GNUC_INTERNAL;
+                  smooth_check_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_generic_part(GScanner *scanner, 
                          GTokenType wanted_token, 
-                         smooth_part_style *retval) G_GNUC_INTERNAL;
+                         smooth_part_style *retval);
 
-guint 
+GE_INTERNAL guint 
 smooth_rc_parse_trough_part(GScanner *scanner, 
                         GTokenType wanted_token, 
-                        smooth_trough_style *retval) G_GNUC_INTERNAL;
+                        smooth_trough_style *retval);
 
-void 
+GE_INTERNAL void 
 part_init(smooth_part_style *part, 
-          gint partstyle) G_GNUC_INTERNAL;
-void 
+          gint partstyle);
+GE_INTERNAL void 
 part_merge (smooth_part_style *dest_part, 
-            smooth_part_style *src_part) G_GNUC_INTERNAL;
+            smooth_part_style *src_part);
 
-void
+GE_INTERNAL void
 smooth_arrow_merge (SmoothArrowPart *dest_arrow,
-             SmoothArrowPart *src_arrow) G_GNUC_INTERNAL;
+             SmoothArrowPart *src_arrow);
 
-void
+GE_INTERNAL void
 smooth_style_get_border(GtkStyle * style,
                             GtkStateType state_type,
 	  		    GtkShadowType shadow_type,
 			    const gchar * detail,
 			    void * part,
 			    gdouble CornerRoundness,
-			    SmoothBorder *Border) G_GNUC_INTERNAL;
+			    SmoothBorder *Border);
 
-void
+GE_INTERNAL void
 smooth_style_get_arrow(SmoothArrowPart *Part,
 				GtkStateType State,
 				GtkArrowType ArrowType,
-				SmoothArrow *Arrow) G_GNUC_INTERNAL;
+				SmoothArrow *Arrow);
 
-void
-smooth_gtkrc_ensure_arrows(SmoothArrowPart *Part) G_GNUC_INTERNAL;
+GE_INTERNAL void
+smooth_gtkrc_ensure_arrows(SmoothArrowPart *Part);
 
 #endif /*SMOOTH_GTK_RC*/

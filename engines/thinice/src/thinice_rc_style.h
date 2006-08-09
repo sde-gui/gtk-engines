@@ -3,7 +3,7 @@
 typedef struct _ThiniceRcStyle ThiniceRcStyle;
 typedef struct _ThiniceRcStyleClass ThiniceRcStyleClass;
 
-extern GType thinice_type_rc_style G_GNUC_INTERNAL;
+GE_INTERNAL extern GType thinice_type_rc_style;
 
 #define THINICE_TYPE_RC_STYLE              thinice_type_rc_style
 #define THINICE_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), THINICE_TYPE_RC_STYLE, ThiniceRcStyle))
@@ -30,7 +30,7 @@ struct _ThiniceRcStyleClass
   GtkRcStyleClass parent_class;
 };
 
-void thinice_rc_style_register_type (GTypeModule *module) G_GNUC_INTERNAL;
+GE_INTERNAL void thinice_rc_style_register_type (GTypeModule *module);
 
 /* Default stuff */
 #define DEFAULT_SCROLLSHAPE       SCROLL_SHAPED

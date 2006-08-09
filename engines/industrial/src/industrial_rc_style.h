@@ -27,7 +27,7 @@
 typedef struct _IndustrialRcStyle IndustrialRcStyle;
 typedef struct _IndustrialRcStyleClass IndustrialRcStyleClass;
 
-extern GType industrial_type_rc_style G_GNUC_INTERNAL;
+GE_INTERNAL extern GType industrial_type_rc_style;
 
 #define INDUSTRIAL_TYPE_RC_STYLE              industrial_type_rc_style
 #define INDUSTRIAL_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), INDUSTRIAL_TYPE_RC_STYLE, IndustrialRcStyle))
@@ -58,4 +58,4 @@ struct _IndustrialRcStyleClass {
 	GtkRcStyleClass parent_class;
 };
 
-void industrial_rc_style_register_type (GTypeModule * module) G_GNUC_INTERNAL;
+GE_INTERNAL void industrial_rc_style_register_type (GTypeModule * module);

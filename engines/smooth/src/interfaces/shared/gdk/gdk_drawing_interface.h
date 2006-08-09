@@ -23,32 +23,32 @@
 #ifndef GDK_DRAWING_INTERFACE_H
 #define GDK_DRAWING_INTERFACE_H
 
-SmoothBool SmoothGDKDrawingInterfaceInitialize(DrawingInterfaceClass *_SmoothDrawingInterface) G_GNUC_INTERNAL;
-SmoothBool SmoothGDKDrawingInterfaceFinalize(DrawingInterfaceClass *_SmoothDrawingInterface) G_GNUC_INTERNAL;
+GE_INTERNAL SmoothBool SmoothGDKDrawingInterfaceInitialize(DrawingInterfaceClass *_SmoothDrawingInterface);
+GE_INTERNAL SmoothBool SmoothGDKDrawingInterfaceFinalize(DrawingInterfaceClass *_SmoothDrawingInterface);
 
-void SmoothGDKModifyCanvasClipArea(SmoothCanvas *Canvas,
-				GdkRectangle * _Rectangle) G_GNUC_INTERNAL;
+GE_INTERNAL void SmoothGDKModifyCanvasClipArea(SmoothCanvas *Canvas,
+				GdkRectangle * _Rectangle);
 				
-void SmoothGDKModifyCanvasClipRegion(SmoothCanvas *Canvas,
-				GdkRegion * _Region) G_GNUC_INTERNAL;
+GE_INTERNAL void SmoothGDKModifyCanvasClipRegion(SmoothCanvas *Canvas,
+				GdkRegion * _Region);
 				
-void SmoothGDKModifyCanvasClipMask(SmoothCanvas *Canvas,
-				GdkBitmap *ClipMask) G_GNUC_INTERNAL;
+GE_INTERNAL void SmoothGDKModifyCanvasClipMask(SmoothCanvas *Canvas,
+				GdkBitmap *ClipMask);
 				
-void SmoothGDKModifyCanvasClipOffset(SmoothCanvas *Canvas,
+GE_INTERNAL void SmoothGDKModifyCanvasClipOffset(SmoothCanvas *Canvas,
 				SmoothInt XOffset,
-				SmoothInt YOffset) G_GNUC_INTERNAL;
+				SmoothInt YOffset);
 				
-void SmoothGDKModifyCanvasDitherDepth(SmoothCanvas *Canvas,
-				SmoothInt DitherDepth) G_GNUC_INTERNAL;
+GE_INTERNAL void SmoothGDKModifyCanvasDitherDepth(SmoothCanvas *Canvas,
+				SmoothInt DitherDepth);
 
-void SmoothColorAssignGdkColor(SmoothColor *DestinationColor, GdkColor SourceColor, gint SourceAlpha) G_GNUC_INTERNAL;
+GE_INTERNAL void SmoothColorAssignGdkColor(SmoothColor *DestinationColor, GdkColor SourceColor, gint SourceAlpha);
 
-void SmoothGDKInitializeColorCube(SmoothCanvas Canvas, GtkStyle * style, SmoothColorCube *ColorCube) G_GNUC_INTERNAL;
-void  SmoothGDKFinalizeColorCube(SmoothColorCube *ColorCube) G_GNUC_INTERNAL;
+GE_INTERNAL void SmoothGDKInitializeColorCube(SmoothCanvas Canvas, GtkStyle * style, SmoothColorCube *ColorCube);
+GE_INTERNAL void  SmoothGDKFinalizeColorCube(SmoothColorCube *ColorCube);
 
-SmoothWidgetState SmoothGtkWidgetState(GtkStateType State) G_GNUC_INTERNAL;
+GE_INTERNAL SmoothWidgetState SmoothGtkWidgetState(GtkStateType State);
 
-void SmoothGDKFinalizeColorCache(GHashTable **ColorCache) G_GNUC_INTERNAL;
+GE_INTERNAL void SmoothGDKFinalizeColorCache(GHashTable **ColorCache);
 
 #endif /* GDK_DRAWING_INTERFACE_H */

@@ -57,7 +57,7 @@ typedef struct {
 	SmoothBool Shadow;
 } SmoothCheckMark;
 
-void
+GE_INTERNAL void
 SmoothDrawCheckMark(SmoothCanvas Canvas,
 			SmoothCheckMark CheckMark,
 			SmoothInt X,
@@ -65,7 +65,7 @@ SmoothDrawCheckMark(SmoothCanvas Canvas,
 			SmoothInt Width,
 			SmoothInt Height,
 			SmoothColor Background,
-			SmoothColor Foreground) G_GNUC_INTERNAL;
+			SmoothColor Foreground);
 
 
 #endif /* DRAW_CHECKMARK_H */

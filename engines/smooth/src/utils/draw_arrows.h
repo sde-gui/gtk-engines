@@ -100,7 +100,7 @@ struct SmoothArrowPartProto
 	SmoothBool CompositeArrowsSet[5][SMOOTH_ARROW_TYPE_COUNT];
 };
 
-void
+GE_INTERNAL void
 SmoothDrawArrow(SmoothCanvas *Canvas,
 			SmoothArrow Arrow,
 			SmoothInt X,
@@ -108,9 +108,9 @@ SmoothDrawArrow(SmoothCanvas *Canvas,
 			SmoothInt Width,
 			SmoothInt Height,
 			SmoothColor Background,
-			SmoothColor Foreground) G_GNUC_INTERNAL;
+			SmoothColor Foreground);
 
-void 
-SmoothFreeArrowStyles(SmoothArrowPart *arrow) G_GNUC_INTERNAL;
+GE_INTERNAL void 
+SmoothFreeArrowStyles(SmoothArrowPart *arrow);
 
 #endif /* DRAW_ARROWS_H */

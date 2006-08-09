@@ -5,7 +5,7 @@
 
 G_BEGIN_DECLS
 
-extern GType crux_type_rc_style G_GNUC_INTERNAL;
+GE_INTERNAL extern GType crux_type_rc_style;
 
 #define CRUX_TYPE_RC_STYLE              crux_type_rc_style
 #define CRUX_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), CRUX_TYPE_RC_STYLE, CruxRcStyle))
@@ -27,7 +27,7 @@ struct _CruxRcStyleClass
   GtkRcStyleClass parent_class;
 };
 
-void crux_rc_style_register_type (GTypeModule *engine) G_GNUC_INTERNAL;
+GE_INTERNAL void crux_rc_style_register_type (GTypeModule *engine);
 
 
 G_END_DECLS

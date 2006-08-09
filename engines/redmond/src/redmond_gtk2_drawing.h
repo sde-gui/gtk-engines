@@ -24,7 +24,7 @@
  
 #include <cairo.h>
 
-void
+GE_INTERNAL void
 redmond_draw_hline (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
@@ -33,9 +33,9 @@ redmond_draw_hline (GtkStyle * style,
 	    const gchar * detail, 
             gint x1,
             gint x2, 
-            gint y) G_GNUC_INTERNAL;
+            gint y);
  
-void
+GE_INTERNAL void
 redmond_draw_vline (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
@@ -44,9 +44,9 @@ redmond_draw_vline (GtkStyle * style,
 	    const gchar * detail, 
             gint y1, 
             gint y2, 
-            gint x) G_GNUC_INTERNAL;
+            gint x);
  
-void
+GE_INTERNAL void
 redmond_draw_check (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state,
@@ -57,9 +57,9 @@ redmond_draw_check (GtkStyle * style,
             gint x, 
             gint y, 
             gint width, 
-            gint height) G_GNUC_INTERNAL;
+            gint height);
  
-void
+GE_INTERNAL void
 redmond_draw_option (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state,
@@ -70,9 +70,9 @@ redmond_draw_option (GtkStyle * style,
              gint x,
              gint y, 
              gint width, 
-             gint height) G_GNUC_INTERNAL;
+             gint height);
  
-void
+GE_INTERNAL void
 redmond_draw_arrow (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state,
@@ -85,9 +85,9 @@ redmond_draw_arrow (GtkStyle * style,
             gint x, 
             gint y, 
             gint width, 
-            gint height) G_GNUC_INTERNAL;
+            gint height);
  
-void
+GE_INTERNAL void
 redmond_draw_shadow (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -98,9 +98,9 @@ redmond_draw_shadow (GtkStyle * style,
              gint x, 
              gint y, 
              gint width, 
-             gint height) G_GNUC_INTERNAL;
+             gint height);
  
-void
+GE_INTERNAL void
 redmond_draw_box (GtkStyle * style,
 	  GdkWindow * window,
 	  GtkStateType state_type,
@@ -111,9 +111,9 @@ redmond_draw_box (GtkStyle * style,
           gint x, 
           gint y, 
           gint width, 
-          gint height) G_GNUC_INTERNAL;
+          gint height);
  
-void
+GE_INTERNAL void
 redmond_draw_tab (GtkStyle * style,
 	  GdkWindow * window,
 	  GtkStateType state,
@@ -124,9 +124,9 @@ redmond_draw_tab (GtkStyle * style,
           gint x, 
           gint y, 
           gint width, 
-          gint height) G_GNUC_INTERNAL;
+          gint height);
  
-void
+GE_INTERNAL void
 redmond_draw_slider (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -138,9 +138,9 @@ redmond_draw_slider (GtkStyle * style,
 	     gint y, 
              gint width, 
              gint height, 
-             GtkOrientation orientation) G_GNUC_INTERNAL;
+             GtkOrientation orientation);
  
-void
+GE_INTERNAL void
 redmond_draw_extension (GtkStyle * style,
 		GdkWindow * window,
 		GtkStateType state_type,
@@ -152,9 +152,9 @@ redmond_draw_extension (GtkStyle * style,
 		gint y, 
                 gint width, 
                 gint height, 
-                GtkPositionType gap_side) G_GNUC_INTERNAL;
+                GtkPositionType gap_side);
                 
-void
+GE_INTERNAL void
 redmond_draw_handle (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -166,4 +166,4 @@ redmond_draw_handle (GtkStyle * style,
 	     gint y, 
              gint width, 
              gint height, 
-             GtkOrientation orientation) G_GNUC_INTERNAL;
+             GtkOrientation orientation);

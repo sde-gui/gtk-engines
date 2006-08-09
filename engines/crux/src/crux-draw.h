@@ -3,6 +3,6 @@
 
 #include <gtk/gtk.h>
 
-void crux_draw_style_class_init (GtkStyleClass *style_class) G_GNUC_INTERNAL;
+GE_INTERNAL void crux_draw_style_class_init (GtkStyleClass *style_class);
 
 #endif

@@ -27,7 +27,7 @@
 typedef struct _ClearlooksRcStyle ClearlooksRcStyle;
 typedef struct _ClearlooksRcStyleClass ClearlooksRcStyleClass;
 
-extern GType clearlooks_type_rc_style G_GNUC_INTERNAL;
+GE_INTERNAL extern GType clearlooks_type_rc_style;
 
 #define CLEARLOOKS_TYPE_RC_STYLE              clearlooks_type_rc_style
 #define CLEARLOOKS_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), CLEARLOOKS_TYPE_RC_STYLE, ClearlooksRcStyle))
@@ -57,4 +57,4 @@ struct _ClearlooksRcStyleClass
   GtkRcStyleClass parent_class;
 };
 
-void clearlooks_rc_style_register_type (GTypeModule *module) G_GNUC_INTERNAL;
+GE_INTERNAL void clearlooks_rc_style_register_type (GTypeModule *module);

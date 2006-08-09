@@ -51,11 +51,11 @@ typedef struct {
 #define GRADIENT(horizontal) (horizontal ? SMOOTH_GRADIENT_HORIZONTAL : SMOOTH_GRADIENT_VERTICAL)
 #define DIAGONALGRADIENT(northern) (northern ? SMOOTH_GRADIENT_NORTHERN_DIAGONAL : SMOOTH_GRADIENT_SOUTHERN_DIAGONAL)
 
-void	SmoothDrawFill(SmoothFill *Fill,
+GE_INTERNAL void	SmoothDrawFill(SmoothFill *Fill,
 			SmoothCanvas *Canvas,
 			SmoothInt X,
 			SmoothInt Y,
 			SmoothInt Width,
-			SmoothInt Height) G_GNUC_INTERNAL;
+			SmoothInt Height);
 		      
 #endif /* DRAW_FILL_H */

@@ -27,8 +27,8 @@
 /*****************************/
 /* RC Style Declaration      */
 /*****************************/
-extern GType hc_type_rc_style G_GNUC_INTERNAL;
-extern GtkStyleClass *hc_parent_class G_GNUC_INTERNAL;
+GE_INTERNAL extern GType hc_type_rc_style;
+GE_INTERNAL extern GtkStyleClass *hc_parent_class;
  
 #define HC_TYPE_RC_STYLE              hc_type_rc_style
 #define HC_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), HC_TYPE_RC_STYLE, HcRcStyle))
@@ -51,7 +51,7 @@ typedef struct
 /*****************************/
 /* Drawing Style Declaration */
 /*****************************/
-extern GType hc_type_style G_GNUC_INTERNAL;
+GE_INTERNAL extern GType hc_type_style;
  
 #define HC_TYPE_STYLE              hc_type_style
 #define HC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), HC_TYPE_STYLE, HcStyle))

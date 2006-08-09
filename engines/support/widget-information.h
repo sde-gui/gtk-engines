@@ -66,28 +66,28 @@
  
 #define TOGGLE_BUTTON(object) (IS_TOGGLE_BUTTON(object)?(GtkToggleButton *)object:NULL)
  
-gboolean ge_object_is_a (const GtkWidget * widget, const gchar * type_name) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean ge_object_is_a (const GtkWidget * widget, const gchar * type_name);
  
-gboolean ge_combo_box_is_using_list (GtkWidget * widget) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean ge_combo_box_is_using_list (GtkWidget * widget);
 
-gboolean ge_is_combo_box_entry (GtkWidget * widget) G_GNUC_INTERNAL;
-gboolean ge_is_combo_box (GtkWidget * widget, gboolean as_list) G_GNUC_INTERNAL;
-gboolean ge_is_combo (GtkWidget * widget) G_GNUC_INTERNAL;
-gboolean ge_is_in_combo_box (GtkWidget * widget) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean ge_is_combo_box_entry (GtkWidget * widget);
+GE_INTERNAL gboolean ge_is_combo_box (GtkWidget * widget, gboolean as_list);
+GE_INTERNAL gboolean ge_is_combo (GtkWidget * widget);
+GE_INTERNAL gboolean ge_is_in_combo_box (GtkWidget * widget);
   
-gboolean ge_is_toolbar_item (GtkWidget * widget) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean ge_is_toolbar_item (GtkWidget * widget);
   
-gboolean ge_is_panel_widget_item (GtkWidget * widget) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean ge_is_panel_widget_item (GtkWidget * widget);
  
-gboolean ge_is_bonobo_dock_item (GtkWidget * widget) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean ge_is_bonobo_dock_item (GtkWidget * widget);
 
-GtkWidget *ge_find_combo_box_widget_parent (GtkWidget * widget) G_GNUC_INTERNAL;
+GE_INTERNAL GtkWidget *ge_find_combo_box_widget_parent (GtkWidget * widget);
 
-gboolean ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget);
 
-void ge_option_menu_get_props (GtkWidget * widget, 
+GE_INTERNAL void ge_option_menu_get_props (GtkWidget * widget, 
                             GtkRequisition * indicator_size, 
-                            GtkBorder * indicator_spacing) G_GNUC_INTERNAL;
+                            GtkBorder * indicator_spacing);
 
-gboolean ge_widget_is_ltr (GtkWidget *widget) G_GNUC_INTERNAL;
+GE_INTERNAL gboolean ge_widget_is_ltr (GtkWidget *widget);
 

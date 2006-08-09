@@ -30,7 +30,7 @@
 #define FLAT_FILL_BACKGROUND(canvas, style, state_type, part, x, y, width, height) (smooth_fill_background(canvas, style, state_type, GTK_SHADOW_NONE, part, x, y, width, height, FALSE, FALSE, FALSE,FALSE, FALSE))		
 #define gradient_fill_background(canvas, style, state_type, part, x, y, width, height, invert, horizontal) (smooth_fill_background(canvas, style, state_type, GTK_SHADOW_NONE, part, x, y, width, height, TRUE, invert, horizontal,FALSE, FALSE))
 
-void 
+GE_INTERNAL void 
 smooth_fill_background(SmoothCanvas Canvas,
 			GtkStyle * style,
 	               GtkStateType state_type,
@@ -44,9 +44,9 @@ smooth_fill_background(SmoothCanvas Canvas,
 	               gboolean invert,
 		       gboolean horizontal,
 		       gboolean arc_fill,
-		       gboolean input_widget) G_GNUC_INTERNAL;
+		       gboolean input_widget);
 
-void
+GE_INTERNAL void
 smooth_parent_fill_background(SmoothCanvas Canvas,
 				GtkStyle * style,
 				GtkStateType state_type,
@@ -59,9 +59,9 @@ smooth_parent_fill_background(SmoothCanvas Canvas,
 				gint height,
 				gboolean use_gradient,  
 				gboolean invert,
-				gboolean horizontal) G_GNUC_INTERNAL;
+				gboolean horizontal);
 
-void 
+GE_INTERNAL void 
 smooth_draw_grip(SmoothCanvas Canvas,
 
 		 GtkStyle * style,
@@ -71,9 +71,9 @@ smooth_draw_grip(SmoothCanvas Canvas,
 	         SmoothInt Y,
 	         SmoothInt Width,
 	         SmoothInt Height,
-	         SmoothBool Horizontal) G_GNUC_INTERNAL;
+	         SmoothBool Horizontal);
 
-void
+GE_INTERNAL void
 do_smooth_draw_shadow(SmoothCanvas Canvas,
 
 			GtkStyle * style,
@@ -86,9 +86,9 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 			SmoothInt x,
 			SmoothInt y,
 			SmoothInt width,
-			SmoothInt height) G_GNUC_INTERNAL;
+			SmoothInt height);
 
-void
+GE_INTERNAL void
 smooth_draw_button_default(SmoothCanvas Canvas,
 
 				GtkStyle *style,
@@ -100,4 +100,4 @@ smooth_draw_button_default(SmoothCanvas Canvas,
 				gint x,
 				gint y,
 				gint width,
-				gint height) G_GNUC_INTERNAL;
+				gint height);

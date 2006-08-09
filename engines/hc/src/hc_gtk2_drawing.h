@@ -19,7 +19,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-void
+GE_INTERNAL void
 hc_draw_shadow_gap (GtkStyle * style, 
                  GdkWindow * window, 
 		 GtkStateType state_type, 
@@ -33,9 +33,9 @@ hc_draw_shadow_gap (GtkStyle * style,
 		 gint height, 
 		 GtkPositionType gap_side, 
 		 gint gap_pos, 
-		 gint gap_size) G_GNUC_INTERNAL;
+		 gint gap_size);
 
-void
+GE_INTERNAL void
 hc_draw_box_gap (GtkStyle * style, 
                  GdkWindow * window, 
 		 GtkStateType state_type, 
@@ -49,9 +49,9 @@ hc_draw_box_gap (GtkStyle * style,
 		 gint height, 
 		 GtkPositionType gap_side, 
 		 gint gap_pos, 
-		 gint gap_size) G_GNUC_INTERNAL;
+		 gint gap_size);
 
-void
+GE_INTERNAL void
 hc_draw_hline (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
@@ -60,9 +60,9 @@ hc_draw_hline (GtkStyle * style,
 	    const gchar * detail, 
             gint x1,
             gint x2, 
-            gint y) G_GNUC_INTERNAL;
+            gint y);
  
-void
+GE_INTERNAL void
 hc_draw_vline (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state_type,
@@ -71,9 +71,9 @@ hc_draw_vline (GtkStyle * style,
 	    const gchar * detail, 
             gint y1, 
             gint y2, 
-            gint x) G_GNUC_INTERNAL;
+            gint x);
  
-void
+GE_INTERNAL void
 hc_draw_check (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state,
@@ -84,9 +84,9 @@ hc_draw_check (GtkStyle * style,
             gint x, 
             gint y, 
             gint width, 
-            gint height) G_GNUC_INTERNAL;
+            gint height);
  
-void
+GE_INTERNAL void
 hc_draw_option (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state,
@@ -97,9 +97,9 @@ hc_draw_option (GtkStyle * style,
              gint x,
              gint y, 
              gint width, 
-             gint height) G_GNUC_INTERNAL;
+             gint height);
  
-void
+GE_INTERNAL void
 hc_draw_arrow (GtkStyle * style,
 	    GdkWindow * window,
 	    GtkStateType state,
@@ -112,9 +112,9 @@ hc_draw_arrow (GtkStyle * style,
             gint x, 
             gint y, 
             gint width, 
-            gint height) G_GNUC_INTERNAL;
+            gint height);
  
-void
+GE_INTERNAL void
 hc_draw_shadow (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -125,9 +125,9 @@ hc_draw_shadow (GtkStyle * style,
              gint x, 
              gint y, 
              gint width, 
-             gint height) G_GNUC_INTERNAL;
+             gint height);
  
-void
+GE_INTERNAL void
 hc_draw_box (GtkStyle * style,
 	  GdkWindow * window,
 	  GtkStateType state_type,
@@ -138,9 +138,9 @@ hc_draw_box (GtkStyle * style,
           gint x, 
           gint y, 
           gint width, 
-          gint height) G_GNUC_INTERNAL;
+          gint height);
  
-void
+GE_INTERNAL void
 hc_draw_flat_box (GtkStyle	*style,
                   GdkWindow	*window,
                   GtkStateType	 state_type,
@@ -151,9 +151,9 @@ hc_draw_flat_box (GtkStyle	*style,
                   gint		 x,
                   gint		 y,
                   gint		 width,
-                  gint		 height) G_GNUC_INTERNAL;
+                  gint		 height);
 
-void
+GE_INTERNAL void
 hc_draw_tab (GtkStyle * style,
 	  GdkWindow * window,
 	  GtkStateType state,
@@ -164,9 +164,9 @@ hc_draw_tab (GtkStyle * style,
           gint x, 
           gint y, 
           gint width, 
-          gint height) G_GNUC_INTERNAL;
+          gint height);
  
-void
+GE_INTERNAL void
 hc_draw_slider (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -178,9 +178,9 @@ hc_draw_slider (GtkStyle * style,
 	     gint y, 
              gint width, 
              gint height, 
-             GtkOrientation orientation) G_GNUC_INTERNAL;
+             GtkOrientation orientation);
  
-void
+GE_INTERNAL void
 hc_draw_extension (GtkStyle * style,
 		GdkWindow * window,
 		GtkStateType state_type,
@@ -192,9 +192,9 @@ hc_draw_extension (GtkStyle * style,
 		gint y, 
                 gint width, 
                 gint height, 
-                GtkPositionType gap_side) G_GNUC_INTERNAL;
+                GtkPositionType gap_side);
                 
-void
+GE_INTERNAL void
 hc_draw_handle (GtkStyle * style,
 	     GdkWindow * window,
 	     GtkStateType state_type,
@@ -206,10 +206,10 @@ hc_draw_handle (GtkStyle * style,
 	     gint y, 
              gint width, 
              gint height, 
-             GtkOrientation orientation) G_GNUC_INTERNAL;
+             GtkOrientation orientation);
 
 
-void
+GE_INTERNAL void
 hc_draw_focus(GtkStyle *style,
            GdkWindow *window,
            GtkStateType state_type,
@@ -219,9 +219,9 @@ hc_draw_focus(GtkStyle *style,
            gint x,
            gint y,
            gint width,
-           gint height) G_GNUC_INTERNAL;
+           gint height);
 
-void
+GE_INTERNAL void
 hc_draw_layout (GtkStyle        *style,
 	     GdkWindow       *window,
 	     GtkStateType     state_type,
@@ -231,9 +231,9 @@ hc_draw_layout (GtkStyle        *style,
 	     const char      *detail,
 	     int              x,
 	     int              y,
-	     PangoLayout      *layout) G_GNUC_INTERNAL;
+	     PangoLayout      *layout);
 
-void
+GE_INTERNAL void
 hc_draw_diamond (GtkStyle      *style,
 		 GdkWindow     *window,
 		 GtkStateType   state_type,
@@ -244,9 +244,9 @@ hc_draw_diamond (GtkStyle      *style,
 		 gint           x,
 		 gint           y,
 		 gint           width,
-		 gint           height) G_GNUC_INTERNAL;
+		 gint           height);
 
-void
+GE_INTERNAL void
 hc_draw_polygon (GtkStyle      *style,
 		 GdkWindow     *window,
 		 GtkStateType   state_type,
@@ -256,5 +256,5 @@ hc_draw_polygon (GtkStyle      *style,
 		 const gchar   *detail,
 		 GdkPoint      *points,
 		 gint           npoints,
-		 gboolean       fill) G_GNUC_INTERNAL;
+		 gboolean       fill);
 

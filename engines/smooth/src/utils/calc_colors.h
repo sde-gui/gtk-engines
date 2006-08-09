@@ -28,9 +28,9 @@
 #ifndef CALC_COLORS_H
 #define CALC_COLORS_H
 
-void
+GE_INTERNAL void
 SmoothCompositeColorShade(SmoothColor *Original, 
 			  SmoothDouble ShadeRatio,
-			  SmoothColor *Composite) G_GNUC_INTERNAL;
+			  SmoothColor *Composite);
 
 #endif /* CALC_COLORS_H */

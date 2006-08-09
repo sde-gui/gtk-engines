@@ -8,7 +8,7 @@
 
 G_BEGIN_DECLS
 
-extern GType crux_type_style G_GNUC_INTERNAL;
+GE_INTERNAL extern GType crux_type_style;
 
 #define CRUX_TYPE_STYLE              crux_type_style
 #define CRUX_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), CRUX_TYPE_STYLE, CruxStyle))
@@ -31,7 +31,7 @@ struct _CruxStyleClass
 
 };
 
-void crux_style_register_type (GTypeModule *module) G_GNUC_INTERNAL;
+GE_INTERNAL void crux_style_register_type (GTypeModule *module);
 
 G_END_DECLS
 

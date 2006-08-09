@@ -21,15 +21,15 @@
  */  
   
 /* Misc Drawing/Colour Functions */  
-void
+GE_INTERNAL void
 do_redmond_draw_pattern_fill (cairo_t * cr,
                                   CairoPattern *pattern,
                                   gint x,
                                   gint y, 
                                   gint width, 
-                                  gint height) G_GNUC_INTERNAL;
+                                  gint height);
                                    
-void
+GE_INTERNAL void
 do_redmond_draw_masked_fill (cairo_t * cr,
                                   CairoPattern *mask,
                                   CairoColor * background,
@@ -37,40 +37,40 @@ do_redmond_draw_masked_fill (cairo_t * cr,
                                   gint x,
                                   gint y, 
                                   gint width, 
-                                  gint height) G_GNUC_INTERNAL;
+                                  gint height);
 
-void do_redmond_draw_check (cairo_t *cr,
+GE_INTERNAL void do_redmond_draw_check (cairo_t *cr,
                             CairoColor *color, 
                             gint x, 
                             gint y, 
                             gint width, 
-                            gint height) G_GNUC_INTERNAL;
+                            gint height);
                             
-void do_redmond_draw_arrow (cairo_t *canvas,
+GE_INTERNAL void do_redmond_draw_arrow (cairo_t *canvas,
                             CairoColor *color,
                             GtkArrowType arrow_type, 
                             gboolean fill,
                             gint x, 
                             gint y, 
                             gint width, 
-                            gint height) G_GNUC_INTERNAL;
+                            gint height);
 
-void
+GE_INTERNAL void
 do_redmond_draw_simple_circle (cairo_t *canvas,
                      	  		CairoColor * tl,
                        			CairoColor * br,
 					gint center_x, 
 					gint center_y, 
-					gint radius) G_GNUC_INTERNAL;
+					gint radius);
                             
-void do_redmond_draw_line(cairo_t *cr, 
+GE_INTERNAL void do_redmond_draw_line(cairo_t *cr, 
                           CairoColor * dark, 
                           CairoColor * light, 
                           GdkRectangle * area, 
                           gint start, 
                           gint end, 
                           gint base, 
-                          gboolean horizontal) G_GNUC_INTERNAL;
+                          gboolean horizontal);
  
-void redmond_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget) G_GNUC_INTERNAL;
-void redmond_gtk2_engine_hack_menu_shell_cleanup_signals(GtkWidget *widget) G_GNUC_INTERNAL;
+GE_INTERNAL void redmond_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget);
+GE_INTERNAL void redmond_gtk2_engine_hack_menu_shell_cleanup_signals(GtkWidget *widget);

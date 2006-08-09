@@ -80,7 +80,7 @@ typedef struct
 	SmoothFloat Thickness;
 } SmoothLineBevel;
 
-void
+GE_INTERNAL void
 SmoothDrawShadowWithGap(SmoothCanvas *Canvas,
 			SmoothColor TopLeftColor,
 			SmoothColor BottomRightColor,
@@ -88,9 +88,9 @@ SmoothDrawShadowWithGap(SmoothCanvas *Canvas,
 			SmoothPositionSide GapSide, 
 			SmoothInt GapPos,
 			SmoothInt GapSize,
-			SmoothBool TopLeftOverlap) G_GNUC_INTERNAL;
+			SmoothBool TopLeftOverlap);
 
-void
+GE_INTERNAL void
 SmoothDrawBevelWithGap(SmoothCanvas *Canvas,
 			SmoothColor TopLeftColor,
 			SmoothColor BottomRightColor,
@@ -98,23 +98,23 @@ SmoothDrawBevelWithGap(SmoothCanvas *Canvas,
 			SmoothInt BevelThickness,
 			SmoothPositionSide GapSide, 
 			SmoothInt GapPos,
-			SmoothInt GapSize) G_GNUC_INTERNAL;
+			SmoothInt GapSize);
 
-void
+GE_INTERNAL void
 SmoothDrawCirclularShadow(SmoothCanvas *Canvas,
 				SmoothColor TopLeftColor,
 				SmoothColor BottomRightColor,
-				SmoothRectangle Target) G_GNUC_INTERNAL;
+				SmoothRectangle Target);
 	       
-void
+GE_INTERNAL void
 SmoothDrawCirclularBevel(SmoothCanvas *Canvas,
 				SmoothColor TopLeftColor,
 				SmoothColor BottomRightColor,
 				SmoothRectangle Target,
-				SmoothInt BevelThickness) G_GNUC_INTERNAL;
+				SmoothInt BevelThickness);
 
 
-SmoothBool
+GE_INTERNAL SmoothBool
 SmoothDrawBorderWithGap(SmoothBorder *Border,
 				SmoothCanvas *Canvas,
 				SmoothColor BaseColor,
@@ -124,16 +124,16 @@ SmoothDrawBorderWithGap(SmoothBorder *Border,
 				SmoothInt Height,
 				SmoothPositionSide GapSide, 
 				SmoothInt GapPos,
-				SmoothInt GapSize) G_GNUC_INTERNAL;
+				SmoothInt GapSize);
 
-SmoothBool
+GE_INTERNAL SmoothBool
 SmoothDrawPolygonBorder(SmoothBorder *Border,
 				SmoothCanvas *Canvas,
 				SmoothColor BaseColor,
 				SmoothPoint *Points,
-				SmoothInt Count) G_GNUC_INTERNAL;
+				SmoothInt Count);
 
-void
+GE_INTERNAL void
 SmoothDrawLineBevel(SmoothLineBevel LineBevel,
 			SmoothCanvas Canvas,
 			SmoothColor BaseColor,
@@ -141,6 +141,6 @@ SmoothDrawLineBevel(SmoothLineBevel LineBevel,
 			SmoothInt Start,
 			SmoothInt End,
 			SmoothInt Base,
-			SmoothBool Horizontal) G_GNUC_INTERNAL;			
+			SmoothBool Horizontal);			
 
 #endif /* DRAW_BORDER_H */

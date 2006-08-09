@@ -69,7 +69,7 @@ typedef struct
 /*****************************/
 /* RC Style Declaration      */
 /*****************************/
-extern GType glide_type_rc_style G_GNUC_INTERNAL;
+GE_INTERNAL extern GType glide_type_rc_style;
  
 #define GLIDE_TYPE_RC_STYLE              glide_type_rc_style
 #define GLIDE_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GLIDE_TYPE_RC_STYLE, GlideRcStyle))
@@ -91,8 +91,8 @@ typedef struct
 /*****************************/
 /* Drawing Style Declaration */
 /*****************************/
-extern GType glide_type_style G_GNUC_INTERNAL;
-extern GtkStyleClass *glide_parent_class G_GNUC_INTERNAL;
+GE_INTERNAL extern GType glide_type_style;
+GE_INTERNAL extern GtkStyleClass *glide_parent_class;
  
 #define GLIDE_TYPE_STYLE              glide_type_style
 #define GLIDE_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GLIDE_TYPE_STYLE, GlideStyle))
