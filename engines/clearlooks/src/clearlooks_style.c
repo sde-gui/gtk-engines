@@ -49,7 +49,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->disabled   = (state_type == GTK_STATE_INSENSITIVE);			
 	params->state_type = (ClearlooksStateType)state_type;
 	params->corners    = CL_CORNER_ALL;
-	params->rtl        = !ge_widget_is_ltr (widget);
+	params->rtl        = !ge_widget_is_ltr ((GtkWidget*)widget);
 	params->focus      = widget && GTK_WIDGET_HAS_FOCUS (widget);
 	params->is_default = widget && GTK_WIDGET_HAS_DEFAULT (widget);
 		

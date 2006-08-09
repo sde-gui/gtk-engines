@@ -1,4 +1,5 @@
 #include <gtk/gtkrc.h>
+#include "ge-support.h"
 
 typedef struct _ThiniceRcStyle ThiniceRcStyle;
 typedef struct _ThiniceRcStyleClass ThiniceRcStyleClass;

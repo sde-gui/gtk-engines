@@ -1,5 +1,20 @@
 2006-08-09 Andrew Johnson <acjgenius@earthlink.net>
 
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/crux/src/crux-draw.h:
+	* engines/crux/src/crux-rc-style.h:
+	* engines/industrial/src/industrial_style.h:
+	* engines/mist/src/mist-rc-style.h:
+	* engines/smooth/src/interfaces/drawing_interface.h:
+	* engines/support/cairo-support.c:
+	* engines/support/general-support.h:
+	* engines/support/widget-information.c:
+	* engines/thinice/src/thinice_rc_style.h:
+
+	- Make sure all headers now using GE_INTERNAL include it via ge-support.h
+
+2006-08-09 Andrew Johnson <acjgenius@earthlink.net>
+
 	* engines/smooth/Makefile.am:
 	- Fix "trailing whitespace" silly automake
 

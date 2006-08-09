@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 
+#include "general-support.h"
 #include "widget-information.h"
 #include <math.h>
 

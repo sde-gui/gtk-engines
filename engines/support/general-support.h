@@ -20,10 +20,10 @@
   else if (height == -1)				\
     gdk_drawable_get_size (window, NULL, &height);
 
-#if defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 303)
-# define GE_EXPORT      __attribute__((visibility("default")))
-# define GE_HIDDEN      __attribute__((visibility("hidden")))
-# define GE_INTERNAL    __attribute__((visibility("internal")))
+#if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)) && defined(__ELF__)
+# define GE_EXPORT      __attribute__((__visibility__("default")))
+# define GE_HIDDEN      __attribute__((__visibility__("hidden")))
+# define GE_INTERNAL    __attribute__((__visibility__("internal")))
 #elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
 # define GE_EXPORT      __global
 # define GE_HIDDEN      __hidden

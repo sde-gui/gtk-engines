@@ -23,6 +23,8 @@
  */
 #include <gtk/gtkstyle.h>
 
+#include "ge-support.h"
+
 typedef struct _IndustrialStyle IndustrialStyle;
 typedef struct _IndustrialStyleClass IndustrialStyleClass;
 

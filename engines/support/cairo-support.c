@@ -1,3 +1,4 @@
+#include "general-support.h"
 #include "cairo-support.h"
 
 /***********************************************

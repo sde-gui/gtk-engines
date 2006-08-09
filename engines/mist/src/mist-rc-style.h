@@ -1,4 +1,5 @@
 #include <gtk/gtkrc.h>
+#include "ge-support.h"
 
 typedef struct _MistRcStyle MistRcStyle;
 typedef struct _MistRcStyleClass MistRcStyleClass;

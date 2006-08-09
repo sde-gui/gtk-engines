@@ -23,6 +23,8 @@
 #ifndef DRAWING_INTERFACE_H
 #define DRAWING_INTERFACE_H
 
+#include "ge-support.h"
+
 #include INTERFACE_DEFINES
 
 #include <interfaces/abstract/abstract_type_defines.h>
@@ -620,8 +622,8 @@ GE_INTERNAL SmoothBool		SmoothCanvasUnCacheMidPointColor		(SmoothCanvas Canvas,
 
 /* Canvas Store/Render */
 GE_INTERNAL SmoothBool		SmoothCanvasStore				(SmoothCanvas Canvas);
-SmoothBool		SmoothCanvasRender				(SmoothCanvas Canvas,	
-										GE_INTERNAL SmoothBool ClosePathAndFill);
+GE_INTERNAL SmoothBool		SmoothCanvasRender				(SmoothCanvas Canvas,	
+										SmoothBool ClosePathAndFill);
 
 /* Canvas Get/Set/Clear Clip Rectangle */
 GE_INTERNAL SmoothBool		SmoothCanvasGetClipRectangle			(SmoothCanvas Canvas,

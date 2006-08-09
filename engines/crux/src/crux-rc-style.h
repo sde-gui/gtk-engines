@@ -2,6 +2,7 @@
 #define CRUX_RC_STYLE_H
 
 #include <gtk/gtk.h>
+#include "ge-support.h"
 
 G_BEGIN_DECLS
 
