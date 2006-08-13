@@ -1,3 +1,10 @@
+2006-08-13  Andrew Johnson <acjgenius@earthlink.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_arrow):
+
+	- Fixed cairo_t leak ala bug #351057
+
 2006-08-09 Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

@@ -1155,14 +1155,18 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
                        gint           height)
 {
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
-	ClearlooksColors *colors = &clearlooks_style->colors;
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	ClearlooksColors *colors;
+	cairo_t *cr;
 		
 	CHECK_ARGS
 	SANITIZE_SIZE
 
 	if (arrow_type == (GtkArrowType)4)//NONE - new in GTK 2.10
 		return;
+
+	colors = &clearlooks_style->colors;
+
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (DETAIL ("arrow"))
 	{
