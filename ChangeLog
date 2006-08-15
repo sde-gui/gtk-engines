@@ -1,5 +1,13 @@
 2006-08-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/animation.c:
+	* engines/clearlooks/src/animation.h:
+
+	- include ge-support.h in animation.h instead of animation.c. This
+	is needed for GE_INTERNAL.
+
+2006-08-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/industrial/src/industrial_style.c: (draw_rounded_rect),
 	(real_draw_box), (real_draw_box_gap), (draw_extension),
 	(draw_check):

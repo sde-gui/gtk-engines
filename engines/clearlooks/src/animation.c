@@ -7,7 +7,6 @@
 #include "animation.h"
 
 #ifdef HAVE_ANIMATION
-#include <ge-support.h>
 #include <glib/gtimer.h>
 
 struct _AnimationInfo {

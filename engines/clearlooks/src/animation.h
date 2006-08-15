@@ -20,6 +20,7 @@
 
 #ifdef HAVE_ANIMATION
 #include <gtk/gtk.h>
+#include <ge-support.h>
 
 #define CL_IS_PROGRESS_BAR(widget) GTK_IS_PROGRESS_BAR(widget) && widget->allocation.x != -1 && widget->allocation.y != -1
 #define ANIMATION_DELAY 100
