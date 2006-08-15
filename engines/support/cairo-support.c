@@ -266,6 +266,12 @@ ge_cairo_rounded_rectangle (cairo_t *cr,
 {
 	g_return_if_fail (cr != NULL);
 
+	if (radius < 0.0001)
+	{
+		cairo_rectangle (cr, x, y, w, h);
+		return;
+	}
+
 	if (corners & CR_CORNER_TOPLEFT)
 		cairo_move_to (cr, x+radius, y);
 	else

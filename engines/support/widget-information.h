@@ -89,5 +89,8 @@ GE_INTERNAL void ge_option_menu_get_props (GtkWidget * widget,
                             GtkRequisition * indicator_size, 
                             GtkBorder * indicator_spacing);
 
+GE_INTERNAL void ge_button_get_default_border (GtkWidget *widget, 
+                                               GtkBorder *border);
+
 GE_INTERNAL gboolean ge_widget_is_ltr (GtkWidget *widget);
 

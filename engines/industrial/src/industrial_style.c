@@ -34,8 +34,6 @@
 #define WIDGET_TYPE_NAME(xx) (widget && !strcmp (G_OBJECT_TYPE_NAME (widget), (xx)))
 /* #define DEBUG 1 */
 
-#define DEFAULT_SHADOW_SIZE 3
-
 #define LINE_OPACITY 0.4
 #define HANDLE_OPACITY 0.38
 #define BUTTON_DEPRESSED_SHADOW_OPACITY_1 0.14
@@ -47,6 +45,8 @@
 #define TROUGH_BG_OPACITY 0.15
 #define TROUGH_BORDER_OPACITY 0.21
 #define MENUBAR_BORDER_OPACITY 0.07
+
+#define IF_ROUNDED(style, rounded, otherwise) (GET_ROUNDED_BUTTONS (style) ? rounded : otherwise)
 
 static GtkStyleClass *parent_class;
 
@@ -176,18 +176,19 @@ draw_rounded_gradient (cairo_t    *cr,
 /* The fill will only be drawn if fill != NULL.
  * radius should be 1.5/2.5 for 1px/2px corners. */
 static void
-draw_rounded_rect_cairo (cairo_t    *cr,
-			 gint        x,
-			 gint        y,
-			 gint        width,
-			 gint        height,
-			 gdouble     radius,
-			 CairoColor *bevel,
-			 CairoColor *fill)
+draw_rounded_rect (cairo_t     *cr,
+		   gint         x,
+		   gint         y,
+		   gint         width,
+		   gint         height,
+		   gdouble      radius,
+		   CairoColor  *bevel,
+		   CairoColor  *fill,
+		   CairoCorners corners)
 {
 	if (fill) {
 		ge_cairo_rounded_rectangle (cr, x, y, width, height, radius,
-					    CR_CORNER_ALL);
+					    corners);
 
 		ge_cairo_set_color (cr, fill);
 		cairo_fill (cr);
@@ -195,7 +196,7 @@ draw_rounded_rect_cairo (cairo_t    *cr,
 
 	ge_cairo_set_color (cr, bevel);
 	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height - 1,
-				    radius, CR_CORNER_ALL);
+				    radius, corners);
 	cairo_stroke (cr);
 }
 
@@ -497,18 +498,27 @@ real_draw_box (GtkStyle      *style,
 		/* Draw the button border, except if this is a "default" button. */
 		CairoColor bg;
 		CairoColor fg;
+		CairoCorners corners = CR_CORNER_ALL;
 
 		ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 		ge_gdk_color_to_cairo (&style->fg[state_type], &fg);
 		fg.a = BUTTON_BORDER_OPACITY;
 
-		if (GET_ROUNDED_BUTTONS (style))
-			ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5,
-						    width - 1, height - 1, 2.5,
-						    CR_CORNER_ALL);
-		else
-			cairo_rectangle (cr, x + 0.5, y + 0.5,
-			                 width - 1, height - 1);
+
+		if (ge_is_combo_box_entry (widget) ||
+		    ge_is_combo_box (widget, TRUE) ||
+		    ge_find_combo_box_widget_parent (widget)) {
+			if (ge_widget_is_ltr (widget))
+				corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+			else
+				corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
+		}
+		if (!GET_ROUNDED_BUTTONS (style))
+			corners = CR_CORNER_NONE;
+
+		ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5,
+					    width - 1, height - 1, 2.5,
+					    corners);
 
 		ge_cairo_set_color (cr, &bg);
 		cairo_fill_preserve (cr);
@@ -537,16 +547,10 @@ real_draw_box (GtkStyle      *style,
 			cairo_close_path (cr);
 			cairo_clip (cr);
 
-			if (GET_ROUNDED_BUTTONS (style))
-				draw_rounded_gradient (cr, x + 1, y + 1,
-						       width - 2, height - 2,
-						       0.5, 2.5, &inner,
-						       &outer);
-			else
-				draw_rounded_gradient (cr, x + 1, y + 1,
-						       width - 2, height - 2,
-						       0.0, 2.0, &inner,
-						       &outer);
+			draw_rounded_gradient (cr, x + 1, y + 1,
+					       width - 2, height - 2,
+					       IF_ROUNDED (style, 0.5, 0), 2.5, &inner,
+					       &outer);
 
 			cairo_restore (cr);
 		}
@@ -579,14 +583,9 @@ real_draw_box (GtkStyle      *style,
 
 			/* XXX: This results in a few pixel that stay blank.
 			 * Need to rethink this one. */
-			if (GET_ROUNDED_BUTTONS (style))
-				draw_rounded_gradient (cr, x + 1, y + 1,
-						       width - 2, height - 2, 1,
-						       5, &inner, &outer);
-			else
-				draw_rounded_gradient (cr, x + 1, y + 1,
-						       width - 2, height - 2, 0,
-						       4, &inner, &outer);
+			draw_rounded_gradient (cr, x + 1, y + 1,
+					       width - 2, height - 2, IF_ROUNDED (style, 1, 0),
+					       IF_ROUNDED (style, 5, 4), &inner, &outer);
 			cairo_restore (cr);
 		}
 
@@ -623,15 +622,21 @@ real_draw_box (GtkStyle      *style,
 		CairoColor shadow_outer;
 		CairoColor fg;
 		gfloat inner_radius;
+		gint shadow_size;
+		GtkBorder default_border;
+
+		ge_button_get_default_border (widget, &default_border);
+		shadow_size = MIN (MIN (default_border.left, default_border.right),
+		                   MIN (default_border.top, default_border.bottom));
 
 		inner_radius = GET_ROUNDED_BUTTONS (style) ? 2.5 : 0;
 
 		ge_gdk_color_to_cairo (&style->fg[state_type], &fg);
 
-		ge_cairo_rounded_rectangle (cr, x + DEFAULT_SHADOW_SIZE + 0.5,
-					    y + DEFAULT_SHADOW_SIZE + 0.5,
-					    width - 2 * DEFAULT_SHADOW_SIZE - 1,
-					    height - 2 * DEFAULT_SHADOW_SIZE -
+		ge_cairo_rounded_rectangle (cr, x + shadow_size + 0.5,
+					    y + shadow_size + 0.5,
+					    width - 2 * shadow_size - 1,
+					    height - 2 * shadow_size -
 					    1, inner_radius, CR_CORNER_ALL);
 
 		ge_cairo_set_color (cr, &fg);
@@ -644,9 +649,10 @@ real_draw_box (GtkStyle      *style,
 		shadow_inner.a = DEFAULT_SHADOW_OPACITY;
 
 		draw_rounded_gradient (cr, x, y, width, height, inner_radius,
-				       DEFAULT_SHADOW_SIZE + inner_radius,
+				       shadow_size + inner_radius,
 				       &shadow_inner, &shadow_outer);
 	} else if (CHECK_DETAIL (detail, "menuitem")) {
+		CairoCorners corners;
 		CairoColor bevel;
 		CairoColor bg;
 
@@ -657,13 +663,17 @@ real_draw_box (GtkStyle      *style,
 		ge_gdk_color_to_cairo (&style->fg[GTK_STATE_NORMAL], &bevel);
 		bevel.a = MENUITEM_BORDER_OPACITY;
 
+		corners = GET_ROUNDED_BUTTONS (style) ? CR_CORNER_ALL : CR_CORNER_NONE;
+
 		if (fill)
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, &bg);
+			draw_rounded_rect (cr, x, y, width, height, 1.5,
+					   &bevel, &bg, corners);
 		else
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, NULL);
+			draw_rounded_rect (cr, x, y, width, height, 1.5,
+					   &bevel, NULL, corners);
 	} else if (CHECK_DETAIL (detail, "trough")
+		   || CHECK_DETAIL (detail, "trough-lower")
+		   || CHECK_DETAIL (detail, "trough-upper")
 		   || CHECK_DETAIL (detail, "menu")
 		   || CHECK_DETAIL (detail, "dockitem_bin")
 		   || CHECK_DETAIL (detail, "handlebox_bin")
@@ -674,9 +684,9 @@ real_draw_box (GtkStyle      *style,
 		CairoColor bg;
 
 		if (fill) {
-			/* XXX: should also handle the trough invert style property ...
-			 * but what do I want to do in that case? */
-			if (CHECK_DETAIL (detail, "trough")) {
+			if (CHECK_DETAIL (detail, "trough") ||
+			    CHECK_DETAIL (detail, "trough-lower") ||
+			    CHECK_DETAIL (detail, "trough-upper")) {
 				/* Troughs cannot be transparent!
 				 * This is a hack to fix this by filling with a solid color first. */
 				ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg);
@@ -686,11 +696,18 @@ real_draw_box (GtkStyle      *style,
 
 				/* Troughs always draw with state ACTIVE or INSENSITIVE,
 				 * so this sets the state to NORMAL to get the correct colors. */
-				if (state_type == GTK_STATE_ACTIVE)
+				if (state_type == GTK_STATE_ACTIVE) {
 					state_type = GTK_STATE_NORMAL;
+				}
+				
+				/* XXX: This definatly needs improvement, at least now it is "implemented" */
+				if (CHECK_DETAIL (detail, "trough-lower")) {
+					ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &bg);
+				} else {
+					ge_gdk_color_to_cairo (&style->fg[state_type], &bg);
+					bg.a = TROUGH_BG_OPACITY;
+				}
 
-				ge_gdk_color_to_cairo (&style->fg[state_type], &bg);
-				bg.a = TROUGH_BG_OPACITY;
 				ge_gdk_color_to_cairo (&style->fg[state_type],  &bevel);
 				bevel.a = TROUGH_BORDER_OPACITY;
 			} else {
@@ -698,8 +715,8 @@ real_draw_box (GtkStyle      *style,
 				ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
 				bevel.a = TROUGH_BORDER_OPACITY;
 			}
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, &bg);
+			draw_rounded_rect (cr, x, y, width, height, 1.5,
+					   &bevel, &bg, IF_ROUNDED (style, CR_CORNER_ALL, CR_CORNER_NONE));
 		}
 	} else if (CHECK_DETAIL (detail, "menubar")) {
 		CairoColor bg;
@@ -710,13 +727,14 @@ real_draw_box (GtkStyle      *style,
 		bevel.a = MENUBAR_BORDER_OPACITY;
 
 		if (fill)
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, &bg);
+			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+					   &bevel, &bg, CR_CORNER_ALL);
 		else
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, NULL);
+			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+					   &bevel, NULL, CR_CORNER_ALL);
 	} else if (CHECK_DETAIL (detail, "spinbutton_up")
 		   || CHECK_DETAIL (detail, "spinbutton_down")) {
+		/* XXX: This results in basically drawing nothing, right? */
 		if (CHECK_DETAIL (detail, "spinbutton_up")) {
 			x += 1;
 			y += 1;
@@ -745,32 +763,43 @@ real_draw_box (GtkStyle      *style,
 
 		/* XXX: fill can never be FALSE, right? */
 		if (fill)
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, &bg);
+			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+					   &bevel, &bg, CR_CORNER_ALL);
 		else
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, NULL);
+			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+					   &bevel, NULL, CR_CORNER_ALL);
 	} else {
 		CairoColor bevel, bg;
+		CairoCorners corners = CR_CORNER_ALL;
 
-		/* XXX: the "spinbutton" should not have rounded corners on the inside ... */
-		if (IS_SPIN_BUTTON (widget) && CHECK_DETAIL (detail, "entry")) {
+		if ((IS_SPIN_BUTTON (widget) && CHECK_DETAIL (detail, "entry")) ||
+		    ge_is_combo_box_entry (widget) ||
+		    ge_is_combo_box (widget, TRUE) ||
+		    ge_find_combo_box_widget_parent (widget)) {
 			/* effectively cut one side off. */
 			width += 2;
 			if (!ge_widget_is_ltr (widget))
 				x -= 2;
 		}
+		
+		if (CHECK_DETAIL (detail, "spinbutton")) {
+			if (ge_widget_is_ltr (widget))
+				corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+			else
+				corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
+		}
 
 		ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
+		
 		ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
 		bevel.a = STANDARD_BORDER_OPACITY;
 
 		if (fill)
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, &bg);
+			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+					   &bevel, &bg, corners);
 		else
-			draw_rounded_rect_cairo (cr, x, y, width, height, 1.5,
-						 &bevel, NULL);
+			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+					   &bevel, NULL, corners);
 	}
 
 	cairo_restore (cr);
@@ -910,9 +939,11 @@ real_draw_box_gap (GtkStyle       *style,
 	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_WINDING);
 
 	if (fill)
-		draw_rounded_rect_cairo (cr, x, y, width, height, 1.5, &bevel, &bg);
+		draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+		                   &bevel, &bg, CR_CORNER_ALL);
 	else
-		draw_rounded_rect_cairo (cr, x, y, width, height, 1.5, &bevel, NULL);
+		draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+		                   &bevel, NULL, CR_CORNER_ALL);
 	cairo_restore (cr);
 
 	/* and draw two dots on both sides of the gap. */
@@ -1027,6 +1058,7 @@ draw_extension (GtkStyle       *style,
 		gint            height,
 		GtkPositionType gap_side)
 {
+	CairoCorners corners = CR_CORNER_ALL;
 	cairo_t *cr;
 	cairo_pattern_t *pattern = NULL;
 	CairoColor bevel;
@@ -1040,6 +1072,8 @@ draw_extension (GtkStyle       *style,
 	if (shadow_type == GTK_SHADOW_NONE)
 		return;
 
+	corners = GET_ROUNDED_BUTTONS (style) ? CR_CORNER_ALL : CR_CORNER_NONE;
+
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	cairo_rectangle (cr, x, y, width, height);
 	cairo_clip (cr);
@@ -1050,22 +1084,26 @@ draw_extension (GtkStyle       *style,
 
 	switch (gap_side) {
 	case GTK_POS_TOP:
-		draw_rounded_rect_cairo (cr, x, y - 3, width, height + 3, 1.5, &bevel, &bg);
+		draw_rounded_rect (cr, x, y - 3, width, height + 3, 1.5,
+		                   &bevel, &bg, corners);
 		pattern = cairo_pattern_create_linear (x, y, x, y + 4);
 		cairo_rectangle (cr, x, y, width, 4);
 		break;
 	case GTK_POS_BOTTOM:
-		draw_rounded_rect_cairo (cr, x, y, width, height + 3, 1.5, &bevel, &bg);
+		draw_rounded_rect (cr, x, y, width, height + 3, 1.5,
+		                   &bevel, &bg, corners);
 		pattern = cairo_pattern_create_linear (x, y + height, x, y + height - 4);
 		cairo_rectangle (cr, x, y + height - 4, width, 4);
 		break;
 	case GTK_POS_LEFT:
-		draw_rounded_rect_cairo (cr, x - 3, y, width + 3, height, 1.5, &bevel, &bg);
+		draw_rounded_rect (cr, x - 3, y, width + 3, height, 1.5,
+		                   &bevel, &bg, corners);
 		pattern = cairo_pattern_create_linear (x, y, x + 4, y);
 		cairo_rectangle (cr, x, y, 4, height);
 		break;
 	case GTK_POS_RIGHT:
-		draw_rounded_rect_cairo (cr, x, y, width + 3, height, 1.5, &bevel, &bg);
+		draw_rounded_rect (cr, x, y, width + 3, height, 1.5,
+		                   &bevel, &bg, corners);
 		pattern = cairo_pattern_create_linear (x + width, y, x + width - 4, y);
 		cairo_rectangle (cr, x + width - 4, y, 4, height);
 		break;
@@ -1121,7 +1159,8 @@ draw_check (GtkStyle * style,
 	height = check_size;
 
 	fg.a = DEFAULT_SHADOW_OPACITY;
-	draw_rounded_rect_cairo (cr, x, y, width, height, 1.5, &fg, &bg);
+	draw_rounded_rect (cr, x, y, width, height, 1.5,
+	                   &fg, &bg, GET_ROUNDED_BUTTONS (style) ? CR_CORNER_ALL : CR_CORNER_NONE);
 
 	/* XXX: following stuff need rework ... ;-) */
 	cairo_translate (cr, x + 2.0, y + 2.0);
@@ -1133,14 +1172,13 @@ draw_check (GtkStyle * style,
 	/* draw the interior */
 	if (shadow_type == GTK_SHADOW_IN) {
 		/* copied from GTK+, but it should be more bold ... */
-		cairo_move_to (cr, 7.0, 0.0);
-		cairo_line_to (cr, 7.5, 1.0);
-		cairo_curve_to (cr, 5.3, 2.0, 4.3, 4.0, 3.5, 7.0);
-		cairo_curve_to (cr, 3.0, 5.7, 1.3, 4.7, 0.0, 4.7);
-		cairo_line_to (cr, 0.2, 3.5);
-		cairo_curve_to (cr, 1.1, 3.5, 2.3, 4.3, 3.0, 5.0);
-		cairo_curve_to (cr, 1.0, 3.9, 2.4, 4.1, 3.2, 4.9);
-		cairo_curve_to (cr, 3.5, 3.1, 5.2, 2.0, 7.0, 0.0);
+		cairo_move_to (cr, 0.0, 4.1);
+		cairo_line_to (cr, 2.8, 6.65);
+		cairo_curve_to (cr, 3.7, 5.2, 5.0, 2.65, 6.9, 1.4);
+		cairo_line_to (cr, 6.4, 0.6);
+		cairo_curve_to (cr, 4.5, 1.9, 3.55, 3.4, 2.6, 4.7);
+		cairo_line_to (cr, 0.8, 3);
+		cairo_close_path (cr);
 
 		cairo_fill (cr);
 	} else if (shadow_type == GTK_SHADOW_ETCHED_IN) {
@@ -1148,6 +1186,7 @@ draw_check (GtkStyle * style,
 		cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
 		cairo_move_to (cr, 0.0, 3.5);
 		cairo_line_to (cr, 7.0, 3.5);
+
 		cairo_stroke (cr);
 	}
 

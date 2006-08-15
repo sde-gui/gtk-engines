@@ -1,3 +1,19 @@
+2006-08-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c: (draw_rounded_rect),
+	(real_draw_box), (real_draw_box_gap), (draw_extension),
+	(draw_check):
+	- small improvements all over the place. ComboBoxes and Spinbuttons
+	don't have a two pixel distance between buttons and entry anymore.
+
+	* engines/support/cairo-support.c: (ge_cairo_rounded_rectangle):
+	- Handle a small radius by using cairo_rectangle.
+
+	* engines/support/widget-information.c:
+	(ge_button_get_default_border):
+	* engines/support/widget-information.h:
+	- added ge_button_get_default_border which I need for industrial
+
 2006-08-13  Andrew Johnson <acjgenius@earthlink.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

@@ -279,7 +279,28 @@ ge_option_menu_get_props (GtkWidget * widget,
   else
     *indicator_spacing = default_spacing;
 }
-  
+
+void
+ge_button_get_default_border (GtkWidget *widget, 
+                              GtkBorder *border)
+{
+	GtkBorder *tmp_border = NULL;
+	
+	if (widget && IS_BUTTON (widget))
+		gtk_widget_style_get (widget, "default-border", &tmp_border, NULL);
+
+	if (tmp_border)
+	{
+		*border = *tmp_border;
+		g_free (tmp_border);
+	}
+	else
+	{
+		*border = (GtkBorder){1, 1, 1, 1};
+	}
+}
+
+
 gboolean
 ge_widget_is_ltr (GtkWidget *widget)
 {
