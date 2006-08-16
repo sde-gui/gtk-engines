@@ -118,12 +118,12 @@ void glide_draw_pattern_fill(cairo_t *canvas,
 
 		if ((pattern->translate == GLIDE_DIRECTION_VERTICAL) || (pattern->translate == GLIDE_DIRECTION_BOTH))
 		{
-			translate_x = 0.5-x;
+			translate_x = 0.0-x;
 		}
 
 		if ((pattern->translate == GLIDE_DIRECTION_HORIZONTAL) || (pattern->translate == GLIDE_DIRECTION_BOTH))
 		{
-			translate_y = 0.5-y;
+			translate_y = 0.0-y;
 		}
 
 		cairo_matrix_translate(&current_matrix, translate_x, translate_y);
