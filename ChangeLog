@@ -1,3 +1,15 @@
+2006-08-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c: (draw_slider),
+	(draw_check):
+	- added shadow to checkbutton
+
+	* themes/Industrial/gtk-2.0/gtkrc:
+	- enable trough-side-details
+	- activate sliders
+	- set x/ythickness of GtkProgress to 0px
+	- some cleanups
+
 2006-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/industrial/src/industrial_style.c: (draw_focus):

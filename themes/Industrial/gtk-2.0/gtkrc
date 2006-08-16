@@ -23,6 +23,8 @@ style "industrial-default"
 
   GtkMenuItem::selected_shadow_type = GTK_SHADOW_IN
 
+  GtkRange::activate-slider = 1
+
   #GtkOptionMenu::indicator_size = { 11, 6 }
   #GtkOptionMenu::indicator_spacing = { 4, 5, 2, 2 }
 
@@ -56,6 +58,11 @@ style "industrial-exterior-focus"
 	GtkWidget::focus-line-width = 0
 }
 
+style "industrial-scale"
+{
+	GtkRange::trough-side-details = 1
+}
+
 style "industrial-unrounded"
 {
   engine "industrial" 
@@ -68,6 +75,13 @@ style "industrial-wide"
 {
   xthickness = 2
   ythickness = 2
+}
+
+style "industrial-progress"
+{
+  #draw progress indicator above trough, without a border
+  xthickness = 0
+  ythickness = 0
 }
 
 style "industrial-tasklist"
@@ -97,18 +111,6 @@ style "industrial-menu"
   fg[SELECTED]  = "#ffffff"
 }
 
-style "industrial-menu-separator"
-{
-#  engine "redmond95" { }
-  xthickness = 3
-  ythickness = 3
-
-  bg[PRELIGHT]    = "#6484a4"
-  bg[SELECTED]    = "#6484a4"
-  fg[PRELIGHT]  = "#ffffff"
-  fg[SELECTED]  = "#ffffff"
-}
-
 style "industrial-menubar"
 {
   xthickness = 3
@@ -130,11 +132,6 @@ style "industrial-tree"
   xthickness = 2
   ythickness = 2
 }
-
-#style "industrial-frame-title"
-#{
-#  fg[NORMAL] = "#4d4466"
-#}
 
 style "industrial-panel"
 {
@@ -194,14 +191,14 @@ class "GtkMenu" style "industrial-wide"
 class "GtkFrame" style "industrial-wide"
 class "GtkStatusbar" style "industrial-wide"
 class "GtkEntry" style "industrial-exterior-focus"
+class "GtkProgress" style "industrial-progress"
+class "GtkScale" style "industrial-scale"
 
 class "*MenuItem*" style "industrial-menu"
 widget_class "*MenuItem*" style "industrial-menu"
-widget_class "*.GtkSeparatorMenuItem.*" style "industrial-menu-separator"
+
 class "GtkEntry" style "industrial-wide"
 widget_class "*.tooltips.*.GtkToggleButton" style "industrial-tasklist"
-#widget_class "*.GtkFrame.GtkLabel" style "industrial-frame-title"
-#widget_class "*.GtkFrame.GtkCheckButton.GtkLabel" style "industrial-frame-title"
 widget_class "*GnomeDruidPage*" style "industrial-druid"
 
 class "MetaFrames" style "metacity-frame"

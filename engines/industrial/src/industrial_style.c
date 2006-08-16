@@ -445,7 +445,6 @@ draw_slider (GtkStyle      *style,
 		}
 	}
 
-	/* XXX? */
 	gtk_paint_box (style, window, state_type, shadow_type,
 		       area, widget, detail, x, y, width, height);
 
@@ -1205,16 +1204,28 @@ draw_check (GtkStyle * style,
 	draw_rounded_rect (cr, x, y, width, height, 1.5,
 	                   &fg, &bg, GET_ROUNDED_BUTTONS (style) ? CR_CORNER_ALL : CR_CORNER_NONE);
 
-	/* XXX: following stuff need rework ... ;-) */
+	cairo_save (cr);
+	fg.a = DEFAULT_SHADOW_OPACITY * 0.3; /* XXX */
+	
+	cairo_move_to (cr, x, y + check_size);
+	cairo_line_to (cr, x + check_size, y);
+	cairo_line_to (cr, x, y);
+	cairo_close_path (cr);
+	cairo_clip (cr);
+	
+	draw_rounded_rect (cr, x + 1, y + 1, width - 2, height - 2, 1.5,
+	                   &fg, NULL, GET_ROUNDED_BUTTONS (style) ? CR_CORNER_ALL : CR_CORNER_NONE);
+	cairo_restore (cr);
+
 	cairo_translate (cr, x + 2.0, y + 2.0);
 
 	cairo_scale (cr, (check_size - 4) / 7., (check_size - 4) / 7.);
 
 	fg.a = 1.0;
 	ge_cairo_set_color (cr, &fg);
+
 	/* draw the interior */
 	if (shadow_type == GTK_SHADOW_IN) {
-		/* copied from GTK+, but it should be more bold ... */
 		cairo_move_to (cr, 0.0, 4.1);
 		cairo_line_to (cr, 2.8, 6.65);
 		cairo_curve_to (cr, 3.7, 5.2, 5.0, 2.65, 6.9, 1.4);
