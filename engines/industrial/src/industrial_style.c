@@ -847,7 +847,7 @@ draw_focus (GtkStyle      *style,
 		
 		SANITIZE_SIZE
 		CHECK_ARGS
-		g_print ("drawing ...");
+
 		if (ge_is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) {
 			if (ge_widget_is_ltr)
 				corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
@@ -861,7 +861,7 @@ draw_focus (GtkStyle      *style,
 		ge_cairo_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, IF_ROUNDED (style, 1.5, 0), corners);
 		ge_cairo_set_color (cr, &border);
 		cairo_set_line_width (cr, 2.0);
-		cairo_fill (cr);	
+		cairo_stroke (cr);	
 		
 		cairo_destroy (cr);
 		

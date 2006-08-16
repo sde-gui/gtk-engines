@@ -1,5 +1,10 @@
 2006-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/industrial/src/industrial_style.c: (draw_focus):
+	- remove some debugging cruft
+
+2006-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/industrial/src/industrial_style.c: (real_draw_box),
 	(draw_focus), (draw_shadow):
 	* engines/industrial/src/industrial_style_versioned_code.h:
