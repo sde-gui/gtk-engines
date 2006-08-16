@@ -50,7 +50,13 @@ style "industrial-default"
 
 }
 
-style "industrial-unrounded" = "industrial-default"
+style "industrial-exterior-focus"
+{
+	GtkWidget::interior-focus = 0
+	GtkWidget::focus-line-width = 0
+}
+
+style "industrial-unrounded"
 {
   engine "industrial" 
     {
@@ -58,24 +64,24 @@ style "industrial-unrounded" = "industrial-default"
     }
 }
 
-style "industrial-wide" = "industrial-default"
+style "industrial-wide"
 {
   xthickness = 2
   ythickness = 2
 }
 
-style "industrial-tasklist" = "industrial-default"
+style "industrial-tasklist"
 {
   xthickness = 5
   ythickness = 3
 }
 
-style "industrial-arrows" = "industrial-default"
+style "industrial-arrows"
 {
   fg[NORMAL] = { 0.2,0.2,0.2 }
 }
 
-style "industrial-menu" = "industrial-default"
+style "industrial-menu"
 {
 #  engine "redmond95" { }
   xthickness = 3
@@ -91,7 +97,7 @@ style "industrial-menu" = "industrial-default"
   fg[SELECTED]  = "#ffffff"
 }
 
-style "industrial-menu-separator" = "industrial-default"
+style "industrial-menu-separator"
 {
 #  engine "redmond95" { }
   xthickness = 3
@@ -103,19 +109,19 @@ style "industrial-menu-separator" = "industrial-default"
   fg[SELECTED]  = "#ffffff"
 }
 
-style "industrial-menubar" = "industrial-default"
+style "industrial-menubar"
 {
   xthickness = 3
   ythickness = 3
 }
 
-style "industrial-paned" = "industrial-default"
+style "industrial-paned"
 {
   xthickness = 10
   ythickness = 10
 }
 
-style "industrial-tree" = "industrial-default"
+style "industrial-tree"
 {
   engine "industrial" 
     {
@@ -125,25 +131,25 @@ style "industrial-tree" = "industrial-default"
   ythickness = 2
 }
 
-#style "industrial-frame-title" = "industrial-default"
+#style "industrial-frame-title"
 #{
 #  fg[NORMAL] = "#4d4466"
 #}
 
-style "industrial-panel" = "industrial-default"
+style "industrial-panel"
 {
   xthickness = 3
   ythickness = 3
 }
 
-style "industrial-tooltips" = "industrial-default"
+style "industrial-tooltips"
 {
   xthickness = 4
   ythickness = 4
   bg[NORMAL] = { 0.9,0.9,0.9 }
 }
 
-style "industrial-druid" = "industrial-default"
+style "industrial-druid"
 {
   bg[SELECTED] = "#6484a4"
 }
@@ -170,6 +176,8 @@ style "metacity-frame"
 	fg[SELECTED]	= "white"
 }
 
+class "GtkWidget" style "industrial-default"
+
 #class "Gtk*Paned" style "industrial-paned"
 
 widget "*.tasklist-button" style "industrial-unrounded"
@@ -180,12 +188,13 @@ widget_class "*.ETree.*" style "industrial-tree"
 widget_class "*.ETable.*" style "industrial-tree"
 
 class "GtkNotebook" style "industrial-wide"
-class "GtkWidget" style "industrial-default"
 class "GtkButton" style "industrial-wide"
 class "GtkRange" style "industrial-wide"
 class "GtkMenu" style "industrial-wide"
 class "GtkFrame" style "industrial-wide"
 class "GtkStatusbar" style "industrial-wide"
+class "GtkEntry" style "industrial-exterior-focus"
+
 class "*MenuItem*" style "industrial-menu"
 widget_class "*MenuItem*" style "industrial-menu"
 widget_class "*.GtkSeparatorMenuItem.*" style "industrial-menu-separator"

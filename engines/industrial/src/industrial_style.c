@@ -505,9 +505,7 @@ real_draw_box (GtkStyle      *style,
 		fg.a = BUTTON_BORDER_OPACITY;
 
 
-		if (ge_is_combo_box_entry (widget) ||
-		    ge_is_combo_box (widget, TRUE) ||
-		    ge_find_combo_box_widget_parent (widget)) {
+		if (ge_is_in_combo_box (widget)) {
 			if (ge_widget_is_ltr (widget))
 				corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 			else
@@ -773,9 +771,7 @@ real_draw_box (GtkStyle      *style,
 		CairoCorners corners = CR_CORNER_ALL;
 
 		if ((IS_SPIN_BUTTON (widget) && CHECK_DETAIL (detail, "entry")) ||
-		    ge_is_combo_box_entry (widget) ||
-		    ge_is_combo_box (widget, TRUE) ||
-		    ge_find_combo_box_widget_parent (widget)) {
+		    ge_is_in_combo_box (widget)) {
 			/* effectively cut one side off. */
 			width += 2;
 			if (!ge_widget_is_ltr (widget))
@@ -832,6 +828,50 @@ draw_box (GtkStyle      *style,
 }
 
 static void
+draw_focus (GtkStyle      *style,
+            GdkWindow     *window,
+            GtkStateType   state_type,
+            GdkRectangle  *area,
+            GtkWidget     *widget,
+            const gchar   *detail,
+            gint           x,
+            gint           y,
+            gint           width,
+            gint           height)
+{
+	/* we draw a custom focus for entries ... */
+	if (CHECK_DETAIL (detail, "entry")) {
+		cairo_t *cr;
+		CairoColor border;
+		CairoCorners corners = CR_CORNER_ALL;
+		
+		SANITIZE_SIZE
+		CHECK_ARGS
+		g_print ("drawing ...");
+		if (ge_is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) {
+			if (ge_widget_is_ltr)
+				corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
+			else
+				corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+		}
+		
+		cr = ge_gdk_drawable_to_cairo (window, area);
+		ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &border);
+		
+		ge_cairo_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, IF_ROUNDED (style, 1.5, 0), corners);
+		ge_cairo_set_color (cr, &border);
+		cairo_set_line_width (cr, 2.0);
+		cairo_fill (cr);	
+		
+		cairo_destroy (cr);
+		
+		return;
+	}
+	
+	parent_class->draw_focus (style, window, state_type, area, widget, detail, x, y, width, height);
+}
+
+static void
 draw_shadow (GtkStyle      *style,
 	     GdkWindow     *window,
 	     GtkStateType   state_type,
@@ -849,7 +889,10 @@ draw_shadow (GtkStyle      *style,
 	printf ("draw_shadow: %p %p %s %i %i %i %i\n", widget, window, detail,
 		x, y, width, height);
 #endif
-	CHECK_ARGS SANITIZE_SIZE cr = ge_gdk_drawable_to_cairo (window, area);
+	CHECK_ARGS
+	SANITIZE_SIZE
+	
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	real_draw_box (style, cr, window, state_type, shadow_type, area, widget,
 		       detail, x, y, width, height, FALSE);

@@ -1,3 +1,15 @@
+2006-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c: (real_draw_box),
+	(draw_focus), (draw_shadow):
+	* engines/industrial/src/industrial_style_versioned_code.h:
+	- Implement a focus for GtkEntry
+	- Some cleanups.
+
+	* themes/Industrial/gtk-2.0/gtkrc:
+	- Use the focus for GtkEntry
+	- Some other small changes
+
 2006-08-15  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* engines/glide/src/glide_gtk2_support.c:

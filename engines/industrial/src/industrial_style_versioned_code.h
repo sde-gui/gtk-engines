@@ -62,33 +62,18 @@ industrial_style_class_init (IndustrialStyleClass * klass)
 
 	parent_class = g_type_class_peek_parent (klass);
 
-#if 0
-	style_class->realize = industrial_style_realize;
-	style_class->unrealize = industrial_style_unrealize;
-#endif
 	style_class->copy = industrial_style_copy;
 	style_class->init_from_rc = industrial_style_init_from_rc;
 
-	/*
-	   style_class->draw_polygon = draw_polygon;
-	   style_class->draw_diamond = draw_diamond;
-	   style_class->draw_string = draw_string;
-	 */
-#if 0
 	style_class->draw_focus = draw_focus;
-	style_class->draw_resize_grip = draw_resize_grip;
-#endif
+
 	style_class->draw_handle = draw_handle;
 	style_class->draw_vline = draw_vline;
 	style_class->draw_hline = draw_hline;
 	style_class->draw_slider = draw_slider;
-#if 0
-	style_class->draw_tab = draw_tab;
-	style_class->draw_arrow = industrial_draw_arrow;
-#endif
+
 	style_class->draw_check = draw_check;
 	style_class->draw_box = draw_box;
-	/*style_class->draw_flat_box = draw_flat_box; */
 	style_class->draw_shadow = draw_shadow;
 	style_class->draw_box_gap = draw_box_gap;
 	style_class->draw_shadow_gap = draw_shadow_gap;
