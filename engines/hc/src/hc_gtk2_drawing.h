@@ -234,6 +234,17 @@ hc_draw_layout (GtkStyle        *style,
 	     PangoLayout      *layout);
 
 GE_INTERNAL void
+hc_draw_expander (GtkStyle        *style,
+                           GdkWindow       *window,
+                           GtkStateType     state_type,
+                           GdkRectangle    *area,
+                           GtkWidget       *widget,
+                           const gchar     *detail,
+                           gint             x,
+                           gint             y,
+			   GtkExpanderStyle expander_style);
+
+GE_INTERNAL void
 hc_draw_diamond (GtkStyle      *style,
 		 GdkWindow     *window,
 		 GtkStateType   state_type,

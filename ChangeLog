@@ -1,3 +1,11 @@
+2006-08-18  Andrew Johnson  <acjgenius@earthlink.net>
+
+	* engines/hc/src/hc-style.c: (hc_draw_expander):
+	* engines/hc/src/hc_gtk2_drawing.h:
+	* engines/hc/src/hc_gtk2_engine.c: (hc_style_class_init):
+
+	- Use the base/text values for expander arrow
+
 2006-08-18  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/industrial/src/industrial_style.c:

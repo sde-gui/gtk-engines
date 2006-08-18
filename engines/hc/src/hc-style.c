@@ -1087,6 +1087,131 @@ hc_draw_vline (GtkStyle     *style,
 }
 
 void
+hc_draw_expander (GtkStyle        *style,
+                           GdkWindow       *window,
+                           GtkStateType     state_type,
+                           GdkRectangle    *area,
+                           GtkWidget       *widget,
+                           const gchar     *detail,
+                           gint             x,
+                           gint             y,
+			   GtkExpanderStyle expander_style)
+{
+#define DEFAULT_EXPANDER_SIZE 12
+
+  HcStyle *hc_style = HC_STYLE (style);
+
+  gint expander_size;
+  gint line_width;
+  double vertical_overshoot;
+  int diameter;
+  double radius;
+  double interp;		/* interpolation factor for center position */
+  double x_double_horz, y_double_horz;
+  double x_double_vert, y_double_vert;
+  double x_double, y_double;
+  gint degrees = 0;
+  cairo_t *cr;
+	
+  CHECK_ARGS
+
+  cr = ge_gdk_drawable_to_cairo (window, area);
+
+  if (widget &&
+      gtk_widget_class_find_style_property (GTK_WIDGET_GET_CLASS (widget),
+					    "expander-size"))
+    {
+      gtk_widget_style_get (widget,
+			    "expander-size", &expander_size,
+			    NULL);
+    }
+  else
+    expander_size = DEFAULT_EXPANDER_SIZE;
+    
+  line_width = MAX (1, expander_size/9);
+
+  switch (expander_style)
+    {
+    case GTK_EXPANDER_COLLAPSED:
+      degrees = (ge_widget_is_ltr(widget)) ? 0 : 180;
+      interp = 0.0;
+      break;
+    case GTK_EXPANDER_SEMI_COLLAPSED:
+      degrees = (ge_widget_is_ltr(widget)) ? 30 : 150;
+      interp = 0.25;
+      break;
+    case GTK_EXPANDER_SEMI_EXPANDED:
+      degrees = (ge_widget_is_ltr(widget)) ? 60 : 120;
+      interp = 0.75;
+      break;
+    case GTK_EXPANDER_EXPANDED:
+      degrees = 90;
+      interp = 1.0;
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+
+  /* Compute distance that the stroke extends beyonds the end
+   * of the triangle we draw.
+   */
+  vertical_overshoot = line_width / 2.0 * (1. / tan (G_PI / 8));
+
+  /* For odd line widths, we end the vertical line of the triangle
+   * at a half pixel, so we round differently.
+   */
+  if (line_width % 2 == 1)
+    vertical_overshoot = ceil (0.5 + vertical_overshoot) - 0.5;
+  else
+    vertical_overshoot = ceil (vertical_overshoot);
+
+  /* Adjust the size of the triangle we draw so that the entire stroke fits
+   */
+  diameter = MAX (3, expander_size - 2 * vertical_overshoot);
+
+  /* If the line width is odd, we want the diameter to be even,
+   * and vice versa, so force the sum to be odd. This relationship
+   * makes the point of the triangle look right.
+   */
+  diameter -= (1 - (diameter + line_width) % 2);
+  
+  radius = diameter / 2.;
+
+  /* Adjust the center so that the stroke is properly aligned with
+   * the pixel grid. The center adjustment is different for the
+   * horizontal and vertical orientations. For intermediate positions
+   * we interpolate between the two.
+   */
+  x_double_vert = floor (x - (radius + line_width) / 2.) + (radius + line_width) / 2.;
+  y_double_vert = y - 0.5;
+
+  x_double_horz = x - 0.5;
+  y_double_horz = floor (y - (radius + line_width) / 2.) + (radius + line_width) / 2.;
+
+  x_double = x_double_vert * (1 - interp) + x_double_horz * interp;
+  y_double = y_double_vert * (1 - interp) + y_double_horz * interp;
+  
+  cairo_translate (cr, x_double, y_double);
+  cairo_rotate (cr, degrees * G_PI / 180);
+
+  cairo_move_to (cr, - radius / 2., - radius);
+  cairo_line_to (cr,   radius / 2.,   0);
+  cairo_line_to (cr, - radius / 2.,   radius);
+  cairo_close_path (cr);
+  
+  cairo_set_line_width (cr, line_width);
+
+  ge_cairo_set_color (cr, &hc_style->color_cube.base[state_type]);
+  
+  cairo_fill_preserve (cr);
+  
+  ge_cairo_set_color (cr, &hc_style->color_cube.text[state_type]);
+  cairo_stroke (cr);
+  
+  cairo_destroy (cr);
+}
+
+void
 hc_draw_diamond (GtkStyle      *style,
 		 GdkWindow     *window,
 		 GtkStateType   state_type,

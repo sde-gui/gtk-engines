@@ -370,6 +370,7 @@ hc_style_class_init (HcStyleClass *klass)
   style_class->draw_slider = hc_draw_slider;  
   style_class->draw_hline = hc_draw_hline; 
   style_class->draw_vline = hc_draw_vline; 
+  style_class->draw_expander = hc_draw_expander;
   style_class->draw_diamond = hc_draw_diamond;
   style_class->draw_polygon = hc_draw_polygon;
 }
