@@ -15,6 +15,9 @@ style "industrial-default"
   GtkCheckButton::indicator_size = 13
   GtkRadioButton::indicator_size = 13
   GtkMenuBar::internal-padding = 0
+  
+  GtkWnckTasklist::fade-opacity = 1
+  GtkWnckTasklist::fade-overlay-rect = 0
 
   GtkButton::child_displacement_x = 0
   GtkButton::child_displacement_y = 1
@@ -117,12 +120,6 @@ style "industrial-menubar"
   ythickness = 3
 }
 
-style "industrial-paned"
-{
-  xthickness = 10
-  ythickness = 10
-}
-
 style "industrial-tree"
 {
   engine "industrial" 
@@ -174,8 +171,6 @@ style "metacity-frame"
 }
 
 class "GtkWidget" style "industrial-default"
-
-#class "Gtk*Paned" style "industrial-paned"
 
 widget "*.tasklist-button" style "industrial-unrounded"
 widget_class "*.GtkTreeView.*" style "industrial-tree"

@@ -39,7 +39,7 @@
 #define BUTTON_DEPRESSED_SHADOW_OPACITY_1 0.14
 #define BUTTON_DEPRESSED_SHADOW_OPACITY_2 0.07
 #define DEFAULT_SHADOW_OPACITY 0.26
-#define MENUITEM_BORDER_OPACITY 0.8
+#define MENUITEM_BORDER_OPACITY 0.38
 #define STANDARD_BORDER_OPACITY 0.38
 #define BUTTON_BORDER_OPACITY 0.38
 #define TROUGH_BG_OPACITY 0.15
@@ -56,16 +56,28 @@ draw_rounded_gradient (cairo_t    *cr,
 		       gint	   y,
 		       gint        width,
 		       gint        height,
+		       gfloat      gradient_width,
 		       gfloat      inner_radius,
 		       gfloat      outer_radius,
 		       CairoColor *inner_color,
 		       CairoColor *outer_color)
 {
-	gfloat gradient_width = outer_radius - inner_radius;
 	cairo_pattern_t *pattern;
 	cairo_matrix_t matrix;
 	cairo_save (cr);
 	cairo_translate (cr, x, y);
+
+	/* either we need an inner_radius of 0px, or gradient_width must be
+	 * exactly outer_radius - inner_radius. I have no idea how I could
+	 * handle the other cases. (and I don't need them) */
+	if (gradient_width == -1) {
+		gradient_width = outer_radius - inner_radius;
+	} else {
+		/* we can't handle a specific gradient width and inner_radius */
+		if (gradient_width != outer_radius - inner_radius) {
+			inner_radius = 0;
+		}
+	}
 
 	/* setup a clip region for the gradient area */
 	cairo_new_path (cr);
@@ -126,6 +138,8 @@ draw_rounded_gradient (cairo_t    *cr,
 	cairo_fill (cr);
 	cairo_restore (cr);
 
+	/* The _rounded_ part of the corners are drawn at this point ... */
+	
 	/* create linear gradient */
 	pattern = cairo_pattern_create_linear (0, 0, 0, gradient_width);
 	ge_cairo_pattern_add_color_stop_color (pattern, 0, inner_color);
@@ -135,8 +149,20 @@ draw_rounded_gradient (cairo_t    *cr,
 
 	/* draw those gradients */
 	cairo_save (cr);
-	cairo_rectangle (cr, outer_radius, 0, width - 2 * outer_radius,
-			 gradient_width);
+	
+	/* This is not perfect, as drawing twice with 0.5 opacity is not the same
+	 * as drawing once with full opacity ... */
+	/* TOP */
+	cairo_move_to (cr, outer_radius, 0);
+	cairo_line_to (cr, outer_radius, outer_radius);
+	cairo_line_to (cr, gradient_width, gradient_width);
+	cairo_line_to (cr, width - gradient_width, gradient_width);
+	cairo_line_to (cr, width - outer_radius, outer_radius);
+	cairo_line_to (cr, width - outer_radius, 0);
+	cairo_close_path (cr);
+	
+	/* cairo_rectangle (cr, outer_radius, 0, width - 2 * outer_radius,
+			 gradient_width); */
 	cairo_matrix_init_rotate (&matrix, M_PI);
 	cairo_matrix_translate (&matrix, 0, -gradient_width);
 	cairo_pattern_set_matrix (pattern, &matrix);
@@ -144,8 +170,18 @@ draw_rounded_gradient (cairo_t    *cr,
 	cairo_restore (cr);
 
 	cairo_save (cr);
-	cairo_rectangle (cr, width - outer_radius, outer_radius, outer_radius,
-			 height - 2 * outer_radius);
+	
+	/* RIGHT */
+	cairo_move_to (cr, width, outer_radius);
+	cairo_line_to (cr, width - outer_radius, outer_radius);
+	cairo_line_to (cr, width - gradient_width, gradient_width);
+	cairo_line_to (cr, width - gradient_width, height - gradient_width);
+	cairo_line_to (cr, width - outer_radius, height - outer_radius);
+	cairo_line_to (cr, width, height - outer_radius);
+	cairo_close_path (cr);
+	
+	/* cairo_rectangle (cr, width - outer_radius, outer_radius, outer_radius,
+			 height - 2 * outer_radius); */
 	cairo_matrix_init_rotate (&matrix, M_PI_2);
 	cairo_matrix_translate (&matrix, -width + gradient_width, -gradient_width);
 	cairo_pattern_set_matrix (pattern, &matrix);
@@ -153,8 +189,18 @@ draw_rounded_gradient (cairo_t    *cr,
 	cairo_restore (cr);
 
 	cairo_save (cr);
-	cairo_rectangle (cr, outer_radius, height - gradient_width,
-			 width - 2 * outer_radius, gradient_width);
+
+	/* BOTTOM */
+	cairo_move_to (cr, outer_radius, height);
+	cairo_line_to (cr, outer_radius, height - outer_radius);
+	cairo_line_to (cr, gradient_width, height - gradient_width);
+	cairo_line_to (cr, width - gradient_width, height - gradient_width);
+	cairo_line_to (cr, width - outer_radius, height - outer_radius);
+	cairo_line_to (cr, width - outer_radius, height);
+	cairo_close_path (cr);
+
+	/* cairo_rectangle (cr, outer_radius, height - gradient_width,
+			 width - 2 * outer_radius, gradient_width); */
 	cairo_matrix_init_rotate (&matrix, 0);
 	cairo_matrix_translate (&matrix, 0, -height + gradient_width);
 	cairo_pattern_set_matrix (pattern, &matrix);
@@ -162,8 +208,17 @@ draw_rounded_gradient (cairo_t    *cr,
 	cairo_restore (cr);
 
 	cairo_save (cr);
-	cairo_rectangle (cr, 0, outer_radius, gradient_width,
-			 height - 2 * outer_radius);
+	/* LEFT */
+	cairo_move_to (cr, 0, height - outer_radius);
+	cairo_line_to (cr, outer_radius, height - outer_radius);
+	cairo_line_to (cr, gradient_width, height - gradient_width);
+	cairo_line_to (cr, gradient_width, gradient_width);
+	cairo_line_to (cr, outer_radius, outer_radius);
+	cairo_line_to (cr, 0, outer_radius);
+	cairo_close_path (cr);
+
+	/* cairo_rectangle (cr, 0, outer_radius, gradient_width,
+			 height - 2 * outer_radius); */
 	cairo_matrix_init_rotate (&matrix, -M_PI_2);
 	cairo_matrix_translate (&matrix, -gradient_width, 0);
 	cairo_pattern_set_matrix (pattern, &matrix);
@@ -187,8 +242,14 @@ draw_rounded_rect (cairo_t     *cr,
 		   CairoCorners corners)
 {
 	if (fill) {
-		ge_cairo_rounded_rectangle (cr, x, y, width, height, radius,
-					    corners);
+		if (radius <= 2.5) {
+			/* At least with a radius like this, the corner pixel will still be
+			 * painted by the stroke ... using a rect here should be fine. */
+			cairo_rectangle (cr, x + 1, y + 1, width -2, height - 2);
+		} else {
+			ge_cairo_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, radius,
+						    corners);
+		}
 
 		ge_cairo_set_color (cr, fill);
 		cairo_fill (cr);
@@ -545,8 +606,8 @@ real_draw_box (GtkStyle      *style,
 			cairo_clip (cr);
 
 			draw_rounded_gradient (cr, x + 1, y + 1,
-					       width - 2, height - 2,
-					       IF_ROUNDED (style, 0.5, 0), 2.5, &inner,
+					       width - 2, height - 2, 3.0,
+					       0.5, IF_ROUNDED (style, 2.5, 0), &inner,
 					       &outer);
 
 			cairo_restore (cr);
@@ -581,8 +642,8 @@ real_draw_box (GtkStyle      *style,
 			/* XXX: This results in a few pixel that stay blank.
 			 * Need to rethink this one. */
 			draw_rounded_gradient (cr, x + 1, y + 1,
-					       width - 2, height - 2, IF_ROUNDED (style, 1, 0),
-					       IF_ROUNDED (style, 5, 4), &inner, &outer);
+					       width - 2, height - 2, 4, 0,
+					       IF_ROUNDED (style, 2.5, 0), &inner, &outer);
 			cairo_restore (cr);
 		}
 
@@ -645,7 +706,7 @@ real_draw_box (GtkStyle      *style,
 		shadow_outer.a = 0;
 		shadow_inner.a = DEFAULT_SHADOW_OPACITY;
 
-		draw_rounded_gradient (cr, x, y, width, height, inner_radius,
+		draw_rounded_gradient (cr, x, y, width, height, -1, inner_radius,
 				       shadow_size + inner_radius,
 				       &shadow_inner, &shadow_outer);
 	} else if (CHECK_DETAIL (detail, "menuitem")) {
@@ -818,7 +879,10 @@ draw_box (GtkStyle      *style,
 	printf ("draw_box: %p %p %s %i %i %i %i\n", widget, window, detail, x,
 		y, width, height);
 #endif
-	CHECK_ARGS SANITIZE_SIZE cr = ge_gdk_drawable_to_cairo (window, area);
+	CHECK_ARGS
+	SANITIZE_SIZE
+	
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	real_draw_box (style, cr, window, state_type, shadow_type, area, widget,
 		       detail, x, y, width, height, TRUE);
@@ -1288,10 +1352,16 @@ draw_option (GtkStyle * style,
 	ge_cairo_set_color (cr, &fg);
 
 	/* XXX: There should be another shadow ... */
-	cairo_arc (cr, xc, yc, radius - 0.5, -M_PI, M_PI);
-	/* cairo_arc (cr, xc + 0.5, yc + 0.3, radius - 0.3, M_PI - M_PI_4 / 2.0, 3 * M_PI_2 + M_PI_4 / 2.0); */
+	cairo_save (cr);
+	
+	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
+	
+	cairo_arc (cr, xc, yc, radius, 0, 2 * M_PI);
+	cairo_arc (cr, xc + 0.2, yc + 0.2, radius - 1.2, 0, 2 * M_PI);
 
-	cairo_stroke (cr);
+	cairo_fill (cr);
+	
+	cairo_restore (cr);
 
 	if (shadow_type == GTK_SHADOW_IN) {
 		cairo_pattern_t *pattern;

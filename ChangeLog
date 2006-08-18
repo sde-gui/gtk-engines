@@ -1,3 +1,18 @@
+2006-08-18  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c:
+	(draw_rounded_gradient), (draw_rounded_rect), (real_draw_box),
+	(draw_box), (draw_option):
+	- add a slight shadow to the radiobutton
+	- change in draw_rounded_gradient to prevent blank pixel
+	in the corners of buttons.
+	- fixed menuitem border opacity
+	- small cleanup
+
+	* themes/Industrial/gtk-2.0/gtkrc:
+	- Tweak the WnckTasklist glowing
+	- cleanups
+
 2006-08-18  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* engines/hc/src/hc-style.c: (hc_draw_check):
