@@ -698,27 +698,30 @@ hc_draw_check (GtkStyle      *style,
 	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
 	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
-	line_width = HC_STYLE(style)->edge_thickness;
+	line_width = ceil(HC_STYLE(style)->edge_thickness/2);
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
-	gtk_widget_style_get (widget,
-				"focus-line-width", &line_width,
-				NULL);
-	
 	cairo_save(cr);
 
-	cairo_set_line_width (cr, line_width + ((line_width%2)?1:0.5));
-	
 	ge_cairo_set_color(cr, &hc_style->color_cube.base[state_type]);	
 
 	cairo_rectangle (cr, x, y, width, height);
 
 	cairo_fill(cr);
 
-	ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);	
- 
-	cairo_rectangle (cr, x, y, width, height);
+	/* Set Line Style */
+	ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
 
+	/* Pixel Alignedness -
+			
+		If even line width, + 1.0 
+		If odd line width,  + 0.5 
+	 */
+	cairo_set_line_width (cr, line_width + ((line_width%2)?1.0:0.5));
+
+	/* Stroke Rectangle */
+	cairo_rectangle (cr, x, y, width, height);
 	cairo_stroke(cr);
 
 	cairo_restore(cr);
@@ -734,7 +737,7 @@ hc_draw_check (GtkStyle      *style,
 		/* What should the line width be? not the same as border... 
 			but why this?
 		 */
-		line_width = ceil(MIN(width,height)/5);
+		line_width = floor(line_width*3.5);//ceil(MIN(width,height)/5);
 
 		/* The X is capped square, 
 				so uh. inset by line_width/2 to center line
@@ -747,7 +750,6 @@ hc_draw_check (GtkStyle      *style,
 
 				My Head hurts. 
 		 */
-		offset += line_width - (((line_width - 1) % 2)?0:0.5);
 
 		cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE);
 
