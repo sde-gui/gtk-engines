@@ -64,6 +64,7 @@ draw_rounded_gradient (cairo_t    *cr,
 {
 	cairo_pattern_t *pattern;
 	cairo_matrix_t matrix;
+	
 	cairo_save (cr);
 	cairo_translate (cr, x, y);
 
@@ -79,64 +80,68 @@ draw_rounded_gradient (cairo_t    *cr,
 		}
 	}
 
-	/* setup a clip region for the gradient area */
-	cairo_new_path (cr);
+	if (inner_radius != 0.0 || outer_radius != 0.0) {
+		/* setup a clip region for the gradient area, this is important for the edges. */
+		cairo_save (cr);
+		
+		cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
 
-	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
+		ge_cairo_rounded_rectangle (cr, 0, 0, width, height, outer_radius, CR_CORNER_ALL);
+		ge_cairo_rounded_rectangle (cr, gradient_width, gradient_width,
+					    width - 2 * gradient_width,
+					    height - 2 * gradient_width,
+					    inner_radius, CR_CORNER_ALL);
 
-	ge_cairo_rounded_rectangle (cr, 0, 0, width, height, outer_radius, CR_CORNER_ALL);
-	ge_cairo_rounded_rectangle (cr, gradient_width, gradient_width,
-				    width - 2 * gradient_width,
-				    height - 2 * gradient_width,
-				    inner_radius, CR_CORNER_ALL);
+		cairo_clip (cr);
 
-	cairo_clip (cr);
+		cairo_set_fill_rule (cr, CAIRO_FILL_RULE_WINDING);
 
-	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_WINDING);
+		/* create radial gradient */
+		pattern = cairo_pattern_create_radial (0, 0, 0, 0, 0, outer_radius);
 
-	/* create radial gradient */
-	pattern = cairo_pattern_create_radial (0, 0, 0, 0, 0, outer_radius);
+		/* XXX: Shouldn't it work to set the first radius in create_radial
+		 * to inner_radius instead of this hack? */
+		ge_cairo_pattern_add_color_stop_color (pattern, 0, inner_color);
+		ge_cairo_pattern_add_color_stop_color (pattern,
+						       inner_radius / outer_radius,
+						       inner_color);
+		ge_cairo_pattern_add_color_stop_color (pattern, 1, outer_color);
+		cairo_set_source (cr, pattern);
+		cairo_pattern_destroy (pattern);
 
-	/* XXX: Shouldn't it work to set the first radius in create_radial
-	 * to inner_radius instead of this hack? */
-	ge_cairo_pattern_add_color_stop_color (pattern, 0, inner_color);
-	ge_cairo_pattern_add_color_stop_color (pattern,
-					       inner_radius / outer_radius,
-					       inner_color);
-	ge_cairo_pattern_add_color_stop_color (pattern, 1, outer_color);
-	cairo_set_source (cr, pattern);
-	cairo_pattern_destroy (pattern);
+		/* move to each corner, and draw it. (as everything is clipped, this is OK to do) */
+		cairo_save (cr);
+		cairo_rectangle (cr, 0, 0, outer_radius, outer_radius);
+		cairo_matrix_init_translate (&matrix, -outer_radius, -outer_radius);
+		cairo_pattern_set_matrix (pattern, &matrix);
+		cairo_fill (cr);
+		cairo_restore (cr);
 
-	/* move to each corner, and draw it. (as everything is clipped, this is OK to do) */
-	cairo_save (cr);
-	cairo_rectangle (cr, 0, 0, outer_radius, outer_radius);
-	cairo_matrix_init_translate (&matrix, -outer_radius, -outer_radius);
-	cairo_pattern_set_matrix (pattern, &matrix);
-	cairo_fill (cr);
-	cairo_restore (cr);
+		cairo_save (cr);
+		cairo_rectangle (cr, width - outer_radius, 0, outer_radius, outer_radius);
+		cairo_matrix_init_translate (&matrix, outer_radius - width, -outer_radius);
+		cairo_pattern_set_matrix (pattern, &matrix);
+		cairo_fill (cr);
+		cairo_restore (cr);
 
-	cairo_save (cr);
-	cairo_rectangle (cr, width - outer_radius, 0, outer_radius, outer_radius);
-	cairo_matrix_init_translate (&matrix, outer_radius - width, -outer_radius);
-	cairo_pattern_set_matrix (pattern, &matrix);
-	cairo_fill (cr);
-	cairo_restore (cr);
+		cairo_save (cr);
+		cairo_rectangle (cr, width - outer_radius, height - outer_radius,
+				 outer_radius, outer_radius);
+		cairo_matrix_init_translate (&matrix, outer_radius - width,
+					     outer_radius - height);
+		cairo_pattern_set_matrix (pattern, &matrix);
+		cairo_fill (cr);
+		cairo_restore (cr);
 
-	cairo_save (cr);
-	cairo_rectangle (cr, width - outer_radius, height - outer_radius,
-			 outer_radius, outer_radius);
-	cairo_matrix_init_translate (&matrix, outer_radius - width,
-				     outer_radius - height);
-	cairo_pattern_set_matrix (pattern, &matrix);
-	cairo_fill (cr);
-	cairo_restore (cr);
-
-	cairo_save (cr);
-	cairo_rectangle (cr, 0, height - outer_radius, outer_radius, outer_radius);
-	cairo_matrix_init_translate (&matrix, -outer_radius, outer_radius - height);
-	cairo_pattern_set_matrix (pattern, &matrix);
-	cairo_fill (cr);
-	cairo_restore (cr);
+		cairo_save (cr);
+		cairo_rectangle (cr, 0, height - outer_radius, outer_radius, outer_radius);
+		cairo_matrix_init_translate (&matrix, -outer_radius, outer_radius - height);
+		cairo_pattern_set_matrix (pattern, &matrix);
+		cairo_fill (cr);
+		cairo_restore (cr);
+		
+		cairo_restore (cr);
+	}
 
 	/* The _rounded_ part of the corners are drawn at this point ... */
 	
@@ -241,13 +246,23 @@ draw_rounded_rect (cairo_t     *cr,
 		   CairoColor  *fill,
 		   CairoCorners corners)
 {
+	CairoColor real_bevel = *bevel;
+	
 	if (fill) {
-		if (radius <= 2.5) {
+		/* This fill is a little optimized in most cases, to only draw a pixel aligned rect.
+		 * To prevent errors, we need to adjust the bevel color ... */
+		
+		if (radius <= 2.5 && fill->a == 1.0) {
+			real_bevel.a = 1;
+			real_bevel.r = fill->r * (1.0 - bevel->a) + bevel->r * bevel->a;
+			real_bevel.g = fill->g * (1.0 - bevel->a) + bevel->g * bevel->a;
+			real_bevel.b = fill->b * (1.0 - bevel->a) + bevel->b * bevel->a;
+
 			/* At least with a radius like this, the corner pixel will still be
 			 * painted by the stroke ... using a rect here should be fine. */
 			cairo_rectangle (cr, x + 1, y + 1, width -2, height - 2);
 		} else {
-			ge_cairo_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, radius,
+			ge_cairo_rounded_rectangle (cr, x, y, width, height, radius,
 						    corners);
 		}
 
@@ -255,7 +270,7 @@ draw_rounded_rect (cairo_t     *cr,
 		cairo_fill (cr);
 	}
 
-	ge_cairo_set_color (cr, bevel);
+	ge_cairo_set_color (cr, &real_bevel);
 	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height - 1,
 				    radius, corners);
 	cairo_stroke (cr);
@@ -275,9 +290,11 @@ draw_grid_cairo (cairo_t    *cr,
 {
 	gint xpos, ypos;
 	gboolean indented = FALSE;
+	CairoColor c = *color;
+	gfloat alpha1 = color->a;
+	gfloat alpha2 = color->a * 0.6;
+	
 	cairo_save (cr);
-
-	ge_cairo_set_color (cr, color);
 
 	/* walk trough the rows */
 	for (ypos = y + 1; ypos < y + height; ypos += 2) {
@@ -291,7 +308,20 @@ draw_grid_cairo (cairo_t    *cr,
 			/* This one would fill in the center pixel exactly, but
 			 * the dots don't look as good then.
 			 * cairo_arc (cr, xpos + 0.5, ypos + 0.5, sqrt (0.5), 0, 2 * M_PI); */
-			cairo_arc (cr, xpos + 0.5, ypos + 0.5, sqrt (0.7), 0, 2 * M_PI);
+			/* cairo_arc (cr, xpos + 0.5, ypos + 0.5, sqrt (0.7), 0, 2 * M_PI); */
+			
+			/* for speed reasons, replaced with code to paint the 5 pixel manually. */
+			c.a = alpha1;
+			ge_cairo_set_color (cr, &c);
+			cairo_rectangle (cr, xpos, ypos, 1, 1);
+			cairo_fill (cr);
+			
+			c.a = alpha2;
+			ge_cairo_set_color (cr, &c);
+			cairo_rectangle (cr, xpos - 1, ypos, 1, 1);
+			cairo_rectangle (cr, xpos, ypos - 1, 1, 1);
+			cairo_rectangle (cr, xpos + 1, ypos, 1, 1);
+			cairo_rectangle (cr, xpos, ypos + 1, 1, 1);
 			cairo_fill (cr);
 		}
 
@@ -562,7 +592,14 @@ real_draw_box (GtkStyle      *style,
 
 		ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 		ge_gdk_color_to_cairo (&style->fg[state_type], &fg);
-		fg.a = BUTTON_BORDER_OPACITY;
+		
+		/* So we don't need to use transparency in the border,
+		 * hack this here. If it doesn't work correctly, it won't
+		 * look too bad. */
+		if (widget && GTK_WIDGET_HAS_DEFAULT (widget))
+			fg.a = 1;
+		else
+			fg.a = BUTTON_BORDER_OPACITY;
 
 
 		if (ge_is_in_combo_box (widget)) {
@@ -574,16 +611,7 @@ real_draw_box (GtkStyle      *style,
 		if (!GET_ROUNDED_BUTTONS (style))
 			corners = CR_CORNER_NONE;
 
-		ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5,
-					    width - 1, height - 1, 2.5,
-					    corners);
-
-		ge_cairo_set_color (cr, &bg);
-		cairo_fill_preserve (cr);
-
-		cairo_set_line_width (cr, 1);
-		ge_cairo_set_color (cr, &fg);
-		cairo_stroke (cr);
+		draw_rounded_rect (cr, x, y, width, height, 2.5, &fg, &bg, corners);
 
 		if (shadow_type == GTK_SHADOW_IN) {
 			gint slope = MIN (width / 2, height / 2);
@@ -691,15 +719,6 @@ real_draw_box (GtkStyle      *style,
 
 		ge_gdk_color_to_cairo (&style->fg[state_type], &fg);
 
-		ge_cairo_rounded_rectangle (cr, x + shadow_size + 0.5,
-					    y + shadow_size + 0.5,
-					    width - 2 * shadow_size - 1,
-					    height - 2 * shadow_size -
-					    1, inner_radius, CR_CORNER_ALL);
-
-		ge_cairo_set_color (cr, &fg);
-		cairo_stroke (cr);
-
 		/* draw the shadow around this. */
 		shadow_outer = fg;
 		shadow_inner = fg;
@@ -745,10 +764,12 @@ real_draw_box (GtkStyle      *style,
 			if (CHECK_DETAIL (detail, "trough") ||
 			    CHECK_DETAIL (detail, "trough-lower") ||
 			    CHECK_DETAIL (detail, "trough-upper")) {
+				CairoColor bg_color;
+
 				/* Troughs cannot be transparent!
 				 * This is a hack to fix this by filling with a solid color first. */
-				ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg);
-				ge_cairo_set_color (cr, &bg);
+				ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg_color);
+				ge_cairo_set_color (cr, &bg_color);
 				cairo_rectangle (cr, x, y, width, height);
 				cairo_fill (cr);
 
@@ -763,7 +784,16 @@ real_draw_box (GtkStyle      *style,
 					ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &bg);
 				} else {
 					ge_gdk_color_to_cairo (&style->fg[state_type], &bg);
+					
 					bg.a = TROUGH_BG_OPACITY;
+					
+					/* Compose the color here instead leaving the work to
+					 * cairo/xserver which doesn't know that this is a solid
+					 * color. */
+					bg.r = bg.r * bg.a + bg_color.r * (1 - bg.a);
+					bg.g = bg.g * bg.a + bg_color.g * (1 - bg.a);
+					bg.b = bg.b * bg.a + bg_color.b * (1 - bg.a);
+					bg.a = 1.0;
 				}
 
 				ge_gdk_color_to_cairo (&style->fg[state_type],  &bevel);
@@ -912,7 +942,7 @@ draw_focus (GtkStyle      *style,
 		CHECK_ARGS
 
 		if (ge_is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) {
-			if (ge_widget_is_ltr)
+			if (ge_widget_is_ltr (widget))
 				corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 			else
 				corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;

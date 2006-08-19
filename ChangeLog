@@ -1,3 +1,15 @@
+2006-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c:
+	(draw_rounded_gradient), (draw_rounded_rect), (draw_grid_cairo),
+	(real_draw_box), (draw_focus):
+
+	small speed improvements all over the place:
+	- draw_rounded_rect is now fixed and has some special cases.
+	- the border color of default buttons is special cased instead
+	  of relying on transparency.
+	- draw grid draws 5 pixel instead of an arc.
+
 2006-08-18  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* engines/hc/src/hc-style.c: (hc_draw_expander):
