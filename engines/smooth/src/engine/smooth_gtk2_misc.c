@@ -171,7 +171,7 @@ smooth_reverse_engineer_stepper_box (GtkWidget    *range,
   gint box_width;
   gint box_height;
   
-  if (range)
+  if (range && GTK_IS_RANGE (range))
     {
       gtk_widget_style_get (range,
 			    "slider_width", &slider_width,

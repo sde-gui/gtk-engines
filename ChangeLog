@@ -1,5 +1,11 @@
 2006-08-21  Benjamin Otte  <in7y118@public.uni-hamburg.de>
 
+	* engines/smooth/src/engine/smooth_gtk2_misc.c:
+	(smooth_reverse_engineer_stepper_box):
+	  only query style properties if the widget really is a GtkRange
+
+2006-08-21  Benjamin Otte  <in7y118@public.uni-hamburg.de>
+
 	* engines/clearlooks/src/support.c:
 	(clearlooks_scrollbar_visible_steppers),
 	(clearlooks_scrollbar_get_junction):
