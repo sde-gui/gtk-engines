@@ -1,3 +1,13 @@
+2006-08-21  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c: (draw_grid_cairo):
+	- change the color of the grid slightly
+	- speed up the grid by filling all pixel at the same time.
+
+	* engines/industrial/src/industrial_style.c: (real_draw_box),
+	(draw_extension):
+	- make some colors relative, fix "in" gradient for buttons
+
 2006-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/industrial/src/industrial_style.c:

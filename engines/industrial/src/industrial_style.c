@@ -292,11 +292,13 @@ draw_grid_cairo (cairo_t    *cr,
 	gboolean indented = FALSE;
 	CairoColor c = *color;
 	gfloat alpha1 = color->a;
-	gfloat alpha2 = color->a * 0.6;
+	gfloat alpha2 = color->a * 0.5;
 	
 	cairo_save (cr);
 
 	/* walk trough the rows */
+	/* for speed reasons, replaced with code to paint the 5 pixel manually.
+	 * First paint the center ones, then the others */
 	for (ypos = y + 1; ypos < y + height; ypos += 2) {
 		xpos = x;
 		if (!indented)
@@ -305,28 +307,35 @@ draw_grid_cairo (cairo_t    *cr,
 			xpos += 3;
 
 		for (; xpos < x + width; xpos += 4) {
-			/* This one would fill in the center pixel exactly, but
-			 * the dots don't look as good then.
-			 * cairo_arc (cr, xpos + 0.5, ypos + 0.5, sqrt (0.5), 0, 2 * M_PI); */
-			/* cairo_arc (cr, xpos + 0.5, ypos + 0.5, sqrt (0.7), 0, 2 * M_PI); */
-			
-			/* for speed reasons, replaced with code to paint the 5 pixel manually. */
-			c.a = alpha1;
-			ge_cairo_set_color (cr, &c);
-			cairo_rectangle (cr, xpos, ypos, 1, 1);
-			cairo_fill (cr);
-			
-			c.a = alpha2;
-			ge_cairo_set_color (cr, &c);
-			cairo_rectangle (cr, xpos - 1, ypos, 1, 1);
-			cairo_rectangle (cr, xpos, ypos - 1, 1, 1);
-			cairo_rectangle (cr, xpos + 1, ypos, 1, 1);
-			cairo_rectangle (cr, xpos, ypos + 1, 1, 1);
-			cairo_fill (cr);
+			cairo_rectangle (cr, xpos, ypos, 1, 1);	
 		}
 
 		indented = !indented;
 	}
+	c.a = alpha1;
+	ge_cairo_set_color (cr, &c);
+	cairo_fill (cr);
+	
+	indented = FALSE;
+	for (ypos = y + 1; ypos < y + height; ypos += 2) {
+		xpos = x;
+		if (!indented)
+			xpos += 1;
+		else
+			xpos += 3;
+
+		for (; xpos < x + width; xpos += 4) {
+			cairo_rectangle (cr, xpos - 1, ypos, 1, 1);
+			cairo_rectangle (cr, xpos, ypos - 1, 1, 1);
+			cairo_rectangle (cr, xpos + 1, ypos, 1, 1);
+			cairo_rectangle (cr, xpos, ypos + 1, 1, 1);
+		}
+
+		indented = !indented;
+	}
+	c.a = alpha2;
+	ge_cairo_set_color (cr, &c);
+	cairo_fill (cr);
 
 	cairo_restore (cr);
 }
@@ -621,8 +630,8 @@ real_draw_box (GtkStyle      *style,
 			ge_gdk_color_to_cairo (&style->fg[state_type], &inner);
 			ge_gdk_color_to_cairo (&style->fg[state_type], &outer);
 			/* XXX: some way to calculate these would be nice. */
-			inner.a = BUTTON_DEPRESSED_SHADOW_OPACITY_2;
-			outer.a = BUTTON_DEPRESSED_SHADOW_OPACITY_1;
+			inner.a = 0.0;
+			outer.a = BUTTON_BORDER_OPACITY * 0.7;
 
 			cairo_save (cr);
 			cairo_move_to (cr, x, y + height);
@@ -779,7 +788,7 @@ real_draw_box (GtkStyle      *style,
 					state_type = GTK_STATE_NORMAL;
 				}
 				
-				/* XXX: This definatly needs improvement, at least now it is "implemented" */
+				/* XXX: This might need improvement, at least now it is "implemented" */
 				if (CHECK_DETAIL (detail, "trough-lower")) {
 					ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &bg);
 				} else {
@@ -1246,8 +1255,9 @@ draw_extension (GtkStyle       *style,
 	}
 
 	if (state_type != GTK_STATE_NORMAL) {
-		bevel.a = 0.15;
+		bevel.a *= 0.3;
 		ge_cairo_pattern_add_color_stop_color (pattern, 0, &bevel);
+
 		bevel.a = 0;
 		ge_cairo_pattern_add_color_stop_color (pattern, 1, &bevel);
 
