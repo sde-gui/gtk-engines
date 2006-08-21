@@ -241,6 +241,15 @@ ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget)
   return result;
 }
 
+gboolean
+ge_toggle_get_inconsistent (GtkWidget * widget, const gchar *detail, GtkShadowType shadow_type)
+{
+	return (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+				| (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
+				| (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN))
+				| (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
+}
+
 /***********************************************
  * option_menu_get_props -
  *  

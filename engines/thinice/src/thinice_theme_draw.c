@@ -535,197 +535,152 @@ thinice_style_draw_box(GtkStyle * style,
          gint height)
 {
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
+	CairoColor *light, *dark;
+	cairo_t *canvas;
+	gboolean draw_border = TRUE;
 
-  CairoColor *light, *dark;
-  cairo_t *cr;
+	/***********************************************/
+	/* GTK Sanity Checks                           */
+	/***********************************************/
+	CHECK_ARGS
+	SANITIZE_SIZE 
 
-  CHECK_ARGS
 
-  SANITIZE_SIZE
+	/***********************************************/
+	/* GTK Special Cases - Ignored Widgets         */
+	/***********************************************/
+	if ((CHECK_DETAIL(detail, "optionmenutab")) ||
+		(CHECK_DETAIL (detail, "slider")) ||
+		(CHECK_DETAIL (detail, "buttondefault")) ||
+		(CHECK_DETAIL (detail, "bar") && 
+			((height < 1) && (width < 1))))
+	{
+		return;
+	}
 
-  if (CHECK_DETAIL(detail, "optionmenutab"))
-	return;
 
-  light = &thinice_style->color_cube.light[state_type];
-  dark = &thinice_style->color_cube.dark[state_type];
+	/***********************************************/
+	/* GTK Special Cases - adjust Size/Offset      */
+	/***********************************************/
+	if ((CHECK_DETAIL (detail, "bar")))
+	{
+		x += 1;
+		y += 1;
+		width -= 2;
+		height -= 2;
 
-  cr = ge_gdk_drawable_to_cairo (window, area);
-
- if (CHECK_DETAIL (detail, "trough"))
-    {
-           ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
-
-           cairo_rectangle(cr, x, y, width, height);
-
-           cairo_fill(cr);
-
-      thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
-                       detail, x, y, width, height);
+		draw_border=FALSE;
     }
-  else if (CHECK_DETAIL (detail, "slider"))
-    {
-    }
-  else if (CHECK_DETAIL (detail, "buttondefault"))
-    {
-      /* I don't want no background on default buttons..
-         Let's add that cute triangle (see below) instead... */
-    }
-  else if (CHECK_DETAIL (detail, "button"))
-    {
-      if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP (window))
-        {
-           ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
+	else if (CHECK_DETAIL (detail, "handlebox_bin"))
+	{
+		draw_border=FALSE;
+	}
 
-           cairo_rectangle(cr, x+1, y+1, width-2, height-2);
 
-           cairo_fill(cr);
+	/***********************************************/
+	/* Fill Box                                    */
+	/***********************************************/
+	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
+	{
+		canvas = ge_gdk_drawable_to_cairo (window, area);
 
-        }
-      else
-        {
-          gtk_style_apply_default_background(style, window,
-                                             widget && !GTK_WIDGET_NO_WINDOW(widget),
-                                             state_type, area,
-                                             x, y, width, height);
-        }
-      /* Paint a triangle here instead of in "buttondefault"
-         which is drawn _behind_ the current button */
-      if (widget && GTK_WIDGET_HAS_DEFAULT (widget))
-        {
-          cairo_set_line_width (cr, 1);
+		ge_cairo_set_color(canvas, &thinice_style->color_cube.bg[state_type]);
 
-          ge_cairo_set_color(cr, &thinice_style->color_cube.bg[GTK_STATE_SELECTED]);
-          cairo_move_to(cr, x+2.5, y+2.5);
-          cairo_line_to(cr, x+10.5, y+2.5);
-          cairo_line_to(cr, x+2.5, y+10.5);
-          cairo_line_to(cr, x+2.5, y+2.5);
-	  cairo_fill(cr);
+		cairo_rectangle(canvas, x, y, width, height);
 
-          ge_cairo_set_color(cr, dark);
-	  cairo_move_to(cr, x + 2.5, y + 11);
-	  cairo_line_to(cr, x + 2.5, y + 2.5);
-  	  cairo_line_to(cr, x + 11, y + 2.5);
-	  cairo_stroke(cr);
+		cairo_fill(canvas);
 
-          cairo_set_line_width (cr, 0.5);
-          ge_cairo_set_color(cr, light);
-          cairo_move_to(cr, x+11, y+3);
-          cairo_line_to(cr, x+3, y+11);
-	  cairo_stroke(cr);
-        }
+		cairo_destroy(canvas);
+	}
+	else
+	{
+		gtk_style_apply_default_background(style, window,
+				widget && !GTK_WIDGET_NO_WINDOW(widget),
+				state_type, area,
+				x, y, width, height);
+	}
+	
+	/***********************************************/
+	/* Draw Box Border                             */
+	/***********************************************/
+	if (draw_border)
+	{
+		thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
+						detail, x, y, width, height);
+	}
 
-      thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
-                       detail, x, y, width, height);
-    }
-  else if (CHECK_DETAIL (detail, "bar"))
-    {
-      if ((height > 1) && (width > 1))
-        {
+	/***********************************************/
+	/* Draw Widget Specific Sub-Parts              */
+	/***********************************************/
+	if (CHECK_DETAIL (detail, "button"))
+	{
+		/* Paint a triangle here instead of in "buttondefault"
+			which is drawn _behind_ the current button */
+		if (widget && GTK_WIDGET_HAS_DEFAULT (widget))
+		{
+			canvas = ge_gdk_drawable_to_cairo (window, area);
 
-           ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
+			ge_cairo_set_color(canvas, &thinice_style->color_cube.bg[GTK_STATE_SELECTED]);
+			cairo_move_to(canvas, x+2.5, y+2.5);
+			cairo_line_to(canvas, x+10.5, y+2.5);
+			cairo_line_to(canvas, x+2.5, y+10.5);
+			cairo_line_to(canvas, x+2.5, y+2.5);
+			cairo_fill(canvas);
 
-           cairo_rectangle(cr, x+1, y+1, width-2, height-2);
+			ge_cairo_set_color(canvas, dark);
+			cairo_move_to(canvas, x + 2.5, y + 11);
+			cairo_line_to(canvas, x + 2.5, y + 2.5);
+			cairo_line_to(canvas, x + 11, y + 2.5);
+			cairo_stroke(canvas);
 
-           cairo_fill(cr);
+			cairo_set_line_width (canvas, 0.5);
+			ge_cairo_set_color(canvas, light);
+			cairo_move_to(canvas, x+11, y+3);
+			cairo_line_to(canvas, x+3, y+11);
+			cairo_stroke(canvas);
 
-        }
-    }
-  else if (CHECK_DETAIL (detail, "handlebox_bin"))
-    {
-      if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
-        {
-           ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
+			cairo_destroy(canvas);
+		}
+	}
 
-           cairo_rectangle(cr, x, y, width, height);
-
-           cairo_fill(cr);
-
-        }
-      else
-        {
-          gtk_style_apply_default_background(style, window,
-                                             widget && !GTK_WIDGET_NO_WINDOW(widget),
-                                             state_type, area,
-                                             x, y, width, height);
-        }
-    }
-  else if (CHECK_DETAIL (detail, "menubar"))
-    {
-      if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
-        {
-           ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
-
-           cairo_rectangle(cr, x, y, width, height);
-
-           cairo_fill(cr);
-        }
-      else
-        {
-          gtk_style_apply_default_background(style, window,
-                                             widget && !GTK_WIDGET_NO_WINDOW(widget),
-                                             state_type, area,
-                                             x, y, width, height);
-        }
-      thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
-                       detail, x, y, width, height);
-    }
-  else
-    {
-
-      if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
-        {
-           ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
-
-           cairo_rectangle(cr, x, y, width, height);
-
-           cairo_fill(cr);
-        }
-      else
-        {
-          gtk_style_apply_default_background(style, window,
-                                             widget && !GTK_WIDGET_NO_WINDOW(widget),
-                                             state_type, area,
-                                             x, y, width, height);
-        }
-      thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
-                       detail, x, y, width, height);
-    }
-
-  if (CHECK_DETAIL(detail, "optionmenu") ||  (CHECK_DETAIL(detail, "button") && 
-       (ge_is_combo_box(widget, FALSE)) && !(ge_is_combo_box_entry(widget))))
-    {
-      GtkRequisition indicator_size;
-      GtkBorder indicator_spacing;
-      gint vline_x;
+	/* Draw Option Menus and Combo Box "Tab" The Same Way Here */
+	if (CHECK_DETAIL(detail, "optionmenu") ||  (CHECK_DETAIL(detail, "button") && 
+		(ge_is_combo_box(widget, FALSE)) && !(ge_is_combo_box_entry(widget))))
+	{
+		GtkRequisition indicator_size;
+		GtkBorder indicator_spacing;
+		gint vline_x;
  
-      if (state_type != GTK_STATE_INSENSITIVE)
-        state_type = GTK_STATE_NORMAL;
+		if (state_type != GTK_STATE_INSENSITIVE)
+			state_type = GTK_STATE_NORMAL;
  
-      ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
+		ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
  
-      if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL))
-	vline_x = x + indicator_size.width + indicator_spacing.left + indicator_spacing.right;
-      else
-	vline_x = x + width - (indicator_size.width + indicator_spacing.left + 
-                               indicator_spacing.right) - style->xthickness;
+		if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL))
+			vline_x = x + indicator_size.width + indicator_spacing.left + indicator_spacing.right;
+		else
+			vline_x = x + width - (indicator_size.width + indicator_spacing.left + 
+						indicator_spacing.right) - style->xthickness;
 
-      thinice_draw_separator(cr, FALSE, vline_x, y + style->ythickness + 1, style->xthickness, height - 2*style->ythickness - 2);
- 
-      if ((widget) && (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL))
-         x +=  indicator_spacing.right + style->xthickness;
-      else
-         x += width - indicator_size.width - indicator_spacing.right - style->xthickness;
- 
-      y += ((height - indicator_size.height) / 2) + 1;
- 
-      width = indicator_size.width;
-      height = indicator_size.height;
- 
-      thinice_style_draw_arrow (style, window, state_type, shadow_type, area, NULL, "optionmenu", 
-	                      GTK_ARROW_DOWN, TRUE,  x,  y,  width,  height);
-   }
+		canvas = ge_gdk_drawable_to_cairo (window, area);
 
-  cairo_destroy(cr);
+		thinice_draw_separator(canvas, FALSE, vline_x, y + style->ythickness + 1, style->xthickness, height - 2*style->ythickness - 2);
+
+		cairo_destroy(canvas);
+ 
+		if ((widget) && (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL))
+			x +=  indicator_spacing.right + style->xthickness;
+		else
+			x += width - indicator_size.width - indicator_spacing.right - style->xthickness;
+ 
+		y += ((height - indicator_size.height) / 2) + 1;
+ 
+		width = indicator_size.width;
+		height = indicator_size.height;
+ 
+		thinice_style_draw_arrow (style, window, state_type, shadow_type, area, NULL, "optionmenu", 
+						GTK_ARROW_DOWN, TRUE,  x,  y,  width,  height);
+	}
 }
 
 static void

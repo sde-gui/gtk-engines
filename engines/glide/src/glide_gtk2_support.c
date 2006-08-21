@@ -733,29 +733,6 @@ do_glide_draw_check (cairo_t *canvas,
                        gint width, 
                        gint height)
 { 
-  gint odd = 0;
-  gdouble left, top;
-  gint scale, factor;
-
-  scale = MIN(width, height);
-
-  factor = 10;
-
-  if ((odd = (scale % 2)))
-  {
-    factor -= 1;
-  }
-
-  if (scale <= (factor + 2))
-    scale = factor;
-
-  left = x + floor((width - scale) / 2) + 0.5;
-  top = y + floor((height - scale) / 2) + 0.5;
-
-  cairo_save(canvas);
-
-  ge_cairo_set_color(canvas, color);	
-  cairo_set_line_width(canvas, 0.5);
 /*
 
 EVEN - 
@@ -807,6 +784,29 @@ ODD -
   +---+---+---+---+---+---+---+---+---+
 
 */
+  gint odd = 0;
+  gdouble left, top;
+  gint scale, factor;
+
+  scale = MIN(width, height);
+
+  factor = 10;
+
+  if ((odd = (scale % 2)))
+  {
+    factor -= 1;
+  }
+
+  if (scale <= (factor + 2))
+    scale = factor;
+
+  left = x + floor((width - scale) / 2) + 0.5;
+  top = y + floor((height - scale) / 2) + 0.5;
+
+  cairo_save(canvas);
+
+  ge_cairo_set_color(canvas, color);	
+  cairo_set_line_width(canvas, 0.5);
 
   cairo_move_to(canvas, left + floor((1*scale)/factor), top + floor(((4-odd)*scale)/factor)); /*(1,4-odd)*/
   cairo_line_to(canvas, left + floor((1*scale)/factor), top + floor(((6-odd)*scale)/factor)); /*(1,6-odd)*/
@@ -1063,16 +1063,10 @@ static void
 do_glide_draw_dot (cairo_t *canvas,
 			CairoColor * light,
 			CairoColor * dark,
+			CairoColor * mid,
 			gint x,
 			gint y)
 {
-	CairoColor mid;
-
-	cairo_save(canvas);
-
-	cairo_set_line_width (canvas, 0.5);
-	cairo_set_antialias(canvas, CAIRO_ANTIALIAS_NONE);
-
 	ge_cairo_set_color(canvas, dark);	
 	cairo_rectangle (canvas, x - 1, y, 0.5, 0.5);
 	cairo_rectangle (canvas, x - 1, y - 1, 0.5, 0.5);
@@ -1085,14 +1079,10 @@ do_glide_draw_dot (cairo_t *canvas,
 	cairo_rectangle (canvas, x, y + 1, 0.5, 0.5);
 	cairo_stroke(canvas);
 
-	ge_blend_color(dark, light, &mid);	
-
-	ge_cairo_set_color(canvas, &mid);	
+	ge_cairo_set_color(canvas, mid);	
 	cairo_rectangle (canvas, x + 1, y - 1, 0.5, 0.5);
 	cairo_rectangle (canvas, x - 1, y + 1, 0.5, 0.5);
 	cairo_stroke(canvas);
-
-	cairo_restore(canvas);
 }
 
 void
@@ -1106,24 +1096,34 @@ do_glide_draw_grip (cairo_t *canvas,
 			gboolean vertical)
 {
 	gint modx=0, mody=0;
+	CairoColor mid;
 	
 	if (vertical) 
 		mody = 5; 
 	else
 		modx = 5;
 	
+	cairo_save(canvas);
+
+	cairo_set_line_width (canvas, 0.5);
+	cairo_set_antialias(canvas, CAIRO_ANTIALIAS_NONE);
+
+	ge_blend_color(dark, light, &mid);	
+
 	do_glide_draw_dot (canvas,
-		 light, dark,
+		 light, dark, &mid,
 		 x + width / 2 - modx + 1,
 		 y + height / 2 - mody);
 	do_glide_draw_dot (canvas,
-		 light, dark,
+		 light, dark, &mid,
 		 x + width / 2 + 1,
 		 y + height / 2);
 	do_glide_draw_dot (canvas,
-		 light, dark,
+		 light, dark, &mid,
 		 x + width / 2 + modx + 1,
 		 y + height / 2 + mody);
+
+	cairo_restore(canvas);
 }
 
 /***********************************************/

@@ -142,10 +142,7 @@ glide_draw_check (GtkStyle * style,
 
 	cairo_fill(canvas);
 
-	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-
-	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
-	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow == GTK_SHADOW_ETCHED_IN));
+	inconsistent = ge_toggle_get_inconsistent(widget, detail, shadow);
 
 	if ((shadow == GTK_SHADOW_IN) || (inconsistent))
 	{

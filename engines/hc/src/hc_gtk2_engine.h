@@ -41,6 +41,7 @@ typedef struct
 {
   GtkRcStyle parent_instance;
   gint edge_thickness;
+  gint cell_indicator_size;
 } HcRcStyle;
  
 typedef struct
@@ -67,6 +68,7 @@ typedef struct
   CairoColorCube color_cube;
 
   gint edge_thickness;
+  gint cell_indicator_size;
 } HcStyle;
  
 typedef struct

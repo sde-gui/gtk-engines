@@ -28,14 +28,16 @@
 /* Parse RC Style                 */ 
 /**********************************/ 
 enum {
-	TOKEN_EDGE_THICKNESS = G_TOKEN_LAST + 1
+	TOKEN_EDGE_THICKNESS = G_TOKEN_LAST + 1,
+	TOKEN_CELL_INDICATOR_SIZE
 };
 
 static struct {
 	const gchar *name;
 	guint token;
 } hc_rc_symbols[] = {
-	{ "edge_thickness",		TOKEN_EDGE_THICKNESS }
+	{ "edge_thickness",		TOKEN_EDGE_THICKNESS },
+	{ "cell_indicator_size", TOKEN_CELL_INDICATOR_SIZE }
 };
 
 guint 
@@ -123,6 +125,9 @@ hc_rc_style_parse (GtkRcStyle  *rc_style,
 		case TOKEN_EDGE_THICKNESS:
 			token = hc_rc_parse_int (scanner, TOKEN_EDGE_THICKNESS, 2, &hc_rc_style->edge_thickness, 1, 25);
 			break;
+		case TOKEN_CELL_INDICATOR_SIZE:
+			token = hc_rc_parse_int (scanner, TOKEN_CELL_INDICATOR_SIZE, 12, &hc_rc_style->cell_indicator_size, 1, 100);
+			break;		
 		default:
 			g_scanner_get_next_token (scanner);
 			token = G_TOKEN_RIGHT_CURLY;
@@ -170,6 +175,7 @@ hc_rc_style_merge (GtkRcStyle *dest,
 	dest_w = HC_RC_STYLE (dest);
 
 	dest_w->edge_thickness = src_w->edge_thickness;
+	dest_w->cell_indicator_size = src_w->cell_indicator_size;
 }
 
 
@@ -188,6 +194,7 @@ static void
 hc_rc_style_init (HcRcStyle *hc_rc_style)
 {
 	hc_rc_style->edge_thickness = -1;
+	hc_rc_style->cell_indicator_size = -1;
 }
 
 static void hc_rc_style_register_type (GTypeModule *module)
@@ -326,6 +333,7 @@ hc_style_copy (GtkStyle * style, GtkStyle * src)
 	HcStyle *hc_src = HC_STYLE (src);
 
 	hc_style->edge_thickness = hc_src->edge_thickness;
+	hc_style->cell_indicator_size = hc_src->cell_indicator_size;
 
 	hc_parent_class->copy (style, src);
 }
@@ -340,6 +348,11 @@ hc_style_init_from_rc (GtkStyle * style, GtkRcStyle * rc_style)
 	if (HC_RC_STYLE (rc_style)->edge_thickness > 0)
 	{
 		hc_style->edge_thickness = HC_RC_STYLE (rc_style)->edge_thickness;
+	}
+	
+	if (HC_RC_STYLE (rc_style)->cell_indicator_size > 0)
+	{
+		hc_style->cell_indicator_size = HC_RC_STYLE (rc_style)->cell_indicator_size;
 	}
 }
 

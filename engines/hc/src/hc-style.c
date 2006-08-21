@@ -678,25 +678,23 @@ hc_draw_check (GtkStyle      *style,
 {
 	HcStyle *hc_style = HC_STYLE (style);
 	gboolean inconsistent;
-	gint line_width;
+	gint line_width, indicator_size, tmp;
 	cairo_t *cr;
 
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	/*#warning - CHECK IN CELL RENDERER DOES NOT FOLLOW SIZING ALWAYS TO SMALL - FIND WORKAROUND*/
-
-	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellcheck"))
+	/* Bug #351764 */
+	if ((!GTK_CHECK_VERSION(2,12,0)) && 
+			CHECK_DETAIL(detail, "cellcheck"))
 	{
-		x -= 1;
-		y -= 1;
-		width += 2;
-		height += 2;
+		x += (width - HC_STYLE(style)->cell_indicator_size)/2;
+		y += (height - HC_STYLE(style)->cell_indicator_size)/2;
+		width = HC_STYLE(style)->cell_indicator_size;
+		height = HC_STYLE(style)->cell_indicator_size;
 	}
-
-	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
-	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
+	
+	inconsistent = ge_toggle_get_inconsistent(widget, detail, shadow_type);
 
 	line_width = ceil(HC_STYLE(style)->edge_thickness/2);
 	cr = ge_gdk_drawable_to_cairo (window, area);
@@ -808,13 +806,14 @@ hc_draw_option (GtkStyle      *style,
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	/*#warning - OPTION IN CELL RENDERER DOES NOT FOLLOW SIZING ALWAYS TO SMALL - FIND WORKAROUND*/
-	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellcheck"))
+	/* Bug #351764 */
+	if ((!GTK_CHECK_VERSION(2,12,0)) && 
+			CHECK_DETAIL(detail, "cellradio"))
 	{
-		x -= 1;
-		y -= 1;
-		width += 2;
-		height += 2;
+		x += (width - HC_STYLE(style)->cell_indicator_size)/2;
+		y += (height - HC_STYLE(style)->cell_indicator_size)/2;
+		width = HC_STYLE(style)->cell_indicator_size;
+		height = HC_STYLE(style)->cell_indicator_size;
 	}
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
@@ -834,9 +833,7 @@ hc_draw_option (GtkStyle      *style,
 	ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);	
 	cairo_stroke (cr);
 
-	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
-	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
+	inconsistent = ge_toggle_get_inconsistent(widget, detail, shadow_type);
 
 	if ((shadow_type == GTK_SHADOW_IN) || inconsistent)
 	{
