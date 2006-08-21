@@ -1,3 +1,10 @@
+2006-08-21  Benjamin Otte  <in7y118@public.uni-hamburg.de>
+
+	* engines/clearlooks/src/support.c:
+	(clearlooks_scrollbar_visible_steppers),
+	(clearlooks_scrollbar_get_junction):
+	not everything that uses the scrollbar details is a scrollbar
+
 2006-08-21  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/industrial/src/industrial_style.c: (draw_grid_cairo):
