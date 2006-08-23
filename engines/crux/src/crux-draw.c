@@ -810,6 +810,7 @@ draw_box (GtkStyle *style,
 	if (DETAIL ("spinbutton"))
 	{
 		/* this is a border round spin buttons - we don't want anything here */
+		gtk_style_apply_default_background (style, window, TRUE, state_type, area, x, y, width, height);
 		return;
 	}
 
@@ -1039,13 +1040,11 @@ draw_arrow (GtkStyle *style,
 		/* make slightly smaller... */
 		x++;
 		height-=2;
-	} else if (ge_is_combo_box_entry (widget) || ge_is_combo (widget) || ge_is_combo_box (widget, FALSE))
+	} else if (ge_is_in_combo_box (widget) || ge_is_combo_box (widget, FALSE))
 	{
 		x+=2; y+=3; width -= 4; height -= 4;
-		if (ge_is_combo_box (widget, FALSE))
-			x++;
-		if (ge_is_combo_box_entry (widget))
-			x--;
+		if (ge_is_combo (widget))
+			width--;
 	}
 	else
 	{
@@ -1346,10 +1345,10 @@ draw_tab (GtkStyle *style,
 	    detail, state_type, shadow_type, x, y, width, height);
 
 	draw_arrow (style, window, state_type, shadow_type, area, widget, detail,
-		    GTK_ARROW_UP, FALSE, x + width / 2, y - height / 2, height, height - 1);
+		    GTK_ARROW_UP, FALSE, x + width / 2, y - height / 2, width * 0.66, height);
 
 	draw_arrow (style, window, state_type, shadow_type, area, widget, detail,
-		    GTK_ARROW_DOWN, FALSE, x + width / 2, y + height / 2 + 1, height, height - 1);
+		    GTK_ARROW_DOWN, FALSE, x + width / 2, y + height / 2 + 1, width * 0.66, height);
 }
 
 static void
@@ -1460,27 +1459,27 @@ draw_box_gap (GtkStyle *style,
     case GTK_POS_TOP:
 	rect.x = x + gap_x;
 	rect.y = y;
-	rect.width = gap_width;
+	rect.width = gap_width - 1;
 	rect.height = 2;
 	break;
     default:
     case GTK_POS_BOTTOM:
 	rect.x = x + gap_x;
 	rect.y = y + height - 2;
-	rect.width = gap_width;
+	rect.width = gap_width - 1;
 	rect.height = 2;
 	break;
     case GTK_POS_LEFT:
 	rect.x = x;
 	rect.y = y + gap_x;
 	rect.width = 2;
-	rect.height = gap_width;
+	rect.height = gap_width - 1;
 	break;
     case GTK_POS_RIGHT:
 	rect.x = x + width - 2;
 	rect.y = y + gap_x;
 	rect.width = 2;
-	rect.height = gap_width;
+	rect.height = gap_width - 1;
 	break;
     }
 
@@ -1507,24 +1506,12 @@ draw_extension (GtkStyle *style,
 	CairoColor c1, c2;
 	CairoCorners corners;
 
-    debug ("draw_extension: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
-	    detail, state_type, shadow_type, x, y, width, height);
-
-	/* Get x relative to parent widget, not window */
-	if (widget != NULL &&
-	    (parent_widget = gtk_widget_get_parent(widget)) != NULL)
-	{
-		relative_x = x - parent_widget->allocation.x;
-		if (GTK_IS_CONTAINER(widget))
-			relative_x = relative_x - gtk_container_get_border_width((GtkContainer*)widget);
-	}
-	else
-	{
-		relative_x = x;
-	}
+	debug ("draw_extension: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
+		detail, state_type, shadow_type, x, y, width, height);
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
+	cairo_save (cr); /* save initial clip for later */
 	cairo_rectangle (cr, x, y, width, height);
 	cairo_clip_preserve (cr);
 	cairo_new_path (cr);
@@ -1536,8 +1523,8 @@ draw_extension (GtkStyle *style,
 	{
 		case GTK_POS_TOP:
 			/* bottom tab */
-			y--;
-			y--;
+			y -= style->ythickness;
+			height += style->ythickness;
 			corners = CR_CORNER_BOTTOMLEFT + CR_CORNER_BOTTOMRIGHT;
 			crp = cairo_pattern_create_linear (x, y + height, x, y);
 			ge_shade_color (&c2, 0.8, &c1);
@@ -1545,22 +1532,20 @@ draw_extension (GtkStyle *style,
 		default:
 		case GTK_POS_BOTTOM:
 			/* top tab */
-			height++;
-			height++;
+			height += style->ythickness;
 			corners = CR_CORNER_TOPLEFT + CR_CORNER_TOPRIGHT;
 			crp = cairo_pattern_create_linear (x, y, x, y + height);
 			break;
 		case GTK_POS_LEFT:
 			/* right tab */
-			x--;
-			x--;
+			x -= style->xthickness;
+			width += style->xthickness;
 			corners = CR_CORNER_TOPRIGHT + CR_CORNER_BOTTOMRIGHT;
 			crp = cairo_pattern_create_linear (x + width, y, x, y);
 			break;
 		case GTK_POS_RIGHT:
 			/* left tab */
-			width++;
-			width++;
+			width += style->xthickness;
 			corners = CR_CORNER_BOTTOMLEFT + CR_CORNER_TOPLEFT;
 			crp = cairo_pattern_create_linear (x, y, x + width, y);
 			break;
@@ -1577,9 +1562,25 @@ draw_extension (GtkStyle *style,
 	cairo_set_source_rgb (cr, OUTLINE_GRAY);
 	cairo_stroke (cr);
 	
+
 	x++; y++; width -= 2.0; height -= 2.0;
+	if (state_type == GTK_STATE_NORMAL)
+	{
+		cairo_restore (cr); /* restore the original clip */
+		switch (gap_side)
+		{
+			case GTK_POS_BOTTOM: height += 2; cairo_rectangle (cr, x, y, width, height -1); break; /* top */
+			case GTK_POS_TOP: y -= 2; height += 2; cairo_rectangle (cr, x, y + 1, width, height - 1); break; /* bottom */
+			case GTK_POS_LEFT: x -= 2; width += 2; cairo_rectangle (cr, x + 1, y, width - 1, height); break; /* right */
+			case GTK_POS_RIGHT: width += 2; cairo_rectangle (cr, x, y, width - 1, height); break; /* left */
+		}
+		
+		cairo_clip_preserve (cr);
+		cairo_new_path (cr);
+	}
+
 	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, 1.0, corners);
-	if (gap_side == GTK_POS_TOP)
+	if (gap_side == GTK_POS_TOP && state_type == GTK_STATE_NORMAL)
 		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
 	else
 		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5); /* must be same colour as corresponding draw_box highlight */

@@ -1,3 +1,10 @@
+2006-08-23  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c:
+		(draw_box): Fix spinbutton background
+		(draw_arrow), (draw_extension): Fix combobox arrow sizes
+		(draw_tab), (draw_box_gap): Fix inner stroke in notebook tabs
+
 2006-08-23  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
