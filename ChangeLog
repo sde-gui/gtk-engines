@@ -1,3 +1,13 @@
+2006-08-23  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_types.h:
+	- Fix RTL locales
+	- Remove // comments
+	- Remove/comment out some debugging spew. Including some weird
+	if block in draw_vline.
+
 2006-08-21  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_check):

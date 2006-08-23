@@ -134,7 +134,7 @@ typedef struct
 	boolean disabled;
 	boolean focus;
 	boolean is_default;
-	boolean rtl;
+	boolean ltr;
 	
 	ClearlooksStateType state_type;
 	

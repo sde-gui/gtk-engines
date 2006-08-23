@@ -49,7 +49,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->disabled   = (state_type == GTK_STATE_INSENSITIVE);			
 	params->state_type = (ClearlooksStateType)state_type;
 	params->corners    = CL_CORNER_ALL;
-	params->rtl        = !ge_widget_is_ltr ((GtkWidget*)widget);
+	params->ltr        = ge_widget_is_ltr ((GtkWidget*)widget);
 	params->focus      = widget && GTK_WIDGET_HAS_FOCUS (widget);
 	params->is_default = widget && GTK_WIDGET_HAS_DEFAULT (widget);
 		
@@ -144,7 +144,13 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		if (widget && (ge_is_in_combo_box(widget) || IS_SPIN_BUTTON (widget)))
 		{
 			width += style->xthickness;
-			params.corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
+			if (!params.ltr)
+				x -= style->xthickness;
+			
+			if (params.ltr)
+				params.corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
+			else
+				params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
 		}
 		
 		clearlooks_draw_entry (cr, &clearlooks_style->colors, &params,
@@ -193,7 +199,6 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		frame.shadow = CL_SHADOW_NONE;
 		frame.gap_x  = -1;
 		frame.border = &colors->shade[5];
-		//printf("draw_shadow: %s %s\n", detail, widget? G_OBJECT_TYPE_NAME (widget) : "null");
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CL_CORNER_NONE;
 		
@@ -235,8 +240,8 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 	}
 	else
 	{
-		if (widget)
-			printf("box_gap: %s %s\n", detail, G_OBJECT_TYPE_NAME (widget));
+		/* if (widget)
+			printf("box_gap: %s %s\n", detail, G_OBJECT_TYPE_NAME (widget)); */
 		clearlooks_parent_class->draw_box_gap (style, window, state_type, shadow_type,
 									   area, widget, detail,
 									   x, y, width, height,
@@ -274,7 +279,7 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 	}
 	else
 	{
-		printf("draw_extension: %s\n", detail);
+		/* printf("draw_extension: %s\n", detail); */
 		clearlooks_parent_class->draw_extension (style, window, state_type, shadow_type, area,
 		                              widget, detail, x, y, width, height,
 		                              gap_side);
@@ -297,7 +302,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 	
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
-	// Evil hack to work around broken orientation for toolbars
+	/* Evil hack to work around broken orientation for toolbars */
 	is_horizontal = (width > height);
 	
 	if (DETAIL ("handlebox"))
@@ -309,7 +314,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.type = CL_HANDLE_TOOLBAR;
 		handle.horizontal = is_horizontal;
 		
-		// Is this ever true? -Daniel
+		/* Is this ever true? -Daniel */
 		if (IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
 			cairo_save (cr);
@@ -334,7 +339,6 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 	}
 	else
 	{
-//		printf ("draw_handle: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null");
 		WidgetParameters params;
 		HandleParameters handle;
 
@@ -342,7 +346,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.type = CL_HANDLE_TOOLBAR;
 		handle.horizontal = is_horizontal;
 		
-		// Is this ever true? -Daniel
+		/* Is this ever true? -Daniel */
 		if (IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
 			cairo_save (cr);
@@ -400,6 +404,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		gint columns, column_index;
 		gboolean resizable = TRUE;
 		
+		/* XXX: make unknown treeview header CL_ORDER_MIDDLE */
+		columns = 3;
+		column_index = 1;
+		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
 		params.corners = CL_CORNER_NONE;
@@ -419,9 +427,9 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		header.resizable = resizable;
 		
 		if (column_index == 0)
-			header.order = CL_ORDER_FIRST;
+			header.order = params.ltr ? CL_ORDER_FIRST : CL_ORDER_LAST;
 		else if (column_index == columns-1)
-			header.order = CL_ORDER_LAST;
+			header.order = params.ltr ? CL_ORDER_LAST : CL_ORDER_FIRST;
 		else
 			header.order = CL_ORDER_MIDDLE;
 		
@@ -437,7 +445,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		if (ge_is_in_combo_box(widget))
 		{
-			params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+			if (params.ltr)
+				params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+			else
+				params.corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
 			
 			/* Seriously, why can't non-gtk-apps at least try to be decent citizens?
 			   Take this fscking OpenOffice.org 1.9 for example. The morons responsible
@@ -449,7 +460,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 */
 			if (params.xthickness > 2)
 			{
-				x--;
+				if (params.ltr)
+					x--;
 				width++;
 			}			
 		}
@@ -460,7 +472,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
 			params.active = TRUE;
 		
-		// Fix some firefox crap.
+		/* Fix some firefox crap. */
 		if (IS_BUTTON (widget) && IS_FIXED (widget->parent) && widget->allocation.x == -1 &&  widget->allocation.y == -1)
 		{
 			gtk_style_apply_default_background (widget->parent->style, window, TRUE, GTK_STATE_NORMAL,
@@ -470,42 +482,37 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		clearlooks_draw_button (cr, &clearlooks_style->colors, &params,
 		                        x, y, width, height);
 	}
-	else if (DETAIL ("spinbutton_up"))
+	else if (DETAIL ("spinbutton_up") || DETAIL ("spinbutton_down"))
 	{
 		if (state_type == GTK_STATE_ACTIVE)
 		{
 			WidgetParameters params;
+			clearlooks_set_widget_parameters (widget, style, state_type, &params);
 			
-			if (style->xthickness ==3)
+			if (style->xthickness == 3)
 			{
-				x--;
 				width++;
+				if (params.ltr)
+					x--;
 			}
-			height+=2;
 			
-			params.state_type = (ClearlooksStateType)state_type;
-			
-			params.corners = CL_CORNER_TOPRIGHT;
-			clearlooks_draw_spinbutton_down (cr, &clearlooks_style->colors, &params,
-											 x, y, width, height);
-		}
-	}
-	else if (DETAIL ("spinbutton_down"))
-	{
-		if (state_type == GTK_STATE_ACTIVE)
-		{
-			WidgetParameters params;
-			params.state_type = (ClearlooksStateType)state_type;
-			
-			params.corners = CL_CORNER_BOTTOMRIGHT;
-			
-			if (style->xthickness ==3)
+			if (DETAIL ("spinbutton_up"))
 			{
-				x--;
-				width++;
+				height+=2;
+				if (params.ltr)
+					params.corners = CL_CORNER_TOPRIGHT;
+				else
+					params.corners = CL_CORNER_TOPLEFT;
 			}
-			clearlooks_draw_spinbutton_down (cr, &clearlooks_style->colors, &params,
-											 x, y, width, height);
+			else
+			{
+				if (params.ltr)
+					params.corners = CL_CORNER_BOTTOMRIGHT;
+				else
+					params.corners = CL_CORNER_BOTTOMLEFT;
+			}
+				
+			clearlooks_draw_spinbutton_down (cr, &clearlooks_style->colors, &params, x, y, width, height);
 		}
 	}
 	else if (DETAIL ("spinbutton"))
@@ -514,11 +521,15 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
-		params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+		if (params.ltr)
+			params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+		else
+			params.corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
 		
 		if (style->xthickness == 3)
 		{
-			x--;
+			if (params.ltr)
+				x--;
 			width++;
 		}
 		
@@ -539,7 +550,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		slider.inverted   = gtk_range_get_inverted (GTK_RANGE (widget));
 		slider.horizontal = (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL);
 		slider.fill_size  = ((slider.horizontal ? width : height) - slider_length) * (1 / ((adjustment->upper - adjustment->lower) / (adjustment->value - adjustment->lower))) + slider_length / 2;
-		if (slider.horizontal && !ge_widget_is_ltr (widget))
+		if (slider.horizontal && !params.ltr)
 			slider.inverted = !slider.inverted;
 		clearlooks_draw_scale_trough (cr, &clearlooks_style->colors,
 		                              &params, &slider,
@@ -615,8 +626,14 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			progressbar.value = 0;
 			progressbar.pulsing = FALSE;
 		}
-		/* WTF is this doing here?
-		 * cairo_reset_clip (cr); */
+		
+		if (!params.ltr)
+		{
+			if (progressbar.orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
+				progressbar.orientation = GTK_PROGRESS_RIGHT_TO_LEFT;
+			else if (progressbar.orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
+				progressbar.orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+		}
 		
 		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
 		                                  x, y, width, height,
@@ -722,7 +739,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
-		// Only draw the shadows on horizontal toolbars
+		/* Only draw the shadows on horizontal toolbars */
 		if (shadow_type != GTK_SHADOW_NONE && height < 2*width )
 			clearlooks_draw_toolbar (cr, colors, NULL, x, y, width, height);
 	}
@@ -740,7 +757,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else
 	{
-		//printf("draw_box: %s\n", detail);
+		/* printf("draw_box: %s\n", detail); */
 		clearlooks_parent_class->draw_box (style, window, state_type, shadow_type, area,
 		                        widget, detail, x, y, width, height);
 	}
@@ -859,12 +876,12 @@ clearlooks_style_draw_option (DRAW_ARGS)
 		else
 		{
 			cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
-			//cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+			/* cairo_set_source_rgb (cr, dot->r, dot->g, dot->b); */
 			cairo_set_source_rgba (cr, dot->r, dot->g, dot->b,trans);
 			cairo_fill (cr);
 		
 			cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
-			//cairo_set_source_rgba (cr, 1,1,1, 0.5);
+			/* cairo_set_source_rgba (cr, 1,1,1, 0.5); */
 			cairo_set_source_rgba (cr, 1,1,1, 0.5+trans);		
 			cairo_fill (cr);
 		}
@@ -1042,19 +1059,12 @@ clearlooks_style_draw_hline                      (GtkStyle               *style,
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
-	if (DETAIL ("label")) /* wtf? */
-	{
-		printf("draw_vline: label. ermm....?\n");
-	}
-	else
-	{
-		SeparatorParameters separator;
-		
-		separator.horizontal = TRUE;
-		
-		clearlooks_draw_separator (cr, NULL, NULL, &separator,
-		                           x1, y, x2-x1, 2);
-	}
+	SeparatorParameters separator;
+	
+	separator.horizontal = TRUE;
+	
+	clearlooks_draw_separator (cr, NULL, NULL, &separator,
+	                           x1, y, x2-x1, 2);
 	
 	cairo_destroy (cr);
 }
@@ -1125,7 +1135,7 @@ clearlooks_style_draw_resize_grip (GtkStyle       *style,
 	g_return_if_fail (window != NULL);
 
 	if (edge != GDK_WINDOW_EDGE_SOUTH_EAST)
-		return; // sorry... need to work on this :P
+		return; /* sorry... need to work on this :P */
 	
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -1161,7 +1171,7 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	if (arrow_type == (GtkArrowType)4)//NONE - new in GTK 2.10
+	if (arrow_type == (GtkArrowType)4)/* NONE - new in GTK 2.10 */
 		return;
 
 	colors = &clearlooks_style->colors;
@@ -1194,7 +1204,7 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 	}
 	else
 	{
-		//printf("draw_arrow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null");
+		/* printf("draw_arrow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null"); */
 
 		clearlooks_parent_class->draw_arrow (style, window, state_type, shadow, area,
 		                          widget, detail, arrow_type, fill,

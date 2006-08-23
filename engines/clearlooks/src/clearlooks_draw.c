@@ -243,8 +243,8 @@ clearlooks_draw_button (cairo_t *cr,
 	const CairoColor *border_disabled = &colors->shade[4];
 	
 	/* Set colors and stuff */
-//	if (params->focus && !params->active)
-//		border_normal = &colors->spot[2];
+	/* if (params->focus && !params->active)
+		border_normal = &colors->spot[2]; */
 	
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
@@ -401,7 +401,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	if (params->focus)
 	{
 		cairo_rectangle (cr, 2, 2, width-5, height-5);
-	//	clearlooks_rounded_rectangle (cr, 2, 2, width-5, height-5, RADIUS-1, params->corners);
+		/* clearlooks_rounded_rectangle (cr, 2, 2, width-5, height-5, RADIUS-1, params->corners); */
 		cairo_set_source_rgb (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b);
 		cairo_stroke (cr);
 	}
@@ -584,7 +584,7 @@ clearlooks_draw_slider (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);	
 	cairo_translate      (cr, x, y);
 
-	// fill the widget
+	/* fill the widget */
 	cairo_rectangle (cr, 0.5, 0.5, width-2, height-2);
 
 	/* Fake light */
@@ -1354,13 +1354,18 @@ clearlooks_draw_list_view_header (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 	
 	/* Draw resize grip */
-	if (header->order != CL_ORDER_LAST || header->resizable)
+	if ((widget->ltr && header->order != CL_ORDER_LAST) ||
+	    (!widget->ltr && header->order != CL_ORDER_FIRST) || header->resizable)
 	{
 		SeparatorParameters separator;
 		separator.horizontal = FALSE;
 		
-		clearlooks_draw_separator (cr, colors, widget, &separator,
-		                           width-1.5, 4.0, 2, height-8.0);
+		if (widget->ltr)
+			clearlooks_draw_separator (cr, colors, widget, &separator,
+			                           width-1.5, 4.0, 2, height-8.0);
+		else
+			clearlooks_draw_separator (cr, colors, widget, &separator,
+			                           1.5, 4.0, 2, height-8.0);
 	}
 }
 
@@ -1436,7 +1441,7 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	ge_shade_color (bg, 0.95, &bg_shade);
 	
 	cairo_set_line_width (cr, 1);
-	//cairo_translate (cr, x, y);
+	/* cairo_translate (cr, x, y); */
 	
 	if (scrollbar->horizontal)
 	{
@@ -1845,9 +1850,9 @@ clearlooks_draw_resize_grip (cairo_t *cr,
  
 	cairo_set_line_width (cr, 1);
 
-	for (ly=0; ly<3; ly++) // vertically, three rows of dots
+	for (ly=0; ly<3; ly++) /* vertically, three rows of dots */
 	{
-		for (lx=0; lx<=ly; lx++) // horizontally
+		for (lx=0; lx<=ly; lx++) /* horizontally */
 		{
 			int ny = (2-ly) * 5;
 			int nx = lx * 4;
