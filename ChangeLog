@@ -3,7 +3,7 @@
 	* engines/clearlooks/src/clearlooks_draw.c:
 	* engines/clearlooks/src/clearlooks_style.c:
 	* engines/clearlooks/src/clearlooks_types.h:
-	- Fix RTL locales
+	- Fix RTL locales (including bug 328053, Hooman "Messi" Mesgary)
 	- Remove // comments
 	- Remove/comment out some debugging spew. Including some weird
 	if block in draw_vline.
