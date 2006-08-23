@@ -18,6 +18,13 @@
 	- Add workaround for cell renderer check/radio till 2.12 style fix
 	- Add ge_toggle_get_inconsistent for function
 
+2006-08-21  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+
+	Update for 2.7.8 release
+
 2006-08-21  Benjamin Otte  <in7y118@public.uni-hamburg.de>
 
 	* engines/smooth/src/engine/smooth_gtk2_misc.c:

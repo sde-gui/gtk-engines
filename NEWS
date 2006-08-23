@@ -1,3 +1,26 @@
+Overview of Changes in 2.7.8 (since 2.7.7)
+==========================================
+
+Highlights in this release include:
+
+	- Add paranoia and deprecated configure flags
+	- Improve HighContrast (HC) engine inconsistent state check mark
+	- Use the base/text values for expander arrow in HC (fixes invisible
+	  indicator problem)
+	- Improve visibility/contrast of checks in HC
+	- Fix broken Clearlooks menu on panel check
+	- Implement a focus rectangle for GtkEntry
+	- Many other visual improvements to Industrial
+
+See the ChangeLog for full details of other smaller fixes and enhancements.
+
+Fixed bugs in this release:
+
+	349575 - C89 Fixes (Last C89 Patch to close bug)
+	350606 - Location of G_GNUC_INTERNAL breaks Solaris build
+	351057 - Leak in clearlooks_style.c
+
+
 Overview of Changes in 2.7.7 (since 2.7.6)
 ==========================================
 
