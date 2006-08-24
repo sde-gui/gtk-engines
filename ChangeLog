@@ -1,3 +1,12 @@
+2006-08-24  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/hc/src/hc-style.c: (hc_draw_check):
+	- Fix a // comment
+
+	* engines/industrial/src/industrial_style.c: (draw_option):
+	- Add a missing cairo_destroy call
+	- Implement a basic inconsistent state
+
 2006-08-23  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c:

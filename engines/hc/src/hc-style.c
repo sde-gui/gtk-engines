@@ -735,7 +735,7 @@ hc_draw_check (GtkStyle      *style,
 		/* What should the line width be? not the same as border... 
 			but why this?
 		 */
-		line_width = floor(line_width*3.5);//ceil(MIN(width,height)/5);
+		line_width = floor(line_width*3.5); /* ceil(MIN(width,height)/5); */
 
 		/* The X is capped square, 
 				so uh. inset by line_width/2 to center line

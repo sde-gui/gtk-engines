@@ -1427,8 +1427,16 @@ draw_option (GtkStyle * style,
 			   3 * M_PI_2 + M_PI_4);
 		cairo_close_path (cr);
 		cairo_fill (cr);
+	} else if (shadow_type == GTK_SHADOW_ETCHED_IN) {
+		/* XXX: inconsistent state needs sanity check */
+		cairo_set_line_width (cr, 2.0);
+		cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
+		cairo_move_to (cr, xc - radius + 2, yc);
+		cairo_line_to (cr, xc + radius - 2, yc);
+
+		cairo_stroke (cr);
 	}
-	/* XXX: inconsistent state missing */
+	cairo_destroy (cr);
 }
 
 static GdkPixbuf*
