@@ -583,12 +583,9 @@ real_draw_box (GtkStyle      *style,
 	       gint           height,
 	       gboolean       fill)
 {
-	/* None of the drawing routines below are set up to handle SHADOW_TYPE_NONE,
-	 * so just fill in a blank box here.  Ideally everything in the theme
-	 * would be reworked to handle SHADOW_TYPE_NONE correctly */
-	if (shadow_type == GTK_SHADOW_NONE)
-		return;
-
+	/* For the shadow_type == GTK_SHADOW_NONE case we try to do some magic ...
+	 * Buttons are drawn normally, but without any shadow effects, and most
+	 * important, for unkown stuff we fall back to flat_box. */
 	cairo_save (cr);
 
 	if (CHECK_DETAIL (detail, "button") ||
@@ -651,7 +648,7 @@ real_draw_box (GtkStyle      *style,
 		}
 
 		/* Only draw shadow if button is large enough to fit it. */
-		if (width > 18 && height > 18) {
+		if (width > 18 && height > 18 && shadow_type != GTK_SHADOW_NONE) {
 			gint slope = MIN (width / 2, height / 2);
 			CairoColor inner;
 			CairoColor outer;
@@ -822,6 +819,11 @@ real_draw_box (GtkStyle      *style,
 		ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 		ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
 		bevel.a = MENUBAR_BORDER_OPACITY;
+		
+		/* ignore the menubar if the shadow is NONE. This is the case for the
+		 * mainmenu applet and the task selector. */
+		if (shadow_type == GTK_SHADOW_NONE)
+			return;
 
 		if (fill)
 			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
@@ -889,12 +891,17 @@ real_draw_box (GtkStyle      *style,
 		ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
 		bevel.a = STANDARD_BORDER_OPACITY;
 
-		if (fill)
-			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
-					   &bevel, &bg, corners);
-		else
+		if (fill) {
+			if (shadow_type != GTK_SHADOW_NONE) {
+				draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+						   &bevel, &bg, corners);
+			} else {
+				parent_class->draw_flat_box (style, window, state_type, shadow_type, area, widget, detail, x, y, width, height);
+			}
+		} else if (shadow_type != GTK_SHADOW_NONE) {
 			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
 					   &bevel, NULL, corners);
+		}
 	}
 
 	cairo_restore (cr);

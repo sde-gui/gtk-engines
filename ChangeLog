@@ -1,3 +1,12 @@
+2006-08-27  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c: (real_draw_box):
+	- Fall back to draw_flat_box if shadow is NONE and something
+	unkown gets drawn. This fixes inkscape rulers. Also added a
+	now needed workaround for panel menubars.
+	Fix based on a patch by Josselin Mouette from
+	http://bugzilla.ximian.com/show_bug.cgi?id=45579
+
 2006-08-24  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/hc/src/hc-style.c: (hc_draw_check):
