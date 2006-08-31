@@ -49,7 +49,7 @@ style "clearlooks-default"
 
   engine "clearlooks" 
   {
-    scrollbar_color   = "#76acde"
+    #scrollbar_color   = "#76acde"
     menubarstyle      = 2       # 0 = flat, 1 = sunken, 2 = flat gradient
     menuitemstyle     = 1       # 0 = flat, 1 = 3d-ish (gradient), 2 = 3d-ish (button)
     listviewitemstyle = 1       # 0 = flat, 1 = 3d-ish (gradient)
