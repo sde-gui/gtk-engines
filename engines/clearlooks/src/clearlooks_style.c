@@ -804,8 +804,8 @@ clearlooks_style_draw_option (DRAW_ARGS)
 
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
-		border = &clearlooks_style->colors.shade[2];
-		dot    = &clearlooks_style->colors.shade[2];
+		border = &clearlooks_style->colors.shade[5];
+		dot    = &clearlooks_style->colors.shade[6];
 	}
 	else
 	{
@@ -918,8 +918,8 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
-		border = &clearlooks_style->colors.shade[2];
-		dot    = &clearlooks_style->colors.shade[2];
+		border = &clearlooks_style->colors.shade[5];
+		dot    = &clearlooks_style->colors.shade[6];
 	}
 	else
 	{
