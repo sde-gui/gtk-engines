@@ -1,6 +1,13 @@
 2006-09-03  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_tab):
+
+	Drawing of arrows on optionmenus was broken in Firefox.
+
+2006-09-03  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_box), (clearlooks_style_draw_tab),
 	(clearlooks_style_draw_arrow):
 

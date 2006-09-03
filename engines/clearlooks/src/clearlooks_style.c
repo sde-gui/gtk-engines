@@ -1007,7 +1007,7 @@ clearlooks_style_draw_tab (DRAW_ARGS)
 	GtkRequisition indicator_size;
 	GtkBorder indicator_spacing;
 	gint arrow_height;
-		
+
 	ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 	
 	indicator_size.width += (indicator_size.width % 2) - 1;
@@ -1017,14 +1017,14 @@ clearlooks_style_draw_tab (DRAW_ARGS)
 	y += height/2;
 
 
-	gtk_paint_arrow (widget->style, widget->window,
-	                 widget->state, shadow_type,
+	gtk_paint_arrow (style, window,
+	                 state_type, shadow_type,
 	                 area, widget, "arrow",
 	                 GTK_ARROW_UP, TRUE,
 	                 x, y-arrow_height-1, indicator_size.width, arrow_height);
 	                 
-	gtk_paint_arrow (widget->style, widget->window,
-	                 widget->state, shadow_type,
+	gtk_paint_arrow (style, window,
+	                 state_type, shadow_type,
 	                 area, widget, "arrow",
 	                 GTK_ARROW_DOWN, TRUE,
 	                 x, y+2, indicator_size.width, arrow_height);
