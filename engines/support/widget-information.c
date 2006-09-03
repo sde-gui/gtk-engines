@@ -14,9 +14,10 @@ ge_object_is_a (const GObject * object, const gchar * type_name)
 {
   gboolean result = FALSE;
  
-  if ((widget))
+  if ((object))
     {
       GType tmp = g_type_from_name (type_name);
+
       if (tmp)
 	result = g_type_check_instance_is_a ((GTypeInstance *) object, tmp);
     }
@@ -31,7 +32,7 @@ ge_is_combo_box_entry (GtkWidget * widget)
  
   if ((widget) && (widget->parent))
     {
-      if (IS_COMBO_BOX_ENTRY (widget->parent))
+      if (GE_IS_COMBO_BOX_ENTRY (widget->parent))
 	result = TRUE;
       else
 	result = ge_is_combo_box_entry (widget->parent);
@@ -44,11 +45,11 @@ ge_combo_box_is_using_list (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
-  if ((widget) && (IS_COMBO_BOX (widget->parent)))
+  if ((widget) && (GE_IS_COMBO_BOX (widget->parent)))
     {
       gboolean *tmp = NULL;
  
-      gtk_widget_style_get (widget, "appears-as-list", &result, NULL);
+      gtk_widget_style_get (widget->parent, "appears-as-list", &result, NULL);
  
       if (tmp)
 	result = *tmp;
@@ -64,12 +65,12 @@ ge_is_combo_box (GtkWidget * widget, gboolean as_list)
  
   if ((widget) && (widget->parent))
     {
-      if (IS_COMBO_BOX (widget->parent))
+      if (GE_IS_COMBO_BOX (widget->parent))
         {
           if (as_list)
-            result = (ge_combo_box_is_using_list(widget));
+            result = (ge_combo_box_is_using_list(widget->parent));
           else
-            result = (!ge_combo_box_is_using_list(widget));
+            result = (!ge_combo_box_is_using_list(widget->parent));
         }
       else
 	result = ge_is_combo_box (widget->parent, as_list);
@@ -84,7 +85,7 @@ ge_is_combo (GtkWidget * widget)
  
   if ((widget) && (widget->parent))
     {
-      if (IS_COMBO (widget->parent))
+      if (GE_IS_COMBO (widget->parent))
 	result = TRUE;
       else
 	result = ge_is_combo (widget->parent);
@@ -104,11 +105,11 @@ ge_is_toolbar_item (GtkWidget * widget)
   gboolean result = FALSE;
  
   if ((widget) && (widget->parent)) {
-    if ((IS_BONOBO_TOOLBAR (widget->parent))
-	|| (IS_BONOBO_DOCK_ITEM (widget->parent))
-	|| (IS_EGG_TOOLBAR (widget->parent))
-	|| (IS_TOOLBAR (widget->parent))
-	|| (IS_HANDLE_BOX (widget->parent)))
+    if ((GE_IS_BONOBO_TOOLBAR (widget->parent))
+	|| (GE_IS_BONOBO_DOCK_ITEM (widget->parent))
+	|| (GE_IS_EGG_TOOLBAR (widget->parent))
+	|| (GE_IS_TOOLBAR (widget->parent))
+	|| (GE_IS_HANDLE_BOX (widget->parent)))
       result = TRUE;
     else
       result = ge_is_toolbar_item (widget->parent);
@@ -123,7 +124,7 @@ ge_is_panel_widget_item (GtkWidget * widget)
  
   if ((widget) && (widget->parent))
     {
-      if (IS_PANEL_WIDGET (widget->parent))
+      if (GE_IS_PANEL_WIDGET (widget->parent))
 	result = TRUE;
       else
 	result = ge_is_panel_widget_item (widget->parent);
@@ -138,9 +139,9 @@ ge_is_bonobo_dock_item (GtkWidget * widget)
  
   if ((widget))
     {
-      if (IS_BONOBO_DOCK_ITEM(widget) || GE_IS_BONOBO_DOCK_ITEM (widget->parent))
+      if (GE_IS_BONOBO_DOCK_ITEM(widget) || GE_IS_BONOBO_DOCK_ITEM (widget->parent))
 	result = TRUE;
-      else if (IS_BOX(widget) || GE_IS_BOX(widget->parent))
+      else if (GE_IS_BOX(widget) || GE_IS_BOX(widget->parent))
         {
           GtkContainer *box = GE_IS_BOX(widget)?GTK_CONTAINER(widget):GTK_CONTAINER(widget->parent);
           GList *children = NULL, *child = NULL;
@@ -149,7 +150,7 @@ ge_is_bonobo_dock_item (GtkWidget * widget)
               
           for (child = g_list_first(children); child; child = g_list_next(child))
             {
-	      if (IS_BONOBO_DOCK_ITEM_GRIP(child->data))
+	      if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
 	        {
 	          result = TRUE;
 	          child = NULL;
@@ -170,7 +171,7 @@ ge_find_combo_box_entry_widget (GtkWidget * widget)
 
   if (widget)
     {
-      if (IS_COMBO_BOX_ENTRY (widget))
+      if (GE_IS_COMBO_BOX_ENTRY (widget))
 	result = widget;
       else
 	result = ge_find_combo_box_entry_widget (widget->parent);
@@ -186,7 +187,7 @@ ge_find_combo_box_widget (GtkWidget * widget, gboolean as_list)
  
   if (widget)
     {
-      if (IS_COMBO_BOX (widget))
+      if (GE_IS_COMBO_BOX (widget))
         {
           if (as_list)
             result = (ge_combo_box_is_using_list(widget))?widget:NULL;
@@ -206,7 +207,7 @@ ge_find_combo_widget (GtkWidget * widget)
  
   if (widget)
     {
-      if (IS_COMBO (widget))
+      if (GE_IS_COMBO (widget))
 	result = widget;
       else
 	result = ge_find_combo_widget(widget->parent);
@@ -244,7 +245,7 @@ ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget)
 gboolean
 ge_toggle_get_inconsistent (GtkWidget * widget, const gchar *detail, GtkShadowType shadow_type)
 {
-	return (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+	return (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
 				| (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
 				| (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN))
 				| (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));

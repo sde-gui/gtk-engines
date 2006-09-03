@@ -170,7 +170,7 @@ redmond_draw_check (GtkStyle * style,
 	{
 	case GTK_STATE_NORMAL:
 	case GTK_STATE_PRELIGHT:
-          if (IS_TOGGLE_BUTTON(widget) && TOGGLE_BUTTON(widget)->inconsistent)
+          if (GE_IS_TOGGLE_BUTTON(widget) && TOGGLE_BUTTON(widget)->inconsistent)
             do_redmond_draw_masked_fill (cr, &redmond_style->hatch_mask, 
                                               &redmond_style->color_cube.bg[GTK_STATE_NORMAL],
                                               &redmond_style->color_cube.light[GTK_STATE_NORMAL],
@@ -195,11 +195,11 @@ redmond_draw_check (GtkStyle * style,
 	}
  
       if ((shadow == GTK_SHADOW_IN) || 
-          (IS_TOGGLE_BUTTON(widget) && 
+          (GE_IS_TOGGLE_BUTTON(widget) && 
            TOGGLE_BUTTON(widget)->inconsistent))
 	{
 	  if ((state == GTK_STATE_INSENSITIVE) || 
-              (IS_TOGGLE_BUTTON(widget) && 
+              (GE_IS_TOGGLE_BUTTON(widget) && 
                TOGGLE_BUTTON(widget)->inconsistent))
             {
 	      do_redmond_draw_check (cr, &redmond_style->color_cube.fg[GTK_STATE_INSENSITIVE],
@@ -295,7 +295,7 @@ redmond_draw_option (GtkStyle * style,
 					center_y, 
 					radius - 1);
 
-      inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
+      inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
       inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
       inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow == GTK_SHADOW_ETCHED_IN));
  
@@ -526,7 +526,7 @@ redmond_draw_shadow (GtkStyle * style,
 	}
       else if (((CHECK_DETAIL (detail, "entry"))
 		|| (CHECK_DETAIL (detail, "frame")))
-	       && widget && ((IS_SPIN_BUTTON (widget))
+	       && widget && ((GE_IS_SPIN_BUTTON (widget))
 			     || (ge_is_in_combo_box (widget))))
 	{
 	  /* The Combo/ComboBoxEntry button and the SpingButton Steppers should apear
@@ -557,7 +557,7 @@ redmond_draw_shadow (GtkStyle * style,
 	    }
 	}
       else if ((CHECK_DETAIL (detail, "trough"))
-	       || ((IS_STATUS_BAR (widget)))
+	       || ((GE_IS_STATUSBAR (widget)))
 	       || ((CHECK_DETAIL (detail, "frame")))
 	       || ((CHECK_DETAIL (detail, "button"))
 		   && (ge_is_toolbar_item (widget))))
@@ -1017,7 +1017,7 @@ redmond_draw_box (GtkStyle * style,
   CHECK_ARGS
   SANITIZE_SIZE
  
-  if (IS_MENU_SHELL(widget))
+  if (GE_IS_MENU_SHELL(widget))
     {
       redmond_gtk2_engine_hack_menu_shell_setup_signals(widget);
     }  
@@ -1052,7 +1052,7 @@ redmond_draw_box (GtkStyle * style,
 
       do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                     x, y, width, height);
-      if (IS_HSCALE (widget))
+      if (GE_IS_HSCALE (widget))
 	{
           ge_cairo_set_color(cr, &redmond_style->black_border[state_type]);
           cairo_rectangle(cr, x, y + (height / 2), width - 2, 1);
@@ -1076,7 +1076,7 @@ redmond_draw_box (GtkStyle * style,
     }
   else if ((CHECK_DETAIL (detail, "toolbar"))
 	   || (CHECK_DETAIL (detail, "menubar"))
-	   || (IS_BONOBO_TOOLBAR (widget))
+	   || (GE_IS_BONOBO_TOOLBAR (widget))
 	   || (CHECK_DETAIL (detail, "dockitem"))
 	   || (CHECK_DETAIL (detail, "dockitem_bin"))
 	   || (CHECK_DETAIL (detail, "handlebox_bin"))
@@ -1090,14 +1090,14 @@ redmond_draw_box (GtkStyle * style,
                 top_cutoff = FALSE, bottom_cutoff = FALSE;
  
       if (((CHECK_DETAIL (detail, "dockitem_bin")) && 
-           (IS_BONOBO_DOCK_ITEM(widget))) || 
+           (GE_IS_BONOBO_DOCK_ITEM(widget))) || 
           ((widget) && (ge_is_bonobo_dock_item(widget->parent))))
 	{	  
 	  GList *children = NULL, *child = NULL;
 	  GtkWidget *dockitem = widget;
 	  gboolean has_grip = FALSE, ltr = TRUE;
 	  
-	  if ((!IS_BONOBO_DOCK_ITEM(widget)) && (!IS_BOX(widget)))
+	  if ((!GE_IS_BONOBO_DOCK_ITEM(widget)) && (!GE_IS_BOX(widget)))
 	    dockitem = widget->parent;
 	    
 	  has_grip = GE_IS_CONTAINER(dockitem);
@@ -1112,7 +1112,7 @@ redmond_draw_box (GtkStyle * style,
                           
             for (child = g_list_first(children); child; child = g_list_next(child))
               {
-	        if (IS_BONOBO_DOCK_ITEM_GRIP(child->data))
+	        if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
                   has_grip = (GTK_WIDGET_VISIBLE(child->data) && 
                               GTK_WIDGET_REALIZED(child->data) && 
                               GTK_WIDGET(child->data)->allocation.width > 1) &&
@@ -1139,7 +1139,7 @@ redmond_draw_box (GtkStyle * style,
  
 	      if GE_IS_HBOX(dockitem)
 	        tmp = GTK_ORIENTATION_VERTICAL;
-	      else if (IS_BONOBO_DOCK_ITEM(dockitem))
+	      else if (GE_IS_BONOBO_DOCK_ITEM(dockitem))
 	        g_object_get (dockitem, "orientation", &tmp, NULL);
  
 	      if (tmp == GTK_ORIENTATION_HORIZONTAL)
@@ -1174,7 +1174,7 @@ redmond_draw_box (GtkStyle * style,
 	        }
 	    }    
 	}
-      else if (IS_HANDLE_BOX(widget))
+      else if (GE_IS_HANDLE_BOX(widget))
         {
 	  switch (gtk_handle_box_get_handle_position
 		  (GTK_HANDLE_BOX (widget)))
@@ -1198,7 +1198,7 @@ redmond_draw_box (GtkStyle * style,
 	      break;
 	    }      
         }
-      else if (IS_HANDLE_BOX_ITEM(widget) && GTK_WIDGET_REALIZED(widget->parent) && GTK_WIDGET_VISIBLE(widget->parent))
+      else if (GE_IS_HANDLE_BOX_ITEM(widget) && GTK_WIDGET_REALIZED(widget->parent) && GTK_WIDGET_VISIBLE(widget->parent))
         {
 	  switch (gtk_handle_box_get_handle_position
 		  (GTK_HANDLE_BOX (widget->parent)))
@@ -1334,7 +1334,7 @@ redmond_draw_box (GtkStyle * style,
       redmond_draw_spinbutton_stepper (style, window, state_type, shadow_type, area,
 			       widget, detail, x, y, width, height);
     }
-  else if (IS_TOGGLE_BUTTON(widget) && (TOGGLE_BUTTON(widget)->active))
+  else if (GE_IS_TOGGLE_BUTTON(widget) && (TOGGLE_BUTTON(widget)->active))
     {
       gint pointer_x, pointer_y;
       GdkModifierType pointer_mask;
@@ -1666,7 +1666,7 @@ redmond_draw_handle (GtkStyle * style,
   CHECK_ARGS
   SANITIZE_SIZE
   
-  if (IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
+  if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
      (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) && 
       orientation == (GTK_ORIENTATION_HORIZONTAL))
   {
@@ -1682,9 +1682,9 @@ redmond_draw_handle (GtkStyle * style,
   do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
                                 x, y, width, height);
  
-  if (widget && !(IS_PANED (widget)))
+  if (widget && !(GE_IS_PANED (widget)))
     {
-      if (IS_HANDLE_BOX (widget))
+      if (GE_IS_HANDLE_BOX (widget))
 	{
 	  /* handle box apears to be broken in that
 	   * it doesn't pass the orientation properly,
@@ -1708,7 +1708,7 @@ redmond_draw_handle (GtkStyle * style,
       else
 	{
 	  if ((CHECK_DETAIL (detail, "handlebox")
-	       && (!IS_HANDLE_BOX_ITEM (widget))))
+	       && (!GE_IS_HANDLE_BOX_ITEM (widget))))
 	    {
 	      /* panel_applet_frame used by the panel is broken,
 	       * always passes orientation == horizontal 
@@ -1759,8 +1759,8 @@ redmond_draw_handle (GtkStyle * style,
 
       if (ge_is_panel_widget_item (widget)
 	  && (CHECK_DETAIL (detail, "handlebox")
-	      && (!IS_HANDLE_BOX_ITEM (widget)))
-	  && (!(IS_HANDLE_BOX (widget))))
+	      && (!GE_IS_HANDLE_BOX_ITEM (widget)))
+	  && (!(GE_IS_HANDLE_BOX (widget))))
 	{
 	  /* If this is on a PanelWidget, we draw a line 
 	   * next to it instead of drawing a border around it.
@@ -1795,7 +1795,7 @@ redmond_draw_handle (GtkStyle * style,
           else
             clip = shadow;
  
-          if (IS_BONOBO_DOCK_ITEM_GRIP(widget))
+          if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget))
             {
               if GE_IS_BOX(widget->parent)
                 {
@@ -1805,7 +1805,7 @@ redmond_draw_handle (GtkStyle * style,
               
                   for (child = g_list_first(children); child; child = g_list_next(child))
                     {
-	              if (IS_BOX(child->data))
+	              if (GE_IS_BOX(child->data))
 	                {
 	                  skip_shadow = TRUE;
 	                  child = NULL;

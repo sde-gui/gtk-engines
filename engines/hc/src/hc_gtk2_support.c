@@ -334,7 +334,7 @@ hc_gtk2_engine_hack_menu_shell_motion(GtkWidget *widget,
                       GdkEventMotion *event, 
                       gpointer user_data)
 {
-  if (IS_MENU_SHELL(widget))
+  if (GE_IS_MENU_SHELL(widget))
     {
       gint pointer_x, pointer_y;
       GdkModifierType pointer_mask;
@@ -342,7 +342,7 @@ hc_gtk2_engine_hack_menu_shell_motion(GtkWidget *widget,
      
       gdk_window_get_pointer(widget->window, &pointer_x, &pointer_y, &pointer_mask);
 	    
-      if (IS_CONTAINER(widget))
+      if (GE_IS_CONTAINER(widget))
         {
           children = gtk_container_get_children(GTK_CONTAINER(widget));
               
@@ -386,11 +386,11 @@ hc_gtk2_engine_hack_menu_shell_leave(GtkWidget *widget,
                       GdkEventCrossing *event,
                       gpointer user_data)
 {
-  if (IS_MENU_SHELL(widget))
+  if (GE_IS_MENU_SHELL(widget))
     {
       GList *children = NULL, *child = NULL;
  
-      if (IS_CONTAINER(widget))
+      if (GE_IS_CONTAINER(widget))
         {
           children = gtk_container_get_children(GTK_CONTAINER(widget));
               
@@ -427,7 +427,7 @@ hc_gtk2_engine_hack_menu_shell_leave(GtkWidget *widget,
 void
 hc_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget)
 {
-  if (IS_MENU_BAR(widget))
+  if (GE_IS_MENU_BAR(widget))
     {
       gint id = 0;
  
@@ -467,7 +467,7 @@ hc_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget)
 void
 hc_gtk2_engine_hack_menu_shell_cleanup_signals(GtkWidget *widget)
 {
-  if (IS_MENU_BAR(widget))
+  if (GE_IS_MENU_BAR(widget))
     {
       gint id = 0;
  

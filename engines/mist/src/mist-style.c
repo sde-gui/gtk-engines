@@ -858,10 +858,10 @@ mist_style_draw_option(GtkStyle *style,
 	cairo_stroke (cr);
 
 	if ((shadow_type == GTK_SHADOW_IN) || 
-		(IS_TOGGLE_BUTTON(widget) && 
+		(GE_IS_TOGGLE_BUTTON(widget) && 
 		TOGGLE_BUTTON(widget)->inconsistent))
 	{
-		if ((IS_TOGGLE_BUTTON(widget) && 
+		if ((GE_IS_TOGGLE_BUTTON(widget) && 
 			TOGGLE_BUTTON(widget)->inconsistent))
 		{
 			/* Rough logic, just make  thickness 1/3 height */

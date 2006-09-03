@@ -871,7 +871,7 @@ real_draw_box (GtkStyle      *style,
 		CairoColor bevel, bg;
 		CairoCorners corners = CR_CORNER_ALL;
 
-		if ((IS_SPIN_BUTTON (widget) && CHECK_DETAIL (detail, "entry")) ||
+		if ((GE_IS_SPIN_BUTTON (widget) && CHECK_DETAIL (detail, "entry")) ||
 		    ge_is_in_combo_box (widget)) {
 			/* effectively cut one side off. */
 			width += 2;

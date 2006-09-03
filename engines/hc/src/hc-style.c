@@ -435,7 +435,7 @@ hc_draw_box (GtkStyle	*style,
 	/***********************************************/
 
 	/* Add Menu Shell Hack For Menu Bar Item Prelight */
-	if (IS_MENU_SHELL(widget))
+	if (GE_IS_MENU_SHELL(widget))
 	{
 		hc_gtk2_engine_hack_menu_shell_setup_signals(widget);
 	}  
@@ -637,7 +637,7 @@ hc_draw_slider (GtkStyle * style,
 	hc_draw_box (style, window, state_type, shadow_type, area, widget, 
 			detail, x, y, width, height);
 
-	if (IS_SCALE(widget))
+	if (GE_IS_SCALE(widget))
 	{
 		if (orientation == GTK_ORIENTATION_HORIZONTAL)
 		{

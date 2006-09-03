@@ -156,7 +156,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		clearlooks_draw_entry (cr, &clearlooks_style->colors, &params,
 		                       x, y, width, height);
 	}
-	else if (DETAIL ("frame") && widget && GE_IS_STATUS_BAR (widget->parent))
+	else if (DETAIL ("frame") && widget && GE_IS_STATUSBAR (widget->parent))
 	{
 		WidgetParameters params;
 		
@@ -315,7 +315,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.horizontal = is_horizontal;
 		
 		/* Is this ever true? -Daniel */
-		if (IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
+		if (GE_IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
 			cairo_save (cr);
 			clearlooks_draw_toolbar (cr, colors, &params, x, y, width, height);
@@ -347,7 +347,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.horizontal = is_horizontal;
 		
 		/* Is this ever true? -Daniel */
-		if (IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
+		if (GE_IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
 			cairo_save (cr);
 			clearlooks_draw_toolbar (cr, colors, &params, x, y, width, height);
@@ -395,7 +395,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		                         x, y, width, height);
 	}
 	else if (DETAIL ("button") && widget && widget->parent &&
-                 (IS_TREE_VIEW(widget->parent) ||
+                 (GE_IS_TREE_VIEW(widget->parent) ||
                   GE_IS_CLIST (widget->parent)))
 	{
 		WidgetParameters params;
@@ -412,13 +412,13 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		params.corners = CL_CORNER_NONE;
 		
-		if (IS_TREE_VIEW (widget->parent))
+		if (GE_IS_TREE_VIEW (widget->parent))
 		{
 			clearlooks_treeview_get_header_index (GTK_TREE_VIEW(widget->parent),
 										   widget, &column_index, &columns,
 										   &resizable);
 		}
-		else if (IS_CLIST (widget->parent))
+		else if (GE_IS_CLIST (widget->parent))
 		{
 			clearlooks_clist_get_header_index (GTK_CLIST(widget->parent),
 										widget, &column_index, &columns);
@@ -468,12 +468,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		else
 			params.corners    = CL_CORNER_ALL;		
 	
-		if (IS_TOGGLE_BUTTON (widget) &&
+		if (GE_IS_TOGGLE_BUTTON (widget) &&
 		    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
 			params.active = TRUE;
 		
 		/* Fix some firefox crap. */
-		if (IS_BUTTON (widget) && GE_IS_FIXED (widget->parent) && widget->allocation.x == -1 &&  widget->allocation.y == -1)
+		if (GE_IS_BUTTON (widget) && GE_IS_FIXED (widget->parent) && widget->allocation.x == -1 &&  widget->allocation.y == -1)
 		{
 			gtk_style_apply_default_background (widget->parent->style, window, TRUE, GTK_STATE_NORMAL,
 			                                    area, x, y, width, height);
@@ -565,7 +565,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		clearlooks_draw_progressbar_trough (cr, colors, &params, 
 		                                    x, y, width, height);
 	}
-	else if (DETAIL ("trough") && widget && (IS_VSCROLLBAR (widget) || GE_IS_HSCROLLBAR (widget)))
+	else if (DETAIL ("trough") && widget && (GE_IS_VSCROLLBAR (widget) || GE_IS_HSCROLLBAR (widget)))
 	{
 		WidgetParameters params;
 		ScrollBarParameters scrollbar;
@@ -577,7 +577,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 		scrollbar.steppers   = clearlooks_scrollbar_visible_steppers (widget);
 		
-		if (IS_RANGE (widget))
+		if (GE_IS_RANGE (widget))
 			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
 		
 		if (scrollbar.horizontal)
@@ -710,7 +710,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 		scrollbar.steppers   = clearlooks_scrollbar_visible_steppers (widget);
 		
-		if (IS_RANGE (widget))
+		if (GE_IS_RANGE (widget))
 			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
 		
 		if (clearlooks_style->has_scrollbar_color)
@@ -789,7 +789,7 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 	cairo_pattern_t *pt;
 
-	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
+	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
 	inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
@@ -900,7 +900,7 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	cairo_t *cr;
 	cairo_pattern_t *pt;
 
-	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
+	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
 	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 

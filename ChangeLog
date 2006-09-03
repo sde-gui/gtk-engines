@@ -1,5 +1,26 @@
 2006-09-03  Andrew Johnson  <acjgenius@earthlink.net>
 
+	* engines/clearlooks/src/animation.c: 
+	* engines/clearlooks/src/support.c:
+	* engines/crux/src/crux-draw.c:
+	* engines/glide/src/glide_gtk2_drawing.c: 
+	* engines/glide/src/glide_gtk2_support.c:
+	* engines/hc/src/hc-style.c:
+	* engines/hc/src/hc_gtk2_support.c:
+	* engines/industrial/src/industrial_style.c:
+	* engines/mist/src/mist-style.c:
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	* engines/redmond/src/redmond_gtk2_misc.c:
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	* engines/support/widget-information.c:
+	* engines/support/widget-information.h:
+
+	- Fixup widget->object in IS_* macros
+	- Fix missed IS_* with GE_IS-*
+	- Removed GE_IS_STYLE and revert to GTK_IS_STYLE (not a GObject!)
+
+2006-09-03  Andrew Johnson  <acjgenius@earthlink.net>
+
 	* engines/clearlooks/src/animation.h:
 	* engines/clearlooks/src/clearlooks_style.c:
 	* engines/crux/src/crux-draw.c:

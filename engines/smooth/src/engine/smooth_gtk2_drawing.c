@@ -1075,7 +1075,7 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 			}
 		}
 	}
- 	else if (CHECK_DETAIL(detail, "entry") && (IS_SPIN_BUTTON(widget) && (ENTRY_BUTTON_EMBED(style))) && (!interior_focus))
+ 	else if (CHECK_DETAIL(detail, "entry") && (GE_IS_SPIN_BUTTON(widget) && (ENTRY_BUTTON_EMBED(style))) && (!interior_focus))
 	{
 		if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 		{
@@ -1673,7 +1673,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
         gradient_fill_background(Canvas, style, state_type, part, -thick, y, x + width + thick, height, TRUE, Horizontal);
 	do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, x, y, width, height);
     } else if (CHECK_DETAIL(detail, "toolbar")) {
-	gboolean toolbar_overlap = (GRIP_OVERLAP_TOOLBAR(style) && (IS_BONOBO_DOCK_ITEM(widget)));
+	gboolean toolbar_overlap = (GRIP_OVERLAP_TOOLBAR(style) && (GE_IS_BONOBO_DOCK_ITEM(widget)));
 	gint hthick = 0, vthick = 0;
 	
 	if (toolbar_overlap) {
@@ -2045,7 +2045,7 @@ smooth_draw_arrow(GtkStyle * style,
 	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
 
-	if (IS_SCROLLBAR(widget) || GE_IS_SPIN_BUTTON(widget))
+	if (GE_IS_SCROLLBAR(widget) || GE_IS_SPIN_BUTTON(widget))
 		part = &(STEPPER_PART(style)->Arrow);
 	else
 		part = (SmoothArrowPart *)&ARROW_PART(style);
@@ -2911,7 +2911,7 @@ smooth_draw_option(GtkStyle * style,
 	else
 		{x++; y++; width-=2; height-=2;}   
 	
-	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
+	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
         inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
@@ -2921,7 +2921,7 @@ smooth_draw_option(GtkStyle * style,
 		
 		cm.Shadow = 0;
                 
-		if (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+		if (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
 			cm.Style = SMOOTH_CHECKMARK_STYLE_MINUS; 
 		else
 			cm.Style = PART_STYLE(option); 
@@ -2997,7 +2997,7 @@ smooth_draw_check(GtkStyle * style,
 				(CHECK_MOTIF(style)), TRUE, TRUE, FALSE, !((CHECK_MOTIF(style)) || (shadow_type == GTK_SHADOW_NONE)));
 	}
 
-	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
+	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
 	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
         inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
@@ -3012,7 +3012,7 @@ smooth_draw_check(GtkStyle * style,
 		
 	  	smooth_style_get_checkmark(style, &cm);
 
-		if (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+		if (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
 			cm.Style = SMOOTH_CHECKMARK_STYLE_MINUS; 
 
 		background =  COLOR_CUBE(style).Input[widget_state].Background;	
@@ -3154,7 +3154,7 @@ smooth_draw_handle(GtkStyle * style,
     smooth_grip_style  *grip;
     gint ax=x, ay=y, aw=width, ah=height;
     gboolean toolbar_overlap = (GRIP_OVERLAP_TOOLBAR(style) && (CHECK_DETAIL(detail, "dockitem")));
-    gboolean horiz=(CHECK_DETAIL(detail, "handlebox") || (CHECK_DETAIL(detail, "dockitem") && !IS_HANDLE_BOX_ITEM(widget)))?(orientation==GTK_ORIENTATION_HORIZONTAL):(orientation==GTK_ORIENTATION_VERTICAL);
+    gboolean horiz=(CHECK_DETAIL(detail, "handlebox") || (CHECK_DETAIL(detail, "dockitem") && !GE_IS_HANDLE_BOX_ITEM(widget)))?(orientation==GTK_ORIENTATION_HORIZONTAL):(orientation==GTK_ORIENTATION_VERTICAL);
     gint gap_size=(!horiz)?y+height:x+width, thick=0;
     gboolean vert=(!horiz);
 

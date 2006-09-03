@@ -562,7 +562,7 @@ glide_draw_shadow (GtkStyle * style,
 		if (((CHECK_DETAIL (detail, "entry"))
 			|| (CHECK_DETAIL (detail, "frame")))
 			&& widget && 
-			((IS_SPIN_BUTTON (widget))
+			((GE_IS_SPIN_BUTTON (widget))
 				|| (ge_is_in_combo_box (widget))))
 		{
 			/* The Combo/ComboBoxEntry button and the SpinButton Steppers should apear
@@ -1227,7 +1227,7 @@ glide_draw_box (GtkStyle * style,
   CHECK_ARGS
   SANITIZE_SIZE
 
-  if (IS_MENU_SHELL(widget))
+  if (GE_IS_MENU_SHELL(widget))
     {
       glide_gtk2_engine_hack_menu_shell_setup(widget);
     }  
@@ -1361,21 +1361,21 @@ glide_draw_box (GtkStyle * style,
 }
   else if ((CHECK_DETAIL (detail, "toolbar"))
 	   || (CHECK_DETAIL (detail, "menubar"))
-	   || (IS_BONOBO_TOOLBAR (widget))
+	   || (GE_IS_BONOBO_TOOLBAR (widget))
 	   || (CHECK_DETAIL (detail, "dockitem"))
 	   || (CHECK_DETAIL (detail, "dockitem_bin"))
 	   || (CHECK_DETAIL (detail, "handlebox_bin"))
 	   || (CHECK_DETAIL (detail, "handlebox")))
     {
       if (((CHECK_DETAIL (detail, "dockitem_bin")) && 
-           (IS_BONOBO_DOCK_ITEM(widget))) || 
+           (GE_IS_BONOBO_DOCK_ITEM(widget))) || 
           ((widget) && (ge_is_bonobo_dock_item(widget->parent))))
 	{	  
 	  GList *children = NULL, *child = NULL;
 	  GtkWidget *dockitem = widget;
 	  gboolean has_grip = FALSE, ltr = TRUE;
 	  
-	  if ((!IS_BONOBO_DOCK_ITEM(widget)) && (!IS_BOX(widget)))
+	  if ((!GE_IS_BONOBO_DOCK_ITEM(widget)) && (!GE_IS_BOX(widget)))
 	    dockitem = widget->parent;
 	    
 	  has_grip = GE_IS_CONTAINER(dockitem);
@@ -1390,7 +1390,7 @@ glide_draw_box (GtkStyle * style,
                           
             for (child = g_list_first(children); child; child = g_list_next(child))
               {
-	        if (IS_BONOBO_DOCK_ITEM_GRIP(child->data))
+	        if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
                   has_grip = (GTK_WIDGET_VISIBLE(child->data) && 
                               GTK_WIDGET_REALIZED(child->data) && 
                               GTK_WIDGET(child->data)->allocation.width > 1) &&
@@ -1417,7 +1417,7 @@ glide_draw_box (GtkStyle * style,
  
 	      if GE_IS_HBOX(dockitem)
 	        tmp = GTK_ORIENTATION_VERTICAL;
-	      else if (IS_BONOBO_DOCK_ITEM(dockitem))
+	      else if (GE_IS_BONOBO_DOCK_ITEM(dockitem))
 	        g_object_get (dockitem, "orientation", &tmp, NULL);
  
 	      if (tmp == GTK_ORIENTATION_HORIZONTAL)
@@ -1684,10 +1684,10 @@ glide_draw_slider (GtkStyle * style,
 	glide_draw_pattern_fill(canvas,DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, &glide_style->bg_gradient[orientation == GTK_ORIENTATION_VERTICAL][state_type]), x, y, width, height);
 
 	do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
-				(IS_SCROLLBAR(widget))?GLIDE_BEVEL_STYLE_SMOOTHER:GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
+				(GE_IS_SCROLLBAR(widget))?GLIDE_BEVEL_STYLE_SMOOTHER:GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
 				x, y, width, height);
 
-	if (!IS_SCALE(widget))
+	if (!GE_IS_SCALE(widget))
 	{
 		do_glide_draw_grip (canvas,
 					&glide_style->color_cube.light[state_type],
@@ -2122,7 +2122,7 @@ glide_draw_handle (GtkStyle * style,
   CHECK_ARGS
   SANITIZE_SIZE
   
-  if (IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
+  if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
      (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) && 
       orientation == (GTK_ORIENTATION_HORIZONTAL))
   {
@@ -2136,7 +2136,7 @@ glide_draw_handle (GtkStyle * style,
 
       canvas = ge_gdk_drawable_to_cairo (window, area);
  
-      if (IS_HANDLE_BOX (widget))
+      if (GE_IS_HANDLE_BOX (widget))
 	{
 	  /* handle box apears to be broken in that
 	   * it doesn't pass the orientation properly,
@@ -2160,7 +2160,7 @@ glide_draw_handle (GtkStyle * style,
       else
 	{
 	  if ((CHECK_DETAIL (detail, "handlebox")
-	       && (!IS_HANDLE_BOX_ITEM (widget))))
+	       && (!GE_IS_HANDLE_BOX_ITEM (widget))))
 	    {
 	      /* panel_applet_frame used by the panel is broken,
 	       * always passes orientation == horizontal 
@@ -2187,13 +2187,13 @@ glide_draw_handle (GtkStyle * style,
 	    }
 	}
 
-	glide_draw_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, (IS_PANED(widget))?&glide_style->bg_solid[state_type]: 
+	glide_draw_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, (GE_IS_PANED(widget))?&glide_style->bg_solid[state_type]: 
 				&glide_style->bg_gradient[orientation == (GTK_ORIENTATION_VERTICAL)][state_type]), x, y, width, height);
 
       if (ge_is_panel_widget_item (widget)
 	  && (CHECK_DETAIL (detail, "handlebox")
-	      && (!IS_HANDLE_BOX_ITEM (widget)))
-	  && (!(IS_HANDLE_BOX (widget))))
+	      && (!GE_IS_HANDLE_BOX_ITEM (widget)))
+	  && (!(GE_IS_HANDLE_BOX (widget))))
 	{
 		/* draw the drag bar */
 		if (orientation == GTK_ORIENTATION_VERTICAL)
@@ -2238,7 +2238,7 @@ glide_draw_handle (GtkStyle * style,
 			&glide_style->color_cube.dark[GTK_STATE_NORMAL],
 			x, y, width, height, orientation == GTK_ORIENTATION_VERTICAL);
 
-          if (IS_BONOBO_DOCK_ITEM_GRIP(widget))
+          if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget))
             {
               if GE_IS_BOX(widget->parent)
                 {
@@ -2248,7 +2248,7 @@ glide_draw_handle (GtkStyle * style,
               
                   for (child = g_list_first(children); child; child = g_list_next(child))
                     {
-	              if (IS_BOX(child->data))
+	              if (GE_IS_BOX(child->data))
 	                {
 	                  skip_shadow = TRUE;
 	                  child = NULL;
@@ -2334,7 +2334,7 @@ glide_draw_focus(GtkStyle *style,
 				gtk_widget_grab_focus(entry);
 			}
 		}
-	 	else if (CHECK_DETAIL(detail, "entry") && (IS_SPIN_BUTTON(widget)) )
+	 	else if (CHECK_DETAIL(detail, "entry") && (GE_IS_SPIN_BUTTON(widget)) )
 		{
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{

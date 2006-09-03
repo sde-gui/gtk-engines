@@ -76,7 +76,7 @@ clearlooks_scrollbar_get_stepper (GtkWidget    *widget,
 	GdkRectangle check_rectangle;
 	GtkOrientation orientation;
 
-	g_return_val_if_fail (IS_RANGE (widget), CL_STEPPER_UNKNOWN);
+	g_return_val_if_fail (GE_IS_RANGE (widget), CL_STEPPER_UNKNOWN);
 
 	check_rectangle.x      = widget->allocation.x;
 	check_rectangle.y      = widget->allocation.y;
@@ -132,7 +132,7 @@ clearlooks_scrollbar_visible_steppers (GtkWidget *widget)
 {
 	ClearlooksStepper steppers = 0;
 	
-	if (!IS_RANGE (widget))
+	if (!GE_IS_RANGE (widget))
 		return 0;
 	
 	if (GTK_RANGE (widget)->has_stepper_a)
@@ -156,7 +156,7 @@ clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 	GtkAdjustment *adj;
 	ClearlooksJunction junction = CL_JUNCTION_NONE;
 	
-	if (!IS_RANGE (widget))
+	if (!GE_IS_RANGE (widget))
 		return CL_JUNCTION_NONE;
 
 	adj = GTK_RANGE (widget)->adjustment;

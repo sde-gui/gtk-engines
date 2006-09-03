@@ -761,7 +761,7 @@ draw_shadow (GtkStyle *style,
 	if (widget != NULL && GTK_WIDGET_HAS_FOCUS (widget))
 		focused = TRUE;
 
-	if (widget && (IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
+	if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
 	{
 		GtkWidget *button;
 		if (ge_widget_is_ltr (widget))
@@ -832,7 +832,7 @@ draw_box (GtkStyle *style,
 				height -= 2;
 		}
 		
-		if (widget && (IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
+		if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
 		{
 			/* Combobox buttons */
 			gboolean focused = FALSE;
@@ -1770,7 +1770,7 @@ draw_layout (GtkStyle        *style,
 {
 	GdkGC *gc;
 	
-	g_return_if_fail (GE_IS_STYLE (style));
+	g_return_if_fail (GTK_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
 	
 	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
