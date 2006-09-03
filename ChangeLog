@@ -1,3 +1,11 @@
+2006-09-03  Richard A. Stellingwerff  <remenic@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_scrollbar_stepper),
+	(clearlooks_draw_scrollbar_slider):
+
+	Added grip handles to scrollbars.
+
 2006-09-02  Richard A. Stellingwerff  <remenic@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c:
