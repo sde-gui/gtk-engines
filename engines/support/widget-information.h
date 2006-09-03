@@ -32,7 +32,7 @@
 #define IS_CHECK_BUTTON(object) ((object) && ge_object_is_a (object, "GtkCheckButton"))
 #define IS_SPIN_BUTTON(object) ((object) && ge_object_is_a (object, "GtkSpinButton"))
  
-#define IS_STATUS_BAR(object) ((object) && ge_object_is_a (object, "GtkStatusBar"))
+#define IS_STATUS_BAR(object) ((object) && ge_object_is_a (object, "GtkStatusbar"))
 #define IS_PROGRESS_BAR(object) ((object) && ge_object_is_a (object, "GtkProgressBar"))
  
 #define IS_MENU_SHELL(object) ((object) && ge_object_is_a (object, "GtkMenuShell"))

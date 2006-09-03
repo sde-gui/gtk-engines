@@ -1,5 +1,12 @@
 2006-09-03  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_resize_grip):
+
+	Sharper resize handle in statusbar.
+
+2006-09-03  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_tab):
 
