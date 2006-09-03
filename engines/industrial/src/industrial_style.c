@@ -517,7 +517,7 @@ draw_slider (GtkStyle      *style,
 	SANITIZE_SIZE
 	
 	/* This makes the slider overlay the stepper buttons at the sides. XXX */
-	if (widget && GTK_IS_SCROLLBAR (widget)) {
+	if (widget && GE_IS_SCROLLBAR (widget)) {
 		GtkAdjustment *adjustment = GTK_RANGE (widget)->adjustment;
 		/* If all of these values are 0, don't do anything.  This fixes mozilla/galeon scrollbars. */
 		if (adjustment->value ||
@@ -957,7 +957,7 @@ draw_focus (GtkStyle      *style,
 		SANITIZE_SIZE
 		CHECK_ARGS
 
-		if (ge_is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) {
+		if (ge_is_in_combo_box (widget) || GE_IS_SPIN_BUTTON (widget)) {
 			if (ge_widget_is_ltr (widget))
 				corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 			else

@@ -761,7 +761,7 @@ draw_shadow (GtkStyle *style,
 	if (widget != NULL && GTK_WIDGET_HAS_FOCUS (widget))
 		focused = TRUE;
 
-	if (widget && (IS_COMBO (widget->parent) || IS_COMBO_BOX_ENTRY (widget->parent)))
+	if (widget && (IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
 	{
 		GtkWidget *button;
 		if (ge_widget_is_ltr (widget))
@@ -776,7 +776,7 @@ draw_shadow (GtkStyle *style,
 			area = &area2;
 		g_object_set_data ((GObject*) widget->parent, "entry", widget);
 		button = g_object_get_data ((GObject*) widget->parent, "button");
-		if (GTK_IS_WIDGET (button))
+		if (GE_IS_WIDGET (button))
 			gtk_widget_queue_draw_area (button,  button->allocation.x, button->allocation.y, button->allocation.width,button->allocation.height);
 	}
 	cr = ge_gdk_drawable_to_cairo (window, area);
@@ -832,7 +832,7 @@ draw_box (GtkStyle *style,
 				height -= 2;
 		}
 		
-		if (widget && (IS_COMBO (widget->parent) || IS_COMBO_BOX_ENTRY (widget->parent)))
+		if (widget && (IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
 		{
 			/* Combobox buttons */
 			gboolean focused = FALSE;
@@ -863,7 +863,7 @@ draw_box (GtkStyle *style,
 			x += 3; y += 3;
 			width -= 6; height -= 6;
 		}
-		if (widget && (GTK_IS_TREE_VIEW (widget->parent)))
+		if (widget && (GE_IS_TREE_VIEW (widget->parent)))
 		{
 			/* Add some extra padding for treeview column buttons */
 			if (state_type == GTK_STATE_INSENSITIVE)
@@ -916,15 +916,15 @@ draw_box (GtkStyle *style,
 	else if (DETAIL ("bar"))
 	{
 		GtkProgressBarOrientation orientation;
-		if (widget && GTK_IS_PROGRESS_BAR (widget))
+		if (widget && GE_IS_PROGRESS_BAR (widget))
 			orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
 		else
 			orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
 		paint_progress_bar (cr, style, state_type, orientation, x, y, width, height);
 	}
-	else if (DETAIL ("trough") && GTK_IS_SCALE (widget))
+	else if (DETAIL ("trough") && GE_IS_SCALE (widget))
 	{
-		if (GTK_IS_VSCALE (widget))
+		if (GE_IS_VSCALE (widget))
 		{
 			x += 1; width -= 2;
 		}
@@ -934,9 +934,9 @@ draw_box (GtkStyle *style,
 		}
 		paint_button (cr, style, GTK_STATE_NORMAL, GTK_SHADOW_OUT, x, y, width, height);
 	}
-	else if (DETAIL ("trough") && GTK_IS_SCROLLBAR (widget))
+	else if (DETAIL ("trough") && GE_IS_SCROLLBAR (widget))
 	{
-		if (GTK_IS_HSCROLLBAR (widget))
+		if (GE_IS_HSCROLLBAR (widget))
 			paint_scrollbar_trough (cr, style, state_type, GTK_ORIENTATION_HORIZONTAL, x, y, width, height);
 		else
 			paint_scrollbar_trough (cr, style, state_type, GTK_ORIENTATION_VERTICAL, x, y, width, height);
@@ -1127,7 +1127,7 @@ draw_check (GtkStyle *style,
 	ch = height - 1.0; cw = width - 1.0;
 
 
-	if (!GTK_IS_MENU_ITEM (widget))
+	if (!GE_IS_MENU_ITEM (widget))
 	{
 		ge_cairo_rounded_rectangle (cr, cx, cy, cw, ch, 2.0, CR_CORNER_ALL);
 		if (state_type == GTK_STATE_INSENSITIVE)
@@ -1243,7 +1243,7 @@ draw_option (GtkStyle *style,
 	cy = y + (height / 2);
 	radius = (height / 2) - 0.5;
 
-	if (!GTK_IS_MENU_ITEM (widget))
+	if (!GE_IS_MENU_ITEM (widget))
 	{
 		cairo_arc (cr, cx, cy, radius, 0.0, M_PI * 2);
 
@@ -1770,7 +1770,7 @@ draw_layout (GtkStyle        *style,
 {
 	GdkGC *gc;
 	
-	g_return_if_fail (GTK_IS_STYLE (style));
+	g_return_if_fail (GE_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
 	
 	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];

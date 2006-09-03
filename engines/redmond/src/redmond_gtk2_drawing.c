@@ -296,7 +296,7 @@ redmond_draw_option (GtkStyle * style,
 					radius - 1);
 
       inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-      inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
+      inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
       inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow == GTK_SHADOW_ETCHED_IN));
  
       switch (state)
@@ -387,7 +387,7 @@ redmond_draw_arrow (GtkStyle * style,
       || (CHECK_DETAIL (detail, "vscrollbar"))
       || (CHECK_DETAIL (detail, "hscrollbar"))
       || (CHECK_DETAIL (detail, "optionmenu"))
-      || IS_SCROLLBAR(widget)
+      || GE_IS_SCROLLBAR(widget)
       || (ge_is_in_combo_box (widget)))
     {
       if (state != GTK_STATE_INSENSITIVE)
@@ -691,7 +691,7 @@ redmond_draw_combobox_button (GtkStyle * style,
         {
           GtkWidget *entry = widget;
 
-	  if (GTK_IS_WIDGET(widget) && GTK_IS_WIDGET(widget->parent) && GTK_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
+	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
             {
                entry = GTK_COMBO (widget->parent)->entry;
                gtk_widget_ensure_style(entry);
@@ -699,7 +699,7 @@ redmond_draw_combobox_button (GtkStyle * style,
                parent_style = entry->style;
                parent_state = entry->state;
              }
-          else if (GTK_IS_WIDGET(widget->parent))
+          else if (GE_IS_WIDGET(widget->parent))
             {
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
@@ -805,7 +805,7 @@ redmond_draw_combobox_button (GtkStyle * style,
         {
           GtkWidget *entry = widget;
 
-	  if (GTK_IS_WIDGET(widget) && GTK_IS_WIDGET(widget->parent) && GTK_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
+	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
             {
                entry = GTK_COMBO (widget->parent)->entry;
                gtk_widget_ensure_style(entry);
@@ -813,7 +813,7 @@ redmond_draw_combobox_button (GtkStyle * style,
                parent_style = entry->style;
                parent_state = entry->state;
              }
-          else if (GTK_IS_WIDGET(widget->parent))
+          else if (GE_IS_WIDGET(widget->parent))
             {
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
@@ -1023,7 +1023,7 @@ redmond_draw_box (GtkStyle * style,
     }  
  
   if ((CHECK_DETAIL (detail, "trough")) &&
-      (widget && IS_SCROLLBAR (widget)))
+      (widget && GE_IS_SCROLLBAR (widget)))
     {
       /* Scrollbar Troughs have a thin cross-hatch 
        * background fill. Technically its supposed
@@ -1042,7 +1042,7 @@ redmond_draw_box (GtkStyle * style,
 			widget, detail, x, y, width, height);
     }
   else if ((CHECK_DETAIL (detail, "trough"))
-	   && (widget && IS_SCALE (widget)))
+	   && (widget && GE_IS_SCALE (widget)))
     {
       /* Scale Troughs are only 4 pixels thick
        * i.e. just a border, so make sure the background
@@ -1100,7 +1100,7 @@ redmond_draw_box (GtkStyle * style,
 	  if ((!IS_BONOBO_DOCK_ITEM(widget)) && (!IS_BOX(widget)))
 	    dockitem = widget->parent;
 	    
-	  has_grip = IS_CONTAINER(dockitem);
+	  has_grip = GE_IS_CONTAINER(dockitem);
 	  
 	  ltr = (!widget) || (gtk_widget_get_direction (dockitem) == GTK_TEXT_DIR_LTR);
 	  
@@ -1137,7 +1137,7 @@ redmond_draw_box (GtkStyle * style,
 	       
    	      GtkOrientation tmp = GTK_ORIENTATION_HORIZONTAL;
  
-	      if IS_HBOX(dockitem)
+	      if GE_IS_HBOX(dockitem)
 	        tmp = GTK_ORIENTATION_VERTICAL;
 	      else if (IS_BONOBO_DOCK_ITEM(dockitem))
 	        g_object_get (dockitem, "orientation", &tmp, NULL);
@@ -1264,7 +1264,7 @@ redmond_draw_box (GtkStyle * style,
       cairo_destroy(cr);
     }
   else if ((CHECK_DETAIL (detail, "menuitem")) && widget && widget->parent
-	   && IS_MENU_BAR (widget->parent))
+	   && GE_IS_MENU_BAR (widget->parent))
     {
       /* Primary Menu Items on Menu bars are drawn with 
        * a thin inset border on select/active,
@@ -1280,7 +1280,7 @@ redmond_draw_box (GtkStyle * style,
       do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 					  x, y, width, height);
 		 			  
-      if ((!GTK_IS_MENU(GTK_MENU_ITEM(widget)->submenu)) || 
+      if ((!GE_IS_MENU(GTK_MENU_ITEM(widget)->submenu)) || 
           (!(GTK_WIDGET_REALIZED(GTK_MENU_ITEM(widget)->submenu) && 
              GTK_WIDGET_VISIBLE(GTK_MENU_ITEM(widget)->submenu) &&
              GTK_WIDGET_REALIZED(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel) &&
@@ -1302,7 +1302,7 @@ redmond_draw_box (GtkStyle * style,
       cairo_destroy(cr);
     }
   else if ((CHECK_DETAIL (detail, "bar"))
-	   && (widget && IS_PROGRESS_BAR (widget)))
+	   && (widget && GE_IS_PROGRESS_BAR (widget)))
     {
       /* Progress bar status is always flat, and only has two states
        * NORMAL and INSENSITIVE, so check the state, and then do a 
@@ -1797,7 +1797,7 @@ redmond_draw_handle (GtkStyle * style,
  
           if (IS_BONOBO_DOCK_ITEM_GRIP(widget))
             {
-              if IS_BOX(widget->parent)
+              if GE_IS_BOX(widget->parent)
                 {
                   GList *children = NULL, *child = NULL;
  

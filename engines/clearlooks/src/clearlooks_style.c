@@ -41,7 +41,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
                                   GtkStateType          state_type,
                                   WidgetParameters     *params)
 {
-	if (widget && IS_ENTRY (widget))
+	if (widget && GE_IS_ENTRY (widget))
 		state_type = GTK_WIDGET_STATE (widget);
 
 	params->active     = (state_type == GTK_STATE_ACTIVE);
@@ -53,7 +53,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->focus      = widget && GTK_WIDGET_HAS_FOCUS (widget);
 	params->is_default = widget && GTK_WIDGET_HAS_DEFAULT (widget);
 		
-	if (!params->active && widget && IS_TOGGLE_BUTTON (widget))
+	if (!params->active && widget && GE_IS_TOGGLE_BUTTON (widget))
 		params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 		
 	params->xthickness = style->xthickness;
@@ -135,13 +135,13 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	if (DETAIL ("entry") && !(widget && widget->parent && IS_TREE_VIEW (widget->parent)))
+	if (DETAIL ("entry") && !(widget && widget->parent && GE_IS_TREE_VIEW (widget->parent)))
 	{
 		WidgetParameters params;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
-		if (widget && (ge_is_in_combo_box(widget) || IS_SPIN_BUTTON (widget)))
+		if (widget && (ge_is_in_combo_box(widget) || GE_IS_SPIN_BUTTON (widget)))
 		{
 			width += style->xthickness;
 			if (!params.ltr)
@@ -156,7 +156,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		clearlooks_draw_entry (cr, &clearlooks_style->colors, &params,
 		                       x, y, width, height);
 	}
-	else if (DETAIL ("frame") && widget && IS_STATUS_BAR (widget->parent))
+	else if (DETAIL ("frame") && widget && GE_IS_STATUS_BAR (widget->parent))
 	{
 		WidgetParameters params;
 		
@@ -396,7 +396,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("button") && widget && widget->parent &&
                  (IS_TREE_VIEW(widget->parent) ||
-                  IS_CLIST (widget->parent)))
+                  GE_IS_CLIST (widget->parent)))
 	{
 		WidgetParameters params;
 		ListViewHeaderParameters header;
@@ -473,7 +473,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			params.active = TRUE;
 		
 		/* Fix some firefox crap. */
-		if (IS_BUTTON (widget) && IS_FIXED (widget->parent) && widget->allocation.x == -1 &&  widget->allocation.y == -1)
+		if (IS_BUTTON (widget) && GE_IS_FIXED (widget->parent) && widget->allocation.x == -1 &&  widget->allocation.y == -1)
 		{
 			gtk_style_apply_default_background (widget->parent->style, window, TRUE, GTK_STATE_NORMAL,
 			                                    area, x, y, width, height);
@@ -536,7 +536,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		clearlooks_draw_spinbutton (cr, &clearlooks_style->colors, &params,
 		                            x, y, width, height);
 	}
-	else if (DETAIL ("trough") && widget && IS_SCALE (widget))
+	else if (DETAIL ("trough") && widget && GE_IS_SCALE (widget))
 	{
 		GtkAdjustment *adjustment = gtk_range_get_adjustment (GTK_RANGE (widget));	
 		WidgetParameters params;
@@ -556,7 +556,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		                              &params, &slider,
 		                              x, y, width, height);
 	}
-	else if (DETAIL ("trough") && widget && IS_PROGRESS_BAR (widget))
+	else if (DETAIL ("trough") && widget && GE_IS_PROGRESS_BAR (widget))
 	{
 		WidgetParameters params;
 		
@@ -565,7 +565,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		clearlooks_draw_progressbar_trough (cr, colors, &params, 
 		                                    x, y, width, height);
 	}
-	else if (DETAIL ("trough") && widget && (IS_VSCROLLBAR (widget) || IS_HSCROLLBAR (widget)))
+	else if (DETAIL ("trough") && widget && (IS_VSCROLLBAR (widget) || GE_IS_HSCROLLBAR (widget)))
 	{
 		WidgetParameters params;
 		ScrollBarParameters scrollbar;
@@ -614,7 +614,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		if (widget && IS_PROGRESS_BAR (widget))
+		if (widget && GE_IS_PROGRESS_BAR (widget))
 		{
 			progressbar.orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
 			progressbar.value = gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(widget));
@@ -677,7 +677,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		WidgetParameters params;
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
-		if (widget && IS_MENU_BAR (widget->parent))
+		if (widget && GE_IS_MENU_BAR (widget->parent))
 		{
 			/*params.corners = CL_CORNER_NONE;
 			params.active = TRUE;
@@ -790,7 +790,7 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	cairo_pattern_t *pt;
 
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
+	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
 	inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	draw_bullet |= inconsistent;
@@ -839,7 +839,7 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	cairo_stroke (cr);
 	
 #ifdef HAVE_ANIMATION
-	if (clearlooks_style->animation && IS_CHECK_BUTTON (widget) &&
+	if (clearlooks_style->animation && GE_IS_CHECK_BUTTON (widget) &&
         clearlooks_animation_is_animated (widget) &&
         !gtk_toggle_button_get_inconsistent (GTK_TOGGLE_BUTTON (widget)))
 	{
@@ -901,7 +901,7 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	cairo_pattern_t *pt;
 
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
+	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
 	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	draw_bullet |= inconsistent;
@@ -961,7 +961,7 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	cairo_stroke (cr);
 		
 #ifdef HAVE_ANIMATION
-	if (clearlooks_style->animation && IS_CHECK_BUTTON (widget) &&
+	if (clearlooks_style->animation && GE_IS_CHECK_BUTTON (widget) &&
 	    clearlooks_animation_is_animated(widget) &&
 	    !gtk_toggle_button_get_inconsistent (GTK_TOGGLE_BUTTON (widget)))
 	{

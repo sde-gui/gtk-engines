@@ -10,7 +10,7 @@
    Smooth-Engine.
 */ 
 gboolean
-ge_object_is_a (const GtkWidget * widget, const gchar * type_name)
+ge_object_is_a (const GObject * object, const gchar * type_name)
 {
   gboolean result = FALSE;
  
@@ -18,7 +18,7 @@ ge_object_is_a (const GtkWidget * widget, const gchar * type_name)
     {
       GType tmp = g_type_from_name (type_name);
       if (tmp)
-	result = g_type_check_instance_is_a ((GTypeInstance *) widget, tmp);
+	result = g_type_check_instance_is_a ((GTypeInstance *) object, tmp);
     }
  
   return result;
@@ -138,11 +138,11 @@ ge_is_bonobo_dock_item (GtkWidget * widget)
  
   if ((widget))
     {
-      if (IS_BONOBO_DOCK_ITEM(widget) || IS_BONOBO_DOCK_ITEM (widget->parent))
+      if (IS_BONOBO_DOCK_ITEM(widget) || GE_IS_BONOBO_DOCK_ITEM (widget->parent))
 	result = TRUE;
-      else if (IS_BOX(widget) || IS_BOX(widget->parent))
+      else if (IS_BOX(widget) || GE_IS_BOX(widget->parent))
         {
-          GtkContainer *box = IS_BOX(widget)?GTK_CONTAINER(widget):GTK_CONTAINER(widget->parent);
+          GtkContainer *box = GE_IS_BOX(widget)?GTK_CONTAINER(widget):GTK_CONTAINER(widget->parent);
           GList *children = NULL, *child = NULL;
  
           children = gtk_container_get_children(box);
@@ -245,7 +245,7 @@ gboolean
 ge_toggle_get_inconsistent (GtkWidget * widget, const gchar *detail, GtkShadowType shadow_type)
 {
 	return (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
-				| (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
+				| (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
 				| (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN))
 				| (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 }
@@ -267,7 +267,7 @@ ge_option_menu_get_props (GtkWidget * widget,
   GtkRequisition *tmp_size = NULL;
   GtkBorder *tmp_spacing = NULL;
  
-  if ((widget) && IS_OPTION_MENU(widget))
+  if ((widget) && GE_IS_OPTION_MENU(widget))
     gtk_widget_style_get (widget,
 			  "indicator_size", &tmp_size,
 			  "indicator_spacing", &tmp_spacing, NULL);
@@ -295,7 +295,7 @@ ge_button_get_default_border (GtkWidget *widget,
 {
 	GtkBorder *tmp_border = NULL;
 	
-	if (widget && IS_BUTTON (widget))
+	if (widget && GE_IS_BUTTON (widget))
 		gtk_widget_style_get (widget, "default-border", &tmp_border, NULL);
 
 	if (tmp_border)
@@ -315,7 +315,7 @@ ge_widget_is_ltr (GtkWidget *widget)
 {
 	GtkTextDirection dir = GTK_TEXT_DIR_NONE;
 	
-	if (GTK_IS_WIDGET (widget))
+	if (GE_IS_WIDGET (widget))
 		dir = gtk_widget_get_direction (widget);
 
 	if (dir == GTK_TEXT_DIR_NONE)

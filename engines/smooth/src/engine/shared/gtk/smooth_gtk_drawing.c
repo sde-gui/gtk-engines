@@ -567,7 +567,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 
 	smooth_style_get_border(style, state_type, shadow_type, detail, part, roundness, &border);
 
-	if (CHECK_DETAIL(detail, "menubar") && GRIP_OVERLAP_TOOLBAR(style) && IS_BONOBO_DOCK_ITEM(widget))
+	if (CHECK_DETAIL(detail, "menubar") && GRIP_OVERLAP_TOOLBAR(style) && GE_IS_BONOBO_DOCK_ITEM(widget))
 	{
 		gint thick = EDGE_LINE_THICKNESS(style, NULL);
 
@@ -575,8 +575,8 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 	}
 	else if (((CHECK_DETAIL (detail, "entry"))
 		|| (CHECK_DETAIL (detail, "frame"))) &&
-		(widget && (!GTK_IS_BUTTON(widget)) && 
-                ((ge_is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) && 
+		(widget && (!GE_IS_BUTTON(widget)) && 
+                ((ge_is_in_combo_box (widget) || GE_IS_SPIN_BUTTON (widget)) && 
                  (ENTRY_BUTTON_EMBED(style)))))
 	{
 		/* The Combo/ComboBoxEntry button and the SpingButton Steppers should apear

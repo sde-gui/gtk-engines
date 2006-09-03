@@ -22,7 +22,7 @@
 #include <gtk/gtk.h>
 #include <ge-support.h>
 
-#define CL_IS_PROGRESS_BAR(widget) GTK_IS_PROGRESS_BAR(widget) && widget->allocation.x != -1 && widget->allocation.y != -1
+#define CL_IS_PROGRESS_BAR(widget) GE_IS_PROGRESS_BAR(widget) && widget->allocation.x != -1 && widget->allocation.y != -1
 #define ANIMATION_DELAY 100
 #define CHECK_ANIMATION_TIME 0.5
 

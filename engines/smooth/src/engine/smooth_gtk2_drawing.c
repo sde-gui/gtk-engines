@@ -907,7 +907,7 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 
 	smooth_style_get_border(style, state_type, shadow_type, detail, part, roundness, &border);
 
-	if (CHECK_DETAIL(detail, "menubar") && GRIP_OVERLAP_TOOLBAR(style) && IS_BONOBO_DOCK_ITEM(widget))
+	if (CHECK_DETAIL(detail, "menubar") && GRIP_OVERLAP_TOOLBAR(style) && GE_IS_BONOBO_DOCK_ITEM(widget))
 	{
 		gint thick = EDGE_LINE_THICKNESS(style, NULL);
 
@@ -915,8 +915,8 @@ do_smooth_draw_shadow(SmoothCanvas Canvas,
 	}
 	else if (((CHECK_DETAIL (detail, "entry"))
 		|| (CHECK_DETAIL (detail, "frame"))) &&
-		(widget && (!GTK_IS_BUTTON(widget)) && 
-                ((ge_is_in_combo_box (widget) || IS_SPIN_BUTTON (widget)) && 
+		(widget && (!GE_IS_BUTTON(widget)) && 
+                ((ge_is_in_combo_box (widget) || GE_IS_SPIN_BUTTON (widget)) && 
                  (ENTRY_BUTTON_EMBED(style)))))
 	{
 		/* The Combo/ComboBoxEntry button and the SpingButton Steppers should apear
@@ -1099,7 +1099,7 @@ do_smooth_draw_focus(SmoothCanvas Canvas,
 			SmoothCanvasFrameRectangle(Canvas,x - line_width , y, width + line_width, height);
 		}
 
-		if (GTK_IS_WIDGET(button))
+		if (GE_IS_WIDGET(button))
 		{
 			gtk_widget_queue_draw_area(button, button->allocation.x, button->allocation.y, 
 							button->allocation.width, button->allocation.height);
@@ -1227,7 +1227,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
 
 		for (child = children; child; child = child->next)
 		{
-			if (GTK_IS_ENTRY(child->data) && GTK_WIDGET_HAS_FOCUS(child->data))
+			if (GE_IS_ENTRY(child->data) && GTK_WIDGET_HAS_FOCUS(child->data))
 			{
 				smooth_gtk_widget_get_focus_props (GTK_WIDGET(child->data), &focus_line_width, &focus_padding, &interior_focus);
 				
@@ -1285,7 +1285,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
           GtkWidget *entry = widget;
           SmoothRectangle clip;
 
-          if (GTK_IS_WIDGET(widget->parent))
+          if (GE_IS_WIDGET(widget->parent))
             {
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
@@ -1392,7 +1392,7 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
         {
           GtkWidget *entry = widget;
 
-          if (GTK_IS_WIDGET(widget->parent))
+          if (GE_IS_WIDGET(widget->parent))
             {
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
@@ -1666,7 +1666,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
     } else if (CHECK_DETAIL(detail, "menubar")) {
         gint thick = 0;
 
-	if (GRIP_OVERLAP_TOOLBAR(style) && IS_BONOBO_DOCK_ITEM(widget))
+	if (GRIP_OVERLAP_TOOLBAR(style) && GE_IS_BONOBO_DOCK_ITEM(widget))
 	  thick = EDGE_LINE_THICKNESS(style, NULL);
  
 	if (!part) part = THEME_PART(BACKGROUND_PART(style));
@@ -1689,7 +1689,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 	gradient_fill_background(Canvas, style, state_type, part, x-hthick, y-vthick, width+hthick, height+vthick, TRUE, Horizontal);
 	do_smooth_draw_shadow(Canvas, style, state_type, shadow_type, widget, detail, x-hthick, y-vthick, width+hthick, height+vthick);
     } else if (CHECK_DETAIL(detail, "trough")) {
-        if (GTK_IS_SCALE (widget) && REAL_SLIDERS(style)) {
+        if (GE_IS_SCALE (widget) && REAL_SLIDERS(style)) {
 		SmoothLineBevel line_bevel;
 
 	  if (!part) part = THEME_PART(BACKGROUND_PART(style));
@@ -1699,7 +1699,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 	  line_bevel.Style = LINE_STYLE(style, NULL);
 	  line_bevel.Thickness = ythickness(style);
 
-          if GTK_IS_HSCALE (widget) 
+          if GE_IS_HSCALE (widget) 
 	    SmoothDrawLineBevel (line_bevel, Canvas, base, x, x + width, y + (height / 2), TRUE);
           else
 	    SmoothDrawLineBevel (line_bevel, Canvas, base, y, y + height, x + (width / 2), FALSE);
@@ -1711,7 +1711,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 	                           width-PART_XPADDING(part)*2, height-PART_YPADDING(part)*2, 
 	                           shadow_type == GTK_SHADOW_IN, Horizontal);
 
-          if (GTK_IS_SCALE(widget) && TROUGH_SHOW_VALUE(style)) {	    
+          if (GE_IS_SCALE(widget) && TROUGH_SHOW_VALUE(style)) {	    
 	    GtkAdjustment * adjustment = gtk_range_get_adjustment(GTK_RANGE(widget));
 	    gfloat value = 0;
   
@@ -1779,7 +1779,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
           } 
         else if ((shadow_type == GTK_SHADOW_NONE) && (EDGE_LINE_STYLE(style, NULL) != SMOOTH_BEVEL_STYLE_NONE) && CHECK_DETAIL(detail, "menuitem"))
 	  shadow_type = GTK_SHADOW_OUT;
-        else if (CHECK_DETAIL(detail, "bar") && GTK_IS_PROGRESS_BAR(widget))
+        else if (CHECK_DETAIL(detail, "bar") && GE_IS_PROGRESS_BAR(widget))
           {
             part = PROGRESS_PART(style);
 
@@ -1895,7 +1895,7 @@ smooth_draw_shadow(GtkStyle * style,
 	{
 		GtkWidget *button = g_object_get_data(G_OBJECT(ge_find_combo_box_widget_parent (widget)), "button");
 
-		if (GTK_IS_WIDGET(button))
+		if (GE_IS_WIDGET(button))
 		{
 			gtk_widget_queue_draw_area(button, button->allocation.x, button->allocation.y, 
 							button->allocation.width, button->allocation.height);
@@ -1903,7 +1903,7 @@ smooth_draw_shadow(GtkStyle * style,
 	}
 
         SmoothGDKInitializeCanvas(&da, style, window, area, NULL, NULL, width, height, 0, 0, &COLOR_CUBE(style));
-	if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT)  && CHECK_DETAIL(detail, "entry") && widget && (GTK_IS_SPIN_BUTTON (widget) || (ge_is_combo_box_entry(widget)) || (ge_is_combo(widget)))) 	
+	if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT)  && CHECK_DETAIL(detail, "entry") && widget && (GE_IS_SPIN_BUTTON (widget) || (ge_is_combo_box_entry(widget)) || (ge_is_combo(widget)))) 	
 	{
 		gtk_paint_flat_box(style, window, widget->state, GTK_SHADOW_NONE, area, widget, "entry_bg", x, y, width, height);
 
@@ -2045,7 +2045,7 @@ smooth_draw_arrow(GtkStyle * style,
 	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
 
-	if (IS_SCROLLBAR(widget) || IS_SPIN_BUTTON(widget))
+	if (IS_SCROLLBAR(widget) || GE_IS_SPIN_BUTTON(widget))
 		part = &(STEPPER_PART(style)->Arrow);
 	else
 		part = (SmoothArrowPart *)&ARROW_PART(style);
@@ -2178,7 +2178,7 @@ smooth_draw_extension(GtkStyle * style,
   CHECK_ARGS
 	SANITIZE_SIZE
     
-  if (GTK_IS_NOTEBOOK(widget)) {
+  if (GE_IS_NOTEBOOK(widget)) {
     notebook = GTK_NOTEBOOK(widget);
     selected = (state_type == GTK_STATE_NORMAL);
   }  
@@ -2218,7 +2218,7 @@ smooth_draw_extension(GtkStyle * style,
         return;
     case SMOOTH_TAB_TRIANGLE:
         tab_stripe_off = 1;
-	if ( CHECK_DETAIL(detail, "tab") && widget && GTK_IS_NOTEBOOK(widget)) {
+	if ( CHECK_DETAIL(detail, "tab") && widget && GE_IS_NOTEBOOK(widget)) {
           gint i, t;
 
           switch (gap_side) {
@@ -2298,7 +2298,7 @@ smooth_draw_extension(GtkStyle * style,
 	/* draw tab highlight */
 	if (selected && 
 	    tab->highlight &&
-	    GTK_IS_NOTEBOOK (widget)) {
+	    GE_IS_NOTEBOOK (widget)) {
 
 		if (GTK_POS_LEFT == gtk_notebook_get_tab_pos (GTK_NOTEBOOK (widget))) {
 
@@ -2630,7 +2630,7 @@ smooth_draw_box(GtkStyle * style,
 		SmoothGDKFinalizeCanvas(&da);
 	} 
 	else if ((EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT) && CHECK_DETAIL(detail, "entry") && widget 
-				&& (GTK_IS_SPIN_BUTTON (widget) || (ge_is_combo_box_entry(widget)) || (ge_is_combo(widget)))) 
+				&& (GE_IS_SPIN_BUTTON (widget) || (ge_is_combo_box_entry(widget)) || (ge_is_combo(widget)))) 
 	{
 		SmoothColor fill;
 		SmoothBorder border;
@@ -2663,7 +2663,7 @@ smooth_draw_box(GtkStyle * style,
 	}
 	else	
 	{
-		if (CHECK_DETAIL(detail, "togglebutton") || CHECK_DETAIL(detail, "button") || CHECK_DETAIL(detail, "spinbutton_up") || CHECK_DETAIL(detail, "spinbutton_down") || GTK_IS_BUTTON(widget))
+		if (CHECK_DETAIL(detail, "togglebutton") || CHECK_DETAIL(detail, "button") || CHECK_DETAIL(detail, "spinbutton_up") || CHECK_DETAIL(detail, "spinbutton_down") || GE_IS_BUTTON(widget))
 			horizontal = TRUE;
 		else if (CHECK_DETAIL(detail, "menubar") || CHECK_DETAIL(detail, "menuitem") || CHECK_DETAIL(detail, "optionmenu") || CHECK_DETAIL(detail, "optionmenutab") || CHECK_DETAIL(detail, "metacity"))
 			horizontal = TRUE;
@@ -2722,7 +2722,7 @@ smooth_draw_box(GtkStyle * style,
 				horizontal = TRUE;
 			}        
 		}
-		else if (GTK_IS_PROGRESS_BAR(widget)) 
+		else if (GE_IS_PROGRESS_BAR(widget)) 
 		{
 			switch (GTK_PROGRESS_BAR(widget)->orientation) 
 			{
@@ -2737,10 +2737,10 @@ smooth_draw_box(GtkStyle * style,
 				break;
 			}   
 		}  
-		else if (GTK_IS_SCROLLBAR(widget)) 
-			horizontal = GTK_IS_HSCROLLBAR(widget);
-		else if (GTK_IS_SCALE(widget))
-			horizontal = GTK_IS_HSCALE(widget);
+		else if (GE_IS_SCROLLBAR(widget)) 
+			horizontal = GE_IS_HSCROLLBAR(widget);
+		else if (GE_IS_SCALE(widget))
+			horizontal = GE_IS_HSCALE(widget);
 		else if (height > width)
 			horizontal = FALSE;
 		else
@@ -2865,7 +2865,7 @@ smooth_draw_option(GtkStyle * style,
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellradio"))
+	if (GE_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellradio"))
         {
 		x -= 1;
 		y -= 1;
@@ -2912,7 +2912,7 @@ smooth_draw_option(GtkStyle * style,
 		{x++; y++; width-=2; height-=2;}   
 	
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
+	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
         inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow_type == GTK_SHADOW_IN) || (inconsistent))
@@ -2968,13 +2968,13 @@ smooth_draw_check(GtkStyle * style,
 
 	check = CHECK_PART(style);
 
-	if (GTK_IS_CHECK_MENU_ITEM(widget)) 
+	if (GE_IS_CHECK_MENU_ITEM(widget)) 
 	{
 		x -= 1;
 		y -= 1;
 		width += 2;
 		height += 2;
-	} else if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellcheck"))
+	} else if (GE_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellcheck"))
         {
 		x -= 1;
 		y -= 1;
@@ -2986,7 +2986,7 @@ smooth_draw_check(GtkStyle * style,
 
 	widget_state = SmoothGtkWidgetState(state_type);
   
-	if (!((GTK_IS_CHECK_MENU_ITEM(widget) && (EDGE_LINE_STYLE(style, check) == SMOOTH_BEVEL_STYLE_NONE))))
+	if (!((GE_IS_CHECK_MENU_ITEM(widget) && (EDGE_LINE_STYLE(style, check) == SMOOTH_BEVEL_STYLE_NONE))))
 	{
 		if ((shadow_type == GTK_SHADOW_IN) && (EDGE_LINE_STYLE(style, check) == SMOOTH_BEVEL_STYLE_BEVELED) && (PART_STYLE(check) == SMOOTH_CHECKMARK_STYLE_NONE))
 		{
@@ -2998,7 +2998,7 @@ smooth_draw_check(GtkStyle * style,
 	}
 
 	inconsistent = (IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GTK_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
+	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
         inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow_type == GTK_SHADOW_IN) || (inconsistent))
@@ -3171,7 +3171,7 @@ smooth_draw_handle(GtkStyle * style,
      
     grip = GRIP_PART(style);
     
-    if (!GTK_IS_PANED(widget)) {
+    if (!GE_IS_PANED(widget)) {
       if (toolbar_overlap)
 	thick = EDGE_LINE_THICKNESS(style, NULL)*2;
       gradient_fill_background(da, style, state_type, THEME_PART(grip), x, y, width+thick*horiz, height+thick*vert, shadow_type == GTK_SHADOW_IN, orientation==GTK_ORIENTATION_HORIZONTAL);
@@ -3237,12 +3237,12 @@ smooth_draw_handle(GtkStyle * style,
 	     w+=1;
 	     h = MIN(height+1, width + height/7);
 	     y = y + (height - h)/2;
-             if ((GTK_IS_PANED(widget)) || (GTK_IS_RANGE(widget))) orientation = GTK_ORIENTATION_HORIZONTAL;
+             if ((GE_IS_PANED(widget)) || (GE_IS_RANGE(widget))) orientation = GTK_ORIENTATION_HORIZONTAL;
 	     if (!GRIP_OVERLAP_TOOLBAR(style) && CHECK_DETAIL(detail, "dockitem")) y -=1;
           } else {
 	     w = MIN(width+1, width/7 + height);
 	     x = x + (width - w)/2;
-	     if ((GTK_IS_PANED(widget)) || (GTK_IS_RANGE(widget))) orientation = GTK_ORIENTATION_VERTICAL;
+	     if ((GE_IS_PANED(widget)) || (GE_IS_RANGE(widget))) orientation = GTK_ORIENTATION_VERTICAL;
 	     if (!GRIP_OVERLAP_TOOLBAR(style) && CHECK_DETAIL(detail, "dockitem")) x -=1;
           }
 		
@@ -3331,7 +3331,7 @@ smooth_draw_resize_grip (GtkStyle       *style,
 	CHECK_ARGS
 	SANITIZE_SIZE
   
-	if (widget && GTK_IS_STATUSBAR(widget) && !RESIZE_GRIP(style)) 
+	if (widget && GE_IS_STATUSBAR(widget) && !RESIZE_GRIP(style)) 
 	{
 		//gtk_statusbar_set_has_resize_grip(GTK_STATUSBAR(widget), FALSE);
 		return;

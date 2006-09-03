@@ -290,7 +290,7 @@ hc_draw_extension (GtkStyle       *style,
 		To fake the apearance of overlap on edge aligned tabs
 		increase clip by edge thickness on gap side. 
 	 */
-	if (widget && (GTK_IS_NOTEBOOK (widget)))
+	if (widget && (GE_IS_NOTEBOOK (widget)))
 	{
 		widget_x = (widget->allocation.x + GTK_CONTAINER (widget)->border_width);
 		widget_y = (widget->allocation.y + GTK_CONTAINER (widget)->border_width);
@@ -302,7 +302,7 @@ hc_draw_extension (GtkStyle       *style,
 	{
 		case GTK_POS_TOP:
 			if (GTK_CHECK_VERSION(2,10,0) || 
-				((widget && GTK_IS_NOTEBOOK (widget)) && 
+				((widget && GE_IS_NOTEBOOK (widget)) && 
 				((x==widget_x) || 
 				((x + width) == (widget_x + widget_width)))))
 			{
@@ -320,7 +320,7 @@ hc_draw_extension (GtkStyle       *style,
 
 		case GTK_POS_LEFT:
 			if (GTK_CHECK_VERSION(2,10,0) || 
-				((widget && GTK_IS_NOTEBOOK (widget)) && 
+				((widget && GE_IS_NOTEBOOK (widget)) && 
 				((y==widget_y) || 
 				((y + height) == (widget_y + widget_height)))))
 			{

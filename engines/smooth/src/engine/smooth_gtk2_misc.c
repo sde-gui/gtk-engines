@@ -86,7 +86,7 @@ smooth_arc_clip_mask(gint width,
 GtkWidget *
 get_notebook_page(GtkWidget * widget)
 {
-  g_return_val_if_fail(GTK_IS_WIDGET(widget), NULL);
+  g_return_val_if_fail(GE_IS_WIDGET(widget), NULL);
 
   while (widget && widget->parent && !g_type_is_a(GTK_WIDGET_TYPE(widget->parent), GTK_TYPE_NOTEBOOK))
     widget = widget->parent;
@@ -101,7 +101,7 @@ get_notebook_page(GtkWidget * widget)
 GtkWidget *
 get_tab_label(GtkWidget *page, GtkWidget * widget)
 {
-  g_return_val_if_fail(GTK_IS_WIDGET(widget), NULL);
+  g_return_val_if_fail(GE_IS_WIDGET(widget), NULL);
 
   widget = gtk_notebook_get_menu_label(GTK_NOTEBOOK(page->parent), page);
   if (!(widget)) 
@@ -114,7 +114,7 @@ gboolean
 widget_is_tab_label(GtkWidget *page, GtkWidget * widget)
 {
   GtkWidget * real_widget = widget;
-  g_return_val_if_fail(GTK_IS_WIDGET(widget), FALSE);
+  g_return_val_if_fail(GE_IS_WIDGET(widget), FALSE);
 
   widget = gtk_notebook_get_menu_label(GTK_NOTEBOOK(page->parent), page);
   if (!(widget)) 
@@ -171,7 +171,7 @@ smooth_reverse_engineer_stepper_box (GtkWidget    *range,
   gint box_width;
   gint box_height;
   
-  if (range && GTK_IS_RANGE (range))
+  if (range && GE_IS_RANGE (range))
     {
       gtk_widget_style_get (range,
 			    "slider_width", &slider_width,
@@ -271,7 +271,7 @@ smooth_reverse_engineer_arrow_box (GtkWidget    *widget,
       *x -= 1;
     }
   else if ((ge_is_in_combo_box (widget) || 
-               IS_SPIN_BUTTON (widget)) && 
+               GE_IS_SPIN_BUTTON (widget)) && 
              ENTRY_BUTTON_EMBED(widget->style))
     {
       GtkStyle *style = widget->style;
@@ -303,7 +303,7 @@ smooth_gtk_button_get_props (GtkWidget *widget,
 
   if (default_border)
     {
-      if( GTK_IS_BUTTON(widget) )
+      if( GE_IS_BUTTON(widget) )
         {
           gtk_widget_style_get (widget, "default_border", &tmp_border, NULL);
         }
@@ -321,7 +321,7 @@ smooth_gtk_button_get_props (GtkWidget *widget,
 
   if (default_outside_border)
     {
-      if( GTK_IS_BUTTON(widget) )
+      if( GE_IS_BUTTON(widget) )
         {
           gtk_widget_style_get (widget, "default_outside_border", &tmp_border, NULL);
         }

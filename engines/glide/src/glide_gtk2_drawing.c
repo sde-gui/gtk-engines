@@ -118,14 +118,14 @@ glide_draw_check (GtkStyle * style,
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	if (GTK_IS_CHECK_MENU_ITEM(widget)) 
+	if (GE_IS_CHECK_MENU_ITEM(widget)) 
 	{
 		x -= 1;
 		y -= 1;
 		width += 2;
 		height += 2;
 	} 
-	else if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellcheck"))
+	else if (GE_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellcheck"))
 	{
 		x -= 1;
 		y -= 1;
@@ -237,7 +237,7 @@ glide_draw_option (GtkStyle * style,
 	/***********************************************/
 	/* GTK Special Cases - adjust Size/Offset      */
 	/***********************************************/
-	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellradio"))
+	if (GE_IS_CELL_RENDERER_TOGGLE(widget) || CHECK_DETAIL(detail, "cellradio"))
         {
 		x -= 1;
 		y -= 1;
@@ -251,12 +251,12 @@ glide_draw_option (GtkStyle * style,
 	/***********************************************/
 	check_state = GLIDE_CHECK_OFF;
 
-	if (GTK_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+	if (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
 	{
 		check_state = GLIDE_CHECK_INCONSISTENT;
 	}
 
-	if (GTK_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
+	if (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
 	{
 		check_state = GLIDE_CHECK_INCONSISTENT;
 	}
@@ -404,7 +404,7 @@ glide_draw_arrow (GtkStyle * style,
 
 	if ((CHECK_DETAIL (detail, "vscrollbar"))
 		|| (CHECK_DETAIL (detail, "hscrollbar"))
-		|| IS_SCROLLBAR(widget))
+		|| GE_IS_SCROLLBAR(widget))
 	{
 		if (arrow_type == GTK_ARROW_LEFT)
 		{
@@ -542,7 +542,7 @@ glide_draw_shadow (GtkStyle * style,
 		GObject *combo_parent = G_OBJECT(ge_find_combo_box_widget_parent(widget));
 		GtkWidget *button = g_object_get_data(combo_parent, "button");
 
-		if (GTK_IS_WIDGET(button))
+		if (GE_IS_WIDGET(button))
 		{
 			gtk_widget_queue_draw_area(button, button->allocation.x, button->allocation.y, 
 							button->allocation.width, button->allocation.height);
@@ -676,7 +676,7 @@ glide_draw_combobox_button (GtkStyle * style,
 
 		for (child = children; child; child = child->next)
 		{
-			if (GTK_IS_ENTRY(child->data) && GTK_WIDGET_HAS_FOCUS(child->data))
+			if (GE_IS_ENTRY(child->data) && GTK_WIDGET_HAS_FOCUS(child->data))
 			{
 				gtk_widget_style_get (widget, "focus_line_width", &focus_line_width, NULL);
 				gtk_widget_style_get (widget, "focus_padding", &focus_padding, NULL);
@@ -740,7 +740,7 @@ glide_draw_combobox_button (GtkStyle * style,
         {
           GtkWidget *entry = widget;
 
-	  if (GTK_IS_WIDGET(widget) && GTK_IS_WIDGET(widget->parent) && GTK_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
+	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
             {
                entry = GTK_COMBO (widget->parent)->entry;
                gtk_widget_ensure_style(entry);
@@ -748,7 +748,7 @@ glide_draw_combobox_button (GtkStyle * style,
                parent_style = entry->style;
                parent_state = entry->state;
              }
-          else if (GTK_IS_WIDGET(widget->parent))
+          else if (GE_IS_WIDGET(widget->parent))
             {
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
@@ -878,7 +878,7 @@ glide_draw_combobox_button (GtkStyle * style,
         {
           GtkWidget *entry = widget;
 
-	  if (GTK_IS_WIDGET(widget) && GTK_IS_WIDGET(widget->parent) && GTK_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
+	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
             {
                entry = GTK_COMBO (widget->parent)->entry;
                gtk_widget_ensure_style(entry);
@@ -886,7 +886,7 @@ glide_draw_combobox_button (GtkStyle * style,
                parent_style = entry->style;
                parent_state = entry->state;
              }
-          else if (GTK_IS_WIDGET(widget->parent))
+          else if (GE_IS_WIDGET(widget->parent))
             {
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
@@ -1279,7 +1279,7 @@ glide_draw_box (GtkStyle * style,
     }
   else if ((CHECK_DETAIL (detail, "trough")))
     {
-	if (GTK_IS_SCALE (widget)) 
+	if (GE_IS_SCALE (widget)) 
 	{
 		GtkAdjustment *adjustment;
 		gfloat value = 0;
@@ -1289,7 +1289,7 @@ glide_draw_box (GtkStyle * style,
 		adjustment = gtk_range_get_adjustment(GTK_RANGE(widget));
 		value = gtk_range_get_value(GTK_RANGE(widget));
 
-		if GTK_IS_HSCALE (widget)
+		if GE_IS_HSCALE (widget)
 		{
 			gint w=0;           
 
@@ -1378,7 +1378,7 @@ glide_draw_box (GtkStyle * style,
 	  if ((!IS_BONOBO_DOCK_ITEM(widget)) && (!IS_BOX(widget)))
 	    dockitem = widget->parent;
 	    
-	  has_grip = IS_CONTAINER(dockitem);
+	  has_grip = GE_IS_CONTAINER(dockitem);
 	  
 	  ltr = (!widget) || (gtk_widget_get_direction (dockitem) == GTK_TEXT_DIR_LTR);
 	  
@@ -1415,7 +1415,7 @@ glide_draw_box (GtkStyle * style,
 	       
    	      GtkOrientation tmp = GTK_ORIENTATION_HORIZONTAL;
  
-	      if IS_HBOX(dockitem)
+	      if GE_IS_HBOX(dockitem)
 	        tmp = GTK_ORIENTATION_VERTICAL;
 	      else if (IS_BONOBO_DOCK_ITEM(dockitem))
 	        g_object_get (dockitem, "orientation", &tmp, NULL);
@@ -1472,7 +1472,7 @@ glide_draw_box (GtkStyle * style,
 	glide_draw_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y, width, height);
     }
   else if ((CHECK_DETAIL (detail, "bar"))
-	   && (widget && IS_PROGRESS_BAR (widget)))
+	   && (widget && GE_IS_PROGRESS_BAR (widget)))
     { 
 gboolean vertical = TRUE;
 			switch (GTK_PROGRESS_BAR(widget)->orientation) 
@@ -1937,7 +1937,7 @@ glide_draw_extension (GtkStyle * style,
 		To fake the apearance of overlap on edge aligned tabs
 		increase clip by one on gap side. */
 
-	if (widget && (GTK_IS_NOTEBOOK (widget)))
+	if (widget && (GE_IS_NOTEBOOK (widget)))
 	{
 		widget_x = (widget->allocation.x + GTK_CONTAINER (widget)->border_width);
 		widget_y = (widget->allocation.y + GTK_CONTAINER (widget)->border_width);
@@ -1947,7 +1947,7 @@ glide_draw_extension (GtkStyle * style,
 
 	pattern = glide_style->bg_solid[state_type];
 
-	if ((widget && GTK_IS_NOTEBOOK (widget)) && (state_type==GTK_STATE_NORMAL))
+	if ((widget && GE_IS_NOTEBOOK (widget)) && (state_type==GTK_STATE_NORMAL))
 	{ 
 		pattern = glide_style->active_tab_gradient[gap_side][state_type];
 		gap_pos = 1;
@@ -1958,7 +1958,7 @@ glide_draw_extension (GtkStyle * style,
 	{
 		case GTK_POS_TOP:
 			if (GTK_CHECK_VERSION(2,10,0) || 
-				((widget && GTK_IS_NOTEBOOK (widget)) && 
+				((widget && GE_IS_NOTEBOOK (widget)) && 
 				((x==widget_x) || 
 				((x + width) == (widget_x + widget_width)))))
 			{
@@ -1977,7 +1977,7 @@ glide_draw_extension (GtkStyle * style,
 
 		case GTK_POS_LEFT:
 			if (GTK_CHECK_VERSION(2,10,0) || 
-				((widget && GTK_IS_NOTEBOOK (widget)) && 
+				((widget && GE_IS_NOTEBOOK (widget)) && 
 				((y==widget_y) || 
 				((y + height) == (widget_y + widget_height)))))
 			{
@@ -1997,7 +1997,7 @@ glide_draw_extension (GtkStyle * style,
 		default:
 		case GTK_POS_BOTTOM:
 			if (GTK_CHECK_VERSION(2,10,0) || 
-				((widget && GTK_IS_NOTEBOOK (widget)) && 
+				((widget && GE_IS_NOTEBOOK (widget)) && 
 				((x==widget_x) || 
 				((x + width) == (widget_x + widget_width)))))
 			{
@@ -2010,7 +2010,7 @@ glide_draw_extension (GtkStyle * style,
 
 		case GTK_POS_RIGHT:
 			if (GTK_CHECK_VERSION(2,10,0) || 
-				((widget && GTK_IS_NOTEBOOK (widget)) && 
+				((widget && GE_IS_NOTEBOOK (widget)) && 
 				((y==widget_y) || 
 				((y + height) == (widget_y + widget_height)))))
 			{
@@ -2240,7 +2240,7 @@ glide_draw_handle (GtkStyle * style,
 
           if (IS_BONOBO_DOCK_ITEM_GRIP(widget))
             {
-              if IS_BOX(widget->parent)
+              if GE_IS_BOX(widget->parent)
                 {
                   GList *children = NULL, *child = NULL;
  
@@ -2260,7 +2260,7 @@ glide_draw_handle (GtkStyle * style,
                 }
             }  
           else
-		skip_shadow = IS_PANED(widget);
+		skip_shadow = GE_IS_PANED(widget);
 
           if (!skip_shadow)
             {
@@ -2329,7 +2329,7 @@ glide_draw_focus(GtkStyle *style,
 
 			entry = g_object_get_data(G_OBJECT(ge_find_combo_box_widget_parent (widget)), "entry");
 
-			if (GTK_IS_WIDGET(entry) && !GTK_WIDGET_HAS_FOCUS(entry))
+			if (GE_IS_WIDGET(entry) && !GTK_WIDGET_HAS_FOCUS(entry))
 			{
 				gtk_widget_grab_focus(entry);
 			}
@@ -2349,7 +2349,7 @@ glide_draw_focus(GtkStyle *style,
 		{
 			GtkWidget *button = g_object_get_data(G_OBJECT(ge_find_combo_box_widget_parent (widget)), "button");
 
-			if (GTK_IS_WIDGET(button))
+			if (GE_IS_WIDGET(button))
 			{
 				gtk_widget_queue_draw_area(button, button->allocation.x, button->allocation.y, 
 								button->allocation.width, button->allocation.height);

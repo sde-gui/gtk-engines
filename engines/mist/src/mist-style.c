@@ -391,7 +391,7 @@ mist_style_draw_shadow(GtkStyle *style,
 		shadow_type = GTK_SHADOW_ETCHED_IN;
 	}
 	
-	if (CHECK_DETAIL(detail, "frame") && widget && widget->parent && GTK_IS_STATUSBAR (widget->parent)) {
+	if (CHECK_DETAIL(detail, "frame") && widget && widget->parent && GE_IS_STATUSBAR (widget->parent)) {
 		if (shadow_type != GTK_SHADOW_NONE) {
 			ge_cairo_set_color(cr, &mist_style->color_cube.dark[GTK_STATE_NORMAL]);	
 	
@@ -718,15 +718,15 @@ mist_style_draw_box(GtkStyle *style,
 	} else {
 		/* Make sure stepper and slider outlines "overlap" - taken from
 		 * bluecurve */
-		if (CHECK_DETAIL(detail, "slider") && widget && GTK_IS_RANGE (widget)) {
+		if (CHECK_DETAIL(detail, "slider") && widget && GE_IS_RANGE (widget)) {
 			GtkAdjustment *adj = GTK_RANGE (widget)->adjustment;
 			if (adj->value <= adj->lower &&
 			    (GTK_RANGE (widget)->has_stepper_a ||
 			     GTK_RANGE (widget)->has_stepper_b)) {
-				if (GTK_IS_VSCROLLBAR (widget)) {
+				if (GE_IS_VSCROLLBAR (widget)) {
 					height += 1;
 					y -= 1;
-				} else if (GTK_IS_HSCROLLBAR (widget)) {
+				} else if (GE_IS_HSCROLLBAR (widget)) {
 					width += 1;
 					x -= 1;
 				}
@@ -735,9 +735,9 @@ mist_style_draw_box(GtkStyle *style,
 			if (adj->value >= adj->upper - adj->page_size &&
 			    (GTK_RANGE (widget)->has_stepper_c ||
 			     GTK_RANGE (widget)->has_stepper_d)) {
-				if (GTK_IS_VSCROLLBAR (widget)) {
+				if (GE_IS_VSCROLLBAR (widget)) {
 					height += 1;
-				} else if (GTK_IS_HSCROLLBAR (widget)) {
+				} else if (GE_IS_HSCROLLBAR (widget)) {
 					width += 1;
 				}
 			}
@@ -1338,7 +1338,7 @@ mist_style_draw_string (GtkStyle      *style,
 	     int            y,
 	     const char    *string)
 {
-	g_return_if_fail (GTK_IS_STYLE (style));
+	g_return_if_fail (GE_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
 	
 	if (area) {
@@ -1368,7 +1368,7 @@ mist_style_draw_layout (GtkStyle        *style,
 {
 	GdkGC *gc;
 	
-	g_return_if_fail (GTK_IS_STYLE (style));
+	g_return_if_fail (GE_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
 	
 	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];

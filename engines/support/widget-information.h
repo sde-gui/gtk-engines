@@ -4,69 +4,75 @@
    Based on/modified from functions in
    Smooth-Engine.
 */ 
-#define IS_WIDGET(object) ((object)  && ge_object_is_a (object, "GtkWidget"))
-#define IS_CONTAINER(object) ((object)  && ge_object_is_a (object, "GtkContainer"))
-#define IS_BIN(object) ((object)  && ge_object_is_a (object, "GtkBin"))
+#define GE_IS_WIDGET(object) ((object)  && ge_object_is_a (object, "GtkWidget"))
+#define GE_IS_CONTAINER(object) ((object)  && ge_object_is_a (object, "GtkContainer"))
+#define GE_IS_BIN(object) ((object)  && ge_object_is_a (object, "GtkBin"))
 
-#define IS_ARROW(object) ((object)  && ge_object_is_a (object, "GtkArrow"))
+#define GE_IS_ARROW(object) ((object)  && ge_object_is_a (object, "GtkArrow"))
 
-#define IS_SEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkSeparator"))
-#define IS_VSEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkVSeparator"))
-#define IS_HSEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkHSeparator"))
+#define GE_IS_SEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkSeparator"))
+#define GE_IS_VSEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkVSeparator"))
+#define GE_IS_HSEPARATOR(object) ((object)  && ge_object_is_a (object, "GtkHSeparator"))
  
-#define IS_HANDLE_BOX(object) ((object) && ge_object_is_a (object, "GtkHandleBox"))
-#define IS_HANDLE_BOX_ITEM(object) ((object) && IS_HANDLE_BOX(object->parent))
-#define IS_BONOBO_DOCK_ITEM(object) ((object) && ge_object_is_a (object, "BonoboDockItem"))
-#define IS_BONOBO_DOCK_ITEM_GRIP(object) ((object) && ge_object_is_a (object, "BonoboDockItemGrip"))
-#define IS_BONOBO_TOOLBAR(object) ((object) && ge_object_is_a (object, "BonoboUIToolbar"))
-#define IS_EGG_TOOLBAR(object) ((object) && ge_object_is_a (object, "Toolbar"))
-#define IS_TOOLBAR(object) ((object) && ge_object_is_a (object, "GtkToolbar"))
-#define IS_PANEL_WIDGET(object) ((object) && (ge_object_is_a (object, "PanelWidget") || ge_object_is_a (object, "PanelApplet")))
+#define GE_IS_HANDLE_BOX(object) ((object) && ge_object_is_a (object, "GtkHandleBox"))
+#define GE_IS_HANDLE_BOX_ITEM(object) ((object) && GE_IS_HANDLE_BOX(object->parent))
+#define GE_IS_BONOBO_DOCK_ITEM(object) ((object) && ge_object_is_a (object, "BonoboDockItem"))
+#define GE_IS_BONOBO_DOCK_ITEM_GRIP(object) ((object) && ge_object_is_a (object, "BonoboDockItemGrip"))
+#define GE_IS_BONOBO_TOOLBAR(object) ((object) && ge_object_is_a (object, "BonoboUIToolbar"))
+#define GE_IS_EGG_TOOLBAR(object) ((object) && ge_object_is_a (object, "Toolbar"))
+#define GE_IS_TOOLBAR(object) ((object) && ge_object_is_a (object, "GtkToolbar"))
+#define GE_IS_PANEL_WIDGET(object) ((object) && (ge_object_is_a (object, "PanelWidget") || ge_object_is_a (object, "PanelApplet")))
 
-#define IS_COMBO_BOX_ENTRY(object) ((widget) && ge_object_is_a (widget, "GtkComboBoxEntry"))
-#define IS_COMBO_BOX(object) ((widget) && ge_object_is_a (widget, "GtkComboBox"))
-#define IS_COMBO(object) ((widget) && ge_object_is_a (widget, "GtkCombo"))
-#define IS_OPTION_MENU(object) ((widget) && ge_object_is_a (widget, "GtkOptionMenu"))
+#define GE_IS_COMBO_BOX_ENTRY(object) ((widget) && ge_object_is_a (widget, "GtkComboBoxEntry"))
+#define GE_IS_COMBO_BOX(object) ((widget) && ge_object_is_a (widget, "GtkComboBox"))
+#define GE_IS_COMBO(object) ((widget) && ge_object_is_a (widget, "GtkCombo"))
+#define GE_IS_OPTION_MENU(object) ((widget) && ge_object_is_a (widget, "GtkOptionMenu"))
  
-#define IS_TOGGLE_BUTTON(object) ((object) && ge_object_is_a (object, "GtkToggleButton"))
-#define IS_CHECK_BUTTON(object) ((object) && ge_object_is_a (object, "GtkCheckButton"))
-#define IS_SPIN_BUTTON(object) ((object) && ge_object_is_a (object, "GtkSpinButton"))
+#define GE_IS_TOGGLE_BUTTON(object) ((object) && ge_object_is_a (object, "GtkToggleButton"))
+#define GE_IS_CHECK_BUTTON(object) ((object) && ge_object_is_a (object, "GtkCheckButton"))
+#define GE_IS_SPIN_BUTTON(object) ((object) && ge_object_is_a (object, "GtkSpinButton"))
  
-#define IS_STATUS_BAR(object) ((object) && ge_object_is_a (object, "GtkStatusbar"))
-#define IS_PROGRESS_BAR(object) ((object) && ge_object_is_a (object, "GtkProgressBar"))
+#define GE_IS_STATUS_BAR(object) ((object) && ge_object_is_a (object, "GtkStatusbar"))
+#define GE_IS_PROGRESS_BAR(object) ((object) && ge_object_is_a (object, "GtkProgressBar"))
  
-#define IS_MENU_SHELL(object) ((object) && ge_object_is_a (object, "GtkMenuShell"))
-#define IS_MENU(object) ((object) && ge_object_is_a (object, "GtkMenu"))
-#define IS_MENU_BAR(object) ((object) && ge_object_is_a (object, "GtkMenuBar"))
-#define IS_MENU_ITEM(object) ((object) && ge_object_is_a (object, "GtkMenuItem"))
+#define GE_IS_MENU_SHELL(object) ((object) && ge_object_is_a (object, "GtkMenuShell"))
+#define GE_IS_MENU(object) ((object) && ge_object_is_a (object, "GtkMenu"))
+#define GE_IS_MENU_BAR(object) ((object) && ge_object_is_a (object, "GtkMenuBar"))
+#define GE_IS_MENU_ITEM(object) ((object) && ge_object_is_a (object, "GtkMenuItem"))
 
-#define IS_RANGE(object) ((object) && ge_object_is_a (object, "GtkRange"))
+#define GE_IS_CHECK_MENU_ITEM(object) ((object) && ge_object_is_a (object, "GtkCheckMenuItem"))
+
+#define GE_IS_RANGE(object) ((object) && ge_object_is_a (object, "GtkRange"))
  
-#define IS_SCROLLBAR(object) ((object) && ge_object_is_a (object, "GtkScrollbar"))
-#define IS_VSCROLLBAR(object) ((object) && ge_object_is_a (object, "GtkVScrollbar"))
-#define IS_HSCROLLBAR(object) ((object) && ge_object_is_a (object, "GtkHScrollbar"))
+#define GE_IS_SCROLLBAR(object) ((object) && ge_object_is_a (object, "GtkScrollbar"))
+#define GE_IS_VSCROLLBAR(object) ((object) && ge_object_is_a (object, "GtkVScrollbar"))
+#define GE_IS_HSCROLLBAR(object) ((object) && ge_object_is_a (object, "GtkHScrollbar"))
  
-#define IS_SCALE(object) ((object) && ge_object_is_a (object, "GtkScale"))
-#define IS_VSCALE(object) ((object) && ge_object_is_a (object, "GtkVScale"))
-#define IS_HSCALE(object) ((object) && ge_object_is_a (object, "GtkHScale"))
+#define GE_IS_SCALE(object) ((object) && ge_object_is_a (object, "GtkScale"))
+#define GE_IS_VSCALE(object) ((object) && ge_object_is_a (object, "GtkVScale"))
+#define GE_IS_HSCALE(object) ((object) && ge_object_is_a (object, "GtkHScale"))
   
-#define IS_PANED(object) ((object) && ge_object_is_a (object, "GtkPaned"))
-#define IS_VPANED(object) ((object) && ge_object_is_a (object, "GtkVPaned"))
-#define IS_HPANED(object) ((object) && ge_object_is_a (object, "GtkHPaned"))
+#define GE_IS_PANED(object) ((object) && ge_object_is_a (object, "GtkPaned"))
+#define GE_IS_VPANED(object) ((object) && ge_object_is_a (object, "GtkVPaned"))
+#define GE_IS_HPANED(object) ((object) && ge_object_is_a (object, "GtkHPaned"))
  
-#define IS_BOX(object) ((object) && ge_object_is_a (object, "GtkBox"))
-#define IS_VBOX(object) ((object) && ge_object_is_a (object, "GtkVBox"))
-#define IS_HBOX(object) ((object) && ge_object_is_a (object, "GtkHBox"))
+#define GE_IS_BOX(object) ((object) && ge_object_is_a (object, "GtkBox"))
+#define GE_IS_VBOX(object) ((object) && ge_object_is_a (object, "GtkVBox"))
+#define GE_IS_HBOX(object) ((object) && ge_object_is_a (object, "GtkHBox"))
 
-#define IS_CLIST(object) ((object) && ge_object_is_a (object, "GtkCList"))
-#define IS_TREE_VIEW(object) ((object) && ge_object_is_a (object, "GtkTreeView"))
-#define IS_ENTRY(object) ((object) && ge_object_is_a (object, "GtkEntry"))
-#define IS_BUTTON(object) ((object) && ge_object_is_a (object, "GtkButton"))
-#define IS_FIXED(object) ((object) && ge_object_is_a (object, "GtkFixed"))
+#define GE_IS_CLIST(object) ((object) && ge_object_is_a (object, "GtkCList"))
+#define GE_IS_TREE_VIEW(object) ((object) && ge_object_is_a (object, "GtkTreeView"))
+#define GE_IS_ENTRY(object) ((object) && ge_object_is_a (object, "GtkEntry"))
+#define GE_IS_BUTTON(object) ((object) && ge_object_is_a (object, "GtkButton"))
+#define GE_IS_FIXED(object) ((object) && ge_object_is_a (object, "GtkFixed"))
  
 #define TOGGLE_BUTTON(object) (IS_TOGGLE_BUTTON(object)?(GtkToggleButton *)object:NULL)
  
-GE_INTERNAL gboolean ge_object_is_a (const GtkWidget * widget, const gchar * type_name);
+#define GE_IS_STYLE(object) ((object) && ge_object_is_a (object, "GtkStyle"))
+#define GE_IS_NOTEBOOK(object) ((object) && ge_object_is_a (object, "GtkNotebook"))
+#define GE_IS_CELL_RENDERER_TOGGLE(object) ((object) && ge_object_is_a (object, "GtkCellRendererToggle"))
+
+GE_INTERNAL gboolean ge_object_is_a (const GObject * object, const gchar * type_name);
  
 GE_INTERNAL gboolean ge_combo_box_is_using_list (GtkWidget * widget);
 
