@@ -1,5 +1,13 @@
 2006-09-03  Richard A. Stellingwerff  <remenic@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box), (clearlooks_style_draw_tab),
+	(clearlooks_style_draw_arrow):
+
+	Arrows are now drawn with the right color and less fuzzy.
+
+2006-09-03  Richard A. Stellingwerff  <remenic@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_scrollbar_stepper),
 	(clearlooks_draw_scrollbar_slider):

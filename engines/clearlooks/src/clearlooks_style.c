@@ -665,14 +665,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 		
 		if (ge_widget_is_ltr (widget))
-			optionmenu.linepos = width - (indicator_size.width + indicator_spacing.left + indicator_spacing.right) - style->xthickness;
+			optionmenu.linepos = width - (indicator_size.width + indicator_spacing.left + indicator_spacing.right) - 1;
 		else
-			optionmenu.linepos = (indicator_size.width + indicator_spacing.left + indicator_spacing.right) + style->xthickness;
+			optionmenu.linepos = (indicator_size.width + indicator_spacing.left + indicator_spacing.right) + 1;
 		
 		clearlooks_draw_optionmenu (cr, colors, &params, &optionmenu,
-		                            x, y, width, height);
-		                            
-		
+		                            x, y, width, height);		
 	}
 	else if (DETAIL ("menuitem"))
 	{
@@ -1006,20 +1004,30 @@ clearlooks_style_draw_check (DRAW_ARGS)
 static void
 clearlooks_style_draw_tab (DRAW_ARGS)
 {
-	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	ClearlooksColors *colors = &clearlooks_style->colors;	
-	WidgetParameters params;
-	ArrowParameters  arrow;
+	GtkRequisition indicator_size;
+	GtkBorder indicator_spacing;
+	gint arrow_height;
+		
+	ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 	
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	indicator_size.width += (indicator_size.width % 2) - 1;
+	arrow_height = indicator_size.width / 2;
 	
-	clearlooks_set_widget_parameters (widget, style, state_type, &params);
-	arrow.type      = CL_ARROW_COMBO;
-	arrow.direction = CL_DIRECTION_DOWN;
-	
-	clearlooks_draw_arrow (cr, colors, &params, &arrow, x, y, width, height);
+	x += (width - indicator_size.width) / 2;
+	y += height/2;
 
-	cairo_destroy (cr);
+
+	gtk_paint_arrow (widget->style, widget->window,
+	                 widget->state, shadow_type,
+	                 area, widget, "arrow",
+	                 GTK_ARROW_UP, TRUE,
+	                 x, y-arrow_height-1, indicator_size.width, arrow_height);
+	                 
+	gtk_paint_arrow (widget->style, widget->window,
+	                 widget->state, shadow_type,
+	                 area, widget, "arrow",
+	                 GTK_ARROW_DOWN, TRUE,
+	                 x, y+2, indicator_size.width, arrow_height);
 }
 
 static void
@@ -1164,43 +1172,24 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
                        gint           width,
                        gint           height)
 {
-	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
-	ClearlooksColors *colors;
-	cairo_t *cr;
-		
-	CHECK_ARGS
-	SANITIZE_SIZE
-
-	if (arrow_type == (GtkArrowType)4)/* NONE - new in GTK 2.10 */
-		return;
-
-	colors = &clearlooks_style->colors;
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
-
-	if (DETAIL ("arrow"))
+	if (DETAIL ("arrow") && ge_is_combo_box (widget, FALSE) && !ge_is_combo_box_entry(widget))
 	{
-		WidgetParameters params;
-		ArrowParameters  arrow;
+#define CL_COMBO_BOX_ARROW_WIDTH 8
+#define CL_COMBO_BOX_ARROW_HEIGHT 5
+
+		x += (width - CL_COMBO_BOX_ARROW_WIDTH) + 1;
+		y += 1;
 		
-		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		arrow.type = CL_ARROW_NORMAL;
-		arrow.direction = (ClearlooksDirection)arrow_type;
+		width  = CL_COMBO_BOX_ARROW_WIDTH;
+		height = CL_COMBO_BOX_ARROW_HEIGHT;
 		
-/*		cairo_rectangle (cr, x, y, width, height);
-		cairo_set_source_rgb (cr, 1, 0, 0);
-		cairo_fill (cr);
-	*/	
-		if (ge_is_combo_box (widget, FALSE) && !ge_is_combo_box_entry (widget))
-		{
-			arrow.type = CL_ARROW_COMBO;
-			y -= 2;
-			height += 4;
-			x += 1;
-		}
-		
-		clearlooks_draw_arrow (cr, colors, &params, &arrow,
-		                       x, y, width, height);
+		clearlooks_parent_class->draw_arrow (style, window, state_type, shadow, area,
+		                          widget, detail, GTK_ARROW_UP, fill,
+		                          x, y-1, width, height);
+
+		clearlooks_parent_class->draw_arrow (style, window, state_type, shadow, area,
+		                          widget, detail, GTK_ARROW_DOWN, fill,
+		                          x, y+height, width, height);
 	}
 	else
 	{
@@ -1210,8 +1199,6 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 		                          widget, detail, arrow_type, fill,
 		                          x, y, width, height);
 	}
-	
-	cairo_destroy (cr);
 }
 
 static void
