@@ -1,3 +1,28 @@
+2006-09-04  Andrew Johnson  <acjgenius@earthlink.net>
+
+	* configure.ac:
+	* engines/clearlooks/Makefile.am:
+	* engines/clearlooks/src/animation.c:
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/support.h:
+	* engines/crux/Makefile.am:
+	* engines/crux/src/crux-draw.c:
+	* engines/glide/Makefile.am:
+	* engines/hc/Makefile.am:
+	* engines/hc/src/hc-style.c: 
+	* engines/industrial/Makefile.am:
+	* engines/mist/Makefile.am:
+	* engines/redmond/Makefile.am:
+	* engines/support/Makefile.am:
+	* engines/support/widget-information.c:
+	* engines/thinice/Makefile.am:
+	* engines/thinice/src/thinice_theme_draw.c:
+
+	- Add --enable-development flag
+	- Fix thinice where default triangle used un-set light/dark variables
+	- Ensure all engines but smooth compile with paranoia
+
 2006-09-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

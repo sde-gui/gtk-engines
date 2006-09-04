@@ -1498,9 +1498,6 @@ draw_extension (GtkStyle *style,
 		gint x,
 		gint y, gint width, gint height, GtkPositionType gap_side)
 {
-	GtkWidget* parent_widget;
-	gint relative_x;
-
 	cairo_t *cr;
 	cairo_pattern_t *crp;
 	CairoColor c1, c2;
@@ -1711,7 +1708,7 @@ draw_handle (GtkStyle *style,
 	cairo_destroy (cr);
 	*/
 
-	if (!ge_is_panel_widget_item (widget) && !ge_object_is_a (widget, "PanelToplevel"))
+	if (!ge_is_panel_widget_item (widget) && !ge_object_is_a ((GObject*)widget, "PanelToplevel"))
 		draw_box (style, window, state_type, shadow_type, area, widget, detail, x, y, width, height);
 
     light_gc = style->light_gc[state_type];

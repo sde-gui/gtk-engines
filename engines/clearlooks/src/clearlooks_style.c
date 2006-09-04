@@ -727,7 +727,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		else
 		{
 			ScrollBarStepperParameters stepper;
-			GdkRectangle this_rectangle = { x, y, width, height };
+			GdkRectangle this_rectangle;
+			
+			this_rectangle.x = x;
+			this_rectangle.y = y;
+			this_rectangle.width = width;
+			this_rectangle.height = height;
 
 			stepper.stepper = clearlooks_scrollbar_get_stepper (widget, &this_rectangle);
 
@@ -859,8 +864,6 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	{
 		if (inconsistent)
 		{
-			cairo_pattern_t *pt;
-
 			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
 			cairo_set_line_width (cr, 4);
 
@@ -1064,10 +1067,9 @@ clearlooks_style_draw_hline                      (GtkStyle               *style,
                                  gint                    y)
 {
 	cairo_t *cr;
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
-	
 	SeparatorParameters separator;
+	
+	cr = ge_gdk_drawable_to_cairo (window, area);
 	
 	separator.horizontal = TRUE;
 	
@@ -1278,7 +1280,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	cairo_t *cr;
 	gboolean free_dash_list = FALSE;
 	gint line_width = 1;
-	gint8 *dash_list = "\1\1";
+	gint8 *dash_list = (gint8 *)"\1\1";
 
 	if (widget)
 	{
@@ -1295,7 +1297,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		if (free_dash_list)
 			g_free (dash_list);
 
-		dash_list = "\4\4";
+		dash_list = (gint8 *)"\4\4";
 		free_dash_list = FALSE;
 	}
 
@@ -1316,7 +1318,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 
 	if (dash_list[0])
 	{
-		gint n_dashes = strlen (dash_list);
+		gint n_dashes = strlen ((gchar *)dash_list);
 		gdouble *dashes = g_new (gdouble, n_dashes);
 		gdouble total_length = 0;
 		gdouble dash_offset;

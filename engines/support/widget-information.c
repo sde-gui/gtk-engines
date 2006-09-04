@@ -3,6 +3,7 @@
 #include "general-support.h"
 #include "widget-information.h"
 #include <math.h>
+#include <string.h>
 
 /* Widget Type Lookups/Macros
    
@@ -294,6 +295,7 @@ void
 ge_button_get_default_border (GtkWidget *widget, 
                               GtkBorder *border)
 {
+	GtkBorder default_border = {1, 1, 1, 1};
 	GtkBorder *tmp_border = NULL;
 	
 	if (widget && GE_IS_BUTTON (widget))
@@ -306,7 +308,7 @@ ge_button_get_default_border (GtkWidget *widget,
 	}
 	else
 	{
-		*border = (GtkBorder){1, 1, 1, 1};
+		*border = default_border;
 	}
 }
 

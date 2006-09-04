@@ -535,7 +535,6 @@ thinice_style_draw_box(GtkStyle * style,
          gint height)
 {
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
-	CairoColor *light, *dark;
 	cairo_t *canvas;
 	gboolean draw_border = TRUE;
 
@@ -627,14 +626,14 @@ thinice_style_draw_box(GtkStyle * style,
 			cairo_line_to(canvas, x+2.5, y+2.5);
 			cairo_fill(canvas);
 
-			ge_cairo_set_color(canvas, dark);
+			ge_cairo_set_color(canvas, &thinice_style->color_cube.dark[state_type]);
 			cairo_move_to(canvas, x + 2.5, y + 11);
 			cairo_line_to(canvas, x + 2.5, y + 2.5);
 			cairo_line_to(canvas, x + 11, y + 2.5);
 			cairo_stroke(canvas);
 
 			cairo_set_line_width (canvas, 0.5);
-			ge_cairo_set_color(canvas, light);
+			ge_cairo_set_color(canvas, &thinice_style->color_cube.light[state_type]);
 			cairo_move_to(canvas, x+11, y+3);
 			cairo_line_to(canvas, x+3, y+11);
 			cairo_stroke(canvas);

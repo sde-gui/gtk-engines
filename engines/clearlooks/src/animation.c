@@ -308,6 +308,9 @@ clearlooks_animation_cleanup ()
 	
 	stop_timer ();
 }
-
-
+#else /* !HAVE_ANIMATION */
+static void clearlooks_animation_dummy_function_so_wall_shuts_up_when_animations_is_disabled()
+{
+	clearlooks_animation_dummy_function_so_wall_shuts_up_when_animations_is_disabled();
+}
 #endif /* HAVE_ANIMATION */

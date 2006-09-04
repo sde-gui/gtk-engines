@@ -20,8 +20,10 @@ GE_INTERNAL void              clearlooks_clist_get_header_index    (GtkCList    
                                                  GtkWidget    *button,
                                                  gint         *column_index,
                                                  gint         *columns);
-
+#ifdef DEVELOPMENT
 #warning clearlooks_get_parent_bg is a bad hack - find out why its needed, and figure out a better way.
+#endif
+
 GE_INTERNAL void              clearlooks_get_parent_bg      (const GtkWidget *widget,
                                                  CairoColor      *color);
 

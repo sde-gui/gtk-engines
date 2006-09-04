@@ -138,7 +138,10 @@ clearlooks_draw_top_left_highlight (cairo_t *cr,
 	cairo_stroke          (cr);
 }
 
+#ifdef DEVELOPMENT
 #warning seems to be very slow in scrollbar_stepper
+#endif
+
 static void
 clearlooks_draw_highlight_and_shade (cairo_t *cr,
                                      const ShadowParameters *params,
@@ -1041,8 +1044,8 @@ clearlooks_draw_frame            (cairo_t *cr,
 {
 	const float RADIUS = 3.0;
 	CairoColor *border = frame->border;
-	ClearlooksRectangle bevel_clip;
-	ClearlooksRectangle frame_clip;
+	ClearlooksRectangle bevel_clip = {0, 0, 0, 0};
+	ClearlooksRectangle frame_clip = {0, 0, 0, 0};
 	
 	if (frame->shadow == CL_SHADOW_NONE)
 		return;
@@ -1485,7 +1488,6 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 {
 	ClearlooksCorners corners = CL_CORNER_NONE;
 	CairoColor *border = (CairoColor*)&colors->shade[6];
-	CairoColor *bg     = (CairoColor*)&colors->bg[widget->state_type];
 	CairoColor  s1, s2, s3, s4;
 	cairo_pattern_t *pattern;
 	ShadowParameters shadow;
@@ -1623,7 +1625,6 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		CairoColor *border  = (CairoColor*)&colors->shade[6];
 		CairoColor s1, s2, s3, s4;		
 		cairo_pattern_t *pattern;
-		HandleParameters handle;
 		int bar_x, i;
 		
 		CairoColor *dark  = (CairoColor*)&colors->shade[4];
@@ -1649,7 +1650,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_set_source_rgb (cr, border->r, border->g, border->b);
 		cairo_stroke (cr);
 		
-		// draw handles
+		/* draw handles */
 		cairo_set_line_width (cr, 1);
 		
 		bar_x = width/2 - 4;
@@ -1897,9 +1898,9 @@ clearlooks_draw_resize_grip (cairo_t *cr,
  
 	cairo_set_line_width (cr, 1);
 	
-	for (ly=0; ly<4; ly++) // vertically, four rows of dots
+	for (ly=0; ly<4; ly++) /* vertically, four rows of dots */
 	{
-		for (lx=0; lx<=ly; lx++) // horizontally
+		for (lx=0; lx<=ly; lx++) /* horizontally */
 		{
 			int ny = (3.5-ly) * 3;
 			int nx = lx * 3;

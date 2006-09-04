@@ -678,7 +678,7 @@ hc_draw_check (GtkStyle      *style,
 {
 	HcStyle *hc_style = HC_STYLE (style);
 	gboolean inconsistent;
-	gint line_width, indicator_size, tmp;
+	gint line_width;
 	cairo_t *cr;
 
 	CHECK_ARGS
