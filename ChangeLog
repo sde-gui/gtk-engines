@@ -1,5 +1,11 @@
 2006-09-03  Andrew Johnson  <acjgenius@earthlink.net>
 
+	* engines/mist/src/mist-style.c:
+
+	- Fix Missed GE_IS_STYLE -> GTK_IS_STYLE
+	
+2006-09-03  Andrew Johnson  <acjgenius@earthlink.net>
+
 	* engines/clearlooks/src/animation.c: 
 	* engines/clearlooks/src/support.c:
 	* engines/crux/src/crux-draw.c:

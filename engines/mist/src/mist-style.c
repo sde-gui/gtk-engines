@@ -1338,7 +1338,7 @@ mist_style_draw_string (GtkStyle      *style,
 	     int            y,
 	     const char    *string)
 {
-	g_return_if_fail (GE_IS_STYLE (style));
+	g_return_if_fail (GTK_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
 	
 	if (area) {
@@ -1368,7 +1368,7 @@ mist_style_draw_layout (GtkStyle        *style,
 {
 	GdkGC *gc;
 	
-	g_return_if_fail (GE_IS_STYLE (style));
+	g_return_if_fail (GTK_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
 	
 	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
