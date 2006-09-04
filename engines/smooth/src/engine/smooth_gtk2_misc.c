@@ -211,36 +211,39 @@ smooth_reverse_engineer_spin_button (GtkWidget    *widget,
 			      gint         *width,
 			      gint         *height)
 {
-  gint size = pango_font_description_get_size (widget->style->font_desc);
-  gint realheight, realwidth;
+	if (widget && widget->style && widget->style->font_desc)
+	{
+		gint size = pango_font_description_get_size (widget->style->font_desc);
+		gint realheight, realwidth;
 
-  realwidth = MIN(PANGO_PIXELS (size), 30);
+		realwidth = MIN(PANGO_PIXELS (size), 30);
 
-  realwidth -= realwidth % 2; /* force even */
+		realwidth -= realwidth % 2; /* force even */
   
-  realwidth -= 2 * xthickness(widget->style);
+		realwidth -= 2 * xthickness(widget->style);
   
-  realheight = ((widget->requisition.height) - 2 * ythickness(widget->style)) / 2;
+		realheight = ((widget->requisition.height) - 2 * ythickness(widget->style)) / 2;
       
-  realheight -= 1;
-  realwidth += 1;
+		realheight -= 1;
+		realwidth += 1;
 
-  *x += ((*width - realwidth) / 2);
-  *y += ((*height - realheight) / 2) + (arrow_type==GTK_ARROW_DOWN?(ENTRY_BUTTON_EMBED(widget->style)?0:1):(ENTRY_BUTTON_EMBED(widget->style)?0:-1));
-  *width = realwidth;
-  *height = realheight;
+		*x += ((*width - realwidth) / 2);
+		*y += ((*height - realheight) / 2) + (arrow_type==GTK_ARROW_DOWN?(ENTRY_BUTTON_EMBED(widget->style)?0:1):(ENTRY_BUTTON_EMBED(widget->style)?0:-1));
+		*width = realwidth;
+		*height = realheight;
 
-  if (ENTRY_BUTTON_EMBED(widget->style))
-    {
-      GtkStyle *style = widget->style;
-      smooth_part_style *part = THEME_PART(STEPPER_PART(widget->style));
-      gint thick = 2;
+		if (ENTRY_BUTTON_EMBED(widget->style))
+		{
+			GtkStyle *style = widget->style;
+			smooth_part_style *part = THEME_PART(STEPPER_PART(widget->style));
+			gint thick = 2;
 
-      thick = EDGE_LINE_THICKNESS(style, part);
+			thick = EDGE_LINE_THICKNESS(style, part);
 
-      if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
-        *x -= (gint)thick/2;
-    }
+			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
+				*x -= (gint)thick/2;
+		}
+	}
 }
 
 /* This function is a home-grown (probably flawed) function 

@@ -2593,7 +2593,7 @@ smooth_draw_box(GtkStyle * style,
 	SANITIZE_SIZE
 
 
-	if (CHECK_DETAIL(detail, "buttondefault"))
+	if (CHECK_DETAIL(detail, "buttondefault") && (widget))
 	{
 		GdkRectangle button;
 
@@ -2677,7 +2677,7 @@ smooth_draw_box(GtkStyle * style,
 			{
 				if (EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT)
 				{
-					if (y < widget->allocation.y + widget->allocation.height/2) 
+					if ((widget) && (y < widget->allocation.y + widget->allocation.height/2))
 					{
 						if ((area) && (area->height >= height))
 							area->height = height + 1;
@@ -2701,7 +2701,7 @@ smooth_draw_box(GtkStyle * style,
 			{
 				if (EDGE_LINE_STYLE(style,NULL) == SMOOTH_BEVEL_STYLE_FLAT)
 				{
-					if (x < widget->allocation.x + widget->allocation.width/2) 
+					if ((widget) && (x < widget->allocation.x + widget->allocation.width/2))
 					{
 						if ((area) && (area->width >= width))
 							area->width = width + 1;
