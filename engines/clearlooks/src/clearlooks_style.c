@@ -1206,15 +1206,8 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 			       GtkRcStyle * rc_style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	double shades[] = {1.15, 0.95, 0.896, 0.82, 0.7, 0.665, 0.5, 0.45, 0.4};
-	CairoColor spot_color;
-	CairoColor bg_normal;
-	double contrast;
-	int i;
 	
 	clearlooks_parent_class->init_from_rc (style, rc_style);
-
-	contrast = CLEARLOOKS_RC_STYLE (rc_style)->contrast;
 	
 	clearlooks_style->progressbarstyle  = CLEARLOOKS_RC_STYLE (rc_style)->progressbarstyle;
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
@@ -1225,6 +1218,21 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
+}
+
+static void
+clearlooks_style_realize (GtkStyle * style)
+{
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	double shades[] = {1.15, 0.95, 0.896, 0.82, 0.7, 0.665, 0.5, 0.45, 0.4};
+	CairoColor spot_color;
+	CairoColor bg_normal;
+	double contrast;
+	int i;
+	
+	clearlooks_parent_class->realize (style);
+
+	contrast = CLEARLOOKS_RC_STYLE (style->rc_style)->contrast;
 	
 	/* Lighter to darker */
 	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg_normal);
@@ -1523,6 +1531,7 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	clearlooks_parent_class = g_type_class_peek_parent (klass);
 
 	style_class->copy             = clearlooks_style_copy;
+	style_class->realize          = clearlooks_style_realize;
 	style_class->unrealize        = clearlooks_style_unrealize;
 	style_class->init_from_rc     = clearlooks_style_init_from_rc;
 	style_class->draw_handle      = clearlooks_style_draw_handle;

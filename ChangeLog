@@ -1,3 +1,20 @@
+2006-09-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_init_from_rc), (clearlooks_style_realize),
+	(clearlooks_style_class_init):
+	- Create the cached colors inside realize instead of init_from_rc.
+
+	* engines/industrial/src/industrial_style_versioned_code.h:
+	- Add note that some code will need to be factored out to realize.
+
+	* themes/Industrial/gtk-2.0/gtkrc:
+	- Fix up WnckTasklist style properties
+	- Decrease fade-loop-time to 2 seconds
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	- Make WnckTasklist change the bg color of fading tasks.
+
 2006-09-03  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* engines/mist/src/mist-style.c:

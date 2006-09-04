@@ -16,8 +16,9 @@ style "industrial-default"
   GtkRadioButton::indicator_size = 13
   GtkMenuBar::internal-padding = 0
   
-  GtkWnckTasklist::fade-opacity = 1
-  GtkWnckTasklist::fade-overlay-rect = 0
+  WnckTasklist::fade-opacity = 1
+  WnckTasklist::fade-overlay-rect = 0
+  WnckTasklist::fade-loop-time = 2
 
   GtkButton::child_displacement_x = 0
   GtkButton::child_displacement_y = 1

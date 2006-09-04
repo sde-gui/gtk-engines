@@ -20,6 +20,8 @@ style "clearlooks-default"
   GtkButton      ::child-displacement-x = 1
   GtkButton      ::child-displacement-y = 1
 
+  WnckTasklist   ::fade-overlay-rect = 0
+
   xthickness = 1
   ythickness = 1
 

@@ -17,6 +17,7 @@ industrial_style_init_from_rc (GtkStyle * style, GtkRcStyle * rc_style)
 {
 	IndustrialStyle *industrial_style = INDUSTRIAL_STYLE (style);
 #if 0
+	/* The color stuff should be in _realize ... */
 	GdkColor *spot_color;
 	double shades[] =
 	    { 1.065, 0.963, 0.896, 0.85, 0.768, 0.665, 0.4, 0.205 };
