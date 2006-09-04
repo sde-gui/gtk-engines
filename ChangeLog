@@ -1,3 +1,9 @@
+2006-09-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* configure.ac:
+	- Fix up the configure script
+	- Remove the --disable-theme option
+
 2006-09-04  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* configure.ac:

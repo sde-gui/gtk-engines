@@ -16,84 +16,67 @@ AM_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
-enableval="n"
-disableval="y"
+AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks    skip ClearLooks engine/theme], 	[clearlooks=$enableval], 	[clearlooks="yes"])
+AC_ARG_ENABLE(crux, 		[  --disable-crux          skip Crux engine/theme], 		[crux=$enableval], 		[crux="yes"])
+AC_ARG_ENABLE(hc,		[  --disable-hc            skip HC(high contrast) engine], 	[hc=$enableval], 		[hc="yes"])
+AC_ARG_ENABLE(industrial, 	[  --disable-industrial    skip Industrial engine/theme], 	[industrial=$enableval], 	[industrial="yes"])
+AC_ARG_ENABLE(mist, 		[  --disable-mist          skip Mist engine/theme], 		[mist=$enableval], 		[mist="yes"])
+AC_ARG_ENABLE(redmond,		[  --disable-redmond       skip Redmond engine/theme], 		[redmond=$enableval], 		[redmond="yes"])
+AC_ARG_ENABLE(smooth, 		[  --disable-smooth        skip Smooth engine], 			[smooth=$enableval], 		[smooth="yes"])
+AC_ARG_ENABLE(glide,		[  --disable-glide         skip Glide engine],			[glide=$enableval],		[glide="yes"])
+AC_ARG_ENABLE(thinice,		[  --disable-thinice       skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice="yes"])
 
-AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks		skip ClearLooks engine/theme], 		[clearlooks=$enableval], 	[clearlooks=$disableval])
-AC_ARG_ENABLE(crux, 		[  --disable-crux		skip Crux engine/theme], 		[crux=$enableval], 		[crux=$disableval])
-AC_ARG_ENABLE(hc,		[  --disable-hc 		skip HC(high contrast) engine], 	[hc=$enableval], 		[hc=$disableval])
-AC_ARG_ENABLE(industrial, 	[  --disable-industrial		skip Industrial engine/theme], 		[industrial=$enableval], 	[industrial=$disableval])
-AC_ARG_ENABLE(mist, 		[  --disable-mist		skip Mist engine/theme], 		[mist=$enableval], 		[mist=$disableval])
-AC_ARG_ENABLE(redmond,		[  --disable-redmond		skip Redmond engine/theme], 		[redmond=$enableval], 		[redmond=$disableval])
-AC_ARG_ENABLE(smooth, 		[  --disable-smooth		skip Smooth engine], 			[smooth=$enableval], 		[smooth=$disableval])
-AC_ARG_ENABLE(glide,           [  --disable-glide             skip Glide engine],                    [glide=$enableval],            [glide=$disableval])
-AC_ARG_ENABLE(thinice,		[  --disable-thinice		skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice=$disableval])
+AC_ARG_ENABLE(animation, 	[  --enable-animation      compile clearlooks with animation support], 	[animation=$enableval],	[animation="no"])
 
-AC_ARG_ENABLE(animation, 	[  --enable-animation		compile clearlooks with animation support], 	[animation=$disableval], 	[animation=$enableval])
+AC_ARG_ENABLE(development, 	[  --enable-development    Enable any development warnings/incomplete code],	[development=$enableval],	[development="no"])
 
-AC_ARG_ENABLE(themes, 		[  --disable-themes		skip installing default themes], 	[themes=$enableval], 		[themes=$disableval])
+AC_ARG_ENABLE(paranoia, 	[  --enable-paranoia       use wall, werror, ansi, pedantic compiler flags],	[paranoia=$enableval],	[paranoia="no"])
 
-AC_ARG_ENABLE(development, [  --enable-development           Enable any development warnings/incomplete code],        [development=$disableval],            [development=$enableval])
-
-AC_ARG_ENABLE(paranoia,           [  --enable-paranoia-checks		use wall, werror, ansi, pedantic compiler flags],        [paranoia=$enableval],            [paranoia=$disableval])
-
-AC_ARG_ENABLE(deprecated,           [  --disable-deprecated           disable deprecated functions in gtk et al],        [deprecated=$disableval],            [deprecated=$enableval])
+AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated functions in gtk et al],	[deprecated=$enableval],		[deprecated="no"])
 
 BUILD_ENGINES=""
 BUILD_THEMES=""
 
-if test $clearlooks = "y"; then
+if test $clearlooks = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES clearlooks"
-	if test $themes = "y"; then
-		BUILD_THEMES="$BUILD_THEMES Clearlooks"
-	fi
+	BUILD_THEMES="$BUILD_THEMES Clearlooks"
 fi
 
-if test $crux = "y"; then
+if test $crux = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES crux"
-	if test $themes = "y"; then
-		BUILD_THEMES="$BUILD_THEMES Crux"
-	fi
+	BUILD_THEMES="$BUILD_THEMES Crux"
 fi
 
-if test $hc = "y"; then
+if test $hc = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES hc"
 fi
 
-if test $industrial = "y"; then
+if test $industrial = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES industrial"
-	if test $themes = "y"; then
-		BUILD_THEMES="$BUILD_THEMES Industrial"
-	fi
+	BUILD_THEMES="$BUILD_THEMES Industrial"
 fi
 
-if test $mist = "y"; then
+if test $mist = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES mist"
-	if test $themes = "y"; then
-		BUILD_THEMES="$BUILD_THEMES Mist"
-	fi
+	BUILD_THEMES="$BUILD_THEMES Mist"
 fi
 
-if test $redmond = "y"; then
+if test $redmond = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES redmond"
-	if test $themes = "y"; then
-		BUILD_THEMES="$BUILD_THEMES Redmond"
-	fi
+	BUILD_THEMES="$BUILD_THEMES Redmond"
 fi
 
-if test $glide = "y"; then
+if test $glide = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES glide"
 fi
 
-if test $smooth = "y"; then
+if test $smooth = "yes"; then
         BUILD_ENGINES="$BUILD_ENGINES smooth"
 fi
 
-if test $thinice = "y"; then
+if test $thinice = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES thinice"
-	if test $themes = "y"; then
-		BUILD_THEMES="$BUILD_THEMES ThinIce"
-	fi
+	BUILD_THEMES="$BUILD_THEMES ThinIce"
 fi
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8.0,,
@@ -108,20 +91,20 @@ AC_SUBST(GTK_VERSION)
 AC_SUBST(BUILD_ENGINES)
 AC_SUBST(BUILD_THEMES)
 
-if test $animation = "y"; then
+if test $animation = "yes"; then
 	AC_DEFINE_UNQUOTED(HAVE_ANIMATION, 1, [Defines whether to compile with animation support])
 fi
 
 DEVELOPMENT_CFLAGS=
-if test $development = "y"; then
+if test $development = "yes"; then
 	DEVELOPMENT_CFLAGS+=" -DDEVELOPMENT"
 fi
 
-if test $paranoia = "y"; then
+if test $paranoia = "yes"; then
 	DEVELOPMENT_CFLAGS+=" -Wall -Werror -ansi -pedantic"
 fi
 
-if test $deprecated = "y"; then
+if test $deprecated = "yes"; then
 	DEVELOPMENT_CFLAGS+=" -DG_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED"
 fi
 
@@ -169,7 +152,7 @@ echo -e "\nSpecial Flags:"
 
 echo -n "      Development Code - "
 
-if test "$development" = "y"; then
+if test "$development" = "yes"; then
 	echo "Enabled"
 else
 	echo "Disabled"
@@ -177,7 +160,7 @@ fi
 
 echo -n "      Paranoia Flags - "
 
-if test "$paranoia" = "y"; then
+if test "$paranoia" = "yes"; then
         echo "Enabled"
 else
         echo "Disabled"
@@ -185,7 +168,7 @@ fi
 
 echo -n "      Disable Deprecated - "
 
-if test "$deprecated" = "y"; then
+if test "$deprecated" = "yes"; then
 	echo "Enabled"
 else
 	echo "Disabled"
@@ -194,9 +177,9 @@ fi
 echo -e "\nEngines and Themes:"
 
 echo -n "      ClearLooks - "
-if test "$clearlooks" = "y"; then
+if test "$clearlooks" = "yes"; then
         echo -n "Including"
-        if test $animation = "y"; then
+        if test $animation = "yes"; then
         	echo " with animation support"
         else
         	echo " without animation support"
@@ -206,77 +189,57 @@ else
 fi
 
 echo -n "      Crux - "
-if test "$crux" = "y"; then
-	if test $themes = "y"; then
-		echo "Including"
-	else
-		echo "Including(Skipping Theme)"
-	fi
+if test "$crux" = "yes"; then
+	echo "Including"
 else
 	echo "Skipping"
 fi
 
 echo -n "      HC - "
-if test "$hc" = "y"; then
+if test "$hc" = "yes"; then
 	echo "Including"
 else
 	echo "Skipping"
 fi
 
 echo -n "      Industrial - "
-if test "$industrial" = "y"; then
-	if test $themes = "y"; then
-		echo "Including"
-	else
-		echo "Including(Skipping Theme)"
-	fi
+if test "$industrial" = "yes"; then
+	echo "Including"
 else
 	echo "Skipping"
 fi
 
 echo -n "      Mist - "
-if test "$mist" = "y"; then
-	if test $themes = "y"; then
-		echo "Including"
-	else
-		echo "Including(Skipping Theme)"
-	fi
+if test "$mist" = "yes"; then
+	echo "Including"
 else
 	echo "Skipping"
 fi
 
 echo -n "      Redmond - "
-if test "$redmond" = "y"; then
-	if test $themes = "y"; then
-		echo "Including"
-	else
-		echo "Including(Skipping Theme)"
-	fi
+if test "$redmond" = "yes"; then
+	echo "Including"
 else
 	echo "Skipping"
 fi
 
 echo -n "      Glide - "
-if test "$glide" = "y"; then
+if test "$glide" = "yes"; then
         echo "Including"
 else
         echo "Skipping"
 fi
 
 echo -n "      Smooth - "
-if test "$smooth" = "y"; then
+if test "$smooth" = "yes"; then
 	echo "Including"
 else
 	echo "Skipping"
 fi
 
 echo -n "      ThinIce - "
-if test "$thinice" = "y"; then
-	if test $themes = "y"; then
-		echo "Including"
-	else
-		echo "Including(Skipping Theme)"
-	fi
+if test "$thinice" = "yes"; then
+	echo "Including"
 else
 	echo "Skipping"
 fi
