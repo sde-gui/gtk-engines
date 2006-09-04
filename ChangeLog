@@ -1,3 +1,23 @@
+2006-09-04  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+
+	Updated for 2.8.0 release
+
+	* engines/crux/src/crux-draw.c: (draw_handle): Fix grip position
+	* themes/Crux/gtk-2.0/gtkrc: Make sure icons are 22x22 in toolbars etc
+	* themes/Mist/gtk-2.0/gtkrc: Use new Tango blue as "hilight" colour
+
+
+2006-09-04  Thomas Wood  <thos@gnome.org>
+
+	reviewed by: <delete if not using a buddy>
+
+	* NEWS:
+	* configure.ac:
+	* themes/Mist/gtk-2.0/gtkrc:
+
 2006-09-04  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

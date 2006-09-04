@@ -20,9 +20,16 @@
 #
 #  $Id$
 #
-#  Authors: John Harper <jsh@eazel.com>
+#  Authors:
+#  Lapo Calamandrei  <>
+#  Thomas Wood  <thos@gnome.org>
+#
+#  Original Author: John Harper <jsh@eazel.com>
 
 # Default style for all widgets to build from
+
+gtk-icon-sizes = "panel-menu=22,22:panel=22,22:gtk-menu=16,16:gtk-large-toolbar=22,22:gtk-button=22,22"
+
 style "default"
 {
 

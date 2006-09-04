@@ -1701,13 +1701,6 @@ draw_handle (GtkStyle *style,
 	state_type = GTK_STATE_ACTIVE;
 
 
-/*
-	cairo_t *cr;
-	cr = ge_gdk_drawable_to_cairo (window, NULL);
-	paint_shadow (cr, style, state_type, GTK_SHADOW_OUT,x, y, width, height);
-	cairo_destroy (cr);
-	*/
-
 	if (!ge_is_panel_widget_item (widget) && !ge_object_is_a ((GObject*)widget, "PanelToplevel"))
 		draw_box (style, window, state_type, shadow_type, area, widget, detail, x, y, width, height);
 
@@ -1729,7 +1722,7 @@ draw_handle (GtkStyle *style,
     if (height > width)
     {
 	yy = y + height / 2 - 4;
-	for (i = 0; i < 9; i += 2)
+	for (i = 0; i < 8; i += 2)
 	{
 	    gdk_draw_line (window, dark_gc, xthick, yy + i,
 			   x + width - xthick, yy + i);
@@ -1739,8 +1732,8 @@ draw_handle (GtkStyle *style,
     }
     else
     {
-	xx = x + width / 2 - 5;
-	for (i = 0; i < 10; i += 4)
+	xx = x + width / 2 - 4;
+	for (i = 0; i < 8; i += 2)
 	{
 	    gdk_draw_line (window, dark_gc, xx + i, ythick,
 			   xx + i, y + height - ythick);
