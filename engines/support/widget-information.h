@@ -71,6 +71,8 @@
 #define GE_IS_NOTEBOOK(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkNotebook"))
 #define GE_IS_CELL_RENDERER_TOGGLE(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkCellRendererToggle"))
 
+#define GE_WIDGET_HAS_DEFAULT(object) ((object) && GE_IS_WIDGET(object) && GTK_WIDGET_HAS_DEFAULT(object))
+
 GE_INTERNAL gboolean ge_object_is_a (const GObject * object, const gchar * type_name);
  
 GE_INTERNAL gboolean ge_combo_box_is_using_list (GtkWidget * widget);

@@ -1526,7 +1526,7 @@ gboolean vertical = TRUE;
 
       /* Paint a triangle here instead of in "buttondefault"
          which is drawn _behind_ the current button */
-      if ((CHECK_DETAIL (detail, "button")) && widget && GTK_WIDGET_HAS_DEFAULT (widget))
+      if ((CHECK_DETAIL (detail, "button")) && widget && GE_WIDGET_HAS_DEFAULT (widget))
         {
           cairo_save(canvas);
 

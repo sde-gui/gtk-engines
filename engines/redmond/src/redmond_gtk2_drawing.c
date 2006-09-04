@@ -514,7 +514,7 @@ redmond_draw_shadow (GtkStyle * style,
       else if (((CHECK_DETAIL (detail, "vscrollbar"))
 		|| (CHECK_DETAIL (detail, "hscrollbar"))
 		|| ((CHECK_DETAIL (detail, "button")) && (widget)
-		    && GTK_WIDGET_HAS_DEFAULT (widget))))
+		    && GE_WIDGET_HAS_DEFAULT (widget))))
 	{
 	  /* Scrollbar steppers and Defaultable Buttons use a flat
 	   * dark edge on pressed.

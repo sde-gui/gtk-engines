@@ -602,7 +602,7 @@ real_draw_box (GtkStyle      *style,
 		/* So we don't need to use transparency in the border,
 		 * hack this here. If it doesn't work correctly, it won't
 		 * look too bad. */
-		if (widget && GTK_WIDGET_HAS_DEFAULT (widget))
+		if (widget && GE_WIDGET_HAS_DEFAULT (widget))
 			fg.a = 1;
 		else
 			fg.a = BUTTON_BORDER_OPACITY;

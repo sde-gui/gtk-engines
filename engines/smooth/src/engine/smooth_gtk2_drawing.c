@@ -1811,7 +1811,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
         /* per widget special drawing */ 
         if (CHECK_DETAIL(detail, "slider") || CHECK_DETAIL(detail, "smooth_slider"))
           smooth_draw_slider_grip(Canvas, style, state_type, x, y, width, height, Horizontal);
-        else if (CHECK_DETAIL(detail, "button") && (smooth_button_default_triangle(style)) & GTK_WIDGET_HAS_DEFAULT (widget)) 
+        else if (CHECK_DETAIL(detail, "button") && (smooth_button_default_triangle(style)) & GE_WIDGET_HAS_DEFAULT (widget)) 
 	{
 		/* Paint a triangle here instead of in "buttondefault"
 		 * which is drawn _behind_ the current button 
@@ -2467,7 +2467,7 @@ draw_default_triangle(GtkStyle * style,
 	
    /* Paint a triangle here instead of in "buttondefault"
       which is drawn _behind_ the current button */
-   if (GTK_WIDGET_HAS_DEFAULT (widget)) {
+   if (GE_WIDGET_HAS_DEFAULT (widget)) {
      gdk_draw_polygon(window, style->dark_gc[state_type], FALSE, points1, 3);
      gdk_draw_polygon(window, style->light_gc[state_type], FALSE, points2, 3);
      gdk_draw_polygon(window, style->bg_gc[GTK_STATE_SELECTED], TRUE, points2, 3);

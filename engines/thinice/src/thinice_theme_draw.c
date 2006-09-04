@@ -615,7 +615,7 @@ thinice_style_draw_box(GtkStyle * style,
 	{
 		/* Paint a triangle here instead of in "buttondefault"
 			which is drawn _behind_ the current button */
-		if (widget && GTK_WIDGET_HAS_DEFAULT (widget))
+		if (widget && GE_WIDGET_HAS_DEFAULT (widget))
 		{
 			canvas = ge_gdk_drawable_to_cairo (window, area);
 

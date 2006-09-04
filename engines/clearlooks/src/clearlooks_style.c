@@ -51,7 +51,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->corners    = CL_CORNER_ALL;
 	params->ltr        = ge_widget_is_ltr ((GtkWidget*)widget);
 	params->focus      = widget && GTK_WIDGET_HAS_FOCUS (widget);
-	params->is_default = widget && GTK_WIDGET_HAS_DEFAULT (widget);
+	params->is_default = widget && GE_WIDGET_HAS_DEFAULT (widget);
 		
 	if (!params->active && widget && GE_IS_TOGGLE_BUTTON (widget))
 		params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));

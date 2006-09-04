@@ -1,5 +1,17 @@
 2006-09-04  Andrew Johnson  <acjgenius@earthlink.net>
 
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/glide/src/glide_gtk2_drawing.c:
+	* engines/industrial/src/industrial_style.c:
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	* engines/support/widget-information.h:
+	* engines/thinice/src/thinice_theme_draw.c:
+
+	- Add GE_WIDGET_HAS_DEFAULT to check for valid widget first
+
+2006-09-04  Andrew Johnson  <acjgenius@earthlink.net>
+
 	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
 	* engines/smooth/src/engine/smooth_gtk2_misc.c:
 
