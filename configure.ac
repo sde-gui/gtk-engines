@@ -147,8 +147,8 @@ gtk-engines.spec
 
 AC_OUTPUT
 
-
-echo -e "\nSpecial Flags:"
+echo
+echo "Special Flags:"
 
 echo -n "      Development Code - "
 
@@ -174,7 +174,8 @@ else
 	echo "Disabled"
 fi
 
-echo -e "\nEngines and Themes:"
+echo
+echo "Engines and Themes:"
 
 echo -n "      ClearLooks - "
 if test "$clearlooks" = "yes"; then
