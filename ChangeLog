@@ -1,3 +1,15 @@
+2006-10-01  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c:
+	(paint_scale_trough): New function to paint scale troughs
+	(paint_progress_bar): GTK+ 2.10 now clips the bar, so work round this
+	for the end cap.
+	(draw_box): See above
+	(draw_option): Improve gradient contrast
+	(draw_slider): Draw scale sliders differently. Implement prelight.
+	* themes/Crux/gtk-2.0/gtkrc: Stop resize grip overlapping the status
+	bar border. Added lapo's e-mail address.
+
 2006-09-29  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* MAINTAINERS:

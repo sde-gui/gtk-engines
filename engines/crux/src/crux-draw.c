@@ -541,9 +541,71 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 	cairo_pattern_destroy (crp);
 }
 
+paint_scale_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOrientation orientation,
+	gdouble x, gdouble y, gdouble width, gdouble height)
+{
+	CairoColor c1, c2;
+	cairo_pattern_t *crp;
+	gdouble radius = 2.0;
+
+	/* set co-ordinates for line drawing */
+	x += 0.5; y += 0.5; width -= 1.0; height -= 1.0;
+
+
+	if (orientation == GTK_ORIENTATION_VERTICAL)
+		crp = cairo_pattern_create_linear (x + 2.0, y, x + width - 2.0, y);
+	else
+		crp = cairo_pattern_create_linear (x, y+2.0, x, y+height-2.0);
+
+	ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
+
+	/* calculate start and end colours for the gradient */
+	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &c1);
+	ge_shade_color (&c1, 0.7, &c2); /* darken */
+	ge_shade_color (&c1, 1.1, &c1); /* lighten */
+
+
+	cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
+	cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
+
+	cairo_set_source (cr, crp);
+	cairo_fill_preserve (cr);
+	cairo_pattern_destroy (crp);
+
+	/* dark gray */
+
+	cairo_set_source_rgb (cr, OUTLINE_GRAY);
+	cairo_stroke (cr);
+
+	ge_cairo_rounded_rectangle (cr, x+1.0, y+1.0, width-2.0, height-2.0, radius, CR_CORNER_ALL);
+	crp = cairo_pattern_create_linear (x, y, x, y + height);
+	cairo_pattern_add_color_stop_rgb (crp, 0.0, 1.0, 1.0, 1.0);
+	cairo_pattern_add_color_stop_rgba (crp, 1.0, 1.0, 1.0, 1.0, 100/255.0);
+	cairo_set_source (cr, crp);
+	cairo_stroke (cr);
+
+	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &c2);
+	ge_shade_color (&c2, 0.8, &c2); /* darken */
+	cairo_set_source_rgb (cr, c2.r, c2.g, c2.b);
+	if (orientation == GTK_ORIENTATION_VERTICAL)
+	{
+		cairo_move_to (cr, x + width + 1.0, y + radius);
+		cairo_line_to (cr, x + width + 1.0, y + height - radius);
+	}
+	else
+	{
+		cairo_move_to (cr, x + radius, y + height + 1.0);
+		cairo_line_to (cr, x + width - radius, y + height + 1.0);
+	}
+	cairo_stroke (cr);
+
+	cairo_pattern_destroy (crp);
+
+}
+
 static void
 paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkProgressBarOrientation orientation,
-		    gdouble x, gdouble y, gdouble width, gdouble height)
+		    gdouble x, gdouble y, gdouble width, gdouble height, gdouble fraction)
 {
 	cairo_pattern_t *crp;
 	CairoColor c1, c2;
@@ -568,6 +630,19 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	/* set co-ordinates for line drawing */
 	x += 0.5; y += 0.5; width -= 1.0; height -= 1.0;
 
+	if (fraction < 1.0)
+	{
+		switch (orientation)
+		{
+			case GTK_PROGRESS_LEFT_TO_RIGHT: width--; break;
+			case GTK_PROGRESS_RIGHT_TO_LEFT: x++; width--; break;
+			case GTK_PROGRESS_TOP_TO_BOTTOM: height--; break;
+			case GTK_PROGRESS_BOTTOM_TO_TOP: y++; height--; break;
+		}
+	}
+
+
+
 	/* bevel */
 	cairo_rectangle (cr, x, y, width, height);
 	crp = cairo_pattern_create_linear (x, y, x, y + height);
@@ -581,29 +656,30 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 
 	/* end cap */
 
-	cairo_set_source_rgb (cr, c2.r, c2.g, c2.b);
-	switch (orientation)
+	if (fraction < 1.0)
 	{
-		case GTK_PROGRESS_LEFT_TO_RIGHT:
-			cairo_move_to (cr, x + width + 1.0, y);
-			cairo_line_to (cr, x + width + 1.0, y + height);
-			break;
-		case GTK_PROGRESS_RIGHT_TO_LEFT:
-			cairo_move_to (cr, x - 1.0, y);
-			cairo_line_to (cr, x - 1.0, y + height);
-			break;
-		case GTK_PROGRESS_TOP_TO_BOTTOM:
-			cairo_move_to (cr, x, y + height + 1.0);
-			cairo_line_to (cr, x + width, y + height + 1.0);
-			break;
-		case GTK_PROGRESS_BOTTOM_TO_TOP:
-			cairo_move_to (cr, x, y - 1.0);
-			cairo_line_to (cr, x + width, y - 1.0);
-			break;
+		cairo_set_source_rgb (cr, c2.r, c2.g, c2.b);
+		switch (orientation)
+		{
+			case GTK_PROGRESS_LEFT_TO_RIGHT:
+				cairo_move_to (cr, x + width + 1.0, y);
+				cairo_line_to (cr, x + width + 1.0, y + height);
+				break;
+			case GTK_PROGRESS_RIGHT_TO_LEFT:
+				cairo_move_to (cr, x - 1.0, y);
+				cairo_line_to (cr, x - 1.0, y + height);
+				break;
+			case GTK_PROGRESS_TOP_TO_BOTTOM:
+				cairo_move_to (cr, x, y + height + 1.0);
+				cairo_line_to (cr, x + width, y + height + 1.0);
+				break;
+			case GTK_PROGRESS_BOTTOM_TO_TOP:
+				cairo_move_to (cr, x, y - 1.0);
+				cairo_line_to (cr, x + width, y - 1.0);
+				break;
+		}
+		cairo_stroke (cr);
 	}
-
-
-	cairo_stroke (cr);
 
 
 	/* draw the end cap shadow
@@ -916,23 +992,30 @@ draw_box (GtkStyle *style,
 	else if (DETAIL ("bar"))
 	{
 		GtkProgressBarOrientation orientation;
+		gdouble fraction = 0;
 		if (widget && GE_IS_PROGRESS_BAR (widget))
+		{
 			orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
+			fraction = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (widget));
+		}
 		else
 			orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
-		paint_progress_bar (cr, style, state_type, orientation, x, y, width, height);
+		paint_progress_bar (cr, style, state_type, orientation, x, y, width, height, fraction);
 	}
 	else if (DETAIL ("trough") && GE_IS_SCALE (widget))
 	{
+		GtkOrientation orientation;
 		if (GE_IS_VSCALE (widget))
 		{
 			x += 1; width -= 2;
+			orientation = GTK_ORIENTATION_VERTICAL;
 		}
 		else
 		{
 			y += 1; height -= 2;
+			orientation = GTK_ORIENTATION_HORIZONTAL;
 		}
-		paint_button (cr, style, GTK_STATE_NORMAL, GTK_SHADOW_OUT, x, y, width, height);
+		paint_scale_trough (cr, style, state_type, orientation, x, y, width, height);
 	}
 	else if (DETAIL ("trough") && GE_IS_SCROLLBAR (widget))
 	{
@@ -953,11 +1036,19 @@ draw_box (GtkStyle *style,
 				cairo_pattern_t *crp;
 				CairoColor c1, c2;
 				gdouble shade_v = 0.1;
+				GtkOrientation gradient_orientation = GTK_ORIENTATION_HORIZONTAL;
 
-				crp = cairo_pattern_create_linear (x, y, x, y + height);
 				ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-				if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar")) 
+				if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
+				{
 					shade_v = 0.3;
+					if (DETAIL ("vscrollbar"))
+						gradient_orientation = GTK_ORIENTATION_VERTICAL;
+				}
+				if (gradient_orientation == GTK_ORIENTATION_HORIZONTAL)
+					crp = cairo_pattern_create_linear (x, y, x, y + height);
+				else
+					crp = cairo_pattern_create_linear (x, y, x + width, y);
 				ge_shade_color (&c1, 1.0 - shade_v, &c2);
 				ge_shade_color (&c1, 1.0 + shade_v, &c1);
 				/*
@@ -1257,15 +1348,15 @@ draw_option (GtkStyle *style,
 		}
 		else
 		{
-			ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-			ge_shade_color (&c1, 0.7, &c2);
-			ge_shade_color (&c1, 9.9, &c1);
+			ge_gdk_color_to_cairo (&style->bg[state_type], &c2);
+			ge_shade_color (&c2, 0.7, &c2);
+			ge_gdk_color_to_cairo (&style->white, &c1);
 
 			crp = cairo_pattern_create_linear (x, y, x + height, y + height);
 			if (state_type != GTK_STATE_ACTIVE)
 			{
 				/* out shadow */
-				cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
+				cairo_pattern_add_color_stop_rgb (crp, 0.2, c1.r, c1.g, c1.b);
 				cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
 			}
 			else
@@ -1625,6 +1716,7 @@ draw_slider (GtkStyle *style,
 	cairo_t *cr;
 	cairo_pattern_t *crp;
 	CairoColor c1, c2;
+	gboolean is_scale = (DETAIL ("vscale") || DETAIL ("hscale"));
 
 	CHECK_ARGS
 	SANITIZE_SIZE
@@ -1633,20 +1725,34 @@ draw_slider (GtkStyle *style,
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
-	cairo_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
-
-	if (orientation == GTK_ORIENTATION_VERTICAL)
-		crp = cairo_pattern_create_linear (x, y, x + width, y);
-	else
-		crp = cairo_pattern_create_linear (x, y, x, y + height);
 
 	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &c2);
 
 	/* light */
 	CRUX_LIGHT (c2, c1)
 
+	if (state_type == GTK_STATE_PRELIGHT)
+	{
+		CRUX_LIGHT (c1, c1)
+	}
+
 	/* dark */
 	CRUX_DARK (c2, c2)
+
+	if (widget != NULL && GTK_WIDGET_HAS_FOCUS (widget))
+	{
+		ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width-1.0, height-1.0, 2, CR_CORNER_ALL);
+	}
+
+	if (orientation == GTK_ORIENTATION_VERTICAL)
+		crp = cairo_pattern_create_linear (x, y, x + width, y);
+	else
+		crp = cairo_pattern_create_linear (x, y, x, y + height);
+
+	if (is_scale)
+		ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width-1.0, height-1.0, 2, CR_CORNER_ALL);
+	else
+		cairo_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0);
 
 	cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
 	cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
@@ -1659,7 +1765,11 @@ draw_slider (GtkStyle *style,
 
 
 	/* bevel */
-	cairo_rectangle (cr, x+1.5, y+1.5, width-3.0, height-3.0);
+	if (is_scale)
+		ge_cairo_rounded_rectangle (cr, x+1.5, y+1.5, width-3.0, height-3.0, 2, CR_CORNER_ALL);
+	else
+		cairo_rectangle (cr, x+1.5, y+1.5, width-3.0, height-3.0);
+
 	if (orientation == GTK_ORIENTATION_VERTICAL)
 		crp = cairo_pattern_create_linear (x, y, x + width, y);
 	else

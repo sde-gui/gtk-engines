@@ -3,7 +3,15 @@
 #  gtkrc -- gtkrc for crux-engine themes
 #
 #  Copyright (C) 2000, 2001 Eazel, Inc.
+#  Copyright (C) 2005, 2006 Thomas Wood <thos@gnome.org>
+
+#  Authors
+#   Design: Lapo Calamandrei  <calamandrei@gmail.com>
+#   Code:   Thomas Wood  <thos@gnome.org>
 #
+#  Original Author: John Harper <jsh@eazel.com>
+
+
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License as
 #  published by the Free Software Foundation; either version 2 of the
@@ -19,13 +27,6 @@
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 #  $Id$
-#
-#  Authors:
-#  Lapo Calamandrei  <>
-#  Thomas Wood  <thos@gnome.org>
-#
-#  Original Author: John Harper <jsh@eazel.com>
-
 # Default style for all widgets to build from
 
 gtk-icon-sizes = "panel-menu=22,22:panel=22,22:gtk-menu=16,16:gtk-large-toolbar=22,22:gtk-button=22,22"
@@ -118,3 +119,10 @@ style "trough"
    bg[NORMAL] = "#c4c6c0"
 }
 class "GtkProgressBar" style "trough"
+
+style "statusbar"
+{
+   xthickness = 3
+   ythickness = 3
+}
+class "GtkStatusbar" style "statusbar"
