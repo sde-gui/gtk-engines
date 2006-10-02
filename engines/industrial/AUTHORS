@@ -8,3 +8,6 @@ Based on GTK Bluecurve Theme
 Parts of the code based on Metal theme
   Randy Gordon, randy@integrand.com
   Owen Taylor <otaylor@redhat.com>
+
+Cairo port by
+  Benjamin Berg <benjamin@sipsolutions.net>

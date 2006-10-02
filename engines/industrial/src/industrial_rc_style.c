@@ -1,6 +1,7 @@
 /* Industrial theme engine
  * Copyright (C) 2001 Red Hat, Inc.
  * Copyright (C) 2002 Ximian, Inc.
+ * Copyright (C) 2006 Benjamin Berg
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -20,6 +21,7 @@
  * Written by Owen Taylor <otaylor@redhat.com>
  * modified by Alexander Larsson <alexl@redhat.com>
  * modified by Christopher James Lahey <clahey@ximian.com>
+ * modified by Benjamin Berg <benjamin@sipsolutions.net>
  */
 
 #include "industrial_style.h"
@@ -33,9 +35,7 @@ static void
 industrial_rc_style_init (IndustrialRcStyle *industrial_rc)
 {
 	industrial_rc->contrast = 1.0;
-	industrial_rc->contrast_center = 0.5;
 	industrial_rc->rounded_buttons = TRUE;
-	industrial_rc->wide = FALSE;
 	industrial_rc->fields = 0;
 }
 
@@ -55,10 +55,7 @@ industrial_rc_style_parse (GtkRcStyle  *rc_style,
 			   GScanner    *scanner)
 {
 	IndustrialRcStyle *industrial_rc = INDUSTRIAL_RC_STYLE (rc_style);
-	return parse_rc_style (scanner, &industrial_rc->contrast,
-			       &industrial_rc->contrast_center,
-			       &industrial_rc->rounded_buttons,
-			       &industrial_rc->wide, &industrial_rc->fields);
+	return parse_rc_style (scanner, industrial_rc);
 }
 
 static void
@@ -80,12 +77,8 @@ industrial_rc_style_merge (GtkRcStyle *dest,
 
 	if (fields & INDUSTRIAL_FIELDS_CONTRAST)
 		dest_w->contrast = src_w->contrast;
-	if (fields & INDUSTRIAL_FIELDS_CONTRAST_CENTER)
-		dest_w->contrast_center = src_w->contrast_center;
 	if (fields & INDUSTRIAL_FIELDS_ROUNDED_BUTTONS)
 		dest_w->rounded_buttons = src_w->rounded_buttons;
-	if (fields & INDUSTRIAL_FIELDS_WIDE)
-		dest_w->wide = src_w->wide;
 
 	dest_w->fields = dest_w->fields | src_w->fields;
 }

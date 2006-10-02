@@ -18,21 +18,14 @@
 *
 **************************************************************************/
 
-/* The port to cairo does not currently support the contrast options.
- * This is because I did not see the option, I'll need to investigate
- * later on what it does exactly and how to implement it.
- */
-
-#include "industrial_style_versioned_include.h"
+#include "industrial_style.h"
+#include "industrial_rc_style.h"
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <ge-support.h>
 #include <cairo.h>
 #include <math.h>
-
-#define WIDGET_TYPE_NAME(xx) (widget && !strcmp (G_OBJECT_TYPE_NAME (widget), (xx)))
-/* #define DEBUG 1 */
 
 #define LINE_OPACITY 0.4
 #define HANDLE_OPACITY 0.38
@@ -45,6 +38,9 @@
 #define TROUGH_BG_OPACITY 0.15
 #define TROUGH_BORDER_OPACITY 0.21
 #define MENUBAR_BORDER_OPACITY 0.07
+
+#define GET_ROUNDED_BUTTONS(style) (INDUSTRIAL_STYLE (style)->rounded_buttons)
+#define GET_REAL_OPACITY(style, orig_opacity) (CLAMP ((orig_opacity) * INDUSTRIAL_STYLE (style)->contrast, 0.0, 1.0))
 
 #define IF_ROUNDED(style, rounded, otherwise) (GET_ROUNDED_BUTTONS (style) ? rounded : otherwise)
 
@@ -368,7 +364,7 @@ draw_hline (GtkStyle     *style,
 		y++;
 
 	ge_gdk_color_to_cairo (&style->fg[state_type], &color);
-	color.a = LINE_OPACITY;
+	color.a = GET_REAL_OPACITY(style, LINE_OPACITY);
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	ge_cairo_set_color (cr, &color);
@@ -418,7 +414,7 @@ draw_handle (GtkStyle      *style,
 		width -= 4;
 		height -= 4;
 	}
-
+	
 	if (shadow_type == GTK_SHADOW_NONE) {
 		maxwidth = width;
 		maxheight = height;
@@ -443,7 +439,7 @@ draw_handle (GtkStyle      *style,
 
 	ge_gdk_color_to_cairo (&style->fg[state_type], &color);
 
-	color.a = HANDLE_OPACITY;
+	color.a = GET_REAL_OPACITY (style, HANDLE_OPACITY);
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -476,7 +472,7 @@ draw_vline (GtkStyle     *style,
 	CHECK_ARGS
 	
 	ge_gdk_color_to_cairo (&style->fg[state_type], &color);
-	color.a = LINE_OPACITY;
+	color.a = GET_REAL_OPACITY (style, LINE_OPACITY);
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	ge_cairo_set_color (cr, &color);
@@ -560,7 +556,7 @@ draw_slider (GtkStyle      *style,
 	y += (height - handle_height) / 2;
 
 	ge_gdk_color_to_cairo (&style->fg[state_type], &color);
-	color.a = HANDLE_OPACITY;
+	color.a = GET_REAL_OPACITY (style, HANDLE_OPACITY);
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	draw_grid_cairo (cr, &color, x, y, handle_width, handle_height);
@@ -603,9 +599,9 @@ real_draw_box (GtkStyle      *style,
 		 * hack this here. If it doesn't work correctly, it won't
 		 * look too bad. */
 		if (widget && GE_WIDGET_HAS_DEFAULT (widget))
-			fg.a = 1;
+			fg.a = GET_REAL_OPACITY (style, 1.0);
 		else
-			fg.a = BUTTON_BORDER_OPACITY;
+			fg.a = GET_REAL_OPACITY (style, BUTTON_BORDER_OPACITY);
 
 
 		if (ge_is_in_combo_box (widget)) {
@@ -628,7 +624,7 @@ real_draw_box (GtkStyle      *style,
 			ge_gdk_color_to_cairo (&style->fg[state_type], &outer);
 			/* XXX: some way to calculate these would be nice. */
 			inner.a = 0.0;
-			outer.a = BUTTON_BORDER_OPACITY * 0.7;
+			outer.a = GET_REAL_OPACITY (style, BUTTON_BORDER_OPACITY * 0.7); /* XXX */
 
 			cairo_save (cr);
 			cairo_move_to (cr, x, y + height);
@@ -662,7 +658,7 @@ real_draw_box (GtkStyle      *style,
 			ge_gdk_color_to_cairo (&style->fg[state_type], &inner);
 			ge_gdk_color_to_cairo (&style->fg[state_type], &outer);
 			inner.a = 0;
-			outer.a = 0.1;	/* XXX: #define this? */
+			outer.a = GET_REAL_OPACITY (style, 0.1);	/* XXX: #define this? */
 
 			cairo_save (cr);
 			cairo_move_to (cr, x, y + height);
@@ -729,7 +725,7 @@ real_draw_box (GtkStyle      *style,
 		shadow_outer = fg;
 		shadow_inner = fg;
 		shadow_outer.a = 0;
-		shadow_inner.a = DEFAULT_SHADOW_OPACITY;
+		shadow_inner.a = GET_REAL_OPACITY (style, DEFAULT_SHADOW_OPACITY);
 
 		draw_rounded_gradient (cr, x, y, width, height, -1, inner_radius,
 				       shadow_size + inner_radius,
@@ -744,7 +740,7 @@ real_draw_box (GtkStyle      *style,
 		/* for some reason, industrial always uses GTK_STATE_NORMAL here, can't change that
 		 * without breaking compatibility. */
 		ge_gdk_color_to_cairo (&style->fg[GTK_STATE_NORMAL], &bevel);
-		bevel.a = MENUITEM_BORDER_OPACITY;
+		bevel.a = GET_REAL_OPACITY (style, MENUITEM_BORDER_OPACITY);
 
 		corners = GET_ROUNDED_BUTTONS (style) ? CR_CORNER_ALL : CR_CORNER_NONE;
 
@@ -762,7 +758,7 @@ real_draw_box (GtkStyle      *style,
 		   || CHECK_DETAIL (detail, "handlebox_bin")
 		   || CHECK_DETAIL (detail, "toolbar")
 		   || CHECK_DETAIL (detail, "dockitem")
-		   || WIDGET_TYPE_NAME ("PanelAppletFrame")) {
+		   || ge_object_is_a (G_OBJECT (widget), "PanelAppletFrame")) {
 		CairoColor bevel;
 		CairoColor bg;
 
@@ -791,7 +787,7 @@ real_draw_box (GtkStyle      *style,
 				} else {
 					ge_gdk_color_to_cairo (&style->fg[state_type], &bg);
 					
-					bg.a = TROUGH_BG_OPACITY;
+					bg.a = GET_REAL_OPACITY (style, TROUGH_BG_OPACITY);
 					
 					/* Compose the color here instead leaving the work to
 					 * cairo/xserver which doesn't know that this is a solid
@@ -803,11 +799,11 @@ real_draw_box (GtkStyle      *style,
 				}
 
 				ge_gdk_color_to_cairo (&style->fg[state_type],  &bevel);
-				bevel.a = TROUGH_BORDER_OPACITY;
+				bevel.a = GET_REAL_OPACITY (style, TROUGH_BORDER_OPACITY);
 			} else {
 				ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 				ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
-				bevel.a = TROUGH_BORDER_OPACITY;
+				bevel.a = GET_REAL_OPACITY (style, TROUGH_BORDER_OPACITY);
 			}
 			draw_rounded_rect (cr, x, y, width, height, 1.5,
 					   &bevel, &bg, IF_ROUNDED (style, CR_CORNER_ALL, CR_CORNER_NONE));
@@ -818,7 +814,7 @@ real_draw_box (GtkStyle      *style,
 
 		ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 		ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
-		bevel.a = MENUBAR_BORDER_OPACITY;
+		bevel.a = GET_REAL_OPACITY (style, MENUBAR_BORDER_OPACITY);
 		
 		/* ignore the menubar if the shadow is NONE. This is the case for the
 		 * mainmenu applet and the task selector. */
@@ -858,7 +854,7 @@ real_draw_box (GtkStyle      *style,
 
 		ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 		ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
-		bevel.a = 0.5; /* XXX: #define this? */
+		bevel.a = GET_REAL_OPACITY (style, 0.5); /* XXX: #define this? */
 
 		/* XXX: fill can never be FALSE, right? */
 		if (fill)
@@ -889,7 +885,7 @@ real_draw_box (GtkStyle      *style,
 		ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 		
 		ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
-		bevel.a = STANDARD_BORDER_OPACITY;
+		bevel.a = GET_REAL_OPACITY (style, STANDARD_BORDER_OPACITY);
 
 		if (fill) {
 			if (shadow_type != GTK_SHADOW_NONE) {
@@ -1060,7 +1056,7 @@ real_draw_box_gap (GtkStyle       *style,
 
 	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 	ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
-	bevel.a = STANDARD_BORDER_OPACITY;
+	bevel.a = GET_REAL_OPACITY (style, STANDARD_BORDER_OPACITY);
 
 	/* clip the gap area */
 	cairo_save (cr);
@@ -1232,7 +1228,7 @@ draw_extension (GtkStyle       *style,
 
 	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 	ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
-	bevel.a = STANDARD_BORDER_OPACITY;
+	bevel.a = GET_REAL_OPACITY (style, STANDARD_BORDER_OPACITY);
 
 	switch (gap_side) {
 	case GTK_POS_TOP:
@@ -1311,12 +1307,12 @@ draw_check (GtkStyle * style,
 	width = check_size;
 	height = check_size;
 
-	fg.a = DEFAULT_SHADOW_OPACITY;
+	fg.a = GET_REAL_OPACITY (style, DEFAULT_SHADOW_OPACITY);
 	draw_rounded_rect (cr, x, y, width, height, 1.5,
 	                   &fg, &bg, GET_ROUNDED_BUTTONS (style) ? CR_CORNER_ALL : CR_CORNER_NONE);
 
 	cairo_save (cr);
-	fg.a = DEFAULT_SHADOW_OPACITY * 0.3; /* XXX */
+	fg.a = fg.a * 0.3;
 	
 	cairo_move_to (cr, x, y + check_size);
 	cairo_line_to (cr, x + check_size, y);
@@ -1332,7 +1328,7 @@ draw_check (GtkStyle * style,
 
 	cairo_scale (cr, (check_size - 4) / 7., (check_size - 4) / 7.);
 
-	fg.a = 1.0;
+	fg.a = GET_REAL_OPACITY (style, 1.0);
 	ge_cairo_set_color (cr, &fg);
 
 	/* draw the interior */
@@ -1395,7 +1391,7 @@ draw_option (GtkStyle * style,
 	ge_cairo_set_color (cr, &bg);
 	cairo_fill (cr);
 
-	fg.a = 0.5;		/* XXX: #define this? */
+	fg.a = GET_REAL_OPACITY (style, 0.5);	/* XXX: #define this? */
 	ge_cairo_set_color (cr, &fg);
 
 	/* XXX: There should be another shadow ... */
@@ -1412,7 +1408,7 @@ draw_option (GtkStyle * style,
 
 	if (shadow_type == GTK_SHADOW_IN) {
 		cairo_pattern_t *pattern;
-		fg.a = 1.0;
+		fg.a = GET_REAL_OPACITY (style, 1.0);
 
 		ge_cairo_set_color (cr, &fg);
 		cairo_arc (cr, xc, yc, radius - 3, 0, 2 * M_PI);
@@ -1423,7 +1419,7 @@ draw_option (GtkStyle * style,
 
 		bg.a = 0;
 		ge_cairo_pattern_add_color_stop_color (pattern, 0, &bg);
-		bg.a = 0.7;	/* XXX: #define this? */
+		bg.a = GET_REAL_OPACITY (style, 0.7);	/* XXX: #define this? */
 		ge_cairo_pattern_add_color_stop_color (pattern, 1, &bg);
 
 		cairo_set_source (cr, pattern);

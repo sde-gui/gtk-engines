@@ -1,6 +1,7 @@
 /* Industrial Engine
  * Copyright (C) 2001 Red Hat, Inc.
  * Copyright (C) 2002 Ximian, Inc.
+ * Copyright (C) 2006 Benjamin Berg
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -20,6 +21,7 @@
  * Written by Owen Taylor <otaylor@redhat.com>
  * modified by Alexander Larsson <alexl@redhat.com>
  * modified by Christopher Lahey <clahey@ximian.com>
+ * modified by Benjamin Berg <benjamin@sipsolutions.net>
  */
 #include <gtk/gtkstyle.h>
 
@@ -41,7 +43,6 @@ struct _IndustrialStyle {
 	GtkStyle parent_instance;
 
 	double contrast;
-	double contrast_center;
 	gboolean rounded_buttons;
 };
 

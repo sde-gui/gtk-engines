@@ -1,6 +1,7 @@
 /* Industrial Theme Engine
  * Copyright (C) 2001 Red Hat, Inc.
  * Copyright (C) 2002 Ximian, Inc.
+ * Copyright (C) 2006 Benjamin Berg
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -20,6 +21,7 @@
  * Written by Owen Taylor <otaylor@redhat.com>
  * modified by Alexander Larsson <alexl@redhat.com>
  * modified by Christopher James Lahey <clahey@ximian.com>
+ * modified by Benjamin Berg <benjamin@sipsolutions.net>
  **/
 
 #include <gtk/gtkrc.h>
@@ -37,19 +39,15 @@ GE_INTERNAL extern GType industrial_type_rc_style;
 #define INDUSTRIAL_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), INDUSTRIAL_TYPE_RC_STYLE, IndustrialRcStyleClass))
 
 typedef enum {
-	INDUSTRIAL_FIELDS_CONTRAST,
-	INDUSTRIAL_FIELDS_CONTRAST_CENTER,
-	INDUSTRIAL_FIELDS_ROUNDED_BUTTONS,
-	INDUSTRIAL_FIELDS_WIDE
+	INDUSTRIAL_FIELDS_CONTRAST		= 1 << 0,
+	INDUSTRIAL_FIELDS_ROUNDED_BUTTONS	= 1 << 1
 } IndustrialFields;
 
 struct _IndustrialRcStyle {
 	GtkRcStyle parent_instance;
 
 	double contrast;
-	double contrast_center;
 	gboolean rounded_buttons;
-	gboolean wide;
 
 	IndustrialFields fields;
 };

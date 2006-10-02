@@ -13,9 +13,7 @@ static struct {
 	guint token;
 } theme_symbols[] = {
 	{ "contrast",		TOKEN_CONTRAST },
-	{ "contrast_center",	TOKEN_CONTRAST_CENTER },
 	{ "rounded_buttons",	TOKEN_ROUNDED_BUTTONS },
-	{ "wide",		TOKEN_WIDE },
 	{ "TRUE",		TOKEN_TRUE },
 	{ "FALSE",		TOKEN_FALSE }
 };
@@ -33,10 +31,13 @@ theme_parse_named_double (GScanner * scanner, double *value)
 		return G_TOKEN_EQUAL_SIGN;
 
 	token = g_scanner_get_next_token (scanner);
-	if (token != G_TOKEN_FLOAT)
+	
+	if (token == G_TOKEN_INT)
+		*value = scanner->value.v_int;
+	else if (token == G_TOKEN_FLOAT)
+		*value = scanner->value.v_float;
+	else
 		return G_TOKEN_FLOAT;
-
-	*value = scanner->value.v_float;
 
 	return G_TOKEN_NONE;
 }
@@ -68,10 +69,7 @@ theme_parse_boolean (GScanner * scanner,
 
 static guint
 parse_rc_style (GScanner * scanner,
-		double *contrast,
-		double *contrast_center,
-		gboolean * rounded_buttons,
-		gboolean * wide, IndustrialFields * fields)
+		IndustrialRcStyle *rc)
 {
 	static GQuark scope_id = 0;
 	guint old_scope;
@@ -107,20 +105,12 @@ parse_rc_style (GScanner * scanner,
 	while (token != G_TOKEN_RIGHT_CURLY) {
 		switch (token) {
 		case TOKEN_CONTRAST:
-			token = theme_parse_named_double (scanner, contrast);
-			*fields |= INDUSTRIAL_FIELDS_CONTRAST;
-			break;
-		case TOKEN_CONTRAST_CENTER:
-			token = theme_parse_named_double (scanner, contrast_center);
-			*fields |= INDUSTRIAL_FIELDS_CONTRAST_CENTER;
+			token = theme_parse_named_double (scanner, &rc->contrast);
+			rc->fields |= INDUSTRIAL_FIELDS_CONTRAST;
 			break;
 		case TOKEN_ROUNDED_BUTTONS:
-			token = theme_parse_boolean (scanner, TOKEN_ROUNDED_BUTTONS, rounded_buttons);
-			*fields |= INDUSTRIAL_FIELDS_ROUNDED_BUTTONS;
-			break;
-		case TOKEN_WIDE:
-			token = theme_parse_boolean (scanner, TOKEN_WIDE, wide);
-			*fields |= INDUSTRIAL_FIELDS_WIDE;
+			token = theme_parse_boolean (scanner, TOKEN_ROUNDED_BUTTONS, &rc->rounded_buttons);
+			rc->fields |= INDUSTRIAL_FIELDS_ROUNDED_BUTTONS;
 			break;
 		default:
 			g_scanner_get_next_token (scanner);

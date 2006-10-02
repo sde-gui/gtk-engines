@@ -1,3 +1,26 @@
+2006-10-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* COPYING:
+	- Metal and Lighthouseblue are not in gtk-engines anymore.
+	- Add Glide
+
+	* engines/industrial/AUTHORS:
+	* engines/industrial/Makefile.am:
+	* engines/industrial/src/industrial_rc_style.c:
+	* engines/industrial/src/industrial_rc_style.h:
+	* engines/industrial/src/industrial_style.c:
+	* engines/industrial/src/industrial_style.h:
+	* engines/industrial/src/industrial_style_versioned_code.h:
+	* engines/industrial/src/industrial_style_versioned_include.h:
+	* engines/industrial/src/parse_rc_style.h:
+	- Add myself to AUTHORS and Copyright notices.
+	- Implement a "contrast" option, that gets multiplied to the alpha
+	values.
+	- Remove unused/nonworking "wide" and "contrast_center" options. I
+	don't think anyone has ever used them, so this should be safe.
+	- Drop useless industrial_style_versioned_include.h
+	- Some small cleanups
+
 2006-10-02  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (paint_entry_shadow), (draw_box):

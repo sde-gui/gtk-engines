@@ -6,7 +6,6 @@ industrial_style_copy (GtkStyle * style, GtkStyle * src)
 	IndustrialStyle *industrial_src = INDUSTRIAL_STYLE (src);
 
 	industrial_style->contrast = industrial_src->contrast;
-	industrial_style->contrast_center = industrial_src->contrast_center;
 	industrial_style->rounded_buttons = industrial_src->rounded_buttons;
 
 	parent_class->copy (style, src);
@@ -16,43 +15,16 @@ static void
 industrial_style_init_from_rc (GtkStyle * style, GtkRcStyle * rc_style)
 {
 	IndustrialStyle *industrial_style = INDUSTRIAL_STYLE (style);
-#if 0
-	/* The color stuff should be in _realize ... */
-	GdkColor *spot_color;
-	double shades[] =
-	    { 1.065, 0.963, 0.896, 0.85, 0.768, 0.665, 0.4, 0.205 };
-	int i;
-	double contrast;
-	double contrast_center;
-#endif
-
 	parent_class->init_from_rc (style, rc_style);
 
 	industrial_style->contrast = INDUSTRIAL_RC_STYLE (rc_style)->contrast;
-	industrial_style->contrast_center = INDUSTRIAL_RC_STYLE (rc_style)->contrast_center;
 	industrial_style->rounded_buttons = INDUSTRIAL_RC_STYLE (rc_style)->rounded_buttons;
-
-#if 0
-	/* Lighter to darker */
-	for (i = 0; i < 8; i++)
-		shade (&style->bg[GTK_STATE_NORMAL], &industrial_style->gray[i],
-		       (shades[i] - contrast_center) * contrast +
-		       contrast_center);
-
-	spot_color = industrial_get_spot_color (INDUSTRIAL_RC_STYLE (rc_style));
-
-	industrial_style->spot_color = *spot_color;
-	shade (&industrial_style->spot_color, &industrial_style->spot1, 1.62);
-	shade (&industrial_style->spot_color, &industrial_style->spot2, 1.05);
-	shade (&industrial_style->spot_color, &industrial_style->spot3, 0.72);
-#endif
 }
 
 static void
 industrial_style_init (IndustrialStyle * style)
 {
 	style->contrast = 1.0;
-	style->contrast_center = 0.5;
 	style->rounded_buttons = TRUE;
 }
 
