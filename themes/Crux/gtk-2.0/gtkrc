@@ -56,18 +56,18 @@ style "default"
   fg[ACTIVE] = "#000000"
   fg[PRELIGHT] = "#000000"
   fg[SELECTED] = "#ffffff"
-  fg[INSENSITIVE] = "#555555"
+  fg[INSENSITIVE] = "#888a85"
 
   bg[NORMAL] = "#d3d7cf"
   bg[ACTIVE] = "#a3a69f"
   bg[PRELIGHT] = "#ededeb"
-  bg[INSENSITIVE] = "#c4c6c0"
   bg[SELECTED] = "#75507b"
+  bg[INSENSITIVE] = "#c4c6c0"
 
   text[NORMAL] = "#000000"
   text[ACTIVE] = "#000000"
   text[PRELIGHT] = "#000000"
-  text[INSENSITIVE] = "#000000"
+  text[INSENSITIVE] = "#888a85"
 
   base[NORMAL] = "#ffffff"
   base[PRELIGHT] = "#000000"
@@ -116,7 +116,7 @@ class "GtkText" style "entry"
 
 style "trough"
 {
-   bg[NORMAL] = "#c4c6c0"
+   bg[NORMAL] = "#babdb6"
 }
 class "GtkProgressBar" style "trough"
 

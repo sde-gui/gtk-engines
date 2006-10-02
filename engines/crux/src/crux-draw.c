@@ -450,7 +450,11 @@ paint_entry_shadow (cairo_t *cr, GtkStyle *style,
 	/* inner Line */
 	cairo_rectangle (cr, x + 1.0, y + 1.0, width - 2.0, height - 2.0);
 	/* TODO: Find a way to calculate these values */
-	cairo_set_source_rgb (cr, 54/255.0, 52/255.0, 54/255.0);
+	if (state_type == GTK_STATE_INSENSITIVE)
+		gdk_cairo_set_source_color (cr, &style->fg [state_type]);
+	else
+		cairo_set_source_rgb (cr, 54/255.0, 52/255.0, 54/255.0);
+
 	cairo_stroke (cr);
 
 	/* inner shadow */
@@ -906,8 +910,12 @@ draw_box (GtkStyle *style,
 				height--;
 			else
 				height -= 2;
+
+			if (state_type == GTK_STATE_INSENSITIVE)
+				height++;
+
 		}
-		
+
 		if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
 		{
 			/* Combobox buttons */
@@ -935,6 +943,8 @@ draw_box (GtkStyle *style,
 			else
 				paint_entry_shadow (cr, style, state_type, focused, x, y, width + 4, height);
 
+			if (state_type == GTK_STATE_INSENSITIVE)
+				height++;
 
 			x += 3; y += 3;
 			width -= 6; height -= 6;
@@ -957,7 +967,7 @@ draw_box (GtkStyle *style,
 	else if (DETAIL ("buttondefault"))
 	{
 		/* draw Default Button marking, but only when sensitive */
-		if (widget && GTK_WIDGET_SENSITIVE (widget))
+		if (widget && state_type != GTK_STATE_INSENSITIVE)
 		{
 			gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
 			cx = x + 0.5; cy = y + 0.5; cw = width - 1.0; ch = height - 1.0;
@@ -1029,7 +1039,8 @@ draw_box (GtkStyle *style,
 		/* fill  */
 		cairo_rectangle (cr, x, y, width, height);
 
-		if (DETAIL ("toolbar") || DETAIL ("menubar") || DETAIL ("vscrollbar") || DETAIL ("hscrollbar") || DETAIL ("handlebox") || DETAIL ("dockitem"))
+		if (DETAIL ("toolbar") || DETAIL ("menubar") || DETAIL ("vscrollbar")
+				|| DETAIL ("hscrollbar") || DETAIL ("handlebox") || DETAIL ("dockitem"))
 		{
 			if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
 			{
@@ -1073,6 +1084,33 @@ draw_box (GtkStyle *style,
 			gdk_cairo_set_source_color (cr, &style->bg[state_type]);
 			cairo_fill (cr);
 		}
+
+		if (GE_IS_PROGRESS_BAR (widget) && DETAIL ("trough"))
+		{
+			/* draw a shadow in progress bar troughs */
+			gdouble cx, cy, cw, ch;
+			cx = x + 1.5;
+			cy = y + 1.5;
+			cw = width - 3.0;
+			ch = height - 3.0;
+			cairo_move_to (cr, cx + 1.0, cy+ ch - 1.0);
+			cairo_line_to (cr, cx + 1.0, cy+ 1.0);
+			cairo_line_to (cr, cx + cw - 1.0, cy+ 1.0);
+			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.22);
+			cairo_stroke (cr);
+
+			cairo_move_to (cr, cx + 2.0, cy + ch - 1.0);
+			cairo_line_to (cr, cx + 2.0, cy + 2.0);
+			cairo_line_to (cr, cx + cw - 1.0, cy+ 2.0);
+			cairo_line_to (cr, cx + cw - 1.0, cy+ ch - 1.0);
+			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.12);
+			cairo_stroke (cr);
+
+			cairo_rectangle (cr, cx + 3.0, cy + 3.0, cw - 5.0, ch - 4.0);
+			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.03);
+			cairo_stroke (cr);
+		}
+
 		paint_shadow (cr, style, state_type, shadow_type, x, y, width, height);
 	}
 
