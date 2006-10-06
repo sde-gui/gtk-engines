@@ -269,22 +269,17 @@ do_hc_draw_dot (cairo_t *canvas,
 			gint x,
 			gint y)
 {
-	cairo_save(canvas);
+	ge_cairo_set_color (canvas, dark);
+	cairo_rectangle (canvas, x - 1, y - 1, 1, 1);
+	cairo_rectangle (canvas, x - 1, y, 1, 1);
+	cairo_rectangle (canvas, x, y - 1, 1, 1);
+	cairo_fill (canvas);
 
-	cairo_set_line_width (canvas, 0.5);
-	cairo_set_antialias(canvas, CAIRO_ANTIALIAS_NONE);
-
-	ge_cairo_set_color(canvas, dark);	
-	cairo_rectangle (canvas, x - 1, y, 0.5, 0.5);
-	cairo_rectangle (canvas, x - 1, y - 1, 0.5, 0.5);
-	cairo_rectangle (canvas, x, y - 1, 0.5, 0.5);
-	cairo_stroke(canvas);
-
-	ge_cairo_set_color(canvas, light);	
-	cairo_rectangle (canvas, x + 1, y, 0.5, 0.5);
-	cairo_rectangle (canvas, x + 1, y + 1, 0.5, 0.5);
-	cairo_rectangle (canvas, x, y + 1, 0.5, 0.5);
-	cairo_stroke(canvas);
+	ge_cairo_set_color (canvas, light);	
+	cairo_rectangle (canvas, x + 1, y + 1, 1, 1);
+	cairo_rectangle (canvas, x + 1, y, 1, 1);
+	cairo_rectangle (canvas, x, y + 1, 1, 1);
+	cairo_fill (canvas);
 }
 
 /***********************************************/

@@ -73,6 +73,7 @@ GE_INTERNAL void ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern
 
 GE_INTERNAL void ge_cairo_rounded_rectangle (cairo_t *cr, double x, double y, double w, double h, double radius, CairoCorners corners);
 
+GE_INTERNAL void ge_cairo_stroke_rectangle (cairo_t *cr, double x, double y, double w, double h);
 GE_INTERNAL void ge_cairo_simple_border (cairo_t *cr, CairoColor * tl, CairoColor * br, gint x, gint y, gint width, gint height, gboolean topleft_overlap);
 
 GE_INTERNAL void ge_cairo_line (cairo_t *cr, CairoColor *color, gint x1, gint y1, gint x2, gint y2);

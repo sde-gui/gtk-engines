@@ -263,28 +263,17 @@ thinice_dot(cairo_t *cr,
             gint x,
             gint y)
 {
-	cairo_save(cr);
+        ge_cairo_set_color (cr, color1);
+        cairo_rectangle (cr, x + 1, y + 1, 1, 1);
+        cairo_rectangle (cr, x + 1, y, 1, 1);
+        cairo_rectangle (cr, x, y + 1, 1, 1);
+        cairo_fill (cr);
 
-	cairo_set_line_width (cr, 0.5);
-	cairo_set_antialias(cr, CAIRO_ANTIALIAS_NONE);
-
-	ge_cairo_set_color(cr, color2);	
-
-	cairo_rectangle (cr, x - 1, y, 0.5, 0.5);
-	cairo_rectangle (cr, x - 1, y - 1, 0.5, 0.5);
-	cairo_rectangle (cr, x, y - 1, 0.5, 0.5);
-
-	cairo_stroke(cr);
-	
-	ge_cairo_set_color(cr, color1);	
-
-	cairo_rectangle (cr, x + 1, y, 0.5, 0.5);
-	cairo_rectangle (cr, x + 1, y + 1, 0.5, 0.5);
-	cairo_rectangle (cr, x, y + 1, 0.5, 0.5);
-
-	cairo_stroke(cr);
-
-	cairo_restore(cr);
+        ge_cairo_set_color (cr, color2);
+        cairo_rectangle (cr, x - 1, y - 1, 1, 1);
+        cairo_rectangle (cr, x - 1, y, 1, 1);
+        cairo_rectangle (cr, x, y - 1, 1, 1);
+        cairo_fill (cr);
 }
 
 

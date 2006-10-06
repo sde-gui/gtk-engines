@@ -1068,21 +1068,21 @@ do_glide_draw_dot (cairo_t *canvas,
 			gint y)
 {
 	ge_cairo_set_color(canvas, dark);	
-	cairo_rectangle (canvas, x - 1, y, 0.5, 0.5);
-	cairo_rectangle (canvas, x - 1, y - 1, 0.5, 0.5);
-	cairo_rectangle (canvas, x, y - 1, 0.5, 0.5);
-	cairo_stroke(canvas);
+	cairo_rectangle (canvas, x - 1, y - 1, 1, 1);
+	cairo_rectangle (canvas, x - 0, y - 1, 1, 1);
+	cairo_rectangle (canvas, x - 1, y - 0, 1, 1);
+	cairo_fill(canvas);
 
 	ge_cairo_set_color(canvas, light);	
-	cairo_rectangle (canvas, x + 1, y, 0.5, 0.5);
-	cairo_rectangle (canvas, x + 1, y + 1, 0.5, 0.5);
-	cairo_rectangle (canvas, x, y + 1, 0.5, 0.5);
-	cairo_stroke(canvas);
+	cairo_rectangle (canvas, x + 1, y + 1, 1, 1);
+	cairo_rectangle (canvas, x + 0, y + 1, 1, 1);
+	cairo_rectangle (canvas, x + 1, y + 0, 1, 1);
+	cairo_fill(canvas);
 
 	ge_cairo_set_color(canvas, mid);	
-	cairo_rectangle (canvas, x + 1, y - 1, 0.5, 0.5);
-	cairo_rectangle (canvas, x - 1, y + 1, 0.5, 0.5);
-	cairo_stroke(canvas);
+	cairo_rectangle (canvas, x + 1, y - 1, 1, 1);
+	cairo_rectangle (canvas, x - 1, y + 1, 1, 1);
+	cairo_fill(canvas);
 }
 
 void

@@ -1,3 +1,32 @@
+2006-10-06  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/support/cairo-support.c:
+	* engines/support/cairo-support.h:
+	- Add ge_cairo_stroke_rectangle helper function that uses cairo_fill
+	internally
+	- Make ge_cairo_simple_border use cairo_fill
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/crux/src/crux-draw.c:
+	* engines/glide/src/glide_gtk2_drawing.c:
+	* engines/glide/src/glide_gtk2_support.c:
+	* engines/hc/src/hc-style.c:
+	* engines/hc/src/hc_gtk2_support.c:
+	* engines/mist/src/mist-style.c:
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	* engines/support/cairo-support.c:
+	* engines/support/cairo-support.h:
+	* engines/thinice/src/thinice_misc.c:
+	* engines/thinice/src/thinice_theme_draw.c:
+	- Use ge_cairo_stroke_rectangle instead of creating a rectangle and
+	stroking that
+	- In some places, use fills instead of strokes
+	- Change the notebook and tabs of mist and thinice to use
+	ge_cairo_simple_border combined with clipping.
+	- Fix the _dot functions of mist, hc and thinice to use aligned
+	fills instead of disabling antialias and do weird stroking.
+	- changed placement of the hc dots in the GtkHandleBox handle.
+
 2006-10-02  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

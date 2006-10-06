@@ -90,6 +90,7 @@ clearlooks_draw_inset (cairo_t *cr, int width, int height,
 	if (corners & CL_CORNER_BOTTOMRIGHT)
 		bot_x2 = width-radius+1;
 	
+#ifdef CAIRO_STROKE_IS_FAST
 	cairo_set_line_width (cr, 1);
 	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.04);
 	cairo_move_to (cr, top_x1, 0.0);
@@ -100,6 +101,15 @@ clearlooks_draw_inset (cairo_t *cr, int width, int height,
 	cairo_move_to (cr, bot_x1, height);
 	cairo_line_to (cr, bot_x2, height);
 	cairo_stroke (cr);
+#else
+	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.04);
+	cairo_rectangle (cr, top_x1 - 0.5, -0.5, top_x2 - top_x1 + 1, 1.0);
+	cairo_fill (cr);
+	
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5);
+	cairo_rectangle (cr, bot_x1 - 0.5, height - 0.5, bot_x2 - bot_x1 + 1, 1.0);
+	cairo_fill (cr);
+#endif
 }
 
 static void
@@ -324,12 +334,10 @@ clearlooks_draw_button (cairo_t *cr,
 		CairoColor *l = &colors->shade[4];
 		CairoColor *d = &colors->shade[4];
 		cairo_set_source_rgb(cr, l->r, l->g, l->b);
-		cairo_rectangle (cr, 2.5, 2.5, width-5, height-5);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, 2.5, 2.5, width-5, height-5);
 
 		cairo_set_source_rgb(cr, d->r, d->g, d->b);
-		cairo_rectangle (cr, 3.5, 3.5, width-7, height-7);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, 3.5, 3.5, width-7, height-7);
 	}
 	
 	if (params->disabled)
@@ -403,10 +411,9 @@ clearlooks_draw_entry (cairo_t *cr,
 	/* Draw the inner shadow */
 	if (params->focus)
 	{
-		cairo_rectangle (cr, 2, 2, width-5, height-5);
 		/* clearlooks_rounded_rectangle (cr, 2, 2, width-5, height-5, RADIUS-1, params->corners); */
 		cairo_set_source_rgb (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, 2, 2, width-5, height-5);
 	}
 	else
 	{
@@ -494,9 +501,8 @@ clearlooks_scale_draw_gradient (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
-	cairo_rectangle (cr, x, y, width, height);	
 	cairo_set_source_rgb (cr, c3->r, c3->g, c3->b);
-	cairo_stroke (cr);
+	ge_cairo_stroke_rectangle (cr, x, y, width, height);	
 }
 
 #define TROUGH_SIZE 6
@@ -831,11 +837,9 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_set_source_rgba (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b, 0.5);
 
 	if (progressbar->pulsing)
-		cairo_rectangle (cr, 1.5, 0.5, width-3, height-1);
+		ge_cairo_stroke_rectangle (cr, 1.5, 0.5, width-3, height-1);
 	else
-		cairo_rectangle (cr, 0.5, 0.5, (progressbar->value < 1.0) ? width-2 : width-1, height-1);
-
-	cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, (progressbar->value < 1.0) ? width-2 : width-1, height-1);
 	
 	cairo_restore (cr);
 	
@@ -973,9 +977,8 @@ clearlooks_draw_menubar1 (cairo_t *cr,
 	clearlooks_draw_menubar2 (cr, colors, params, menubar,
 	                          x, y, width, height);
 
-	cairo_rectangle      (cr, 0.5, 0.5, width-1, height-1);
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
-	cairo_stroke         (cr);
+	ge_cairo_stroke_rectangle      (cr, 0.5, 0.5, width-1, height-1);
 }
 
 
@@ -1075,10 +1078,9 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8 );
 		if (frame->shadow == CL_SHADOW_ETCHED_IN)
-			cairo_rectangle       (cr, 1, 1, width-2, height-2);
+			ge_cairo_stroke_rectangle (cr, 1, 1, width-2, height-2);
 		else
-			cairo_rectangle       (cr, 0, 0, width-2, height-2);
-		cairo_stroke          (cr);
+			ge_cairo_stroke_rectangle (cr, 0, 0, width-2, height-2);
 	}
 	else if (frame->shadow != CL_SHADOW_NONE)
 	{
@@ -1105,16 +1107,15 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2 );
 		if (frame->shadow == CL_SHADOW_ETCHED_IN)
-			cairo_rectangle       (cr, 0, 0, width-2, height-2);
+			ge_cairo_stroke_rectangle (cr, 0, 0, width-2, height-2);
 		else
-			cairo_rectangle       (cr, 1, 1, width-2, height-2);
+			ge_cairo_stroke_rectangle (cr, 1, 1, width-2, height-2);
 	}
 	else
 	{
 		cairo_set_source_rgb (cr, border->r, border->g, border->b );
-		cairo_rectangle      (cr, 0, 0, width-1, height-1);
+		ge_cairo_stroke_rectangle (cr, 0, 0, width-1, height-1);
 	}
-	cairo_stroke         (cr);
 	cairo_restore (cr);
 }
 
@@ -1213,11 +1214,9 @@ clearlooks_draw_tab (cairo_t *cr,
 		cairo_set_source_rgba (cr, 1, 1, 1, 0.4);
 		
 		if (tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM)
-			cairo_rectangle (cr, 1, 1, width-3, height-3);
+			ge_cairo_stroke_rectangle (cr, 1, 1, width-3, height-3);
 		else
-			cairo_rectangle (cr, 1, 1, width-3, height-3);
-		
-		cairo_stroke (cr);
+			ge_cairo_stroke_rectangle (cr, 1, 1, width-3, height-3);
 	}
 	else
 	{
@@ -1473,9 +1472,8 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 	
 	/* Draw border */
-	cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
-	cairo_stroke (cr);
+	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 }
 
 void
@@ -1612,13 +1610,11 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_fill (cr);
 		cairo_pattern_destroy (pattern);
 		
-		cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
 		cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, 1.5, 1.5, width-3, height-3);
 	
-		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
 		cairo_set_source_rgb (cr, border->r, border->g, border->b);
-		cairo_stroke (cr);		
+		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 	}
 	else
 	{
@@ -1646,9 +1642,8 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_fill(cr);
 		cairo_pattern_destroy(pattern);
 		
-		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
 		cairo_set_source_rgb (cr, border->r, border->g, border->b);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 		
 		/* draw handles */
 		cairo_set_line_width (cr, 1);
@@ -1707,10 +1702,8 @@ clearlooks_draw_menu_frame (cairo_t *cr,
 	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 	cairo_paint          (cr);
 */
-	cairo_rectangle      (cr, 0.5, 0.5, width-1, height-1);
 	cairo_set_source_rgb (cr, border->r, border->g, border->b);
-	
-	cairo_stroke         (cr);
+	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 }
 
 void

@@ -508,8 +508,7 @@ redmond_draw_shadow (GtkStyle * style,
 	   */
            cairo_set_line_width (cr, 1);
            ge_cairo_set_color(cr, &redmond_style->black_border[state_type]);	
-           cairo_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
-           cairo_stroke(cr);
+           ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
 	}
       else if (((CHECK_DETAIL (detail, "vscrollbar"))
 		|| (CHECK_DETAIL (detail, "hscrollbar"))
@@ -521,8 +520,7 @@ redmond_draw_shadow (GtkStyle * style,
 	   */
            cairo_set_line_width (cr, 1);
            ge_cairo_set_color(cr, &redmond_style->color_cube.dark[state_type]);	
-           cairo_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
-           cairo_stroke(cr);
+           ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
 	}
       else if (((CHECK_DETAIL (detail, "entry"))
 		|| (CHECK_DETAIL (detail, "frame")))

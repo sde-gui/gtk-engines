@@ -151,13 +151,11 @@ thinice_style_draw_shadow(GtkStyle     *style,
 
     case GTK_SHADOW_ETCHED_IN:
     case GTK_SHADOW_ETCHED_OUT:
-	  ge_cairo_set_color(cr, color1);	
-   	  cairo_rectangle(cr, x + 1.5, y + 1.5, width - 3, height - 3);  
-	  cairo_stroke(cr);
+	  ge_cairo_set_color(cr, color1);
+   	  ge_cairo_stroke_rectangle(cr, x + 1.5, y + 1.5, width - 3, height - 3);  
 
 	  ge_cairo_set_color(cr, color2);	
-   	  cairo_rectangle(cr, x + 0.5, y + 0.5, width - 3, height - 3);  
-	  cairo_stroke(cr);
+   	  ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width - 3, height - 3);  
       break;
 
     case GTK_SHADOW_IN:
@@ -714,9 +712,7 @@ thinice_style_draw_check(GtkStyle * style,
 	{
 	  ge_cairo_set_color(cr, &thinice_style->color_cube.dark[state_type]);	
 
-   	  cairo_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);  
-
-	  cairo_stroke(cr);
+   	  ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);  
 	}
 	else
 	{
@@ -875,6 +871,7 @@ thinice_style_draw_shadow_gap(GtkStyle * style,
 
 	CairoColor              *color1 = NULL, *color2 = NULL;
 	cairo_t *cr;
+	gint start;
 
 	CHECK_ARGS
 	SANITIZE_SIZE
@@ -900,99 +897,30 @@ thinice_style_draw_shadow_gap(GtkStyle * style,
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
+	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
+	cairo_rectangle (cr, x, y, width, height);
+	
 	switch (gap_side) {
         case GTK_POS_TOP:
-		if (gap_x > 0) {
-			ge_cairo_line (cr, color1, 
-				       x, y, 
-				       x + gap_x, y);
-		}
-		if ((width - (gap_x + gap_width)) > 0) {
-			ge_cairo_line (cr, color1, 
-				       x + gap_x + gap_width - 1, y,
-				       x + width - 1, y);
-		}
-		ge_cairo_line (cr, color1, 
-			       x, y, 
-			       x, y + height - 1);
-		ge_cairo_line (cr, color2,
-			       x + width - 1, y,
-			       x + width - 1, y + height - 1);
-		ge_cairo_line (cr, color2,
-			       x, y + height - 1,
-			       x + width - 1, y + height - 1);
+        	start = MAX (1, gap_x + 1);
+        	cairo_rectangle (cr, x + start, y, MIN(width-1, gap_x+gap_width - 1) - start, 1);
 		break;
         case GTK_POS_BOTTOM:
-		ge_cairo_line (cr, color1,
-			       x, y,
-			       x + width - 1, y);
-		ge_cairo_line (cr, color1, 
-			       x, y, 
-			       x, y + height - 1);
-		ge_cairo_line (cr, color2,
-			       x + width - 1, y,
-			       x + width - 1, y + height - 1);
-
-		if (gap_x > 0) {
-			ge_cairo_line (cr, color2, 
-				       x, y + height - 1, 
-				       x + gap_x, y + height - 1);
-		}
-		if ((width - (gap_x + gap_width)) > 0) {
-			ge_cairo_line (cr, color2, 
-				       x + gap_x + gap_width - 1, y + height - 1,
-				       x + width - 1, y + height - 1);
-		}
-		
+        	start = MAX (1, gap_x + 1);
+        	cairo_rectangle (cr, x + start, y + height - 1, MIN(width-1, gap_x+gap_width - 1) - start, 1);
 		break;
         case GTK_POS_LEFT:
-		ge_cairo_line (cr, color1,
-			       x, y,
-			       x + width - 1, y);
-		if (gap_x > 0) {
-			ge_cairo_line (cr, color1, 
-				       x, y,
-				       x, y + gap_x);
-		}
-		if ((height - (gap_x + gap_width)) > 0) {
-			ge_cairo_line (cr, color1, 
-				       x, y + gap_x + gap_width - 1,
-				       x, y + height - 1);
-		}
-
-		ge_cairo_line (cr, color2,
-			       x + width - 1, y,
-			       x + width - 1, y + height - 1);
-		ge_cairo_line (cr, color2,
-			       x, y + height - 1,
-			       x + width - 1, y + height - 1);
+        	start = MAX (1, gap_x + 1);
+        	cairo_rectangle (cr, x, y + start, 1, MIN(width-1, gap_x+gap_width - 1) - start);
 		break;
         case GTK_POS_RIGHT:
-		ge_cairo_line (cr, color1,
-			       x, y,
-			       x + width - 1, y);
-		ge_cairo_line (cr, color1, 
-			       x, y, 
-			       x, y + height - 1);
-
-
-		if (gap_x > 0) {
-			ge_cairo_line (cr, color2, 
-				       x + width - 1, y,
-				       x + width - 1, y + gap_x);
-		}
-		if ((height - (gap_x + gap_width)) > 0) {
-			ge_cairo_line (cr, color2, 
-				       x + width - 1, y + gap_x + gap_width - 1,
-				       x + width - 1, y + height - 1);
-		}
-
-		ge_cairo_line (cr, color2,
-			       x, y + height - 1,
-			       x + width - 1, y + height - 1);
-
+        	start = MAX (1, gap_x + 1);
+        	cairo_rectangle (cr, x + width - 1, y + start, 1, MIN(width-1, gap_x+gap_width - 1) - start);
+        	break;
 	}
-
+	cairo_clip (cr);
+	cairo_new_path (cr);
+	ge_cairo_simple_border (cr, color1, color2, x, y, width, height, FALSE);
 	cairo_destroy(cr);
 }
 
@@ -1383,7 +1311,7 @@ thinice_tab(DRAW_ARGS, gint orientation)
     {
       ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
 
-      cairo_rectangle(cr, x, y, width - 1, height - 1);
+      cairo_rectangle(cr, x, y, width, height);
 
       cairo_fill(cr);
     }
@@ -1394,42 +1322,27 @@ thinice_tab(DRAW_ARGS, gint orientation)
                                          state_type, area, x, y, width, height);
     }
 
+  cairo_rectangle (cr, x, y, width, height);
+  cairo_clip (cr);
   switch(orientation)
     {
     case GTK_POS_TOP:
-      ge_cairo_line(cr, light,
-                    x, y + height, x, y);
-      ge_cairo_line(cr, light,
-                    x, y, x + width - 2, y);
-      ge_cairo_line(cr, dark,
-                    x + width - 2, y, x + width - 2, y + height - 1);
+      height++;
       break;
     case GTK_POS_BOTTOM:
-      ge_cairo_line(cr, light,
-                    x, y - 1, x, y + height - 1);
-      ge_cairo_line(cr, dark,
-                    x, y + height - 1, x + width - 2, y + height - 1);
-      ge_cairo_line(cr, dark,
-                    x + width - 2, y + height - 1, x + width - 2, y);
+      y--;
+      height++;
       break;
     case GTK_POS_LEFT:
-      ge_cairo_line(cr, light,
-                    x, y + height - 1, x, y);
-      ge_cairo_line(cr, light,
-                    x, y, x + width, y);
-      ge_cairo_line(cr, dark,
-                    x, y + height - 1, x + width - 1, y + height - 1);
+      width++;
       break;
     case GTK_POS_RIGHT:
-      ge_cairo_line(cr, light,
-                    x - 1, y, x + width - 1, y);
-      ge_cairo_line(cr, dark,
-                    x + width - 1, y, x + width - 1, y + height - 1);
-      ge_cairo_line(cr, dark,
-                    x, y + height - 1, x + width - 1, y + height - 1);
+      x--;
+      width++;
       break;
     }
 
+    ge_cairo_simple_border (cr, light, dark, x, y, width, height, FALSE);
     cairo_destroy(cr);
 }
 

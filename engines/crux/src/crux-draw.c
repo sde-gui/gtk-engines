@@ -346,11 +346,10 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 	width -= 1.0; height -= 1.0;
 
 	/* outer rectangle */
-	cairo_rectangle (cr, x, y, width, height);
 	if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
 	{
 		cairo_set_source_rgb (cr, OUTLINE_GRAY);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, x, y, width, height);
 	}
 	else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
 	{
@@ -362,15 +361,13 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 		cairo_pattern_add_color_stop_rgba (crp, 1.0, 1.0, 1.0, 1.0, 0.5);
 		cairo_pattern_add_color_stop_rgba (crp, 0.0, .0, .0, .0, 0.2);
 		cairo_set_source (cr, crp);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, x, y, width, height);
 		cairo_pattern_destroy (crp);
 	}
 
 	/* inner rectangle */
 	x += 1.0; y += 1.0;
 	width -= 2.0; height -= 2.0;
-
-	cairo_rectangle (cr, x, y, width, height);
 
 	/* stroke */
 	if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
@@ -383,14 +380,14 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 		cairo_pattern_add_color_stop_rgba (crp, 0.0, 1.0, 1.0, 1.0, 0.5);
 		cairo_pattern_add_color_stop_rgba (crp, 1.0, .0, .0, .0, 0.2);
 		cairo_set_source (cr, crp);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, x, y, width, height);
 		cairo_pattern_destroy (crp);
 	}
 	else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
 	{
 		/*TODO: Find a way to calculate this value (same as shadow out outer line)*/
 		cairo_set_source_rgb (cr, OUTLINE_GRAY);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, x, y, width, height);
 
 		/*
 		// three lines of alpha: 0.22, 0.12, 0.03
@@ -430,11 +427,10 @@ paint_entry_shadow (cairo_t *cr, GtkStyle *style,
 
 
 	/* Outer Line */
-	cairo_rectangle (cr, x, y, width, height);
 	if (focused)
 	{
 		gdk_cairo_set_source_color (cr, &style->light[GTK_STATE_SELECTED]);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, x, y, width, height);
 	}
 	else
 	{
@@ -443,26 +439,24 @@ paint_entry_shadow (cairo_t *cr, GtkStyle *style,
 		cairo_pattern_add_color_stop_rgb (crp, 0.0, 185/255.0, 189/255.0, 182/255.0);
 		cairo_pattern_add_color_stop_rgb (crp, 1.0, 238/255.0, 238/255.0, 236/255.0);
 		cairo_set_source (cr, crp);
-		cairo_stroke (cr);
+		ge_cairo_stroke_rectangle (cr, x, y, width, height);
 		cairo_pattern_destroy (crp);
 	}
 
 	/* inner Line */
-	cairo_rectangle (cr, x + 1.0, y + 1.0, width - 2.0, height - 2.0);
 	/* TODO: Find a way to calculate these values */
 	if (state_type == GTK_STATE_INSENSITIVE)
 		gdk_cairo_set_source_color (cr, &style->fg [state_type]);
 	else
 		cairo_set_source_rgb (cr, 54/255.0, 52/255.0, 54/255.0);
 
-	cairo_stroke (cr);
+	ge_cairo_stroke_rectangle (cr, x + 1.0, y + 1.0, width - 2.0, height - 2.0);
 
 	/* inner shadow */
 
 	/* make sure background is initialised as shadow is only in top left */
 	gdk_cairo_set_source_color (cr, &style->base[(state_type == GTK_STATE_INSENSITIVE) ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);
-	cairo_rectangle (cr, x + 2.0, y + 2.0, width - 4.0, height - 4.0);
-	cairo_stroke (cr);
+	ge_cairo_stroke_rectangle (cr, x + 2.0, y + 2.0, width - 4.0, height - 4.0);
 
 	/* draw shadow */
 	cairo_move_to (cr, x + 2.0, y + height - 2.0);

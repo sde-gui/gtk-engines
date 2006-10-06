@@ -159,8 +159,7 @@ hc_draw_shadow(GtkStyle * style,
 	cairo_set_line_width (canvas, line_width + ((line_width%2)?1.0:0.5));
 
 	/* Stroke Rectangle */
-	cairo_rectangle (canvas, x, y, width, height);
-	cairo_stroke(canvas);
+	ge_cairo_stroke_rectangle (canvas, x, y, width, height);
 
 	cairo_destroy(canvas);
 }
@@ -231,8 +230,7 @@ hc_draw_shadow_gap (GtkStyle       *style,
 	cairo_set_line_width (canvas, line_width + ((line_width%2)?1.0:0.5));
 
 	/* Stroke Rectangle */
-	cairo_rectangle (canvas, x, y, width, height);
-	cairo_stroke(canvas);
+	ge_cairo_stroke_rectangle (canvas, x, y, width, height);
 
 	cairo_destroy(canvas);
 }
@@ -377,8 +375,7 @@ hc_draw_extension (GtkStyle       *style,
 	cairo_set_line_width (canvas, line_width + ((line_width%2)?1.0:0.5));
 
 	/* Stroke Rectangle */
-	cairo_rectangle (canvas, x, y, width, height);
-	cairo_stroke(canvas);
+	ge_cairo_stroke_rectangle (canvas, x, y, width, height);
 
 	cairo_destroy(canvas);
 }
@@ -593,13 +590,15 @@ hc_draw_handle (GtkStyle      *style,
 	}
 	else
 	{
-		for (yy = y + ythick; yy < (y + height - ythick); yy += 3)
+		if (orientation == GTK_ORIENTATION_HORIZONTAL)
 		{
-			for (xx = x + xthick; xx < (x + width - xthick); xx += 6)
-			{
-				do_hc_draw_dot (canvas, light, dark, xx, yy);
-				do_hc_draw_dot (canvas, light, dark, xx + 3, yy + 1);
-			}
+			for (xx = x + xthick + (width/2 - xthick) % 5; xx <= x + width - xthick*2; xx += 5)
+				do_hc_draw_dot (canvas, light, dark, xx + 2, y + height/2);
+		}
+		else
+		{
+			for (yy = y + ythick + (height/2 - ythick) % 5; yy <= y + height - ythick*2; yy += 5)
+				do_hc_draw_dot (canvas, light, dark, x + width/2, yy + 2);
 		}
 	}
 
@@ -719,8 +718,7 @@ hc_draw_check (GtkStyle      *style,
 	cairo_set_line_width (cr, line_width + ((line_width%2)?1.0:0.5));
 
 	/* Stroke Rectangle */
-	cairo_rectangle (cr, x, y, width, height);
-	cairo_stroke(cr);
+	ge_cairo_stroke_rectangle (cr, x, y, width, height);
 
 	cairo_restore(cr);
 

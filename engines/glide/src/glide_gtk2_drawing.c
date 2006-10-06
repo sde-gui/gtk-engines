@@ -2320,11 +2320,11 @@ glide_draw_focus(GtkStyle *style,
 
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				cairo_rectangle(canvas, x - thick + line_width*2, y + thick, width - line_width*2, height - thick*2);
+				ge_cairo_stroke_rectangle(canvas, x - thick + line_width*2, y + thick, width - line_width*2, height - thick*2);
 			}
 			else
 			{
-				cairo_rectangle(canvas, x + thick, y + thick, width - line_width*2, height - thick*2);
+				ge_cairo_stroke_rectangle(canvas, x + thick, y + thick, width - line_width*2, height - thick*2);
 			}
 
 			entry = g_object_get_data(G_OBJECT(ge_find_combo_box_widget_parent (widget)), "entry");
@@ -2338,11 +2338,11 @@ glide_draw_focus(GtkStyle *style,
 		{
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				cairo_rectangle(canvas, x + 0.5, y + 0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(canvas, x + 0.5, y + 0.5, width + line_width - 1, height - 1);
 			}
 			else
 			{
-				cairo_rectangle(canvas, x - line_width + 0.5, y + 0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(canvas, x - line_width + 0.5, y + 0.5, width + line_width - 1, height - 1);
 			}
 		}
  		else if (CHECK_DETAIL(detail, "entry") && (ge_is_in_combo_box (widget)))
@@ -2357,11 +2357,11 @@ glide_draw_focus(GtkStyle *style,
 
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				cairo_rectangle(canvas, x + 0.5, y + 0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(canvas, x + 0.5, y + 0.5, width + line_width - 1, height - 1);
 			}
 			else
 			{
-				cairo_rectangle(canvas, x - line_width + 0.5, y + 0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(canvas, x - line_width + 0.5, y + 0.5, width + line_width - 1, height - 1);
 			}
 		}
 		else if (CHECK_DETAIL(detail, "spinbutton_up"))
@@ -2376,7 +2376,7 @@ glide_draw_focus(GtkStyle *style,
 			}
 
 			cairo_clip(canvas);
-			cairo_rectangle(canvas, x + 0.5, y + 0.5, width - 1, height + line_width - 1);
+			ge_cairo_stroke_rectangle(canvas, x + 0.5, y + 0.5, width - 1, height + line_width - 1);
 		} 
 	        else if (CHECK_DETAIL(detail, "spinbutton_down"))
 		{
@@ -2390,7 +2390,7 @@ glide_draw_focus(GtkStyle *style,
 			}		
 
 			cairo_clip(canvas);
-			cairo_rectangle(canvas, x + 0.5, y - line_width  + 0.5, width - 1, height + line_width - 1);
+			ge_cairo_stroke_rectangle(canvas, x + 0.5, y - line_width  + 0.5, width - 1, height + line_width - 1);
 		} 
 	        else if (CHECK_DETAIL(detail, "combo_entry_button"))
 		{
@@ -2399,22 +2399,20 @@ glide_draw_focus(GtkStyle *style,
 				cairo_rectangle(canvas, x + line_width, y, width - line_width, height + 1);
 				cairo_clip(canvas);
 
-				cairo_rectangle(canvas, x + 0.5, y + 0.5, width - 1, height - 1);
+				ge_cairo_stroke_rectangle(canvas, x + 0.5, y + 0.5, width - 1, height - 1);
 			}
 			else
 			{
 				cairo_rectangle(canvas, x, y, width, height + 1);
 				cairo_clip(canvas);
 
-				cairo_rectangle(canvas, x+0.5, y+0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(canvas, x+0.5, y+0.5, width + line_width - 1, height - 1);
 			}
 		}
 		else
 		{
-  			cairo_rectangle(canvas, x+0.5, y+0.5, width-1, height-1);
+  			ge_cairo_stroke_rectangle(canvas, x+0.5, y+0.5, width-1, height-1);
 		}
-
-		cairo_stroke(canvas);
 
 		cairo_destroy(canvas);
 	}
