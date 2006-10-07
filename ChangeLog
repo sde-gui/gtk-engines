@@ -1,3 +1,8 @@
+2006-10-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/support/cairo-support.c: (ge_cairo_simple_border):
+	- One rectangle was placed wrong
+
 2006-10-06  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/support/cairo-support.c:

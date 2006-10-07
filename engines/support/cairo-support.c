@@ -374,7 +374,7 @@ ge_cairo_simple_border (cairo_t *cr,
 		cairo_stroke (cr);
 #else
 		cairo_rectangle (cr, x, y + height - 1, width, 1);
-		cairo_rectangle (cr, x+width - 1, y + 1, 1, height);
+		cairo_rectangle (cr, x+width - 1, y, 1, height - 1);
 
 		cairo_fill(cr);
 #endif
