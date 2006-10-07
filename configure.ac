@@ -16,15 +16,16 @@ AM_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
-AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks    skip ClearLooks engine/theme], 	[clearlooks=$enableval], 	[clearlooks="yes"])
-AC_ARG_ENABLE(crux, 		[  --disable-crux          skip Crux engine/theme], 		[crux=$enableval], 		[crux="yes"])
-AC_ARG_ENABLE(hc,		[  --disable-hc            skip HC(high contrast) engine], 	[hc=$enableval], 		[hc="yes"])
-AC_ARG_ENABLE(industrial, 	[  --disable-industrial    skip Industrial engine/theme], 	[industrial=$enableval], 	[industrial="yes"])
-AC_ARG_ENABLE(mist, 		[  --disable-mist          skip Mist engine/theme], 		[mist=$enableval], 		[mist="yes"])
-AC_ARG_ENABLE(redmond,		[  --disable-redmond       skip Redmond engine/theme], 		[redmond=$enableval], 		[redmond="yes"])
-AC_ARG_ENABLE(smooth, 		[  --disable-smooth        skip Smooth engine], 			[smooth=$enableval], 		[smooth="yes"])
-AC_ARG_ENABLE(glide,		[  --disable-glide         skip Glide engine],			[glide=$enableval],		[glide="yes"])
-AC_ARG_ENABLE(thinice,		[  --disable-thinice       skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice="yes"])
+AC_ARG_ENABLE(all, 		[  --disable-all           skip all engines/themes by default], [defaultval=$enableval], 	[defaultval="yes"])
+AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks    skip ClearLooks engine/theme], 	[clearlooks=$enableval], 	[clearlooks="$defaultval"])
+AC_ARG_ENABLE(crux, 		[  --disable-crux          skip Crux engine/theme], 		[crux=$enableval], 		[crux="$defaultval"])
+AC_ARG_ENABLE(hc,		[  --disable-hc            skip HC(high contrast) engine], 	[hc=$enableval], 		[hc="$defaultval"])
+AC_ARG_ENABLE(industrial, 	[  --disable-industrial    skip Industrial engine/theme], 	[industrial=$enableval], 	[industrial="$defaultval"])
+AC_ARG_ENABLE(mist, 		[  --disable-mist          skip Mist engine/theme], 		[mist=$enableval], 		[mist="$defaultval"])
+AC_ARG_ENABLE(redmond,		[  --disable-redmond       skip Redmond engine/theme], 		[redmond=$enableval], 		[redmond="$defaultval"])
+AC_ARG_ENABLE(smooth, 		[  --disable-smooth        skip Smooth engine], 		[smooth=$enableval], 		[smooth="$defaultval"])
+AC_ARG_ENABLE(glide,		[  --disable-glide         skip Glide engine],			[glide=$enableval],		[glide="$defaultval"])
+AC_ARG_ENABLE(thinice,		[  --disable-thinice       skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice="$defaultval"])
 
 AC_ARG_ENABLE(animation, 	[  --enable-animation      compile clearlooks with animation support], 	[animation=$enableval],	[animation="no"])
 
