@@ -990,8 +990,9 @@ mist_style_draw_handle(GtkStyle *style,
 	
 	SANITIZE_SIZE
 
-	gtk_paint_box(style, window, state_type, shadow_type, area, widget,
-		      detail, x, y, width, height);
+	if (!ge_is_panel_widget_item (widget) && !ge_object_is_a ((GObject*)widget, "PanelToplevel"))
+		gtk_paint_box(style, window, state_type, shadow_type, area, widget,
+			      detail, x, y, width, height);
 	
 	light = &mist_style->color_cube.light[state_type];
 	dark = &mist_style->color_cube.dark[state_type];
