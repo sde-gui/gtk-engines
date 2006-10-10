@@ -252,11 +252,33 @@ ge_cairo_set_color (cairo_t *cr, CairoColor *color)
 }
 
 void 
-ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, gfloat offset, CairoColor *color)
+ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, 
+						gfloat offset, 
+						CairoColor *color)
 {
 	g_return_if_fail (pattern && color);
 
 	cairo_pattern_add_color_stop_rgba (pattern, offset, color->r, color->g, color->b, color->a);	
+}
+
+void
+ge_cairo_pattern_add_color_stop_shade(cairo_pattern_t *pattern, 
+						gdouble offset, 
+						CairoColor *color, 
+						gdouble shade)
+{
+	CairoColor shaded;
+
+	g_return_if_fail (pattern && color && (shade >= 0) && (shade <= 3));
+
+	shaded = *color;
+
+	if (shade != 1)
+	{
+		ge_shade_color(color, shade, &shaded);
+	}
+
+	ge_cairo_pattern_add_color_stop_color(pattern, offset, &shaded);	
 }
 
 void
@@ -506,6 +528,231 @@ ge_cairo_mirror (cairo_t     *cr,
 	}
 
 	cairo_transform (cr, &matrix);
+}
+
+/***********************************************
+ * ge_cairo_pattern_fill -
+ *  
+ *   Fill an area with some pattern
+ *   Scaling or tiling if needed
+ ***********************************************/
+void 
+ge_cairo_pattern_fill(cairo_t *canvas,
+			CairoPattern *pattern,
+			gint x,
+			gint y,
+			gint width,
+			gint height)
+{
+	cairo_matrix_t original_matrix, current_matrix;
+
+	if (pattern->operator == CAIRO_OPERATOR_DEST)
+	{
+		return;
+	}
+
+	cairo_pattern_get_matrix(pattern->handle, &original_matrix);
+	current_matrix = original_matrix;
+
+	if (pattern->scale != GE_DIRECTION_NONE)
+	{
+		gdouble scale_x = 1.0;
+		gdouble scale_y = 1.0;
+
+		if ((pattern->scale == GE_DIRECTION_VERTICAL) || (pattern->scale == GE_DIRECTION_BOTH))
+		{
+			scale_x = 1.0/width;
+		}
+
+		if ((pattern->scale == GE_DIRECTION_HORIZONTAL) || (pattern->scale == GE_DIRECTION_BOTH))
+		{
+			scale_y = 1.0/height;
+		}
+
+		cairo_matrix_scale(&current_matrix, scale_x, scale_y);
+	}
+
+	if (pattern->translate != GE_DIRECTION_NONE)
+	{
+		gdouble translate_x = 0;
+		gdouble translate_y = 0;
+
+		if ((pattern->translate == GE_DIRECTION_VERTICAL) || (pattern->translate == GE_DIRECTION_BOTH))
+		{
+			translate_x = 0.0-x;
+		}
+
+		if ((pattern->translate == GE_DIRECTION_HORIZONTAL) || (pattern->translate == GE_DIRECTION_BOTH))
+		{
+			translate_y = 0.0-y;
+		}
+
+		cairo_matrix_translate(&current_matrix, translate_x, translate_y);
+	}
+
+	cairo_pattern_set_matrix(pattern->handle, &current_matrix);
+
+	cairo_save(canvas);
+
+	cairo_set_source(canvas, pattern->handle);
+        cairo_set_operator(canvas, pattern->operator);
+	cairo_rectangle(canvas, x, y, width, height);
+
+	cairo_fill (canvas);
+
+	cairo_restore(canvas);
+
+	cairo_pattern_set_matrix(pattern->handle, &original_matrix);
+}
+
+/***********************************************
+ * ge_cairo_color_pattern -
+ *  
+ *   Create A Solid Color Pattern
+ ***********************************************/
+CairoPattern*
+ge_cairo_color_pattern(CairoColor *base)
+{	
+	CairoPattern * result = g_new0(CairoPattern, 1);
+
+	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+		result->type = CAIRO_PATTERN_TYPE_SOLID;
+	#endif
+
+	result->scale = GE_DIRECTION_NONE;
+	result->translate = GE_DIRECTION_NONE;
+
+	result->handle = cairo_pattern_create_rgba(base->r, 
+							base->g, 
+							base->b, 
+							base->a);
+
+	result->operator = CAIRO_OPERATOR_SOURCE;
+	
+	return result;
+}
+
+/***********************************************
+ * ge_cairo_pixbuf_pattern -
+ *  
+ *   Create A Tiled Pixbuf Pattern
+ ***********************************************/
+CairoPattern*
+ge_cairo_pixbuf_pattern(GdkPixbuf *pixbuf)
+{	
+	CairoPattern * result = g_new0(CairoPattern, 1);
+
+	cairo_t *canvas;
+	cairo_surface_t * surface;
+	gint width, height;
+
+	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+		result->type = CAIRO_PATTERN_TYPE_SURFACE;
+	#endif
+
+	result->scale = GE_DIRECTION_NONE;
+	result->translate = GE_DIRECTION_BOTH;
+
+	width = gdk_pixbuf_get_width(pixbuf);
+	height = gdk_pixbuf_get_height(pixbuf);
+	
+	surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+
+	canvas = cairo_create(surface);
+
+	gdk_cairo_set_source_pixbuf (canvas, pixbuf, 0, 0);
+	cairo_rectangle (canvas, 0, 0, width, height);
+	cairo_fill (canvas);
+	cairo_destroy(canvas);
+
+	result->handle = cairo_pattern_create_for_surface (surface);
+	cairo_surface_destroy(surface);
+
+	cairo_pattern_set_extend (result->handle, CAIRO_EXTEND_REPEAT);
+
+	result->operator = CAIRO_OPERATOR_SOURCE;
+
+	return result;
+}
+
+/***********************************************
+ * ge_cairo_pixmap_pattern -
+ *  
+ *   Create A Tiled Pixmap Pattern
+ ***********************************************/
+CairoPattern*
+ge_cairo_pixmap_pattern(GdkPixmap *pixmap)
+{	
+	CairoPattern * result = NULL;
+
+	GdkPixbuf * pixbuf;
+	gint width, height;
+
+	gdk_drawable_get_size (GDK_DRAWABLE (pixmap), &width, &height);
+
+	pixbuf = gdk_pixbuf_get_from_drawable(NULL, GDK_DRAWABLE (pixmap), 
+				gdk_drawable_get_colormap(GDK_DRAWABLE (pixmap)), 
+				0, 0, 0, 0, width, height);
+
+	result = ge_cairo_pixbuf_pattern(pixbuf);
+	
+	g_object_unref (pixbuf);
+
+	return result;
+}
+
+/***********************************************
+ * ge_cairo_linear_shade_gradient_pattern - 
+ *  
+ *   Create A Linear Shade Gradient Pattern
+ *   Aka Smooth Shade Gradient, from/to gradient
+ *   With End points defined as shades of the
+ *   base color
+ ***********************************************/
+CairoPattern *
+ge_cairo_linear_shade_gradient_pattern(CairoColor *base, 
+						gdouble shade1, 
+						gdouble shade2, 
+						gboolean vertical)
+{
+	CairoPattern * result = g_new0(CairoPattern, 1);
+	
+	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+		result->type = CAIRO_PATTERN_TYPE_LINEAR;
+	#endif
+
+	if (vertical)
+	{
+		result->scale = GE_DIRECTION_VERTICAL;
+
+		result->handle = cairo_pattern_create_linear(0, 0, 1, 0);
+	}
+	else
+	{
+		result->scale = GE_DIRECTION_HORIZONTAL;
+
+		result->handle = cairo_pattern_create_linear(0, 0, 0, 1);
+	}
+
+	result->translate = GE_DIRECTION_BOTH;
+	result->operator = CAIRO_OPERATOR_SOURCE;
+
+	ge_cairo_pattern_add_color_stop_shade(result->handle, 0, base, shade1);
+	ge_cairo_pattern_add_color_stop_shade(result->handle, 1, base, shade2);
+
+	return result;
+}
+
+void
+ge_cairo_pattern_destroy(CairoPattern *pattern)
+{
+	if (pattern)
+	{
+		if (pattern->handle)
+			cairo_pattern_destroy(pattern->handle);
+			
+		g_free(pattern);
+	}
 }
 
 /* The following function will be called by GTK+ when the module

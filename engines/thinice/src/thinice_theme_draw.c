@@ -36,20 +36,6 @@ Tomas Ögren <stric@ing.umu.se>
 static void thinice_style_init       (ThiniceStyle      *style);
 static void thinice_style_class_init (ThiniceStyleClass *klass);
 
-static void
-thinice_tab(GtkStyle * style,
-            GdkWindow * window,
-            GtkStateType state_type,
-            GtkShadowType shadow_type,
-            GdkRectangle * area,
-            GtkWidget * widget,
-            const gchar *detail,
-            gint x,
-            gint y,
-            gint width,
-            gint height,
-	    gint orientation);
-
 static GtkStyleClass *thinice_parent_style_class = NULL;
 
 static void
@@ -956,15 +942,62 @@ thinice_style_draw_box_gap(GtkStyle * style,
 static void
 thinice_style_draw_extension(DRAW_ARGS, GtkPositionType gap_side)
 {
-	switch (gap_side)
+	ThiniceStyle *thinice_style = THINICE_STYLE (style);
+
+	CairoColor *background, *light, *dark;
+	cairo_t *canvas;
+
+	CHECK_ARGS
+
+	SANITIZE_SIZE
+
+	background = &thinice_style->color_cube.bg[state_type];
+	light = &thinice_style->color_cube.light[state_type];
+	dark = &thinice_style->color_cube.dark[state_type];
+
+	canvas = ge_gdk_drawable_to_cairo (window, area);
+
+	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
 	{
-		case GTK_POS_TOP: gap_side = GTK_POS_BOTTOM; break;
-		case GTK_POS_BOTTOM: gap_side = GTK_POS_TOP; break;
-		case GTK_POS_LEFT: gap_side = GTK_POS_RIGHT; break;
-		case GTK_POS_RIGHT: gap_side = GTK_POS_LEFT; break;
+		ge_cairo_set_color(canvas, background);
+
+		cairo_rectangle(canvas, x, y, width, height);
+
+		cairo_fill(canvas);
+	}
+	else
+	{
+		gtk_style_apply_default_background(style, window,
+				widget && !GTK_WIDGET_NO_WINDOW(widget),
+				state_type, area, x, y, width, height);
 	}
 
-	thinice_tab(DRAW_VARS, gap_side);
+	cairo_rectangle (canvas, x, y, width, height);
+	cairo_clip (canvas);
+
+	switch(gap_side)
+	{
+		case GTK_POS_TOP:
+			y--;
+			height++;
+		break;
+
+		case GTK_POS_LEFT:
+			x--;
+			width++;
+		break;
+
+		case GTK_POS_BOTTOM:
+			height++;
+		break;
+
+		case GTK_POS_RIGHT:
+			width++;
+		break;
+	}
+
+	ge_cairo_simple_border (canvas, light, dark, x, y, width, height, FALSE);
+	cairo_destroy(canvas);
 }
 
 static void
@@ -1287,62 +1320,6 @@ thinice_style_draw_handle(GtkStyle * style,
         }
     }
 
-    cairo_destroy(cr);
-}
-
-static void
-thinice_tab(DRAW_ARGS, gint orientation)
-{
-	ThiniceStyle *thinice_style = THINICE_STYLE (style);
-
-  CairoColor *light, *dark;
-  cairo_t *cr;
-
-  CHECK_ARGS
-
-  SANITIZE_SIZE
-
-  light = &thinice_style->color_cube.light[state_type];
-  dark = &thinice_style->color_cube.dark[state_type];
-
-  cr = ge_gdk_drawable_to_cairo (window, area);
-
-  if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
-    {
-      ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
-
-      cairo_rectangle(cr, x, y, width, height);
-
-      cairo_fill(cr);
-    }
-  else
-    {
-      gtk_style_apply_default_background(style, window,
-                                         widget && !GTK_WIDGET_NO_WINDOW(widget),
-                                         state_type, area, x, y, width, height);
-    }
-
-  cairo_rectangle (cr, x, y, width, height);
-  cairo_clip (cr);
-  switch(orientation)
-    {
-    case GTK_POS_TOP:
-      height++;
-      break;
-    case GTK_POS_BOTTOM:
-      y--;
-      height++;
-      break;
-    case GTK_POS_LEFT:
-      width++;
-      break;
-    case GTK_POS_RIGHT:
-      x--;
-      width++;
-      break;
-    }
-
-    ge_cairo_simple_border (cr, light, dark, x, y, width, height, FALSE);
     cairo_destroy(cr);
 }
 

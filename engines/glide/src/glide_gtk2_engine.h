@@ -24,45 +24,8 @@
  
 #include "ge-support.h"
 
-/*****************************/
-/* Pattern Fills             */
-/*****************************/
-typedef enum {
-	GLIDE_DIRECTION_VERTICAL,
-	GLIDE_DIRECTION_HORIZONTAL,
-	GLIDE_DIRECTION_BOTH,
-	GLIDE_DIRECTION_NONE
-} GlideDirection;
-
-#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-typedef enum _cairo_pattern_type {
-    CAIRO_PATTERN_TYPE_SOLID,
-    CAIRO_PATTERN_TYPE_SURFACE,
-    CAIRO_PATTERN_TYPE_LINEAR,
-    CAIRO_PATTERN_TYPE_RADIAL
-} cairo_pattern_type_t;
-
-
-#	define CAIRO_PATTERN_TYPE(pattern) pattern->type;
-#else
-#	define CAIRO_PATTERN_TYPE(pattern) cairo_pattern_get_type (pattern->handle);
-#endif
-
-typedef struct
-{
-#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-	cairo_pattern_type_t type;
-#endif
-	GlideDirection scale;
-	GlideDirection translate;
-
-	cairo_pattern_t *handle;
-	cairo_operator_t operator;
-} CairoPattern;
-  
-
 /*#warning NO MORE MACROS! - Replace with pattern precedence in configuration parsing*/
-#define DEFAULT_BACKGROUND_PATTERN(glide_style, state, alternate) ((glide_style->bg_image[state].handle)?&glide_style->bg_image[state]:alternate)
+#define DEFAULT_BACKGROUND_PATTERN(glide_style, state, alternate) ((glide_style->bg_image[state])?glide_style->bg_image[state]:alternate)
 
 #define DEFAULT_OVERLAY_PATTERN(glide_style, detail, vertical) &glide_style->overlay[CHECK_DETAIL(detail, "menuitem")][vertical]
 
@@ -106,10 +69,10 @@ typedef struct
   GtkStyle parent_instance;
   CairoColorCube color_cube;
 
-  CairoPattern bg_solid[5];
-  CairoPattern bg_image[5];
-  CairoPattern bg_gradient[2][5];
-  CairoPattern active_tab_gradient[4][5];
+  CairoPattern *bg_solid[5];
+  CairoPattern *bg_image[5];
+  CairoPattern *bg_gradient[2][5];
+  CairoPattern *active_tab_gradient[4][5];
 
   CairoPattern overlay[2][2];
 

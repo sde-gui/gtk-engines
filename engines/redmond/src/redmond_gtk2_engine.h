@@ -26,21 +26,7 @@
 /*****************************/
 /* Pattern Fills             */
 /*****************************/
-typedef enum {
-	REDMOND_DIRECTION_VERTICAL,
-	REDMOND_DIRECTION_HORIZONTAL,
-	REDMOND_DIRECTION_BOTH,
-	REDMOND_DIRECTION_NONE
-} RedmondDirection;
-
-typedef struct
-{
-	RedmondDirection scale;
-	RedmondDirection translate;
-	cairo_pattern_t *handle;
-} CairoPattern;
-  
-#define DEFAULT_BACKGROUND_PATTERN(redmond_style, state) ((redmond_style->bg_image[state].handle)?&redmond_style->bg_image[state]:&redmond_style->bg_color[state])
+#define DEFAULT_BACKGROUND_PATTERN(redmond_style, state) ((redmond_style->bg_image[state])?redmond_style->bg_image[state]:redmond_style->bg_color[state])
 
 /*****************************/
 /* RC Style Declaration      */
@@ -83,8 +69,8 @@ typedef struct
   CairoColor black_border[5];
   CairoColorCube color_cube;
 
-  CairoPattern bg_color[5];
-  CairoPattern bg_image[5];
+  CairoPattern *bg_color[5];
+  CairoPattern *bg_image[5];
   CairoPattern hatch_mask;
 } RedmondStyle;
  

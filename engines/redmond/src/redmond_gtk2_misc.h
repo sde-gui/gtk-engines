@@ -22,14 +22,6 @@
   
 /* Misc Drawing/Colour Functions */  
 GE_INTERNAL void
-do_redmond_draw_pattern_fill (cairo_t * cr,
-                                  CairoPattern *pattern,
-                                  gint x,
-                                  gint y, 
-                                  gint width, 
-                                  gint height);
-                                   
-GE_INTERNAL void
 do_redmond_draw_masked_fill (cairo_t * cr,
                                   CairoPattern *mask,
                                   CairoColor * background,

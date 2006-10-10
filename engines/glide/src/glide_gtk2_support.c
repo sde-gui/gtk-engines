@@ -43,31 +43,6 @@ ge_blend_color(const CairoColor *color1, const CairoColor *color2, CairoColor *c
 	composite->a = (color1->a + color2->a)/2;	
 }
 
-void
-ge_cairo_pattern_add_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color)
-{
-	g_return_if_fail (pattern && color);
-	
-	cairo_pattern_add_color_stop_rgba(pattern, offset, color->r, color->g, color->b, color->a);	
-}
-
-void
-ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade)
-{
-	CairoColor shaded;
-
-	g_return_if_fail (pattern && color && (shade >= 0) && (shade <= 3));
-
-	shaded = *color;
-
-	if (shade != 1)
-	{
-		ge_shade_color(color, shade, &shaded);
-	}
-
-	cairo_pattern_add_color_stop_rgba(pattern, offset, shaded.r, shaded.g, shaded.b, shaded.a);	
-}
-
 typedef struct 
 {
 	cairo_path_t *clip;
@@ -75,74 +50,6 @@ typedef struct
 	gint num_layers;
 	cairo_pattern_t **layers;
 } GlideFill;
-
-void glide_draw_pattern_fill(cairo_t *canvas,
-					CairoPattern *pattern,
-					gint x,
-					gint y,
-					gint width,
-					gint height)
-{
-	cairo_matrix_t original_matrix, current_matrix;
-
-	if (pattern->operator == CAIRO_OPERATOR_DEST)
-	{
-		return;
-	}
-
-	cairo_pattern_get_matrix(pattern->handle, &original_matrix);
-	current_matrix = original_matrix;
-
-	if (pattern->scale != GLIDE_DIRECTION_NONE)
-	{
-		gdouble scale_x = 1.0;
-		gdouble scale_y = 1.0;
-
-		if ((pattern->scale == GLIDE_DIRECTION_VERTICAL) || (pattern->scale == GLIDE_DIRECTION_BOTH))
-		{
-			scale_x = 1.0/width;
-		}
-
-		if ((pattern->scale == GLIDE_DIRECTION_HORIZONTAL) || (pattern->scale == GLIDE_DIRECTION_BOTH))
-		{
-			scale_y = 1.0/height;
-		}
-
-		cairo_matrix_scale(&current_matrix, scale_x, scale_y);
-	}
-
-	if (pattern->translate != GLIDE_DIRECTION_NONE)
-	{
-		gdouble translate_x = 0;
-		gdouble translate_y = 0;
-
-		if ((pattern->translate == GLIDE_DIRECTION_VERTICAL) || (pattern->translate == GLIDE_DIRECTION_BOTH))
-		{
-			translate_x = 0.0-x;
-		}
-
-		if ((pattern->translate == GLIDE_DIRECTION_HORIZONTAL) || (pattern->translate == GLIDE_DIRECTION_BOTH))
-		{
-			translate_y = 0.0-y;
-		}
-
-		cairo_matrix_translate(&current_matrix, translate_x, translate_y);
-	}
-
-	cairo_pattern_set_matrix(pattern->handle, &current_matrix);
-
-	cairo_save(canvas);
-
-	cairo_set_source(canvas, pattern->handle);
-        cairo_set_operator(canvas, pattern->operator);
-	cairo_rectangle(canvas, x, y, width, height);
-
-	cairo_fill (canvas);
-
-	cairo_restore(canvas);
-
-	cairo_pattern_set_matrix(pattern->handle, &original_matrix);
-}
 
 static void 
 glide_simple_border_gap_clip(cairo_t *canvas,

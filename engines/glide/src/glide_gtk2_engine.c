@@ -87,85 +87,6 @@ glide_rc_style_register_type (GTypeModule * module)
 GType glide_type_style = 0;
 GtkStyleClass *glide_parent_class;
 
-static void glide_simple_color_pattern(CairoColor *base, CairoPattern *pattern)
-{	
-	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-		pattern->type = CAIRO_PATTERN_TYPE_SOLID;
-	#endif
-
-	pattern->scale = GLIDE_DIRECTION_NONE;
-	pattern->translate = GLIDE_DIRECTION_NONE;
-
-	pattern->handle = cairo_pattern_create_rgba(base->r, base->g, base->b, base->a);
-
-	pattern->operator = CAIRO_OPERATOR_SOURCE;
-}
-
-static void glide_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
-{	
-	cairo_t *cr;
-	cairo_surface_t * surface;
-	GdkPixbuf * pixbuf;
-	gint width, height;
-
-	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-		pattern->type = CAIRO_PATTERN_TYPE_SURFACE;
-	#endif
-
-	pattern->scale = GLIDE_DIRECTION_NONE;
-	pattern->translate = GLIDE_DIRECTION_BOTH;
-
-	gdk_drawable_get_size (GDK_DRAWABLE (pixmap), &width, &height);
-
-	pixbuf = gdk_pixbuf_get_from_drawable(NULL, GDK_DRAWABLE (pixmap), 
-				gdk_drawable_get_colormap(GDK_DRAWABLE (pixmap)), 
-				0, 0, 0, 0, width, height);
-
-	surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-
-	cr = cairo_create(surface);
-
-	gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
-	cairo_rectangle (cr, 0, 0, width, height);
-	cairo_fill (cr);
-	cairo_destroy(cr);
-	g_object_unref (pixbuf);
-
-	pattern->handle = cairo_pattern_create_for_surface (surface);
-	cairo_surface_destroy(surface);
-
-	cairo_pattern_set_extend (pattern->handle, CAIRO_EXTEND_REPEAT);
-
-	pattern->operator = CAIRO_OPERATOR_SOURCE;
-}
-
-static void
-glide_simple_linear_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdouble shade2, gboolean vertical, CairoPattern *pattern)
-{
-	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-		pattern->type = CAIRO_PATTERN_TYPE_LINEAR;
-	#endif
-
-	if (vertical)
-	{
-		pattern->scale = GLIDE_DIRECTION_VERTICAL;
-
-		pattern->handle = cairo_pattern_create_linear(0, 0, 1, 0);
-	}
-	else
-	{
-		pattern->scale = GLIDE_DIRECTION_HORIZONTAL;
-
-		pattern->handle = cairo_pattern_create_linear(0, 0, 0, 1);
-	}
-
-	pattern->translate = GLIDE_DIRECTION_BOTH;
-	pattern->operator = CAIRO_OPERATOR_SOURCE;
-
-	ge_cairo_pattern_add_shade_color_stop(pattern->handle, 0, base, shade1);
-	ge_cairo_pattern_add_shade_color_stop(pattern->handle, 1, base, shade2);
-}
-
 static void
 glide_linear_overlay_pattern(gboolean vertical, gboolean EVIL_OVERLAY, CairoPattern *pattern)
 {
@@ -175,18 +96,18 @@ glide_linear_overlay_pattern(gboolean vertical, gboolean EVIL_OVERLAY, CairoPatt
 
 	if (vertical)
 	{
-		pattern->scale = GLIDE_DIRECTION_VERTICAL;
+		pattern->scale = GE_DIRECTION_VERTICAL;
 
 		pattern->handle = cairo_pattern_create_linear(0, 0, 1, 0);
 	}
 	else
 	{
-		pattern->scale = GLIDE_DIRECTION_HORIZONTAL;
+		pattern->scale = GE_DIRECTION_HORIZONTAL;
 
 		pattern->handle = cairo_pattern_create_linear(0, 0, 0, 1);
 	}
 
-	pattern->translate = GLIDE_DIRECTION_BOTH;
+	pattern->translate = GE_DIRECTION_BOTH;
 
 	if (EVIL_OVERLAY)
 	{
@@ -237,27 +158,21 @@ glide_style_realize (GtkStyle * style)
 		ge_shade_color(&base, 1.2, &glide_style->color_cube.light[i]);
 		ge_blend_color(&glide_style->color_cube.dark[i], &glide_style->color_cube.light[i], &glide_style->color_cube.mid[i]);
 
-		glide_simple_color_pattern(&base, &glide_style->bg_solid[i]);
+		glide_style->bg_solid[i] = ge_cairo_color_pattern(&base);
 
-		glide_style->bg_image[i].handle = NULL;
+		glide_style->bg_image[i] = NULL;
 		if ((style->bg_pixmap[i]) && (style->bg_pixmap[i] != (GdkPixmap*) GDK_PARENT_RELATIVE))
 		{
-			glide_simple_pixmap_pattern(style->bg_pixmap[i], &glide_style->bg_image[i]);
+			glide_style->bg_image[i] = ge_cairo_pixmap_pattern(style->bg_pixmap[i]);
 		}
 
-		glide_simple_linear_shade_gradient_pattern(&base, 1.05, 0.95, FALSE, 
-				&glide_style->bg_gradient[0][i]);
-		glide_simple_linear_shade_gradient_pattern(&base, 1.05, 0.95, TRUE, 
-				&glide_style->bg_gradient[1][i]);
+		glide_style->bg_gradient[0][i] = ge_cairo_linear_shade_gradient_pattern(&base, 1.05, 0.95, FALSE);
+		glide_style->bg_gradient[1][i] = ge_cairo_linear_shade_gradient_pattern(&base, 1.05, 0.95, TRUE);
 
-		glide_simple_linear_shade_gradient_pattern(&base, 1.0, 0.95, TRUE, 
-				&glide_style->active_tab_gradient[GTK_POS_LEFT][i]);
-		glide_simple_linear_shade_gradient_pattern(&base, 1.05, 1.0, TRUE, 
-				&glide_style->active_tab_gradient[GTK_POS_RIGHT][i]);
-		glide_simple_linear_shade_gradient_pattern(&base, 1.0, 0.95, FALSE, 
-				&glide_style->active_tab_gradient[GTK_POS_TOP][i]);
-		glide_simple_linear_shade_gradient_pattern(&base, 1.05, 1.0, FALSE, 
-				&glide_style->active_tab_gradient[GTK_POS_BOTTOM][i]);
+		glide_style->active_tab_gradient[GTK_POS_LEFT][i] = ge_cairo_linear_shade_gradient_pattern(&base, 1.0, 0.95, TRUE);
+		glide_style->active_tab_gradient[GTK_POS_RIGHT][i] = ge_cairo_linear_shade_gradient_pattern(&base, 1.05, 1.0, TRUE);
+		glide_style->active_tab_gradient[GTK_POS_TOP][i] = ge_cairo_linear_shade_gradient_pattern(&base, 1.0, 0.95, FALSE);
+		glide_style->active_tab_gradient[GTK_POS_BOTTOM][i] = ge_cairo_linear_shade_gradient_pattern(&base, 1.05, 1.0, FALSE);
 	}
 }
 
@@ -274,20 +189,17 @@ glide_style_unrealize (GtkStyle * style)
 
 	for (i = 0; i < 5; i++)
 	{
-		cairo_pattern_destroy(glide_style->bg_solid[i].handle);
+		ge_cairo_pattern_destroy(glide_style->bg_solid[i]);
 
-		if (glide_style->bg_image[i].handle)
-		{
-			cairo_pattern_destroy(glide_style->bg_image[i].handle);
-		}
+		ge_cairo_pattern_destroy(glide_style->bg_image[i]);
 
-		cairo_pattern_destroy(glide_style->bg_gradient[FALSE][i].handle);
-		cairo_pattern_destroy(glide_style->bg_gradient[TRUE][i].handle);
+		ge_cairo_pattern_destroy(glide_style->bg_gradient[FALSE][i]);
+		ge_cairo_pattern_destroy(glide_style->bg_gradient[TRUE][i]);
 
-		cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_LEFT][i].handle);
-		cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_RIGHT][i].handle);
-		cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_TOP][i].handle);
-		cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_BOTTOM][i].handle);
+		ge_cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_LEFT][i]);
+		ge_cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_RIGHT][i]);
+		ge_cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_TOP][i]);
+		ge_cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_BOTTOM][i]);
 	}
  
 	glide_parent_class->unrealize (style);

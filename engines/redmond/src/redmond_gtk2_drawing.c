@@ -757,7 +757,7 @@ redmond_draw_combobox_button (GtkStyle * style,
 
        cr = ge_gdk_drawable_to_cairo (window, area);
  
-        do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+        ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 				          x, y + 2, width - 2, height - 4);
       cairo_destroy(cr);
 
@@ -856,7 +856,7 @@ redmond_draw_combobox_button (GtkStyle * style,
  
       cr = ge_gdk_drawable_to_cairo (window, area);
 
-      do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 				          x + 2, y + 2, width - 2, height - 4);
 
       cairo_destroy(cr);
@@ -922,7 +922,7 @@ redmond_draw_spinbutton_stepper (GtkStyle * style,
 			    &spin_area, widget, detail, x - 2, y,
 			    width + 2, height + 2);
           cr = ge_gdk_drawable_to_cairo (window, area);
-	  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
+	  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
 					      x, y + 2, width - 2, height - 2);
           cairo_destroy(cr);
 	  gtk_paint_shadow (style, window, state_type, shadow_type,
@@ -938,7 +938,7 @@ redmond_draw_spinbutton_stepper (GtkStyle * style,
 			    &spin_area, widget, detail, x - 2, y - 2,
 			    width + 2, height + 2);
           cr = ge_gdk_drawable_to_cairo (window, area);
-	  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+	  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 					      x, y, width - 2, height - 2);
           cairo_destroy(cr);
 	  gtk_paint_shadow (style, window, state_type, shadow_type,
@@ -957,7 +957,7 @@ redmond_draw_spinbutton_stepper (GtkStyle * style,
 			    &spin_area, widget, detail, x, y,
 			    width + 4, height + 2);
           cr = ge_gdk_drawable_to_cairo (window, area);
-	  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
+	  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
 					      x + 2, y + 2, width - 2, height - 2);
           cairo_destroy(cr);
 	  gtk_paint_shadow (style, window, state_type, shadow_type,
@@ -973,7 +973,7 @@ redmond_draw_spinbutton_stepper (GtkStyle * style,
 			    &spin_area, widget, detail, x, y - 2,
 			    width + 4, height + 2);
           cr = ge_gdk_drawable_to_cairo (window, area);
-	  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
+	  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
 					      x + 2, y, width - 2, height - 2);
           cairo_destroy(cr);
 	  gtk_paint_shadow (style, window, state_type, shadow_type,
@@ -1048,7 +1048,7 @@ redmond_draw_box (GtkStyle * style,
        */
       cr = ge_gdk_drawable_to_cairo (window, area);
 
-      do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                     x, y, width, height);
       if (GE_IS_HSCALE (widget))
 	{
@@ -1235,7 +1235,7 @@ redmond_draw_box (GtkStyle * style,
         }
   
       cr = ge_gdk_drawable_to_cairo (window, area);
-      do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 					  x, y, width, height);
  
       /* If this is a menu embedded in the gnome-panel, we don't
@@ -1275,7 +1275,7 @@ redmond_draw_box (GtkStyle * style,
  
       cr = ge_gdk_drawable_to_cairo (window, area);
 
-      do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 					  x, y, width, height);
 		 			  
       if ((!GE_IS_MENU(GTK_MENU_ITEM(widget)->submenu)) || 
@@ -1310,7 +1310,7 @@ redmond_draw_box (GtkStyle * style,
 	state_type = GTK_STATE_NORMAL;
 
       cr = ge_gdk_drawable_to_cairo (window, area);
-      do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, GTK_STATE_SELECTED),
+      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, GTK_STATE_SELECTED),
                                     x, y, width, height);
       cairo_destroy(cr);
     }
@@ -1347,7 +1347,7 @@ redmond_draw_box (GtkStyle * style,
 	  (pointer_y < (widget->allocation.y +
 	                widget->allocation.height)))
         {
-          do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+          ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                         x, y, width, height);
         }
       else 
@@ -1367,7 +1367,7 @@ redmond_draw_box (GtkStyle * style,
       /* default box apearance */
       cr = ge_gdk_drawable_to_cairo (window, area);
 
-      do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                     x, y, width,height);
       cairo_destroy(cr);
       redmond_draw_shadow (style, window, state_type, shadow_type, area,
@@ -1463,7 +1463,7 @@ redmond_draw_slider (GtkStyle * style,
   if ((CHECK_DETAIL (detail, "hscale")) || (CHECK_DETAIL (detail, "vscale")))
     {
       cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
-      do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                     x, y, width, height);
  
       cairo_destroy(cr);
@@ -1511,7 +1511,7 @@ redmond_draw_extension (GtkStyle * style,
   SANITIZE_SIZE
  
   cr = ge_gdk_drawable_to_cairo (window, area);
-  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, GTK_STATE_NORMAL),
+  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, GTK_STATE_NORMAL),
                                 x, y, width, height);
   switch (shadow_type)
     {
@@ -1553,7 +1553,7 @@ redmond_draw_extension (GtkStyle * style,
       switch (gap_side)
 	{
 	case GTK_POS_TOP:
-	  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+	  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                         x + style->xthickness, 
                                         y,
                                         width - (2 * style->xthickness),
@@ -1573,7 +1573,7 @@ redmond_draw_extension (GtkStyle * style,
 			 y + height - 2);
 	  break;
 	case GTK_POS_BOTTOM:
-	  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+	  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                         x + style->xthickness, 
                                         y + style->ythickness,
                                         width - (2 * style->xthickness),
@@ -1594,7 +1594,7 @@ redmond_draw_extension (GtkStyle * style,
 			 y + 1);
 	  break;
 	case GTK_POS_LEFT:
-	  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+	  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                         x,
                                         y + style->ythickness,
                                         width - (style->xthickness),
@@ -1613,7 +1613,7 @@ redmond_draw_extension (GtkStyle * style,
 			 y + height - 2);
 	  break;
 	case GTK_POS_RIGHT:
-	  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+	  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                         x + style->xthickness,
                                         y + style->ythickness,
                                         width - (style->xthickness),
@@ -1677,7 +1677,7 @@ redmond_draw_handle (GtkStyle * style,
   }
   
   cr = ge_gdk_drawable_to_cairo (window, area);
-  do_redmond_draw_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
+  ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type), 
                                 x, y, width, height);
  
   if (widget && !(GE_IS_PANED (widget)))

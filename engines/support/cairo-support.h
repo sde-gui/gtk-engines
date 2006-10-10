@@ -57,6 +57,41 @@ typedef enum
 	CR_MIRROR_VERTICAL   = 1 << 1
 } CairoMirror;
 
+/*****************************/
+/* Pattern Fills             */
+/*****************************/
+typedef enum {
+	GE_DIRECTION_VERTICAL,
+	GE_DIRECTION_HORIZONTAL,
+	GE_DIRECTION_BOTH,
+	GE_DIRECTION_NONE
+} GeDirection;
+
+#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+typedef enum _cairo_pattern_type {
+    CAIRO_PATTERN_TYPE_SOLID,
+    CAIRO_PATTERN_TYPE_SURFACE,
+    CAIRO_PATTERN_TYPE_LINEAR,
+    CAIRO_PATTERN_TYPE_RADIAL
+} cairo_pattern_type_t;
+
+#	define CAIRO_PATTERN_TYPE(pattern) pattern->type;
+#else
+#	define CAIRO_PATTERN_TYPE(pattern) cairo_pattern_get_type (pattern->handle);
+#endif
+
+typedef struct
+{
+#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+	cairo_pattern_type_t type;
+#endif
+	GeDirection scale;
+	GeDirection translate;
+
+	cairo_pattern_t *handle;
+	cairo_operator_t operator;
+} CairoPattern;
+
 GE_INTERNAL void ge_hsb_from_color (const CairoColor *color, gdouble *hue, gdouble *saturation, gdouble *brightness);
 GE_INTERNAL void ge_color_from_hsb (gdouble hue, gdouble saturation, gdouble brightness, CairoColor *color);
 
@@ -70,6 +105,7 @@ GE_INTERNAL void ge_saturate_color (const CairoColor * base, gdouble saturate_le
 GE_INTERNAL cairo_t * ge_gdk_drawable_to_cairo (GdkDrawable  *window, GdkRectangle *area);
 GE_INTERNAL void ge_cairo_set_color (cairo_t *cr, CairoColor *color);
 GE_INTERNAL void ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, gfloat offset, CairoColor *color);
+GE_INTERNAL void ge_cairo_pattern_add_color_stop_shade(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade);
 
 GE_INTERNAL void ge_cairo_rounded_rectangle (cairo_t *cr, double x, double y, double w, double h, double radius, CairoCorners corners);
 
@@ -80,3 +116,11 @@ GE_INTERNAL void ge_cairo_line (cairo_t *cr, CairoColor *color, gint x1, gint y1
 GE_INTERNAL void ge_cairo_polygon (cairo_t *cr, CairoColor *color, GdkPoint *points, gint npoints);
 
 GE_INTERNAL void ge_cairo_mirror (cairo_t *cr, CairoMirror mirror, gint *x, gint *y, gint *width, gint *height);
+
+GE_INTERNAL void ge_cairo_pattern_fill(cairo_t *canvas, CairoPattern *pattern, gint x, gint y, gint width, gint height);
+
+GE_INTERNAL CairoPattern *ge_cairo_color_pattern(CairoColor *base);
+GE_INTERNAL CairoPattern *ge_cairo_pixbuf_pattern(GdkPixbuf *pixbuf);
+GE_INTERNAL CairoPattern *ge_cairo_pixmap_pattern(GdkPixmap *pixmap);
+GE_INTERNAL CairoPattern *ge_cairo_linear_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdouble shade2, gboolean vertical);
+GE_INTERNAL void ge_cairo_pattern_destroy(CairoPattern *pattern);

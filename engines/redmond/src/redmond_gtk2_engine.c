@@ -71,54 +71,14 @@ redmond_rc_style_register_type (GTypeModule * module)
 GType redmond_type_style = 0;
 static GtkStyleClass *redmond_style_parent_class;
 
-static void redmond_simple_color_pattern(CairoColor *base, CairoPattern *pattern)
-{	
-	pattern->scale = REDMOND_DIRECTION_NONE;
-	pattern->translate = REDMOND_DIRECTION_NONE;
-
-	pattern->handle = cairo_pattern_create_rgba(base->r, base->g, base->b, base->a);
-}
-
-static void redmond_simple_pixmap_pattern(GdkPixmap *pixmap, CairoPattern *pattern)
-{	
-	cairo_t *cr;
-	cairo_surface_t * surface;
-	GdkPixbuf * pixbuf;
-	gint width, height;
-
-	pattern->scale = REDMOND_DIRECTION_NONE;
-	pattern->translate = REDMOND_DIRECTION_BOTH;
-
-	gdk_drawable_get_size (GDK_DRAWABLE (pixmap), &width, &height);
-
-	pixbuf = gdk_pixbuf_get_from_drawable(NULL, GDK_DRAWABLE (pixmap), 
-				gdk_drawable_get_colormap(GDK_DRAWABLE (pixmap)), 
-				0, 0, 0, 0, width, height);
-
-	surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-
-	cr = cairo_create(surface);
-
-	gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
-	cairo_rectangle (cr, 0, 0, width, height);
-	cairo_fill (cr);
-	cairo_destroy(cr);
-	g_object_unref (pixbuf);
-
-	pattern->handle = cairo_pattern_create_for_surface (surface);
-	cairo_surface_destroy(surface);
-
-	cairo_pattern_set_extend (pattern->handle, CAIRO_EXTEND_REPEAT);
-}
-
 static void
 redmond_simple_hatch_mask_pattern(CairoPattern *pattern)
 {
 	cairo_t * cr;
 	cairo_surface_t *surface;
 
-	pattern->scale = REDMOND_DIRECTION_NONE;
-	pattern->translate = REDMOND_DIRECTION_NONE;
+	pattern->scale = GE_DIRECTION_NONE;
+	pattern->translate = GE_DIRECTION_NONE;
 
 	surface = cairo_image_surface_create(CAIRO_FORMAT_A8, 2, 2);
 
@@ -159,13 +119,13 @@ redmond_style_realize (GtkStyle * style)
     { 
       ge_shade_color(&(redmond_style->color_cube.bg[i]), 0.3, &(redmond_style->black_border[i]));
 
-      redmond_simple_color_pattern(&(redmond_style->color_cube.bg[i]), &redmond_style->bg_color[i]);
+      redmond_style->bg_color[i] = ge_cairo_color_pattern(&(redmond_style->color_cube.bg[i]));
 
-      redmond_style->bg_image[i].handle = NULL;
+      redmond_style->bg_image[i] = NULL;
 
       if ((style->bg_pixmap[i]) && (style->bg_pixmap[i] != (GdkPixmap*) GDK_PARENT_RELATIVE))
       {
-        redmond_simple_pixmap_pattern(style->bg_pixmap[i], &redmond_style->bg_image[i]);
+        redmond_style->bg_image[i] = ge_cairo_pixmap_pattern(style->bg_pixmap[i]);
       }
     }
 }
@@ -180,12 +140,8 @@ redmond_style_unrealize (GtkStyle * style)
 
 	for (i = 0; i < 5; i++)
 	{
-		cairo_pattern_destroy(redmond_style->bg_color[i].handle);
-
-		if (redmond_style->bg_image[i].handle)
-		{
-			cairo_pattern_destroy(redmond_style->bg_image[i].handle);
-		}
+		ge_cairo_pattern_destroy(redmond_style->bg_color[i]);
+		ge_cairo_pattern_destroy(redmond_style->bg_image[i]);
         }
 
   redmond_style_parent_class->unrealize (style);

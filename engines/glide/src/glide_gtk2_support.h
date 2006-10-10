@@ -24,16 +24,6 @@
 GE_INTERNAL void
 ge_blend_color(const CairoColor *color1, const CairoColor *color2, CairoColor *composite);
 
-GE_INTERNAL void ge_cairo_pattern_add_shade_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color, gdouble shade);
-GE_INTERNAL void ge_cairo_pattern_add_color_stop(cairo_pattern_t *pattern, gdouble offset, CairoColor *color);
-
-GE_INTERNAL void glide_draw_pattern_fill(cairo_t *canvas,
-					CairoPattern *pattern,
-					gint x,
-					gint y,
-					gint width,
-					gint height);
-
 typedef enum {
 	GLIDE_BEVEL_STYLE_SMOOTH = 1,
 
