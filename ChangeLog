@@ -1,5 +1,11 @@
 2006-10-10  Andrew Johnson  <acjgenius@earthlink.net>
 
+	* engines/mist/src/mist-style.c: 
+	- Merge Tab function into Extension
+	- Replace common return if.... with CHECK_ARGS macro
+
+2006-10-10  Andrew Johnson  <acjgenius@earthlink.net>
+
 	* engines/glide/src/glide_gtk2_drawing.c: 
 	* engines/glide/src/glide_gtk2_engine.c:
 	* engines/glide/src/glide_gtk2_engine.h:
