@@ -408,8 +408,16 @@ ge_cairo_simple_border (cairo_t *cr,
 		cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
 		cairo_line_to(cr, x + width - 0.5, y + 0.5);
 #else
-		cairo_rectangle (cr, x, y + height - 1, width, 1);
-		cairo_rectangle (cr, x + width - 1, y, 1, height - 1);
+		if (solid_color)
+		{
+			cairo_rectangle (cr, x + 1, y + height - 1, width - 1, 1);
+			cairo_rectangle (cr, x + width - 1, y + 1, 1, height - 2);
+		}
+		else
+		{
+			cairo_rectangle (cr, x, y + height - 1, width, 1);
+			cairo_rectangle (cr, x + width - 1, y, 1, height - 1);
+		}
 #endif
 	}
 
