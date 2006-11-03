@@ -219,9 +219,11 @@ smooth_parent_fill_background(SmoothCanvas Canvas,
 	SmoothRectangle area;
 			
 	if ((widget) && (widget->parent)) {
-		parent_style = widget->parent->style;
-		parent_state = widget->parent->state;
-		
+		if ((SMOOTH_IS_STYLE(widget->parent->style)) && (SMOOTH_IS_RC_STYLE(widget->parent->style->rc_style)))
+		  {
+		    parent_style = widget->parent->style;
+		    parent_state = widget->parent->state;
+		  }
 		parent_x = -widget->allocation.x;
 		parent_y = -widget->allocation.y;
 		parent_width = widget->parent->allocation.width;
@@ -682,8 +684,11 @@ smooth_draw_button_default(SmoothCanvas Canvas,
 			GtkStateType parent_state = GTK_STATE_NORMAL;
 			
 			if ((widget) && (widget->parent)) {
-				parent_style = widget->parent->style;
-				parent_state = widget->parent->state;
+				if ((SMOOTH_IS_STYLE(widget->parent->style)) && (SMOOTH_IS_RC_STYLE(widget->parent->style->rc_style)))
+				 {
+  				  parent_style = widget->parent->style;
+				  parent_state = widget->parent->state;
+				 }
 			}
 
 			if (!part) part = THEME_PART(BACKGROUND_PART(style));

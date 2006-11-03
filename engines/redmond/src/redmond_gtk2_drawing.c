@@ -1047,7 +1047,7 @@ redmond_draw_box (GtkStyle * style,
        */
       cr = ge_gdk_drawable_to_cairo (window, area);
 
-      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
+      ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, GTK_STATE_NORMAL),
                                     x, y, width, height);
       if (GE_IS_HSCALE (widget))
 	{

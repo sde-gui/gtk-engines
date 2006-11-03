@@ -1253,8 +1253,11 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
                 {
                   gtk_widget_ensure_style(widget->parent);
 
-                  parent_style = widget->parent->style;
-                  parent_state = widget->parent->state;
+                  if ((SMOOTH_IS_STYLE(widget->parent->style)) && (SMOOTH_IS_RC_STYLE(widget->parent->style->rc_style)))
+                    {
+                      parent_style = widget->parent->style;
+                      parent_state = widget->parent->state;
+                    }
                 }
 
 	      if (parent_state != GTK_STATE_INSENSITIVE)
@@ -1290,8 +1293,11 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
 
-               parent_style = entry->style;
-               parent_state = entry->state;
+               if ((SMOOTH_IS_STYLE(entry->style)) && (SMOOTH_IS_RC_STYLE(entry->style->rc_style)))
+                 {
+                   parent_style = entry->style;
+                   parent_state = entry->state;
+                 }
             }
  
 	  if (parent_state != GTK_STATE_INSENSITIVE)
@@ -1319,8 +1325,11 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
             {
               gtk_widget_ensure_style(parent);
 
-              parent_style = parent->style;
-              parent_state = parent->state;
+              if ((SMOOTH_IS_STYLE(parent->style)) && (SMOOTH_IS_RC_STYLE(parent->style->rc_style)))
+                {
+                  parent_style = parent->style;
+                  parent_state = parent->state;
+                }
             }
 
           if (parent_state != GTK_STATE_INSENSITIVE)
@@ -1363,8 +1372,11 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
                 {
                   gtk_widget_ensure_style(widget->parent);
 
-                  parent_style = widget->parent->style;
-                  parent_state = widget->parent->state;
+                  if ((SMOOTH_IS_STYLE(widget->parent->style)) && (SMOOTH_IS_RC_STYLE(widget->parent->style->rc_style)))
+                  {
+                    parent_style = widget->parent->style;
+                    parent_state = widget->parent->state;
+                  }
                 }
 
               if (parent_state != GTK_STATE_INSENSITIVE)
@@ -1397,8 +1409,11 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
 
-               parent_style = entry->style;
-               parent_state = entry->state;
+               if ((SMOOTH_IS_STYLE(entry->style)) && (SMOOTH_IS_RC_STYLE(entry->style->rc_style)))
+                 {
+                   parent_style = entry->style;
+                   parent_state = entry->state;
+                 }
             }
   
            if (parent_state != GTK_STATE_INSENSITIVE)
@@ -1423,8 +1438,11 @@ smooth_draw_combobox_button (SmoothCanvas Canvas,
             {
               gtk_widget_ensure_style(parent);
 
-              parent_style = parent->style;
-              parent_state = parent->state;
+              if ((SMOOTH_IS_STYLE(parent->style)) && (SMOOTH_IS_RC_STYLE(parent->style->rc_style)))
+                {
+                  parent_style = parent->style;
+                  parent_state = parent->state;
+                }
             }
 
           if (parent_state != GTK_STATE_INSENSITIVE)
@@ -2280,7 +2298,9 @@ smooth_draw_extension(GtkStyle * style,
 		if (widget->state == GTK_STATE_INSENSITIVE)
 			state_type = GTK_STATE_INSENSITIVE;
 		
-		if (widget->parent) {
+		if ((widget->parent) && (SMOOTH_IS_STYLE(widget->parent->style)) 
+			&& (SMOOTH_IS_RC_STYLE(widget->parent->style->rc_style)))
+		{
 			parent_style = widget->parent->style;
 			parent_state = widget->parent->state;
 		}
@@ -2544,7 +2564,9 @@ smooth_draw_button_default(SmoothCanvas Canvas,
 			GtkStyle *parent_style = style;
 			GtkStateType parent_state = GTK_STATE_NORMAL;
 			
-			if ((widget) && (widget->parent)) {
+			if ((widget) && (widget->parent) 
+				&& (SMOOTH_IS_STYLE(widget->parent->style)) 
+				&& (SMOOTH_IS_RC_STYLE(widget->parent->style->rc_style))) {
 				parent_style = widget->parent->style;
 				parent_state = widget->parent->state;
 			}
