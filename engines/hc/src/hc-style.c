@@ -46,7 +46,7 @@ hc_draw_shadow(GtkStyle * style,
 	       gint height)
 {
 	/* Border Uses Foreground Color */
-	CairoColor *foreground = &HC_STYLE(style)->color_cube.fg[state_type];
+	CairoColor foreground = HC_STYLE(style)->color_cube.fg[state_type];
 
 	gint line_width;
 	gint clip_x = x, clip_y = y, clip_width = width, clip_height = height;
@@ -97,10 +97,9 @@ hc_draw_shadow(GtkStyle * style,
 		}
 
 		/* Force Border To Use Foreground Widget State */
-		if ((widget) && (widget->parent))
+		if (widget)
 		{
-	               	gtk_widget_ensure_style(widget);
-			foreground = &HC_STYLE(widget->style)->color_cube.fg[widget->state];
+			foreground = HC_STYLE(style)->color_cube.fg[widget->state];
 		}
 	}
 
@@ -108,9 +107,7 @@ hc_draw_shadow(GtkStyle * style,
 	/* Entry - Force Border To Use Foreground Matching Widget State */
 	if (CHECK_DETAIL(detail, "entry") && !ge_is_combo(widget))
 	{
-               	gtk_widget_ensure_style(widget);
-
-		foreground = &HC_STYLE(style)->color_cube.fg[widget ? widget->state : GTK_STATE_NORMAL];
+		foreground = HC_STYLE(style)->color_cube.fg[widget ? widget->state : GTK_STATE_NORMAL];
 	}
 
 
@@ -132,8 +129,8 @@ hc_draw_shadow(GtkStyle * style,
 		/* Force Border To Use Foreground Matching Parent State */
 		if ((widget) && (widget->parent))
 		{
-	               	gtk_widget_ensure_style(widget->parent);
-			foreground = &HC_STYLE(widget->parent->style)->color_cube.fg[widget->parent->state];
+			gtk_widget_ensure_style(widget->parent);
+			ge_gdk_color_to_cairo(&widget->parent->style->fg[GTK_WIDGET_STATE(widget)], &foreground);
 		}
 	}
 
@@ -148,7 +145,7 @@ hc_draw_shadow(GtkStyle * style,
 	cairo_clip(canvas);
 
 	/* Set Line Style */
-	ge_cairo_set_color(canvas, foreground);
+	ge_cairo_set_color(canvas, &foreground);
 	cairo_set_line_cap(canvas, CAIRO_LINE_CAP_BUTT);
 
 	/* Pixel Alignedness -

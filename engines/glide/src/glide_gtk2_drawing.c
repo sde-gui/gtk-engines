@@ -760,7 +760,7 @@ glide_draw_combobox_button (GtkStyle * style,
  
             parent_state = GTK_STATE_NORMAL;
 
-          glide_draw_flat_box (parent_style, window, parent_state,
+          gtk_paint_flat_box (parent_style, window, parent_state,
 	 		      GTK_SHADOW_NONE, area, entry, "entry_bg", x - 2,
 			      y, width + 2, height);
 
@@ -778,7 +778,7 @@ glide_draw_combobox_button (GtkStyle * style,
             else
               clip = shadow;
 
-            glide_draw_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+            gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 	 	              &clip, entry, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
           }
@@ -801,10 +801,10 @@ glide_draw_combobox_button (GtkStyle * style,
           if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
-          glide_draw_flat_box (parent_style, window, parent_state,
+          gtk_paint_flat_box (parent_style, window, parent_state,
 			      GTK_SHADOW_NONE, area, parent, "entry_bg", x - 2,
 			      y, width + 2, height);
-          glide_draw_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+          gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 		   	    area, parent, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
@@ -899,11 +899,11 @@ glide_draw_combobox_button (GtkStyle * style,
            if (parent_state != GTK_STATE_INSENSITIVE)
              parent_state = GTK_STATE_NORMAL;
 
-           glide_draw_flat_box (parent_style, window, parent_state,
+           gtk_paint_flat_box (parent_style, window, parent_state,
 			       GTK_SHADOW_NONE, area, entry, "entry_bg", 
 				x + focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-           glide_draw_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+           gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 			     area, entry, "combo_box_entry", 
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
@@ -926,11 +926,11 @@ glide_draw_combobox_button (GtkStyle * style,
           if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
-          glide_draw_flat_box (parent_style, window, parent_state,
+          gtk_paint_flat_box (parent_style, window, parent_state,
 			      GTK_SHADOW_NONE, area, parent, "entry_bg", 
 				x + focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-          glide_draw_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
+          gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 		   	    area, parent, "combo_box_entry", 
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);

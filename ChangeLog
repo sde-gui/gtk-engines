@@ -1,3 +1,12 @@
+2006-11-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/glide/src/glide_gtk2_drawing.c:
+	(glide_draw_combobox_button):
+	* engines/hc/src/hc-style.c: (hc_draw_shadow):
+	- Fix bug 352602 for glide and hc. hc now doesn't use cached colors
+	but recalculates them from the GtkStyle. glide called internal drawing
+	functions that I replaced with their gtk_paint_* equivalent.
+
 2006-10-10  Andrew Johnson  <acjgenius@earthlink.net>
 
 	* engines/mist/src/mist-style.c: 
