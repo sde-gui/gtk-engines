@@ -269,20 +269,21 @@ mist_style_draw_shadow(GtkStyle *style,
 
 	shadow_type = mist_get_shadow_type (style, detail, shadow_type);
 
+	if (shadow_type == GTK_SHADOW_NONE)
+		return;
+
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
-	if (state_type == GTK_STATE_INSENSITIVE && shadow_type != GTK_SHADOW_NONE) {
+	if (state_type == GTK_STATE_INSENSITIVE) {
 		shadow_type = GTK_SHADOW_ETCHED_IN;
 	}
 	
 	if (CHECK_DETAIL(detail, "frame") && widget && widget->parent && GE_IS_STATUSBAR (widget->parent)) {
-		if (shadow_type != GTK_SHADOW_NONE) {
-			ge_cairo_set_color(cr, &mist_style->color_cube.dark[GTK_STATE_NORMAL]);	
-	
-			cairo_move_to (cr, x + 0.5, y + 0.5);
-			cairo_line_to (cr, x + width - 0.5, y + 0.5);
-			cairo_stroke (cr);
-		}
+		ge_cairo_set_color(cr, &mist_style->color_cube.dark[GTK_STATE_NORMAL]);	
+
+		cairo_move_to (cr, x + 0.5, y + 0.5);
+		cairo_line_to (cr, x + width - 0.5, y + 0.5);
+		cairo_stroke (cr);
 	} else {
 		mist_draw_border (style, cr, state_type,
 				       shadow_type,x, y, width, height);
@@ -675,25 +676,27 @@ mist_style_draw_check(GtkStyle *style,
 #define gray50_width 2
 #define gray50_height 2
 		GdkBitmap *stipple;
+		GdkGC *gc = style->base_gc[GTK_STATE_SELECTED];
 		static const char gray50_bits[] = {
 			0x02, 0x01
 		};
-		
+
 		stipple = gdk_bitmap_create_from_data (window,
 						       gray50_bits, 
 						       gray50_width,
 						       gray50_height);
   
-		gdk_gc_set_fill (widget->style->base_gc[GTK_STATE_SELECTED],
-				 GDK_STIPPLED);
-		gdk_gc_set_stipple (widget->style->base_gc[GTK_STATE_SELECTED],
-				    stipple);
-		gdk_draw_rectangle(window,
-				   widget->style->base_gc[GTK_STATE_SELECTED],
-				   TRUE, x + 2, y + 2, width - 5, height - 5);
-		gdk_gc_set_fill (widget->style->base_gc[GTK_STATE_SELECTED],
-				 GDK_SOLID);
+		if (area)
+			gdk_gc_set_clip_rectangle (gc, area);
 
+		gdk_gc_set_fill (gc, GDK_STIPPLED);
+		gdk_gc_set_stipple (gc, stipple);
+		gdk_draw_rectangle(window, gc,
+				   TRUE, x + 2, y + 2, width - 5, height - 5);
+		gdk_gc_set_fill (gc, GDK_SOLID);
+
+		if (area)
+			gdk_gc_set_clip_rectangle (gc, NULL);
 #undef gray50_width
 #undef gray50_height 
 	}
