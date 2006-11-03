@@ -787,8 +787,7 @@ redmond_draw_combobox_button (GtkStyle * style,
                 parent_state = GTK_STATE_NORMAL;
 
 	      gdk_draw_rectangle (window,
-		  	          widget->parent->style->
-			          base_gc[GTK_WIDGET_STATE (widget->parent)],
+		  	          parent_style->base_gc[parent_state],
 			          TRUE, x + 2, y, width + 2, height);
             }
           else
@@ -1666,7 +1665,8 @@ redmond_draw_handle (GtkStyle * style,
   
   if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
      (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) && 
-      orientation == (GTK_ORIENTATION_HORIZONTAL))
+     (orientation == (GTK_ORIENTATION_HORIZONTAL)) &&
+     (widget->parent != NULL))
   {
     x = widget->parent->allocation.width - widget->allocation.width;
     y = widget->parent->allocation.height - widget->allocation.height;

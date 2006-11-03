@@ -1,5 +1,11 @@
 2006-11-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	(redmond_draw_combobox_button), (redmond_draw_handle):
+	- Fix some broken parent accesses.
+
+2006-11-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/glide/src/glide_gtk2_drawing.c:
 	(glide_draw_combobox_button):
 	* engines/hc/src/hc-style.c: (hc_draw_shadow):
