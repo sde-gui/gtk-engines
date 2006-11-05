@@ -35,5 +35,9 @@ GE_INTERNAL void thinice_arrow (cairo_t *canvas,
 			gint width, 
 			gint height);
 
-GE_INTERNAL void thinice_draw_separator(cairo_t *cr, gboolean horizontal,
-                           int x, int y, int width, int height);
+GE_INTERNAL
+void thinice_draw_separator(cairo_t *cr,
+                            CairoColor *dark,
+                            CairoColor *light,
+                            gboolean horizontal,
+                            int x, int y, int width, int height);

@@ -47,10 +47,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	GdkColor *gcolor;
 	
 	if (widget == NULL)
-	{
-		color->r = color->g = color->b = 255;
 		return;
-	}
 	
 	parent = widget->parent;
 	
@@ -58,7 +55,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 		parent = parent->parent;
 
 	if (parent == NULL)
-		parent = widget;
+		return;
 	
 	state_type = GTK_WIDGET_STATE (parent);
 	

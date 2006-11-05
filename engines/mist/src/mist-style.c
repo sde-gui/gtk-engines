@@ -801,6 +801,8 @@ mist_style_draw_shadow_gap(GtkStyle *style,
 
 	switch (shadow_type) {
 	case GTK_SHADOW_NONE:
+		/* need to destroy the cairo context. */
+		cairo_destroy (cr);
 		return;
 	case GTK_SHADOW_IN:
 		color1 = &mist_style->color_cube.dark[state_type];

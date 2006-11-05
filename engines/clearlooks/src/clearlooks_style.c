@@ -61,8 +61,8 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 		
 	/* I want to avoid to have to do this. I need it for GtkEntry, unless I
 	   find out why it doesn't behave the way I expect it to. */
-	if (widget)
-		clearlooks_get_parent_bg (widget, &params->parentbg);
+	params->parentbg = CLEARLOOKS_STYLE (style)->colors.bg[state_type];
+	clearlooks_get_parent_bg (widget, &params->parentbg);
 }
 
 static void

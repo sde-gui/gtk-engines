@@ -278,22 +278,28 @@ thinice_dot(cairo_t *cr,
 
 
 void
-thinice_draw_separator(cairo_t *cr, gboolean horizontal,
-                           int x, int y, int width, int height)
+thinice_draw_separator(cairo_t *cr,
+                       CairoColor *dark,
+                       CairoColor *light,
+                       gboolean horizontal,
+                       int x, int y, int width, int height)
 {
+	cairo_save (cr);
+	cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
+
 	if (horizontal)
 	{
 		cairo_set_line_width  (cr, 1.0);
 		cairo_translate       (cr, x, y+0.5);
 		
 		cairo_move_to         (cr, 0.0,     0.0);
-		cairo_line_to         (cr, width+1, 0.0);
-		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+		cairo_line_to         (cr, width, 0.0);
+		ge_cairo_set_color    (cr, dark);
 		cairo_stroke          (cr);
 		
 		cairo_move_to         (cr, 0.0,   1.0);
 		cairo_line_to         (cr, width, 1.0);
-		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
+		ge_cairo_set_color    (cr, light);
 		cairo_stroke          (cr);				
 	}
 	else
@@ -303,12 +309,13 @@ thinice_draw_separator(cairo_t *cr, gboolean horizontal,
 		
 		cairo_move_to         (cr, 0.0, 0.0);
 		cairo_line_to         (cr, 0.0, height);
-		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+		ge_cairo_set_color    (cr, dark);
 		cairo_stroke          (cr);
 		
 		cairo_move_to         (cr, 1.0, 0.0);
 		cairo_line_to         (cr, 1.0, height);
-		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
+		ge_cairo_set_color    (cr, light);
 		cairo_stroke          (cr);		
 	}
+	cairo_restore (cr);
 }

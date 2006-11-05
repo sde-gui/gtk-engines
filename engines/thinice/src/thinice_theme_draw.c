@@ -49,13 +49,18 @@ thinice_style_draw_hline(GtkStyle * style,
            gint x2,
            gint y)
 {
+	ThiniceStyle *thinice_style = THINICE_STYLE (style);
+	CairoColor *dark;
+        CairoColor *light;
 	cairo_t *cr;
 	
 	CHECK_ARGS
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
-	thinice_draw_separator(cr, TRUE, x1, y, x2-x1, 2);
+	dark = &thinice_style->color_cube.dark[state_type];
+	light = &thinice_style->color_cube.light[state_type];
+	thinice_draw_separator(cr, dark, light, TRUE, x1, y, x2-x1, 2);
 	cairo_destroy (cr);
 }
 
@@ -70,6 +75,9 @@ thinice_style_draw_vline(GtkStyle * style,
            gint y2,
            gint x)
 {
+	ThiniceStyle *thinice_style = THINICE_STYLE (style);
+	CairoColor *dark;
+	CairoColor *light;
 	cairo_t *cr;
 
 	CHECK_ARGS
@@ -79,7 +87,9 @@ thinice_style_draw_vline(GtkStyle * style,
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
-	thinice_draw_separator(cr, FALSE, x, y1, 2, y2-y1);
+	dark = &thinice_style->color_cube.dark[state_type];
+	light = &thinice_style->color_cube.light[state_type];
+	thinice_draw_separator(cr, dark, light, FALSE, x, y1, 2, y2-y1);
 
 	cairo_destroy (cr);
 }
@@ -632,6 +642,8 @@ thinice_style_draw_box(GtkStyle * style,
 	{
 		GtkRequisition indicator_size;
 		GtkBorder indicator_spacing;
+		CairoColor *dark;
+		CairoColor *light;
 		gint vline_x;
  
 		if (state_type != GTK_STATE_INSENSITIVE)
@@ -647,7 +659,11 @@ thinice_style_draw_box(GtkStyle * style,
 
 		canvas = ge_gdk_drawable_to_cairo (window, area);
 
-		thinice_draw_separator(canvas, FALSE, vline_x, y + style->ythickness + 1, style->xthickness, height - 2*style->ythickness - 2);
+		dark = &thinice_style->color_cube.dark[state_type];
+		light = &thinice_style->color_cube.light[state_type];
+		thinice_draw_separator(canvas, dark, light, FALSE,
+                                       vline_x, y + style->ythickness + 1,
+                                       style->xthickness, height - 2*style->ythickness - 2);
 
 		cairo_destroy(canvas);
  
