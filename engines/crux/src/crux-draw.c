@@ -479,7 +479,7 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 
 	#define OFFWHITE 238/255.0, 238/255.0, 238/255.0
 
-
+	/* bevel */
 	ge_gdk_color_to_cairo (&style->white, &br);
 	ge_gdk_color_to_cairo (&style->bg[state_type], &tl);
 	ge_shade_color (&tl, 1.2, &tl);
@@ -494,9 +494,9 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 	cairo_fill (cr);
 
 	if (orientation == GTK_ORIENTATION_HORIZONTAL)
-		cairo_rectangle (cr, x, y, width, height * 0.4);
+		cairo_rectangle (cr, x, y, width, height / 2 - 1);
 	else
-		cairo_rectangle (cr, x, y, width * 0.4, height);
+		cairo_rectangle (cr, x, y, width /2 - 1, height);
 
 	cairo_set_source_rgb (cr, OFFWHITE);
 	cairo_fill_preserve (cr);
@@ -506,9 +506,9 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 
 
 	if (orientation == GTK_ORIENTATION_HORIZONTAL)
-		cairo_rectangle (cr, x, y + height * 0.6, width, height * 0.4);
+		cairo_rectangle (cr, x, y + height / 2 + 1, width, height  / 2 -1);
 	else
-		cairo_rectangle (cr, x + width * 0.6, y, width * 0.4, height);
+		cairo_rectangle (cr, x + width / 2 + 1, y, width / 2 - 1, height);
 
 	cairo_set_source_rgb (cr, OFFWHITE);
 	cairo_fill_preserve (cr);
@@ -528,11 +528,14 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 	}
 
 
+	/* set co-ordinates for fill drawing */
+	x -= 0.5; y -= 0.5; width += 1.0; height += 1.0;
+
 	cairo_rectangle (cr, x, y, width, height);
-	cairo_pattern_add_color_stop_rgba (crp, 0.0, 0.0, 0.0, 0.0, 0.4);
+	cairo_pattern_add_color_stop_rgba (crp, 0.0, 0.0, 0.0, 0.0, 0.5);
 	cairo_pattern_add_color_stop_rgba (crp, gradient_size, 0.0, 0.0, 0.0, 0.0);
-	cairo_pattern_add_color_stop_rgba (crp, 1 - gradient_size, 0.0, 0.0, 0.0, 0.0);
-	cairo_pattern_add_color_stop_rgba (crp, 1.0, 0.0, 0.0, 0.0, 0.4);
+	cairo_pattern_add_color_stop_rgba (crp, 1.0 - gradient_size, 0.0, 0.0, 0.0, 0.0);
+	cairo_pattern_add_color_stop_rgba (crp, 1.0, 0.0, 0.0, 0.0, 0.5);
 
 	cairo_set_source (cr, crp);
 	cairo_fill (cr);

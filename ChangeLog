@@ -1,3 +1,9 @@
+2006-11-07  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (paint_scrollbar_trough): Improve
+	scollbar trough sharpness
+	* themes/Redmond/gtk-2.0/gtkrc: Set some "Redmond" style icon sizes
+
 2006-11-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
