@@ -1,3 +1,13 @@
+2006-11-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_flat_box):
+	- possible crash bug
+
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
+	(smooth_arrow_merge):
+	- fix a leak that happend when rc styles were merged
+
 2006-11-07  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (paint_scrollbar_trough): Improve

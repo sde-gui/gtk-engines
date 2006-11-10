@@ -2206,7 +2206,10 @@ smooth_arrow_merge (SmoothArrowPart *dest_arrow,
              SmoothArrowPart *src_arrow)
 {
   SmoothArrow dummy;
-     
+
+  if (dest_arrow->DefaultStyle)
+    g_free(dest_arrow->DefaultStyle);
+
   smooth_style_get_arrow(src_arrow, 0, 0, &dummy);
   memcpy(dest_arrow, src_arrow, sizeof(SmoothArrowPart));
   dest_arrow->Inherited = NULL;

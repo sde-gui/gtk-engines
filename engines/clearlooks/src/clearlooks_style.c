@@ -90,7 +90,7 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 
 		cairo_translate (cr, x, y);
 
-		if (GTK_WIDGET_HAS_FOCUS (widget))
+		if (widget && GTK_WIDGET_HAS_FOCUS (widget))
 		{
 			upper_color = colors->base[state_type];
 		}
