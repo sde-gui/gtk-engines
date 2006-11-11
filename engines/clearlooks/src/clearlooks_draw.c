@@ -329,8 +329,8 @@ clearlooks_draw_button (cairo_t *cr,
 
 	if (!params->active && params->is_default)
 	{
-		CairoColor *l = &colors->shade[4];
-		CairoColor *d = &colors->shade[4];
+		const CairoColor *l = &colors->shade[4];
+		const CairoColor *d = &colors->shade[4];
 		cairo_set_source_rgb(cr, l->r, l->g, l->b);
 		ge_cairo_stroke_rectangle (cr, 2.5, 2.5, width-5, height-5);
 
@@ -576,7 +576,7 @@ clearlooks_draw_slider (cairo_t *cr,
 {
 	const CairoColor	*border = &colors->shade[params->disabled ? 4 : 6];
 	const CairoColor	*spot = &colors->spot[1];
-	CairoColor          *fill = &colors->shade[2];
+	const CairoColor        *fill = &colors->shade[2];
 	
 
 	cairo_pattern_t *pattern;

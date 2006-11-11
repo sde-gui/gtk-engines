@@ -1,5 +1,13 @@
 2006-11-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button), (clearlooks_draw_slider):
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
+	(smooth_style_get_arrow):
+	- Fix a few minor warnings.
+
+2006-11-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/*:
 	- replace G_MODULE_EXPORT with GE_EXPORT
 	- removed GE_HIDDEN, not used

@@ -2342,7 +2342,7 @@ smooth_style_get_arrow(SmoothArrowPart *Part,
 				...
 			}
 	*/
-	SmoothArrowType type = SMOOTH_ARROW_TYPE_NONE;
+	SmoothArrowType type;
 
 	switch (ArrowType)
 	{
@@ -2360,6 +2360,10 @@ smooth_style_get_arrow(SmoothArrowPart *Part,
 		
 		case GTK_ARROW_RIGHT : 
 			type = SMOOTH_ARROW_TYPE_RIGHT;
+		break;
+		
+		default :
+			type = SMOOTH_ARROW_TYPE_NONE;
 		break;
 	}
 
