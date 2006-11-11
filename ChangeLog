@@ -1,5 +1,12 @@
 2006-11-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/support.c:
+	(clearlooks_scrollbar_get_stepper):
+	- don't use g_return_val_if_fail instead just return. It is not
+	critical if the widget is not a GtkRange.
+
+2006-11-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/smooth/src/engine/smooth_gtk2_misc.c:
 	(smooth_gtk_button_get_props):
 	- Fix smooth to compile with VC++

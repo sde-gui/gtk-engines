@@ -73,7 +73,8 @@ clearlooks_scrollbar_get_stepper (GtkWidget    *widget,
 	GdkRectangle check_rectangle;
 	GtkOrientation orientation;
 
-	g_return_val_if_fail (GE_IS_RANGE (widget), CL_STEPPER_UNKNOWN);
+	if (!GE_IS_RANGE (widget))
+		return CL_STEPPER_UNKNOWN;
 
 	check_rectangle.x      = widget->allocation.x;
 	check_rectangle.y      = widget->allocation.y;
