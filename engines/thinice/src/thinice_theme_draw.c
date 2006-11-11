@@ -12,13 +12,6 @@ Tomas Ögren <stric@ing.umu.se>
 #include "thinice_rc_style.h"
 #include "thinice_misc.h"
 
-#ifndef max
-#define max(x,y) ((x)>=(y)?(x):(y))
-#endif
-#ifndef min
-#define min(x,y) ((x)<=(y)?(x):(y))
-#endif
-
 #define DRAW_ARGS    GtkStyle       *style, \
                      GdkWindow      *window, \
                      GtkStateType    state_type, \
@@ -175,15 +168,8 @@ thinice_style_draw_polygon(GtkStyle * style,
              gint npoints,
              gint fill)
 {
-#ifndef M_PI
-#define M_PI    3.14159265358979323846
-#endif /* M_PI */
-#ifndef M_PI_4
-#define M_PI_4  0.78539816339744830962
-#endif /* M_PI_4 */
-
-  static const gdouble pi_over_4 = M_PI_4;
-  static const gdouble pi_3_over_4 = M_PI_4 * 3;
+  static const gdouble pi_over_4 = G_PI_4;
+  static const gdouble pi_3_over_4 = G_PI_4 * 3;
 
   ThiniceStyle *thinice_style = THINICE_STYLE (style);
 
@@ -785,21 +771,21 @@ thinice_style_draw_option(GtkStyle * style,
     {
     case GTK_SHADOW_ETCHED_IN:
       ge_cairo_set_color(cr, color2);
-      cairo_arc(cr, centerX + 1, centerY + 1, radius + 1, 0, 2 * M_PI);
+      cairo_arc(cr, centerX + 1, centerY + 1, radius + 1, 0, 2 * G_PI);
       cairo_stroke(cr);
 
       ge_cairo_set_color(cr, color1); 
-      cairo_arc(cr, centerX, centerY, radius + 1, 0, 2 * M_PI);
+      cairo_arc(cr, centerX, centerY, radius + 1, 0, 2 * G_PI);
       cairo_stroke(cr);
 
       break;
     case GTK_SHADOW_ETCHED_OUT:
       ge_cairo_set_color(cr, color1); 
-      cairo_arc(cr, centerX - 1, centerY - 1, radius + 1, 0, 2 * M_PI);
+      cairo_arc(cr, centerX - 1, centerY - 1, radius + 1, 0, 2 * G_PI);
       cairo_stroke(cr);
 
       ge_cairo_set_color(cr, color2);
-      cairo_arc(cr, centerX, centerY, radius + 1,  0, 2 * M_PI);
+      cairo_arc(cr, centerX, centerY, radius + 1,  0, 2 * G_PI);
       cairo_stroke(cr);
 
       break;
@@ -809,8 +795,8 @@ thinice_style_draw_option(GtkStyle * style,
       cairo_new_path (cr);
 
       cairo_move_to(cr, centerX + (radius + 2), centerY + (radius + 2));
-      cairo_line_to(cr, centerX + (radius + 2)*sin(M_PI/4.0), centerY - (radius + 2)*cos(M_PI/4.0));
-      cairo_line_to(cr, centerX - (radius + 2)*sin(M_PI/4.0), centerY + (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(cr, centerX + (radius + 2)*sin(G_PI/4.0), centerY - (radius + 2)*cos(G_PI/4.0));
+      cairo_line_to(cr, centerX - (radius + 2)*sin(G_PI/4.0), centerY + (radius + 2)*cos(G_PI/4.0));
       cairo_line_to(cr, centerX + (radius + 2), centerY + (radius + 2));
 
       cairo_close_path (cr);
@@ -819,7 +805,7 @@ thinice_style_draw_option(GtkStyle * style,
       cairo_clip (cr);
 
       ge_cairo_set_color(cr, color2);
-      cairo_arc(cr, centerX, centerY, radius + 1, 0,  2*M_PI);
+      cairo_arc(cr, centerX, centerY, radius + 1, 0,  2*G_PI);
       cairo_fill(cr);
 
       cairo_restore(cr);
@@ -827,8 +813,8 @@ thinice_style_draw_option(GtkStyle * style,
       cairo_new_path (cr);
 
       cairo_move_to(cr, centerX - (radius + 2), centerY - (radius + 2));
-      cairo_line_to(cr, centerX + (radius + 2)*sin(M_PI/4.0), centerY - (radius + 2)*cos(M_PI/4.0));
-      cairo_line_to(cr, centerX - (radius + 2)*sin(M_PI/4.0), centerY + (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(cr, centerX + (radius + 2)*sin(G_PI/4.0), centerY - (radius + 2)*cos(G_PI/4.0));
+      cairo_line_to(cr, centerX - (radius + 2)*sin(G_PI/4.0), centerY + (radius + 2)*cos(G_PI/4.0));
       cairo_line_to(cr, centerX - (radius + 2), centerY - (radius + 2));
 
       cairo_close_path (cr);
@@ -838,13 +824,13 @@ thinice_style_draw_option(GtkStyle * style,
       cairo_clip (cr);
 
       ge_cairo_set_color(cr, color1); 
-      cairo_arc(cr, centerX, centerY, radius + 1, 0,  2*M_PI);
+      cairo_arc(cr, centerX, centerY, radius + 1, 0,  2*G_PI);
       cairo_fill(cr);
 
       cairo_restore(cr);
 
       ge_cairo_set_color(cr, color3);
-      cairo_arc(cr, centerX, centerY, radius, 0, 2 * M_PI);
+      cairo_arc(cr, centerX, centerY, radius, 0, 2 * G_PI);
       cairo_fill(cr);
 
       break;
@@ -1078,9 +1064,9 @@ thinice_style_draw_slider(GtkStyle * style,
           int chopoff;
 
           if (orientation == GTK_ORIENTATION_HORIZONTAL) {
-            chopoff = max(0, min(6, width-SMALLEST_HANDLE));
+            chopoff = CLAMP(width-SMALLEST_HANDLE, 0, 6);
           } else {
-            chopoff = max(0, min(6, height-SMALLEST_HANDLE));
+            chopoff = CLAMP(height-SMALLEST_HANDLE, 0, 6);
           }
 
           pointsh[0].x = x;                  pointsh[0].y = y+height-1;

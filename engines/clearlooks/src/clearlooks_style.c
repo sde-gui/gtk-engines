@@ -2,7 +2,6 @@
 #include <cairo.h>
 #include <math.h>
 #include <string.h>
-#include <sys/time.h>
 
 #include <ge-support.h>
 #include "clearlooks_style.h"
@@ -824,14 +823,14 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	cairo_translate (cr, x, y);
 	
 	cairo_set_line_width (cr, 2);
-	cairo_arc       (cr, 7, 7, 6, 0, M_PI*2);	
+	cairo_arc       (cr, 7, 7, 6, 0, G_PI*2);	
 	cairo_set_source (cr, pt);
 	cairo_stroke (cr);
 	cairo_pattern_destroy (pt);
 
 	cairo_set_line_width (cr, 1);
 
-	cairo_arc       (cr, 7, 7, 5.5, 0, M_PI*2);	
+	cairo_arc       (cr, 7, 7, 5.5, 0, G_PI*2);	
 	
 	if (state_type != GTK_STATE_INSENSITIVE)
 	{
@@ -876,12 +875,12 @@ clearlooks_style_draw_option (DRAW_ARGS)
 		}
 		else
 		{
-			cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
+			cairo_arc (cr, 7, 7, 3, 0, G_PI*2);
 			/* cairo_set_source_rgb (cr, dot->r, dot->g, dot->b); */
 			cairo_set_source_rgba (cr, dot->r, dot->g, dot->b,trans);
 			cairo_fill (cr);
 		
-			cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
+			cairo_arc (cr, 6, 6, 1, 0, G_PI*2);
 			/* cairo_set_source_rgba (cr, 1,1,1, 0.5); */
 			cairo_set_source_rgba (cr, 1,1,1, 0.5+trans);		
 			cairo_fill (cr);

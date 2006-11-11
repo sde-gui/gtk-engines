@@ -7,8 +7,6 @@
 
 #include <cairo.h>
 
-#define M_PI 3.14159265358979323846
-
 static void
 clearlooks_rounded_rectangle (cairo_t *cr,
                                  double x, double y, double w, double h,
@@ -20,22 +18,22 @@ clearlooks_rounded_rectangle (cairo_t *cr,
 		cairo_move_to (cr, x, y);
 	
 	if (corners & CL_CORNER_TOPRIGHT)
-		cairo_arc (cr, x+w-radius, y+radius, radius, M_PI * 1.5, M_PI * 2);
+		cairo_arc (cr, x+w-radius, y+radius, radius, G_PI * 1.5, G_PI * 2);
 	else
 		cairo_line_to (cr, x+w, y);
 	
 	if (corners & CL_CORNER_BOTTOMRIGHT)
-		cairo_arc (cr, x+w-radius, y+h-radius, radius, 0, M_PI * 0.5);
+		cairo_arc (cr, x+w-radius, y+h-radius, radius, 0, G_PI * 0.5);
 	else
 		cairo_line_to (cr, x+w, y+h);
 	
 	if (corners & CL_CORNER_BOTTOMLEFT)
-		cairo_arc (cr, x+radius,   y+h-radius, radius, M_PI * 0.5, M_PI);
+		cairo_arc (cr, x+radius,   y+h-radius, radius, G_PI * 0.5, G_PI);
 	else
 		cairo_line_to (cr, x, y+h);
 	
 	if (corners & CL_CORNER_TOPLEFT)
-		cairo_arc (cr, x+radius,   y+radius,   radius, M_PI, M_PI * 1.5);
+		cairo_arc (cr, x+radius,   y+radius,   radius, G_PI, G_PI * 1.5);
 	else
 		cairo_line_to (cr, x, y);
 }
@@ -120,7 +118,7 @@ clearlooks_draw_shadow (cairo_t *cr, int width, int height)
 	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.1);
 	
 	cairo_move_to (cr, width, 3.0);
-	cairo_arc (cr, width-4.0, height-4.0, 4.0, 0, M_PI/2);
+	cairo_arc (cr, width-4.0, height-4.0, 4.0, 0, G_PI/2);
 	cairo_line_to (cr, 3.0, height);
 
 	cairo_stroke (cr);
@@ -139,7 +137,7 @@ clearlooks_draw_top_left_highlight (cairo_t *cr,
 	cairo_move_to         (cr, light_x1, light_y2);
 	
 	if (params->corners & CL_CORNER_TOPLEFT)
-		cairo_arc         (cr, light_x1+radius, light_y1+radius, radius, M_PI, 270*(M_PI/180));
+		cairo_arc         (cr, light_x1+radius, light_y1+radius, radius, G_PI, 270*(G_PI/180));
 	else
 		cairo_line_to     (cr, light_x1, light_y1);
 	
@@ -173,7 +171,7 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr,
 		cairo_move_to (cr, x, y+height);
 	
 	if (corners & CL_CORNER_TOPLEFT)
-		cairo_arc (cr, x+radius, y+radius, radius, M_PI, 270*(M_PI/180));
+		cairo_arc (cr, x+radius, y+radius, radius, G_PI, 270*(G_PI/180));
 	else
 		cairo_line_to (cr, x, y);
 	
@@ -194,18 +192,18 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr,
 	if (corners & CL_CORNER_TOPRIGHT)
 	{
 		cairo_move_to (cr, x+width-radius, y);
-		cairo_arc (cr, x+width-radius, y+radius, radius, M_PI + M_PI*0.5, M_PI*2);
+		cairo_arc (cr, x+width-radius, y+radius, radius, G_PI + G_PI*0.5, G_PI*2);
 	}
 	else
 		cairo_move_to (cr, x+width, y);
 	
 	if (corners & CL_CORNER_BOTTOMRIGHT)
-		cairo_arc (cr, x+width-radius, y+height-radius, radius, 0, M_PI/2);
+		cairo_arc (cr, x+width-radius, y+height-radius, radius, 0, G_PI/2);
 	else
 		cairo_line_to (cr, x+width, y+height);
 	
 	if (corners & CL_CORNER_BOTTOMLEFT)
-		cairo_arc (cr, x+radius, y+height-radius, radius, M_PI/2, M_PI);
+		cairo_arc (cr, x+radius, y+height-radius, radius, G_PI/2, G_PI);
 	else
 		cairo_line_to (cr, x, y+height);
 	
@@ -420,7 +418,7 @@ clearlooks_draw_entry (cairo_t *cr,
 		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, params->disabled ? 0.05 : 0.1);
 		/*
 		cairo_move_to (cr, 2, height-3);
-		cairo_arc (cr, params->xthickness+RADIUS-1, params->ythickness+RADIUS-1, RADIUS, M_PI, 270*(M_PI/180));
+		cairo_arc (cr, params->xthickness+RADIUS-1, params->ythickness+RADIUS-1, RADIUS, G_PI, 270*(G_PI/180));
 		cairo_line_to (cr, width-3, 2);*/
 		cairo_move_to (cr, 2, height-3);
 		cairo_line_to (cr, 2, 2);
@@ -683,7 +681,7 @@ clearlooks_draw_slider_button (cairo_t *cr,
 	else
 	{
 		int tmp = height;
-		clearlooks_rotate_mirror_translate (cr, M_PI/2, x+0.5, y+0.5, FALSE, FALSE);
+		clearlooks_rotate_mirror_translate (cr, G_PI/2, x+0.5, y+0.5, FALSE, FALSE);
 		height = width;
 		width = tmp;
 	}
@@ -779,9 +777,9 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 		width   = tmp;
 
 		if (progressbar->orientation == CL_ORIENTATION_TOP_TO_BOTTOM)
-			clearlooks_rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+			clearlooks_rotate_mirror_translate (cr, G_PI/2, x, y, FALSE, FALSE);
 		else
-			clearlooks_rotate_mirror_translate (cr, M_PI/2, x, y+width, TRUE, FALSE);
+			clearlooks_rotate_mirror_translate (cr, G_PI/2, x, y+width, TRUE, FALSE);
 	}
 	
 	cairo_save (cr);
@@ -1448,7 +1446,7 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	if (scrollbar->horizontal)
 	{
 		int tmp = height;
-		clearlooks_rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+		clearlooks_rotate_mirror_translate (cr, G_PI/2, x, y, FALSE, FALSE);
 		height = width;
 		width = tmp;
 	}
@@ -1576,7 +1574,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 	else
 	{
 		int tmp = height;
-		clearlooks_rotate_mirror_translate (cr, M_PI/2, x, y, FALSE, FALSE);
+		clearlooks_rotate_mirror_translate (cr, G_PI/2, x, y, FALSE, FALSE);
 		height = width;
 		width = tmp;
 	}
@@ -1741,7 +1739,7 @@ clearlooks_draw_handle (cairo_t *cr,
 	if (handle->horizontal)
 	{
 		int tmp = height;
-		clearlooks_rotate_mirror_translate (cr, M_PI/2,
+		clearlooks_rotate_mirror_translate (cr, G_PI/2,
 		                         x + 0.5 + width/2 - bar_height/2,
 		                         y + height/2 - bar_width/2,
 		                         FALSE, FALSE);
@@ -1824,11 +1822,11 @@ _clearlooks_draw_arrow (cairo_t *cr, CairoColor *color,
 	double rotate;
 	
 	if (dir == CL_DIRECTION_LEFT)
-		rotate = M_PI*1.5;
+		rotate = G_PI*1.5;
 	else if (dir == CL_DIRECTION_RIGHT)
-		rotate = M_PI*0.5;
+		rotate = G_PI*0.5;
 	else if (dir == CL_DIRECTION_UP)
-		rotate = M_PI;
+		rotate = G_PI;
 	else
 		rotate = 0;
 	

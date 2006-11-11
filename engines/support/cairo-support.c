@@ -300,22 +300,22 @@ ge_cairo_rounded_rectangle (cairo_t *cr,
 		cairo_move_to (cr, x, y);
 	
 	if (corners & CR_CORNER_TOPRIGHT)
-		cairo_arc (cr, x+w-radius, y+radius, radius, M_PI * 1.5, M_PI * 2);
+		cairo_arc (cr, x+w-radius, y+radius, radius, G_PI * 1.5, G_PI * 2);
 	else
 		cairo_line_to (cr, x+w, y);
 	
 	if (corners & CR_CORNER_BOTTOMRIGHT)
-		cairo_arc (cr, x+w-radius, y+h-radius, radius, 0, M_PI * 0.5);
+		cairo_arc (cr, x+w-radius, y+h-radius, radius, 0, G_PI * 0.5);
 	else
 		cairo_line_to (cr, x+w, y+h);
 	
 	if (corners & CR_CORNER_BOTTOMLEFT)
-		cairo_arc (cr, x+radius,   y+h-radius, radius, M_PI * 0.5, M_PI);
+		cairo_arc (cr, x+radius,   y+h-radius, radius, G_PI * 0.5, G_PI);
 	else
 		cairo_line_to (cr, x, y+h);
 	
 	if (corners & CR_CORNER_TOPLEFT)
-		cairo_arc (cr, x+radius,   y+radius,   radius, M_PI, M_PI * 1.5);
+		cairo_arc (cr, x+radius,   y+radius,   radius, G_PI, G_PI * 1.5);
 	else
 		cairo_line_to (cr, x, y);
 }
@@ -759,7 +759,7 @@ ge_cairo_pattern_destroy(CairoPattern *pattern)
  * is loaded and checks to see if we are compatible with the
  * version of GTK+ that loads us.
  */
-G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
+GE_EXPORT const gchar* g_module_check_init (GModule *module);
 const gchar*
 g_module_check_init (GModule *module)
 {

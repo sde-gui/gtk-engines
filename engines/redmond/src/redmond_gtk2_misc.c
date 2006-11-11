@@ -306,14 +306,14 @@ do_redmond_draw_simple_circle (cairo_t *canvas,
       cairo_save(canvas);
 
       cairo_move_to(canvas, center_x + (radius + 2), center_y + (radius + 2));
-      cairo_line_to(canvas, center_x + (radius + 2)*sin(M_PI/4.0), center_y - (radius + 2)*cos(M_PI/4.0));
-      cairo_line_to(canvas, center_x - (radius + 2)*sin(M_PI/4.0), center_y + (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(canvas, center_x + (radius + 2)*sin(G_PI/4.0), center_y - (radius + 2)*cos(G_PI/4.0));
+      cairo_line_to(canvas, center_x - (radius + 2)*sin(G_PI/4.0), center_y + (radius + 2)*cos(G_PI/4.0));
       cairo_line_to(canvas, center_x + (radius + 2), center_y + (radius + 2));
 
       cairo_clip (canvas);
 
       ge_cairo_set_color(canvas, br);
-      cairo_arc(canvas, center_x, center_y, radius, 0,  2*M_PI);
+      cairo_arc(canvas, center_x, center_y, radius, 0,  2*G_PI);
       cairo_fill(canvas);
 
       cairo_restore(canvas);
@@ -321,14 +321,14 @@ do_redmond_draw_simple_circle (cairo_t *canvas,
       cairo_save(canvas);
 
       cairo_move_to(canvas, center_x - (radius + 2), center_y - (radius + 2));
-      cairo_line_to(canvas, center_x + (radius + 2)*sin(M_PI/4.0), center_y - (radius + 2)*cos(M_PI/4.0));
-      cairo_line_to(canvas, center_x - (radius + 2)*sin(M_PI/4.0), center_y + (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(canvas, center_x + (radius + 2)*sin(G_PI/4.0), center_y - (radius + 2)*cos(G_PI/4.0));
+      cairo_line_to(canvas, center_x - (radius + 2)*sin(G_PI/4.0), center_y + (radius + 2)*cos(G_PI/4.0));
       cairo_line_to(canvas, center_x - (radius + 2), center_y - (radius + 2));
 
       cairo_clip (canvas);
 
       ge_cairo_set_color(canvas, tl); 
-      cairo_arc(canvas, center_x, center_y, radius, 0, 2*M_PI);
+      cairo_arc(canvas, center_x, center_y, radius, 0, 2*G_PI);
       cairo_fill(canvas);
 
       cairo_restore(canvas);

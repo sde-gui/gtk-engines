@@ -887,7 +887,7 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 				angle = atan2 (y2 - y1, x2 - x1);
 			}
 	
-			if ((angle > - (M_PI_4 * 3) - 0.0625) && (angle < M_PI_4 - 0.0625)) 
+			if ((angle > - (G_PI_4 * 3) - 0.0625) && (angle < G_PI_4 - 0.0625)) 
 			{
 				if (i!=1) 
 				{
@@ -900,7 +900,7 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 					
 				SmoothColorSetAlphaValue(&mid_color, 0.0);
 
-				if (angle > -M_PI_4) 
+				if (angle > -G_PI_4) 
 				{
 					y1  -= i;
 					y2 -= i;
@@ -939,7 +939,7 @@ SmoothDrawPolygonBorder(SmoothBorder *Border,
 
 				SmoothColorSetAlphaValue(&mid_color, 0.0);
 					
-				if ((angle < -(M_PI_4 * 3)) || (angle > (M_PI_4 * 3))) 
+				if ((angle < -(G_PI_4 * 3)) || (angle > (G_PI_4 * 3))) 
 				{
 					y1  += i;
 					y2 += i;

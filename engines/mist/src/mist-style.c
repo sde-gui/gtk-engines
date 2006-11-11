@@ -306,8 +306,8 @@ mist_style_draw_polygon(GtkStyle *style,
 {
 	MistStyle *mist_style = MIST_STYLE (style);
 
-	static const gdouble pi_over_4 = M_PI_4;
-	static const gdouble pi_3_over_4 = M_PI_4 * 3;
+	static const gdouble pi_over_4 = G_PI_4;
+	static const gdouble pi_3_over_4 = G_PI_4 * 3;
 	
 	CairoColor           *color1;
 	CairoColor           *color2;
@@ -724,15 +724,15 @@ mist_style_draw_option(GtkStyle *style,
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
-	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * G_PI);
 	ge_cairo_set_color(cr, &mist_style->color_cube.dark[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
 	cairo_stroke (cr);
 	
-	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * G_PI);
 	ge_cairo_set_color(cr, &mist_style->color_cube.base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
 	cairo_fill (cr);
 
-	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * M_PI);
+	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * G_PI);
 	cairo_set_source_rgba(cr, 0, 0, 0, 0.35); 
 	cairo_stroke (cr);
 
@@ -761,7 +761,7 @@ mist_style_draw_option(GtkStyle *style,
 		else
 		{
 			ge_cairo_set_color(cr, &mist_style->color_cube.bg[GTK_STATE_SELECTED]);	
-			cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * M_PI);
+			cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * G_PI);
 			cairo_fill (cr);
 		}
 	}

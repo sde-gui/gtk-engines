@@ -276,7 +276,7 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 			/* inside shadow */
 			radius = 1.0;
 			cairo_move_to (cr, x + 1.0, y + height - 1.0);
-			cairo_arc (cr, x + radius + 1.0, y + radius + 1.0, radius, M_PI, M_PI * 1.5);
+			cairo_arc (cr, x + radius + 1.0, y + radius + 1.0, radius, G_PI, G_PI * 1.5);
 			cairo_line_to (cr, x + width - 1.0, y + 1.0);
 			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.22);
 			cairo_stroke (cr);
@@ -542,6 +542,7 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 	cairo_pattern_destroy (crp);
 }
 
+static void
 paint_scale_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOrientation orientation,
 	gdouble x, gdouble y, gdouble width, gdouble height)
 {
@@ -1371,7 +1372,7 @@ draw_option (GtkStyle *style,
 
 	if (!GE_IS_MENU_ITEM (widget))
 	{
-		cairo_arc (cr, cx, cy, radius, 0.0, M_PI * 2);
+		cairo_arc (cr, cx, cy, radius, 0.0, G_PI * 2);
 
 		if (state_type == GTK_STATE_INSENSITIVE)
 		{
@@ -1407,7 +1408,7 @@ draw_option (GtkStyle *style,
 			cairo_set_source_rgb (cr, OUTLINE_GRAY);
 			cairo_stroke (cr);
 
-			cairo_arc (cr, cx, cy, radius - 1.0, 0.0, M_PI * 2);
+			cairo_arc (cr, cx, cy, radius - 1.0, 0.0, G_PI * 2);
 			cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5);
 			cairo_stroke (cr);
 		}
@@ -1419,7 +1420,7 @@ draw_option (GtkStyle *style,
 	if (shadow_type == GTK_SHADOW_IN)
 	{
 		/* draw check mark */
-		cairo_arc (cr, cx, cy, radius, 0.0, M_PI * 2);
+		cairo_arc (cr, cx, cy, radius, 0.0, G_PI * 2);
 
 		if (state_type == GTK_STATE_INSENSITIVE)
 		{

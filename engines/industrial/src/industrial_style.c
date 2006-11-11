@@ -164,7 +164,7 @@ draw_rounded_gradient (cairo_t    *cr,
 	
 	/* cairo_rectangle (cr, outer_radius, 0, width - 2 * outer_radius,
 			 gradient_width); */
-	cairo_matrix_init_rotate (&matrix, M_PI);
+	cairo_matrix_init_rotate (&matrix, G_PI);
 	cairo_matrix_translate (&matrix, 0, -gradient_width);
 	cairo_pattern_set_matrix (pattern, &matrix);
 	cairo_fill (cr);
@@ -183,7 +183,7 @@ draw_rounded_gradient (cairo_t    *cr,
 	
 	/* cairo_rectangle (cr, width - outer_radius, outer_radius, outer_radius,
 			 height - 2 * outer_radius); */
-	cairo_matrix_init_rotate (&matrix, M_PI_2);
+	cairo_matrix_init_rotate (&matrix, G_PI_2);
 	cairo_matrix_translate (&matrix, -width + gradient_width, -gradient_width);
 	cairo_pattern_set_matrix (pattern, &matrix);
 	cairo_fill (cr);
@@ -220,7 +220,7 @@ draw_rounded_gradient (cairo_t    *cr,
 
 	/* cairo_rectangle (cr, 0, outer_radius, gradient_width,
 			 height - 2 * outer_radius); */
-	cairo_matrix_init_rotate (&matrix, -M_PI_2);
+	cairo_matrix_init_rotate (&matrix, -G_PI_2);
 	cairo_matrix_translate (&matrix, -gradient_width, 0);
 	cairo_pattern_set_matrix (pattern, &matrix);
 	cairo_fill (cr);
@@ -1386,7 +1386,7 @@ draw_option (GtkStyle * style,
 
 	xc = x + width / 2.0;
 	yc = y + height / 2.0;
-	cairo_arc (cr, xc, yc, radius - 0.5, 0, 2 * M_PI);
+	cairo_arc (cr, xc, yc, radius - 0.5, 0, 2 * G_PI);
 
 	ge_cairo_set_color (cr, &bg);
 	cairo_fill (cr);
@@ -1399,8 +1399,8 @@ draw_option (GtkStyle * style,
 	
 	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
 	
-	cairo_arc (cr, xc, yc, radius, 0, 2 * M_PI);
-	cairo_arc (cr, xc + 0.2, yc + 0.2, radius - 1.2, 0, 2 * M_PI);
+	cairo_arc (cr, xc, yc, radius, 0, 2 * G_PI);
+	cairo_arc (cr, xc + 0.2, yc + 0.2, radius - 1.2, 0, 2 * G_PI);
 
 	cairo_fill (cr);
 	
@@ -1411,7 +1411,7 @@ draw_option (GtkStyle * style,
 		fg.a = GET_REAL_OPACITY (style, 1.0);
 
 		ge_cairo_set_color (cr, &fg);
-		cairo_arc (cr, xc, yc, radius - 3, 0, 2 * M_PI);
+		cairo_arc (cr, xc, yc, radius - 3, 0, 2 * G_PI);
 		cairo_fill (cr);
 
 		pattern =
@@ -1426,8 +1426,8 @@ draw_option (GtkStyle * style,
 		cairo_pattern_destroy (pattern);
 
 		cairo_move_to (cr, xc, yc);
-		cairo_arc (cr, xc, yc, radius - 4, M_PI - M_PI_4,
-			   3 * M_PI_2 + M_PI_4);
+		cairo_arc (cr, xc, yc, radius - 4, G_PI - G_PI_4,
+			   3 * G_PI_2 + G_PI_4);
 		cairo_close_path (cr);
 		cairo_fill (cr);
 	} else if (shadow_type == GTK_SHADOW_ETCHED_IN) {

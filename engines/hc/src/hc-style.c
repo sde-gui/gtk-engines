@@ -820,11 +820,11 @@ hc_draw_option (GtkStyle      *style,
 	cairo_set_line_width (cr, radius*0.30);
 	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
 	
-	cairo_arc(cr, centerX, centerY, radius, 0 , 2 * M_PI);
+	cairo_arc(cr, centerX, centerY, radius, 0 , 2 * G_PI);
 	ge_cairo_set_color(cr, &hc_style->color_cube.bg[state_type]);	
 	cairo_fill (cr);
 
-	cairo_arc(cr, centerX, centerY, radius, 0 , 2 * M_PI);
+	cairo_arc(cr, centerX, centerY, radius, 0 , 2 * G_PI);
 	ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);	
 	cairo_stroke (cr);
 
@@ -851,9 +851,9 @@ hc_draw_option (GtkStyle      *style,
 		}
 		else
 		{
-			cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * M_PI);
+			cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * G_PI);
 			cairo_fill(cr);
-			cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * M_PI);
+			cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * G_PI);
 			cairo_stroke(cr);
 		}
 	}
@@ -1330,8 +1330,8 @@ hc_draw_polygon (GtkStyle      *style,
 {
 	HcStyle *hc_style = HC_STYLE (style);
 
-	static const gdouble pi_over_4 = M_PI_4;
-	static const gdouble pi_3_over_4 = M_PI_4 * 3;
+	static const gdouble pi_over_4 = G_PI_4;
+	static const gdouble pi_3_over_4 = G_PI_4 * 3;
 	
 	CairoColor           *color1;
 	CairoColor           *color2;

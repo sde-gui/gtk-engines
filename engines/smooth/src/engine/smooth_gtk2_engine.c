@@ -316,7 +316,7 @@ smooth_theme_init (GTypeModule *module)
   SmoothDrawingInterfaceInitialize();
 }
 
-G_MODULE_EXPORT void
+GE_EXPORT void
 theme_init (GTypeModule *module)
 {
 	smooth_theme_init (module);
@@ -332,7 +332,7 @@ smooth_theme_exit (void)
   }
 }
 
-G_MODULE_EXPORT void
+GE_EXPORT void
 theme_exit (void)
 {
 	smooth_theme_exit();
@@ -344,7 +344,7 @@ smooth_theme_create_rc_style (void)
   return (GtkRcStyle *)g_object_new (SMOOTH_TYPE_RC_STYLE, NULL);
 }
 
-G_MODULE_EXPORT GtkRcStyle *
+GE_EXPORT GtkRcStyle *
 theme_create_rc_style (void)
 {
   return smooth_theme_create_rc_style();

@@ -1,3 +1,22 @@
+2006-11-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/*:
+	- replace G_MODULE_EXPORT with GE_EXPORT
+	- removed GE_HIDDEN, not used
+	- GE_EXPORT:
+	  - defined to G_MODULE_EXPORT
+	  - special cases for SUNPRO_C and if G_HAVE_GNUC_VISIBILITY is set.
+	    This makes compiling with -fvisibility=hidden possible.
+	- GE_INTERNAL
+	  - defined to G_GNUC_INTERNAL
+	  - special case for SUNPRO_C
+
+	- replace M_PI* with G_PI* and removed unneeded definitions
+	- removed include of sys/time.h from clearlooks
+	- removed some min/max defines, and replaced them with MIN/MAX and CLAMP
+
+	gtk-engines should now work on win32
+
 2006-11-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

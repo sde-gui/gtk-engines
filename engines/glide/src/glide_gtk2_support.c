@@ -388,7 +388,7 @@ do_glide_draw_option_check(cairo_t *canvas,
 	{
 		case GLIDE_CHECK_ON:
 		{
-			cairo_arc(canvas, center_x, center_y, radius*0.68, 0, 2 * M_PI);
+			cairo_arc(canvas, center_x, center_y, radius*0.68, 0, 2 * G_PI);
 			cairo_fill(canvas);
 		}
 		break;
@@ -446,7 +446,7 @@ do_glide_draw_round_option(cairo_t *canvas,
 		|| (bevel_style == GLIDE_BEVEL_STYLE_NONE)) 
 	{
 		ge_cairo_set_color(canvas, fill_color);
-		cairo_arc(canvas, center_x, center_y, radius, 0, 2 * M_PI);
+		cairo_arc(canvas, center_x, center_y, radius, 0, 2 * G_PI);
 		cairo_fill(canvas);
 
 		do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 1);
@@ -464,7 +464,7 @@ do_glide_draw_round_option(cairo_t *canvas,
 						center_x, center_y, radius);
 
 		ge_cairo_set_color(canvas, fill_color);
-		cairo_arc(canvas, center_x, center_y, radius - 1, 0, 2 * M_PI);
+		cairo_arc(canvas, center_x, center_y, radius - 1, 0, 2 * G_PI);
 		cairo_fill(canvas);
 
 		do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 2);
@@ -504,7 +504,7 @@ do_glide_draw_round_option(cairo_t *canvas,
 								center_x, center_y, radius - 1);		
 
 			ge_cairo_set_color(canvas, fill_color);
-			cairo_arc(canvas, center_x, center_y, radius - 2, 0, 2 * M_PI);
+			cairo_arc(canvas, center_x, center_y, radius - 2, 0, 2 * G_PI);
 			cairo_fill(canvas);
 
 			do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 3);
@@ -534,7 +534,7 @@ do_glide_draw_round_option(cairo_t *canvas,
 								center_x, center_y, radius);
 
 				ge_cairo_set_color(canvas, fill_color);
-				cairo_arc(canvas, center_x, center_y, radius - 1, 0, 2 * M_PI);
+				cairo_arc(canvas, center_x, center_y, radius - 1, 0, 2 * G_PI);
 				cairo_fill(canvas);
 
 				do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 2);
@@ -609,7 +609,7 @@ do_glide_draw_round_option(cairo_t *canvas,
 								center_x, center_y, radius - 1);
 
 				ge_cairo_set_color(canvas, fill_color);
-				cairo_arc(canvas, center_x, center_y, radius - 2, 0, 2 * M_PI);
+				cairo_arc(canvas, center_x, center_y, radius - 2, 0, 2 * G_PI);
 				cairo_fill(canvas);
 
 				do_glide_draw_option_check(canvas, check_color, check_state, center_x, center_y, radius - 3);
@@ -740,8 +740,8 @@ do_glide_draw_simple_circle (cairo_t *canvas,
       cairo_new_path (canvas);
 
       cairo_move_to(canvas, center_x + (radius + 2), center_y + (radius + 2));
-      cairo_line_to(canvas, center_x + (radius + 2)*sin(M_PI/4.0), center_y - (radius + 2)*cos(M_PI/4.0));
-      cairo_line_to(canvas, center_x - (radius + 2)*sin(M_PI/4.0), center_y + (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(canvas, center_x + (radius + 2)*sin(G_PI/4.0), center_y - (radius + 2)*cos(G_PI/4.0));
+      cairo_line_to(canvas, center_x - (radius + 2)*sin(G_PI/4.0), center_y + (radius + 2)*cos(G_PI/4.0));
       cairo_line_to(canvas, center_x + (radius + 2), center_y + (radius + 2));
 
       cairo_close_path (canvas);
@@ -751,7 +751,7 @@ do_glide_draw_simple_circle (cairo_t *canvas,
       cairo_clip (canvas);
 
       ge_cairo_set_color(canvas, br);
-      cairo_arc(canvas, center_x, center_y, radius, 0,  2*M_PI);
+      cairo_arc(canvas, center_x, center_y, radius, 0,  2*G_PI);
       cairo_fill(canvas);
 
       cairo_restore(canvas);
@@ -760,8 +760,8 @@ do_glide_draw_simple_circle (cairo_t *canvas,
       cairo_new_path (canvas);
 
       cairo_move_to(canvas, center_x - (radius + 2), center_y - (radius + 2));
-      cairo_line_to(canvas, center_x + (radius + 2)*sin(M_PI/4.0), center_y - (radius + 2)*cos(M_PI/4.0));
-      cairo_line_to(canvas, center_x - (radius + 2)*sin(M_PI/4.0), center_y + (radius + 2)*cos(M_PI/4.0));
+      cairo_line_to(canvas, center_x + (radius + 2)*sin(G_PI/4.0), center_y - (radius + 2)*cos(G_PI/4.0));
+      cairo_line_to(canvas, center_x - (radius + 2)*sin(G_PI/4.0), center_y + (radius + 2)*cos(G_PI/4.0));
       cairo_line_to(canvas, center_x - (radius + 2), center_y - (radius + 2));
 
       cairo_close_path (canvas);
@@ -769,7 +769,7 @@ do_glide_draw_simple_circle (cairo_t *canvas,
       cairo_clip (canvas);
 
       ge_cairo_set_color(canvas, tl); 
-      cairo_arc(canvas, center_x, center_y, radius, 0, 2*M_PI);
+      cairo_arc(canvas, center_x, center_y, radius, 0, 2*G_PI);
       cairo_fill(canvas);
 
       cairo_restore(canvas);

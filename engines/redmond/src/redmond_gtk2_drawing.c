@@ -275,7 +275,7 @@ redmond_draw_option (GtkStyle * style,
       if (shadow == GTK_SHADOW_IN)
       {
         ge_cairo_set_color(cr, &redmond_style->color_cube.text[state]);	
-	cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * M_PI);
+	cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
         cairo_fill(cr);
       }
     }
@@ -307,7 +307,7 @@ redmond_draw_option (GtkStyle * style,
           {
              cairo_t *tmp = ge_gdk_drawable_to_cairo (window, area);
 
-            cairo_arc(tmp, center_x, center_y,  radius - 2, 0, 2*M_PI);
+            cairo_arc(tmp, center_x, center_y,  radius - 2, 0, 2*G_PI);
             cairo_clip(tmp);
 
             do_redmond_draw_masked_fill (tmp, &redmond_style->hatch_mask, 
@@ -319,13 +319,13 @@ redmond_draw_option (GtkStyle * style,
           else
           {
             ge_cairo_set_color(cr, &redmond_style->color_cube.base[GTK_STATE_NORMAL]);
-            cairo_arc(cr, center_x, center_y, radius - 2, 0, 2 * M_PI);
+            cairo_arc(cr, center_x, center_y, radius - 2, 0, 2 * G_PI);
             cairo_fill(cr);
           }
 	  break;
 	default:
             ge_cairo_set_color(cr, &redmond_style->color_cube.bg[GTK_STATE_NORMAL]);
-            cairo_arc(cr, center_x, center_y, radius - 2, 0, 2 * M_PI);
+            cairo_arc(cr, center_x, center_y, radius - 2, 0, 2 * G_PI);
             cairo_fill(cr);
 	}
 
@@ -340,7 +340,7 @@ redmond_draw_option (GtkStyle * style,
              ge_cairo_set_color(cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL]);	
            }
 
-           cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * M_PI);
+           cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
            cairo_fill(cr);
 	}
      }

@@ -137,13 +137,13 @@ do_smooth_draw_lines(SmoothGripObjects *GripObjects,
 	{
 		if (Horizontal)
 		{
-			xthick = GripObjects->Size*cos(GripObjects->Angle*M_PI/180);
-			ythick = GripObjects->Size*sin(GripObjects->Angle*M_PI/180);
+			xthick = GripObjects->Size*cos(GripObjects->Angle*G_PI/180);
+			ythick = GripObjects->Size*sin(GripObjects->Angle*G_PI/180);
 		}	
 		else	
 		{
-			xthick = GripObjects->Size*sin(GripObjects->Angle*M_PI/180);
-			ythick = GripObjects->Size*cos(GripObjects->Angle*M_PI/180);
+			xthick = GripObjects->Size*sin(GripObjects->Angle*G_PI/180);
+			ythick = GripObjects->Size*cos(GripObjects->Angle*G_PI/180);
 		}			
 	}
 	
