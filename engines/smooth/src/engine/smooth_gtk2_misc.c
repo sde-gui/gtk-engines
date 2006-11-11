@@ -318,8 +318,11 @@ smooth_gtk_button_get_props (GtkWidget *widget,
 	  *default_border = *tmp_border;
 	  g_free (tmp_border);
 	}
-      else
-	*default_border = (GtkBorder){ 1, 1, 1, 1 };
+      else 
+	{
+	  static const GtkBorder tmp = {1, 1, 1, 1};
+	  *default_border = tmp;
+	}
     }
 
   if (default_outside_border)
@@ -336,8 +339,11 @@ smooth_gtk_button_get_props (GtkWidget *widget,
 	  *default_outside_border = *tmp_border;
 	  g_free (tmp_border);
 	}
-      else
-	*default_outside_border = (GtkBorder){ 0, 0, 0, 0 };
+      else 
+	{
+	  static const GtkBorder tmp = {0, 0, 0, 0};
+	  *default_outside_border = tmp;
+	}
     }
 
   if (interior_focus)

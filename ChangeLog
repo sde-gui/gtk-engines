@@ -1,5 +1,13 @@
 2006-11-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/smooth/src/engine/smooth_gtk2_misc.c:
+	(smooth_gtk_button_get_props):
+	- Fix smooth to compile with VC++
+
+	Thanks to TFKyle for all the win32 fixes.
+
+2006-11-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_button), (clearlooks_draw_slider):
 	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
