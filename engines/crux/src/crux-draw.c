@@ -1136,61 +1136,37 @@ draw_arrow (GtkStyle *style,
 	if (arrow_type == (GtkArrowType)4)/*NONE - new in GTK 2.10*/
 		return;
 
+
+	/* random adjustments... */
 	if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
 	{
-		/* add some padding */
-		x++; y++; height--; width--; 
-		if (DETAIL ("hscrollbar"))
-			width--;
-		else
-			height--;
-
-		/* random adjustments... */
 		if (arrow_type == GTK_ARROW_DOWN)
 			y++;
 		else if (arrow_type == GTK_ARROW_RIGHT)
 			x++;
-			
 	}
-	else if (DETAIL ("spinbutton"))
+
+	if (DETAIL ("spinbutton"))
 	{
 		if (arrow_type == GTK_ARROW_DOWN)
 			y+=2;
-		else if (arrow_type == GTK_ARROW_UP)
-			y--;
-
-		x++; width--;
-
 	}
-	else if (DETAIL ("menuitem"))
-	{
-		/* make slightly smaller... */
-		x++;
-		height-=2;
-	} else if (ge_is_in_combo_box (widget) || ge_is_combo_box (widget, FALSE))
-	{
-		x+=2; y+=3; width -= 4; height -= 4;
-		if (ge_is_combo (widget))
-			width--;
-	}
-	else
-	{
-		/* catch all to add some padding... */
-		x++;
-		y++;
-		width -= 2;
-		height -= 2;
-	}
-
-	/* make triangle equilateral */
 	if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
-		height = sin (60.0 * 0.017453) * width;
+	{
+		x = x + width / 2 - 2;
+		y = y + height / 2 - 2;
+		height = 4; width = 5;
+	}
 	else if (arrow_type == GTK_ARROW_LEFT || GTK_ARROW_RIGHT)
-		width = sin (60.0 * 0.017453) * height;
+	{
+		x = x + width / 2 - 2;
+		y = y + height / 2 - 2;
+		height = 5; width = 4;
+	}
+
 
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
-
 	switch (arrow_type)
 	{
 		case GTK_ARROW_UP:
@@ -1468,14 +1444,14 @@ draw_tab (GtkStyle *style,
 	/* Draws an option menu tab (the up and down pointing arrows)
 	 * TODO: Make this look neater
 	 */
-    	debug ("draw_tab: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
+	debug ("draw_tab: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
 	draw_arrow (style, window, state_type, shadow_type, area, widget, detail,
-		    GTK_ARROW_UP, FALSE, x + width / 2, y - height / 2, width * 0.66, height);
+		    GTK_ARROW_UP, FALSE, x + (width / 2) - 2, y - (height / 2), 7, 7);
 
 	draw_arrow (style, window, state_type, shadow_type, area, widget, detail,
-		    GTK_ARROW_DOWN, FALSE, x + width / 2, y + height / 2 + 1, width * 0.66, height);
+		    GTK_ARROW_DOWN, FALSE, x + (width / 2) - 2, y + (height / 2), 7, 7);
 }
 
 static void
