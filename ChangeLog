@@ -1,3 +1,9 @@
+2006-11-14  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c: (clearlooks_draw_tab):
+	- a buggy cairo_fill_preserve which should have been a cairo_fill
+	  caused active tabs to have the wrong color
+
 2006-11-13  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (draw_arrow), (draw_tab): Attempt to

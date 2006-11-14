@@ -1190,7 +1190,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	
 	/* Draw fill */
 	cairo_set_source_rgb  (cr, fill->r, fill->g, fill->b);
-	cairo_fill_preserve   (cr);
+	cairo_fill   (cr);
 	
 	/* Draw highlight */
 	if (!params->active)
