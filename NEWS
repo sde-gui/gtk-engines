@@ -1,3 +1,26 @@
+Overview of Changes in 2.8.2 (since 2.8.1)
+==========================================
+
+Hilights in this release include:
+
+	- Don't draw boxes around handles on gnome-panels in Mist
+	- Add a --disable-all option, so that it is possible to build one
+	  engine without requiring to disable every other engine manually.
+	- Various changes to avoid expensive code paths in cairo
+	- Fix background fill for redmond slider widgets (GtkScale)
+	- Improvements in Crux arrows and scrollbar troughs
+	- Fixes to enable gtk-engines to compile on win32 with VC++
+	- Set some "Redmond" style icon sizes in the Redmond theme
+  
+See the ChangeLog for full details of other smaller fixes and enhancements.
+
+Fixed bugs in this release:
+
+	Bug 364750 - Menu separator, tear off dash lines and option menu lines changed shading style
+	Bug 352602 - When accessing parent styles, engines shouldn't assume same type
+	Bug 366716 - mist_style_draw_shadow is missing a SHADOW_NONE test
+
+
 Overview of Changes in 2.8.1 (since 2.8.0)
 ==========================================
 
