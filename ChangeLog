@@ -1,5 +1,10 @@
 2006-11-17  Daniel Borgmann  <daniel.borgmann@gmail.com>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Enable experimental gloss option.
+
+2006-11-17  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_button_gloss),
 	(clearlooks_draw_button_with_gloss), (clearlooks_draw_spinbutton),
