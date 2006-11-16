@@ -1,5 +1,11 @@
 2006-11-16  Thomas Wood  <thos@gnome.org>
 
+	* configure.ac: Pre-release version bump, and require GTK+ 2.10
+	* themes/Clearlooks/gtk-2.0/gtkrc: First attempt at using
+	gtk-color-scheme
+
+2006-11-16  Thomas Wood  <thos@gnome.org>
+
 	* NEWS:
 	* configure.ac:
 

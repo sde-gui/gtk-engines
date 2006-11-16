@@ -1,4 +1,4 @@
-AC_INIT([gtk-engines], [2.8.2])
+AC_INIT([gtk-engines], [2.9.0])
 AC_CONFIG_SRCDIR([README])
 
 AM_INIT_AUTOMAKE
@@ -80,8 +80,8 @@ if test $thinice = "yes"; then
 	BUILD_THEMES="$BUILD_THEMES ThinIce"
 fi
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8.0,,
-                  AC_MSG_ERROR([GTK+-2.8 is required to compile gtk-engines]))
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.10.0,,
+                  AC_MSG_ERROR([GTK+-2.10 is required to compile gtk-engines]))
 
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)

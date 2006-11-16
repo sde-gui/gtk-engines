@@ -1,3 +1,6 @@
+
+gtk_color_scheme = "fg_color:#000\nbg_color:#ede9e3\nbase_color:#fff\ntext_color:#000\nselected_bg_color:#5598d7\nselected_fg_color:#fff\nfoo:#123"
+
 style "clearlooks-default"
 {
   GtkButton      ::default_border    = { 0, 0, 0, 0 }
@@ -5,7 +8,7 @@ style "clearlooks-default"
   GtkPaned       ::handle_size       = 6
   GtkRange       ::slider_width      = 15
   GtkRange       ::stepper_size      = 15
-  
+
   GtkScrollbar   ::min_slider_length = 30
   GtkCheckButton ::indicator_size    = 14
   GtkMenuBar     ::internal-padding  = 0
@@ -25,29 +28,30 @@ style "clearlooks-default"
   xthickness = 1
   ythickness = 1
 
-  fg[NORMAL]        = "#000000" # black
-  fg[PRELIGHT]      = "#000000" # black
-  fg[SELECTED]      = "#ffffff" # white 
-  fg[ACTIVE]        = "#000000" # black
-  fg[INSENSITIVE]   = "#b5b3ac" # dark beige
 
-  bg[NORMAL]        = "#ede9e3"
-  bg[PRELIGHT]      = "#f9f7f3" # very light beige
-  bg[SELECTED]	    = "#5598d7" # deepsky
-  bg[INSENSITIVE]   = "#efebe5" # beige
-  bg[ACTIVE]        = "#dcd4c9" #"#d7d3ca" # dark beige
+  fg[NORMAL]        = @fg_color #"#000000" # black
+  fg[PRELIGHT]      = @fg_color #"#000000" # black
+  fg[SELECTED]      = @selected_fg_color #"#ffffff" # white 
+  fg[ACTIVE]        = @fg_color #"#000000" # black
+  fg[INSENSITIVE]   = darker (@bg_color) #"#b5b3ac" # dark beige
 
-  base[NORMAL]      = "#ffffff" # white 
-  base[PRELIGHT]    = "#5f8ec4" # dark beige
-  base[ACTIVE]      = "#a69f91" # darker deepsky
-  base[SELECTED]    = "#5598d7" # deepsky
-  base[INSENSITIVE] = "#e8e5de" # beige
+  bg[NORMAL]        = @bg_color # "#ede9e3"
+  bg[PRELIGHT]      = shade (1.02, @bg_color) #"#f9f7f3" # very light beige
+  bg[SELECTED]	    = @selected_bg_color # "#5598d7" # deepsky
+  bg[INSENSITIVE]   = @bg_color # "#efebe5" # beige
+  bg[ACTIVE]        = shade (0.9, @bg_color) #"#dcd4c9" #"#d7d3ca" # dark beige
 
-  text[NORMAL]      = "#000000" # black
-  text[PRELIGHT]    = "#000000" # black
-  text[ACTIVE]      = "#ffffff" # white
-  text[SELECTED]    = "#ffffff" # white
-  text[INSENSITIVE] = "#b5b3ac" # dark beige
+  base[NORMAL]      = @base_color # "#ffffff" # white 
+  base[PRELIGHT]    = darker (@bg_color) # "#5f8ec4" # dark beige
+  base[ACTIVE]      = shade (0.9, @selected_bg_color) # "#a69f91" # darker deepsky
+  base[SELECTED]    = @selected_bg_color # "#5598d7" # deepsky
+  base[INSENSITIVE] = @bg_color # "#e8e5de" # beige
+
+  text[NORMAL]      = @text_color # "#000000" # black
+  text[PRELIGHT]    = @text_color # "#000000" # black
+  text[ACTIVE]      = @selected_fg_color # "#ffffff" # white
+  text[SELECTED]    = @selected_fg_color # "#ffffff" # white
+  text[INSENSITIVE] = darker (@bg_color) # "#b5b3ac" # dark beige
 
   engine "clearlooks" 
   {
@@ -75,15 +79,15 @@ style "clearlooks-wider" = "clearlooks-default"
 
 style "clearlooks-button" = "clearlooks-wider"
 {
-  bg[NORMAL]        = "#f6f4f1"
-  bg[INSENSITIVE]   = "#f2efeb"
-  bg[PRELIGHT]      = "#faf9f8"
+  bg[NORMAL]        = shade (1.05, @bg_color) # "#f6f4f1"
+  bg[INSENSITIVE]   = shade (1.04, @bg_color) # "#f2efeb"
+  bg[PRELIGHT]      = shade (1.08, @bg_color) # "#faf9f8"
 }
 
 style "clearlooks-notebook" = "clearlooks-wide"
 {
-  bg[NORMAL]      = "#efebe5"
-  bg[INSENSITIVE] = "#efebe5"
+#  bg[NORMAL]      = "#efebe5"
+#  bg[INSENSITIVE] = "#efebe5"
 }
 
 style "clearlooks-tasklist" = "clearlooks-default"
@@ -96,20 +100,19 @@ style "clearlooks-menu" = "clearlooks-default"
 {
   xthickness = 2
   ythickness = 1
-  bg[NORMAL] = "#f9f7f3"
+  bg[NORMAL] = lighter (@bg_color) # "#f9f7f3"
 }
 
 style "clearlooks-menubar-item" = "clearlooks-button"
 {
-    fg[PRELIGHT] = "#000000"
+#    fg[PRELIGHT] = "#000000"
 }
 
 style "clearlooks-menu-item" = "clearlooks-default"
 {
   xthickness = 2
   ythickness = 3
-  fg[PRELIGHT] = "#ffffff"
-  text[PRELIGHT] = "#ffffff"
+  fg[PRELIGHT] = @selected_fg_color
 }
 
 style "clearlooks-tree" = "clearlooks-default"
@@ -120,7 +123,7 @@ style "clearlooks-tree" = "clearlooks-default"
 
 style "clearlooks-frame-title" = "clearlooks-default"
 {
-  fg[NORMAL] = "#404040"
+  fg[NORMAL] = lighter (@fg_color) # "#404040"
 }
 
 style "clearlooks-tooltips" = "clearlooks-default"
@@ -134,7 +137,7 @@ style "clearlooks-progressbar" = "clearlooks-wide"
 {
   xthickness = 1
   ythickness = 1
-  fg[PRELIGHT]  = "#ffffff"
+  # fg[PRELIGHT]  = "#ffffff"
 }
 
 style "clearlooks-combo" = "clearlooks-button"
@@ -143,7 +146,7 @@ style "clearlooks-combo" = "clearlooks-button"
 
 style "clearlooks-menubar" = "blackrock-default"
 {
-  bg[NORMAL]   = "#bacedb"
+#  bg[NORMAL]   = "#bacedb"
 }
 	
 
