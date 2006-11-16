@@ -1,3 +1,33 @@
+2006-11-17  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button_gloss),
+	(clearlooks_draw_button_with_gloss), (clearlooks_draw_spinbutton),
+	(clearlooks_draw_slider), (clearlooks_draw_slider_button),
+	(clearlooks_draw_optionmenu), (clearlooks_draw_scrollbar_slider),
+	(clearlooks_draw_handle), (clearlooks_draw_resize_grip),
+	(clearlooks_draw_checkbox), (clearlooks_draw_radiobutton):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	- Ported ubuntulooks buttonstyle and use if gloss option is set.
+	- Tweaked glossy scrollbar.
+	- Changed to gripdots.
+	- Ported ubuntulooks checkboxes and radiobuttons.
+	
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init), (clearlooks_rc_style_parse),
+	(clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	- Add global gloss engine option.
+	
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters),
+	(clearlooks_style_draw_flat_box), (clearlooks_style_draw_box),
+	(clearlooks_style_draw_option), (clearlooks_style_draw_check),
+	(clearlooks_style_init_from_rc), (clearlooks_style_realize):
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/clearlooks_types.h:
+	- Use gloss option.
+
 2006-11-16  Thomas Wood  <thos@gnome.org>
 
 	* configure.ac: Pre-release version bump, and require GTK+ 2.10

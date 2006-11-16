@@ -43,14 +43,15 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	if (widget && GE_IS_ENTRY (widget))
 		state_type = GTK_WIDGET_STATE (widget);
 
-	params->active     = (state_type == GTK_STATE_ACTIVE);
-	params->prelight   = (state_type == GTK_STATE_PRELIGHT);
-	params->disabled   = (state_type == GTK_STATE_INSENSITIVE);			
-	params->state_type = (ClearlooksStateType)state_type;
-	params->corners    = CL_CORNER_ALL;
-	params->ltr        = ge_widget_is_ltr ((GtkWidget*)widget);
-	params->focus      = widget && GTK_WIDGET_HAS_FOCUS (widget);
-	params->is_default = widget && GE_WIDGET_HAS_DEFAULT (widget);
+	params->active      = (state_type == GTK_STATE_ACTIVE);
+	params->prelight    = (state_type == GTK_STATE_PRELIGHT);
+	params->disabled    = (state_type == GTK_STATE_INSENSITIVE);			
+	params->state_type  = (ClearlooksStateType)state_type;
+	params->corners     = CL_CORNER_ALL;
+	params->ltr         = ge_widget_is_ltr ((GtkWidget*)widget);
+	params->focus       = widget && GTK_WIDGET_HAS_FOCUS (widget);
+	params->is_default  = widget && GE_WIDGET_HAS_DEFAULT (widget);
+	params->enable_glow = FALSE;
 		
 	if (!params->active && widget && GE_IS_TOGGLE_BUTTON (widget))
 		params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
@@ -114,6 +115,9 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 
 		cairo_pattern_destroy (pattern);
 		cairo_destroy (cr);
+	}
+	else if ((DETAIL("checkbutton") || DETAIL("radiobutton")) && state_type == GTK_STATE_PRELIGHT)
+	{
 	}
 	else
 	{
@@ -440,6 +444,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	else if (DETAIL ("button") || DETAIL ("buttondefault"))
 	{
 		WidgetParameters params;
+		ShadowParameters shadow = { CL_CORNER_ALL, CL_SHADOW_NONE } ;
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		if (ge_is_in_combo_box(widget))
@@ -452,11 +457,14 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			/* Seriously, why can't non-gtk-apps at least try to be decent citizens?
 			   Take this fscking OpenOffice.org 1.9 for example. The morons responsible
 			   for this utter piece of crap gave the clip size wrong values! :'(  */
+			   // Is this comment still necessary? ;) -dborg
 /*			cairo_reset_clip (cr);
 			cairo_rectangle (cr, x+ 0.5, y+ 0.5, 10, 10);
 			cairo_clip (cr);
 			cairo_new_path (cr);
 */
+			shadow.shadow = CL_SHADOW_IN;
+
 			if (params.xthickness > 2)
 			{
 				if (params.ltr)
@@ -465,7 +473,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			}			
 		}
 		else
-			params.corners    = CL_CORNER_ALL;		
+		{
+			params.corners    = CL_CORNER_ALL;
+			params.enable_glow = TRUE;
+		}		
 	
 		if (GE_IS_TOGGLE_BUTTON (widget) &&
 		    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
@@ -478,8 +489,16 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			                                    area, x, y, width, height);
 		}
 		
-		clearlooks_draw_button (cr, &clearlooks_style->colors, &params,
-		                        x, y, width, height);
+		if (clearlooks_style->gloss)
+		{
+			clearlooks_draw_button_with_gloss (cr, &clearlooks_style->colors, &params, &shadow,
+			                                   x, y, width, height);
+		}
+		else
+		{
+			clearlooks_draw_button (cr, &clearlooks_style->colors, &params,
+		    	                    x, y, width, height);
+		}
 	}
 	else if (DETAIL ("spinbutton_up") || DETAIL ("spinbutton_down"))
 	{
@@ -510,7 +529,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				else
 					params.corners = CL_CORNER_BOTTOMLEFT;
 			}
-				
+			
 			clearlooks_draw_spinbutton_down (cr, &clearlooks_style->colors, &params, x, y, width, height);
 		}
 	}
@@ -531,6 +550,9 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				x--;
 			width++;
 		}
+		
+		if (clearlooks_style->gloss)
+				params.enable_glow = TRUE;
 		
 		clearlooks_draw_spinbutton (cr, &clearlooks_style->colors, &params,
 		                            x, y, width, height);
@@ -647,6 +669,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		slider.horizontal = DETAIL ("hscale");
 		
+		if (clearlooks_style->gloss)
+		{
+			params.enable_glow = TRUE;
+			params.corners = CL_CORNER_ALL;
+		}
+		
 		clearlooks_draw_slider_button (cr, &clearlooks_style->colors,
 		                               &params, &slider,
 		                               x, y, width, height);
@@ -667,6 +695,9 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			optionmenu.linepos = width - (indicator_size.width + indicator_spacing.left + indicator_spacing.right) - 1;
 		else
 			optionmenu.linepos = (indicator_size.width + indicator_spacing.left + indicator_spacing.right) + 1;
+			
+		if (clearlooks_style->gloss)
+			params.enable_glow = TRUE;
 		
 		clearlooks_draw_optionmenu (cr, colors, &params, &optionmenu,
 		                            x, y, width, height);		
@@ -712,7 +743,13 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		if (GE_IS_RANGE (widget))
 			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
 		
-		if (clearlooks_style->has_scrollbar_color)
+		if (clearlooks_style->gloss)
+		{
+			scrollbar.color = colors->bg[CL_STATE_NORMAL];
+			ge_shade_color (&scrollbar.color, 0.5, &scrollbar.color);
+			scrollbar.has_color = TRUE;
+		}
+		else if (clearlooks_style->has_scrollbar_color)
 		{
 			ge_gdk_color_to_cairo (&clearlooks_style->scrollbar_color, &scrollbar.color);
 			scrollbar.has_color = TRUE;
@@ -784,108 +821,20 @@ static void
 clearlooks_style_draw_option (DRAW_ARGS)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	CairoColor *border;
-	CairoColor *dot;
-	double trans = 1.0;
-	gboolean inconsistent; 
-	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN);
-
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
-	cairo_pattern_t *pt;
-
-	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
-	inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
-
-	draw_bullet |= inconsistent;
-
-#ifdef HAVE_ANIMATION
-	if (clearlooks_style->animation)
-		clearlooks_animation_connect_checkbox (widget);
-#endif
-
-	if (state_type == GTK_STATE_INSENSITIVE)
-	{
-		border = &clearlooks_style->colors.shade[5];
-		dot    = &clearlooks_style->colors.shade[6];
-	}
-	else
-	{
-		border = &clearlooks_style->colors.shade[7];
-		dot    = &clearlooks_style->colors.spot[1];
-	}
-	pt = cairo_pattern_create_linear (0, 0, 13, 13);
-	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.1);
-	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
-	cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
-	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.5);
+	const ClearlooksColors *colors;
+	cairo_t *cr;
+	cr = ge_gdk_drawable_to_cairo (window, area);
+	colors = &clearlooks_style->colors;
 	
-	cairo_translate (cr, x, y);
+	WidgetParameters params;
+	CheckboxParameters checkbox;
 	
-	cairo_set_line_width (cr, 2);
-	cairo_arc       (cr, 7, 7, 6, 0, G_PI*2);	
-	cairo_set_source (cr, pt);
-	cairo_stroke (cr);
-	cairo_pattern_destroy (pt);
-
-	cairo_set_line_width (cr, 1);
-
-	cairo_arc       (cr, 7, 7, 5.5, 0, G_PI*2);	
-	
-	if (state_type != GTK_STATE_INSENSITIVE)
-	{
-		CairoColor *bg = &clearlooks_style->colors.base[0];
-		cairo_set_source_rgb (cr, bg->r, bg->g, bg->b);
-		cairo_fill_preserve (cr);
-	}
-	
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
-	cairo_stroke (cr);
-	
-#ifdef HAVE_ANIMATION
-	if (clearlooks_style->animation && GE_IS_CHECK_BUTTON (widget) &&
-        clearlooks_animation_is_animated (widget) &&
-        !gtk_toggle_button_get_inconsistent (GTK_TOGGLE_BUTTON (widget)))
-	{
-		gfloat elapsed = clearlooks_animation_elapsed (widget);
-	
-		if (draw_bullet)
-			trans = sqrt (sqrt (MIN(elapsed / CHECK_ANIMATION_TIME, 1.0)));	
-		else
-			trans = 1.0 - sqrt (sqrt (MIN(elapsed / CHECK_ANIMATION_TIME, 1.0)));
+	checkbox.shadow_type = shadow_type;
+	checkbox.in_menu = (widget && GTK_IS_MENU(widget->parent));
 		
-		draw_bullet = TRUE;
-	}
-#endif
-
-	/* inconsistent state is missing? */
-	if (draw_bullet)
-	{
-		if (inconsistent)
-		{
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-			cairo_set_line_width (cr, 4);
-
-			cairo_move_to(cr, 5, 7);
-			cairo_line_to(cr, 9, 7);
-
-			cairo_set_source_rgba (cr, dot->r, dot->g, dot->b, trans);
-			cairo_stroke (cr);
-
-		}
-		else
-		{
-			cairo_arc (cr, 7, 7, 3, 0, G_PI*2);
-			/* cairo_set_source_rgb (cr, dot->r, dot->g, dot->b); */
-			cairo_set_source_rgba (cr, dot->r, dot->g, dot->b,trans);
-			cairo_fill (cr);
-		
-			cairo_arc (cr, 6, 6, 1, 0, G_PI*2);
-			/* cairo_set_source_rgba (cr, 1,1,1, 0.5); */
-			cairo_set_source_rgba (cr, 1,1,1, 0.5+trans);		
-			cairo_fill (cr);
-		}
-	}
+	clearlooks_set_widget_parameters (widget, style, state_type, &params);
+	
+	clearlooks_draw_radiobutton (cr, colors, &params, &checkbox, x, y, width, height);
 
 	cairo_destroy (cr);
 }
@@ -894,112 +843,25 @@ static void
 clearlooks_style_draw_check (DRAW_ARGS)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	CairoColor *border;
-	CairoColor *dot;
-	double trans = 1.0;
-	gboolean inconsistent = FALSE;
-	gboolean draw_bullet = (shadow_type == GTK_SHADOW_IN);
+
 	cairo_t *cr;
-	cairo_pattern_t *pt;
-
-	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent(widget));
-	inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
-
-	draw_bullet |= inconsistent;
-
 	cr = ge_gdk_drawable_to_cairo (window, area);
+	
+	WidgetParameters params;
+	CheckboxParameters checkbox;
+		
+	clearlooks_set_widget_parameters (widget, style, state_type, &params);
+	
+	params.corners = CL_CORNER_ALL;
+	
+	checkbox.shadow_type = shadow_type;
+	checkbox.in_cell = DETAIL("cellcheck");
 
+	checkbox.in_menu = (widget && widget->parent && GTK_IS_MENU(widget->parent));
 
-#ifdef HAVE_ANIMATION
-	if (clearlooks_style->animation)
-		clearlooks_animation_connect_checkbox (widget);
-#endif
+	clearlooks_draw_checkbox (cr, &clearlooks_style->colors, &params, &checkbox,
+	                          x, y, width, height);
 	
-	if (state_type == GTK_STATE_INSENSITIVE)
-	{
-		border = &clearlooks_style->colors.shade[5];
-		dot    = &clearlooks_style->colors.shade[6];
-	}
-	else
-	{
-		border = &clearlooks_style->colors.shade[7];
-		dot    = &clearlooks_style->colors.spot[1];
-	}
-
-	cairo_translate (cr, x, y);
-	cairo_set_line_width (cr, 1);
-	
-	if (style->xthickness > 2 && style->ythickness > 2)
-	{
-		/* Draw a gradient around the box so it appears sunken. */
-		pt = cairo_pattern_create_linear (0, 0, 0, 13);
-		cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.04);
-		cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
-		cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
-		cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.4);
-		
-		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
-		cairo_set_source (cr, pt);
-		cairo_stroke (cr);
-		cairo_pattern_destroy (pt);
-		
-		/* Draw the rectangle for the checkbox itself */
-		cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
-	}
-	else
-	{
-		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
-	}
-	
-	if (state_type != GTK_STATE_INSENSITIVE)
-	{
-		CairoColor *bg = &clearlooks_style->colors.base[0];
-		cairo_set_source_rgb (cr, bg->r, bg->g, bg->b);
-		cairo_fill_preserve (cr);
-	}
-	
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
-	cairo_stroke (cr);
-		
-#ifdef HAVE_ANIMATION
-	if (clearlooks_style->animation && GE_IS_CHECK_BUTTON (widget) &&
-	    clearlooks_animation_is_animated(widget) &&
-	    !gtk_toggle_button_get_inconsistent (GTK_TOGGLE_BUTTON (widget)))
-	{
-		gfloat elapsed = clearlooks_animation_elapsed (widget);
-	
-		if (draw_bullet)
-			trans = sqrt (sqrt (MIN(elapsed / CHECK_ANIMATION_TIME, 1.0)));
-		else
-			trans = 1.0 - sqrt (sqrt (MIN(elapsed / CHECK_ANIMATION_TIME, 1.0)));
-		
-		draw_bullet = TRUE;
-	}
-#endif
-
-	if (draw_bullet)
-	{
-		if (inconsistent) /* Inconsistent */
-		{
-			cairo_set_line_width (cr, 2.0);
-			cairo_move_to (cr, 3, height*0.5);
-			cairo_line_to (cr, width-3, height*0.5);
-		}
-		else
-		{
-			cairo_set_line_width (cr, 1.7);
-			cairo_move_to (cr, 0.5 + (width*0.2), (height*0.5));
-			cairo_line_to (cr, 0.5 + (width*0.4), (height*0.7));
-		
-			cairo_curve_to (cr, 0.5 + (width*0.4), (height*0.7),
-			                    0.5 + (width*0.5), (height*0.4),
-			                    0.5 + (width*0.70), (height*0.25));
-		}
-		
-		cairo_set_source_rgba (cr, dot->r, dot->g, dot->b, trans);
-		cairo_stroke (cr);
-	}
 	cairo_destroy (cr);
 }
 
@@ -1216,6 +1078,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->listviewitemstyle = CLEARLOOKS_RC_STYLE (rc_style)->listviewitemstyle;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->has_scrollbar_color;
 	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
+	clearlooks_style->gloss             = CLEARLOOKS_RC_STYLE (rc_style)->gloss;
 	
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
@@ -1252,8 +1115,8 @@ clearlooks_style_realize (GtkStyle * style)
 	for (i=0; i<5; i++)
 	{
 		ge_gdk_color_to_cairo (&style->bg[i], &clearlooks_style->colors.bg[i]);
-
-		ge_gdk_color_to_cairo (&style->base[i],&clearlooks_style->colors.base[i]);
+		ge_gdk_color_to_cairo (&style->base[i], &clearlooks_style->colors.base[i]);
+		ge_gdk_color_to_cairo (&style->text[i], &clearlooks_style->colors.text[i]);
 	}
 }
 

@@ -148,6 +148,18 @@ GE_INTERNAL void clearlooks_draw_resize_grip      (cairo_t *cr,
                                        const WidgetParameters          *widget,
                                        const ResizeGripParameters      *grip,
                                        int x, int y, int width, int height);
+                                       
+GE_INTERNAL void clearlooks_draw_checkbox (cairo_t *cr,
+                                           const ClearlooksColors  *colors,
+                                           const WidgetParameters   *widget,
+                                           const CheckboxParameters *checkbox,
+                                           int x, int y, int width, int height);
+
+GE_INTERNAL void clearlooks_draw_radiobutton (cairo_t *cr,
+                                              const ClearlooksColors *colors,
+                                              const WidgetParameters  *widget,
+                                              const CheckboxParameters *checkbox,
+                                              int x, int y, int width, int height);
 
 /* Function Pointers */
 typedef void (*menubar_draw_proto) (cairo_t *cr,

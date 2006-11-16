@@ -54,6 +54,7 @@ enum
   TOKEN_MENUITEMSTYLE,
   TOKEN_LISTVIEWITEMSTYLE,
   TOKEN_ANIMATION,
+  TOKEN_GLOSS,
   
   TOKEN_TRUE,
   TOKEN_FALSE
@@ -73,7 +74,8 @@ clearlooks_gtk2_rc_symbols[] =
   { "menubarstyle",      TOKEN_MENUBARSTYLE },
   { "menuitemstyle",     TOKEN_MENUITEMSTYLE },
   { "listviewitemstyle", TOKEN_LISTVIEWITEMSTYLE },
-  { "animation",	TOKEN_ANIMATION },
+  { "animation",         TOKEN_ANIMATION },
+  { "gloss",             TOKEN_GLOSS },
   
   { "TRUE",	TOKEN_TRUE },
   { "FALSE",	TOKEN_FALSE }
@@ -114,6 +116,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
   clearlooks_rc->menuitemstyle = 1;
   clearlooks_rc->listviewitemstyle = 1;
   clearlooks_rc->animation = FALSE;
+  clearlooks_rc->gloss = FALSE;
 }
 
 #ifdef HAVE_ANIMATION
@@ -302,6 +305,10 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	case TOKEN_ANIMATION:
 	  token = clearlooks_gtk2_rc_parse_boolean (settings, scanner, &clearlooks_style->animation);
 	  break;
+	case TOKEN_GLOSS:
+	  token = clearlooks_gtk2_rc_parse_boolean (settings, scanner, &clearlooks_style->gloss);
+	  break;
+	
 	default:
 	  g_scanner_get_next_token(scanner);
 	  token = G_TOKEN_RIGHT_CURLY;
@@ -349,7 +356,7 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 	}
 	
 	dest_w->animation = src_w->animation;
-
+	dest_w->gloss = src_w->gloss;
 }
 
 

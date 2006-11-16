@@ -50,6 +50,7 @@ struct _ClearlooksRcStyle
   guint8 listviewitemstyle;
   guint8 scrollbarstyle;
   gboolean animation;
+  gboolean gloss;
 };
 
 struct _ClearlooksRcStyleClass

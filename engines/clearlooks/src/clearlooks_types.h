@@ -122,6 +122,7 @@ typedef struct
 {
 	CairoColor bg[5];
 	CairoColor base[5];
+	CairoColor text[5];
 	
 	CairoColor shade[9];
 	CairoColor spot[3];
@@ -135,6 +136,7 @@ typedef struct
 	boolean focus;
 	boolean is_default;
 	boolean ltr;
+	boolean enable_glow;
 	
 	ClearlooksStateType state_type;
 	
@@ -231,6 +233,13 @@ typedef struct
 {
 	int style;
 } MenuBarParameters;
+
+typedef struct
+{
+	ClearlooksShadowType shadow_type;
+	boolean              in_cell;
+	boolean              in_menu;
+} CheckboxParameters;
 
 #define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) rect.x      = _x; \
                                                        rect.y      = _y; \
