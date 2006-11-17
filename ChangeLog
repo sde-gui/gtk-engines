@@ -1,5 +1,19 @@
 2006-11-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.h:
+	- definition for clearlooks_draw_button_with_gloss was missing
+
+	* engines/support/cairo-support.c: (ge_gdk_color_to_cairo),
+	(ge_cairo_color_to_gtk), (ge_cairo_set_color),
+	(ge_cairo_pattern_add_color_stop_color),
+	(ge_cairo_pattern_add_color_stop_shade), (ge_cairo_simple_border),
+	(ge_cairo_polygon), (ge_cairo_line):
+	* engines/support/cairo-support.h:
+	- Add "const" to some arguments where it seemed appropriate
+	(fixes some warnings in clearlooks)
+
+2006-11-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_scale_trough):
 	* engines/clearlooks/src/clearlooks_style.c:

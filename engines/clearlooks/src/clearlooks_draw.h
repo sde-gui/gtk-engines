@@ -13,6 +13,12 @@ GE_INTERNAL void clearlooks_draw_button           (cairo_t *cr,
                                        const WidgetParameters      *widget,
                                        int x, int y, int width, int height);
 
+GE_INTERNAL void clearlooks_draw_button_with_gloss (cairo_t *cr,
+                                                    const ClearlooksColors *colors,
+                                                    const WidgetParameters *params,
+                                                    const ShadowParameters *shadow,
+                                                    int x, int y, int width, int height);
+                                                                                                                                            
 GE_INTERNAL void clearlooks_draw_scale_trough     (cairo_t *cr,
                                        const ClearlooksColors      *colors,
                                        const WidgetParameters      *widget,

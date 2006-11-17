@@ -122,7 +122,7 @@ ge_color_from_hsb (gdouble hue,
 }
 
 void
-ge_gdk_color_to_cairo (GdkColor *c, CairoColor *cc)
+ge_gdk_color_to_cairo (const GdkColor *c, CairoColor *cc)
 {
 	gdouble r, g, b;
 
@@ -139,7 +139,7 @@ ge_gdk_color_to_cairo (GdkColor *c, CairoColor *cc)
 }
 
 void
-ge_cairo_color_to_gtk (CairoColor *cc, GdkColor *c)
+ge_cairo_color_to_gtk (const CairoColor *cc, GdkColor *c)
 {
 	gdouble r, g, b;
 
@@ -244,7 +244,7 @@ ge_gdk_drawable_to_cairo (GdkDrawable  *window, GdkRectangle *area)
 }
 
 void 
-ge_cairo_set_color (cairo_t *cr, CairoColor *color)
+ge_cairo_set_color (cairo_t *cr, const CairoColor *color)
 {
 	g_return_if_fail (cr && color);
 
@@ -254,7 +254,7 @@ ge_cairo_set_color (cairo_t *cr, CairoColor *color)
 void 
 ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, 
 						gfloat offset, 
-						CairoColor *color)
+						const CairoColor *color)
 {
 	g_return_if_fail (pattern && color);
 
@@ -264,7 +264,7 @@ ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern,
 void
 ge_cairo_pattern_add_color_stop_shade(cairo_pattern_t *pattern, 
 						gdouble offset, 
-						CairoColor *color, 
+						const CairoColor *color, 
 						gdouble shade)
 {
 	CairoColor shaded;
@@ -365,7 +365,7 @@ ge_cairo_stroke_rectangle (cairo_t *cr, double x, double y, double w, double h)
  ***********************************************/
 void
 ge_cairo_simple_border (cairo_t *cr,
-				CairoColor * tl, CairoColor * br,
+				const CairoColor * tl, const CairoColor * br,
 				gint x,	gint y, gint width, gint height, 
 				gboolean topleft_overlap)
 {
@@ -453,7 +453,7 @@ ge_cairo_simple_border (cairo_t *cr,
 }
 
 void ge_cairo_polygon (cairo_t *cr,
-				CairoColor *color,
+				const CairoColor *color,
 				GdkPoint *points,
 				gint npoints)
 {
@@ -485,7 +485,7 @@ void ge_cairo_polygon (cairo_t *cr,
 }
 
 void ge_cairo_line (cairo_t *cr,
-			CairoColor *color,
+			const CairoColor *color,
 			gint x1,
 			gint y1,
 			gint x2,
