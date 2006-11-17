@@ -149,12 +149,16 @@ style "clearlooks-menubar" = "blackrock-default"
 {
 #  bg[NORMAL]   = "#bacedb"
 }
-	
+
+style "clearlooks-scale" = "clearooks-button"
+{
+	GtkRange::trough-side-details = 1
+}	
 
 # widget styles
 class "GtkWidget" style "clearlooks-default"
 class "GtkButton" style "clearlooks-button"
-class "GtkScale"  style "clearlooks-button"
+class "GtkScale"  style "clearlooks-scale"
 class "GtkCombo"  style "clearlooks-button"
 class "GtkRange"  style "clearlooks-wide"
 class "GtkFrame"  style "clearlooks-wide"

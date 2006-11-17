@@ -557,22 +557,17 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		clearlooks_draw_spinbutton (cr, &clearlooks_style->colors, &params,
 		                            x, y, width, height);
 	}
-	else if (DETAIL ("trough") && widget && GE_IS_SCALE (widget))
+	else if (detail && g_str_has_prefix (detail, "trough") && GE_IS_SCALE (widget))
 	{
-		GtkAdjustment *adjustment = gtk_range_get_adjustment (GTK_RANGE (widget));	
 		WidgetParameters params;
 		SliderParameters slider;
-		gint slider_length;
 		
-		gtk_widget_style_get (widget, "slider-length", &slider_length, NULL);
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners    = CL_CORNER_NONE;
 		
-		slider.inverted   = gtk_range_get_inverted (GTK_RANGE (widget));
+		slider.lower = DETAIL ("trough-lower");
 		slider.horizontal = (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL);
-		slider.fill_size  = ((slider.horizontal ? width : height) - slider_length) * (1 / ((adjustment->upper - adjustment->lower) / (adjustment->value - adjustment->lower))) + slider_length / 2;
-		if (slider.horizontal && !params.ltr)
-			slider.inverted = !slider.inverted;
+		
 		clearlooks_draw_scale_trough (cr, &clearlooks_style->colors,
 		                              &params, &slider,
 		                              x, y, width, height);

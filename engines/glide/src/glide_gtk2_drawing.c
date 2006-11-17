@@ -1278,77 +1278,40 @@ glide_draw_box (GtkStyle * style,
 	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,vertical), x, y, width, height);
 
     }
-  else if ((CHECK_DETAIL (detail, "trough")))
+  else if (detail && g_str_has_prefix (detail, "trough")) /* accept trough side details */
     {
 	if (GE_IS_SCALE (widget)) 
 	{
-		GtkAdjustment *adjustment;
-		gfloat value = 0;
-  
-		ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, GTK_STATE_NORMAL, glide_style->bg_solid[GTK_STATE_NORMAL]), x, y, width, height);
-
-		adjustment = gtk_range_get_adjustment(GTK_RANGE(widget));
-		value = gtk_range_get_value(GTK_RANGE(widget));
-
+		gint vborder, hborder;
+		
+		/* calculate h/vborder, minimum width is 6 pixel */
 		if GE_IS_HSCALE (widget)
 		{
-			gint w=0;           
-
-			if (gtk_range_get_inverted(GTK_RANGE(widget)))
-				w = (width-1*2)*(1-(value- adjustment->lower) / (adjustment->upper - adjustment->lower));
-			else  
-				w = (width-1*2)*((value- adjustment->lower) / (adjustment->upper - adjustment->lower));
-
-			w = MAX (2, w);
-			w = MIN(w, width-1*2);              
-
-			ge_cairo_pattern_fill(canvas, glide_style->bg_solid[GTK_STATE_ACTIVE], 
-							x+1, y+8, width-1*2, height-8*2);
-              
-			if ((widget) && (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL))
-			{
-				ge_cairo_pattern_fill(canvas, glide_style->bg_gradient[TRUE][GTK_STATE_SELECTED], 
-								x + width - w - 1, y+8, w, height-8*2);
-      			}
-			else
-			{
-			ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[TRUE][GTK_STATE_SELECTED]), 
-							x+1, y+8, w, height-8*2);
-			}
-
-			ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, "menuitem",FALSE), 
-							x+1, y+8, width-1*2, height-8*2);
-
-			do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_NORMAL],
-						GLIDE_BEVEL_STYLE_SMOOTHER, GLIDE_BORDER_TYPE_IN,
-						x+1, y+8, width-1*2, height-8*2);
+			vborder = MIN(8, (height - 6) / 2);
+			hborder = 1;
 		}
 		else
 		{
-			gint h;           
-              
-			if (gtk_range_get_inverted(GTK_RANGE(widget)))
-				h = (height-1*2)*((value - adjustment->lower) / (adjustment->upper - adjustment->lower));
-			else  
-				h = (height-1*2)*(1-(value - adjustment->lower) / (adjustment->upper - adjustment->lower));
-
-			h = MAX (2, h);
-			h = MIN(h, height-8*2);
-	      
-			ge_cairo_pattern_fill(canvas, glide_style->bg_solid[GTK_STATE_ACTIVE], 
-							x+8, y+1, width-8*2, height-1*2);
-
-			ge_cairo_pattern_fill(canvas, glide_style->bg_gradient[FALSE][GTK_STATE_SELECTED], 
-							x+8, y+height - h - 1, width - 8*2, h);
-
-			ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, "menuitem",TRUE), 
-							x+8, y+1, width-8*2, height-1*2);
-
-			do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_NORMAL],
-						GLIDE_BEVEL_STYLE_SMOOTHER, GLIDE_BORDER_TYPE_IN,
-						x+8, y+1, width-8*2, height-1*2);
-
+			vborder = 1;
+			hborder = MIN(8, (width - 6) / 2);
 		}
+
+		ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, GTK_STATE_NORMAL,
+		                      glide_style->bg_solid[GTK_STATE_NORMAL]), x, y, width, height);
+
+		ge_cairo_pattern_fill(canvas, glide_style->bg_solid[GTK_STATE_ACTIVE], 
+		                      x+hborder, y+vborder, width-hborder*2, height-vborder*2);
+
+		if (CHECK_DETAIL (detail, "trough-lower"))
+			ge_cairo_pattern_fill(canvas, glide_style->bg_gradient[TRUE][GTK_STATE_SELECTED], 
+			                      x + hborder, y+vborder, width - hborder*2, height-vborder*2);
+
+		ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, "menuitem",FALSE), 
+				      x+hborder, y+vborder, width-hborder*2, height-vborder*2);
+
+		do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_NORMAL],
+				     GLIDE_BEVEL_STYLE_SMOOTHER, GLIDE_BORDER_TYPE_IN,
+				     x+hborder, y+vborder, width-hborder*2, height-vborder*2);
 	} 
 	else 
 	{

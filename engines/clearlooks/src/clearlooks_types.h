@@ -149,8 +149,7 @@ typedef struct
 
 typedef struct
 {
-	boolean inverted;
-	int     fill_size;
+	boolean lower;
 	boolean horizontal;
 } SliderParameters;
 

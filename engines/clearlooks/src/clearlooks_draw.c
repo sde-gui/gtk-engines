@@ -675,21 +675,11 @@ clearlooks_draw_scale_trough (cairo_t *cr,
                               const SliderParameters *slider,
                               int x, int y, int width, int height)
 {
-	int     fill_x, fill_y, fill_width, fill_height; /* Fill x,y,w,h */
 	int     trough_width, trough_height;
 	double  translate_x, translate_y;
-	int     fill_size = slider->fill_size;
 
 	if (slider->horizontal)
 	{
-		if (fill_size > width-3)
-			fill_size = width-3;
-
-		fill_x        = slider->inverted ? width - fill_size - 3 : 0;
-		fill_y        = 0;
-		fill_width    = fill_size;			
-		fill_height   = TROUGH_SIZE-2;
-		
 		trough_width  = width-3;
 		trough_height = TROUGH_SIZE-2;
 		
@@ -698,14 +688,6 @@ clearlooks_draw_scale_trough (cairo_t *cr,
 	}
 	else
 	{
-		if (fill_size > height-3)
-			fill_size = height-3;
-
-		fill_x        = 0;
-		fill_y        = slider->inverted ? height - fill_size - 3 : 0;
-		fill_width    = TROUGH_SIZE-2;
-		fill_height   = fill_size;			
-		
 		trough_width  = TROUGH_SIZE-2;
 		trough_height = height-3;
 		
@@ -719,17 +701,19 @@ clearlooks_draw_scale_trough (cairo_t *cr,
 	clearlooks_draw_inset (cr, trough_width+2, trough_height+2, 0, 0);
 	
 	cairo_translate (cr, 1, 1);
-	clearlooks_scale_draw_gradient (cr, &colors->shade[3], /* top */
-	                                    &colors->shade[2], /* bottom */
-	                                    &colors->shade[6], /* border */
-	                                    0, 0, trough_width, trough_height,
-	                                    slider->horizontal);
 	
-	clearlooks_scale_draw_gradient (cr, &colors->spot[1], /* top    */
-	                                    &colors->spot[0], /* bottom */
-	                                    &colors->spot[2], /* border */
-	                                    fill_x, fill_y, fill_width, fill_height,
-	                                    slider->horizontal);
+	if (!slider->lower)
+		clearlooks_scale_draw_gradient (cr, &colors->shade[3], /* top */
+		                                    &colors->shade[2], /* bottom */
+		                                    &colors->shade[6], /* border */
+		                                    0, 0, trough_width, trough_height,
+		                                    slider->horizontal);
+	else
+		clearlooks_scale_draw_gradient (cr, &colors->spot[1], /* top    */
+		                                    &colors->spot[0], /* bottom */
+		                                    &colors->spot[2], /* border */
+		                                    0, 0, trough_width, trough_height,
+		                                    slider->horizontal);
 }
 
 static void
