@@ -1,5 +1,10 @@
 2006-11-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Industrial/gtk-2.0/gtkrc:
+	- Initial color scheme support
+
+2006-11-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.h:
 	- definition for clearlooks_draw_button_with_gloss was missing
 
