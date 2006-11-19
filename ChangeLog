@@ -1,3 +1,7 @@
+2006-11-19  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc: Tweak base[PRELIGHT] for checkboxes
+
 2006-11-19  Thomas Wood  <thos@gnome.org>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

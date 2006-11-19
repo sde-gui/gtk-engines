@@ -42,7 +42,7 @@ style "clearlooks-default"
   bg[ACTIVE]        = shade (0.9, @bg_color) #"#dcd4c9" #"#d7d3ca" # dark beige
 
   base[NORMAL]      = @base_color # "#ffffff" # white 
-  base[PRELIGHT]    = darker (@bg_color) # "#5f8ec4" # dark beige
+  base[PRELIGHT]    = shade (0.95, @bg_color) # "#5f8ec4" # dark beige
   base[ACTIVE]      = shade (0.9, @selected_bg_color) # "#a69f91" # darker deepsky
   base[SELECTED]    = @selected_bg_color # "#5598d7" # deepsky
   base[INSENSITIVE] = @bg_color # "#e8e5de" # beige
