@@ -441,11 +441,13 @@ clearlooks_draw_button_with_gloss (cairo_t *cr,
 			ge_cairo_set_color (cr, glow);
 			cairo_stroke (cr);
 		}
-		if (params->active || shadow->shadow == CL_SHADOW_IN)
+		
+		/* Use inset as default for now - would be nice to make this an option */
+		/* if (params->active || shadow->shadow == CL_SHADOW_IN) */
 			clearlooks_draw_inset (cr, width-1, height-1, RADIUS, params->corners);
-		else
+		/* else
 			clearlooks_draw_shadow (cr, width-1, height-1);
-			
+		*/
 		cairo_translate (cr, -0.5, -0.5);
 		
 		if (params->xthickness == 3)

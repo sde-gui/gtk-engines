@@ -1,3 +1,8 @@
+2006-11-19  Thomas Wood  <thos@gnome.org>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button_with_gloss): Draw buttons with inset border
+
 2006-11-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Industrial/gtk-2.0/gtkrc:
