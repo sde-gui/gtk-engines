@@ -334,7 +334,7 @@ void
 ge_cairo_stroke_rectangle (cairo_t *cr, double x, double y, double w, double h)
 {
 #ifdef CAIRO_STROKE_IS_FAST
-	cairo_rectangle (cr, x, y, width, height);
+	cairo_rectangle (cr, x, y, w, h);
 	cairo_stroke (cr);
 #else
 	gfloat line_width;

@@ -1,3 +1,8 @@
+2006-11-20  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/support/cairo-support.c: (ge_cairo_stroke_rectangle):
+	- Wrong variable names in the codepath using stroke.
+
 2006-11-19  Daniel Borgmann  <daniel.borgmann@gmail.com>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc: Tweak base[PRELIGHT] for checkboxes
