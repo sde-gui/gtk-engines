@@ -2262,80 +2262,83 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 		cairo_translate (cr, -2, -1);
 	}
 
-	if ( (checkbox->shadow_type == CL_SHADOW_IN || 
-	      checkbox->shadow_type == CL_SHADOW_ETCHED_IN || 
-	      widget->active) && !widget->disabled )
+	if (!checkbox->in_menu)
 	{
-		border = top = bottom = colors->spot[1];
-		
-		if (widget->prelight)
+		if ( (checkbox->shadow_type == CL_SHADOW_IN || 
+		      checkbox->shadow_type == CL_SHADOW_ETCHED_IN || 
+		      widget->active) && !widget->disabled )
 		{
-			ge_shade_color (&top, 1.1, &top);
-			ge_shade_color (&border, 0.8, &border);
-		}
-		
-		ge_shade_color (&top, 1.2, &top);
-		ge_shade_color (&bottom, 0.9, &bottom);
-		ge_shade_color (&border, 0.6, &border);
-	}
-	else if (widget->disabled)
-	{
-		border = top = bottom = colors->shade[3];
-	}
-	else
-	{		
-		top = bottom = colors->base[widget->state_type];
-		
-		if (widget->prelight)
-		{
-			ge_shade_color (&top, 1.2, &top);
-			border = colors->spot[2];
+			border = top = bottom = colors->spot[1];
 			
+			if (widget->prelight)
+			{
+				ge_shade_color (&top, 1.1, &top);
+				ge_shade_color (&border, 0.8, &border);
+			}
+			
+			ge_shade_color (&top, 1.2, &top);
+			ge_shade_color (&bottom, 0.9, &bottom);
+			ge_shade_color (&border, 0.6, &border);
+		}
+		else if (widget->disabled)
+		{
+			border = top = bottom = colors->shade[3];
 		}
 		else
-		{
-			border = colors->base[widget->state_type];
-			ge_shade_color(&border, 0.4, &border);
+		{		
+			top = bottom = colors->base[widget->state_type];
+			
+			if (widget->prelight)
+			{
+				ge_shade_color (&top, 1.2, &top);
+				border = colors->spot[2];
+				
+			}
+			else
+			{
+				border = colors->base[widget->state_type];
+				ge_shade_color(&border, 0.4, &border);
+			}
+			
+			ge_shade_color (&top, 0.98, &top);
+			ge_shade_color (&bottom, 0.85, &bottom);
 		}
 		
-		ge_shade_color (&top, 0.98, &top);
-		ge_shade_color (&bottom, 0.85, &bottom);
-	}
-	
-	if ( widget->state_type != GTK_STATE_INSENSITIVE )
-	{
-		// glow
-		if (widget->prelight || (widget->active && !draw_bullet)) 
+		if ( widget->state_type != GTK_STATE_INSENSITIVE )
 		{
-			const CairoColor *glow = &colors->spot[0];
-			cairo_arc (cr, x+width/2.0 + 0.5, y+height/2.0 + 0.5, width/2.0, 0, 2 * M_PI);
-			cairo_set_source_rgba (cr, glow->r, glow->g, glow->b, 1.0);
+			// glow
+			if (widget->prelight || (widget->active && !draw_bullet)) 
+			{
+				const CairoColor *glow = &colors->spot[0];
+				cairo_arc (cr, x+width/2.0 + 0.5, y+height/2.0 + 0.5, width/2.0, 0, 2 * M_PI);
+				cairo_set_source_rgba (cr, glow->r, glow->g, glow->b, 1.0);
+				cairo_stroke (cr);
+			}
+		
+			// shadow
+			cairo_arc (cr, x+width/2.0+1, y+height/2.0+1, width/2.0 - 1.0, 0, 2 * M_PI);
+			cairo_set_source_rgba (cr, 0., 0., 0., 0.2);
 			cairo_stroke (cr);
+			
+			cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);	
+			pattern = cairo_pattern_create_linear (x, y, x+width, y+height);
+			cairo_pattern_add_color_stop_rgb (pattern, 0.0, 1.0, 1.0, 1.0);
+			cairo_pattern_add_color_stop_rgb (pattern, 0.4, top.r, top.g, top.b);
+			cairo_pattern_add_color_stop_rgb (pattern, 1.0, bottom.r, bottom.g, bottom.b);
+			cairo_set_source (cr, pattern);
+			cairo_fill(cr);
+			cairo_pattern_destroy (pattern);
 		}
-	
-		// shadow
-		cairo_arc (cr, x+width/2.0+1, y+height/2.0+1, width/2.0 - 1.0, 0, 2 * M_PI);
-		cairo_set_source_rgba (cr, 0., 0., 0., 0.2);
+		cairo_translate (cr, 0.5, 0.5);
+		cairo_arc (cr, x+width/2.0, y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);
+		
+		cairo_set_source_rgb (cr, border.r, border.g, border.b);
 		cairo_stroke (cr);
 		
-		cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);	
-		pattern = cairo_pattern_create_linear (x, y, x+width, y+height);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.0, 1.0, 1.0, 1.0);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.4, top.r, top.g, top.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 1.0, bottom.r, bottom.g, bottom.b);
-		cairo_set_source (cr, pattern);
-		cairo_fill(cr);
-		cairo_pattern_destroy (pattern);
+		cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 2.0, 0, 2 * M_PI);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.4);
+		cairo_stroke (cr);
 	}
-	cairo_translate (cr, 0.5, 0.5);
-	cairo_arc (cr, x+width/2.0, y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);
-	
-	cairo_set_source_rgb (cr, border.r, border.g, border.b);
-	cairo_stroke (cr);
-	
-	cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 2.0, 0, 2 * M_PI);
-	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.4);
-	cairo_stroke (cr);
 	
 	// draw the bullet
 	cairo_translate (cr, x, y);
