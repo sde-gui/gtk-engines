@@ -1,5 +1,13 @@
 2006-11-24  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_fill),
+	(clearlooks_draw_scrollbar_trough),
+	(clearlooks_draw_scrollbar_slider), (_clearlooks_draw_arrow):
+	- removed clearlooks_rotate_mirror_translate
+
+2006-11-24  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/*:
 	* engines/clearlooks/src/clearlooks_style_glossy.c:
 	- separate the glossy functions into clearlooks_style_glossy.c.

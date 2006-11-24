@@ -13,41 +13,6 @@ typedef void (*menubar_draw_proto) (cairo_t *cr,
                                     const MenuBarParameters *menubar,
                                     int x, int y, int width, int height);
 
-
-
-/* KEEP IN MIND, MIRROR TAKES PLACE BEFORE ROTATION */
-/* ROTATES ANTI-CLOCKWISE, I THINK :P */
-/* TODO: Do I really need THREE matrices? */
-
-/* This function does not, and never did, what it advertises. Needs to be killed -- Benjamin */
-static void
-clearlooks_rotate_mirror_translate (cairo_t *cr, double radius, double x, double y,
-                         boolean mirror_horizontally, boolean mirror_vertically)
-{
-	cairo_matrix_t matrix_rotate;
-	cairo_matrix_t matrix_mirror;
-	cairo_matrix_t matrix_result;
-	
-	double r_cos = cos(radius);
-	double r_sin = sin(radius);
-	
-	cairo_matrix_init (&matrix_rotate, r_cos,
-	                                   r_sin,
-	                                   r_sin,
-	                                   r_cos,
-	                                   x, y);
-	
-	cairo_matrix_init (&matrix_mirror, mirror_horizontally ? -1 : 1,
-	                                   0,
-	                                   0,
-	                                   mirror_vertically ? -1 : 1,
-									   0, 0);
-
-	cairo_matrix_multiply (&matrix_result, &matrix_mirror, &matrix_rotate);
-
-	cairo_set_matrix (cr, &matrix_result);
-}
-
 static void
 clearlooks_draw_inset (cairo_t *cr, int width, int height,
                        double radius, uint8 corners)
@@ -718,25 +683,15 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	 * The problem is that the rotation should not be resetted by the save/restore. */
 	cairo_rectangle (cr, x, y, width, height);
 
-	if (is_horizontal)
-	{
-		if (progressbar->orientation == CL_ORIENTATION_LEFT_TO_RIGHT)
-			clearlooks_rotate_mirror_translate (cr, 0, x, y, FALSE, FALSE);
-		else
-			clearlooks_rotate_mirror_translate (cr, 0, x+width, y, TRUE, FALSE);
-	}
-	else
-	{
-		int tmp = height;
-		height  = width;
-		width   = tmp;
+	if (!is_horizontal)
+		ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
 
-		if (progressbar->orientation == CL_ORIENTATION_TOP_TO_BOTTOM)
-			clearlooks_rotate_mirror_translate (cr, G_PI/2, x, y, FALSE, FALSE);
-		else
-			clearlooks_rotate_mirror_translate (cr, G_PI/2, x, y+width, TRUE, FALSE);
-	}
-	
+	if ((progressbar->orientation == CL_ORIENTATION_RIGHT_TO_LEFT) || (progressbar->orientation == CL_ORIENTATION_BOTTOM_TO_TOP))
+		ge_cairo_mirror (cr, CR_MIRROR_HORIZONTAL, &x, &y, &width, &height);
+
+	cairo_translate (cr, x, y);
+
+
 	cairo_save (cr);
 	cairo_clip (cr);
 	
@@ -1400,16 +1355,9 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	/* cairo_translate (cr, x, y); */
 	
 	if (scrollbar->horizontal)
-	{
-		int tmp = height;
-		clearlooks_rotate_mirror_translate (cr, G_PI/2, x, y, FALSE, FALSE);
-		height = width;
-		width = tmp;
-	}
-	else
-	{
-		cairo_translate (cr, x, y);	
-	}
+		ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
+
+	cairo_translate (cr, x, y);	
 
 	/* Draw fill */
 	cairo_rectangle (cr, 1, 0, width-2, height);
@@ -1523,18 +1471,10 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 			height += 1;
 	}
 	
-	if (scrollbar->horizontal)
-	{
-		cairo_translate (cr, x, y);	
-	}
-	else
-	{
-		int tmp = height;
-		clearlooks_rotate_mirror_translate (cr, G_PI/2, x, y, FALSE, FALSE);
-		height = width;
-		width = tmp;
-	}
-	
+	if (!scrollbar->horizontal)
+		ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
+
+	cairo_translate (cr, x, y);	
 
 	if (scrollbar->has_color)
 	{
@@ -1766,8 +1706,9 @@ _clearlooks_draw_arrow (cairo_t *cr, CairoColor *color,
 		rotate = 0;
 	
 	if (type == CL_ARROW_NORMAL)
-	{		
-		clearlooks_rotate_mirror_translate (cr, rotate, x, y, FALSE, FALSE);		
+	{
+		cairo_translate (cr, x, y);
+		cairo_rotate (cr, rotate);		
 		clearlooks_draw_normal_arrow (cr, color, 0, 0, width, height);
 	}
 	else if (type == CL_ARROW_COMBO)
