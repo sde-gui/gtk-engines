@@ -1,3 +1,26 @@
+2006-11-24  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/*:
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	- separate the glossy functions into clearlooks_style_glossy.c.
+	Created a ClearlooksStyleFunctions struct containing function pointer for
+	the different styles.
+	- add "style" option to the gtkrc, valid values are CLASSIC and
+	GLOSSY (removed gloss option)
+	- fix merging of rc styles, before it was not possible to override
+	only some options.
+	- Changed some things to use support (ge_cairo_rounded_rectangle,
+	CairoCorner)
+
+	* engines/support/cairo-support.c: (ge_cairo_mirror),
+	(ge_cairo_exchange_axis):
+	* engines/support/cairo-support.h:
+	- Add ge_cairo_exchange_axis, a common operation done by clearlooks.
+	- fix ge_cairo_mirror
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	- set "style = CLASSIC" not some glossy stuff
+
 2006-11-20  Daniel Borgmann  <daniel.borgmann@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

@@ -5,6 +5,15 @@
 
 typedef unsigned char boolean;
 typedef unsigned char uint8;
+typedef struct _ClearlooksStyleFunctions ClearlooksStyleFunctions;
+
+typedef enum
+{
+	CL_STYLE_CLASSIC = 0,
+	CL_STYLE_GLOSSY = 1,
+	CL_NUM_STYLES = 2
+} ClearlooksStyles;
+
 
 typedef enum
 {
@@ -13,16 +22,6 @@ typedef enum
 	CL_STATE_SELECTED,
 	CL_STATE_INSENSITIVE
 } ClearlooksStateType;
-
-typedef enum
-{
-	CL_CORNER_NONE        = 0,
-	CL_CORNER_TOPLEFT     = 1,
-	CL_CORNER_TOPRIGHT    = 2,
-	CL_CORNER_BOTTOMLEFT  = 4,
-	CL_CORNER_BOTTOMRIGHT = 8,
-	CL_CORNER_ALL         = 15
-} ClearlooksCorners;
 
 typedef enum
 {
@@ -145,6 +144,8 @@ typedef struct
 	uint8 ythickness;
 
 	CairoColor parentbg;
+
+	ClearlooksStyleFunctions *style_functions;
 } WidgetParameters;
 
 typedef struct
@@ -182,7 +183,7 @@ typedef struct
 
 typedef struct
 {
-	ClearlooksCorners    corners;
+	CairoCorners    corners;
 	ClearlooksShadowType shadow;	
 } ShadowParameters;
 
@@ -239,6 +240,178 @@ typedef struct
 	boolean              in_cell;
 	boolean              in_menu;
 } CheckboxParameters;
+
+
+struct _ClearlooksStyleFunctions
+{
+	void (*draw_button)           (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_scale_trough)     (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const SliderParameters		*slider,
+	                               int x, int y, int width, int height);
+
+	void (*draw_progressbar_trough) (cairo_t			*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_progressbar_fill) (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const ProgressBarParameters	*progressbar,
+	                               int x, int y, int width, int height, gint offset);
+
+	void (*draw_slider_button)    (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const SliderParameters		*slider,
+	                               int x, int y, int width, int height);
+
+	void (*draw_entry)            (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_spinbutton)       (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_spinbutton_down)  (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_optionmenu)       (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const OptionMenuParameters	*optionmenu,
+	                               int x, int y, int width, int height);
+					   
+	void (*draw_inset)            (cairo_t				*cr,
+	                               int width, int height,
+	                               double radius, uint8 corners);
+
+	void (*draw_menubar)          (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const MenuBarParameters		*menubar,
+	                               int x, int y, int width, int height);
+
+	void (*draw_tab)              (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const TabParameters		*tab,
+	                               int x, int y, int width, int height);
+
+	void (*draw_frame)            (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const FrameParameters		*frame,
+	                               int x, int y, int width, int height);
+
+	void (*draw_separator)        (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const SeparatorParameters	*separator,
+	                               int x, int y, int width, int height);
+
+	void (*draw_list_view_header) (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const ListViewHeaderParameters	*header,
+	                               int x, int y, int width, int height);
+
+	void (*draw_toolbar)          (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_menuitem)         (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_scrollbar_stepper) (cairo_t				*cr,
+	                                const ClearlooksColors		*colors,
+	                                const WidgetParameters		*widget,
+	                                const ScrollBarParameters	*scrollbar,
+	                                const ScrollBarStepperParameters *stepper,
+	                                int x, int y, int width, int height);
+
+	void (*draw_scrollbar_slider) (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const ScrollBarParameters	*scrollbar,
+	                               int x, int y, int width, int height);
+
+	void (*draw_scrollbar_trough) (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const ScrollBarParameters	*scrollbar,
+	                               int x, int y, int width, int height);
+
+	void (*draw_statusbar)        (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_menu_frame)       (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_handle)           (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const HandleParameters		*handle,
+	                               int x, int y, int width, int height);
+
+	void (*draw_arrow)            (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const ArrowParameters		*arrow,
+	                               int x, int y, int width, int height);
+
+	void (*draw_resize_grip)      (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const ResizeGripParameters	*grip,
+	                               int x, int y, int width, int height);
+	                               
+	void (*draw_checkbox)         (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const CheckboxParameters		*checkbox,
+	                               int x, int y, int width, int height);
+
+	void (*draw_radiobutton)      (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const CheckboxParameters		*checkbox,
+	                               int x, int y, int width, int height);
+
+	/* Style internal functions */
+	/* XXX: Only used by slider_button, inline it? */
+	void (*draw_shadow)           (cairo_t				*cr,
+	                               int				 width,
+	                               int				 height);
+
+	void (*draw_slider)           (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
+	void (*draw_gripdots)         (cairo_t *cr, int x, int y,
+                                       int width, int height, int xr, int yr,
+                                       float contrast);
+};
+
 
 #define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) rect.x      = _x; \
                                                        rect.y      = _y; \

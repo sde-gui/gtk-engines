@@ -23,6 +23,7 @@
  */
 
 #include <gtk/gtkrc.h>
+#include "clearlooks_types.h"
 
 typedef struct _ClearlooksRcStyle ClearlooksRcStyle;
 typedef struct _ClearlooksRcStyleClass ClearlooksRcStyleClass;
@@ -36,21 +37,37 @@ GE_INTERNAL extern GType clearlooks_type_rc_style;
 #define CLEARLOOKS_IS_RC_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLEARLOOKS_TYPE_RC_STYLE))
 #define CLEARLOOKS_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLEARLOOKS_TYPE_RC_STYLE, ClearlooksRcStyleClass))
 
+/* XXX: needs fixing! */
+typedef enum {
+	CL_FLAG_STYLE		= 1 << 0,
+	CL_FLAG_SCROLLBAR_COLOR	= 1 << 1,
+	CL_FLAG_CONTRAST	= 1 << 2,
+	CL_FLAG_SUNKENMENUBAR	= 1 << 3,
+	CL_FLAG_PROGRESSBARSTYLE = 1 << 4,
+	CL_FLAG_MENUBARSTYLE	= 1 << 5,
+	CL_FLAG_MENUITEMSTYLE	= 1 << 6,
+	CL_FLAG_LISTVIEWITEMSTYLE = 1 << 7,
+	CL_FLAG_SCROLLBARSTYLE	= 1 << 8,
+	CL_FLAG_ANIMATION	= 1 << 9,
+} ClearlooksRcFlags;
+
 struct _ClearlooksRcStyle
 {
-  GtkRcStyle parent_instance;
+	GtkRcStyle parent_instance;
 
-  GdkColor scrollbar_color;
-  gboolean has_scrollbar_color;
-  double contrast;
-  guint8 sunkenmenubar;
-  guint8 progressbarstyle;
-  guint8 menubarstyle;
-  guint8 menuitemstyle;
-  guint8 listviewitemstyle;
-  guint8 scrollbarstyle;
-  gboolean animation;
-  gboolean gloss;
+	ClearlooksRcFlags flags;
+
+	ClearlooksStyles style;
+  
+	GdkColor scrollbar_color;
+	double contrast;
+	guint8 sunkenmenubar;
+	guint8 progressbarstyle;
+	guint8 menubarstyle;
+	guint8 menuitemstyle;
+	guint8 listviewitemstyle;
+	guint8 scrollbarstyle;
+	gboolean animation;
 };
 
 struct _ClearlooksRcStyleClass

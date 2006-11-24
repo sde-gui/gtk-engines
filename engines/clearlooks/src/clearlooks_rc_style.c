@@ -54,7 +54,10 @@ enum
   TOKEN_MENUITEMSTYLE,
   TOKEN_LISTVIEWITEMSTYLE,
   TOKEN_ANIMATION,
-  TOKEN_GLOSS,
+  TOKEN_STYLE,
+  
+  TOKEN_CLASSIC,
+  TOKEN_GLOSSY,
   
   TOKEN_TRUE,
   TOKEN_FALSE
@@ -75,7 +78,10 @@ clearlooks_gtk2_rc_symbols[] =
   { "menuitemstyle",     TOKEN_MENUITEMSTYLE },
   { "listviewitemstyle", TOKEN_LISTVIEWITEMSTYLE },
   { "animation",         TOKEN_ANIMATION },
-  { "gloss",             TOKEN_GLOSS },
+  { "style",             TOKEN_STYLE },
+
+  { "CLASSIC",           TOKEN_CLASSIC },
+  { "GLOSSY",            TOKEN_GLOSSY },
   
   { "TRUE",	TOKEN_TRUE },
   { "FALSE",	TOKEN_FALSE }
@@ -108,7 +114,10 @@ clearlooks_rc_style_register_type (GTypeModule *module)
 static void
 clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
 {
-  clearlooks_rc->has_scrollbar_color = FALSE;
+  clearlooks_rc->style = CL_STYLE_CLASSIC;
+
+  clearlooks_rc->flags = 0;
+  
   clearlooks_rc->contrast = 1.0;
   clearlooks_rc->sunkenmenubar = 1;
   clearlooks_rc->progressbarstyle = 0;
@@ -116,7 +125,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
   clearlooks_rc->menuitemstyle = 1;
   clearlooks_rc->listviewitemstyle = 1;
   clearlooks_rc->animation = FALSE;
-  clearlooks_rc->gloss = FALSE;
+  clearlooks_rc->style = CL_STYLE_CLASSIC;
 }
 
 #ifdef HAVE_ANIMATION
@@ -238,6 +247,39 @@ clearlooks_gtk2_rc_parse_int (GtkSettings  *settings,
 }
 
 static guint
+clearlooks_gtk2_rc_parse_style (GtkSettings      *settings,
+                                GScanner         *scanner,
+                                ClearlooksStyles *style)
+{
+  guint token;
+
+  g_assert (CL_NUM_STYLES == CL_STYLE_GLOSSY + 1); /* so that people don't forget ;-) */
+
+  /* Skip 'style' */
+  token = g_scanner_get_next_token (scanner);
+
+  token = g_scanner_get_next_token (scanner);
+  if (token != G_TOKEN_EQUAL_SIGN)
+    return G_TOKEN_EQUAL_SIGN;
+
+  token = g_scanner_get_next_token (scanner);
+  
+  switch (token)
+    {
+      case TOKEN_CLASSIC:
+        *style = CL_STYLE_CLASSIC;
+        break;
+      case TOKEN_GLOSSY:
+        *style = CL_STYLE_GLOSSY;
+        break;
+      default:
+        return TOKEN_CLASSIC;
+    }
+
+  return G_TOKEN_NONE;
+}
+
+static guint
 clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 			   GtkSettings  *settings,
 			   GScanner   *scanner)
@@ -282,31 +324,39 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	{
 	case TOKEN_SCROLLBARCOLOR:
 	  token = clearlooks_gtk2_rc_parse_color (settings, scanner, &clearlooks_style->scrollbar_color);
-	  clearlooks_style->has_scrollbar_color = TRUE;
+	  clearlooks_style->flags |= CL_FLAG_SCROLLBAR_COLOR;
 	  break;
 	case TOKEN_CONTRAST:
 	  token = clearlooks_gtk2_rc_parse_contrast (settings, scanner, &clearlooks_style->contrast);
+	  clearlooks_style->flags |= CL_FLAG_CONTRAST;
 	  break;
 	case TOKEN_SUNKENMENU:
 	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->sunkenmenubar);
+	  clearlooks_style->flags |= CL_FLAG_SUNKENMENUBAR;
 	  break;
 	case TOKEN_PROGRESSBARSTYLE:
 	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->progressbarstyle);
+	  clearlooks_style->flags |= CL_FLAG_PROGRESSBARSTYLE;
 	  break;
 	case TOKEN_MENUBARSTYLE:
 	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->menubarstyle);
+	  clearlooks_style->flags |= CL_FLAG_MENUBARSTYLE;
 	  break;
 	case TOKEN_MENUITEMSTYLE:
 	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->menuitemstyle);
+	  clearlooks_style->flags |= CL_FLAG_MENUITEMSTYLE;
 	  break;
 	case TOKEN_LISTVIEWITEMSTYLE:
 	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->listviewitemstyle);
+	  clearlooks_style->flags |= CL_FLAG_LISTVIEWITEMSTYLE;
 	  break;
 	case TOKEN_ANIMATION:
 	  token = clearlooks_gtk2_rc_parse_boolean (settings, scanner, &clearlooks_style->animation);
+	  clearlooks_style->flags |= CL_FLAG_ANIMATION;
 	  break;
-	case TOKEN_GLOSS:
-	  token = clearlooks_gtk2_rc_parse_boolean (settings, scanner, &clearlooks_style->gloss);
+	case TOKEN_STYLE:
+	  token = clearlooks_gtk2_rc_parse_style (settings, scanner, &clearlooks_style->style);
+	  clearlooks_style->flags |= CL_FLAG_STYLE;
 	  break;
 	
 	default:
@@ -342,21 +392,26 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 	src_w = CLEARLOOKS_RC_STYLE (src);
 	dest_w = CLEARLOOKS_RC_STYLE (dest);
 	
-	dest_w->contrast          = src_w->contrast;
-	dest_w->sunkenmenubar     = src_w->sunkenmenubar;
-	dest_w->progressbarstyle  = src_w->progressbarstyle;
-	dest_w->menubarstyle      = src_w->menubarstyle;
-	dest_w->menuitemstyle     = src_w->menuitemstyle;
-	dest_w->listviewitemstyle = src_w->listviewitemstyle;
-
-	if (src_w->has_scrollbar_color)
-	{
-		dest_w->has_scrollbar_color = TRUE;
+	if (src_w->flags & CL_FLAG_STYLE)
+		dest_w->style = src_w->style;
+	if (src_w->flags & CL_FLAG_CONTRAST)
+		dest_w->contrast          = src_w->contrast;
+	if (src_w->flags & CL_FLAG_SUNKENMENUBAR)
+		dest_w->sunkenmenubar     = src_w->sunkenmenubar;
+	if (src_w->flags & CL_FLAG_PROGRESSBARSTYLE)
+		dest_w->progressbarstyle  = src_w->progressbarstyle;
+	if (src_w->flags & CL_FLAG_MENUBARSTYLE)
+		dest_w->menubarstyle      = src_w->menubarstyle;
+	if (src_w->flags & CL_FLAG_MENUITEMSTYLE)
+		dest_w->menuitemstyle     = src_w->menuitemstyle;
+	if (src_w->flags & CL_FLAG_LISTVIEWITEMSTYLE)
+		dest_w->listviewitemstyle = src_w->listviewitemstyle;
+	if (src_w->flags & CL_FLAG_SCROLLBAR_COLOR)
 		dest_w->scrollbar_color = src_w->scrollbar_color;
-	}
-	
-	dest_w->animation = src_w->animation;
-	dest_w->gloss = src_w->gloss;
+	if (src_w->flags & CL_FLAG_ANIMATION)
+		dest_w->animation = src_w->animation;
+
+	dest_w->flags |= src_w->flags;
 }
 
 

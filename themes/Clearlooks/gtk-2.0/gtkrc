@@ -61,7 +61,7 @@ style "clearlooks-default"
     listviewitemstyle = 1       # 0 = flat, 1 = 3d-ish (gradient)
     progressbarstyle  = 1       # 0 = candy bar, 1 = fancy candy bar, 2 = flat
     animation         = FALSE
-    gloss             = TRUE
+    style             = CLASSIC
   }
 }
 

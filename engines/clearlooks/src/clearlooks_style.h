@@ -1,5 +1,6 @@
 /* Clearlooks Engine
  * Copyright (C) 2005 Richard Stellingwerff.
+ * Copyright (C) 2006 Benjamin Berg
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -22,6 +23,9 @@
  */
 #include <gtk/gtkstyle.h>
 
+#ifndef CLEARLOOKS_STYLE_H
+#define CLEARLOOKS_STYLE_H
+
 #include "animation.h"
 #include "clearlooks_types.h"
 
@@ -42,6 +46,8 @@ struct _ClearlooksStyle
 	GtkStyle parent_instance;
 
 	ClearlooksColors colors;
+
+	ClearlooksStyles style;
 	
 	guint8   progressbarstyle;
 	guint8   menubarstyle;
@@ -50,13 +56,17 @@ struct _ClearlooksStyle
 	GdkColor scrollbar_color;
 	gboolean has_scrollbar_color;
 	gboolean animation;
-	gboolean gloss;
 };
 
 struct _ClearlooksStyleClass
 {
   GtkStyleClass parent_class;
+  
+  ClearlooksStyleFunctions style_functions[CL_NUM_STYLES];
 };
 
 
 GE_INTERNAL void clearlooks_style_register_type (GTypeModule *module);
+
+
+#endif /* CLEARLOOKS_STYLE_H */

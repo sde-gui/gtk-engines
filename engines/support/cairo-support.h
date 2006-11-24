@@ -104,6 +104,7 @@ GE_INTERNAL void ge_cairo_line (cairo_t *cr, const CairoColor *color, gint x1, g
 GE_INTERNAL void ge_cairo_polygon (cairo_t *cr, const CairoColor *color, GdkPoint *points, gint npoints);
 
 GE_INTERNAL void ge_cairo_mirror (cairo_t *cr, CairoMirror mirror, gint *x, gint *y, gint *width, gint *height);
+GE_INTERNAL void ge_cairo_exchange_axis (cairo_t *cr, gint *x, gint *y, gint *width, gint *height);
 
 GE_INTERNAL void ge_cairo_pattern_fill(cairo_t *canvas, CairoPattern *pattern, gint x, gint y, gint width, gint height);
 

@@ -516,19 +516,47 @@ ge_cairo_mirror (cairo_t     *cr,
 	
 	cairo_matrix_init_identity (&matrix);
 	
+	cairo_translate (cr, *x, *y);
+	*x = 0;
+	*y = 0;
+	
 	if (mirror & CR_MIRROR_HORIZONTAL)
 	{
 		cairo_matrix_scale (&matrix, -1, 1);
-		cairo_matrix_translate (&matrix, *width, 0);
+		*x = -*width;
 	}
 	if (mirror & CR_MIRROR_VERTICAL)
 	{
 		cairo_matrix_scale (&matrix, 1, -1);
-		cairo_matrix_translate (&matrix, 0, *height);
+		*y = -*height;
 	}
 
 	cairo_transform (cr, &matrix);
 }
+
+void
+ge_cairo_exchange_axis (cairo_t  *cr,
+                        gint     *x,
+                        gint     *y,
+                        gint     *width,
+                        gint     *height)
+{
+	gint tmp;
+	cairo_matrix_t matrix;
+
+	cairo_translate (cr, *x, *y);
+	cairo_matrix_init (&matrix, 0, 1, 1, 0, 0, 0);
+
+	cairo_transform (cr, &matrix);
+	
+	/* swap width/height */
+	tmp = *width;
+	*x = 0;
+	*y = 0;
+	*width = *height;
+	*height = tmp;
+}
+
 
 /***********************************************
  * ge_cairo_pattern_fill -

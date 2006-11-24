@@ -11,10 +11,7 @@
 
 /* #define DEBUG 1 */
 
-#define SCALE_SIZE 5
-
 #define DETAIL(xx)   ((detail) && (!strcmp(xx, detail)))
-#define COMPARE_COLORS(a,b) (a.red == b.red && a.green == b.green && a.blue == b.blue)
 
 #define DRAW_ARGS    GtkStyle       *style, \
                      GdkWindow      *window, \
@@ -32,6 +29,9 @@
 #include "animation.h"
 #endif
 
+#define STYLE_FUNCTION(function) (clearlooks_style_class->style_functions[CLEARLOOKS_STYLE (style)->style].function)
+
+static ClearlooksStyleClass *clearlooks_style_class;
 static GtkStyleClass *clearlooks_parent_class;
 
 static void
@@ -43,16 +43,18 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	if (widget && GE_IS_ENTRY (widget))
 		state_type = GTK_WIDGET_STATE (widget);
 
+	params->style_functions = &(clearlooks_style_class->style_functions[CLEARLOOKS_STYLE (style)->style]);
+
 	params->active      = (state_type == GTK_STATE_ACTIVE);
 	params->prelight    = (state_type == GTK_STATE_PRELIGHT);
 	params->disabled    = (state_type == GTK_STATE_INSENSITIVE);			
 	params->state_type  = (ClearlooksStateType)state_type;
-	params->corners     = CL_CORNER_ALL;
+	params->corners     = CR_CORNER_ALL;
 	params->ltr         = ge_widget_is_ltr ((GtkWidget*)widget);
 	params->focus       = widget && GTK_WIDGET_HAS_FOCUS (widget);
 	params->is_default  = widget && GE_WIDGET_HAS_DEFAULT (widget);
 	params->enable_glow = FALSE;
-		
+
 	if (!params->active && widget && GE_IS_TOGGLE_BUTTON (widget))
 		params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 		
@@ -151,12 +153,12 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 				x -= style->xthickness;
 			
 			if (params.ltr)
-				params.corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
+				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 			else
-				params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 		}
 		
-		clearlooks_draw_entry (cr, &clearlooks_style->colors, &params,
+		STYLE_FUNCTION (draw_entry) (cr, &clearlooks_style->colors, &params,
 		                       x, y, width, height);
 	}
 	else if (DETAIL ("frame") && widget && GE_IS_STATUSBAR (widget->parent))
@@ -168,7 +170,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		gtk_style_apply_default_background (style, window, TRUE, state_type,
 		                                    area, x, y, width, height);
 		
-		clearlooks_draw_statusbar (cr, colors, &params,
+		STYLE_FUNCTION (draw_statusbar) (cr, colors, &params,
 		                           x, y, width, height);
 	}
 	else if (DETAIL ("frame"))
@@ -180,10 +182,10 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		frame.border  = &colors->shade[4];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		params.corners = CL_CORNER_NONE;
+		params.corners = CR_CORNER_NONE;
 	
 		if (widget && !g_str_equal ("XfcePanelWindow", gtk_widget_get_name (gtk_widget_get_toplevel (widget))))
-			clearlooks_draw_frame (cr, colors, &params, &frame,
+			STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
 			                       x, y, width, height);
 	}
 	else if (DETAIL ("scrolled_window") || DETAIL ("viewport") || detail == NULL)
@@ -203,9 +205,9 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		frame.gap_x  = -1;
 		frame.border = &colors->shade[5];
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		params.corners = CL_CORNER_NONE;
+		params.corners = CR_CORNER_NONE;
 		
-		clearlooks_draw_frame (cr, colors, &params, &frame, x, y, width, height);
+		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame, x, y, width, height);
 	}
 	
 	cairo_destroy (cr);
@@ -236,9 +238,9 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		params.corners = CL_CORNER_NONE;
+		params.corners = CR_CORNER_NONE;
 		
-		clearlooks_draw_frame (cr, colors, &params, &frame,
+		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
 		                       x, y, width, height);
 	}
 	else
@@ -273,11 +275,11 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 		tab.gap_side = (ClearlooksGapSide)gap_side;
 		
 		if (gap_side == GTK_POS_BOTTOM)
-			params.corners = CL_CORNER_TOPLEFT | CL_CORNER_TOPRIGHT;
+			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
 		else if (gap_side == GTK_POS_TOP)
-			params.corners = CL_CORNER_BOTTOMLEFT | CL_CORNER_BOTTOMRIGHT;
+			params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_BOTTOMRIGHT;
 		
-		clearlooks_draw_tab (cr, colors, &params, &tab,
+		STYLE_FUNCTION(draw_tab) (cr, colors, &params, &tab,
 		                     x, y, width, height);
 	}
 	else
@@ -321,11 +323,11 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		if (GE_IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
 			cairo_save (cr);
-			clearlooks_draw_toolbar (cr, colors, &params, x, y, width, height);
+			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, x, y, width, height);
 			cairo_restore (cr);
 		}
 		
-		clearlooks_draw_handle (cr, colors, &params, &handle,
+		STYLE_FUNCTION(draw_handle) (cr, colors, &params, &handle,
 		                        x, y, width, height);
 	}
 	else if (DETAIL ("paned"))
@@ -337,7 +339,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.type = CL_HANDLE_SPLITTER;
 		handle.horizontal = orientation == GTK_ORIENTATION_HORIZONTAL;
 			
-		clearlooks_draw_handle (cr, colors, &params, &handle,
+		STYLE_FUNCTION(draw_handle) (cr, colors, &params, &handle,
 		                        x, y, width, height);
 	}
 	else
@@ -353,11 +355,11 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		if (GE_IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
 			cairo_save (cr);
-			clearlooks_draw_toolbar (cr, colors, &params, x, y, width, height);
+			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, x, y, width, height);
 			cairo_restore (cr);
 		}
 		
-		clearlooks_draw_handle (cr, colors, &params, &handle,
+		STYLE_FUNCTION(draw_handle) (cr, colors, &params, &handle,
 		                        x, y, width, height);
 /*
 		clearlooks_parent_class->draw_handle (style, window, state_type, shadow_type, area,
@@ -394,7 +396,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		menubar.style = clearlooks_style->menubarstyle;
 
-		clearlooks_draw_menubar (cr, colors, &params, &menubar,
+		STYLE_FUNCTION(draw_menubar) (cr, colors, &params, &menubar,
 		                         x, y, width, height);
 	}
 	else if (DETAIL ("button") && widget && widget->parent &&
@@ -413,7 +415,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
-		params.corners = CL_CORNER_NONE;
+		params.corners = CR_CORNER_NONE;
 		
 		if (GE_IS_TREE_VIEW (widget->parent))
 		{
@@ -438,21 +440,21 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		gtk_style_apply_default_background (style, window, FALSE, state_type, area, x, y, width, height);
 		
-		clearlooks_draw_list_view_header (cr, colors, &params, &header,
+		STYLE_FUNCTION(draw_list_view_header) (cr, colors, &params, &header,
 		                                  x, y, width, height);
 	}
 	else if (DETAIL ("button") || DETAIL ("buttondefault"))
 	{
 		WidgetParameters params;
-		ShadowParameters shadow = { CL_CORNER_ALL, CL_SHADOW_NONE } ;
+		ShadowParameters shadow = { CR_CORNER_ALL, CL_SHADOW_NONE } ;
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		if (ge_is_in_combo_box(widget))
 		{
 			if (params.ltr)
-				params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 			else
-				params.corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
+				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 			
 			/* Seriously, why can't non-gtk-apps at least try to be decent citizens?
 			   Take this fscking OpenOffice.org 1.9 for example. The morons responsible
@@ -474,7 +476,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		}
 		else
 		{
-			params.corners    = CL_CORNER_ALL;
+			params.corners    = CR_CORNER_ALL;
 			params.enable_glow = TRUE;
 		}		
 	
@@ -489,16 +491,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			                                    area, x, y, width, height);
 		}
 		
-		if (clearlooks_style->gloss)
-		{
-			clearlooks_draw_button_with_gloss (cr, &clearlooks_style->colors, &params, &shadow,
-			                                   x, y, width, height);
-		}
-		else
-		{
-			clearlooks_draw_button (cr, &clearlooks_style->colors, &params,
-		    	                    x, y, width, height);
-		}
+		STYLE_FUNCTION(draw_button) (cr, &clearlooks_style->colors, &params,
+		                             x, y, width, height);
 	}
 	else if (DETAIL ("spinbutton_up") || DETAIL ("spinbutton_down"))
 	{
@@ -518,19 +512,19 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			{
 				height+=2;
 				if (params.ltr)
-					params.corners = CL_CORNER_TOPRIGHT;
+					params.corners = CR_CORNER_TOPRIGHT;
 				else
-					params.corners = CL_CORNER_TOPLEFT;
+					params.corners = CR_CORNER_TOPLEFT;
 			}
 			else
 			{
 				if (params.ltr)
-					params.corners = CL_CORNER_BOTTOMRIGHT;
+					params.corners = CR_CORNER_BOTTOMRIGHT;
 				else
-					params.corners = CL_CORNER_BOTTOMLEFT;
+					params.corners = CR_CORNER_BOTTOMLEFT;
 			}
 			
-			clearlooks_draw_spinbutton_down (cr, &clearlooks_style->colors, &params, x, y, width, height);
+			STYLE_FUNCTION(draw_spinbutton_down) (cr, &clearlooks_style->colors, &params, x, y, width, height);
 		}
 	}
 	else if (DETAIL ("spinbutton"))
@@ -540,9 +534,9 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
 		if (params.ltr)
-			params.corners = CL_CORNER_TOPRIGHT | CL_CORNER_BOTTOMRIGHT;
+			params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 		else
-			params.corners = CL_CORNER_TOPLEFT | CL_CORNER_BOTTOMLEFT;
+			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 		
 		if (style->xthickness == 3)
 		{
@@ -551,10 +545,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			width++;
 		}
 		
-		if (clearlooks_style->gloss)
-				params.enable_glow = TRUE;
-		
-		clearlooks_draw_spinbutton (cr, &clearlooks_style->colors, &params,
+		STYLE_FUNCTION(draw_spinbutton) (cr, &clearlooks_style->colors, &params,
 		                            x, y, width, height);
 	}
 	else if (detail && g_str_has_prefix (detail, "trough") && GE_IS_SCALE (widget))
@@ -563,12 +554,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		SliderParameters slider;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		params.corners    = CL_CORNER_NONE;
+		params.corners    = CR_CORNER_NONE;
 		
 		slider.lower = DETAIL ("trough-lower");
 		slider.horizontal = (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL);
 		
-		clearlooks_draw_scale_trough (cr, &clearlooks_style->colors,
+		STYLE_FUNCTION(draw_scale_trough) (cr, &clearlooks_style->colors,
 		                              &params, &slider,
 		                              x, y, width, height);
 	}
@@ -578,7 +569,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);		
 		
-		clearlooks_draw_progressbar_trough (cr, colors, &params, 
+		STYLE_FUNCTION(draw_progressbar_trough) (cr, colors, &params, 
 		                                    x, y, width, height);
 	}
 	else if (DETAIL ("trough") && widget && (GE_IS_VSCROLLBAR (widget) || GE_IS_HSCROLLBAR (widget)))
@@ -587,7 +578,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		ScrollBarParameters scrollbar;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		params.corners = CL_CORNER_NONE;
+		params.corners = CR_CORNER_NONE;
 		
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
@@ -607,7 +598,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			height -= 4;
 		}
 		
-		clearlooks_draw_scrollbar_trough (cr, colors, &params, &scrollbar,
+		STYLE_FUNCTION(draw_scrollbar_trough) (cr, colors, &params, &scrollbar,
 		                                  x, y, width, height);
 	}
 	else if (DETAIL ("bar"))
@@ -651,7 +642,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				progressbar.orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
 		}
 		
-		clearlooks_draw_progressbar_fill (cr, colors, &params, &progressbar,
+		STYLE_FUNCTION(draw_progressbar_fill) (cr, colors, &params, &progressbar,
 		                                  x, y, width, height,
 		                                  10 - (int)(elapsed * 10.0) % 10);
 	}
@@ -664,13 +655,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		slider.horizontal = DETAIL ("hscale");
 		
-		if (clearlooks_style->gloss)
-		{
-			params.enable_glow = TRUE;
-			params.corners = CL_CORNER_ALL;
-		}
+		if (clearlooks_style->style == CL_STYLE_GLOSSY) /* XXX! */
+			params.corners = CR_CORNER_ALL;
 		
-		clearlooks_draw_slider_button (cr, &clearlooks_style->colors,
+		STYLE_FUNCTION(draw_slider_button) (cr, &clearlooks_style->colors,
 		                               &params, &slider,
 		                               x, y, width, height);
 	}
@@ -691,11 +679,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		else
 			optionmenu.linepos = (indicator_size.width + indicator_spacing.left + indicator_spacing.right) + 1;
 			
-		if (clearlooks_style->gloss)
-			params.enable_glow = TRUE;
-		
-		clearlooks_draw_optionmenu (cr, colors, &params, &optionmenu,
-		                            x, y, width, height);		
+		STYLE_FUNCTION(draw_optionmenu) (cr, colors, &params, &optionmenu,
+		                                 x, y, width, height);		
 	}
 	else if (DETAIL ("menuitem"))
 	{
@@ -704,7 +689,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		if (widget && GE_IS_MENU_BAR (widget->parent))
 		{
-			/*params.corners = CL_CORNER_NONE;
+			/*params.corners = CR_CORNER_NONE;
 			params.active = TRUE;
 			params.state_type = CL_STATE_ACTIVE;
 			params.xthickness = 2;
@@ -712,15 +697,15 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			
 			clearlooks_draw_button (cr, colors, &params, x, y, width, height+1);*/
 			
-			params.corners = CL_CORNER_TOPLEFT | CL_CORNER_TOPRIGHT;
+			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
 			height += 1;
 		}
 		else
 		{	
-			params.corners = CL_CORNER_ALL;
+			params.corners = CR_CORNER_ALL;
 		}
 		
-		clearlooks_draw_menuitem (cr, colors, &params, x, y, width, height);
+		STYLE_FUNCTION(draw_menuitem) (cr, colors, &params, x, y, width, height);
 	}
 	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar") || DETAIL ("slider") || DETAIL ("stepper"))
 	{
@@ -728,7 +713,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		ScrollBarParameters scrollbar;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		params.corners = CL_CORNER_NONE;
+		params.corners = CR_CORNER_NONE;
 		
 		scrollbar.has_color  = FALSE;
 		scrollbar.horizontal = TRUE;
@@ -738,7 +723,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		if (GE_IS_RANGE (widget))
 			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
 		
-		if (clearlooks_style->gloss)
+		if (clearlooks_style->style == CL_STYLE_GLOSSY) /* XXX! */
 		{
 			scrollbar.color = colors->bg[CL_STATE_NORMAL];
 			ge_shade_color (&scrollbar.color, 0.5, &scrollbar.color);
@@ -752,7 +737,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		if (DETAIL ("slider"))
 		{
-			clearlooks_draw_scrollbar_slider (cr, colors, &params, &scrollbar,
+			STYLE_FUNCTION(draw_scrollbar_slider) (cr, colors, &params, &scrollbar,
 			                                  x, y, width, height);
 		}
 		else
@@ -767,7 +752,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 			stepper.stepper = clearlooks_scrollbar_get_stepper (widget, &this_rectangle);
 
-			clearlooks_draw_scrollbar_stepper (cr, colors, &params, &scrollbar, &stepper,
+			STYLE_FUNCTION(draw_scrollbar_stepper) (cr, colors, &params, &scrollbar, &stepper,
 			                                   x, y, width, height);
 		}
 	}
@@ -775,7 +760,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	{
 		/* Only draw the shadows on horizontal toolbars */
 		if (shadow_type != GTK_SHADOW_NONE && height < 2*width )
-			clearlooks_draw_toolbar (cr, colors, NULL, x, y, width, height);
+			STYLE_FUNCTION(draw_toolbar) (cr, colors, NULL, x, y, width, height);
 	}
 	else if (DETAIL ("trough"))
 	{
@@ -787,7 +772,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
-		clearlooks_draw_menu_frame (cr, colors, &params, x, y, width, height);
+		STYLE_FUNCTION(draw_menu_frame) (cr, colors, &params, x, y, width, height);
 	}
 	else
 	{
@@ -829,7 +814,7 @@ clearlooks_style_draw_option (DRAW_ARGS)
 		
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 	
-	clearlooks_draw_radiobutton (cr, colors, &params, &checkbox, x, y, width, height);
+	STYLE_FUNCTION(draw_radiobutton) (cr, colors, &params, &checkbox, x, y, width, height);
 
 	cairo_destroy (cr);
 }
@@ -847,14 +832,14 @@ clearlooks_style_draw_check (DRAW_ARGS)
 		
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 	
-	params.corners = CL_CORNER_ALL;
+	params.corners = CR_CORNER_ALL;
 	
 	checkbox.shadow_type = shadow_type;
 	checkbox.in_cell = DETAIL("cellcheck");
 
 	checkbox.in_menu = (widget && widget->parent && GTK_IS_MENU(widget->parent));
 
-	clearlooks_draw_checkbox (cr, &clearlooks_style->colors, &params, &checkbox,
+	STYLE_FUNCTION(draw_checkbox) (cr, &clearlooks_style->colors, &params, &checkbox,
 	                          x, y, width, height);
 	
 	cairo_destroy (cr);
@@ -905,7 +890,7 @@ clearlooks_style_draw_vline                      (GtkStyle               *style,
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
-	clearlooks_draw_separator (cr, NULL, NULL, &separator,
+	STYLE_FUNCTION(draw_separator) (cr, NULL, NULL, &separator,
 	                           x, y1, 2, y2-y1);
 	
 	cairo_destroy (cr);
@@ -929,7 +914,7 @@ clearlooks_style_draw_hline                      (GtkStyle               *style,
 	
 	separator.horizontal = TRUE;
 	
-	clearlooks_draw_separator (cr, NULL, NULL, &separator,
+	STYLE_FUNCTION(draw_separator) (cr, NULL, NULL, &separator,
 	                           x1, y, x2-x1, 2);
 	
 	cairo_destroy (cr);
@@ -961,9 +946,9 @@ clearlooks_style_draw_shadow_gap (DRAW_ARGS,
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		params.corners = CL_CORNER_NONE;
+		params.corners = CR_CORNER_NONE;
 		
-		clearlooks_draw_frame (cr, colors, &params, &frame,
+		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
 		                       x, y, width, height);
 	}
 	else
@@ -1007,7 +992,7 @@ clearlooks_style_draw_resize_grip (GtkStyle       *style,
 
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);	
 
-	clearlooks_draw_resize_grip (cr, colors, &params, &grip,
+	STYLE_FUNCTION(draw_resize_grip) (cr, colors, &params, &grip,
 	                             x, y, width, height);
 
 	cairo_destroy (cr);
@@ -1067,13 +1052,15 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	
 	clearlooks_parent_class->init_from_rc (style, rc_style);
 	
+	g_assert ((CLEARLOOKS_RC_STYLE (rc_style)->style >= 0) && (CLEARLOOKS_RC_STYLE (rc_style)->style < CL_NUM_STYLES));
+	clearlooks_style->style		= CLEARLOOKS_RC_STYLE (rc_style)->style;
+	
 	clearlooks_style->progressbarstyle  = CLEARLOOKS_RC_STYLE (rc_style)->progressbarstyle;
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->menuitemstyle     = CLEARLOOKS_RC_STYLE (rc_style)->menuitemstyle;
 	clearlooks_style->listviewitemstyle = CLEARLOOKS_RC_STYLE (rc_style)->listviewitemstyle;
-	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->has_scrollbar_color;
+	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_SCROLLBAR_COLOR;
 	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
-	clearlooks_style->gloss             = CLEARLOOKS_RC_STYLE (rc_style)->gloss;
 	
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
@@ -1387,6 +1374,7 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 {
 	GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
 	
+	clearlooks_style_class = CLEARLOOKS_STYLE_CLASS (klass);
 	clearlooks_parent_class = g_type_class_peek_parent (klass);
 
 	style_class->copy             = clearlooks_style_copy;
@@ -1410,6 +1398,10 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_resize_grip = clearlooks_style_draw_resize_grip;
 	style_class->draw_arrow       = clearlooks_style_draw_arrow;
 	style_class->render_icon      = clearlooks_style_draw_render_icon;
+
+	clearlooks_register_style_classic (&clearlooks_style_class->style_functions[CL_STYLE_CLASSIC]);
+	clearlooks_style_class->style_functions[CL_STYLE_GLOSSY] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
+	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_GLOSSY]);
 }
 
 GType clearlooks_type_style = 0;
