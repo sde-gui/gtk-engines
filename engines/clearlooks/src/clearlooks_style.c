@@ -118,8 +118,10 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 		cairo_pattern_destroy (pattern);
 		cairo_destroy (cr);
 	}
-	else if ((DETAIL("checkbutton") || DETAIL("radiobutton")) && state_type == GTK_STATE_PRELIGHT)
+	else if (CLEARLOOKS_STYLE (style)->style == CL_STYLE_GLOSSY &&
+	         ((DETAIL("checkbutton") || DETAIL("radiobutton")) && state_type == GTK_STATE_PRELIGHT))
 	{
+		/* XXX: Don't draw any check/radiobutton bg in GLOSSY mode. */
 	}
 	else
 	{

@@ -1784,288 +1784,169 @@ clearlooks_draw_resize_grip (cairo_t *cr,
 }
 
 static void
-clearlooks_draw_checkbox (cairo_t *cr,
-                          const ClearlooksColors  *colors,
-                          const WidgetParameters  *widget,
-                          const CheckboxParameters *checkbox,
-                          int x, int y, int width, int height)
-{
-	CairoColor border, top, bottom;
-	cairo_pattern_t *pattern;
-	gboolean draw_bullet = (checkbox->shadow_type == GTK_SHADOW_IN);
-
-	/* sanitize size to be rectangular */
-	if (width > height) {
-		x += (width - height) / 2;
-		width = height;
-	} else if (height > width) {
-		y += (height - width) / 2;
-		height = width;
-	}
-	
-	cairo_set_line_width (cr, 1.0);
-	
-	if (!checkbox->in_menu)
-	{
-		if ( (checkbox->shadow_type == CL_SHADOW_IN || 
-		      checkbox->shadow_type == CL_SHADOW_ETCHED_IN || 
-		      widget->active) && !widget->disabled && !checkbox->in_cell )
-		{
-			border = top = bottom = colors->spot[1];
-			
-			if (widget->prelight)
-			{
-				ge_shade_color (&top, 1.1, &top);
-				ge_shade_color (&border, 0.8, &border);
-			}
-			
-			ge_shade_color (&top, 1.2, &top);
-			ge_shade_color (&bottom, 0.9, &bottom);
-			ge_shade_color (&border, 0.6, &border);
-		}
-		else if (widget->disabled)
-		{
-			if (checkbox->in_cell) {
-				border = top = bottom = colors->shade[3];
-			} else {
-				border = top = bottom = colors->shade[3];
-			}
-		}	
-		else
-		{
-			top = bottom = colors->base[widget->state_type];
-			
-			if (widget->prelight)
-			{
-				ge_shade_color (&top, 1.2, &top);
-				border = colors->spot[2];
-			}
-			else
-			{
-				border = colors->base[widget->state_type];
-				ge_shade_color (&border, 0.4, &border);
-			}
-			
-			ge_shade_color (&top, 0.98, &top);
-			ge_shade_color (&bottom, 0.85, &bottom);
-		}
-		
-		if (widget->state_type != GTK_STATE_INSENSITIVE)
-		{
-			// glow
-			if ((widget->prelight || (widget->active && !draw_bullet)) && !checkbox->in_cell) 
-			{
-				const CairoColor *glow = &colors->spot[0];
-				ge_cairo_rounded_rectangle (cr, x+1.5, y+1.5, width - 1, height - 1, 2, widget->corners);
-				cairo_set_source_rgba (cr, glow->r, glow->g, glow->b, 0.5);
-				cairo_stroke (cr);
-			}
-			
-			// shadow
-			if (checkbox->in_cell) {
-				ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width, height, 1, widget->corners);
-			} else {
-				ge_cairo_rounded_rectangle (cr, x+3.5, y+3.5, width - 3, height - 3, 1, widget->corners);
-			}
-			cairo_set_source_rgba (cr, 0., 0., 0., 0.2);
-			cairo_stroke (cr);
-		
-			if (checkbox->in_cell) {
-				ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width, height, 1, widget->corners);
-			} else {
-				ge_cairo_rounded_rectangle (cr, x+2.5, y+2.5, width - 3, height - 3, 1, widget->corners);
-			}
-			pattern = cairo_pattern_create_linear (x, y, x+width, y+height);
-			cairo_pattern_add_color_stop_rgb (pattern, 0.0, 1.0, 1.0, 1.0);
-			cairo_pattern_add_color_stop_rgb (pattern, 0.4, top.r, top.g, top.b);
-			cairo_pattern_add_color_stop_rgb (pattern, 1.0, bottom.r, bottom.g, bottom.b);
-			cairo_set_source (cr, pattern);
-			cairo_fill (cr);
-			cairo_pattern_destroy (pattern);
-		}
-		
-		if (checkbox->in_cell) {
-			ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width, height, 1, widget->corners);
-		} else {
-			ge_cairo_rounded_rectangle (cr, x+2.5, y+2.5, width - 3, height - 3, 1, widget->corners);
-		}
-		
-		cairo_set_source_rgb (cr, border.r, border.g, border.b);
-		cairo_stroke (cr);
-		
-		if (checkbox->in_cell) {
-			ge_cairo_rounded_rectangle (cr, x+1.5, y+1.5, width - 2, height - 2, 1, widget->corners);
-		} else {
-			ge_cairo_rounded_rectangle (cr, x+3.5, y+3.5, width - 5, height - 5, 1, widget->corners);
-		}
-		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.4);
-		cairo_stroke (cr);
-		
-	}
-	
-	cairo_translate (cr, x, y);
-	cairo_scale (cr, width / 13.0, height / 13.0);
-	/* To offset this checkmark, one should probably use a translation */
-	if (draw_bullet)
-	{
-		if (checkbox->in_cell)
-		{
-			cairo_translate (cr, -2, -2);
-		}
-		else if (checkbox->in_menu)
-		{
-			cairo_translate (cr, -2, -2);
-		}
-	
-		cairo_move_to (cr, 4, 8);
-		cairo_rel_line_to (cr,   5,   4);
-		cairo_rel_curve_to (cr,  1.4,  -5,   -1,  -1,   5.7,  -12.5);
-		cairo_rel_curve_to (cr, -4,   4,  -4,   4,  -6.7,    9.3);
-		cairo_rel_line_to (cr,  -2.3,  -2.5);
-		
-		
-		cairo_set_source_rgb (cr, colors->text[widget->state_type].r,
-		                          colors->text[widget->state_type].g,
-		                          colors->text[widget->state_type].b);
-		cairo_fill (cr);
-	}
-	else if (checkbox->shadow_type == GTK_SHADOW_ETCHED_IN)
-	{
-		cairo_rectangle (cr, 4.0, 6.0, 6, 2);
-		cairo_set_source_rgb (cr, colors->text[widget->state_type].r,
-		                          colors->text[widget->state_type].g,
-		                          colors->text[widget->state_type].b);
-		cairo_fill(cr);
-	}
-}
-
-static void
 clearlooks_draw_radiobutton (cairo_t *cr,
                              const ClearlooksColors  *colors,
                              const WidgetParameters  *widget,
                              const CheckboxParameters *checkbox,
                              int x, int y, int width, int height)
 {
-	CairoColor border, top, bottom;
-	cairo_pattern_t *pattern;
-	gboolean draw_bullet = (checkbox->shadow_type == CL_SHADOW_IN || checkbox->shadow_type == CL_SHADOW_ETCHED_IN);
-	/* sanitize size to be rectangular */
-	if (width > height) {
-		x += (width - height) / 2;
-		width = height;
-	} else if (height > width) {
-		y += (height - width) / 2;
-		height = width;
-	}
+	const CairoColor *border;
+	const CairoColor *dot;
+	cairo_pattern_t *pt;
+	gboolean inconsistent; 
+	gboolean draw_bullet = (checkbox->shadow_type == GTK_SHADOW_IN);
 
-	cairo_set_line_width (cr, 1.0);
-	
-	if (checkbox->in_menu)
-	{
-		cairo_translate (cr, -2, -1);
-	}
+	inconsistent = (checkbox->shadow_type == GTK_SHADOW_ETCHED_IN);
+	draw_bullet |= inconsistent;
 
-	if (!checkbox->in_menu)
+	if (widget->disabled)
 	{
-		if ( (checkbox->shadow_type == CL_SHADOW_IN || 
-		      checkbox->shadow_type == CL_SHADOW_ETCHED_IN || 
-		      widget->active) && !widget->disabled )
-		{
-			border = top = bottom = colors->spot[1];
-			
-			if (widget->prelight)
-			{
-				ge_shade_color (&top, 1.1, &top);
-				ge_shade_color (&border, 0.8, &border);
-			}
-			
-			ge_shade_color (&top, 1.2, &top);
-			ge_shade_color (&bottom, 0.9, &bottom);
-			ge_shade_color (&border, 0.6, &border);
-		}
-		else if (widget->disabled)
-		{
-			border = top = bottom = colors->shade[3];
-		}
-		else
-		{		
-			top = bottom = colors->base[widget->state_type];
-			
-			if (widget->prelight)
-			{
-				ge_shade_color (&top, 1.2, &top);
-				border = colors->spot[2];
-				
-			}
-			else
-			{
-				border = colors->base[widget->state_type];
-				ge_shade_color(&border, 0.4, &border);
-			}
-			
-			ge_shade_color (&top, 0.98, &top);
-			ge_shade_color (&bottom, 0.85, &bottom);
-		}
-		
-		if ( widget->state_type != GTK_STATE_INSENSITIVE )
-		{
-			// glow
-			if (widget->prelight || (widget->active && !draw_bullet)) 
-			{
-				const CairoColor *glow = &colors->spot[0];
-				cairo_arc (cr, x+width/2.0 + 0.5, y+height/2.0 + 0.5, width/2.0, 0, 2 * M_PI);
-				cairo_set_source_rgba (cr, glow->r, glow->g, glow->b, 1.0);
-				cairo_stroke (cr);
-			}
-		
-			// shadow
-			cairo_arc (cr, x+width/2.0+1, y+height/2.0+1, width/2.0 - 1.0, 0, 2 * M_PI);
-			cairo_set_source_rgba (cr, 0., 0., 0., 0.2);
-			cairo_stroke (cr);
-			
-			cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);	
-			pattern = cairo_pattern_create_linear (x, y, x+width, y+height);
-			cairo_pattern_add_color_stop_rgb (pattern, 0.0, 1.0, 1.0, 1.0);
-			cairo_pattern_add_color_stop_rgb (pattern, 0.4, top.r, top.g, top.b);
-			cairo_pattern_add_color_stop_rgb (pattern, 1.0, bottom.r, bottom.g, bottom.b);
-			cairo_set_source (cr, pattern);
-			cairo_fill(cr);
-			cairo_pattern_destroy (pattern);
-		}
-		cairo_translate (cr, 0.5, 0.5);
-		cairo_arc (cr, x+width/2.0, y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);
-		
-		cairo_set_source_rgb (cr, border.r, border.g, border.b);
-		cairo_stroke (cr);
-		
-		cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 2.0, 0, 2 * M_PI);
-		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.4);
-		cairo_stroke (cr);
+		border = &colors->shade[5];
+		dot    = &colors->shade[6];
 	}
+	else
+	{
+		border = &colors->shade[7];
+		dot    = &colors->spot[1];
+	}
+	pt = cairo_pattern_create_linear (0, 0, 13, 13);
+	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.1);
+	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
+	cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
+	cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.5);
 	
-	// draw the bullet
 	cairo_translate (cr, x, y);
-	cairo_scale (cr, width / 13.0, height / 13.0);
+	
+	cairo_set_line_width (cr, 2);
+	cairo_arc       (cr, 7, 7, 6, 0, M_PI*2);	
+	cairo_set_source (cr, pt);
+	cairo_stroke (cr);
+	cairo_pattern_destroy (pt);
+
+	cairo_set_line_width (cr, 1);
+
+	cairo_arc       (cr, 7, 7, 5.5, 0, M_PI*2);	
+	
+	if (!widget->disabled)
+	{
+		ge_cairo_set_color (cr, &colors->base[0]);
+		cairo_fill_preserve (cr);
+	}
+	
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke (cr);
+	
 	if (draw_bullet)
 	{
-		cairo_arc (cr, 6.5, 6.5, 2.5, 0, 2 * M_PI);
-		if (widget->disabled)
+		if (inconsistent)
 		{
-			cairo_set_source_rgb (cr, colors->text[widget->state_type].r,
-			                          colors->text[widget->state_type].g,
-			                          colors->text[widget->state_type].b);
+			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+			cairo_set_line_width (cr, 4);
+
+			cairo_move_to(cr, 5, 7);
+			cairo_line_to(cr, 9, 7);
+
+			cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+			cairo_stroke (cr);
+
 		}
 		else
 		{
-			pattern = cairo_pattern_create_radial (5.25, 5.25, 0.1, 5.25, 5.25, 4);
-			cairo_pattern_add_color_stop_rgb (pattern, 0.0, 0.4, 0.4, 0.4);
-			cairo_pattern_add_color_stop_rgb (pattern, 1.0, colors->text[widget->state_type].r,
-			                                                colors->text[widget->state_type].g,
-			                                                colors->text[widget->state_type].b);
-			cairo_set_source (cr, pattern);
-			cairo_pattern_destroy (pattern);
+			cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
+			/* cairo_set_source_rgb (cr, dot->r, dot->g, dot->b); */
+			cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+			cairo_fill (cr);
+		
+			cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
+			/* cairo_set_source_rgba (cr, 1,1,1, 0.5); */
+			cairo_set_source_rgb (cr, 1,1,1);
+			cairo_fill (cr);
 		}
+	}
+}
+
+static void
+clearlooks_draw_checkbox (cairo_t *cr,
+                          const ClearlooksColors  *colors,
+                          const WidgetParameters  *widget,
+                          const CheckboxParameters *checkbox,
+                          int x, int y, int width, int height)
+{
+	const CairoColor *border;
+	const CairoColor *dot;
+	gboolean inconsistent = FALSE;
+	gboolean draw_bullet = (checkbox->shadow_type == GTK_SHADOW_IN);
+	cairo_pattern_t *pt;
+
+	inconsistent = (checkbox->shadow_type == GTK_SHADOW_ETCHED_IN);
+	draw_bullet |= inconsistent;
+	
+	if (widget->disabled)
+	{
+		border = &colors->shade[5];
+		dot    = &colors->shade[6];
+	}
+	else
+	{
+		border = &colors->shade[7];
+		dot    = &colors->spot[1];
+	}
+
+	cairo_translate (cr, x, y);
+	cairo_set_line_width (cr, 1);
+	
+	if (widget->xthickness > 2 && widget->ythickness > 2)
+	{
+		/* Draw a gradient around the box so it appears sunken. */
+		pt = cairo_pattern_create_linear (0, 0, 0, 13);
+		cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.04);
+		cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
+		cairo_pattern_add_color_stop_rgba (pt, 0.5, 1, 1, 1, 0);
+		cairo_pattern_add_color_stop_rgba (pt, 1.0, 1, 1, 1, 0.4);
+		
+		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
+		cairo_set_source (cr, pt);
+		cairo_stroke (cr);
+		cairo_pattern_destroy (pt);
+		
+		/* Draw the rectangle for the checkbox itself */
+		cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
+	}
+	else
+	{
+		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
+	}
+	
+	if (!widget->disabled)
+	{
+		ge_cairo_set_color (cr, &colors->base[0]);
 		cairo_fill_preserve (cr);
+	}
+	
+	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	cairo_stroke (cr);
+
+	if (draw_bullet)
+	{
+		if (inconsistent) /* Inconsistent */
+		{
+			cairo_set_line_width (cr, 2.0);
+			cairo_move_to (cr, 3, height*0.5);
+			cairo_line_to (cr, width-3, height*0.5);
+		}
+		else
+		{
+			cairo_set_line_width (cr, 1.7);
+			cairo_move_to (cr, 0.5 + (width*0.2), (height*0.5));
+			cairo_line_to (cr, 0.5 + (width*0.4), (height*0.7));
+		
+			cairo_curve_to (cr, 0.5 + (width*0.4), (height*0.7),
+			                    0.5 + (width*0.5), (height*0.4),
+			                    0.5 + (width*0.70), (height*0.25));
+		}
+		
+		cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+		cairo_stroke (cr);
 	}
 }
 

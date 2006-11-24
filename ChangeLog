@@ -1,6 +1,21 @@
 2006-11-24  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_radiobutton), (clearlooks_draw_checkbox):
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_glossy_draw_checkbox),
+	(clearlooks_glossy_draw_radiobutton),
+	(clearlooks_register_style_glossy):
+	- Move glossy check- and radiobuttons to clearlooks_style_glossy.c
+	- Resurrect normal checkbutton from an older version
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_flat_box):
+	- special case highlight drawing between the two styles
+
+2006-11-24  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_progressbar_fill),
 	(clearlooks_draw_scrollbar_trough),
 	(clearlooks_draw_scrollbar_slider), (_clearlooks_draw_arrow):
