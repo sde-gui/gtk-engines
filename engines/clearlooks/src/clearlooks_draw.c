@@ -249,7 +249,7 @@ clearlooks_draw_button (cairo_t *cr,
 	{
 		cairo_pattern_t *pattern;
 		
-		cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
+		ge_cairo_set_color (cr, fill);
 		cairo_fill_preserve (cr);
 
 		pattern	= cairo_pattern_create_linear (0, yoffset+1, 0, 3+yoffset);
@@ -274,25 +274,17 @@ clearlooks_draw_button (cairo_t *cr,
 	{
 		const CairoColor *l = &colors->shade[4];
 		const CairoColor *d = &colors->shade[4];
-		cairo_set_source_rgb(cr, l->r, l->g, l->b);
+		ge_cairo_set_color (cr, l);
 		ge_cairo_stroke_rectangle (cr, 2.5, 2.5, width-5, height-5);
 
-		cairo_set_source_rgb(cr, d->r, d->g, d->b);
+		ge_cairo_set_color (cr, d);
 		ge_cairo_stroke_rectangle (cr, 3.5, 3.5, width-7, height-7);
 	}
 	
 	if (params->disabled)
-	{
-		cairo_set_source_rgb (cr, border_disabled->r,
-		                          border_disabled->g,
-		                          border_disabled->b);
-	}
+		ge_cairo_set_color (cr, border_disabled);
 	else
-	{
-		cairo_set_source_rgb (cr, border_normal->r,
-		                          border_normal->g,
-		                          border_normal->b);
-	}
+		ge_cairo_set_color (cr, border_normal);
 	
 	ge_cairo_rounded_rectangle (cr, xoffset + 0.5, yoffset + 0.5,
                                   width-(xoffset*2)-1, height-(yoffset*2)-1,
@@ -335,16 +327,12 @@ clearlooks_draw_entry (cairo_t *cr,
 	
 	/* Fill the background (shouldn't have to) */
 	cairo_rectangle (cr, -0.5, -0.5, width, height);
-	cairo_set_source_rgb (cr, params->parentbg.r, 
-	                          params->parentbg.g, 
-	                          params->parentbg.b);
+	ge_cairo_set_color (cr, &params->parentbg);
 	cairo_fill (cr);
 
 	/* Fill the entry's base color (why isn't is large enough by default?) */
 	cairo_rectangle (cr, 1.5, 1.5, width-4, height-4);
-	cairo_set_source_rgb (cr, base->r, 
-	                          base->g, 
-	                          base->b);
+	ge_cairo_set_color (cr, base);
 	cairo_fill (cr);
 	
 	params->style_functions->draw_inset (cr, width-1, height-1, 2.0, params->corners);
@@ -353,7 +341,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	if (params->focus)
 	{
 		/* ge_cairo_rounded_rectangle (cr, 2, 2, width-5, height-5, RADIUS-1, params->corners); */
-		cairo_set_source_rgb (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b);
+		ge_cairo_set_color (cr, &colors->spot[0]);
 		ge_cairo_stroke_rectangle (cr, 2, 2, width-5, height-5);
 	}
 	else
@@ -370,7 +358,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	}
 
 	/* Draw the border */
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	ge_cairo_set_color (cr, border);
 	ge_cairo_rounded_rectangle (cr, 1, 1, width-3, height-3, RADIUS, params->corners);
 	cairo_stroke (cr);
 }
@@ -407,9 +395,7 @@ clearlooks_draw_spinbutton_down (cairo_t *cr,
 	
 	ge_cairo_rounded_rectangle (cr, 1, 1, width-4, height-4, 3, params->corners);
 	
-	cairo_set_source_rgb (cr, colors->bg[params->state_type].r,
-	                          colors->bg[params->state_type].g, 
-	                          colors->bg[params->state_type].b);
+	ge_cairo_set_color (cr, &colors->bg[params->state_type]);
 	
 	cairo_fill_preserve (cr);
 	
@@ -442,7 +428,7 @@ clearlooks_scale_draw_gradient (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
-	cairo_set_source_rgb (cr, c3->r, c3->g, c3->b);
+	ge_cairo_set_color (cr, c3);
 	ge_cairo_stroke_rectangle (cr, x, y, width, height);	
 }
 
@@ -535,9 +521,9 @@ clearlooks_draw_slider (cairo_t *cr,
 	}
 	else
 	{
-		cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
-		cairo_rectangle      (cr, 0.5, 0.5, width-2, height-2);
-		cairo_fill           (cr);
+		ge_cairo_set_color (cr, fill);
+		cairo_rectangle    (cr, 0.5, 0.5, width-2, height-2);
+		cairo_fill         (cr);
 	}
 
 	/* Set the clip */
@@ -570,9 +556,7 @@ clearlooks_draw_slider (cairo_t *cr,
 
 	/* Draw the border */
 	ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, 3.0, params->corners);
-	cairo_set_source_rgb (cr, border->r,
-	                          border->g,
-	                          border->b);
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 
 	/* Draw handle lines */
@@ -588,7 +572,7 @@ clearlooks_draw_slider (cairo_t *cr,
 		cairo_set_source_rgba (cr, border->r,
 		                           border->g,
 		                           border->b,
-	                           0.3);
+	                                   0.3);
 		cairo_stroke (cr);
 	}
 }
@@ -625,23 +609,19 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);
 	
 	/* Fill with bg color */
-	cairo_set_source_rgb (cr, colors->bg[params->state_type].r,
-	                          colors->bg[params->state_type].g,
-	                          colors->bg[params->state_type].b);
+	ge_cairo_set_color (cr, &colors->bg[params->state_type]);
 	
 	cairo_rectangle (cr, x, y, width, height);	
 	cairo_fill (cr);
 
 	/* Create trough box */
 	cairo_rectangle (cr, x+1, y+1, width-2, height-2);
-	cairo_set_source_rgb (cr, colors->shade[3].r, colors->shade[3].g, colors->shade[3].b );
+	ge_cairo_set_color (cr, &colors->shade[3]);
 	cairo_fill (cr);
 
 	/* Draw border */
 	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width-1, height-1, 1.5, params->corners);
-	cairo_set_source_rgb (cr, border->r,
-	                          border->g,
-	                          border->b);
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 	
 	/* Top shadow */
@@ -705,9 +685,7 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_rectangle (cr, 0, 0, width, height);
 		
 	/* Draw fill */
-	cairo_set_source_rgb (cr, colors->spot[1].r,
-	                          colors->spot[1].g,
-	                          colors->spot[1].b);
+	ge_cairo_set_color (cr, &colors->spot[1]);
 	cairo_fill_preserve (cr);
 	
 	/* Draw gradient */
@@ -827,12 +805,12 @@ clearlooks_draw_menubar0 (cairo_t *cr,
 
 	cairo_move_to (cr, 0, 0);
 	cairo_line_to (cr, width, 0);
-	cairo_set_source_rgb (cr, light->r, light->g, light->b);
+	ge_cairo_set_color (cr, light);
 	cairo_stroke (cr);
 
 	cairo_move_to (cr, 0, height-1);
 	cairo_line_to (cr, width, height-1);
-	cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
+	ge_cairo_set_color (cr, dark);
 	cairo_stroke (cr);
 }
 
@@ -864,13 +842,11 @@ clearlooks_draw_menubar2 (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 	
 	/* Draw bottom line */
-	cairo_set_line_width  (cr, 1.0);
-	cairo_move_to         (cr, 0, height-0.5);
-	cairo_line_to         (cr, width, height-0.5);
-	cairo_set_source_rgb  (cr, colors->shade[3].r,
-	                           colors->shade[3].g,
-	                           colors->shade[3].b);
-	cairo_stroke          (cr);
+	cairo_set_line_width (cr, 1.0);
+	cairo_move_to        (cr, 0, height-0.5);
+	cairo_line_to        (cr, width, height-0.5);
+	ge_cairo_set_color   (cr, &colors->shade[3]);
+	cairo_stroke         (cr);
 }
 
 static void
@@ -885,8 +861,8 @@ clearlooks_draw_menubar1 (cairo_t *cr,
 	clearlooks_draw_menubar2 (cr, colors, params, menubar,
 	                          x, y, width, height);
 
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
-	ge_cairo_stroke_rectangle      (cr, 0.5, 0.5, width-1, height-1);
+	ge_cairo_set_color (cr, border);
+	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 }
 
 
@@ -1022,7 +998,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 	}
 	else
 	{
-		cairo_set_source_rgb (cr, border->r, border->g, border->b );
+		ge_cairo_set_color (cr, border);
 		ge_cairo_stroke_rectangle (cr, 0, 0, width-1, height-1);
 	}
 	cairo_restore (cr);
@@ -1100,7 +1076,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	                                     RADIUS, corners);
 	
 	/* Draw fill */
-	cairo_set_source_rgb  (cr, fill->r, fill->g, fill->b);
+	ge_cairo_set_color (cr, fill);
 	cairo_fill   (cr);
 	
 	/* Draw highlight */
@@ -1160,7 +1136,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	
 	if (params->active)
 	{
-		cairo_set_source_rgb  (cr, border1->r, border1->g, border1->b);	
+		ge_cairo_set_color (cr, border1);	
 		cairo_stroke (cr);
 	}
 	else
@@ -1249,9 +1225,7 @@ clearlooks_draw_list_view_header (cairo_t *cr,
 	/* Draw bottom border */
 	cairo_move_to (cr, 0.0, height-0.5);
 	cairo_line_to (cr, width, height-0.5);
-	cairo_set_source_rgb (cr, border->r,
-	                          border->g,
-	                          border->b);
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 
 	/* Draw bottom shade */	
@@ -1294,17 +1268,17 @@ clearlooks_draw_toolbar (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);
 	
 	/* Draw highlight */
-	cairo_translate       (cr, x, y);
-	cairo_move_to         (cr, 0, 0.5);
-	cairo_line_to         (cr, width-1, 0.5);
-	cairo_set_source_rgb  (cr, light->r, light->g, light->b);
-	cairo_stroke          (cr);
+	cairo_translate     (cr, x, y);
+	cairo_move_to       (cr, 0, 0.5);
+	cairo_line_to       (cr, width-1, 0.5);
+	ge_cairo_set_color  (cr, light);
+	cairo_stroke        (cr);
 
 	/* Draw shadow */
-	cairo_move_to         (cr, 0, height-0.5);
-	cairo_line_to         (cr, width-1, height-0.5);
-	cairo_set_source_rgb  (cr, dark->r, dark->g, dark->b);
-	cairo_stroke          (cr);
+	cairo_move_to       (cr, 0, height-0.5);
+	cairo_line_to       (cr, width-1, height-0.5);
+	ge_cairo_set_color  (cr, dark);
+	cairo_stroke        (cr);
 }
 
 static void
@@ -1333,8 +1307,8 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	cairo_fill_preserve  (cr);
 	cairo_pattern_destroy (pattern);
 	
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
-	cairo_stroke	         (cr);
+	ge_cairo_set_color (cr, border);
+	cairo_stroke	   (cr);
 }
 
 static void
@@ -1361,7 +1335,7 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 
 	/* Draw fill */
 	cairo_rectangle (cr, 1, 0, width-2, height);
-	cairo_set_source_rgb (cr, bg->r, bg->g, bg->b);
+	ge_cairo_set_color (cr, bg);
 	cairo_fill (cr);
 
 	/* Draw shadow */
@@ -1374,7 +1348,7 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 	
 	/* Draw border */
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	ge_cairo_set_color (cr, border);
 	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 }
 
@@ -1431,7 +1405,7 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 
 	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, 3.0, corners);	
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 	
 	cairo_translate (cr, 0.5, 0.5);
@@ -1508,7 +1482,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
 		ge_cairo_stroke_rectangle (cr, 1.5, 1.5, width-3, height-3);
 	
-		cairo_set_source_rgb (cr, border->r, border->g, border->b);
+		ge_cairo_set_color (cr, border);
 		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 	}
 	else
@@ -1537,7 +1511,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_fill(cr);
 		cairo_pattern_destroy(pattern);
 		
-		cairo_set_source_rgb (cr, border->r, border->g, border->b);
+		ge_cairo_set_color (cr, border);
 		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 		
 		/* draw handles */
@@ -1549,12 +1523,12 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		{
 			cairo_move_to (cr, bar_x, 4);
 			cairo_line_to (cr, bar_x, height-5);
-			cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
+			ge_cairo_set_color (cr, dark);
 			cairo_stroke (cr);
 			
 			cairo_move_to (cr, bar_x+1, 4);
 			cairo_line_to (cr, bar_x+1, height-5);
-			cairo_set_source_rgb (cr, light->r, light->g, light->b);
+			ge_cairo_set_color (cr, light);
 			cairo_stroke (cr);
 			
 			bar_x += 3;
@@ -1597,7 +1571,7 @@ clearlooks_draw_menu_frame (cairo_t *cr,
 	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 	cairo_paint          (cr);
 */
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	ge_cairo_set_color (cr, border);
 	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 }
 
@@ -1627,7 +1601,7 @@ clearlooks_draw_handle (cairo_t *cr,
 	if (params->prelight)
 	{
 		cairo_rectangle (cr, x, y, width, height);
-		cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);
+		ge_cairo_set_color (cr, fill);
 		cairo_fill (cr);
 	}
 	
@@ -1658,7 +1632,7 @@ clearlooks_draw_normal_arrow (cairo_t *cr, CairoColor *color,
 	cairo_line_to   (cr, 0, ARROW_HEIGHT/2);
 	cairo_line_to   (cr, ARROW_WIDTH/2, -ARROW_HEIGHT/2);
 	
-	cairo_set_source_rgb (cr, color->r, color->g, color->b);
+	ge_cairo_set_color (cr, color);
 	cairo_fill (cr);	
 }
 
@@ -1677,7 +1651,7 @@ clearlooks_draw_combo_arrow (cairo_t *cr, CairoColor *fill,
 	cairo_move_to (cr, -ARROW_WIDTH/2, y + ARROW_HEIGHT/2);
 	cairo_line_to   (cr, 0, y + -ARROW_HEIGHT/2);
 	cairo_line_to   (cr, ARROW_WIDTH/2, y + ARROW_HEIGHT/2);
-	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);	
+	ge_cairo_set_color (cr, fill);	
 	cairo_fill (cr);
 	
 	y += ARROW_SPACING;
@@ -1685,7 +1659,7 @@ clearlooks_draw_combo_arrow (cairo_t *cr, CairoColor *fill,
 	cairo_move_to (cr, -ARROW_WIDTH/2, y + -ARROW_HEIGHT/2);
 	cairo_line_to   (cr, 0, y + ARROW_HEIGHT/2);
 	cairo_line_to   (cr, ARROW_WIDTH/2, y + -ARROW_HEIGHT/2);
-	cairo_set_source_rgb (cr, fill->r, fill->g, fill->b);	
+	ge_cairo_set_color (cr, fill);	
 	cairo_fill (cr);
 }
 
@@ -1833,7 +1807,7 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 		cairo_fill_preserve (cr);
 	}
 	
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 	
 	if (draw_bullet)
@@ -1846,15 +1820,14 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 			cairo_move_to(cr, 5, 7);
 			cairo_line_to(cr, 9, 7);
 
-			cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+			ge_cairo_set_color (cr, dot);
 			cairo_stroke (cr);
 
 		}
 		else
 		{
 			cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
-			/* cairo_set_source_rgb (cr, dot->r, dot->g, dot->b); */
-			cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+			ge_cairo_set_color (cr, dot);
 			cairo_fill (cr);
 		
 			cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
@@ -1923,7 +1896,7 @@ clearlooks_draw_checkbox (cairo_t *cr,
 		cairo_fill_preserve (cr);
 	}
 	
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 
 	if (draw_bullet)
@@ -1945,7 +1918,7 @@ clearlooks_draw_checkbox (cairo_t *cr,
 			                    0.5 + (width*0.70), (height*0.25));
 		}
 		
-		cairo_set_source_rgb (cr, dot->r, dot->g, dot->b);
+		ge_cairo_set_color (cr, dot);
 		cairo_stroke (cr);
 	}
 }

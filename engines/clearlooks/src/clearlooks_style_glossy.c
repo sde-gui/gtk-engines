@@ -215,7 +215,7 @@ clearlooks_glossy_draw_slider (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	ge_cairo_set_color (cr, border);
 	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, 2.5, params->corners);
 	cairo_stroke (cr);
 
@@ -349,7 +349,7 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 			ge_cairo_rounded_rectangle (cr, x+2.5, y+2.5, width - 3, height - 3, 1, widget->corners);
 		}
 		
-		cairo_set_source_rgb (cr, border.r, border.g, border.b);
+		ge_cairo_set_color (cr, &border);
 		cairo_stroke (cr);
 		
 		if (checkbox->in_cell) {
@@ -383,17 +383,13 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 		cairo_rel_line_to (cr,  -2.3,  -2.5);
 		
 		
-		cairo_set_source_rgb (cr, colors->text[widget->state_type].r,
-		                          colors->text[widget->state_type].g,
-		                          colors->text[widget->state_type].b);
+		ge_cairo_set_color (cr, &colors->text[widget->state_type]);
 		cairo_fill (cr);
 	}
 	else if (checkbox->shadow_type == GTK_SHADOW_ETCHED_IN)
 	{
 		cairo_rectangle (cr, 4.0, 6.0, 6, 2);
-		cairo_set_source_rgb (cr, colors->text[widget->state_type].r,
-		                          colors->text[widget->state_type].g,
-		                          colors->text[widget->state_type].b);
+		ge_cairo_set_color (cr, &colors->text[widget->state_type]);
 		cairo_fill(cr);
 	}
 }
@@ -494,7 +490,7 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 		cairo_translate (cr, 0.5, 0.5);
 		cairo_arc (cr, x+width/2.0, y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);
 		
-		cairo_set_source_rgb (cr, border.r, border.g, border.b);
+		ge_cairo_set_color (cr, &border);
 		cairo_stroke (cr);
 		
 		cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 2.0, 0, 2 * M_PI);
@@ -510,9 +506,7 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 		cairo_arc (cr, 6.5, 6.5, 2.5, 0, 2 * M_PI);
 		if (widget->disabled)
 		{
-			cairo_set_source_rgb (cr, colors->text[widget->state_type].r,
-			                          colors->text[widget->state_type].g,
-			                          colors->text[widget->state_type].b);
+			ge_cairo_set_color (cr, &colors->text[widget->state_type]);
 		}
 		else
 		{

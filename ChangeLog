@@ -1,6 +1,12 @@
 2006-11-24  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	- replace cairo_set_source_rgb with ge_cairo_set_color where possible.
+
+2006-11-24  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_radiobutton), (clearlooks_draw_checkbox):
 	* engines/clearlooks/src/clearlooks_style_glossy.c:
 	(clearlooks_glossy_draw_checkbox),
