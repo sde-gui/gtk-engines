@@ -200,6 +200,8 @@ clearlooks_draw_button (cairo_t *cr,
 	/* if (params->focus && !params->active)
 		border_normal = &colors->spot[2]; */
 	
+	cairo_save (cr);
+	
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 
@@ -304,6 +306,7 @@ clearlooks_draw_button (cairo_t *cr,
 		/* Draw topleft shadow */
 		clearlooks_draw_top_left_highlight (cr, params, width, height, RADIUS);
 	}
+	cairo_restore (cr);
 }
 
 static void
@@ -370,15 +373,16 @@ clearlooks_draw_spinbutton (cairo_t *cr,
                             int x, int y, int width, int height)
 {
 	params->style_functions->draw_button (cr, colors, params, x, y, width, height);
-	
+
+	cairo_translate (cr, x, y);
 	/* Seperator */
-	cairo_move_to (cr, params->xthickness,         (height/2));
-	cairo_line_to (cr, width-params->xthickness-1, (height/2));
+	cairo_move_to (cr, params->xthickness + 0.5,       (height/2) + 0.5);
+	cairo_line_to (cr, width-params->xthickness - 0.5, (height/2) + 0.5);
 	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
 	cairo_stroke (cr);
 
-	cairo_move_to (cr, params->xthickness,         (height/2)+1);
-	cairo_line_to (cr, width-params->xthickness-1, (height/2)+1);
+	cairo_move_to (cr, params->xthickness + 0.5,       (height/2)+1.5);
+	cairo_line_to (cr, width-params->xthickness - 0.5, (height/2)+1.5);
 	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.7);
 	cairo_stroke (cr);
 }
@@ -772,22 +776,13 @@ clearlooks_draw_optionmenu (cairo_t *cr,
                             const OptionMenuParameters *optionmenu,
                             int x, int y, int width, int height)
 {
+	SeparatorParameters separator;
 	int offset = params->ythickness + 1;
 	
 	params->style_functions->draw_button (cr, colors, params, x, y, width, height);
 	
-	cairo_set_line_width  (cr, 1.0);
-	cairo_translate       (cr, optionmenu->linepos, 0.5);
-	
-	cairo_move_to         (cr, 0.0, offset);
-	cairo_line_to         (cr, 0.0, height - offset - params->ythickness + 1);
-	cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
-	cairo_stroke          (cr);
-	
-	cairo_move_to         (cr, 1.0, offset);
-	cairo_line_to         (cr, 1.0, height - offset - params->ythickness + 1);
-	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
-	cairo_stroke          (cr);
+	separator.horizontal = FALSE;
+	params->style_functions->draw_separator (cr, colors, params, &separator, x+optionmenu->linepos, y + offset, 2, height - offset*2);
 }
 
 static void
@@ -1163,13 +1158,17 @@ clearlooks_draw_separator (cairo_t *cr,
                            const SeparatorParameters  *separator,
                            int x, int y, int width, int height)
 {
+	cairo_save (cr);
+	cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
+
 	if (separator->horizontal)
 	{
+		//cairo_reset_clip (cr);
 		cairo_set_line_width  (cr, 1.0);
 		cairo_translate       (cr, x, y+0.5);
 		
-		cairo_move_to         (cr, 0.0,     0.0);
-		cairo_line_to         (cr, width+1, 0.0);
+		cairo_move_to         (cr, 0.0,   0.0);
+		cairo_line_to         (cr, width, 0.0);
 		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
 		cairo_stroke          (cr);
 		
@@ -1193,6 +1192,8 @@ clearlooks_draw_separator (cairo_t *cr,
 		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8);
 		cairo_stroke          (cr);		
 	}
+
+	cairo_restore (cr);
 }
 
 static void

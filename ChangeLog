@@ -1,3 +1,25 @@
+2006-11-25  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button), (clearlooks_draw_spinbutton),
+	(clearlooks_draw_optionmenu), (clearlooks_draw_separator):
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_glossy_draw_button):
+	- Add some cairo_save/restore pairs
+	- clearlooks_draw_option_menu now uses the separator routine
+	- draw_spinbutton and optionmenu used the fact that drawing the
+	button modified the cairo context.
+	- pixel align the end of the separator lines
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	- Make the progressbar clipbox larger by one pixel to leave space
+	for the shadow.
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	- Set x/ythickness for GtkSeparator to 2, otherwise they may get
+	clipped.
+
 2006-11-24  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

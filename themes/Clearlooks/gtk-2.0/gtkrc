@@ -101,7 +101,7 @@ style "clearlooks-menu" = "clearlooks-default"
 {
   xthickness = 2
   ythickness = 1
-  bg[NORMAL] = lighter (@bg_color) # "#f9f7f3"
+  bg[NORMAL] = shade (1.02, @bg_color) # "#f9f7f3"
 }
 
 style "clearlooks-menubar-item" = "clearlooks-button"
@@ -156,14 +156,15 @@ style "clearlooks-scale" = "clearooks-button"
 }	
 
 # widget styles
-class "GtkWidget" style "clearlooks-default"
-class "GtkButton" style "clearlooks-button"
-class "GtkScale"  style "clearlooks-scale"
-class "GtkCombo"  style "clearlooks-button"
-class "GtkRange"  style "clearlooks-wide"
-class "GtkFrame"  style "clearlooks-wide"
-class "GtkMenu"   style "clearlooks-menu"
-class "GtkEntry"  style "clearlooks-wider"
+class "GtkWidget"    style "clearlooks-default"
+class "GtkButton"    style "clearlooks-button"
+class "GtkScale"     style "clearlooks-scale"
+class "GtkCombo"     style "clearlooks-button"
+class "GtkRange"     style "clearlooks-wide"
+class "GtkFrame"     style "clearlooks-wide"
+class "GtkSeparator" style "clearlooks-wide"
+class "GtkMenu"      style "clearlooks-menu"
+class "GtkEntry"     style "clearlooks-wider"
 class "GtkMenuItem"    style "clearlooks-menu-item"
 class "GtkNotebook"    style "clearlooks-notebook"
 class "GtkProgressBar" style "clearlooks-progressbar"

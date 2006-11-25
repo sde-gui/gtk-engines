@@ -87,6 +87,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	
 	cairo_pattern_t *pattern;
 	
+	cairo_save (cr);
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 
@@ -176,6 +177,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
                                   width-(xoffset*2)-1, height-(yoffset*2)-1,
                                   RADIUS, params->corners);
 	cairo_stroke (cr);
+	cairo_restore (cr);
 }
 
 static void
