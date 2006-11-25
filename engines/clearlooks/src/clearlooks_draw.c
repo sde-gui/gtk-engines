@@ -1057,11 +1057,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	}
 	
 	/* Set the fill color */
-	if (params->active)
-		fill = (CairoColor*)&colors->bg[params->state_type];
-	else
-		fill = (CairoColor*)&params->parentbg;
-	
+	fill = (CairoColor*)&colors->bg[params->state_type];
 
 	/* Set tab shape */
 	ge_cairo_rounded_rectangle (cr, 0,

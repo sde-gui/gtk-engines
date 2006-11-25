@@ -241,6 +241,10 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		params.corners = CR_CORNER_NONE;
+		/* Fill the background with bg[NORMAL] */
+		cairo_rectangle (cr, x, y, width, height);
+		ge_cairo_set_color (cr, &colors->bg[GTK_STATE_NORMAL]);
+		cairo_fill (cr);
 		
 		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
 		                       x, y, width, height);

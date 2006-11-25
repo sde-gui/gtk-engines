@@ -1,5 +1,14 @@
 2006-11-25  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c: (clearlooks_draw_tab):
+	- Don't use parentbg, but always bg[STATE]
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box_gap):
+	- Fill the notebook background with bg[NORMAL]
+
+2006-11-25  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_button), (clearlooks_draw_spinbutton),
 	(clearlooks_draw_optionmenu), (clearlooks_draw_separator):
