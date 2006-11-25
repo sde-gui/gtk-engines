@@ -1,5 +1,21 @@
 2006-11-25  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_frame): Support rounded corners correctly.
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_extension):
+	- Set the corners correctly in the widget parameters
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_tab):
+	- Use the corners value from the parameters
+
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_draw_button_gloss), (clearlooks_glossy_draw_button):
+	- removed fill option from clearlooks_draw_button_gloss
+
+2006-11-25  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c: (clearlooks_draw_tab):
 	- Don't use parentbg, but always bg[STATE]
 

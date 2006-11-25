@@ -958,9 +958,10 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.8 );
 		if (frame->shadow == CL_SHADOW_ETCHED_IN)
-			ge_cairo_stroke_rectangle (cr, 1, 1, width-2, height-2);
+			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, RADIUS, params->corners);
 		else
-			ge_cairo_stroke_rectangle (cr, 0, 0, width-2, height-2);
+			ge_cairo_rounded_rectangle (cr, 0, 0, width-2, height-2, RADIUS, params->corners);
+		cairo_stroke (cr);
 	}
 	else if (frame->shadow != CL_SHADOW_NONE)
 	{
@@ -987,15 +988,17 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2 );
 		if (frame->shadow == CL_SHADOW_ETCHED_IN)
-			ge_cairo_stroke_rectangle (cr, 0, 0, width-2, height-2);
+			ge_cairo_rounded_rectangle (cr, 0, 0, width-2, height-2, RADIUS, params->corners);
 		else
-			ge_cairo_stroke_rectangle (cr, 1, 1, width-2, height-2);
+			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, RADIUS, params->corners);
 	}
 	else
 	{
 		ge_cairo_set_color (cr, border);
-		ge_cairo_stroke_rectangle (cr, 0, 0, width-1, height-1);
+		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, RADIUS, params->corners);
 	}
+	cairo_stroke (cr);
+
 	cairo_restore (cr);
 }
 
@@ -1014,7 +1017,6 @@ clearlooks_draw_tab (cairo_t *cr,
 
 	cairo_pattern_t     *pattern;
 	
-	int                  corners;
 	double               strip_size;
 		
 	/* Set clip */
@@ -1035,12 +1037,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	 	strip_size = ((100.0/height)*2.0)/100.0;
 		
 		if (tab->gap_side == CL_GAP_TOP)
-		{
 			cairo_translate (cr, 0.0, -4.0); /* gap at the other side */
-			corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_BOTTOMRIGHT;
-		}
-		else
-			corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
 	}
 	else
 	{
@@ -1048,12 +1045,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	 	strip_size = ((100.0/width)*2.0)/100.0;
 		
 		if (tab->gap_side == CL_GAP_LEFT) 
-		{
 			cairo_translate (cr, -4.0, 0.0); /* gap at the other side */
-			corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;		
-		}
-		else
-			corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;	
 	}
 	
 	/* Set the fill color */
@@ -1064,7 +1056,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	                                     0,
 	                                     width-1,
 	                                     height-1,
-	                                     RADIUS, corners);
+	                                     RADIUS, params->corners);
 	
 	/* Draw fill */
 	ge_cairo_set_color (cr, fill);
@@ -1076,7 +1068,7 @@ clearlooks_draw_tab (cairo_t *cr,
 		ShadowParameters shadow;
 		
 		shadow.shadow  = CL_SHADOW_OUT;
-		shadow.corners = corners;
+		shadow.corners = params->corners;
 		
 		clearlooks_draw_highlight_and_shade (cr, &shadow,
 		                                     width,
@@ -1106,7 +1098,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	                                     0,
 	                                     width-1,
 	                                     height-1,
-	                                     RADIUS, corners);
+	                                     RADIUS, params->corners);
 		
 		cairo_pattern_add_color_stop_rgb  (pattern, 0.0,        stripe_fill->r, stripe_fill->g, stripe_fill->b);
 		cairo_pattern_add_color_stop_rgb  (pattern, strip_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
@@ -1122,7 +1114,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	                                     0,
 	                                     width-1,
 	                                     height-1,
-	                                     RADIUS, corners);
+	                                     RADIUS, params->corners);
 	
 	
 	if (params->active)

@@ -280,10 +280,20 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 		
 		tab.gap_side = (ClearlooksGapSide)gap_side;
 		
-		if (gap_side == GTK_POS_BOTTOM)
-			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
-		else if (gap_side == GTK_POS_TOP)
-			params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_BOTTOMRIGHT;
+		switch (gap_side)
+		{
+			case CL_GAP_BOTTOM:
+				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
+				break;
+			case CL_GAP_TOP:
+				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_BOTTOMRIGHT;
+				break;
+			case CL_GAP_RIGHT:
+				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
+				break;
+			case CL_GAP_LEFT:
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+		}
 		
 		STYLE_FUNCTION(draw_tab) (cr, colors, &params, &tab,
 		                     x, y, width, height);

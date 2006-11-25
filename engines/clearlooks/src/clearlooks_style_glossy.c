@@ -37,25 +37,16 @@
 static void
 clearlooks_draw_button_gloss (cairo_t *cr,
                               double x, double y, int width, int height,
-                              CairoColor *color, boolean fill, boolean disabled)
+                              const CairoColor *color, boolean disabled)
 {
 	CairoColor a, b, c, d, e;
 	cairo_pattern_t *pt;
 
-	if (fill)
-	{
-		ge_shade_color (color, 1.48, &a);
-		ge_shade_color (color, 1.24, &b);
-		ge_shade_color (color, 0.98, &c);
-		ge_shade_color (color, 1.0, &d );
-		ge_shade_color (color, 1.42, &e);
-	} else {
-		ge_shade_color (color, disabled? 1.03 : 1.05, &a);
-		ge_shade_color (color, disabled? 1.01 : 1.02, &b);
-		ge_shade_color (color, disabled? 0.99 : 0.98, &c);
-		ge_shade_color (color, 1.0, &d);
-		ge_shade_color (color, disabled? 1.01 : 1.02, &e);
-	}
+	ge_shade_color (color, disabled? 1.03 : 1.05, &a);
+	ge_shade_color (color, disabled? 1.01 : 1.02, &b);
+	ge_shade_color (color, disabled? 0.99 : 0.98, &c);
+	ge_shade_color (color, 1.0, &d);
+	ge_shade_color (color, disabled? 1.01 : 1.02, &e);
 
 	pt = cairo_pattern_create_linear (x, y, x, y+height);
 	cairo_pattern_add_color_stop_rgb (pt, 0.0,  a.r, a.g, a.b);
@@ -126,7 +117,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	
 	clearlooks_draw_button_gloss (cr, xoffset+1, yoffset+1, 
 	                              width-(xoffset*2)-2, height-(yoffset*2)-2, 
-	                              &fill, FALSE, params->disabled);
+	                              &fill, params->disabled);
 	
 	/* Pressed button shadow */
 	if (params->active)
