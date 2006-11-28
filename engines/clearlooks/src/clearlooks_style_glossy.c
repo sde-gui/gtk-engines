@@ -396,7 +396,7 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 {
 	CairoColor border, top, bottom;
 	cairo_pattern_t *pattern;
-	gboolean draw_bullet = (checkbox->shadow_type == CL_SHADOW_IN || checkbox->shadow_type == CL_SHADOW_ETCHED_IN);
+	gboolean draw_bullet = (checkbox->shadow_type == CL_SHADOW_IN);
 	/* sanitize size to be rectangular */
 	if (width > height) {
 		x += (width - height) / 2;

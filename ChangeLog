@@ -1,5 +1,11 @@
 2006-11-28  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_glossy_draw_radiobutton):
+	- Don't draw the bullet in the inconsistent state.
+
+2006-11-28  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_box):
 	- Draw Evolution ETree headers as headers instead of buttons.
