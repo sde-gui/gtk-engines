@@ -416,8 +416,9 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		                         x, y, width, height);
 	}
 	else if (DETAIL ("button") && widget && widget->parent &&
-                 (GE_IS_TREE_VIEW(widget->parent) ||
-                  GE_IS_CLIST (widget->parent)))
+                  (GE_IS_TREE_VIEW(widget->parent) ||
+                   GE_IS_CLIST (widget->parent) ||
+                   ge_object_is_a (widget->parent, "ETree"))) /* ECanvas inside ETree */
 	{
 		WidgetParameters params;
 		ListViewHeaderParameters header;
