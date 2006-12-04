@@ -1,28 +1,33 @@
+gtk-color-scheme =
+"bg_color:#eaeaea\nfg_color:#000\nbase_color:#fff\ntext_color:#000\nselected_fg_color:#fff\nselected_bg_color:#729fcf"
+
 style "default"
 {
-        fg[NORMAL]              = "#000000"
-        fg[ACTIVE]              = "#000000"
-        fg[INSENSITIVE]         = "#888888"
-        fg[PRELIGHT]            = "#000000"
-        fg[SELECTED]            = "#ffffff"
-        
-        bg[ACTIVE]              = "#cdcdcd"
-	bg[NORMAL]              = "#eaeaea"
-        bg[INSENSITIVE]         = "#dddddd"
-        bg[PRELIGHT]            = "#f6f6f6"
-        bg[SELECTED]            = "#729fcf"
+        fg[NORMAL]              = @fg_color
+        fg[ACTIVE]              = @fg_color
+        fg[INSENSITIVE]         = mix (0.4, @fg_color, shade (0.85, @bg_color)) #shaded to bg[INSENSITIVE]
 
-        base[NORMAL]            = "#ffffff"
-        base[ACTIVE]            = "#cdcdcd"
-        base[INSENSITIVE]       = "#ffffff"
-        base[PRELIGHT]          = "#eaeaea"
-	base[SELECTED]          = "#729fcf"
+        fg[PRELIGHT]            = @fg_color
+        fg[SELECTED]            = @selected_fg_color
         
-        text[NORMAL]            = "#000000"
-        text[ACTIVE]            = "#000000"
-        text[PRELIGHT]          = "#000000"
-        text[SELECTED]          = "#FFFFFF"
-        text[INSENSITIVE]       = "#555555"
+        bg[ACTIVE]              = shade (0.9, @bg_color)
+	bg[NORMAL]              = @bg_color
+        bg[INSENSITIVE]         = shade (0.95, @bg_color)
+        bg[PRELIGHT]            = shade (1.03, @bg_color)
+        bg[SELECTED]            = @selected_bg_color
+
+        base[NORMAL]            = @base_color
+        base[ACTIVE]            = shade (0.9, @selected_bg_color)
+        base[INSENSITIVE]       = @base_color
+        base[PRELIGHT]          = @bg_color
+	base[SELECTED]          = @selected_bg_color
+        
+        text[NORMAL]            = @text_color
+        text[ACTIVE]            = @text_color
+        text[PRELIGHT]          = @text_color
+        text[SELECTED]          = @selected_fg_color
+        text[INSENSITIVE]       = mix (0.5, @text_color, @base_color)
+	
 
 	GtkRange::trough_border = 0
 	GtkRange::slider_width = 15
@@ -32,8 +37,7 @@ style "default"
 	GtkCheckButton::indicator_size=10
 	GtkCheckMenuItem::indicator_size=10
 	GtkRadioButton::indicator_size=12
-#	GtkStatusbar::shadow_type = 
-	
+
 	GtkNotebook::tab_vborder = 1
 	GtkNotebook::tab_hborder = 1
 	xthickness = 1
