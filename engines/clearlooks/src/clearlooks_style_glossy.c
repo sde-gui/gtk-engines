@@ -172,6 +172,91 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 }
 
 static void
+clearlooks_glossy_draw_tab (cairo_t *cr,
+                            const ClearlooksColors *colors,
+                            const WidgetParameters *params,
+                            const TabParameters    *tab,
+                            int x, int y, int width, int height)
+{
+	const CairoColor *background;
+	FrameParameters frame;
+	GdkRectangle pos = { x, y, width, height };
+	
+	background = &colors->bg[params->state_type];
+	
+	cairo_save (cr);
+	{
+		CairoColor a, b, c, d, e;
+		gint center;
+		cairo_pattern_t *pt;
+
+		/* change everything as if the gap side was at the bottom/top */
+		if ((tab->gap_side == CL_GAP_LEFT) || (tab->gap_side == CL_GAP_RIGHT))
+			ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
+
+		center = height / 2;
+		/* draw the gloss ... */
+		if ((tab->gap_side == CL_GAP_BOTTOM) || (tab->gap_side == CL_GAP_RIGHT))
+		{
+			ge_shade_color (background, 1.06, &a);
+			ge_shade_color (background, 1.04, &b);
+			ge_shade_color (background, 1.02, &c);
+			ge_shade_color (background, 0.96, &d);
+			ge_shade_color (background, 1.00, &e);
+
+			pt = cairo_pattern_create_linear (x, y, x, y+height);
+			cairo_pattern_add_color_stop_rgb (pt, 0.0,  a.r, a.g, a.b);
+			cairo_pattern_add_color_stop_rgb (pt, 0.2,  b.r, b.g, b.b);
+			cairo_pattern_add_color_stop_rgb (pt, (center-1)/((gfloat) height), c.r, c.g, c.b);
+			cairo_pattern_add_color_stop_rgb (pt, (center)/((gfloat) height), d.r, d.g, d.b);
+			cairo_pattern_add_color_stop_rgb (pt, 1.0,  e.r, e.g, e.b);
+
+			cairo_set_source (cr, pt);
+			ge_cairo_rounded_rectangle (cr, x, y, width, height, 3.0, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
+			cairo_fill (cr);
+
+			cairo_pattern_destroy (pt);
+		}
+		else
+		{
+			ge_shade_color (background, 1.00, &a);
+			ge_shade_color (background, 1.04, &b);
+			ge_shade_color (background, 1.06, &c);
+			ge_shade_color (background, 0.96, &d);
+			ge_shade_color (background, 0.99, &e);
+
+			pt = cairo_pattern_create_linear (x, y, x, y+height);
+			cairo_pattern_add_color_stop_rgb (pt, 0.0,  a.r, a.g, a.b);
+			cairo_pattern_add_color_stop_rgb (pt, 0.2,  b.r, b.g, b.b);
+			cairo_pattern_add_color_stop_rgb (pt, (center-1)/((gfloat) height), c.r, c.g, c.b);
+			cairo_pattern_add_color_stop_rgb (pt, (center)/((gfloat) height), d.r, d.g, d.b);
+			cairo_pattern_add_color_stop_rgb (pt, 1.0,  e.r, e.g, e.b);
+
+			cairo_set_source (cr, pt);
+			ge_cairo_rounded_rectangle (cr, x, y, width, height, 3.0, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
+			cairo_fill (cr);
+
+			cairo_pattern_destroy (pt);
+		}
+		
+	}
+	cairo_restore (cr);
+	
+	x = pos.x;
+	y = pos.y;
+	width = pos.width;
+	height = pos.height;
+	
+	frame.shadow = CL_SHADOW_OUT;
+	frame.gap_side = tab->gap_side;
+	frame.gap_x = 0;
+	frame.gap_width = width;
+	frame.border = (CairoColor*) &colors->shade[6]; /* XXX */
+	
+	params->style_functions->draw_frame (cr, colors, params, &frame, x, y, width, height);
+}
+
+static void
 clearlooks_glossy_draw_slider (cairo_t *cr,
                         const ClearlooksColors *colors,
                         const WidgetParameters *params,
@@ -520,6 +605,7 @@ void
 clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions)
 {
 	functions->draw_button        = clearlooks_glossy_draw_button;
+	functions->draw_tab           = clearlooks_glossy_draw_tab;
 	functions->draw_slider        = clearlooks_glossy_draw_slider;
 	functions->draw_slider_button = clearlooks_glossy_draw_slider_button;
 	functions->draw_checkbox      = clearlooks_glossy_draw_checkbox;

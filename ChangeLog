@@ -1,3 +1,9 @@
+2006-12-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_glossy_draw_tab), (clearlooks_register_style_glossy):
+	- Added glossy tabs.
+
 2006-12-04  Thomas Wood  <thos@gnome.org>
 
 	* themes/Mist/gtk-2.0/gtkrc: Use gtk-color-scheme
