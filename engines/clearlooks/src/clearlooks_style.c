@@ -843,12 +843,12 @@ clearlooks_style_draw_option (DRAW_ARGS)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	const ClearlooksColors *colors;
+	WidgetParameters params;
+	CheckboxParameters checkbox;
+	
 	cairo_t *cr;
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	colors = &clearlooks_style->colors;
-	
-	WidgetParameters params;
-	CheckboxParameters checkbox;
 	
 	checkbox.shadow_type = shadow_type;
 	checkbox.in_menu = (widget && GTK_IS_MENU(widget->parent));
@@ -864,13 +864,13 @@ static void
 clearlooks_style_draw_check (DRAW_ARGS)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	WidgetParameters params;
+	CheckboxParameters checkbox;
+		
 
 	cairo_t *cr;
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
-	WidgetParameters params;
-	CheckboxParameters checkbox;
-		
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 	
 	params.corners = CR_CORNER_ALL;
