@@ -114,6 +114,7 @@ style "clearlooks-menu-item" = "clearlooks-default"
   xthickness = 2
   ythickness = 3
   fg[PRELIGHT] = @selected_fg_color
+  text[PRELIGHT] = @selected_fg_color
 }
 
 style "clearlooks-tree" = "clearlooks-default"
@@ -138,7 +139,7 @@ style "clearlooks-progressbar" = "clearlooks-wide"
 {
   xthickness = 1
   ythickness = 1
-  # fg[PRELIGHT]  = "#ffffff"
+  fg[PRELIGHT]  = @selected_fg_color
 }
 
 style "clearlooks-combo" = "clearlooks-button"

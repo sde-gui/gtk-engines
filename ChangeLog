@@ -1,3 +1,9 @@
+2006-12-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	- Use @selected_fg_color for text[PRELIGHT] inside menus and
+	for fg[PRELIGHT] in GtkProgressBar (Bug #382397, Michael Monreal)
+
 2006-12-04  Thomas Wood  <thos@gnome.org>
 
 	* NEWS: Updated for 2.9.0
