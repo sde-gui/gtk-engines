@@ -1,3 +1,7 @@
+2006-12-04  Thomas Wood  <thos@gnome.org>
+
+	* NEWS: Updated for 2.9.0
+
 2006-12-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style_glossy.c:
