@@ -1,3 +1,10 @@
+2006-12-06  Daniel Borgmann <daniel.borgmann@gmail.com>
+
+	* engines/lua/*:
+	- Added Lua scripting engine.
+	* configure.ac:
+	- Added --enable-lua option to compile the lua engine.
+
 2006-12-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

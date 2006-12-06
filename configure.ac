@@ -26,6 +26,7 @@ AC_ARG_ENABLE(redmond,		[  --disable-redmond       skip Redmond engine/theme], 	
 AC_ARG_ENABLE(smooth, 		[  --disable-smooth        skip Smooth engine], 		[smooth=$enableval], 		[smooth="$defaultval"])
 AC_ARG_ENABLE(glide,		[  --disable-glide         skip Glide engine],			[glide=$enableval],		[glide="$defaultval"])
 AC_ARG_ENABLE(thinice,		[  --disable-thinice       skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice="$defaultval"])
+AC_ARG_ENABLE(lua,			[  --enable-lua            enable Lua engine], 			[lua=$enableval], 			[lua="no"])
 
 AC_ARG_ENABLE(animation, 	[  --enable-animation      compile clearlooks with animation support], 	[animation=$enableval],	[animation="no"])
 
@@ -80,6 +81,10 @@ if test $thinice = "yes"; then
 	BUILD_THEMES="$BUILD_THEMES ThinIce"
 fi
 
+if test $lua = "yes"; then
+	BUILD_ENGINES="$BUILD_ENGINES lua"
+fi
+
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.10.0,,
                   AC_MSG_ERROR([GTK+-2.10 is required to compile gtk-engines]))
 
@@ -128,6 +133,7 @@ engines/redmond/Makefile
 engines/glide/Makefile
 engines/smooth/Makefile
 engines/thinice/Makefile
+engines/lua/Makefile
 themes/Makefile
 themes/Clearlooks/Makefile
 themes/Clearlooks/gtk-2.0/Makefile
@@ -241,6 +247,13 @@ fi
 
 echo -n "      ThinIce - "
 if test "$thinice" = "yes"; then
+	echo "Including"
+else
+	echo "Skipping"
+fi
+
+echo -n "      Lua - "
+if test "$lua" = "yes"; then
 	echo "Including"
 else
 	echo "Skipping"
