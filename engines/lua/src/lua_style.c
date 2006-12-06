@@ -195,7 +195,7 @@ lua_style_push_standard_params (LuaStyle *style, GtkWidget *widget, GtkStateType
 	lua_setfield (style->L, -2, "uid");
 }
 
-static void
+static cairo_t *
 lua_style_prepare_cairo (LuaStyle *style, GdkWindow *window, GdkRectangle *area, gint x, gint y)
 {
 	g_return_if_fail (style);
@@ -213,6 +213,8 @@ lua_style_prepare_cairo (LuaStyle *style, GdkWindow *window, GdkRectangle *area,
 	}
 	cairo_translate (cr, x, y);
 	lua_utils_push_pointer (style->L, "cairo", cr);
+	
+	return cr;
 }
 
 static void
@@ -325,16 +327,48 @@ lua_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 static void
 lua_style_draw_box (DRAW_ARGS)
 {
+	cairo_t *cr;
 	LuaStyle *lua_style = LUA_STYLE (style);
 	gboolean processed = FALSE;
+	gint tmp;
 	
 	SANITIZE_SIZE;
 	
-	lua_style_prepare_cairo (lua_style, window, area, x, y);
+	cr = lua_style_prepare_cairo (lua_style, window, area, x, y);
+	
+	if (widget && GE_IS_RANGE (widget) && GTK_RANGE (widget)->orientation != GTK_ORIENTATION_HORIZONTAL)
+	{
+		cairo_translate (cr, width, 0);
+		cairo_rotate (cr, G_PI * 0.5);
+		tmp = width;
+		width = height;
+		height = tmp;
+	}
+		
+	if (widget && GE_IS_PROGRESS_BAR (widget))
+	{
+		switch (gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget)))
+		{
+		case GTK_PROGRESS_TOP_TO_BOTTOM:
+		case GTK_PROGRESS_BOTTOM_TO_TOP:
+			cairo_translate (cr, width, 0);
+			cairo_rotate (cr, G_PI * 0.5);
+			tmp = width;
+			width = height;
+			height = tmp;
+		}
+	
+		switch (gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget)))
+		{
+		case GTK_PROGRESS_RIGHT_TO_LEFT:
+		case GTK_PROGRESS_BOTTOM_TO_TOP:
+			cairo_translate (cr, width, 0);
+			cairo_scale (cr, -1, 1);
+		}
+	}
 	
 	if (DETAIL ("button") || DETAIL ("buttondefault") || DETAIL ("spinbutton"))
 	{
-		
 		if (DETAIL ("spinbutton"))
 		{
 			lua_newtable (lua_style->L);

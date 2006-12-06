@@ -1,3 +1,9 @@
+2006-12-06  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
+	* engines/lua/src/lua_style.c: (lua_style_prepare_cairo),
+	(lua_style_draw_box):
+	- Properly rotate and mirror some widgets.
+
 2006-12-06  Daniel Borgmann <daniel.borgmann@gmail.com>
 
 	* engines/lua/*:
