@@ -136,6 +136,8 @@ typedef struct
 	boolean is_default;
 	boolean ltr;
 	boolean enable_glow;
+
+	gfloat  radius;
 	
 	ClearlooksStateType state_type;
 	
@@ -399,6 +401,7 @@ struct _ClearlooksStyleFunctions
 	/* Style internal functions */
 	/* XXX: Only used by slider_button, inline it? */
 	void (*draw_shadow)           (cairo_t				*cr,
+	                               gfloat                            radius,
 	                               int				 width,
 	                               int				 height);
 

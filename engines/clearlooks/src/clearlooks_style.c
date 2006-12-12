@@ -54,6 +54,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->focus       = widget && GTK_WIDGET_HAS_FOCUS (widget);
 	params->is_default  = widget && GE_WIDGET_HAS_DEFAULT (widget);
 	params->enable_glow = FALSE;
+	params->radius      = CLEARLOOKS_STYLE (style)->radius;
 
 	if (!params->active && widget && GE_IS_TOGGLE_BUTTON (widget))
 		params->active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
@@ -1102,7 +1103,8 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->listviewitemstyle = CLEARLOOKS_RC_STYLE (rc_style)->listviewitemstyle;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_SCROLLBAR_COLOR;
 	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
-	
+	clearlooks_style->radius            = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 1.0, 10.0);
+
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
 }

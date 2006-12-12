@@ -39,16 +39,17 @@ GE_INTERNAL extern GType clearlooks_type_rc_style;
 
 /* XXX: needs fixing! */
 typedef enum {
-	CL_FLAG_STYLE		= 1 << 0,
-	CL_FLAG_SCROLLBAR_COLOR	= 1 << 1,
-	CL_FLAG_CONTRAST	= 1 << 2,
-	CL_FLAG_SUNKENMENUBAR	= 1 << 3,
-	CL_FLAG_PROGRESSBARSTYLE = 1 << 4,
-	CL_FLAG_MENUBARSTYLE	= 1 << 5,
-	CL_FLAG_MENUITEMSTYLE	= 1 << 6,
-	CL_FLAG_LISTVIEWITEMSTYLE = 1 << 7,
-	CL_FLAG_SCROLLBARSTYLE	= 1 << 8,
-	CL_FLAG_ANIMATION	= 1 << 9,
+	CL_FLAG_STYLE             = 1 <<  0,
+	CL_FLAG_SCROLLBAR_COLOR   = 1 <<  1,
+	CL_FLAG_CONTRAST          = 1 <<  2,
+	CL_FLAG_SUNKENMENUBAR     = 1 <<  3,
+	CL_FLAG_PROGRESSBARSTYLE  = 1 <<  4,
+	CL_FLAG_MENUBARSTYLE      = 1 <<  5,
+	CL_FLAG_MENUITEMSTYLE     = 1 <<  6,
+	CL_FLAG_LISTVIEWITEMSTYLE = 1 <<  7,
+	CL_FLAG_SCROLLBARSTYLE    = 1 <<  8,
+	CL_FLAG_ANIMATION         = 1 <<  9,
+	CL_FLAG_RADIUS            = 1 << 10,
 } ClearlooksRcFlags;
 
 struct _ClearlooksRcStyle
@@ -68,6 +69,7 @@ struct _ClearlooksRcStyle
 	guint8 listviewitemstyle;
 	guint8 scrollbarstyle;
 	gboolean animation;
+	double radius;
 };
 
 struct _ClearlooksRcStyleClass

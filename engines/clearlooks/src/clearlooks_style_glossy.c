@@ -69,8 +69,6 @@ clearlooks_glossy_draw_button (cairo_t *cr,
                                    const WidgetParameters *params,
                                    int x, int y, int width, int height)
 {
-	const float RADIUS = 3.0;
-	
 	double xoffset = 0, yoffset = 0;
 	CairoColor fill                   = colors->bg[params->state_type];
 	const CairoColor *border_normal   = &colors->shade[6];
@@ -90,16 +88,16 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		if (params->prelight && params->enable_glow)
 		{
 			const CairoColor *glow = &colors->spot[0];
-			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, RADIUS+1, params->corners);
+			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, params->radius+1, params->corners);
 			ge_cairo_set_color (cr, glow);
 			cairo_stroke (cr);
 		}
 		
 		/* Use inset as default for now - would be nice to make this an option */
 		/* if (params->active || shadow->shadow == CL_SHADOW_IN) */
-			params->style_functions->draw_inset (cr, width-1, height-1, RADIUS, params->corners);
+			params->style_functions->draw_inset (cr, width-1, height-1, params->radius, params->corners);
 		/* else
-			clearlooks_draw_shadow (cr, width-1, height-1);
+			clearlooks_draw_shadow (cr, params->radius, width-1, height-1);
 		*/
 		cairo_translate (cr, -0.5, -0.5);
 		
@@ -166,7 +164,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		ge_cairo_set_color (cr, border_normal);
 	ge_cairo_rounded_rectangle (cr, xoffset + 0.5, yoffset + 0.5,
                                   width-(xoffset*2)-1, height-(yoffset*2)-1,
-                                  RADIUS, params->corners);
+                                  params->radius, params->corners);
 	cairo_stroke (cr);
 	cairo_restore (cr);
 }
@@ -212,7 +210,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 			cairo_pattern_add_color_stop_rgb (pt, 1.0,  e.r, e.g, e.b);
 
 			cairo_set_source (cr, pt);
-			ge_cairo_rounded_rectangle (cr, x, y, width, height, 3.0, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
+			ge_cairo_rounded_rectangle (cr, x, y, width, height, params->radius, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
 			cairo_fill (cr);
 
 			cairo_pattern_destroy (pt);
@@ -233,7 +231,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 			cairo_pattern_add_color_stop_rgb (pt, 1.0,  e.r, e.g, e.b);
 
 			cairo_set_source (cr, pt);
-			ge_cairo_rounded_rectangle (cr, x, y, width, height, 3.0, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
+			ge_cairo_rounded_rectangle (cr, x, y, width, height, params->radius, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
 			cairo_fill (cr);
 
 			cairo_pattern_destroy (pt);
@@ -316,7 +314,7 @@ clearlooks_glossy_draw_slider_button (cairo_t *cr,
 
 	cairo_translate (cr, x+0.5, y+0.5);
 	
-	params->style_functions->draw_shadow (cr, width-1, height-1);
+	params->style_functions->draw_shadow (cr, params->radius, width-1, height-1);
 	params->style_functions->draw_slider (cr, colors, params, 1, 1, width-2, height-2);
 }
 

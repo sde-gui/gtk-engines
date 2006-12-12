@@ -55,6 +55,7 @@ enum
   TOKEN_LISTVIEWITEMSTYLE,
   TOKEN_ANIMATION,
   TOKEN_STYLE,
+  TOKEN_RADIUS,
   
   TOKEN_CLASSIC,
   TOKEN_GLOSSY,
@@ -79,6 +80,7 @@ clearlooks_gtk2_rc_symbols[] =
   { "listviewitemstyle", TOKEN_LISTVIEWITEMSTYLE },
   { "animation",         TOKEN_ANIMATION },
   { "style",             TOKEN_STYLE },
+  { "radius",            TOKEN_RADIUS },
 
   { "CLASSIC",           TOKEN_CLASSIC },
   { "GLOSSY",            TOKEN_GLOSSY },
@@ -126,6 +128,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
   clearlooks_rc->listviewitemstyle = 1;
   clearlooks_rc->animation = FALSE;
   clearlooks_rc->style = CL_STYLE_CLASSIC;
+  clearlooks_rc->radius = 3.0;
 }
 
 #ifdef HAVE_ANIMATION
@@ -201,13 +204,13 @@ clearlooks_gtk2_rc_parse_color(GtkSettings  *settings,
 }
 
 static guint
-clearlooks_gtk2_rc_parse_contrast(GtkSettings  *settings,
-		     GScanner     *scanner,
-		     double       *contrast)
+clearlooks_gtk2_rc_parse_double (GtkSettings  *settings,
+                                 GScanner     *scanner,
+                                 gdouble      *val)
 {
   guint token;
 
-  /* Skip 'contrast' */
+  /* Skip 'blah' */
   token = g_scanner_get_next_token(scanner);
 
   token = g_scanner_get_next_token(scanner);
@@ -218,7 +221,7 @@ clearlooks_gtk2_rc_parse_contrast(GtkSettings  *settings,
   if (token != G_TOKEN_FLOAT)
     return G_TOKEN_FLOAT;
 
-  *contrast = scanner->value.v_float;
+  *val = scanner->value.v_float;
   
   return G_TOKEN_NONE;
 }
@@ -327,7 +330,7 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	  clearlooks_style->flags |= CL_FLAG_SCROLLBAR_COLOR;
 	  break;
 	case TOKEN_CONTRAST:
-	  token = clearlooks_gtk2_rc_parse_contrast (settings, scanner, &clearlooks_style->contrast);
+	  token = clearlooks_gtk2_rc_parse_double (settings, scanner, &clearlooks_style->contrast);
 	  clearlooks_style->flags |= CL_FLAG_CONTRAST;
 	  break;
 	case TOKEN_SUNKENMENU:
@@ -357,6 +360,10 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	case TOKEN_STYLE:
 	  token = clearlooks_gtk2_rc_parse_style (settings, scanner, &clearlooks_style->style);
 	  clearlooks_style->flags |= CL_FLAG_STYLE;
+	  break;
+	case TOKEN_RADIUS:
+	  token = clearlooks_gtk2_rc_parse_double (settings, scanner, &clearlooks_style->radius);
+	  clearlooks_style->flags |= CL_FLAG_RADIUS;
 	  break;
 	
 	default:
@@ -410,6 +417,8 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 		dest_w->scrollbar_color = src_w->scrollbar_color;
 	if (src_w->flags & CL_FLAG_ANIMATION)
 		dest_w->animation = src_w->animation;
+	if (src_w->flags & CL_FLAG_RADIUS)
+		dest_w->radius = src_w->radius;
 
 	dest_w->flags |= src_w->flags;
 }

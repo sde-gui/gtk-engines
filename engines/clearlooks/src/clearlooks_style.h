@@ -56,6 +56,7 @@ struct _ClearlooksStyle
 	GdkColor scrollbar_color;
 	gboolean has_scrollbar_color;
 	gboolean animation;
+	gfloat   radius;
 };
 
 struct _ClearlooksStyleClass
