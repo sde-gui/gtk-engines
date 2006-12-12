@@ -204,7 +204,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		WidgetParameters params;
 		FrameParameters frame;
 
-		frame.shadow = CL_SHADOW_NONE;
+		frame.shadow = shadow_type;
 		frame.gap_x  = -1;
 		frame.border = &colors->shade[5];
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
