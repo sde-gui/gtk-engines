@@ -3,7 +3,7 @@ NULL =
 INCLUDES = \
 	$(GTK_CFLAGS) $(DEVELOPMENT_CFLAGS) \
 	-I$(top_srcdir)/engines/support \
-	-Iliblua \
+	-I$(top_srcdir)/engines/lua/src/liblua \
 	$(NULL)
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines

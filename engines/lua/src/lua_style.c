@@ -338,8 +338,8 @@ lua_style_draw_box (DRAW_ARGS)
 	
 	if (widget && GE_IS_RANGE (widget) && GTK_RANGE (widget)->orientation != GTK_ORIENTATION_HORIZONTAL)
 	{
-		cairo_translate (cr, width, 0);
-		cairo_rotate (cr, G_PI * 0.5);
+		cairo_translate (cr, 0, height);
+		cairo_rotate (cr, -G_PI * 0.5);
 		tmp = width;
 		width = height;
 		height = tmp;
@@ -351,8 +351,8 @@ lua_style_draw_box (DRAW_ARGS)
 		{
 		case GTK_PROGRESS_TOP_TO_BOTTOM:
 		case GTK_PROGRESS_BOTTOM_TO_TOP:
-			cairo_translate (cr, width, 0);
-			cairo_rotate (cr, G_PI * 0.5);
+			cairo_translate (cr, 0, height);
+			cairo_rotate (cr, -G_PI * 0.5);
 			tmp = width;
 			width = height;
 			height = tmp;
@@ -367,7 +367,7 @@ lua_style_draw_box (DRAW_ARGS)
 		}
 	}
 	
-	if (DETAIL ("button") || DETAIL ("buttondefault") || DETAIL ("spinbutton"))
+	if (DETAIL ("button") || DETAIL ("buttondefault") || DETAIL ("spinbutton") || DETAIL ("optionmenu"))
 	{
 		if (DETAIL ("spinbutton"))
 		{
@@ -393,6 +393,13 @@ lua_style_draw_box (DRAW_ARGS)
 			lua_setglobal (lua_style->L, "widget");
 			processed = lua_style_draw (lua_style, widget, "combo_box_button", width, height);
 		}
+		else if (DETAIL ("optionmenu"))
+		{
+			lua_newtable (lua_style->L);
+			lua_style_push_standard_params (lua_style, widget, state_type);
+			lua_setglobal (lua_style->L, "widget");
+			processed = lua_style_draw (lua_style, widget, "option_menu", width, height);
+		}
 	
 		if (!processed)
 		{
@@ -405,6 +412,14 @@ lua_style_draw_box (DRAW_ARGS)
 	else if (DETAIL ("menubar"))
 	{
 		processed = lua_style_draw (lua_style, widget, "menubar", width, height);
+	}
+	else if (DETAIL ("menuitem"))
+	{
+		processed = lua_style_draw (lua_style, widget, "menuitem", width, height);
+	}
+	else if (DETAIL ("menu"))
+	{
+		processed = lua_style_draw (lua_style, widget, "menu", width, height);
 	}
 	else if (DETAIL ("trough") && widget && GE_IS_PROGRESS_BAR (widget))
 	{
@@ -445,6 +460,21 @@ lua_style_draw_box (DRAW_ARGS)
 			lua_setglobal (lua_style->L, "widget");
 			processed = lua_style_draw (lua_style, widget, "scrollbar", width, height);
 		}
+		else
+		{
+			lua_newtable (lua_style->L);
+			lua_style_push_standard_params (lua_style, widget, state_type);
+			lua_setglobal (lua_style->L, "widget");
+			processed = lua_style_draw (lua_style, widget, "scrollbar_stepper", width, height);
+			
+			if (!processed)
+			{
+				lua_newtable (lua_style->L);
+				lua_style_push_standard_params (lua_style, widget, state_type);
+				lua_setglobal (lua_style->L, "widget");
+				processed = lua_style_draw (lua_style, widget, "button", width, height);
+			}
+		}
 	}
 	else if (DETAIL ("hscale") || DETAIL ("vscale"))
 	{
@@ -452,6 +482,10 @@ lua_style_draw_box (DRAW_ARGS)
 		lua_style_push_standard_params (lua_style, widget, state_type);
 		lua_setglobal (lua_style->L, "widget");
 		processed = lua_style_draw (lua_style, widget, "scale", width, height);
+	}
+	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
+	{
+		processed = lua_style_draw (lua_style, widget, "toolbar", width, height);
 	}
 	
 	if (!processed)

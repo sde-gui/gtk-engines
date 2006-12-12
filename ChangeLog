@@ -1,3 +1,10 @@
+2006-12-12  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
+	* engines/lua/Makefile.am:
+	- Use absolute include path
+	* engines/lua/src/lua_style.c: (lua_style_draw_box):
+	- Support more widgets
+
 2006-12-06  Daniel Borgmann  <daniel.borgmann@gmail.com>
 
 	* engines/lua/src/lua_style.c: (lua_style_prepare_cairo),
