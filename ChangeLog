@@ -1,3 +1,12 @@
+2006-12-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_types.h:
+	- Remove arrow drawing code
+	- Use buildin draw_tab, the difference is only minimal
+	- Call gtk_paint_tab for the combobox arrow
+
 2006-12-12  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

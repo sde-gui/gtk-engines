@@ -888,35 +888,6 @@ clearlooks_style_draw_check (DRAW_ARGS)
 }
 
 static void
-clearlooks_style_draw_tab (DRAW_ARGS)
-{
-	GtkRequisition indicator_size;
-	GtkBorder indicator_spacing;
-	gint arrow_height;
-
-	ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
-	
-	indicator_size.width += (indicator_size.width % 2) - 1;
-	arrow_height = indicator_size.width / 2;
-	
-	x += (width - indicator_size.width) / 2;
-	y += height/2;
-
-
-	gtk_paint_arrow (style, window,
-	                 state_type, shadow_type,
-	                 area, widget, "arrow",
-	                 GTK_ARROW_UP, TRUE,
-	                 x, y-arrow_height-1, indicator_size.width, arrow_height);
-	                 
-	gtk_paint_arrow (style, window,
-	                 state_type, shadow_type,
-	                 area, widget, "arrow",
-	                 GTK_ARROW_DOWN, TRUE,
-	                 x, y+2, indicator_size.width, arrow_height);
-}
-
-static void
 clearlooks_style_draw_vline                      (GtkStyle               *style,
                                  GdkWindow              *window,
                                  GtkStateType            state_type,
@@ -1059,27 +1030,13 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 {
 	if (DETAIL ("arrow") && ge_is_combo_box (widget, FALSE) && !ge_is_combo_box_entry(widget))
 	{
-#define CL_COMBO_BOX_ARROW_WIDTH 8
-#define CL_COMBO_BOX_ARROW_HEIGHT 5
-
-		x += (width - CL_COMBO_BOX_ARROW_WIDTH) + 1;
-		y += 1;
-		
-		width  = CL_COMBO_BOX_ARROW_WIDTH;
-		height = CL_COMBO_BOX_ARROW_HEIGHT;
-		
-		clearlooks_parent_class->draw_arrow (style, window, state_type, shadow, area,
-		                          widget, detail, GTK_ARROW_UP, fill,
-		                          x, y-1, width, height);
-
-		clearlooks_parent_class->draw_arrow (style, window, state_type, shadow, area,
-		                          widget, detail, GTK_ARROW_DOWN, fill,
-		                          x, y+height, width, height);
+		/* call gtk_paint_tab to draw option menu like arrows.
+		 * In theory this could recurse, but gtk buildin style directly draws the arrow code instead
+		 * of using the style function. Just in case, change the detail. */
+		gtk_paint_tab (style, window, state_type, shadow, area, widget, "tab", x, y, width, height);
 	}
 	else
 	{
-		/* printf("draw_arrow: %s %s\n", detail, widget ? G_OBJECT_TYPE_NAME (widget) : "null"); */
-
 		clearlooks_parent_class->draw_arrow (style, window, state_type, shadow, area,
 		                          widget, detail, arrow_type, fill,
 		                          x, y, width, height);
@@ -1435,7 +1392,6 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_option      = clearlooks_style_draw_option;
 	style_class->draw_check       = clearlooks_style_draw_check;
 	style_class->draw_flat_box    = clearlooks_style_draw_flat_box;
-	style_class->draw_tab         = clearlooks_style_draw_tab;
 	style_class->draw_vline       = clearlooks_style_draw_vline;
 	style_class->draw_hline       = clearlooks_style_draw_hline;
 	style_class->draw_resize_grip = clearlooks_style_draw_resize_grip;

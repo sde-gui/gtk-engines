@@ -374,12 +374,6 @@ struct _ClearlooksStyleFunctions
 	                               const HandleParameters		*handle,
 	                               int x, int y, int width, int height);
 
-	void (*draw_arrow)            (cairo_t				*cr,
-	                               const ClearlooksColors		*colors,
-	                               const WidgetParameters		*widget,
-	                               const ArrowParameters		*arrow,
-	                               int x, int y, int width, int height);
-
 	void (*draw_resize_grip)      (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
