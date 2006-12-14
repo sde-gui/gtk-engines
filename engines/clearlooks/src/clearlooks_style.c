@@ -62,8 +62,10 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->xthickness = style->xthickness;
 	params->ythickness = style->ythickness;
 		
-	/* I want to avoid to have to do this. I need it for GtkEntry, unless I
-	   find out why it doesn't behave the way I expect it to. */
+	/* This is used in GtkEntry to fake transparency. The reason to do this
+	 * is that the entry has it's entire background filled with base[STATE].
+	 * This is not a very good solution as it will eg. fail if one changes
+	 * the background color of a notebook. */
 	params->parentbg = CLEARLOOKS_STYLE (style)->colors.bg[state_type];
 	clearlooks_get_parent_bg (widget, &params->parentbg);
 }
@@ -252,8 +254,6 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 	}
 	else
 	{
-		/* if (widget)
-			printf("box_gap: %s %s\n", detail, G_OBJECT_TYPE_NAME (widget)); */
 		clearlooks_parent_class->draw_box_gap (style, window, state_type, shadow_type,
 									   area, widget, detail,
 									   x, y, width, height,
@@ -301,7 +301,6 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 	}
 	else
 	{
-		/* printf("draw_extension: %s\n", detail); */
 		clearlooks_parent_class->draw_extension (style, window, state_type, shadow_type, area,
 		                              widget, detail, x, y, width, height,
 		                              gap_side);
@@ -378,10 +377,6 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		
 		STYLE_FUNCTION(draw_handle) (cr, colors, &params, &handle,
 		                        x, y, width, height);
-/*
-		clearlooks_parent_class->draw_handle (style, window, state_type, shadow_type, area,
-		                           widget, detail, x, y, width, height,
-		                           orientation);*/
 	}
 
 	cairo_destroy (cr);
@@ -427,7 +422,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		gint columns, column_index;
 		gboolean resizable = TRUE;
 		
-		/* XXX: make unknown treeview header CL_ORDER_MIDDLE */
+		/* XXX: This makes unknown treeview header CL_ORDER_MIDDLE, in need for something nicer */
 		columns = 3;
 		column_index = 1;
 		
@@ -474,15 +469,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			else
 				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 			
-			/* Seriously, why can't non-gtk-apps at least try to be decent citizens?
-			   Take this fscking OpenOffice.org 1.9 for example. The morons responsible
-			   for this utter piece of crap gave the clip size wrong values! :'(  */
-			   // Is this comment still necessary? ;) -dborg
-/*			cairo_reset_clip (cr);
-			cairo_rectangle (cr, x+ 0.5, y+ 0.5, 10, 10);
-			cairo_clip (cr);
-			cairo_new_path (cr);
-*/
 			shadow.shadow = CL_SHADOW_IN;
 
 			if (params.xthickness > 2)
@@ -600,7 +586,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
-		scrollbar.steppers   = clearlooks_scrollbar_visible_steppers (widget);
 		
 		if (GE_IS_RANGE (widget))
 			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
@@ -731,14 +716,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		if (widget && GE_IS_MENU_BAR (widget->parent))
 		{
-			/*params.corners = CR_CORNER_NONE;
-			params.active = TRUE;
-			params.state_type = CL_STATE_ACTIVE;
-			params.xthickness = 2;
-			params.ythickness = 2;
-			
-			clearlooks_draw_button (cr, colors, &params, x, y, width, height+1);*/
-			
 			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
 			height += 1;
 		}
@@ -760,7 +737,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		scrollbar.has_color  = FALSE;
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
-		scrollbar.steppers   = clearlooks_scrollbar_visible_steppers (widget);
 		
 		if (GE_IS_RANGE (widget))
 			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
@@ -806,7 +782,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("trough"))
 	{
-		
+			
 	}
 	else if (DETAIL ("menu"))
 	{
@@ -818,7 +794,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else
 	{
-		/* printf("draw_box: %s\n", detail); */
 		clearlooks_parent_class->draw_box (style, window, state_type, shadow_type, area,
 		                        widget, detail, x, y, width, height);
 	}
@@ -1054,10 +1029,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	g_assert ((CLEARLOOKS_RC_STYLE (rc_style)->style >= 0) && (CLEARLOOKS_RC_STYLE (rc_style)->style < CL_NUM_STYLES));
 	clearlooks_style->style		= CLEARLOOKS_RC_STYLE (rc_style)->style;
 	
-	clearlooks_style->progressbarstyle  = CLEARLOOKS_RC_STYLE (rc_style)->progressbarstyle;
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
-	clearlooks_style->menuitemstyle     = CLEARLOOKS_RC_STYLE (rc_style)->menuitemstyle;
-	clearlooks_style->listviewitemstyle = CLEARLOOKS_RC_STYLE (rc_style)->listviewitemstyle;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_SCROLLBAR_COLOR;
 	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	clearlooks_style->radius            = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 1.0, 10.0);
@@ -1211,10 +1183,7 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	ClearlooksStyle * cl_src = CLEARLOOKS_STYLE (src);
 	
 	cl_style->colors              = cl_src->colors;
-	cl_style->progressbarstyle    = cl_src->progressbarstyle;
 	cl_style->menubarstyle        = cl_src->menubarstyle;
-	cl_style->menuitemstyle       = cl_src->menuitemstyle;
-	cl_style->listviewitemstyle   = cl_src->listviewitemstyle;
 	cl_style->scrollbar_color     = cl_src->scrollbar_color;
 	cl_style->has_scrollbar_color = cl_src->has_scrollbar_color;
 	cl_style->animation           = cl_src->animation;
@@ -1333,16 +1302,6 @@ clearlooks_style_draw_render_icon (GtkStyle            *style,
 	if (gtk_icon_source_get_state_wildcarded (source)) {
 		if (state == GTK_STATE_INSENSITIVE) {
 			stated = set_transparency (scaled, 0.3);
-#if 0
-			stated =
-				gdk_pixbuf_composite_color_simple (scaled,
-								   gdk_pixbuf_get_width (scaled),
-								   gdk_pixbuf_get_height (scaled),
-								   GDK_INTERP_BILINEAR, 128,
-								   gdk_pixbuf_get_width (scaled),
-								   style->bg[state].pixel,
-								   style->bg[state].pixel);
-#endif
 			gdk_pixbuf_saturate_and_pixelate (stated, stated,
 							  0.1, FALSE);
 			

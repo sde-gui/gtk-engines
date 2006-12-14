@@ -121,11 +121,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
   clearlooks_rc->flags = 0;
   
   clearlooks_rc->contrast = 1.0;
-  clearlooks_rc->sunkenmenubar = 1;
-  clearlooks_rc->progressbarstyle = 0;
   clearlooks_rc->menubarstyle = 0;
-  clearlooks_rc->menuitemstyle = 1;
-  clearlooks_rc->listviewitemstyle = 1;
   clearlooks_rc->animation = FALSE;
   clearlooks_rc->style = CL_STYLE_CLASSIC;
   clearlooks_rc->radius = 3.0;
@@ -283,6 +279,31 @@ clearlooks_gtk2_rc_parse_style (GtkSettings      *settings,
 }
 
 static guint
+clearlooks_gtk2_rc_parse_dummy (GtkSettings      *settings,
+                                GScanner         *scanner,
+                                gchar            *name)
+{
+  guint token;
+
+  /* Skip option */
+  token = g_scanner_get_next_token (scanner);
+
+  /* print a warning. Isn't there a way to get the string from the scanner? */
+  g_scanner_warn (scanner, "Clearlooks configuration option \"%s\" is not supported and will be ignored.", name);
+
+  /* equal sign */
+  token = g_scanner_get_next_token (scanner);
+  if (token != G_TOKEN_EQUAL_SIGN)
+    return G_TOKEN_EQUAL_SIGN;
+
+  /* eat whatever comes next */
+  token = g_scanner_get_next_token (scanner);
+
+  return G_TOKEN_NONE;
+}
+
+
+static guint
 clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 			   GtkSettings  *settings,
 			   GScanner   *scanner)
@@ -333,25 +354,9 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	  token = clearlooks_gtk2_rc_parse_double (settings, scanner, &clearlooks_style->contrast);
 	  clearlooks_style->flags |= CL_FLAG_CONTRAST;
 	  break;
-	case TOKEN_SUNKENMENU:
-	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->sunkenmenubar);
-	  clearlooks_style->flags |= CL_FLAG_SUNKENMENUBAR;
-	  break;
-	case TOKEN_PROGRESSBARSTYLE:
-	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->progressbarstyle);
-	  clearlooks_style->flags |= CL_FLAG_PROGRESSBARSTYLE;
-	  break;
 	case TOKEN_MENUBARSTYLE:
 	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->menubarstyle);
 	  clearlooks_style->flags |= CL_FLAG_MENUBARSTYLE;
-	  break;
-	case TOKEN_MENUITEMSTYLE:
-	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->menuitemstyle);
-	  clearlooks_style->flags |= CL_FLAG_MENUITEMSTYLE;
-	  break;
-	case TOKEN_LISTVIEWITEMSTYLE:
-	  token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->listviewitemstyle);
-	  clearlooks_style->flags |= CL_FLAG_LISTVIEWITEMSTYLE;
 	  break;
 	case TOKEN_ANIMATION:
 	  token = clearlooks_gtk2_rc_parse_boolean (settings, scanner, &clearlooks_style->animation);
@@ -364,6 +369,20 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	case TOKEN_RADIUS:
 	  token = clearlooks_gtk2_rc_parse_double (settings, scanner, &clearlooks_style->radius);
 	  clearlooks_style->flags |= CL_FLAG_RADIUS;
+	  break;
+
+	/* stuff to ignore */
+	case TOKEN_SUNKENMENU:
+	  token = clearlooks_gtk2_rc_parse_dummy (settings, scanner, "sunkenmenu");
+	  break;
+	case TOKEN_PROGRESSBARSTYLE:
+	  token = clearlooks_gtk2_rc_parse_dummy (settings, scanner, "progressbarstyle");
+	  break;
+	case TOKEN_MENUITEMSTYLE:
+	  token = clearlooks_gtk2_rc_parse_dummy (settings, scanner, "menuitemstyle");
+	  break;
+	case TOKEN_LISTVIEWITEMSTYLE:
+	  token = clearlooks_gtk2_rc_parse_dummy (settings, scanner, "listviewitemstyle");
 	  break;
 	
 	default:
@@ -403,16 +422,8 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 		dest_w->style = src_w->style;
 	if (src_w->flags & CL_FLAG_CONTRAST)
 		dest_w->contrast          = src_w->contrast;
-	if (src_w->flags & CL_FLAG_SUNKENMENUBAR)
-		dest_w->sunkenmenubar     = src_w->sunkenmenubar;
-	if (src_w->flags & CL_FLAG_PROGRESSBARSTYLE)
-		dest_w->progressbarstyle  = src_w->progressbarstyle;
 	if (src_w->flags & CL_FLAG_MENUBARSTYLE)
 		dest_w->menubarstyle      = src_w->menubarstyle;
-	if (src_w->flags & CL_FLAG_MENUITEMSTYLE)
-		dest_w->menuitemstyle     = src_w->menuitemstyle;
-	if (src_w->flags & CL_FLAG_LISTVIEWITEMSTYLE)
-		dest_w->listviewitemstyle = src_w->listviewitemstyle;
 	if (src_w->flags & CL_FLAG_SCROLLBAR_COLOR)
 		dest_w->scrollbar_color = src_w->scrollbar_color;
 	if (src_w->flags & CL_FLAG_ANIMATION)

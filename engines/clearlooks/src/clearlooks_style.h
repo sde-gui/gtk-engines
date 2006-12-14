@@ -49,10 +49,7 @@ struct _ClearlooksStyle
 
 	ClearlooksStyles style;
 	
-	guint8   progressbarstyle;
 	guint8   menubarstyle;
-	guint8   menuitemstyle;
-	guint8   listviewitemstyle;
 	GdkColor scrollbar_color;
 	gboolean has_scrollbar_color;
 	gboolean animation;

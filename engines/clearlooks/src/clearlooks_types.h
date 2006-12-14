@@ -159,7 +159,6 @@ typedef struct
 typedef struct
 {
 	ClearlooksOrientation orientation;
-	ClearlooksProgressBarStyle style;
 	boolean pulsing;
 	float value;
 } ProgressBarParameters;
@@ -175,7 +174,7 @@ typedef struct
 	ClearlooksGapSide gap_side;
 	int gap_x;
 	int gap_width;
-	CairoColor *border;
+	CairoColor *border; /* maybe changes this to some other hint ... */
 } FrameParameters;
 
 typedef struct
@@ -196,7 +195,7 @@ typedef struct
 
 typedef struct
 {
-	ClearlooksOrder order;
+	ClearlooksOrder order; /* XXX: rename to position */
 	boolean         resizable;
 } ListViewHeaderParameters;
 
@@ -204,7 +203,6 @@ typedef struct
 {
 	CairoColor         color;
 	ClearlooksJunction junction;       /* On which sides the slider junctions */
-	ClearlooksStepper  steppers;       /* The visible steppers */
 	boolean            horizontal;
 	boolean            has_color;
 } ScrollBarParameters;
@@ -219,12 +217,6 @@ typedef struct
 {
 	ClearlooksStepper stepper;         /* Which stepper to draw */
 } ScrollBarStepperParameters;
-
-typedef struct
-{
-	ClearlooksArrowType type;
-	ClearlooksDirection direction;
-} ArrowParameters;
 
 typedef struct
 {
