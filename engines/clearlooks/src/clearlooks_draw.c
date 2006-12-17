@@ -1295,6 +1295,44 @@ clearlooks_draw_menuitem (cairo_t *cr,
 }
 
 static void
+clearlooks_draw_selected_cell (cairo_t                  *cr,
+	                       const ClearlooksColors   *colors,
+	                       const WidgetParameters   *params,
+	                       int x, int y, int width, int height)
+{
+	CairoColor upper_color;
+	CairoColor lower_color;
+	cairo_pattern_t *pattern;
+	cairo_save (cr);
+	
+	cairo_translate (cr, x, y);
+
+	if (params->focus)
+		upper_color = colors->base[params->state_type];
+	else
+		upper_color = colors->base[GTK_STATE_ACTIVE];
+
+	ge_shade_color(&upper_color, 0.8, &lower_color);
+
+	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.0, upper_color.r,
+	                                                upper_color.g,
+	                                                upper_color.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, lower_color.r,
+	                                                lower_color.g,
+	                                                lower_color.b);
+
+	cairo_set_source (cr, pattern);
+	cairo_rectangle  (cr, 0, 0, width, height);
+	cairo_fill       (cr);
+
+	cairo_pattern_destroy (pattern);
+	
+	cairo_restore (cr);
+}
+
+
+static void
 clearlooks_draw_scrollbar_trough (cairo_t *cr,
                                   const ClearlooksColors           *colors,
                                   const WidgetParameters           *widget,
@@ -1821,6 +1859,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_list_view_header	= clearlooks_draw_list_view_header;
 	functions->draw_toolbar			= clearlooks_draw_toolbar;
 	functions->draw_menuitem		= clearlooks_draw_menuitem;
+	functions->draw_selected_cell		= clearlooks_draw_selected_cell;
 	functions->draw_scrollbar_stepper	= clearlooks_draw_scrollbar_stepper;
 	functions->draw_scrollbar_slider	= clearlooks_draw_scrollbar_slider;
 	functions->draw_scrollbar_trough	= clearlooks_draw_scrollbar_trough;

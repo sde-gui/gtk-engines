@@ -471,6 +471,39 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 }
 
 static void
+clearlooks_glossy_draw_menuitem (cairo_t                   *cr,
+                                 const ClearlooksColors    *colors,
+                                 const WidgetParameters    *params,
+                                 int x, int y, int width, int height)
+{
+	cairo_save (cr);
+	ge_cairo_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, params->radius, params->corners);
+	cairo_clip (cr);
+	clearlooks_draw_button_gloss (cr, x, y, width, height, &colors->spot[1], params->disabled);
+	cairo_restore (cr);
+
+	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, params->radius, params->corners);
+	ge_cairo_set_color (cr, &colors->spot[2]);
+	cairo_stroke (cr);
+}
+
+static void
+clearlooks_glossy_draw_selected_cell (cairo_t                  *cr,
+	                              const ClearlooksColors   *colors,
+	                              const WidgetParameters   *params,
+	                              int x, int y, int width, int height)
+{
+	CairoColor color;
+
+	if (params->focus)
+		color = colors->base[params->state_type];
+	else
+		color = colors->base[GTK_STATE_ACTIVE];
+
+	clearlooks_draw_button_gloss (cr, x, y, width, height, &color, params->disabled);
+}
+
+static void
 clearlooks_glossy_draw_radiobutton (cairo_t *cr,
                                     const ClearlooksColors  *colors,
                                     const WidgetParameters  *widget,
@@ -608,5 +641,7 @@ clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions)
 	functions->draw_slider_button = clearlooks_glossy_draw_slider_button;
 	functions->draw_checkbox      = clearlooks_glossy_draw_checkbox;
 	functions->draw_radiobutton   = clearlooks_glossy_draw_radiobutton;
+	functions->draw_menuitem      = clearlooks_glossy_draw_menuitem;
+	functions->draw_selected_cell = clearlooks_glossy_draw_selected_cell;
 }
 
