@@ -1,3 +1,13 @@
+2006-12-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_top_left_highlight):
+	- Nicer variable names.
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_copy):
+	- Copy the radius option.
+
 2006-12-14  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_rc_style.c:

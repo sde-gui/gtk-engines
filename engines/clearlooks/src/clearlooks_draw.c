@@ -72,19 +72,19 @@ clearlooks_draw_top_left_highlight (cairo_t *cr,
                                     const WidgetParameters *params,
                                     int width, int height, gdouble radius)
 {
-	double light_y1 = params->ythickness-1,
-	       light_y2 = height - params->ythickness - 1,
-	       light_x1 = params->xthickness-1,
-	       light_x2 = width - params->xthickness - 1;
+	double light_top = params->ythickness-1,
+	       light_bottom = height - params->ythickness - 1,
+	       light_left = params->xthickness-1,
+	       light_right = width - params->xthickness - 1;
 
-	cairo_move_to         (cr, light_x1, light_y2);
+	cairo_move_to         (cr, light_left, light_bottom);
 	
 	if (params->corners & CR_CORNER_TOPLEFT)
-		cairo_arc         (cr, light_x1+radius, light_y1+radius, radius, G_PI, 270*(G_PI/180));
+		cairo_arc         (cr, light_left+radius, light_top+radius, radius, G_PI, 270*(G_PI/180));
 	else
-		cairo_line_to     (cr, light_x1, light_y1);
+		cairo_line_to     (cr, light_left, light_top);
 	
-	cairo_line_to         (cr, light_x2, light_y1);
+	cairo_line_to         (cr, light_right, light_top);
 	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.6);
 	cairo_stroke          (cr);
 }
