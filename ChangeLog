@@ -1,3 +1,13 @@
+2006-12-18  Thomas Wood  <thos@gnome.org>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_menuitem), (clearlooks_draw_menu_frame):
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_glossy_draw_menuitem):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Implement suggestions for menu selection from bug 382634
+
 2006-12-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

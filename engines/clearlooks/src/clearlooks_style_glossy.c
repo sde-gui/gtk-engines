@@ -477,14 +477,29 @@ clearlooks_glossy_draw_menuitem (cairo_t                   *cr,
                                  int x, int y, int width, int height)
 {
 	cairo_save (cr);
-	ge_cairo_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, params->radius, params->corners);
+	cairo_rectangle (cr, x, y + 1, width, height - 2);
 	cairo_clip (cr);
 	clearlooks_draw_button_gloss (cr, x, y, width, height, &colors->spot[1], params->disabled);
 	cairo_restore (cr);
 
-	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, params->radius, params->corners);
 	ge_cairo_set_color (cr, &colors->spot[2]);
-	cairo_stroke (cr);
+	/* TODO: only draw full border if horiztonal padding is > 1 or parent is menubar
+	 *
+	if (params->horizontal_padding > 1)
+	{
+		cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
+		cairo_stroke (cr);
+	}
+	else
+	{
+	*/
+		cairo_move_to (cr, x + 0.5, y + 0.5);
+		cairo_line_to (cr, width, y + 0.5);
+		cairo_stroke (cr);
+		cairo_move_to (cr, x + 0.5, y + height - 0.5);
+		cairo_line_to (cr, width, y + height - 0.5);
+		cairo_stroke (cr);
+	/*}*/
 }
 
 static void

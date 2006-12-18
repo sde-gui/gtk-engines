@@ -1277,21 +1277,35 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	
 	ge_shade_color (fill, 0.85, &fill_shade);
 	
-	cairo_translate      (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 	
-	ge_cairo_rounded_rectangle (cr, 0, 0, width, height, widget->radius, widget->corners);
-	
-	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	ge_cairo_set_color (cr, border);
+	/* TODO: only draw full border if horiztonal padding is > 1 or parent is menubar
+	 *
+	if (params->horizontal_padding > 1)
+	{
+		cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
+		cairo_stroke (cr);
+	}
+	else
+	{
+	*/
+		cairo_move_to (cr, x + 0.5, y + 0.5);
+		cairo_line_to (cr, width, y + 0.5);
+		cairo_stroke (cr);
+		cairo_move_to (cr, x + 0.5, y + height - 0.5);
+		cairo_line_to (cr, width, y + height - 0.5);
+		cairo_stroke (cr);
+	/*}*/
+	cairo_rectangle (cr, x, y + 1, width, height - 2);
+	pattern = cairo_pattern_create_linear (x, y, x, y + height);
 	cairo_pattern_add_color_stop_rgb (pattern, 0,   fill->r, fill->g, fill->b);
 	cairo_pattern_add_color_stop_rgb (pattern, 1.0, fill_shade.r, fill_shade.g, fill_shade.b);
-	
+
 	cairo_set_source (cr, pattern);
 	cairo_fill_preserve  (cr);
 	cairo_pattern_destroy (pattern);
-	
-	ge_cairo_set_color (cr, border);
-	cairo_stroke	   (cr);
+
 }
 
 static void
@@ -1584,10 +1598,10 @@ clearlooks_draw_menu_frame (cairo_t *cr,
                             const WidgetParameters          *widget,
                             int x, int y, int width, int height)
 {
-	CairoColor *border = (CairoColor*)&colors->shade[5];
+	CairoColor *border = (CairoColor*)&colors->spot[2];
 	cairo_translate      (cr, x, y);
 	cairo_set_line_width (cr, 1);
-/*	
+/*
 	cairo_set_source_rgba (cr, colors->bg[0].r, colors->bg[0].g, colors->bg[0].b, 0.9);
 	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 	cairo_paint          (cr);
