@@ -281,6 +281,48 @@ ge_cairo_pattern_add_color_stop_shade(cairo_pattern_t *pattern,
 	ge_cairo_pattern_add_color_stop_color(pattern, offset, &shaded);	
 }
 
+/* This function will draw a rounded corner at position x,y. If the radius
+ * is very small (or negative) it will instead just do a line_to.
+ * ge_cairo_rounded_corner assumes clockwise drawing. */
+void
+ge_cairo_rounded_corner (cairo_t      *cr,
+                         double        x,
+                         double        y,
+                         double        radius,
+                         CairoCorners  corner)
+{
+	if (radius < 0.0001)
+	{
+		cairo_line_to (cr, x, y);
+	}
+	else
+	{
+		switch (corner) {
+		case CR_CORNER_NONE:
+			cairo_line_to (cr, x, y);
+			break;
+		case CR_CORNER_TOPLEFT:
+			cairo_arc (cr, x + radius, y + radius, radius, G_PI, G_PI * 3/2);
+			break;
+		case CR_CORNER_TOPRIGHT:
+			cairo_arc (cr, x - radius, y + radius, radius, G_PI * 3/2, G_PI * 2);
+			break;
+		case CR_CORNER_BOTTOMRIGHT:
+			cairo_arc (cr, x - radius, y - radius, radius, 0, G_PI * 1/2);
+			break;
+		case CR_CORNER_BOTTOMLEFT:
+			cairo_arc (cr, x + radius, y - radius, radius, G_PI * 1/2, G_PI);
+			break;
+
+		default:
+			/* A bitfield and not a sane value ... */
+			g_assert_not_reached ();
+			cairo_line_to (cr, x, y);
+			return;
+		}
+	}
+}
+
 void
 ge_cairo_rounded_rectangle (cairo_t *cr,
                                  double x, double y, double w, double h,
@@ -293,6 +335,10 @@ ge_cairo_rounded_rectangle (cairo_t *cr,
 		cairo_rectangle (cr, x, y, w, h);
 		return;
 	}
+#if DEVELOPMENT
+	if (radius > w / 2.0 || radius > h / 2.0)
+		g_warning ("Radius is too large for width/height in ge_rounded_rectangle.\n");
+#endif
 
 	if (corners & CR_CORNER_TOPLEFT)
 		cairo_move_to (cr, x+radius, y);

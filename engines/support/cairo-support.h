@@ -95,6 +95,7 @@ GE_INTERNAL void ge_cairo_set_color (cairo_t *cr, const CairoColor *color);
 GE_INTERNAL void ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, gfloat offset, const CairoColor *color);
 GE_INTERNAL void ge_cairo_pattern_add_color_stop_shade (cairo_pattern_t *pattern, gdouble offset, const CairoColor *color, gdouble shade);
 
+GE_INTERNAL void ge_cairo_rounded_corner (cairo_t *cr, double x, double y, double radius, CairoCorners corner);
 GE_INTERNAL void ge_cairo_rounded_rectangle (cairo_t *cr, double x, double y, double w, double h, double radius, CairoCorners corners);
 
 GE_INTERNAL void ge_cairo_stroke_rectangle (cairo_t *cr, double x, double y, double w, double h);

@@ -1,3 +1,29 @@
+2006-12-20  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/support/cairo-support.c: (ge_cairo_rounded_rectangle):
+	- Print a warning if the radius is too large for the width/height.
+	This is only during development.
+
+	* engines/support/cairo-support.c: (ge_cairo_rounded_corner),
+	(ge_cairo_rounded_rectangle):
+	* engines/support/cairo-support.h:
+	- Added ge_cairo_rounded_corner to draw one corner of a rounded
+	rectangle more easily.
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_inset), (clearlooks_draw_shadow),
+	(clearlooks_draw_top_left_highlight),
+	(clearlooks_draw_highlight_and_shade), (clearlooks_draw_button),
+	(clearlooks_draw_entry), (clearlooks_draw_slider),
+	(clearlooks_draw_slider_button),
+	(clearlooks_draw_progressbar_trough), (clearlooks_draw_frame),
+	(clearlooks_draw_tab), (clearlooks_draw_scrollbar_stepper):
+	- Fix the radius option.
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_init_from_rc):
+	- Allow 0 radius, as it should be working fine now.
+
 2006-12-18  Thomas Wood  <thos@gnome.org>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

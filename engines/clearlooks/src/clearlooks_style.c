@@ -1008,7 +1008,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_SCROLLBAR_COLOR;
 	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
-	clearlooks_style->radius            = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 1.0, 10.0);
+	clearlooks_style->radius            = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
 
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
