@@ -37,7 +37,8 @@
 static void
 clearlooks_draw_button_gloss (cairo_t *cr,
                               double x, double y, int width, int height,
-                              const CairoColor *color, boolean disabled)
+                              const CairoColor *color, boolean disabled,
+                              gboolean radius, CairoCorners corners)
 {
 	CairoColor a, b, c, d, e;
 	cairo_pattern_t *pt;
@@ -57,7 +58,7 @@ clearlooks_draw_button_gloss (cairo_t *cr,
 	cairo_pattern_add_color_stop_rgb (pt, 1.0,  d.r, d.g, d.b);
 
 	cairo_set_source (cr, pt);
-	cairo_rectangle (cr, x, y, width, height);
+	ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, corners);
 	cairo_fill (cr);
 	
 	cairo_pattern_destroy (pt);
@@ -73,6 +74,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	CairoColor fill                   = colors->bg[params->state_type];
 	const CairoColor *border_normal   = &colors->shade[6];
 	const CairoColor *border_disabled = &colors->shade[4];
+	double radius;
 	
 	cairo_pattern_t *pattern;
 	
@@ -83,12 +85,24 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	/* Shadows and Glow */
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
+		if (params->xthickness == 3)
+			xoffset = 1;
+		if (params->ythickness == 3)
+			yoffset = 1;
+	}
+
+	radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0, (height - 2.0 - 2*yoffset) / 2.0));
+
+	if (params->xthickness == 3 || params->ythickness == 3)
+	{
 		cairo_translate (cr, 0.5, 0.5);
 		
 		if (params->prelight && params->enable_glow)
 		{
+			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
+
 			const CairoColor *glow = &colors->spot[0];
-			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, params->radius+1, params->corners);
+			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
 			ge_cairo_set_color (cr, glow);
 			cairo_stroke (cr);
 		}
@@ -100,11 +114,6 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 			clearlooks_draw_shadow (cr, params->radius, width-1, height-1);
 		*/
 		cairo_translate (cr, -0.5, -0.5);
-		
-		if (params->xthickness == 3)
-			xoffset = 1;
-		if (params->ythickness == 3)
-			yoffset = 1;
 	}
 	
 	if (params->active && params->prelight)
@@ -115,11 +124,15 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	
 	clearlooks_draw_button_gloss (cr, xoffset+1, yoffset+1, 
 	                              width-(xoffset*2)-2, height-(yoffset*2)-2, 
-	                              &fill, params->disabled);
+	                              &fill, params->disabled, radius, params->corners);
 	
 	/* Pressed button shadow */
 	if (params->active)
 	{
+		cairo_save (cr);
+
+		ge_cairo_rounded_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, height, radius, params->corners & (CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT));
+		cairo_clip (cr);
 		cairo_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, 3);
 	
 		pattern = cairo_pattern_create_linear (xoffset+1, yoffset+1, xoffset+1, yoffset+4);
@@ -128,6 +141,8 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
 		cairo_pattern_destroy (pattern);
+
+		cairo_restore (cr);
 	}
 	
 	/* Default button highlight */
@@ -164,7 +179,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		ge_cairo_set_color (cr, border_normal);
 	ge_cairo_rounded_rectangle (cr, xoffset + 0.5, yoffset + 0.5,
                                   width-(xoffset*2)-1, height-(yoffset*2)-1,
-                                  params->radius, params->corners);
+                                  radius, params->corners);
 	cairo_stroke (cr);
 	cairo_restore (cr);
 }
@@ -179,6 +194,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	const CairoColor *background;
 	FrameParameters frame;
 	GdkRectangle pos = { x, y, width, height };
+	double radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 	
 	background = &colors->bg[params->state_type];
 	
@@ -210,7 +226,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 			cairo_pattern_add_color_stop_rgb (pt, 1.0,  e.r, e.g, e.b);
 
 			cairo_set_source (cr, pt);
-			ge_cairo_rounded_rectangle (cr, x, y, width, height, params->radius, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
+			ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
 			cairo_fill (cr);
 
 			cairo_pattern_destroy (pt);
@@ -231,7 +247,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 			cairo_pattern_add_color_stop_rgb (pt, 1.0,  e.r, e.g, e.b);
 
 			cairo_set_source (cr, pt);
-			ge_cairo_rounded_rectangle (cr, x, y, width, height, params->radius, CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT);
+			ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_BOTTOMLEFT | CR_CORNER_BOTTOMRIGHT);
 			cairo_fill (cr);
 
 			cairo_pattern_destroy (pt);
@@ -307,6 +323,8 @@ clearlooks_glossy_draw_slider_button (cairo_t *cr,
                                       const SliderParameters *slider,
                                       int x, int y, int width, int height)
 {
+	double radius = MIN (params->radius, MIN ((width - 1.0) / 2.0, (height - 1.0) / 2.0));
+
 	cairo_set_line_width (cr, 1.0);
 	
 	if (!slider->horizontal)
@@ -314,7 +332,7 @@ clearlooks_glossy_draw_slider_button (cairo_t *cr,
 
 	cairo_translate (cr, x+0.5, y+0.5);
 	
-	params->style_functions->draw_shadow (cr, params->radius, width-1, height-1);
+	params->style_functions->draw_shadow (cr, radius, width-1, height-1);
 	params->style_functions->draw_slider (cr, colors, params, 1, 1, width-2, height-2);
 }
 
@@ -479,7 +497,7 @@ clearlooks_glossy_draw_menuitem (cairo_t                   *cr,
 	cairo_save (cr);
 	cairo_rectangle (cr, x, y + 1, width, height - 2);
 	cairo_clip (cr);
-	clearlooks_draw_button_gloss (cr, x, y, width, height, &colors->spot[1], params->disabled);
+	clearlooks_draw_button_gloss (cr, x, y, width, height, &colors->spot[1], params->disabled, 0, CR_CORNER_NONE);
 	cairo_restore (cr);
 
 	ge_cairo_set_color (cr, &colors->spot[2]);
@@ -515,7 +533,7 @@ clearlooks_glossy_draw_selected_cell (cairo_t                  *cr,
 	else
 		color = colors->base[GTK_STATE_ACTIVE];
 
-	clearlooks_draw_button_gloss (cr, x, y, width, height, &color, params->disabled);
+	clearlooks_draw_button_gloss (cr, x, y, width, height, &color, params->disabled, 0.0, CR_CORNER_NONE);
 }
 
 static void
