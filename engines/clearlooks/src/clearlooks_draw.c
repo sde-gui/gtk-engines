@@ -188,10 +188,6 @@ clearlooks_draw_button (cairo_t *cr,
 
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
-		cairo_translate (cr, 0.5, 0.5);
-		params->style_functions->draw_inset (cr, width-1, height-1, radius, params->corners);
-		cairo_translate (cr, -0.5, -0.5);
-		
 		if (params->xthickness == 3)
 			xoffset = 1;
 		if (params->ythickness == 3)
@@ -199,6 +195,13 @@ clearlooks_draw_button (cairo_t *cr,
 	}
 
 	radius = MIN (radius, MIN ((width - 2.0 - xoffset * 2.0) / 2.0, (height - 2.0 - yoffset * 2) / 2.0));
+
+	if (params->xthickness == 3 || params->ythickness == 3)
+	{
+		cairo_translate (cr, 0.5, 0.5);
+		params->style_functions->draw_inset (cr, width-1, height-1, radius, params->corners);
+		cairo_translate (cr, -0.5, -0.5);
+	}		
 	
 	ge_cairo_rounded_rectangle (cr, xoffset+1, yoffset+1,
 	                                     width-(xoffset*2)-2,
@@ -300,7 +303,7 @@ clearlooks_draw_entry (cairo_t *cr,
 {
 	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
 	CairoColor *border;
-	double radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
+	double radius = MIN (params->radius, MIN ((width - 4.0) / 2.0, (height - 4.0) / 2.0));
 	
 	if (params->focus)
 		border = (CairoColor*)&colors->spot[2];
