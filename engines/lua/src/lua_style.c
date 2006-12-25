@@ -76,19 +76,63 @@ push_color (lua_State *L, CairoColor *color)
 	lua_settable (L, -3);
 }
 
-static gboolean
-lua_style_draw (LuaStyle *style, GtkWidget *widget, gchar *name, gint width, gint height)
+static void
+lua_style_push_widget_params (LuaStyle *style, GtkWidget *widget, GtkStateType state_type)
 {
 	g_return_if_fail (style);
 	g_return_if_fail (style->L);
+	g_return_if_fail (widget);
+	
+	/* If there is already a table at the top of the stack, re-use it so custom
+	 * parameters can be added beforehand.
+	 */
+	if (!lua_istable (style->L, -1))
+		lua_newtable (style->L);
+	
+	if (widget && GE_IS_ENTRY (widget))
+		state_type = GTK_WIDGET_STATE (widget);
+
+	lua_pushstring (style->L, get_name_for_state (state_type));
+	lua_setfield (style->L, -2, "state");
+	
+	lua_pushboolean (style->L, state_type == GTK_STATE_PRELIGHT);
+	lua_setfield (style->L, -2, "prelight");
+	
+	lua_pushboolean (style->L, state_type == GTK_STATE_INSENSITIVE);
+	lua_setfield (style->L, -2, "insensitive");
+	
+	if (widget && GE_IS_TOGGLE_BUTTON (widget))
+		lua_pushboolean (style->L, gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)));
+	else
+		lua_pushboolean (style->L, state_type == GTK_STATE_ACTIVE);
+	lua_setfield (style->L, -2, "active");
+	
+	lua_pushboolean (style->L, widget && GTK_WIDGET_HAS_FOCUS (widget));
+	lua_setfield (style->L, -2, "has_focus");
+	
+	lua_pushnumber (style->L, (int)widget);
+	lua_setfield (style->L, -2, "uid");
+	
+	lua_setglobal (style->L, "widget");
+}
+
+static gboolean
+lua_style_draw (LuaStyle *style, GtkWidget *widget, GtkStateType state_type,
+                gchar *name, gint width, gint height)
+{
+	g_return_if_fail (style);
+	g_return_if_fail (style->L);
+
+	lua_style_push_widget_params (style, widget, state_type);
 
 	lua_pcall (style->L, 0, 0, 0);
 
     lua_getglobal (style->L, g_strconcat ("draw_", name));
     
+    
     if (!lua_isfunction (style->L, -1))
     	return FALSE;
-    
+    	
     lua_pushnumber (style->L, width);
     lua_pushnumber (style->L, height);
     
@@ -163,38 +207,6 @@ lua_style_prepare_lua (LuaStyle *style)
 	return L;
 }
 
-static void
-lua_style_push_standard_params (LuaStyle *style, GtkWidget *widget, GtkStateType state_type)
-{
-	g_return_if_fail (style);
-	g_return_if_fail (style->L);
-	g_return_if_fail (widget);
-	
-	if (widget && GE_IS_ENTRY (widget))
-		state_type = GTK_WIDGET_STATE (widget);
-
-	lua_pushstring (style->L, get_name_for_state (state_type));
-	lua_setfield (style->L, -2, "state");
-	
-	lua_pushboolean (style->L, state_type == GTK_STATE_PRELIGHT);
-	lua_setfield (style->L, -2, "prelight");
-	
-	lua_pushboolean (style->L, state_type == GTK_STATE_INSENSITIVE);
-	lua_setfield (style->L, -2, "insensitive");
-	
-	if (widget && GE_IS_TOGGLE_BUTTON (widget))
-		lua_pushboolean (style->L, gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)));
-	else
-		lua_pushboolean (style->L, state_type == GTK_STATE_ACTIVE);
-	lua_setfield (style->L, -2, "active");
-	
-	lua_pushboolean (style->L, widget && GTK_WIDGET_HAS_FOCUS (widget));
-	lua_setfield (style->L, -2, "has_focus");
-	
-	lua_pushnumber (style->L, (int)widget);
-	lua_setfield (style->L, -2, "uid");
-}
-
 static cairo_t *
 lua_style_prepare_cairo (LuaStyle *style, GdkWindow *window, GdkRectangle *area, gint x, gint y)
 {
@@ -260,12 +272,7 @@ lua_style_draw_shadow (DRAW_ARGS)
 	if (DETAIL ("entry"))
 	{
 		if (GE_IS_SPIN_BUTTON (widget))
-		{
-			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
-			lua_setglobal (lua_style->L, "widget");
-			processed = lua_style_draw (lua_style, widget, "spin_button_entry", width, height);
-		}
+			processed = lua_style_draw (lua_style, widget, state_type, "spin_button_entry", width, height);
 		else if (widget && ge_is_in_combo_box (widget))
 		{
 			/* force a redraw on the entire combo to handle focus changes */
@@ -278,19 +285,11 @@ lua_style_draw_shadow (DRAW_ARGS)
 			else if (p != NULL)
 				lua_utils_push_pointer (lua_style->L, "in_combo_box_redraw", NULL);
 
-			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
-			lua_setglobal (lua_style->L, "widget");
-			processed = lua_style_draw (lua_style, widget, "combo_box_entry", width, height);
+			processed = lua_style_draw (lua_style, widget, state_type, "combo_box_entry", width, height);
 		}
 		
 		if (!processed)
-		{
-			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
-			lua_setglobal (lua_style->L, "widget");
-			lua_style_draw (lua_style, widget, "entry", width, height);
-		}
+			lua_style_draw (lua_style, widget, state_type, "entry", width, height);
 	}
 	
 	lua_style_close_cairo (lua_style);
@@ -369,13 +368,63 @@ lua_style_draw_box (DRAW_ARGS)
 	
 	if (DETAIL ("button") || DETAIL ("buttondefault") || DETAIL ("spinbutton") || DETAIL ("optionmenu"))
 	{
-		if (DETAIL ("spinbutton"))
+		if (widget && widget->parent && (GE_IS_TREE_VIEW(widget->parent) ||
+		    GE_IS_CLIST (widget->parent) || ge_object_is_a ((GObject*)widget->parent, "ETree")))
 		{
+			gint columns = 0;
+			gint column_index = 0;
+			gboolean resizable = TRUE;
+			
+			if (GE_IS_TREE_VIEW (widget->parent))
+			{
+				GList *list, *list_start;
+				list_start = list = gtk_tree_view_get_columns (GTK_TREE_VIEW(widget->parent));
+				
+				do
+				{
+					GtkTreeViewColumn *column = GTK_TREE_VIEW_COLUMN (list->data);
+					if (column->button == widget)
+					{
+						column_index = columns;
+						resizable = column->resizable;
+					}
+					if (column->visible)
+						columns++;
+				} while ((list = g_list_next (list)));
+				
+				g_list_free (list_start);
+			}
+			else if (GE_IS_CLIST (widget->parent))
+			{
+				int i;
+				columns = GTK_CLIST (widget->parent)->columns;
+				
+				for (i = 0; i < columns; i++)
+				{
+					if (GTK_CLIST (widget->parent)->column[i].button == widget)
+					{
+						column_index = i;
+						break;
+					}
+				}
+			}
+			
 			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
-			lua_setglobal (lua_style->L, "widget");
-			processed = lua_style_draw (lua_style, widget, "spin_button", width, height);
-		}
+			lua_pushboolean (lua_style->L, resizable);
+			lua_setfield (lua_style->L, -2, "resizable");
+			
+			if (column_index == 0)
+				lua_pushstring (lua_style->L, "first");
+			else if (column_index == columns - 1)
+				lua_pushstring (lua_style->L, "last");
+			else
+				lua_pushstring (lua_style->L, "middle");
+			lua_setfield (lua_style->L, -2, "position");
+			
+			processed = lua_style_draw (lua_style, widget, state_type, "column_header", width, height);
+		} 
+		else if (DETAIL ("spinbutton"))
+			processed = lua_style_draw (lua_style, widget, state_type, "spin_button", width, height);
 		else if (widget && ge_is_in_combo_box (widget))
 		{
 			gboolean combo_has_focus = FALSE;
@@ -387,106 +436,53 @@ lua_style_draw_box (DRAW_ARGS)
 				combo_has_focus = GTK_WIDGET_HAS_FOCUS (GTK_COMBO (ge_find_combo_box_widget_parent (widget))->entry);
 		
 			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
 			lua_pushboolean (lua_style->L, combo_has_focus);
 			lua_setfield (lua_style->L, -2, "parent_has_focus");
-			lua_setglobal (lua_style->L, "widget");
-			processed = lua_style_draw (lua_style, widget, "combo_box_button", width, height);
+			processed = lua_style_draw (lua_style, widget, state_type, "combo_box_button", width, height);
 		}
 		else if (DETAIL ("optionmenu"))
-		{
-			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
-			lua_setglobal (lua_style->L, "widget");
-			processed = lua_style_draw (lua_style, widget, "option_menu", width, height);
-		}
+			processed = lua_style_draw (lua_style, widget, state_type, "option_menu", width, height);
 	
 		if (!processed)
-		{
-			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
-			lua_setglobal (lua_style->L, "widget");
-			processed = lua_style_draw (lua_style, widget, "button", width, height);
-		}
+			processed = lua_style_draw (lua_style, widget, state_type, "button", width, height);
 	}
 	else if (DETAIL ("menubar"))
-	{
-		processed = lua_style_draw (lua_style, widget, "menubar", width, height);
-	}
+		processed = lua_style_draw (lua_style, widget, state_type, "menubar", width, height);
 	else if (DETAIL ("menuitem"))
-	{
-		processed = lua_style_draw (lua_style, widget, "menuitem", width, height);
-	}
+		processed = lua_style_draw (lua_style, widget, state_type, "menuitem", width, height);
 	else if (DETAIL ("menu"))
-	{
-		processed = lua_style_draw (lua_style, widget, "menu", width, height);
-	}
+		processed = lua_style_draw (lua_style, widget, state_type, "menu", width, height);
 	else if (DETAIL ("trough") && widget && GE_IS_PROGRESS_BAR (widget))
-	{
-		lua_newtable (lua_style->L);
-		lua_style_push_standard_params (lua_style, widget, state_type);
-		lua_setglobal (lua_style->L, "widget");
-		processed = lua_style_draw (lua_style, widget, "progressbar_tray", width, height);
-	}
+		processed = lua_style_draw (lua_style, widget, state_type, "progressbar_tray", width, height);
 	else if (DETAIL ("trough") && widget && (GE_IS_VSCROLLBAR (widget) || GE_IS_HSCROLLBAR (widget)))
-	{
-		lua_newtable (lua_style->L);
-		lua_style_push_standard_params (lua_style, widget, state_type);
-		lua_setglobal (lua_style->L, "widget");
-		processed = lua_style_draw (lua_style, widget, "scrollbar_tray", width, height);
-	}
+		processed = lua_style_draw (lua_style, widget, state_type, "scrollbar_tray", width, height);
 	else if (detail && g_str_has_prefix (detail, "trough") && GE_IS_SCALE (widget))
 	{
 		lua_newtable (lua_style->L);
-		lua_style_push_standard_params (lua_style, widget, state_type);
 		lua_pushboolean (lua_style->L, DETAIL ("trough-lower"));
 		lua_setfield (lua_style->L, -2, "lower");
-		lua_setglobal (lua_style->L, "widget");
-		processed = lua_style_draw (lua_style, widget, "scale_tray", width, height);
+		processed = lua_style_draw (lua_style, widget, state_type, "scale_tray", width, height);
 	}
 	else if (DETAIL ("bar"))
-	{
-		lua_newtable (lua_style->L);
-		lua_style_push_standard_params (lua_style, widget, state_type);
-		lua_setglobal (lua_style->L, "widget");
-		processed = lua_style_draw (lua_style, widget, "progressbar", width, height);
-	}
+		processed = lua_style_draw (lua_style, widget, state_type, "progressbar", width, height);
 	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar") || DETAIL ("slider") || DETAIL ("stepper"))
 	{
 		if (DETAIL ("slider"))
-		{
-			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
-			lua_setglobal (lua_style->L, "widget");
-			processed = lua_style_draw (lua_style, widget, "scrollbar", width, height);
-		}
+			processed = lua_style_draw (lua_style, widget, state_type, "scrollbar", width, height);
 		else
 		{
-			lua_newtable (lua_style->L);
-			lua_style_push_standard_params (lua_style, widget, state_type);
-			lua_setglobal (lua_style->L, "widget");
-			processed = lua_style_draw (lua_style, widget, "scrollbar_stepper", width, height);
+			processed = lua_style_draw (lua_style, widget, state_type, "scrollbar_stepper", width, height);
 			
 			if (!processed)
 			{
-				lua_newtable (lua_style->L);
-				lua_style_push_standard_params (lua_style, widget, state_type);
-				lua_setglobal (lua_style->L, "widget");
-				processed = lua_style_draw (lua_style, widget, "button", width, height);
+				processed = lua_style_draw (lua_style, widget, state_type, "button", width, height);
 			}
 		}
 	}
 	else if (DETAIL ("hscale") || DETAIL ("vscale"))
-	{
-		lua_newtable (lua_style->L);
-		lua_style_push_standard_params (lua_style, widget, state_type);
-		lua_setglobal (lua_style->L, "widget");
-		processed = lua_style_draw (lua_style, widget, "scale", width, height);
-	}
+		processed = lua_style_draw (lua_style, widget, state_type, "scale", width, height);
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
-	{
-		processed = lua_style_draw (lua_style, widget, "toolbar", width, height);
-	}
+		processed = lua_style_draw (lua_style, widget, state_type, "toolbar", width, height);
 	
 	if (!processed)
 	{
@@ -528,22 +524,16 @@ lua_style_draw_check (DRAW_ARGS)
 	lua_style_prepare_cairo (lua_style, window, area, x, y);
 	
 	lua_newtable (lua_style->L);
-	lua_style_push_standard_params (lua_style, widget, state_type);
-	
 	lua_pushboolean (lua_style->L, shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN);
 	lua_setfield (lua_style->L, -2, "draw_mark");
-	
 	lua_pushboolean (lua_style->L, shadow_type == GTK_SHADOW_ETCHED_IN);
 	lua_setfield (lua_style->L, -2, "inconsistent");
-	
 	lua_pushboolean (lua_style->L, DETAIL("cellcheck"));
 	lua_setfield (lua_style->L, -2, "in_cell");
-	
 	lua_pushboolean (lua_style->L, widget && widget->parent && GTK_IS_MENU(widget->parent));
 	lua_setfield (lua_style->L, -2, "in_menu");
 	
-	lua_setglobal (lua_style->L, "widget");
-	lua_style_draw (lua_style, widget, "checkbox", width, height);
+	lua_style_draw (lua_style, widget, state_type, "checkbox", width, height);
 	
     lua_style_close_cairo (lua_style);
 }
