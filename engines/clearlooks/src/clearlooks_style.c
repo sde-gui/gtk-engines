@@ -368,12 +368,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	cr     = ge_gdk_drawable_to_cairo (window, area);
 	colors = &clearlooks_style->colors;
 
-	if ((width == -1) && (height == -1))
-		gdk_window_get_size (window, &width, &height);
-	else if (width == -1)   
-		gdk_window_get_size (window, &width, NULL);
-	else if (height == -1)
-		gdk_window_get_size (window, NULL, &height);
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 	if (DETAIL ("menubar") && !ge_is_panel_widget_item(widget))
 	{
@@ -649,22 +645,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		                                  x, y, width, height,
 		                                  10 - (int)(elapsed * 10.0) % 10);
 	}
-	else if (DETAIL ("hscale") || DETAIL ("vscale"))
-	{
-		WidgetParameters params;
-		SliderParameters slider;
-		
-		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		
-		slider.horizontal = DETAIL ("hscale");
-		
-		if (clearlooks_style->style == CL_STYLE_GLOSSY) /* XXX! */
-			params.corners = CR_CORNER_ALL;
-		
-		STYLE_FUNCTION(draw_slider_button) (cr, &clearlooks_style->colors,
-		                               &params, &slider,
-		                               x, y, width, height);
-	}
 	else if (DETAIL ("optionmenu"))
 	{
 		WidgetParameters params;
@@ -702,10 +682,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		STYLE_FUNCTION(draw_menuitem) (cr, colors, &params, x, y, width, height);
 	}
-	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar") || DETAIL ("slider") || DETAIL ("stepper"))
+	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar")) /* This can't be "stepper" for scrollbars ... */
 	{
 		WidgetParameters    params;
 		ScrollBarParameters scrollbar;
+		ScrollBarStepperParameters stepper;
+		GdkRectangle this_rectangle = { x, y, width, height };
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CR_CORNER_NONE;
@@ -714,41 +696,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 		
-		if (GE_IS_RANGE (widget))
-			scrollbar.horizontal = GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL;
+		scrollbar.horizontal = DETAIL ("hscrollbar");
 		
-		if (clearlooks_style->style == CL_STYLE_GLOSSY) /* XXX! */
-		{
-			scrollbar.color = colors->bg[CL_STATE_NORMAL];
-			ge_shade_color (&scrollbar.color, 0.5, &scrollbar.color);
-			scrollbar.has_color = TRUE;
-		}
-		else if (clearlooks_style->has_scrollbar_color)
-		{
-			ge_gdk_color_to_cairo (&clearlooks_style->scrollbar_color, &scrollbar.color);
-			scrollbar.has_color = TRUE;
-		}
-		
-		if (DETAIL ("slider"))
-		{
-			STYLE_FUNCTION(draw_scrollbar_slider) (cr, colors, &params, &scrollbar,
-			                                  x, y, width, height);
-		}
-		else
-		{
-			ScrollBarStepperParameters stepper;
-			GdkRectangle this_rectangle;
-			
-			this_rectangle.x = x;
-			this_rectangle.y = y;
-			this_rectangle.width = width;
-			this_rectangle.height = height;
+		stepper.stepper = clearlooks_scrollbar_get_stepper (widget, &this_rectangle);
 
-			stepper.stepper = clearlooks_scrollbar_get_stepper (widget, &this_rectangle);
-
-			STYLE_FUNCTION(draw_scrollbar_stepper) (cr, colors, &params, &scrollbar, &stepper,
-			                                   x, y, width, height);
-		}
+		STYLE_FUNCTION(draw_scrollbar_stepper) (cr, colors, &params, &scrollbar, &stepper,
+			                                x, y, width, height);
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
@@ -780,14 +733,66 @@ clearlooks_style_draw_box (DRAW_ARGS)
 static void
 clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 {
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	const ClearlooksColors *colors;
+	cairo_t *cr;
+
+	cr     = ge_gdk_drawable_to_cairo (window, area);
+	colors = &clearlooks_style->colors;
+
+	CHECK_ARGS
+	SANITIZE_SIZE
+	
 	if (DETAIL ("hscale") || DETAIL ("vscale"))
 	{
-		clearlooks_style_draw_box (style, window, state_type, shadow_type, area,
-		          widget, detail, x, y, width, height);
+		WidgetParameters params;
+		SliderParameters slider;
+		
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		
+		slider.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
+		
+		if (clearlooks_style->style == CL_STYLE_GLOSSY) /* XXX! */
+			params.corners = CR_CORNER_ALL;
+		
+		STYLE_FUNCTION(draw_slider_button) (cr, &clearlooks_style->colors,
+		                               &params, &slider,
+		                               x, y, width, height);
+	}
+	else if (DETAIL ("slider"))
+	{
+		WidgetParameters    params;
+		ScrollBarParameters scrollbar;
+
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		params.corners = CR_CORNER_NONE;
+
+		scrollbar.has_color  = FALSE;
+		scrollbar.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
+		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
+
+		if (clearlooks_style->style == CL_STYLE_GLOSSY) /* XXX! */
+		{
+			scrollbar.color = colors->bg[CL_STATE_NORMAL];
+			ge_shade_color (&scrollbar.color, 0.5, &scrollbar.color);
+			scrollbar.has_color = TRUE;
+		}
+		else if (clearlooks_style->has_scrollbar_color)
+		{
+			ge_gdk_color_to_cairo (&clearlooks_style->scrollbar_color, &scrollbar.color);
+			scrollbar.has_color = TRUE;
+		}
+		
+		STYLE_FUNCTION(draw_scrollbar_slider) (cr, colors, &params, &scrollbar,
+		                                       x, y, width, height);
 	}
 	else
+	{
 		clearlooks_parent_class->draw_slider (style, window, state_type, shadow_type, area,
 		                           widget, detail, x, y, width, height, orientation);
+	}
+
+	cairo_destroy (cr);
 }
 
 static void
