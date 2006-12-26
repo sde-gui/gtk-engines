@@ -1,3 +1,12 @@
+2006-12-26  Daniel Borgmann  <daniel.borgmann@gmail.com>
+
+	* engines/lua/src/draw_lib.c: (rectangle), (arc), (luaopen_draw):
+	- Add arc function.
+	* engines/lua/src/lua_style.c: (lua_style_draw_box),
+	(lua_style_draw_option), (lua_style_draw_vline),
+	(lua_style_draw_hline):
+	- Add separator and radiobutton support.
+
 2006-12-25  Daniel Borgmann  <daniel.borgmann@gmail.com>
 
 	* engines/lua/src/lua_style.c: (lua_style_push_widget_params),

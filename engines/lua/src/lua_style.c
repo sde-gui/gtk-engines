@@ -348,8 +348,8 @@ lua_style_draw_box (DRAW_ARGS)
 	{
 		switch (gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget)))
 		{
-		case GTK_PROGRESS_TOP_TO_BOTTOM:
 		case GTK_PROGRESS_BOTTOM_TO_TOP:
+		case GTK_PROGRESS_TOP_TO_BOTTOM:
 			cairo_translate (cr, 0, height);
 			cairo_rotate (cr, -G_PI * 0.5);
 			tmp = width;
@@ -360,7 +360,7 @@ lua_style_draw_box (DRAW_ARGS)
 		switch (gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget)))
 		{
 		case GTK_PROGRESS_RIGHT_TO_LEFT:
-		case GTK_PROGRESS_BOTTOM_TO_TOP:
+		case GTK_PROGRESS_TOP_TO_BOTTOM:
 			cairo_translate (cr, width, 0);
 			cairo_scale (cr, -1, 1);
 		}
@@ -505,6 +505,30 @@ lua_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 static void
 lua_style_draw_option (DRAW_ARGS)
 {
+	LuaStyle *lua_style = LUA_STYLE(style);
+	
+	/* sanitize size to be rectangular */
+	if (width > height) {
+		x += (width - height) / 2;
+		width = height;
+	} else if (height > width) {
+		y += (height - width) / 2;
+		height = width;
+	}
+	
+	lua_style_prepare_cairo (lua_style, window, area, x, y);
+	
+	lua_newtable (lua_style->L);
+	lua_pushboolean (lua_style->L, shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN);
+	lua_setfield (lua_style->L, -2, "draw_mark");
+	lua_pushboolean (lua_style->L, shadow_type == GTK_SHADOW_ETCHED_IN);
+	lua_setfield (lua_style->L, -2, "inconsistent");
+	lua_pushboolean (lua_style->L, widget && widget->parent && GTK_IS_MENU(widget->parent));
+	lua_setfield (lua_style->L, -2, "in_menu");
+	
+	lua_style_draw (lua_style, widget, state_type, "radiobutton", width, height);
+	
+    lua_style_close_cairo (lua_style);
 }
 
 static void
@@ -554,6 +578,23 @@ lua_style_draw_vline (GtkStyle               *style,
                       gint                    y2,
                       gint                    x)
 {
+	gint tmp, width, height;
+	cairo_t *cr;
+	LuaStyle *lua_style = LUA_STYLE (style);
+	cr = lua_style_prepare_cairo (lua_style, window, area, x, y1);
+	
+	width = y2-y1;
+	height = 2;
+	
+	cairo_translate (cr, 0, width);
+	cairo_rotate (cr, -G_PI * 0.5);
+	
+	lua_newtable (lua_style->L);
+	lua_pushstring (lua_style->L, "vertical");
+	lua_setfield (lua_style->L, -2, "orientation");
+	lua_style_draw (lua_style, widget, state_type, "separator", width, height);
+	
+	lua_style_close_cairo (lua_style);
 }
 
 static void
@@ -567,6 +608,19 @@ lua_style_draw_hline (GtkStyle               *style,
                       gint                    x2,
                       gint                    y)
 {
+	cairo_t *cr;
+	LuaStyle *lua_style = LUA_STYLE (style);
+	cr = lua_style_prepare_cairo (lua_style, window, area, x1, y);
+	
+	// FIXME: otherwise the clip is only one pixel high, how did clearlooks fix this?
+	cairo_reset_clip (cr);
+	
+	lua_newtable (lua_style->L);
+	lua_pushstring (lua_style->L, "horizontal");
+	lua_setfield (lua_style->L, -2, "orientation");
+	lua_style_draw (lua_style, widget, state_type, "separator", x2-x1, 2);
+	
+	lua_style_close_cairo (lua_style);
 }
 
 static void 

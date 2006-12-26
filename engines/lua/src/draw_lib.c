@@ -272,8 +272,6 @@ rectangle (lua_State *L)
 	cairo_t *cr = lua_utils_fetch_pointer (L, "cairo");
 	gdouble x, y, width, height, radius;
 	gboolean filled, tl, tr, bl, br;
-	CairoColor color;
-	int i = 0;
 	
 	if (!lua_istable (L, 1))
 		return luaL_error (L, "Rectangle function expects a table parameter.\n");
@@ -298,6 +296,32 @@ rectangle (lua_State *L)
 	}
 	
 	draw_rectangle (cr, x, y, width, height, radius, tl, tr, bl, br, filled);
+}
+
+static gint
+arc (lua_State *L)
+{
+	cairo_t *cr = lua_utils_fetch_pointer (L, "cairo");
+	gdouble x, y, radius, angle1, angle2;
+	gboolean filled;
+	
+	if (!lua_istable (L, 1))
+		return luaL_error (L, "Arc function expects a table parameter.\n");
+	
+	x = fetch_number_arg (L, "x", 0);
+	y = fetch_number_arg (L, "y", 0);
+	radius = fetch_number_arg (L, "radius", 0);
+	angle1 = fetch_number_arg (L, "angle1", 0);
+	angle2 = fetch_number_arg (L, "angle2", 0);
+	filled = fetch_boolean_arg (L, "filled", FALSE);
+	set_source_from_args (L);
+	
+	cairo_arc (cr, x, y, radius, angle1, angle2);
+	
+	if (filled)
+		cairo_fill (cr);
+	else
+		cairo_stroke (cr);
 }
 
 static gint
@@ -418,6 +442,7 @@ luaopen_draw (lua_State *L)
 	/* drawing ops */
 	lua_register (L, "line", line);
 	lua_register (L, "rectangle", rectangle);
+	lua_register (L, "arc", arc);
 	lua_register (L, "shape", shape);
 	
 	/* misc cairo functions */
