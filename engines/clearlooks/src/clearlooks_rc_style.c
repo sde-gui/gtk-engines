@@ -409,6 +409,7 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 			   GtkRcStyle *src)
 {
 	ClearlooksRcStyle *dest_w, *src_w;
+	ClearlooksRcFlags flags;
 	
 	clearlooks_parent_rc_class->merge (dest, src);
 	
@@ -417,18 +418,20 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 	
 	src_w = CLEARLOOKS_RC_STYLE (src);
 	dest_w = CLEARLOOKS_RC_STYLE (dest);
-	
-	if (src_w->flags & CL_FLAG_STYLE)
+
+	flags = (~dest_w->flags) & src_w->flags;
+
+	if (flags & CL_FLAG_STYLE)
 		dest_w->style = src_w->style;
-	if (src_w->flags & CL_FLAG_CONTRAST)
+	if (flags & CL_FLAG_CONTRAST)
 		dest_w->contrast          = src_w->contrast;
-	if (src_w->flags & CL_FLAG_MENUBARSTYLE)
+	if (flags & CL_FLAG_MENUBARSTYLE)
 		dest_w->menubarstyle      = src_w->menubarstyle;
-	if (src_w->flags & CL_FLAG_SCROLLBAR_COLOR)
+	if (flags & CL_FLAG_SCROLLBAR_COLOR)
 		dest_w->scrollbar_color = src_w->scrollbar_color;
-	if (src_w->flags & CL_FLAG_ANIMATION)
+	if (flags & CL_FLAG_ANIMATION)
 		dest_w->animation = src_w->animation;
-	if (src_w->flags & CL_FLAG_RADIUS)
+	if (flags & CL_FLAG_RADIUS)
 		dest_w->radius = src_w->radius;
 
 	dest_w->flags |= src_w->flags;

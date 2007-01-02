@@ -1,3 +1,9 @@
+2007-01-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_merge):
+	- Fix merging. Thanks to Werner Pantke for reporting this issue.
+
 2007-01-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
