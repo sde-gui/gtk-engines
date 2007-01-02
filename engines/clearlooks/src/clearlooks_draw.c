@@ -1712,14 +1712,14 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 	cairo_translate (cr, x, y);
 	
 	cairo_set_line_width (cr, 2);
-	cairo_arc       (cr, 7, 7, 6, 0, M_PI*2);	
+	cairo_arc       (cr, 7, 7, 6, 0, G_PI*2);	
 	cairo_set_source (cr, pt);
 	cairo_stroke (cr);
 	cairo_pattern_destroy (pt);
 
 	cairo_set_line_width (cr, 1);
 
-	cairo_arc       (cr, 7, 7, 5.5, 0, M_PI*2);	
+	cairo_arc       (cr, 7, 7, 5.5, 0, G_PI*2);	
 	
 	if (!widget->disabled)
 	{
@@ -1746,11 +1746,11 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 		}
 		else
 		{
-			cairo_arc (cr, 7, 7, 3, 0, M_PI*2);
+			cairo_arc (cr, 7, 7, 3, 0, G_PI*2);
 			ge_cairo_set_color (cr, dot);
 			cairo_fill (cr);
 		
-			cairo_arc (cr, 6, 6, 1, 0, M_PI*2);
+			cairo_arc (cr, 6, 6, 1, 0, G_PI*2);
 			/* cairo_set_source_rgba (cr, 1,1,1, 0.5); */
 			cairo_set_source_rgb (cr, 1,1,1);
 			cairo_fill (cr);

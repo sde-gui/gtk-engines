@@ -1,3 +1,14 @@
+2007-01-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_radiobutton):
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_glossy_draw_button),
+	(clearlooks_glossy_draw_radiobutton):
+	Patch from TFKyle:
+	- A few M_PI slipped back in.
+	- Fix for a C99ism.
+
 2006-12-26  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

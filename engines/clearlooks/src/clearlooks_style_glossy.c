@@ -99,9 +99,10 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		
 		if (params->prelight && params->enable_glow)
 		{
+			const CairoColor *glow = &colors->spot[0];
+
 			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
 
-			const CairoColor *glow = &colors->spot[0];
 			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
 			ge_cairo_set_color (cr, glow);
 			cairo_stroke (cr);
@@ -610,17 +611,17 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 			if (widget->prelight || (widget->active && !draw_bullet)) 
 			{
 				const CairoColor *glow = &colors->spot[0];
-				cairo_arc (cr, x+width/2.0 + 0.5, y+height/2.0 + 0.5, width/2.0, 0, 2 * M_PI);
+				cairo_arc (cr, x+width/2.0 + 0.5, y+height/2.0 + 0.5, width/2.0, 0, 2 * G_PI);
 				cairo_set_source_rgba (cr, glow->r, glow->g, glow->b, 1.0);
 				cairo_stroke (cr);
 			}
 		
 			// shadow
-			cairo_arc (cr, x+width/2.0+1, y+height/2.0+1, width/2.0 - 1.0, 0, 2 * M_PI);
+			cairo_arc (cr, x+width/2.0+1, y+height/2.0+1, width/2.0 - 1.0, 0, 2 * G_PI);
 			cairo_set_source_rgba (cr, 0., 0., 0., 0.2);
 			cairo_stroke (cr);
 			
-			cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);	
+			cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 1.0, 0, 2 * G_PI);	
 			pattern = cairo_pattern_create_linear (x, y, x+width, y+height);
 			cairo_pattern_add_color_stop_rgb (pattern, 0.0, 1.0, 1.0, 1.0);
 			cairo_pattern_add_color_stop_rgb (pattern, 0.4, top.r, top.g, top.b);
@@ -630,12 +631,12 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 			cairo_pattern_destroy (pattern);
 		}
 		cairo_translate (cr, 0.5, 0.5);
-		cairo_arc (cr, x+width/2.0, y+height/2.0, width/2.0 - 1.0, 0, 2 * M_PI);
+		cairo_arc (cr, x+width/2.0, y+height/2.0, width/2.0 - 1.0, 0, 2 * G_PI);
 		
 		ge_cairo_set_color (cr, &border);
 		cairo_stroke (cr);
 		
-		cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 2.0, 0, 2 * M_PI);
+		cairo_arc (cr, x+width/2., y+height/2.0, width/2.0 - 2.0, 0, 2 * G_PI);
 		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.4);
 		cairo_stroke (cr);
 	}
@@ -645,7 +646,7 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 	cairo_scale (cr, width / 13.0, height / 13.0);
 	if (draw_bullet)
 	{
-		cairo_arc (cr, 6.5, 6.5, 2.5, 0, 2 * M_PI);
+		cairo_arc (cr, 6.5, 6.5, 2.5, 0, 2 * G_PI);
 		if (widget->disabled)
 		{
 			ge_cairo_set_color (cr, &colors->text[widget->state_type]);
