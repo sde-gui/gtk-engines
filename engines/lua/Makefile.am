@@ -9,8 +9,6 @@ INCLUDES = \
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libluaengine.la
 
-EXTRA_DIST = ./src/config.h.in
-
 libluaengine_la_SOURCES = \
 	./src/draw_lib.c \
 	./src/draw_lib.h \
@@ -25,7 +23,6 @@ libluaengine_la_SOURCES = \
 	./src/main.c \
 	./src/misc_utils.c \
 	./src/misc_utils.h \
-	./src/config.h \
 	./src/liblua/lapi.h \
 	./src/liblua/lauxlib.h \
 	./src/liblua/lcode.h \

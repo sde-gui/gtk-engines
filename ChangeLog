@@ -1,5 +1,11 @@
 2007-01-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/lua/Makefile.am:
+	- Fix problem found during "make distcheck". There is no
+	  config.h/config.h.in.
+
+2007-01-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_rc_style.c:
 	(clearlooks_rc_style_merge):
 	- Fix merging. Thanks to Werner Pantke for reporting this issue.
