@@ -1,5 +1,11 @@
 2007-01-04  Thomas Wood  <thos@gnome.org>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_menuitem): Fix a co-ordinate
+	(clearlooks_register_style_classic): Add draw_menubaritem
+
+2007-01-04  Thomas Wood  <thos@gnome.org>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_box): Fix a compiler warning
 	* engines/clearlooks/src/clearlooks_style_glossy.c:

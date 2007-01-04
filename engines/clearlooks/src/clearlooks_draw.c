@@ -1273,7 +1273,7 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);
 	
 	ge_cairo_set_color (cr, border);
-	/* TODO: only draw full border if horiztonal padding is > 1 or parent is menubar
+	/* TODO: only draw full border if horiztonal padding is > 1
 	 *
 	if (params->horizontal_padding > 1)
 	{
@@ -1284,10 +1284,10 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	{
 	*/
 		cairo_move_to (cr, x + 0.5, y + 0.5);
-		cairo_line_to (cr, width, y + 0.5);
+		cairo_line_to (cr, x + 0.5 + width, y + 0.5);
 		cairo_stroke (cr);
 		cairo_move_to (cr, x + 0.5, y + height - 0.5);
-		cairo_line_to (cr, width, y + height - 0.5);
+		cairo_line_to (cr, x + 0.5 + width, y + height - 0.5);
 		cairo_stroke (cr);
 	/*}*/
 	cairo_rectangle (cr, x, y + 1, width, height - 2);
@@ -1300,6 +1300,37 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 
 }
+
+static void
+clearlooks_draw_menubaritem (cairo_t *cr,
+                          const ClearlooksColors          *colors,
+                          const WidgetParameters          *widget,
+                          int x, int y, int width, int height)
+{
+	CairoColor *fill = (CairoColor*)&colors->spot[1];
+	CairoColor fill_shade;
+	CairoColor *border = (CairoColor*)&colors->spot[2];
+	cairo_pattern_t *pattern;
+	
+	ge_shade_color (fill, 0.85, &fill_shade);
+	
+	cairo_set_line_width (cr, 1.0);
+	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height, widget->radius, widget->corners);
+
+
+	pattern = cairo_pattern_create_linear (x, y, x, y + height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0,   fill->r, fill->g, fill->b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, fill_shade.r, fill_shade.g, fill_shade.b);
+
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve  (cr);
+	cairo_pattern_destroy (pattern);
+
+	ge_cairo_set_color (cr, border);
+	cairo_stroke_preserve (cr);
+}
+
+
 
 static void
 clearlooks_draw_selected_cell (cairo_t                  *cr,
@@ -1867,7 +1898,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_list_view_header	= clearlooks_draw_list_view_header;
 	functions->draw_toolbar			= clearlooks_draw_toolbar;
 	functions->draw_menuitem		= clearlooks_draw_menuitem;
-	functions->draw_menubaritem		= clearlooks_draw_menuitem;
+	functions->draw_menubaritem		= clearlooks_draw_menubaritem;
 	functions->draw_selected_cell		= clearlooks_draw_selected_cell;
 	functions->draw_scrollbar_stepper	= clearlooks_draw_scrollbar_stepper;
 	functions->draw_scrollbar_slider	= clearlooks_draw_scrollbar_slider;
