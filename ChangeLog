@@ -1,3 +1,10 @@
+2007-01-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Use draw_menubaritem as the fallback. Also use draw_menubaritem
+	if the padding is larger than one pixel in the menu.
+
 2007-01-04  Thomas Wood  <thos@gnome.org>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
