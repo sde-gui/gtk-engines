@@ -331,6 +331,11 @@ struct _ClearlooksStyleFunctions
 	                               const WidgetParameters		*widget,
 	                               int x, int y, int width, int height);
 
+	void (*draw_menubaritem)      (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
 	void (*draw_selected_cell)    (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,

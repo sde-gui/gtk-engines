@@ -1,3 +1,19 @@
+2007-01-04  Thomas Wood  <thos@gnome.org>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box): Fix a compiler warning
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_draw_button_gloss): Sharpen gloss colours
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_register_style_classic):
+	* engines/clearlooks/src/clearlooks_style_glossy.c:
+	(clearlooks_glossy_draw_menuitem), (clearlooks_register_style_glossy):
+	* engines/clearlooks/src/clearlooks_types.h:
+
+	Add draw_menubaritem function
+
+
 2007-01-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/lua/Makefile.am:

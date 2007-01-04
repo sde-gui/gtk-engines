@@ -386,7 +386,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	else if (DETAIL ("button") && widget && widget->parent &&
                   (GE_IS_TREE_VIEW(widget->parent) ||
                    GE_IS_CLIST (widget->parent) ||
-                   ge_object_is_a (widget->parent, "ETree"))) /* ECanvas inside ETree */
+                   ge_object_is_a (G_OBJECT(widget->parent), "ETree"))) /* ECanvas inside ETree */
 	{
 		WidgetParameters params;
 		ListViewHeaderParameters header;
@@ -674,13 +674,13 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		{
 			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
 			height += 1;
+			STYLE_FUNCTION(draw_menubaritem) (cr, colors, &params, x, y, width, height);
 		}
 		else
 		{	
 			params.corners = CR_CORNER_ALL;
+			STYLE_FUNCTION(draw_menuitem) (cr, colors, &params, x, y, width, height);
 		}
-		
-		STYLE_FUNCTION(draw_menuitem) (cr, colors, &params, x, y, width, height);
 	}
 	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar")) /* This can't be "stepper" for scrollbars ... */
 	{

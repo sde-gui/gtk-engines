@@ -43,9 +43,9 @@ clearlooks_draw_button_gloss (cairo_t *cr,
 	CairoColor a, b, c, d, e;
 	cairo_pattern_t *pt;
 
-	ge_shade_color (color, disabled? 1.03 : 1.05, &a);
-	ge_shade_color (color, disabled? 1.01 : 1.02, &b);
-	ge_shade_color (color, disabled? 0.99 : 0.98, &c);
+	ge_shade_color (color, disabled? 1.03 : 1.1, &a);
+	ge_shade_color (color, disabled? 1.01 : 1.0, &b);
+	ge_shade_color (color, disabled? 0.99 : 0.9, &c);
 	ge_shade_color (color, 1.0, &d);
 	ge_shade_color (color, disabled? 1.01 : 1.02, &e);
 
@@ -502,8 +502,7 @@ clearlooks_glossy_draw_menuitem (cairo_t                   *cr,
 	cairo_restore (cr);
 
 	ge_cairo_set_color (cr, &colors->spot[2]);
-	/* TODO: only draw full border if horiztonal padding is > 1 or parent is menubar
-	 *
+	/* TODO: only draw full border if horiztonal padding is > 1
 	if (params->horizontal_padding > 1)
 	{
 		cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
@@ -520,6 +519,24 @@ clearlooks_glossy_draw_menuitem (cairo_t                   *cr,
 		cairo_stroke (cr);
 	/*}*/
 }
+
+static void
+clearlooks_glossy_draw_menubaritem (cairo_t                   *cr,
+                                 const ClearlooksColors    *colors,
+                                 const WidgetParameters    *params,
+                                 int x, int y, int width, int height)
+{
+	cairo_save (cr);
+	cairo_rectangle (cr, x, y + 1, width, height - 2);
+	cairo_clip (cr);
+	clearlooks_draw_button_gloss (cr, x, y, width, height, &colors->spot[1], params->disabled, 0, CR_CORNER_NONE);
+	cairo_restore (cr);
+
+	ge_cairo_set_color (cr, &colors->spot[2]);
+	cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
+	cairo_stroke (cr);
+}
+
 
 static void
 clearlooks_glossy_draw_selected_cell (cairo_t                  *cr,
@@ -676,6 +693,7 @@ clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions)
 	functions->draw_checkbox      = clearlooks_glossy_draw_checkbox;
 	functions->draw_radiobutton   = clearlooks_glossy_draw_radiobutton;
 	functions->draw_menuitem      = clearlooks_glossy_draw_menuitem;
+	functions->draw_menubaritem   = clearlooks_glossy_draw_menubaritem;
 	functions->draw_selected_cell = clearlooks_glossy_draw_selected_cell;
 }
 

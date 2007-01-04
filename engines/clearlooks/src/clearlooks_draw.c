@@ -1867,6 +1867,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_list_view_header	= clearlooks_draw_list_view_header;
 	functions->draw_toolbar			= clearlooks_draw_toolbar;
 	functions->draw_menuitem		= clearlooks_draw_menuitem;
+	functions->draw_menubaritem		= clearlooks_draw_menuitem;
 	functions->draw_selected_cell		= clearlooks_draw_selected_cell;
 	functions->draw_scrollbar_stepper	= clearlooks_draw_scrollbar_stepper;
 	functions->draw_scrollbar_slider	= clearlooks_draw_scrollbar_slider;
