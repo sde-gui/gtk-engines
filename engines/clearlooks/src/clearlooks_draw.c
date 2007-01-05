@@ -1267,30 +1267,12 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	CairoColor fill_shade;
 	CairoColor *border = (CairoColor*)&colors->spot[2];
 	cairo_pattern_t *pattern;
-	
+
 	ge_shade_color (fill, 0.85, &fill_shade);
-	
 	cairo_set_line_width (cr, 1.0);
-	
-	ge_cairo_set_color (cr, border);
-	/* TODO: only draw full border if horiztonal padding is > 1
-	 *
-	if (params->horizontal_padding > 1)
-	{
-		cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
-		cairo_stroke (cr);
-	}
-	else
-	{
-	*/
-		cairo_move_to (cr, x + 0.5, y + 0.5);
-		cairo_line_to (cr, x + 0.5 + width, y + 0.5);
-		cairo_stroke (cr);
-		cairo_move_to (cr, x + 0.5, y + height - 0.5);
-		cairo_line_to (cr, x + 0.5 + width, y + height - 0.5);
-		cairo_stroke (cr);
-	/*}*/
-	cairo_rectangle (cr, x, y + 1, width, height - 2);
+
+	cairo_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1);
+
 	pattern = cairo_pattern_create_linear (x, y, x, y + height);
 	cairo_pattern_add_color_stop_rgb (pattern, 0,   fill->r, fill->g, fill->b);
 	cairo_pattern_add_color_stop_rgb (pattern, 1.0, fill_shade.r, fill_shade.g, fill_shade.b);
@@ -1298,6 +1280,9 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	cairo_set_source (cr, pattern);
 	cairo_fill_preserve  (cr);
 	cairo_pattern_destroy (pattern);
+
+	ge_cairo_set_color (cr, border);
+	cairo_stroke (cr);
 
 }
 

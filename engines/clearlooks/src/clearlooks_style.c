@@ -670,33 +670,16 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		WidgetParameters params;
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
-		/* Only draw a "menuitem" if we can be sure this is a menu.
-		 * This does not work for firefox :-(  */
-		if (widget && GE_IS_MENU (widget->parent))
+		if (widget && GE_IS_MENU_BAR (widget->parent))
 		{
-			gint horizontal_padding = 0;
-
-			gtk_widget_style_get (widget->parent, "horizontal-padding", &horizontal_padding, NULL);
-
-			params.corners = CR_CORNER_ALL;
-
-			if (horizontal_padding + widget->parent->style->xthickness > 1)
-				STYLE_FUNCTION(draw_menubaritem) (cr, colors, &params, x, y, width, height);
-			else
-				STYLE_FUNCTION(draw_menuitem) (cr, colors, &params, x, y, width, height);
+			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
+			height += 1;
+			STYLE_FUNCTION(draw_menubaritem) (cr, colors, &params, x, y, width, height);
 		}
 		else
-		{
+		{	
 			params.corners = CR_CORNER_ALL;
-
-			/* On the menubar we don't draw a border at the bottom. This is not perfect
-			 * if the menu opens to the top, but that pretty much never happens. */
-			if (widget && GE_IS_MENU_BAR (widget->parent))
-			{
-				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
-				height += 1;
-			}
-			STYLE_FUNCTION(draw_menubaritem) (cr, colors, &params, x, y, width, height);
+			STYLE_FUNCTION(draw_menuitem) (cr, colors, &params, x, y, width, height);
 		}
 	}
 	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar")) /* This can't be "stepper" for scrollbars ... */

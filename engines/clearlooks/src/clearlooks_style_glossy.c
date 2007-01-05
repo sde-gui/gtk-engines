@@ -502,22 +502,8 @@ clearlooks_glossy_draw_menuitem (cairo_t                   *cr,
 	cairo_restore (cr);
 
 	ge_cairo_set_color (cr, &colors->spot[2]);
-	/* TODO: only draw full border if horiztonal padding is > 1
-	if (params->horizontal_padding > 1)
-	{
-		cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
-		cairo_stroke (cr);
-	}
-	else
-	{
-	*/
-		cairo_move_to (cr, x + 0.5, y + 0.5);
-		cairo_line_to (cr, width, y + 0.5);
-		cairo_stroke (cr);
-		cairo_move_to (cr, x + 0.5, y + height - 0.5);
-		cairo_line_to (cr, width, y + height - 0.5);
-		cairo_stroke (cr);
-	/*}*/
+	cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
+	cairo_stroke (cr);
 }
 
 static void
