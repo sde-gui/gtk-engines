@@ -1,3 +1,18 @@
+2007-01-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_trough),
+	(clearlooks_draw_progressbar_fill):
+	- Follow the radius option when drawing the trough.
+	- Cleaned up progressbar_fill
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Adjust the clip region by 3 pixel instead of one.
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	- Set the radius to 1.5 for the progress bar.
+
 2007-01-05  Thomas Wood  <thos@gnome.org>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

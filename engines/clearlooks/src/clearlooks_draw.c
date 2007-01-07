@@ -595,7 +595,6 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
                                     const WidgetParameters *params,
                                     int x, int y, int width, int height)
 {
-	/* XXX: progressbar does not use radius ... radius should be smaller, what about old themes? */
 	CairoColor      *border = (CairoColor*)&colors->shade[7];
 	cairo_pattern_t *pattern;
 	
@@ -608,15 +607,19 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	cairo_fill (cr);
 
 	/* Create trough box */
-	cairo_rectangle (cr, x+1, y+1, width-2, height-2);
+	ge_cairo_rounded_rectangle (cr, x+1, y+1, width-2, height-2, params->radius, params->corners);
 	ge_cairo_set_color (cr, &colors->shade[3]);
 	cairo_fill (cr);
 
 	/* Draw border */
-	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width-1, height-1, 1.5, params->corners);
+	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width-1, height-1, params->radius, params->corners);
 	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
-	
+
+	/* clip the corners of the shadows */
+	ge_cairo_rounded_rectangle (cr, x+1, y+1, width-2, height-2, params->radius, params->corners);
+	cairo_clip (cr);
+
 	/* Top shadow */
 	cairo_rectangle (cr, x+1, y+1, width-2, 4);
 	pattern = cairo_pattern_create_linear (x, y, x, y+4);
@@ -644,17 +647,15 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
                                   int x, int y, int width, int height,
                                   gint offset)
 {
-	boolean          is_horizontal = progressbar->orientation < 2;
-	double           tile_pos = 0;
-	double           stroke_width;
-	int			x_step;
+	boolean      is_horizontal = progressbar->orientation < 2;
+	double       tile_pos = 0;
+	double       stroke_width;
+	int          x_step;
 
 	cairo_pattern_t *pattern;
 	CairoColor       shade1;
-	
-	/* This is kind of ugly, but I want to get this fixed now. -- Benjamin
-	 * The problem is that the rotation should not be resetted by the save/restore. */
-	cairo_rectangle (cr, x, y, width, height);
+
+	cairo_save (cr);
 
 	if (!is_horizontal)
 		ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
@@ -662,23 +663,14 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	if ((progressbar->orientation == CL_ORIENTATION_RIGHT_TO_LEFT) || (progressbar->orientation == CL_ORIENTATION_BOTTOM_TO_TOP))
 		ge_cairo_mirror (cr, CR_MIRROR_HORIZONTAL, &x, &y, &width, &height);
 
-	cairo_translate (cr, x, y);
-
-
-	cairo_save (cr);
-	cairo_clip (cr);
-	
 	stroke_width = height*2;
-
-	x_step = (((float)stroke_width/10)*offset);
-
-	cairo_set_line_width (cr, 1.0);
+	x_step = (((float)stroke_width/10)*offset); /* This looks weird ... */
 	
-	cairo_save (cr);
-	cairo_rectangle (cr, 0, 0, width, height);
-		
-	/* Draw fill */
+	cairo_translate (cr, x, y);
+	
+	/* Fill the background. */
 	ge_cairo_set_color (cr, &colors->spot[1]);
+	cairo_rectangle (cr, 0, 0, width, height);
 	cairo_fill_preserve (cr);
 	
 	/* Draw gradient */
@@ -688,10 +680,12 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_pattern_add_color_stop_rgb (pattern, 0.6, colors->spot[1].r, colors->spot[1].g, colors->spot[1].b);
 	cairo_pattern_add_color_stop_rgb (pattern, 1.0, shade1.r, shade1.g, shade1.b);
 	cairo_set_source (cr, pattern);
-	cairo_fill (cr);
+	cairo_fill_preserve (cr);
 	cairo_pattern_destroy (pattern);
-	
-	/* Draw strokes */
+
+	/* Draw the Strokes */
+	cairo_save (cr);
+	cairo_clip (cr);
 	while (tile_pos <= width+x_step)
 	{
 		cairo_move_to (cr, stroke_width/2-x_step, 0);
@@ -702,40 +696,45 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 		cairo_translate (cr, stroke_width, 0);
 		tile_pos += stroke_width;
 	}
-
 	cairo_set_source_rgba (cr, colors->spot[2].r,
 	                           colors->spot[2].g,
 	                           colors->spot[2].b,
 	                           0.15);
 	
 	cairo_fill (cr);
-	
 	cairo_restore (cr);
-	
+
 	/* inner highlight border */
 	cairo_set_source_rgba (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b, 0.5);
 
 	if (progressbar->pulsing)
 		ge_cairo_stroke_rectangle (cr, 1.5, 0.5, width-3, height-1);
 	else
-		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, (progressbar->value < 1.0) ? width-2 : width-1, height-1);
-	
-	cairo_restore (cr);
-	
-	/* begin of bar line */
+		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, (progressbar->value < 1.0) ? width-2 : width-1, height-1);	
+
+	/* Draw the dark lines. */
+	cairo_save (cr);
+
+	cairo_set_source_rgba (cr, colors->spot[2].r,
+	                           colors->spot[2].g,
+	                           colors->spot[2].b,
+	                           0.5);
 	if (progressbar->pulsing)
 	{
-		cairo_move_to (cr, 0.5, 0);
-		cairo_line_to (cr, 0.5, height);
-		cairo_set_source_rgba (cr, colors->spot[2].r,
-		                           colors->spot[2].g,
-		                           colors->spot[2].b,
-								   0.5);
+		/* At the beginning of the bar. */
+		cairo_move_to (cr, 0.5, 0.5);
+		cairo_line_to (cr, 0.5, height - 0.5);
 		cairo_stroke (cr);
-		
 	}
-
-	/* Left shadow */
+	if (progressbar->value < 1.0)
+	{
+		/* At the end of the bar. */
+		cairo_move_to (cr, width - 0.5, 0.5);
+		cairo_line_to (cr, width - 0.5, height - 0.5);
+		cairo_stroke (cr);
+	}
+	
+	/* Finally the shadow. */
 	cairo_translate (cr, width, 0);
 	pattern = cairo_pattern_create_linear (0, 0, 3, 0);
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, 0., 0., 0., 0.1);	
@@ -743,19 +742,9 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 	cairo_rectangle (cr, 0, 0, 3, height);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
-	cairo_pattern_destroy (pattern);	
+	cairo_pattern_destroy (pattern);
 	
-	/* End of bar line */
-	if (progressbar->value < 1.0)
-	{
-		cairo_move_to (cr, -0.5, 0);
-		cairo_line_to (cr, -0.5, height);
-		cairo_set_source_rgba (cr, colors->spot[2].r,
-		                           colors->spot[2].g,
-		                           colors->spot[2].b,
-								   0.5);
-		cairo_stroke (cr);
-	}
+	cairo_restore (cr); /* rotation, mirroring */
 }
 
 static void

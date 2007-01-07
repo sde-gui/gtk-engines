@@ -61,6 +61,7 @@ style "clearlooks-default"
     menubarstyle      = 2       # 0 = flat, 1 = sunken, 2 = flat gradient
     animation         = FALSE
     style             = CLASSIC
+    radius            = 3.0
   }
 }
 
@@ -139,6 +140,11 @@ style "clearlooks-progressbar" = "clearlooks-wide"
   xthickness = 1
   ythickness = 1
   fg[PRELIGHT]  = @selected_fg_color
+
+  engine "clearlooks"
+  {
+    radius = 1.5
+  }
 }
 
 style "clearlooks-combo" = "clearlooks-button"

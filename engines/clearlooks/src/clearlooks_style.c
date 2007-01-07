@@ -625,14 +625,14 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			switch (progressbar.orientation)
 			{
 				case GTK_PROGRESS_RIGHT_TO_LEFT:
-					tmp.x -= 1;
+					tmp.x -= 3;
 				case GTK_PROGRESS_LEFT_TO_RIGHT:
-					tmp.width += 1;
+					tmp.width += 3;
 					break;
 				case GTK_PROGRESS_BOTTOM_TO_TOP:
-					tmp.y -= 1;
+					tmp.y -= 3;
 				case GTK_PROGRESS_TOP_TO_BOTTOM:
-					tmp.height += 1;
+					tmp.height += 3;
 					break;
 			}
 			
