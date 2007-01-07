@@ -1,5 +1,11 @@
 2007-01-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/Makefile.am:
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	Rename clearlooks_style_glossy.c to clearlooks_draw_glossy.c
+
+2007-01-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_progressbar_trough),
 	(clearlooks_draw_progressbar_fill):
