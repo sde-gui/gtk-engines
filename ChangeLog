@@ -1,3 +1,21 @@
+2007-01-08  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_progressbar_trough),
+	(clearlooks_draw_progressbar_fill):
+	- Added save/restore to _trough.
+	- Sanity check for the radius in _trough.
+	- Radius support for the fill.
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	- Again adjust the clip region differently. Only one pixel now, but
+	in both direction if it is pulsing.
+
+	* engines/support/cairo-support.c: (ge_cairo_rounded_rectangle):
+	- Use cairo_rectangle if no corner is set.
+	- Fix bug causing too many warnings 
+
 2007-01-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/Makefile.am:

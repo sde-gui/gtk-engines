@@ -622,18 +622,35 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		if (area)
 		{
 			GdkRectangle tmp = *area;
-			switch (progressbar.orientation)
+			if (!progressbar.pulsing)
 			{
-				case GTK_PROGRESS_RIGHT_TO_LEFT:
-					tmp.x -= 3;
-				case GTK_PROGRESS_LEFT_TO_RIGHT:
-					tmp.width += 3;
-					break;
-				case GTK_PROGRESS_BOTTOM_TO_TOP:
-					tmp.y -= 3;
-				case GTK_PROGRESS_TOP_TO_BOTTOM:
-					tmp.height += 3;
-					break;
+				switch (progressbar.orientation)
+				{
+					case GTK_PROGRESS_RIGHT_TO_LEFT:
+						tmp.x -= 1;
+					case GTK_PROGRESS_LEFT_TO_RIGHT:
+						tmp.width += 1;
+						break;
+					case GTK_PROGRESS_BOTTOM_TO_TOP:
+						tmp.y -= 1;
+					case GTK_PROGRESS_TOP_TO_BOTTOM:
+						tmp.height += 1;
+						break;
+				}
+			}
+			else
+			{
+				if (progressbar.orientation == GTK_PROGRESS_RIGHT_TO_LEFT ||
+				    progressbar.orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
+				{
+					tmp.x -= 1;
+					tmp.width += 2;
+				}
+				else
+				{
+					tmp.y -= 1;
+					tmp.height += 2;
+				}
 			}
 			
 			cairo_reset_clip (cr);

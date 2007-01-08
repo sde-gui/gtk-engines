@@ -330,13 +330,13 @@ ge_cairo_rounded_rectangle (cairo_t *cr,
 {
 	g_return_if_fail (cr != NULL);
 
-	if (radius < 0.0001)
+	if (radius < 0.0001 || corners == CR_CORNER_NONE)
 	{
 		cairo_rectangle (cr, x, y, w, h);
 		return;
 	}
 #if DEVELOPMENT
-	if ((corners & CR_CORNER_ALL) && (radius > w / 2.0 || radius > h / 2.0))
+	if ((corners == CR_CORNER_ALL) && (radius > w / 2.0 || radius > h / 2.0))
 		g_warning ("Radius is too large for width/height in ge_rounded_rectangle.\n");
 	else if (radius > w || radius > h) /* This isn't perfect. Assumes that only one corner is set. */
 		g_warning ("Radius is too large for width/height in ge_rounded_rectangle.\n");
