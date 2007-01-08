@@ -1,3 +1,10 @@
+2007-01-08  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+
+	Updated for 2.9.1 release
+
 2007-01-08  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/Makefile.am:

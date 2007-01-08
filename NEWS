@@ -1,3 +1,21 @@
+Overview of Changes in 2.9.1 (since 2.9.0)
+==========================================
+
+- New lua scripting engine by Daniel Borgmann
+- New clearlooks options radius, improvements to glossy style 
+- Implement suggestions for clearlooks menu selection from bug 382634
+
+- Plus many other small bug fixes
+
+Fixed bugs in this release:
+
+	- Bug 382397 - Clearlooks: Use @selected_fg_color for text[PRELIGHT] inside menus and
+    for fg[PRELIGHT] in GtkProgressBar
+	- Bug 382704 - Clearlooks: C89 fixes (Patch by Jens Granseuer)
+	- Bug 385106 - Clearlooks: Don't set shadow type to NONE if the detail is not
+	  one of the known ones.
+
+
 Overview of Changes in 2.9.0 (since 2.8.2)
 ==========================================
 
