@@ -1,5 +1,10 @@
 2007-01-08  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/Makefile.am:
+	- Add DIST_SUBDIRS with all subdirs. This fixes make distcheck.
+
+2007-01-08  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_progressbar_trough),
 	(clearlooks_draw_progressbar_fill):
