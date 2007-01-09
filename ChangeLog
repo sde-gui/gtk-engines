@@ -1,5 +1,13 @@
 2007-01-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/lua/src/draw_lib.c: (alpha), (shade):
+	* engines/lua/src/lua_style.c: (lua_style_prepare_lua),
+	(lua_style_prepare_cairo), (lua_style_close_cairo):
+
+	Some C89 fixes for lua from TFKyle.
+
+2007-01-09  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_menuitem):
 	- Draw the border around the whole menuitem including the sides.

@@ -148,12 +148,12 @@ lua_style_draw (LuaStyle *style, GtkWidget *widget, GtkStateType state_type,
 static lua_State *
 lua_style_prepare_lua (LuaStyle *style)
 {
-	g_return_if_fail (style);
-
 	lua_State *L;
 	gchar *themepath;
 	gchar *state;
 	int i;
+
+	g_return_if_fail (style);
 	
 	L = lua_open ();
 	luaopen_base (L);
@@ -210,10 +210,11 @@ lua_style_prepare_lua (LuaStyle *style)
 static cairo_t *
 lua_style_prepare_cairo (LuaStyle *style, GdkWindow *window, GdkRectangle *area, gint x, gint y)
 {
+	cairo_t *cr;
 	g_return_if_fail (style);
 	g_return_if_fail (style->L);
 	
-	cairo_t *cr = gdk_cairo_create (window);
+	cr = gdk_cairo_create (window);
 	cairo_set_source_rgb (cr, 0, 0, 0);
 	cairo_set_line_width (cr, 1);
 	cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
@@ -232,11 +233,13 @@ lua_style_prepare_cairo (LuaStyle *style, GdkWindow *window, GdkRectangle *area,
 static void
 lua_style_close_cairo (LuaStyle *style)
 {
+	cairo_t *cr;
+	cairo_pattern_t *pattern;
 	g_return_if_fail (style);
 	g_return_if_fail (style->L);
 	
-	cairo_t *cr = lua_utils_fetch_pointer (style->L, "cairo");
-	cairo_pattern_t *pattern = lua_utils_fetch_pointer (style->L, "pattern");
+	cr = lua_utils_fetch_pointer (style->L, "cairo");
+	pattern = lua_utils_fetch_pointer (style->L, "pattern");
 	
 	if (pattern)
 	{

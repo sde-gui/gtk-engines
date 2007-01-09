@@ -194,9 +194,10 @@ static int
 alpha (lua_State *L)
 {
 	CairoColor color;
+	gdouble alpha;
 	if (!fetch_color (L, 1, &color))
 		luaL_error (L, "Invalid color argument.");
-	gdouble alpha = luaL_checknumber (L, 2);
+	alpha = luaL_checknumber (L, 2);
 	color.a = alpha;
 	push_color (L, color);
 	return 1;
@@ -206,9 +207,10 @@ static int
 shade (lua_State *L)
 {
 	CairoColor color;
+	gdouble adjust;
 	if (!fetch_color (L, 1, &color))
 		luaL_error (L, "Invalid color argument.");
-	gdouble adjust = luaL_checknumber (L, 2);
+	adjust = luaL_checknumber (L, 2);
 	ge_shade_color (&color, adjust, &color);
 	push_color (L, color);
 	return 1;
