@@ -1,3 +1,9 @@
+2007-01-09  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_menuitem):
+	- Draw the border around the whole menuitem including the sides.
+
 2007-01-08  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:
