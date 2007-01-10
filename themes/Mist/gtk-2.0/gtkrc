@@ -47,6 +47,9 @@ style "default"
 	NautilusIconContainer::light_info_color="#bbbbbb"
 	NautilusIconContainer::highlight_alpha=200
 
+	GtkMenu::horizontal_padding=0
+	GtkMenu::vertical_padding=0
+
 	engine "mist"
  	{
 	}

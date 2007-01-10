@@ -1,3 +1,7 @@
+2007-01-10  Thomas Wood  <thos@gnome.org>
+
+	* themes/Mist/gtk-2.0/gtkrc: Fix a spacing issue in the menus
+
 2007-01-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/lua/src/draw_lib.c: (alpha), (shade):
