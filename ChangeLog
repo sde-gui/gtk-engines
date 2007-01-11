@@ -1,6 +1,11 @@
 2007-01-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(do_smooth_draw_box): Correct RTL locales.
+
+2007-01-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
 	(do_smooth_draw_box):
 	Fix division by zero bug in smooth (Bug 395193, Stuart Whitman)
 	also switch the highlighted side for inverted scales

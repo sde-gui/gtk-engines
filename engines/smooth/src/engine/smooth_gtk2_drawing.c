@@ -1731,9 +1731,14 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 
           if (GE_IS_SCALE(widget) && TROUGH_SHOW_VALUE(style)) {	    
 	    GtkAdjustment * adjustment = gtk_range_get_adjustment(GTK_RANGE(widget));
+	    gboolean inverted;
 	    gfloat value = 0;
 	    gfloat percentage = 0;
 	    
+	    inverted = gtk_range_get_inverted (GTK_RANGE (widget));
+	    if (!ge_widget_is_ltr (widget))
+	      inverted = !inverted;
+
             value = gtk_range_get_value(GTK_RANGE(widget));
 	    
             if (adjustment->upper - adjustment->lower > 0) {
@@ -1745,7 +1750,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
                 length = (width-PART_XPADDING(part)*2)*percentage;
                 length = CLAMP (length, 2, width-PART_XPADDING(part)*2);              
                 
-                if (gtk_range_get_inverted (GTK_RANGE (widget)))
+                if (inverted)
                   gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
                                            x+width-PART_XPADDING(part)-length, y+PART_YPADDING(part),
                                            length, height-PART_YPADDING(part)*2, 
@@ -1761,7 +1766,7 @@ do_smooth_draw_box(SmoothCanvas Canvas,
                 length = (height-PART_YPADDING(part)*2)*(1.0-percentage);
                 length = CLAMP (length, 2, height-PART_YPADDING(part)*2);
 
-                if (gtk_range_get_inverted (GTK_RANGE (widget)))
+                if (inverted)
                   gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
                                            x + PART_XPADDING(part), y + PART_YPADDING(part),
                                            width - PART_XPADDING(part)*2, length,
