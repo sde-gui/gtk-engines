@@ -1732,38 +1732,46 @@ do_smooth_draw_box(SmoothCanvas Canvas,
           if (GE_IS_SCALE(widget) && TROUGH_SHOW_VALUE(style)) {	    
 	    GtkAdjustment * adjustment = gtk_range_get_adjustment(GTK_RANGE(widget));
 	    gfloat value = 0;
-  
+	    gfloat percentage = 0;
+	    
             value = gtk_range_get_value(GTK_RANGE(widget));
 	    
-	    if (Horizontal) {
-              gint w=0;           
-              
-              if (gtk_range_get_inverted(GTK_RANGE(widget)))
-  	        w = (width-PART_XPADDING(part)*2)*(1-(value- adjustment->lower) / (adjustment->upper - adjustment->lower));
-	      else  
-  	        w = (width-PART_XPADDING(part)*2)*((value- adjustment->lower) / (adjustment->upper - adjustment->lower));
-	      w = MAX (2, w);
-	      w = MIN(w, width-PART_XPADDING(part)*2);              
-              
-	      gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
-	                               x+PART_XPADDING(part), y+PART_YPADDING(part), 
-	                               w, height-PART_YPADDING(part)*2, 
-	                               shadow_type == GTK_SHADOW_IN, Horizontal);
-            } else {
-              gint h;           
-              
-              if (gtk_range_get_inverted(GTK_RANGE(widget)))
-	        h = (height-PART_YPADDING(part)*2)*((value - adjustment->lower) / (adjustment->upper - adjustment->lower));
-	      else  
-	        h = (height-PART_YPADDING(part)*2)*(1-(value - adjustment->lower) / (adjustment->upper - adjustment->lower));
+            if (adjustment->upper - adjustment->lower > 0) {
+              percentage = (value - adjustment->lower) / (adjustment->upper - adjustment->lower);
+  
+              if (Horizontal) {
+                gint length;           
 
-              h = MAX (2, h);
-              h = MIN(h, height-PART_YPADDING(part)*2);
-	      
-              gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
-	                               x + PART_XPADDING(part), y + height-PART_YPADDING(part)-h, 
-	                               width - PART_XPADDING(part)*2, h,
-	                               shadow_type == GTK_SHADOW_IN, Horizontal);
+                length = (width-PART_XPADDING(part)*2)*percentage;
+                length = CLAMP (length, 2, width-PART_XPADDING(part)*2);              
+                
+                if (gtk_range_get_inverted (GTK_RANGE (widget)))
+                  gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
+                                           x+width-PART_XPADDING(part)-length, y+PART_YPADDING(part),
+                                           length, height-PART_YPADDING(part)*2, 
+                                           shadow_type == GTK_SHADOW_IN, Horizontal);
+                else
+                  gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
+                                           x+PART_XPADDING(part), y+PART_YPADDING(part), 
+                                           length, height-PART_YPADDING(part)*2, 
+                                           shadow_type == GTK_SHADOW_IN, Horizontal);
+              } else {
+                gint length;
+                
+                length = (height-PART_YPADDING(part)*2)*(1.0-percentage);
+                length = CLAMP (length, 2, height-PART_YPADDING(part)*2);
+
+                if (gtk_range_get_inverted (GTK_RANGE (widget)))
+                  gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
+                                           x + PART_XPADDING(part), y + PART_YPADDING(part),
+                                           width - PART_XPADDING(part)*2, length,
+                                           shadow_type == GTK_SHADOW_IN, Horizontal);
+                else
+                  gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
+                                           x + PART_XPADDING(part), y + height-PART_YPADDING(part)-length, 
+                                           width - PART_XPADDING(part)*2, length,
+                                           shadow_type == GTK_SHADOW_IN, Horizontal);
+              }
             }
           }
 	  
