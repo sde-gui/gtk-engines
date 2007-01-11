@@ -1736,8 +1736,6 @@ do_smooth_draw_box(SmoothCanvas Canvas,
 	    gfloat percentage = 0;
 	    
 	    inverted = gtk_range_get_inverted (GTK_RANGE (widget));
-	    if (!ge_widget_is_ltr (widget))
-	      inverted = !inverted;
 
             value = gtk_range_get_value(GTK_RANGE(widget));
 	    
@@ -1746,6 +1744,9 @@ do_smooth_draw_box(SmoothCanvas Canvas,
   
               if (Horizontal) {
                 gint length;           
+
+                if (!ge_widget_is_ltr (widget))
+                  inverted = !inverted;
 
                 length = (width-PART_XPADDING(part)*2)*percentage;
                 length = CLAMP (length, 2, width-PART_XPADDING(part)*2);              
