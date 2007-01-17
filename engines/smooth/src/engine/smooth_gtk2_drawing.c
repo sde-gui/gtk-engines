@@ -1764,17 +1764,17 @@ do_smooth_draw_box(SmoothCanvas Canvas,
               } else {
                 gint length;
                 
-                length = (height-PART_YPADDING(part)*2)*(1.0-percentage);
+                length = (height-PART_YPADDING(part)*2)*percentage;
                 length = CLAMP (length, 2, height-PART_YPADDING(part)*2);
 
                 if (inverted)
                   gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
-                                           x + PART_XPADDING(part), y + PART_YPADDING(part),
+                                           x + PART_XPADDING(part), y + height-PART_YPADDING(part)-length, 
                                            width - PART_XPADDING(part)*2, length,
                                            shadow_type == GTK_SHADOW_IN, Horizontal);
                 else
                   gradient_fill_background(Canvas, style, GTK_STATE_SELECTED, part, 
-                                           x + PART_XPADDING(part), y + height-PART_YPADDING(part)-length, 
+                                           x + PART_XPADDING(part), y + PART_YPADDING(part),
                                            width - PART_XPADDING(part)*2, length,
                                            shadow_type == GTK_SHADOW_IN, Horizontal);
               }
