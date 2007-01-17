@@ -2207,11 +2207,12 @@ smooth_arrow_merge (SmoothArrowPart *dest_arrow,
 {
   SmoothArrow dummy;
 
-  if (dest_arrow->DefaultStyle)
-    g_free(dest_arrow->DefaultStyle);
-
+  /* what is this for? */
   smooth_style_get_arrow(src_arrow, 0, 0, &dummy);
-  memcpy(dest_arrow, src_arrow, sizeof(SmoothArrowPart));
+
+  SmoothCopyArrowPart(dest_arrow, src_arrow);
+
+  /* Only used to inherit in one rc style. So this should work fine, I think. */
   dest_arrow->Inherited = NULL;
 }
 

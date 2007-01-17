@@ -1,3 +1,11 @@
+2007-01-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
+	(smooth_arrow_merge):
+	* engines/smooth/src/utils/draw_arrows.c: (SmoothCopyArrowPart):
+	* engines/smooth/src/utils/draw_arrows.h:
+	- Fix memory corruption in smooth (Bug #393312, Colin Leroy)
+
 2007-01-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/smooth/src/engine/smooth_gtk2_drawing.c:

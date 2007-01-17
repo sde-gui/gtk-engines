@@ -685,3 +685,52 @@ void SmoothFreeArrowStyles(SmoothArrowPart *arrow)
 		}
 	}
 }
+
+
+void SmoothCopyArrowPart(SmoothArrowPart *dst, SmoothArrowPart *src)
+{
+	gint i, j;
+	g_assert (dst != NULL);
+	g_assert (src != NULL);
+	
+	SmoothFreeArrowStyles(dst);
+	
+	if (src->DefaultStyle)
+	{
+		dst->DefaultStyle = g_new0(SmoothArrow, 1);
+		memcpy(dst->DefaultStyle, src->DefaultStyle, sizeof(SmoothArrow));
+	}
+
+	if (src->DefaultStateStyles)
+	{			
+		dst->DefaultStateStyles = g_new0(SmoothArrow, 1);
+		memcpy(dst->DefaultStateStyles, src->DefaultStateStyles, sizeof(SmoothArrow));
+	}
+
+	if (src->DefaultTypeStyles)
+	{
+		dst->DefaultTypeStyles = g_new0(SmoothArrow, 1);
+		memcpy(dst->DefaultTypeStyles, src->DefaultTypeStyles, sizeof(SmoothArrow));
+	}
+
+	for (i=0; i < 5; i++) 
+	{
+		if (src->Styles[i])
+		{
+			dst->Styles[i] = g_new0(SmoothArrow, 1);
+			memcpy(dst->Styles[i], src->Styles[i], sizeof(SmoothArrow));
+		}
+	}
+	
+	dst->StylesFreed = src->StylesFreed;
+	dst->Inherited = src->Inherited;
+	
+	for (i=0; i < 5; i++)
+	{
+		for (j=0; j < SMOOTH_ARROW_TYPE_COUNT; j++)
+		{
+			dst->CompositeArrows[i][j] = src->CompositeArrows[i][j];
+			dst->CompositeArrowsSet[i][j] = src->CompositeArrowsSet[i][j];
+		}
+	}
+}

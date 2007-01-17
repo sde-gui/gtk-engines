@@ -112,5 +112,7 @@ SmoothDrawArrow(SmoothCanvas *Canvas,
 
 GE_INTERNAL void 
 SmoothFreeArrowStyles(SmoothArrowPart *arrow);
+GE_INTERNAL void
+SmoothCopyArrowPart(SmoothArrowPart *dst, SmoothArrowPart *src);
 
 #endif /* DRAW_ARROWS_H */
