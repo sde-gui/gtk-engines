@@ -1,5 +1,12 @@
 2007-01-22  Thomas Wood  <thos@gnome.org>
 
+	* NEWS:
+	* configure.ac:
+
+	Update for 2.9.2 release
+
+2007-01-22  Thomas Wood  <thos@gnome.org>
+
 	* themes/Crux/gtk-2.0/gtkrc: Don't force icons to 22x22. Fixes bug 356426
 
 2007-01-17  Benjamin Berg  <benjamin@sipsolutions.net>

@@ -1,3 +1,21 @@
+Overview of Changes in 2.9.2 (since 2.9.1)
+==========================================
+
+Hilights in this release include:
+
+	- RTL Fixes in Smooth
+	- C89 fixes for lua engine (from TFKyle)
+	- Corrections to hilighted side for inverted scales and vertical ranges in
+	  Smooth engine
+	- Fix menu border spacing in Mist
+
+Fixed bugs in this release:
+
+	Bug 356426 - Don't force Crux icons to be 22x22
+	Bug 393312 - Memory corruption in Smooth engine
+	Bug 395193 - Division by zero bug in Smooth
+
+
 Overview of Changes in 2.9.1 (since 2.9.0)
 ==========================================
 
