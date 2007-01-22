@@ -1,6 +1,4 @@
-# gtkrc generated automatically by make-gtkrc.pl
-
-#  gtkrc -- gtkrc for crux-engine themes
+#  gtkrc -- gtkrc for crux-engine theme
 #
 #  Copyright (C) 2000, 2001 Eazel, Inc.
 #  Copyright (C) 2005, 2006 Thomas Wood <thos@gnome.org>
@@ -9,7 +7,8 @@
 #   Design: Lapo Calamandrei  <calamandrei@gmail.com>
 #   Code:   Thomas Wood  <thos@gnome.org>
 #
-#  Original Author: John Harper <jsh@eazel.com>
+#  Original Authors
+#   John Harper <jsh@eazel.com>
 
 
 #  This program is free software; you can redistribute it and/or
@@ -26,10 +25,9 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-#  $Id$
-# Default style for all widgets to build from
+#  $Id: gtkrc,v 1.11 2006/10/02 17:57:25 thos Exp $
 
-gtk-icon-sizes = "panel-menu=22,22:panel=22,22:gtk-menu=16,16:gtk-large-toolbar=22,22:gtk-button=22,22"
+# Default style for all widgets to build from
 
 style "default"
 {
