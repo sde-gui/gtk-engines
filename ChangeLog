@@ -1,3 +1,21 @@
+2007-02-01  Thomas Wood  <thos@gnome.org>
+
+	Patch by: Andrea Cimitan <andrea.cimitan@gmail.com>
+
+	* autogen.sh: Add support for automake 1.10
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_shadow), (clearlooks_draw_top_left_highlight),
+	(clearlooks_draw_button), (clearlooks_draw_entry),
+	(clearlooks_draw_progressbar_trough), (clearlooks_draw_tab),
+	(clearlooks_draw_scrollbar_trough),
+	(clearlooks_draw_scrollbar_stepper),
+	(clearlooks_draw_scrollbar_slider), (clearlooks_draw_radiobutton),
+	(clearlooks_draw_checkbox):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box_gap):
+
+	Miscellaneous tweaks to colours and shading.
+
 2007-01-22  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

@@ -215,7 +215,7 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		frame.gap_side  = gap_side;
 		frame.gap_x     = gap_x;
 		frame.gap_width = gap_width;
-		frame.border    = &colors->shade[6];
+		frame.border    = &colors->shade[5];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
