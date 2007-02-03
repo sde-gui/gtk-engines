@@ -1,3 +1,37 @@
+2007-02-03  Thomas Wood  <thos@gnome.org>
+
+	Based on patch by: Andrea Cimitan <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_inset), (clearlooks_draw_shadow),
+	(clearlooks_draw_top_left_highlight),
+	(clearlooks_draw_highlight_and_shade), (clearlooks_draw_gripdots),
+	(clearlooks_draw_button), (clearlooks_draw_entry),
+	(clearlooks_draw_spinbutton), (clearlooks_draw_spinbutton_down),
+	(clearlooks_scale_draw_gradient), (clearlooks_draw_scale_trough),
+	(clearlooks_draw_slider), (clearlooks_draw_slider_button),
+	(clearlooks_draw_progressbar_trough), (clearlooks_draw_menubar),
+	(clearlooks_get_frame_gap_clip), (clearlooks_draw_frame),
+	(clearlooks_draw_tab), (clearlooks_draw_separator),
+	(clearlooks_draw_list_view_header),
+	(clearlooks_draw_scrollbar_trough),
+	(clearlooks_draw_scrollbar_stepper),
+	(clearlooks_draw_scrollbar_slider), (clearlooks_draw_statusbar),
+	(clearlooks_draw_menu_frame), (clearlooks_draw_handle),
+	(clearlooks_draw_resize_grip), (clearlooks_draw_checkbox),
+	(clearlooks_register_style_classic):
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button),
+	(clearlooks_glossy_draw_slider_button):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_vline), (clearlooks_style_draw_hline):
+	* engines/clearlooks/src/clearlooks_types.h:
+
+	- Use shading rather than hardcoded black and white values
+	- Improved support for dark themes (fixes bug 333615)
+	- All shadow functions now accept the colour parameter
+	- New shadow for ACTIVE button state
+
 2007-02-01  Thomas Wood  <thos@gnome.org>
 
 	Patch by: Andrea Cimitan <andrea.cimitan@gmail.com>

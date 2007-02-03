@@ -110,7 +110,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		
 		/* Use inset as default for now - would be nice to make this an option */
 		/* if (params->active || shadow->shadow == CL_SHADOW_IN) */
-			params->style_functions->draw_inset (cr, width-1, height-1, params->radius, params->corners);
+			params->style_functions->draw_inset (cr, colors, width-1, height-1, params->radius, params->corners);
 		/* else
 			clearlooks_draw_shadow (cr, params->radius, width-1, height-1);
 		*/
@@ -333,7 +333,7 @@ clearlooks_glossy_draw_slider_button (cairo_t *cr,
 
 	cairo_translate (cr, x+0.5, y+0.5);
 	
-	params->style_functions->draw_shadow (cr, radius, width-1, height-1);
+	params->style_functions->draw_shadow (cr, colors, radius, width-1, height-1);
 	params->style_functions->draw_slider (cr, colors, params, 1, 1, width-2, height-2);
 }
 
