@@ -29,8 +29,34 @@
 
 # Default style for all widgets to build from
 
+gtk_color_scheme = "fg_color:#000\nbg_color:#c4c6c0\nbase_color:#fff\ntext_color:#000\nselected_bg_color:#75507b\nselected_fg_color:#fff"
+
+
 style "default"
 {
+  fg[NORMAL]        = @fg_color           # was 000000 --> OK
+  fg[PRELIGHT]      = @fg_color           # was 000000 --> OK
+  fg[SELECTED]      = @selected_fg_color  # was ffffff --> OK
+  fg[ACTIVE]        = @fg_color           # was 000000 --> OK
+  fg[INSENSITIVE]   = darker (@bg_color)  # was 888a85 --> ??
+
+  bg[NORMAL]        = @bg_color                # was d3d7cf --> NO?
+  bg[PRELIGHT]      = shade (1.02, @bg_color)  # was ededeb --> NO?
+  bg[SELECTED]      = @selected_bg_color       # was 75507b --> OK
+  bg[INSENSITIVE]   = @bg_color                # was c4c6c0 --> OK?
+  bg[ACTIVE]        = shade (0.9, @bg_color)   # was a3a69f --> ??
+
+  base[NORMAL]      = @base_color              # was ffffff --> OK
+  base[PRELIGHT]    = shade (0.95, @bg_color)  # was 000000 --> NO?
+  base[ACTIVE]      = shade (0.9, @selected_bg_color)  # undefined
+  base[SELECTED]    = @selected_bg_color       # 75507b --> OK
+  base[INSENSITIVE] = @bg_color                # dddddd --> NO
+
+  text[NORMAL]      = @text_color         # was 000000 --> OK
+  text[PRELIGHT]    = @text_color         # was 000000 --> OK
+  text[ACTIVE]      = @selected_fg_color  # was 000000 --> OK 
+  text[SELECTED]    = @selected_fg_color  # was undefined
+  text[INSENSITIVE] = darker (@bg_color)  # was 888a85 --> ??
 
   GtkRange::slider_width = 13
   GtkRange::stepper_size = 13
@@ -50,28 +76,6 @@ style "default"
 
   GtkScrollbar::min_slider_length = 25
 
-  fg[NORMAL] = "#000000"
-  fg[ACTIVE] = "#000000"
-  fg[PRELIGHT] = "#000000"
-  fg[SELECTED] = "#ffffff"
-  fg[INSENSITIVE] = "#888a85"
-
-  bg[NORMAL] = "#d3d7cf"
-  bg[ACTIVE] = "#a3a69f"
-  bg[PRELIGHT] = "#ededeb"
-  bg[SELECTED] = "#75507b"
-  bg[INSENSITIVE] = "#c4c6c0"
-
-  text[NORMAL] = "#000000"
-  text[ACTIVE] = "#000000"
-  text[PRELIGHT] = "#000000"
-  text[INSENSITIVE] = "#888a85"
-
-  base[NORMAL] = "#ffffff"
-  base[PRELIGHT] = "#000000"
-  base[INSENSITIVE] = "#dddddd"
-  base[SELECTED] = "#75507b"
-
   engine "crux-engine" {  }
 }
 
@@ -81,8 +85,8 @@ class "GtkWidget" style "default"
 # Style used for (prelighted) menu items
 style "menuitem"
 {
-  fg[PRELIGHT] = "#ffffff"
-  bg[PRELIGHT] = "#75507b"
+  fg[PRELIGHT] = @selected_fg_color # was 000000 --> OK
+  bg[PRELIGHT] = @selected_bg_color # was 75507b --> OK
 }
 
 class "GtkMenuItem" style "menuitem"
@@ -114,7 +118,7 @@ class "GtkText" style "entry"
 
 style "trough"
 {
-   bg[NORMAL] = "#babdb6"
+   bg[NORMAL] =  darker (@bg_color) # was babdb6 --> ??
 }
 class "GtkProgressBar" style "trough"
 
