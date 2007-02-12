@@ -27,4 +27,4 @@ if [ "x$something_tested" = "x" ]; then
 	exit 77;
 fi
 
-return $FAILED
+exit $FAILED
