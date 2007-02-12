@@ -1,0 +1,7 @@
+
+style "default"
+{
+	engine "mist" {}
+}
+
+class "GtkWidget" style "default"

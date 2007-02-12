@@ -1,0 +1,7 @@
+
+style "default"
+{
+	engine "crux" {}
+}
+
+class "GtkWidget" style "default"

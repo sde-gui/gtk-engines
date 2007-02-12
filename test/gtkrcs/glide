@@ -1,0 +1,7 @@
+
+style "default"
+{
+	engine "glide" {}
+}
+
+class "GtkWidget" style "default"

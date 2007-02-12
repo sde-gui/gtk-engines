@@ -122,6 +122,7 @@ AM_CONFIG_HEADER([engines/smooth/src/config.h])
 
 AC_CONFIG_FILES([
 Makefile
+test/Makefile
 engines/Makefile
 engines/support/Makefile
 engines/clearlooks/Makefile

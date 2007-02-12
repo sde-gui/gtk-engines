@@ -1,4 +1,4 @@
-SUBDIRS = engines themes
+SUBDIRS = engines themes test
 
 EXTRA_DIST = \
 	autogen.sh	\
@@ -10,6 +10,10 @@ EXTRA_DIST = \
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = gtk-engines-2.pc
+
+
+test:	all
+	cd test && $(MAKE) $(AM_MAKEFLAGS) test
 
 rpm : dist
 	rpmbuild --nodeps -ta $(PACKAGE)-$(VERSION).tar.gz

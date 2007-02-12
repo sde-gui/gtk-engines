@@ -1,0 +1,30 @@
+#! /bin/sh
+
+RC_PREFIX="`basename $0 | cut -d '_' -f 2`"
+
+# Do the test for every file starting with the prefix
+
+FAILED="0"
+
+for RC_FILE in $srcdir/gtkrcs/$RC_PREFIX*; do
+	test -f $RC_FILE || continue
+	something_tested="1"
+	
+	export GTK2_RC_FILES=$RC_FILE
+	RC_FILE_BASENAME="`basename $RC_FILE`"
+	MY_EXEC_WRAPPER="`echo "$EXEC_WRAPPER" | sed s/THEME/$RC_FILE_BASENAME/`"
+	
+	$MY_EXEC_WRAPPER ./torturetest 2>/dev/null
+
+	if [ "$?" != "0" ]; then
+		echo "FAILURE while torture testing $RC_FILE_BASENAME";
+		FAILED=1;
+	fi
+done
+
+if [ "x$something_tested" = "x" ]; then
+	echo "Failed to run test for \"$RC_PREFIX\" because no gtkrc files were found"
+	exit 77;
+fi
+
+return $FAILED

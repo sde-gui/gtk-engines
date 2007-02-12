@@ -1,0 +1,7 @@
+
+style "default"
+{
+	engine "redmond" {}
+}
+
+class "GtkWidget" style "default"

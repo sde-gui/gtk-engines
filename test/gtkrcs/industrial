@@ -1,0 +1,7 @@
+
+style "default"
+{
+	engine "industrial" {}
+}
+
+class "GtkWidget" style "default"
