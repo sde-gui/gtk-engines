@@ -8,8 +8,6 @@
 #include "crux-style.h"
 #include "crux-draw.h"
 
-#include "debug.h"
-
 
 GE_EXPORT void
 theme_init (GTypeModule *module)

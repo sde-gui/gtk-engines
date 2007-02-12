@@ -3,8 +3,6 @@
 #include "crux-rc-style.h"
 #include "crux-style.h"
 
-#include "debug.h"
-
 #include <stdio.h>
 #include <string.h>
 

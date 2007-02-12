@@ -1,5 +1,14 @@
 2007-02-12  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/crux/Makefile.am:
+	* engines/crux/src/crux-main.c:
+	* engines/crux/src/crux-rc-style.c:
+	* engines/crux/src/debug.c:
+	* engines/crux/src/debug.h:
+	- Remove debug.c and debug.h.
+
+2007-02-12  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* configure.ac:
 	* Makefile.am:
 	* test/*:

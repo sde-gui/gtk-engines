@@ -17,8 +17,6 @@ libcrux_engine_la_SOURCES = \
 	./src/crux-style.h            \
 	./src/crux-rc-style.c            \
 	./src/crux-rc-style.h            \
-	./src/debug.c                 \
-	./src/debug.h                 \
 	./src/eazel-theme.h
 
 libcrux_engine_la_LDFLAGS = -module -avoid-version -no-undefined
