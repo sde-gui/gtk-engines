@@ -16,7 +16,7 @@
 #define CRUX_LIGHT(xx, yy) yy.r = xx.r + 56/255.0;yy.g = xx.g + 47/255.0;yy.b = xx.b + 45/255.0;
 #define CRUX_DARK(xx, yy) yy.r = xx.r - 25/255.0;yy.g = xx.g - 27/255.0;yy.b = xx.b - 21/255.0;
 
-GtkStyleClass *parent_style_class;
+static GtkStyleClass *parent_style_class;
 
 static void
 draw_hline (GtkStyle *style,

@@ -1,5 +1,22 @@
 2007-02-12  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/crux/src/crux-draw.c:
+	* engines/glide/src/glide_gtk2_drawing.h:
+	* engines/hc/src/hc_gtk2_engine.c:
+	- Mark some things static/GE_INTERNAL
+
+	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.h:
+	- Two functions got defined with the wrong name (prefix was missing)
+
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(smooth_draw_option), (smooth_draw_check):
+	* engines/smooth/src/engine/smooth_gtk2_misc.c:
+	- Remove gtk_cell_renderer_toggle_get_inconsistent in favor of
+	ge_cell_renderer_toggle_get_inconsistent.
+
+2007-02-12  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/crux/Makefile.am:
 	* engines/crux/src/crux-main.c:
 	* engines/crux/src/crux-rc-style.c:

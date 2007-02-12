@@ -366,12 +366,3 @@ smooth_gtk_widget_get_focus_props (GtkWidget *widget,
     gtk_widget_style_get (widget, "interior_focus", interior_focus, NULL);
 }
 
-gboolean
-gtk_cell_renderer_toggle_get_inconsistent (GtkWidget *widget)
-{
-  gboolean result = FALSE;
-
-  g_object_get (widget, "inconsistent", result, NULL);
-
-  return result;
-}

@@ -1730,7 +1730,7 @@ clearlooks_draw_statusbar (cairo_t *cr,
 	cairo_stroke          (cr);
 }
 
-void
+static void
 clearlooks_draw_menu_frame (cairo_t *cr,
                             const ClearlooksColors          *colors,
                             const WidgetParameters          *widget,

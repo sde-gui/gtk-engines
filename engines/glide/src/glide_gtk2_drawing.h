@@ -140,7 +140,7 @@ glide_draw_box (GtkStyle * style,
           gint width, 
           gint height);
 
-void
+GE_INTERNAL void
 glide_draw_flat_box (GtkStyle * style,
 	  GdkWindow * window,
 	  GtkStateType state_type,

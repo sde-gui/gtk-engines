@@ -57,6 +57,7 @@
 #include "smooth_gtk2_drawing.h"
 #include "smooth_gtk2_misc.h"
 #include "smooth_gtk2_rc.h"
+#include <ge-support.h>
 
 #define FLAT_FILL_BACKGROUND(canvas, style, state_type, part, x, y, width, height) (smooth_fill_background(canvas, style, state_type, GTK_SHADOW_NONE, part, x, y, width, height, FALSE, FALSE, FALSE,FALSE, FALSE))		
 #define gradient_fill_background(canvas, style, state_type, part, x, y, width, height, invert, horizontal) (smooth_fill_background(canvas, style, state_type, GTK_SHADOW_NONE, part, x, y, width, height, TRUE, invert, horizontal,FALSE, FALSE))
@@ -2948,7 +2949,7 @@ smooth_draw_option(GtkStyle * style,
 		{x++; y++; width-=2; height-=2;}   
 	
 	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
+	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
         inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow_type == GTK_SHADOW_IN) || (inconsistent))
@@ -3034,7 +3035,7 @@ smooth_draw_check(GtkStyle * style,
 	}
 
 	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && gtk_cell_renderer_toggle_get_inconsistent (widget));
+	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
         inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
 
 	if ((shadow_type == GTK_SHADOW_IN) || (inconsistent))

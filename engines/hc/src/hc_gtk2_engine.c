@@ -40,7 +40,7 @@ static struct {
 	{ "cell_indicator_size", TOKEN_CELL_INDICATOR_SIZE }
 };
 
-guint 
+static guint 
 hc_rc_parse_int (GScanner *scanner, 
                  GTokenType wanted_token, 
 		 guint return_default,

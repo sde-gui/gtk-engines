@@ -475,11 +475,11 @@ smooth_rc_parse_trough_part(GScanner *scanner,
                         smooth_trough_style *retval);
 
 GE_INTERNAL void 
-part_init(smooth_part_style *part, 
-          gint partstyle);
+smooth_part_init(smooth_part_style *part, 
+                 gint partstyle);
 GE_INTERNAL void 
-part_merge (smooth_part_style *dest_part, 
-            smooth_part_style *src_part);
+smooth_part_merge (smooth_part_style *dest_part, 
+                   smooth_part_style *src_part);
 
 GE_INTERNAL void
 smooth_arrow_merge (SmoothArrowPart *dest_arrow,
