@@ -99,6 +99,7 @@ engines:
 	done;
 
 CLEANFILES = \
+	torture_buildin-failed \
 	$(EXTRA_PROGRAMS)
 
 clean-local:

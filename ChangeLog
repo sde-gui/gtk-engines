@@ -1,3 +1,12 @@
+2007-02-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* test/Makefile.am:
+	* test/exported:
+	* test/torture:
+	- Skip toreture tests if buildin fails (eg. no X server or crashes
+	in GTK+)
+	- Minor changes
+
 2007-02-13  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

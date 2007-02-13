@@ -2,11 +2,8 @@
 
 ALLOWED_SYMBOLS="\(g_module_check_init\|theme_create_rc_style\|theme_exit\|theme_init\)"
 
-if [ ! -f `which nm` ]; then
-	# Not sure if this has to exist ...
-	# well, just return
-	exit 77;
-fi
+# exit with status 77 if nm does not exist
+which nm >/dev/null || exit 77
 
 ENGINE="`basename $0 | cut -d '_' -f 2`"
 ENGINE_FILE="engines/lib$ENGINE.so"
