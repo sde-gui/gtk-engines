@@ -406,7 +406,7 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 		
 		if (widget->state_type != GTK_STATE_INSENSITIVE)
 		{
-			// glow
+			/* glow */
 			if ((widget->prelight || (widget->active && !draw_bullet)) && !checkbox->in_cell) 
 			{
 				const CairoColor *glow = &colors->spot[0];
@@ -415,7 +415,7 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 				cairo_stroke (cr);
 			}
 			
-			// shadow
+			/* shadow */
 			if (checkbox->in_cell) {
 				ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width, height, 1, widget->corners);
 			} else {
@@ -610,7 +610,7 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 		
 		if ( widget->state_type != GTK_STATE_INSENSITIVE )
 		{
-			// glow
+			/* glow */
 			if (widget->prelight || (widget->active && !draw_bullet)) 
 			{
 				const CairoColor *glow = &colors->spot[0];
@@ -619,7 +619,7 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 				cairo_stroke (cr);
 			}
 		
-			// shadow
+			/* shadow */
 			cairo_arc (cr, x+width/2.0+1, y+height/2.0+1, width/2.0 - 1.0, 0, 2 * G_PI);
 			cairo_set_source_rgba (cr, 0., 0., 0., 0.2);
 			cairo_stroke (cr);
@@ -644,7 +644,7 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 		cairo_stroke (cr);
 	}
 	
-	// draw the bullet
+	/* draw the bullet */
 	cairo_translate (cr, x, y);
 	cairo_scale (cr, width / 13.0, height / 13.0);
 	if (draw_bullet)

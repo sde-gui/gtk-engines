@@ -873,10 +873,11 @@ clearlooks_style_draw_vline                      (GtkStyle               *style,
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	const ClearlooksColors *colors;
-	colors = &clearlooks_style->colors;
-
 	SeparatorParameters separator = { FALSE };
 	cairo_t *cr;
+
+	colors = &clearlooks_style->colors;
+
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
@@ -899,11 +900,11 @@ clearlooks_style_draw_hline                      (GtkStyle               *style,
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	const ClearlooksColors *colors;
-	colors = &clearlooks_style->colors;
-
 	cairo_t *cr;
 	SeparatorParameters separator;
-	
+
+	colors = &clearlooks_style->colors;
+
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
 	separator.horizontal = TRUE;
@@ -995,6 +996,25 @@ clearlooks_style_draw_resize_grip (GtkStyle       *style,
 }
 
 static void
+clearlooks_style_draw_tab (DRAW_ARGS)
+{
+	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+	ClearlooksColors *colors = &clearlooks_style->colors;
+	WidgetParameters params;
+	ArrowParameters  arrow; 	 
+
+	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+
+	clearlooks_set_widget_parameters (widget, style, state_type, &params);
+	arrow.type      = CL_ARROW_COMBO;
+	arrow.direction = CL_DIRECTION_DOWN; 	 
+
+	STYLE_FUNCTION(draw_arrow) (cr, colors, &params, &arrow, x, y, width, height);
+
+	cairo_destroy (cr);
+}
+
+static void
 clearlooks_style_draw_arrow (GtkStyle  *style,
                        GdkWindow     *window,
                        GtkStateType   state_type,
@@ -1009,12 +1029,35 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
                        gint           width,
                        gint           height)
 {
-	if (DETAIL ("arrow") && ge_is_combo_box (widget, FALSE) && !ge_is_combo_box_entry(widget))
+	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
+	ClearlooksColors *colors = &clearlooks_style->colors;
+	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+		
+	SANITIZE_SIZE
+
+  if (arrow_type == (GtkArrowType)4) { /* NONE - new in GTK 2.10 */
+		cairo_destroy (cr);
+		return;
+	}
+
+	if (DETAIL ("arrow"))
 	{
-		/* call gtk_paint_tab to draw option menu like arrows.
-		 * In theory this could recurse, but gtk buildin style directly draws the arrow code instead
-		 * of using the style function. Just in case, change the detail. */
-		gtk_paint_tab (style, window, state_type, shadow, area, widget, "tab", x, y, width, height);
+		WidgetParameters params;
+		ArrowParameters  arrow;
+		
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		arrow.type = CL_ARROW_NORMAL;
+		arrow.direction = (ClearlooksDirection)arrow_type;
+			
+    if (ge_is_combo_box (widget, FALSE) && !ge_is_combo_box_entry (widget)) 	 
+    { 	 
+            arrow.type = CL_ARROW_COMBO; 	 
+            y -= 2; 	 
+            height += 4; 	 
+            x += 1; 	 
+    }
+		
+		STYLE_FUNCTION(draw_arrow) (cr, colors, &params, &arrow, x, y, width, height);
 	}
 	else
 	{
@@ -1022,6 +1065,8 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 		                          widget, detail, arrow_type, fill,
 		                          x, y, width, height);
 	}
+	
+	cairo_destroy (cr);
 }
 
 static void
@@ -1048,7 +1093,7 @@ static void
 clearlooks_style_realize (GtkStyle * style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-	double shades[] = {1.15, 0.95, 0.896, 0.82, 0.7, 0.665, 0.5, 0.45, 0.4};
+	double shades[] = {1.15, 0.95, 0.896, 0.82, 0.7, 0.665, 0.475, 0.45, 0.4};
 	CairoColor spot_color;
 	CairoColor bg_normal;
 	double contrast;
@@ -1361,12 +1406,15 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_vline       = clearlooks_style_draw_vline;
 	style_class->draw_hline       = clearlooks_style_draw_hline;
 	style_class->draw_resize_grip = clearlooks_style_draw_resize_grip;
+	style_class->draw_tab         = clearlooks_style_draw_tab;
 	style_class->draw_arrow       = clearlooks_style_draw_arrow;
 	style_class->render_icon      = clearlooks_style_draw_render_icon;
 
 	clearlooks_register_style_classic (&clearlooks_style_class->style_functions[CL_STYLE_CLASSIC]);
 	clearlooks_style_class->style_functions[CL_STYLE_GLOSSY] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
 	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_GLOSSY]);
+	clearlooks_style_class->style_functions[CL_STYLE_INVERTED] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
+	clearlooks_register_style_inverted (&clearlooks_style_class->style_functions[CL_STYLE_INVERTED]);
 }
 
 GType clearlooks_type_style = 0;

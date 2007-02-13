@@ -44,7 +44,7 @@ typedef enum {
 	CL_FLAG_CONTRAST          = 1 <<  2,
 	CL_FLAG_MENUBARSTYLE      = 1 <<  3,
 	CL_FLAG_ANIMATION         = 1 <<  4,
-	CL_FLAG_RADIUS            = 1 <<  5,
+	CL_FLAG_RADIUS            = 1 <<  5
 } ClearlooksRcFlags;
 
 struct _ClearlooksRcStyle

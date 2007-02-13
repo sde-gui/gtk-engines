@@ -1,3 +1,25 @@
+2007-02-13  Thomas Wood  <thos@gnome.org>
+
+	Based on patch by: Andrea Cimitan <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/Makefile.am:
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_types.h:
+
+	- Changes to checkbox style (use cross rather than tick mark)
+	- Use text[] colour for radio and check marks
+	- Improve arrows style (more similar to original Clearlooks)
+	- Improve borders, treeview selection and scrollbar style
+	- Added new INVERTED style option
+
+	- Also includes many c90 fixes by Thomas Wood
+
 2007-02-12  Thomas Wood  <thos@gnome.org>
 
 	* test/torture: Use exit rather than return

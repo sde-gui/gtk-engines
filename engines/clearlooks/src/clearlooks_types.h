@@ -11,7 +11,8 @@ typedef enum
 {
 	CL_STYLE_CLASSIC = 0,
 	CL_STYLE_GLOSSY = 1,
-	CL_NUM_STYLES = 2
+	CL_STYLE_INVERTED = 2,
+	CL_NUM_STYLES = 3
 } ClearlooksStyles;
 
 
@@ -235,6 +236,11 @@ typedef struct
 	boolean              in_menu;
 } CheckboxParameters;
 
+typedef struct
+{
+	ClearlooksArrowType type;
+	ClearlooksDirection direction;
+} ArrowParameters;
 
 struct _ClearlooksStyleFunctions
 {
@@ -382,6 +388,12 @@ struct _ClearlooksStyleFunctions
 	                               const WidgetParameters		*widget,
 	                               const ResizeGripParameters	*grip,
 	                               int x, int y, int width, int height);
+
+	void (*draw_arrow)      (cairo_t				*cr,
+					                       const ClearlooksColors          *colors,
+					                       const WidgetParameters          *widget,
+					                       const ArrowParameters           *arrow,
+					                       int x, int y, int width, int height);
 	                               
 	void (*draw_checkbox)         (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,

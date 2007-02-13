@@ -59,6 +59,7 @@ enum
   
   TOKEN_CLASSIC,
   TOKEN_GLOSSY,
+  TOKEN_INVERTED,
   
   TOKEN_TRUE,
   TOKEN_FALSE
@@ -84,6 +85,7 @@ clearlooks_gtk2_rc_symbols[] =
 
   { "CLASSIC",           TOKEN_CLASSIC },
   { "GLOSSY",            TOKEN_GLOSSY },
+  { "INVERTED",          TOKEN_INVERTED },
   
   { "TRUE",	TOKEN_TRUE },
   { "FALSE",	TOKEN_FALSE }
@@ -252,7 +254,7 @@ clearlooks_gtk2_rc_parse_style (GtkSettings      *settings,
 {
   guint token;
 
-  g_assert (CL_NUM_STYLES == CL_STYLE_GLOSSY + 1); /* so that people don't forget ;-) */
+  g_assert (CL_NUM_STYLES == CL_STYLE_INVERTED + 1); /* so that people don't forget ;-) */
 
   /* Skip 'style' */
   token = g_scanner_get_next_token (scanner);
@@ -270,6 +272,9 @@ clearlooks_gtk2_rc_parse_style (GtkSettings      *settings,
         break;
       case TOKEN_GLOSSY:
         *style = CL_STYLE_GLOSSY;
+        break;
+      case TOKEN_INVERTED:
+        *style = CL_STYLE_INVERTED;
         break;
       default:
         return TOKEN_CLASSIC;
