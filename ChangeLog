@@ -1,5 +1,12 @@
 2007-02-13  Thomas Wood  <thos@gnome.org>
 
+	* NEWS:
+	* configure.ac:
+
+	Updated for 2.9.3
+
+2007-02-13  Thomas Wood  <thos@gnome.org>
+
 	Based on patch by: Andrea Cimitan <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/Makefile.am:
