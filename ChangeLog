@@ -1,3 +1,24 @@
+2007-02-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	Patch from Andrea Cimitan <andrea.cimitan@gmail.com>:
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button), (clearlooks_draw_slider),
+	(clearlooks_draw_scrollbar_stepper),
+	(clearlooks_draw_scrollbar_slider), (clearlooks_draw_radiobutton),
+	(clearlooks_draw_checkbox):
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_button),
+	(clearlooks_inverted_draw_slider),
+	(clearlooks_inverted_draw_list_view_header),
+	(clearlooks_inverted_draw_scrollbar_stepper),
+	(clearlooks_inverted_draw_scrollbar_slider),
+	(clearlooks_inverted_draw_selected_cell):
+
+	- Color, shading and style changes
+	- Removal of some comments and other small changes
+	- Use text[NORMAL] for ACTIVE checkmarks. (Fixes Bug #407440)
+
 2007-02-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* test/Makefile.am:
