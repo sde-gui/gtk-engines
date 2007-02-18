@@ -1,3 +1,9 @@
+2007-02-18  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* test/Makefile.am:
+	* test/gtkrcs/clearlooks-inverted:
+	- Add clearlooks inverted style to the tests.
+
 2007-02-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	Patch from Andrea Cimitan <andrea.cimitan@gmail.com>:

@@ -7,6 +7,7 @@ GTKRCS =				\
 	gtkrcs/buildin			\
 	gtkrcs/clearlooks		\
 	gtkrcs/clearlooks-glossy	\
+	gtkrcs/clearlooks-inverted	\
 	gtkrcs/crux			\
 	gtkrcs/glide			\
 	gtkrcs/hc			\
