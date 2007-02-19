@@ -31,8 +31,9 @@ torturetest_LDFLAGS = $(GTK_LIBS)
 # the engines in tests/engines
 TESTS_ENVIRONMENT=GTK_PATH="."
 
-# should add suppressions ...
-VALGRIND_COMMAND=valgrind --leak-check=full --suppressions=$(srcdir)/valgrind-suppressions --log-file-exactly=valgrind-logs/THEME
+VALGRIND_COMMAND=valgrind --leak-resolution=high --leak-check=full --suppressions=$(srcdir)/valgrind-suppressions --num-callers=20 --log-file-exactly=valgrind-logs/THEME
+# set some flags to make glib more valgrind friendly
+VALGRIND_ENV=G_SLICE=always-malloc G_DEBUG=gc-friendly,resident-modules
 
 #################################################################
 #################################################################
@@ -124,7 +125,7 @@ exported_%: exported engines symbols
 	cp $(srcdir)/exported $@
 
 check-valgrind: valgrind-logs
-	$(MAKE) $(AM_MAKEFLAGS) check TESTS_ENVIRONMENT="$(TESTS_ENVIRONMENT) EXEC_WRAPPER=\"$(VALGRIND_COMMAND)\""
+	$(MAKE) $(AM_MAKEFLAGS) check TESTS_ENVIRONMENT="$(TESTS_ENVIRONMENT) $(VALGRIND_ENV) EXEC_WRAPPER=\"$(VALGRIND_COMMAND)\""
 
 test:
 	@$(MAKE) $(AM_MAKEFLAGS) check
