@@ -90,9 +90,6 @@ GE_INTERNAL gboolean ge_is_bonobo_dock_item (GtkWidget * widget);
 
 GE_INTERNAL GtkWidget *ge_find_combo_box_widget_parent (GtkWidget * widget);
 
-GE_INTERNAL gboolean ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget);
-GE_INTERNAL gboolean ge_toggle_get_inconsistent (GtkWidget * widget, const gchar *detail, GtkShadowType shadow_type);
-
 GE_INTERNAL void ge_option_menu_get_props (GtkWidget * widget, 
                             GtkRequisition * indicator_size, 
                             GtkBorder * indicator_spacing);

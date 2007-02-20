@@ -142,7 +142,7 @@ glide_draw_check (GtkStyle * style,
 
 	cairo_fill(canvas);
 
-	inconsistent = ge_toggle_get_inconsistent(widget, detail, shadow);
+	inconsistent = shadow == GTK_SHADOW_ETCHED_IN;
 
 	if ((shadow == GTK_SHADOW_IN) || (inconsistent))
 	{
@@ -245,32 +245,20 @@ glide_draw_option (GtkStyle * style,
 		height += 2;
 	}
 
-
-	/***********************************************/
-	/* GTK Special Cases - Determine Check State   */
-	/***********************************************/
-	check_state = GLIDE_CHECK_OFF;
-
-	if (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+	switch (shadow)
 	{
+	case GTK_SHADOW_ETCHED_IN:
 		check_state = GLIDE_CHECK_INCONSISTENT;
-	}
-
-	if (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
-	{
-		check_state = GLIDE_CHECK_INCONSISTENT;
-	}
-
-	if (CHECK_DETAIL(detail, "cellradio") && (shadow == GTK_SHADOW_ETCHED_IN))
-	{
-		check_state = GLIDE_CHECK_INCONSISTENT;
-	}
-
-	if ((shadow == GTK_SHADOW_IN) && (check_state == GLIDE_CHECK_OFF))
-	{
+		break;
+	case GTK_SHADOW_IN:
 		check_state = GLIDE_CHECK_ON;
+		break;
+	case GTK_SHADOW_OUT:
+		check_state = GLIDE_CHECK_OFF;
+		break;
+	default:
+		g_return_if_reached ();
 	}
-
 
 	/***********************************************/
 	/* Appearance                                  */

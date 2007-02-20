@@ -153,64 +153,55 @@ redmond_draw_check (GtkStyle * style,
  
   cr = ge_gdk_drawable_to_cairo (window, area);
 
-  if (CHECK_DETAIL (detail, "check"))	/* Menu item */
+  if (CHECK_DETAIL (detail, "check") && /* Special case for menu items. */
+     (shadow != GTK_SHADOW_ETCHED_IN))
     {
-      /* check boxes in menu don't actually draw box, only the check mark,
-       * which use the text color 
-       */
       if (shadow == GTK_SHADOW_IN)
-	{
-	  do_redmond_draw_check (cr, &redmond_style->color_cube.text[state], x + 3, y + 3,
-			 width - 4, height - 4);
-	}
+        do_redmond_draw_check (cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL],
+                               x + 2, y + 2, width - 4, height - 4);
     }
   else
     {
-      switch (state)
-	{
-	case GTK_STATE_NORMAL:
-	case GTK_STATE_PRELIGHT:
-          if (GE_IS_TOGGLE_BUTTON(widget) && TOGGLE_BUTTON(widget)->inconsistent)
-            do_redmond_draw_masked_fill (cr, &redmond_style->hatch_mask, 
-                                              &redmond_style->color_cube.bg[GTK_STATE_NORMAL],
-                                              &redmond_style->color_cube.light[GTK_STATE_NORMAL],
-                                              x, y, width, height);
-	  else
+      if (state == GTK_STATE_ACTIVE || state == GTK_STATE_INSENSITIVE)
+      {
+        ge_cairo_set_color(cr, &redmond_style->color_cube.bg[GTK_STATE_NORMAL]);
+
+        cairo_rectangle(cr, x, y, width - 1, height - 1);
+
+        cairo_fill(cr);
+      }
+      else
+      {
+        /* Draw stipples for inconsistent checkboxes. */
+        if (shadow == GTK_SHADOW_ETCHED_IN)
           {
+            do_redmond_draw_masked_fill (cr, &redmond_style->hatch_mask, 
+                                             &redmond_style->color_cube.bg[GTK_STATE_NORMAL],
+                                             &redmond_style->color_cube.light[GTK_STATE_NORMAL],
+                                             x, y, width, height);
+          }
+        else
+          {
+            /* ignore PRELIGHT state ... */
             ge_cairo_set_color(cr, &redmond_style->color_cube.base[GTK_STATE_NORMAL]);
 
             cairo_rectangle(cr, x, y, width - 1, height - 1);
 
             cairo_fill(cr);
           }
+      }
 
-	  break;
-	default:
-          ge_cairo_set_color(cr, &redmond_style->color_cube.bg[GTK_STATE_NORMAL]);
-
-          cairo_rectangle(cr, x, y, width - 1, height - 1);
-
-          cairo_fill(cr);
-
-	}
- 
-      if ((shadow == GTK_SHADOW_IN) || 
-          (GE_IS_TOGGLE_BUTTON(widget) && 
-           TOGGLE_BUTTON(widget)->inconsistent))
-	{
-	  if ((state == GTK_STATE_INSENSITIVE) || 
-              (GE_IS_TOGGLE_BUTTON(widget) && 
-               TOGGLE_BUTTON(widget)->inconsistent))
-            {
-	      do_redmond_draw_check (cr, &redmond_style->color_cube.fg[GTK_STATE_INSENSITIVE],
-			             x + 2, y + 2, width - 4, height - 4);
-            }
-	  else
-            {
-	      do_redmond_draw_check (cr, &redmond_style->color_cube.fg[GTK_STATE_NORMAL],
-			             x + 2, y + 2, width - 4, height - 4);
-            }
-	}
+      if ((shadow == GTK_SHADOW_ETCHED_IN) || (state == GTK_STATE_INSENSITIVE))
+        {
+          /* force insensitive color for inconsistent checkboxes */
+          do_redmond_draw_check (cr, &redmond_style->color_cube.fg[GTK_STATE_INSENSITIVE],
+                                 x + 2, y + 2, width - 4, height - 4);
+        }
+      else if (shadow == GTK_SHADOW_IN)
+        {
+          do_redmond_draw_check (cr, &redmond_style->color_cube.fg[GTK_STATE_NORMAL],
+                                 x + 2, y + 2, width - 4, height - 4);
+        }
  
       redmond_draw_shadow (style, window, GTK_STATE_NORMAL, GTK_SHADOW_IN,
 			area, widget, detail, x, y, width, height);
@@ -251,99 +242,90 @@ redmond_draw_option (GtkStyle * style,
              gint height)
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
- 
   gint center_x;
   gint center_y;
   gint radius;
-
+ 
   cairo_t *cr;
 
   CHECK_ARGS
   SANITIZE_SIZE
- 
+
   center_x = x + floor(width/2);
   center_y = y + floor(height/2);
   radius = floor(MIN(width, height)/2) + 1;
 
   cr = ge_gdk_drawable_to_cairo (window, area);
 
-  if (CHECK_DETAIL (detail, "option"))	/* Menu item */
+  if (CHECK_DETAIL (detail, "check") && /* Special case for menu items. */
+     (shadow != GTK_SHADOW_ETCHED_IN))
     {
-      /* check boxes in menu don't actually draw box, only the mark,
-       * which use the text color 
-       */
       if (shadow == GTK_SHADOW_IN)
-      {
-        ge_cairo_set_color(cr, &redmond_style->color_cube.text[state]);	
-	cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
-        cairo_fill(cr);
-      }
+        {
+          ge_cairo_set_color(cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL]);
+          cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
+          cairo_fill(cr);
+        }
     }
   else
     {
-      gboolean inconsistent;
+      do_redmond_draw_simple_circle (cr, &redmond_style->color_cube.dark[GTK_STATE_NORMAL],
+                                     &redmond_style->color_cube.light[GTK_STATE_NORMAL],
+                                     center_x, center_y, radius);
 
-  do_redmond_draw_simple_circle (cr, &redmond_style->color_cube.dark[GTK_STATE_NORMAL],
-				&redmond_style->color_cube.light[GTK_STATE_NORMAL],
-					center_x, 
-					center_y, 
-					radius);
+      do_redmond_draw_simple_circle (cr, &redmond_style->black_border[GTK_STATE_NORMAL],
+                                     &redmond_style->color_cube.bg[GTK_STATE_NORMAL],
+                                     center_x, center_y, radius - 1);
 
-  do_redmond_draw_simple_circle (cr, &redmond_style->black_border[GTK_STATE_NORMAL],
-				&redmond_style->color_cube.bg[GTK_STATE_NORMAL],
-					center_x, 
-					center_y, 
-					radius - 1);
+      if (state == GTK_STATE_ACTIVE || state == GTK_STATE_INSENSITIVE)
+      {
+        ge_cairo_set_color (cr, &redmond_style->color_cube.bg[GTK_STATE_NORMAL]);
 
-      inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-      inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
-      inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow == GTK_SHADOW_ETCHED_IN));
- 
-      switch (state)
-	{
-	case GTK_STATE_NORMAL:
-	case GTK_STATE_PRELIGHT:
-          if (inconsistent)
+        cairo_arc  (cr, center_x, center_y,  radius - 2, 0, 2*G_PI);
+
+        cairo_fill (cr);
+      }
+      else
+      {
+        /* Draw stipples for inconsistent checkboxes. */
+        if (shadow == GTK_SHADOW_ETCHED_IN)
           {
-             cairo_t *tmp = ge_gdk_drawable_to_cairo (window, area);
+            cairo_save (cr);
+            cairo_arc  (cr, center_x, center_y,  radius - 2, 0, 2*G_PI);
+            cairo_clip (cr);
 
-            cairo_arc(tmp, center_x, center_y,  radius - 2, 0, 2*G_PI);
-            cairo_clip(tmp);
+            do_redmond_draw_masked_fill (cr, &redmond_style->hatch_mask, 
+                                             &redmond_style->color_cube.bg[GTK_STATE_NORMAL],
+                                             &redmond_style->color_cube.light[GTK_STATE_NORMAL],
+                                             x, y, width, height);
 
-            do_redmond_draw_masked_fill (tmp, &redmond_style->hatch_mask, 
-                                              &redmond_style->color_cube.bg[GTK_STATE_NORMAL],
-                                              &redmond_style->color_cube.light[GTK_STATE_NORMAL],
-                                              x, y, width, height);
-	    cairo_destroy(tmp);
-         }
-          else
-          {
-            ge_cairo_set_color(cr, &redmond_style->color_cube.base[GTK_STATE_NORMAL]);
-            cairo_arc(cr, center_x, center_y, radius - 2, 0, 2 * G_PI);
-            cairo_fill(cr);
+            cairo_restore (cr);
           }
-	  break;
-	default:
-            ge_cairo_set_color(cr, &redmond_style->color_cube.bg[GTK_STATE_NORMAL]);
-            cairo_arc(cr, center_x, center_y, radius - 2, 0, 2 * G_PI);
-            cairo_fill(cr);
-	}
+        else
+          {
+            /* ignore PRELIGHT state ... */
+            ge_cairo_set_color (cr, &redmond_style->color_cube.base[GTK_STATE_NORMAL]);
 
-      if ((shadow == GTK_SHADOW_IN) || inconsistent)
-	{
-           if ((state==GTK_STATE_INSENSITIVE) || inconsistent)
-           {
-             ge_cairo_set_color(cr, &redmond_style->color_cube.fg[GTK_STATE_INSENSITIVE]);
-           }
-           else
-           {
-             ge_cairo_set_color(cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL]);	
-           }
+            cairo_arc  (cr, center_x, center_y,  radius - 2, 0, 2*G_PI);
 
-           cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
-           cairo_fill(cr);
-	}
-     }
+            cairo_fill (cr);
+          }
+      }
+
+      if ((shadow == GTK_SHADOW_ETCHED_IN) || (state == GTK_STATE_INSENSITIVE))
+        {
+          ge_cairo_set_color(cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL]);
+          cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
+          cairo_fill(cr);
+        }
+      else if (shadow == GTK_SHADOW_IN)
+        {
+          /* force insensitive color for inconsistent checkboxes */
+          ge_cairo_set_color(cr, &redmond_style->color_cube.fg[GTK_STATE_INSENSITIVE]);
+          cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
+          cairo_fill(cr);
+        }
+    }
 
      cairo_destroy(cr);
 }

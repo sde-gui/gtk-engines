@@ -2948,9 +2948,7 @@ smooth_draw_option(GtkStyle * style,
 	else
 		{x++; y++; width-=2; height-=2;}   
 	
-	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
-        inconsistent |= (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
+	inconsistent = (shadow_type == GTK_SHADOW_ETCHED_IN);
 
 	if ((shadow_type == GTK_SHADOW_IN) || (inconsistent))
 	{
@@ -2958,7 +2956,7 @@ smooth_draw_option(GtkStyle * style,
 		
 		cm.Shadow = 0;
                 
-		if (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+		if (inconsistent)
 			cm.Style = SMOOTH_CHECKMARK_STYLE_MINUS; 
 		else
 			cm.Style = PART_STYLE(option); 
@@ -3034,9 +3032,7 @@ smooth_draw_check(GtkStyle * style,
 				(CHECK_MOTIF(style)), TRUE, TRUE, FALSE, !((CHECK_MOTIF(style)) || (shadow_type == GTK_SHADOW_NONE)));
 	}
 
-	inconsistent = (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)));
-	inconsistent |= (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget));
-        inconsistent |= (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN));
+	inconsistent = (shadow_type == GTK_SHADOW_ETCHED_IN);
 
 	if ((shadow_type == GTK_SHADOW_IN) || (inconsistent))
 	{
@@ -3047,10 +3043,10 @@ smooth_draw_check(GtkStyle * style,
 		if (EDGE_LINE_STYLE(style, check) == SMOOTH_BEVEL_STYLE_COLD) 
 			thick = 1;
 		
-	  	smooth_style_get_checkmark(style, &cm);
-
-		if (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
+		if (inconsistent)
 			cm.Style = SMOOTH_CHECKMARK_STYLE_MINUS; 
+                else
+                	smooth_style_get_checkmark(style, &cm);
 
 		background =  COLOR_CUBE(style).Input[widget_state].Background;	
 		foreground =  COLOR_CUBE(style).Input[widget_state].Foreground;	

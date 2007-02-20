@@ -690,7 +690,7 @@ hc_draw_check (GtkStyle      *style,
 		height = HC_STYLE(style)->cell_indicator_size;
 	}
 	
-	inconsistent = ge_toggle_get_inconsistent(widget, detail, shadow_type);
+	inconsistent = (shadow_type == GTK_SHADOW_ETCHED_IN);
 
 	line_width = ceil(HC_STYLE(style)->edge_thickness/2);
 	cr = ge_gdk_drawable_to_cairo (window, area);
@@ -828,34 +828,31 @@ hc_draw_option (GtkStyle      *style,
 	ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);	
 	cairo_stroke (cr);
 
-	inconsistent = ge_toggle_get_inconsistent(widget, detail, shadow_type);
+	inconsistent = (shadow_type == GTK_SHADOW_ETCHED_IN);
 
-	if ((shadow_type == GTK_SHADOW_IN) || inconsistent)
+	ge_cairo_set_color(cr, &hc_style->color_cube.text[state_type]);
+
+	if (shadow_type == GTK_SHADOW_IN)
 	{
-		ge_cairo_set_color(cr, &hc_style->color_cube.text[state_type]);	
+		cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * G_PI);
+		cairo_fill(cr);
+		cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * G_PI);
+		cairo_stroke(cr);
+	}
+	else if (inconsistent)
+	{
+		int line_width = ceil(radius*0.68);
 
-		if (inconsistent)
-		{
-			int line_width = ceil(radius*0.68);
+		/* Force Thickness Even */
+		line_width -= (line_width % 2);
 
-			/* Force Thickness Even */
-			line_width -= (line_width % 2);
+		cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+		cairo_set_line_width (cr, line_width);
 
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-			cairo_set_line_width (cr, line_width);
+		cairo_move_to(cr, centerX - radius*0.38, centerY);
+		cairo_line_to(cr, centerX + radius*0.38, centerY);
 
-			cairo_move_to(cr, centerX - radius*0.38, centerY);
-			cairo_line_to(cr, centerX + radius*0.38, centerY);
-
-			cairo_stroke (cr);
-		}
-		else
-		{
-			cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * G_PI);
-			cairo_fill(cr);
-			cairo_arc(cr, centerX, centerY, radius*0.38, 0, 2 * G_PI);
-			cairo_stroke(cr);
-		}
+		cairo_stroke (cr);
 	}
 
 	cairo_destroy(cr);

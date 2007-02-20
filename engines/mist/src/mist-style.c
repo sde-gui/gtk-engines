@@ -736,34 +736,30 @@ mist_style_draw_option(GtkStyle *style,
 	cairo_set_source_rgba(cr, 0, 0, 0, 0.35); 
 	cairo_stroke (cr);
 
-	if ((shadow_type == GTK_SHADOW_IN) || 
-		(GE_IS_TOGGLE_BUTTON(widget) && 
-		TOGGLE_BUTTON(widget)->inconsistent))
+	if (shadow_type == GTK_SHADOW_ETCHED_IN)
 	{
-		if ((GE_IS_TOGGLE_BUTTON(widget) && 
-			TOGGLE_BUTTON(widget)->inconsistent))
-		{
-			/* Rough logic, just make  thickness 1/3 height */
-			int line_width = ceil((height + 1)/3);
+		/* inconsistent */
+		/* Rough logic, just make  thickness 1/3 height */
+		int line_width = ceil((height + 1)/3);
 
-			/* Force Thickness Even */
-			line_width -= (line_width % 2);
+		/* Force Thickness Even */
+		line_width -= (line_width % 2);
 
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-			cairo_set_line_width (cr, line_width + ((height % 2)?1:0));
+		cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+		cairo_set_line_width (cr, line_width + ((height % 2)?1:0));
 
-			cairo_move_to(cr, x + line_width - ((height % 2)?0.5:0), y + floor(height/2));
-			cairo_line_to(cr, x + width - line_width + ((height % 2)?0.5:0), y + floor(height/2));
+		cairo_move_to(cr, x + line_width - ((height % 2)?0.5:0), y + floor(height/2));
+		cairo_line_to(cr, x + width - line_width + ((height % 2)?0.5:0), y + floor(height/2));
 
-			ge_cairo_set_color(cr, &mist_style->color_cube.bg[GTK_STATE_SELECTED]);	
-			cairo_stroke (cr);
-		}
-		else
-		{
-			ge_cairo_set_color(cr, &mist_style->color_cube.bg[GTK_STATE_SELECTED]);	
-			cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * G_PI);
-			cairo_fill (cr);
-		}
+		ge_cairo_set_color(cr, &mist_style->color_cube.bg[GTK_STATE_SELECTED]);	
+		cairo_stroke (cr);
+	}
+	else if (shadow_type == GTK_SHADOW_IN)
+	{
+		/* checked */
+		ge_cairo_set_color(cr, &mist_style->color_cube.bg[GTK_STATE_SELECTED]);	
+		cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * G_PI);
+		cairo_fill (cr);
 	}
 
 	cairo_destroy(cr);

@@ -233,25 +233,6 @@ ge_find_combo_box_widget_parent (GtkWidget * widget)
   return result;
 }
 
-gboolean
-ge_cell_renderer_toggle_get_inconsistent (GtkWidget * widget)
-{
-  gboolean result = FALSE;
-  
-  g_object_get (widget, "inconsistent", &result, NULL);
-  
-  return result;
-}
-
-gboolean
-ge_toggle_get_inconsistent (GtkWidget * widget, const gchar *detail, GtkShadowType shadow_type)
-{
-	return (GE_IS_TOGGLE_BUTTON(widget) && gtk_toggle_button_get_inconsistent(TOGGLE_BUTTON(widget)))
-				| (GE_IS_CELL_RENDERER_TOGGLE(widget) && ge_cell_renderer_toggle_get_inconsistent (widget))
-				| (CHECK_DETAIL(detail, "cellcheck") && (shadow_type == GTK_SHADOW_ETCHED_IN))
-				| (CHECK_DETAIL(detail, "cellradio") && (shadow_type == GTK_SHADOW_ETCHED_IN));
-}
-
 /***********************************************
  * option_menu_get_props -
  *  

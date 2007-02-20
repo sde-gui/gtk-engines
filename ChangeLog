@@ -1,3 +1,20 @@
+2007-02-20  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_check),
+	(glide_draw_option):
+	* engines/hc/src/hc-style.c: (hc_draw_check), (hc_draw_option):
+	* engines/mist/src/mist-style.c: (mist_style_draw_option):
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_check),
+	(redmond_draw_option):
+	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
+	(smooth_draw_option), (smooth_draw_check):
+	* engines/support/widget-information.c:
+	* engines/support/widget-information.h:
+
+	Remove ge_toggle_get_inconsistent and
+	ge_cell_renderer_toggle_get_inconsistent, instead rely on the passed
+	in shadow type.
+
 2007-02-19  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* test/Makefile.am:
