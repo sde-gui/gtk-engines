@@ -1,5 +1,12 @@
 2007-02-20  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/redmond/src/redmond_gtk2_misc.c:
+	(do_redmond_draw_masked_fill):
+	- cairo_mask ignores the current path, so we need to clip the
+	rectangle or everything gets filled.
+
+2007-02-20  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_check),
 	(glide_draw_option):
 	* engines/hc/src/hc-style.c: (hc_draw_check), (hc_draw_option):

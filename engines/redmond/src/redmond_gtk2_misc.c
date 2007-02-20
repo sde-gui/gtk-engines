@@ -38,8 +38,11 @@ do_redmond_draw_masked_fill (cairo_t * cr,
 	cairo_fill(cr);
 
 	ge_cairo_set_color(cr, foreground);
+	cairo_save (cr);
 	cairo_rectangle (cr, x, y, width, height);
+	cairo_clip (cr);
 	cairo_mask (cr, mask->handle);
+	cairo_restore (cr);
 }
   
 /***********************************************
