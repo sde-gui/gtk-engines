@@ -1313,7 +1313,7 @@ redmond_draw_box (GtkStyle * style,
       redmond_draw_spinbutton_stepper (style, window, state_type, shadow_type, area,
 			       widget, detail, x, y, width, height);
     }
-  else if (GE_IS_TOGGLE_BUTTON(widget) && (TOGGLE_BUTTON(widget)->active))
+  else if (GE_IS_TOGGLE_BUTTON (widget) && (shadow_type == GTK_SHADOW_IN))
     {
       gint pointer_x, pointer_y;
       GdkModifierType pointer_mask;

@@ -1,5 +1,11 @@
 2007-02-20  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_box):
+	- Do not use the real active state of the widget. Instead use the passed
+	  in state type. This fixes inconsistent toggle buttons.
+
+2007-02-20  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/redmond/src/redmond_gtk2_misc.c:
 	(do_redmond_draw_masked_fill):
 	- cairo_mask ignores the current path, so we need to clip the
