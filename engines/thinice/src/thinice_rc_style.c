@@ -234,7 +234,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
   g_print("thinice_rc_parse_rc_style(\"%s\")\n", rc_style->name);
   */
   if (!scope_id)
-    scope_id = g_quark_from_string("theme_engine");
+    scope_id = g_quark_from_string("thinice_theme_engine");
 
   /* If we bail out due to errors, we *don't* reset the scope, so the
    * error messaging code can make sense of our tokens.
@@ -258,7 +258,6 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
 
   /* We're ready to go, now parse the top level */
 
-  /* theme_data = g_new0(ThiniceRcStyle, 1); */
   theme_data->scrollbar_type = DEFAULT_SCROLLSHAPE;
   theme_data->scrollbar_marks = DEFAULT_SCROLLBARMARKS;
   theme_data->scroll_button_marks = DEFAULT_SCROLLBUTTONMARKS;
@@ -352,7 +351,6 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
 
       if (token != G_TOKEN_NONE)
 	{
-	  g_free(theme_data);
 	  return token;
 	}
       token = g_scanner_peek_next_token(scanner);

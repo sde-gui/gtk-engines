@@ -64,7 +64,7 @@ mist_rc_style_parse (GtkRcStyle *rc_style,
 	/* Set up a new scope in this scanner. */
 	
 	if (!scope_id)
-		scope_id = g_quark_from_string("theme_engine");
+		scope_id = g_quark_from_string("mist_theme_engine");
 	
 	/* If we bail out due to errors, we *don't* reset the scope, so the
 	 * error messaging code can make sense of our tokens.

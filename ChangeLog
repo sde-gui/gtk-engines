@@ -1,3 +1,11 @@
+2007-02-25  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/mist/src/mist-rc-style.c: (mist_rc_style_parse):
+	* engines/thinice/src/thinice_rc_style.c: (thinice_rc_style_parse):
+	- Use quarks with the engines name in them.
+	- Don't free thinice's RC style on parse failure. GTK+ will
+	take care of that. (Thanks to Werner Pantke for reporting)
+
 2007-02-20  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/redmond/src/redmond_gtk2_drawing.c: (redmond_draw_box):
