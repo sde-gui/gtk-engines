@@ -1,3 +1,9 @@
+2007-02-26  Thomas Wood  <thos@gnome.org>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_checkbox): Revert the checkbox mark style from a tick to a
+	cross
+
 2007-02-25  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/mist/src/mist-rc-style.c: (mist_rc_style_parse):

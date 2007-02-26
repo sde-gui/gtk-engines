@@ -1990,14 +1990,14 @@ clearlooks_draw_checkbox (cairo_t *cr,
 		}
 		else
 		{
-			int pos = 3;
-			if (widget->xthickness > 2 && widget->ythickness > 2)
-				pos+=1;
-			cairo_set_line_width (cr, 1.5);
-			cairo_move_to (cr, pos, pos);
-			cairo_line_to (cr, width-pos, height-pos);
-			cairo_move_to (cr, width-pos, pos);
-			cairo_line_to (cr, pos, height-pos);
+			cairo_set_line_width (cr, 1.7);
+			cairo_move_to (cr, 0.5 + (width*0.2), (height*0.5));
+			cairo_line_to (cr, 0.5 + (width*0.4), (height*0.7));
+		
+			cairo_curve_to (cr, 0.5 + (width*0.4), (height*0.7),
+			                    0.5 + (width*0.5), (height*0.4),
+			                    0.5 + (width*0.70), (height*0.25));
+
 		}
 		
 		ge_cairo_set_color (cr, dot);
