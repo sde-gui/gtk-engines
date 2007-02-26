@@ -1,5 +1,12 @@
 2007-02-26  Thomas Wood  <thos@gnome.org>
 
+	* NEWS:
+	* configure.ac:
+
+	Update for 2.9.4 release
+
+2007-02-26  Thomas Wood  <thos@gnome.org>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_checkbox): Revert the checkbox mark style from a tick to a
 	cross

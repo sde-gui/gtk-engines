@@ -1,3 +1,19 @@
+Overview of Changes in 2.9.4 (since 2.9.3)
+==========================================
+
+Hilights in this release include:
+  - Revert checkbox style to a tick in Clearlooks
+  - Add clearlooks inverted style to test suite
+  - Fixes to Clearlooks shading, style and colours
+  - Fix inconsistent toggle buttons in Redmond engine
+  - Use quarks with engines name in thinice and mist engines
+  - Skip torture tests if buildin fails (eg. no X server or crashes
+  in GTK+)
+
+
+Fixed bugs in this release:
+  - Bug 407440 - Use text[NORMAL] for active checkmarks
+
 Overview of Changes in 2.9.3 (since 2.9.2)
 ==========================================
 
@@ -5,7 +21,7 @@ Hilights in this release include:
 
   - Many improvements to Clearlooks style from Andrea Cimitan
   - Added some generic engine checks to "make check"
-  - Use symbollic colors in Crux
+  - Use symbolic colors in Crux
   - c90 fixes
 
 
