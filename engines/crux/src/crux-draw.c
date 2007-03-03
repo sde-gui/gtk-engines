@@ -1086,7 +1086,6 @@ draw_box (GtkStyle *style,
 		if (GE_IS_PROGRESS_BAR (widget) && DETAIL ("trough"))
 		{
 			/* draw a shadow in progress bar troughs */
-			gdouble cx, cy, cw, ch;
 			cx = x + 1.5;
 			cy = y + 1.5;
 			cw = width - 3.0;

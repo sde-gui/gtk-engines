@@ -10,7 +10,7 @@
 typedef enum {
 	WIDGET_NULL,
 	WIDGET_VSCROLLBAR,
-	WIDGET_TOGGLE_BUTTON,
+	WIDGET_TOGGLE_BUTTON
 } WidgetType;
 
 #define WIDGET_COUNT (WIDGET_TOGGLE_BUTTON+1)
@@ -72,7 +72,7 @@ typedef enum {
 	FUNCTION_SLIDER		= 1 << 15,
 	FUNCTION_TAB		= 1 << 15,
 
-	FUNCTION_ALL		= -1,
+	FUNCTION_ALL		= -1
 } FunctionType;
 #define FUNCTION_LAST FUNCTION_BOX
 
@@ -399,7 +399,7 @@ run_functions (Test *test)
 static void
 run_test (gint test)
 {
-	Test current_test;
+	Test current_test = {0};
 	gint initial = TRUE;
 	
 	while (!get_next_combination (&tests[test], &current_test, initial)) {

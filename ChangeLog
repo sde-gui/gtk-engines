@@ -1,3 +1,25 @@
+2007-03-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/animation.c:
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/crux/src/crux-draw.c: (draw_box):
+	* engines/industrial/src/parse_rc_style.h:
+	* engines/support/cairo-support.c:
+	* test/Makefile.am:
+	* test/torturetest.c:
+
+	- Make gtk-engines compile with --enable-paranoia set.
+	- Don't use the development cflags for the torture test. The string
+	constants are too long and gcc complains.
+
+	* engines/glide/src/glide_gtk2_support.c:
+
+	Fixed some typos. A wrong variable was used in some comparisons and
+	the result could never be true.
+
 2007-02-26  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

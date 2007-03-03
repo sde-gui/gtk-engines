@@ -704,7 +704,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		WidgetParameters    params;
 		ScrollBarParameters scrollbar;
 		ScrollBarStepperParameters stepper;
-		GdkRectangle this_rectangle = { x, y, width, height };
+		GdkRectangle this_rectangle;
+		
+		this_rectangle.x = x;
+		this_rectangle.y = y;
+		this_rectangle.width  = width;
+		this_rectangle.height = height;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CR_CORNER_NONE;

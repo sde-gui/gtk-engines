@@ -292,7 +292,7 @@ do_glide_draw_border_with_gap(cairo_t *canvas,
 							color1 = midtone;
 							color2 = darktone;
 							color3 = lighttone;
-							color4 = (border_type==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
+							color4 = (bevel_style==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
 
 							outer_overlap = FALSE;
 							inner_overlap = TRUE;
@@ -302,7 +302,7 @@ do_glide_draw_border_with_gap(cairo_t *canvas,
 							color1 = midtone;
 							color2 = lighttone;
 							color3 = darktone;
-							color4 = (border_type==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
+							color4 = (bevel_style==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
 
 							outer_overlap = TRUE;
 							inner_overlap = (gap_side == GLIDE_SIDE_NONE) || 
@@ -576,14 +576,14 @@ do_glide_draw_round_option(cairo_t *canvas,
 							outer_color1 = midtone;
 							inner_color1 = darktone;
 							outer_color2 = lighttone;
-							inner_color2 = (border_type==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
+							inner_color2 = (bevel_style==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
 						}
 						else
 						{						
 							outer_color1 = midtone;
 							inner_color1 = lighttone;
 							outer_color2 = darktone;
-							inner_color2 = (border_type==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
+							inner_color2 = (bevel_style==GLIDE_BEVEL_STYLE_SMOOTHER)?*base:midtone;
 						}
 						
 						invert_in = FALSE;

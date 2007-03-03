@@ -194,10 +194,16 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 {
 	const CairoColor *background;
 	FrameParameters frame;
-	GdkRectangle pos = { x, y, width, height };
+	GdkRectangle real_pos;
 	double radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 	
 	background = &colors->bg[params->state_type];
+	
+	/* make a backup of x,y,width,height */
+	real_pos.x = x;
+	real_pos.y = y;
+	real_pos.width  = width;
+	real_pos.height = height;
 	
 	cairo_save (cr);
 	{
@@ -257,10 +263,10 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	}
 	cairo_restore (cr);
 	
-	x = pos.x;
-	y = pos.y;
-	width = pos.width;
-	height = pos.height;
+	x = real_pos.x;
+	y = real_pos.y;
+	width  = real_pos.width;
+	height = real_pos.height;
 	
 	frame.shadow = CL_SHADOW_OUT;
 	frame.gap_side = tab->gap_side;

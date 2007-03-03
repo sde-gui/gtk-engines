@@ -21,7 +21,7 @@ EXTRA_DIST = exported torture valgrind-suppressions $(GTKRCS)
 
 
 EXTRA_PROGRAMS = torturetest
-torturetest_CFLAGS = $(GTK_CFLAGS) $(DEVELOPMENT_CFLAGS)
+torturetest_CFLAGS = $(GTK_CFLAGS)
 torturetest_LDFLAGS = $(GTK_LIBS)
 
 

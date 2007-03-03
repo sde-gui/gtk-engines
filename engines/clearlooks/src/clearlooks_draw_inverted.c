@@ -165,9 +165,8 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 	if (!params->active)
 	{
 		cairo_pattern_t *pattern;
-		gdouble shade_size = ((100.0/height)*10.0)/100.0; /* 10 pixels */
-
 		CairoColor top_shade, bottom_shade;
+
 		ge_shade_color (fill, 0.95, &top_shade);		
 		ge_shade_color (fill, 1.05, &bottom_shade);
 		
@@ -532,17 +531,17 @@ clearlooks_inverted_draw_tab (cairo_t *cr,
 	ge_shade_color (fill, 1.3, &hilight);
 
 	/* Draw highlight */
-	if (!params->active)
+	/*if (!params->active)
 	{
 		ShadowParameters shadow;
 		
 		shadow.shadow  = CL_SHADOW_OUT;
 		shadow.corners = params->corners;
-		/*
+		
 		clearlooks_draw_highlight_and_shade (cr, colors, &shadow,
 		                                     width,
-		                                     height, radius);*/
-	}
+		                                     height, radius);
+	}*/
 	
 
 	if (params->active)
@@ -742,7 +741,6 @@ clearlooks_inverted_draw_list_view_header (cairo_t *cr,
 	const CairoColor *fill = &colors->bg[params->state_type];
 	CairoColor      *border = (CairoColor*)&colors->shade[4];
 	cairo_pattern_t *pattern;
-	CairoColor *dark   = (CairoColor*)&colors->shade[3];
 	CairoColor hilight_header;
 	CairoColor hilight;
 	CairoColor shadow;
@@ -811,7 +809,7 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 {
 	CairoCorners corners = CR_CORNER_NONE;
 	CairoColor border;
-	CairoColor  s1, s2, s3, s4;
+	CairoColor  s1, s2, s3;
 	cairo_pattern_t *pattern;
 	ShadowParameters shadow;
 	double radius = MIN (widget->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
@@ -939,7 +937,7 @@ clearlooks_inverted_draw_scrollbar_slider (cairo_t *cr,
 	else
 	{
 		CairoColor border;
-		CairoColor s1, s2, s3, s4;		
+		CairoColor s1, s2, s3;
 		cairo_pattern_t *pattern;
 		int bar_x, i;
 		

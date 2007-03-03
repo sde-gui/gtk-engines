@@ -142,12 +142,13 @@ update_animation_info (gpointer key, gpointer value, gpointer user_data)
 	AnimationInfo *animation_info = value;
 	GtkWidget *widget = key;
 	
-	if ((widget == NULL) || (animation_info == NULL))
-		g_assert_not_reached ();
+	g_assert ((widget != NULL) && (animation_info != NULL));
 	
 	/* remove the widget from the hash table if it is not drawable */
 	if (!GTK_WIDGET_DRAWABLE (widget))
+	{
 		return TRUE;
+	}
 	
 	if (GE_IS_PROGRESS_BAR (widget))
 	{

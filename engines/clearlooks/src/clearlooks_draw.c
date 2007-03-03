@@ -1294,7 +1294,6 @@ clearlooks_draw_list_view_header (cairo_t *cr,
 {
 	CairoColor      *border = (CairoColor*)&colors->shade[5];
 	cairo_pattern_t *pattern;
-	CairoColor *dark   = (CairoColor*)&colors->shade[3];
 	CairoColor hilight; 
 	CairoColor shadow;
 
@@ -1767,18 +1766,19 @@ clearlooks_draw_handle (cairo_t *cr,
                         int x, int y, int width, int height)
 {
 	const CairoColor *fill  = &colors->bg[params->state_type];
+	int num_bars = 6; /* shut up gcc warnings */
+	int bar_spacing;
 	
-	int num_bars, bar_spacing;
-	
-	if (handle->type == CL_HANDLE_TOOLBAR)
+	switch (handle->type)
 	{
-		num_bars    = 6;
-		bar_spacing = 3;
-	}
-	else if (handle->type == CL_HANDLE_SPLITTER)
-	{
-		num_bars    = 16;
-		bar_spacing = 3;
+		case CL_HANDLE_TOOLBAR:
+			num_bars    = 6;
+			bar_spacing = 3;
+		break;
+		case CL_HANDLE_SPLITTER:
+			num_bars    = 16;
+			bar_spacing = 3;
+		break;
 	}
 
 	if (params->prelight)

@@ -42,7 +42,7 @@ theme_parse_named_double (GScanner * scanner, double *value)
 	return G_TOKEN_NONE;
 }
 
-static gboolean
+static guint
 theme_parse_boolean (GScanner * scanner,
 		     GTokenType wanted_token, gboolean * retval)
 {
