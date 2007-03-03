@@ -1,5 +1,10 @@
 2007-03-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Makefile.am:
+	List subdirectories in DIST_SUBDIRS.
+
+2007-03-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/animation.c:
 	* engines/clearlooks/src/clearlooks_draw.c:
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
