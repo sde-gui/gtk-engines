@@ -18,3 +18,6 @@ config.sub
 gtk-engines.spec
 autom4te.cache
 gtk-engines-2.pc
+intltool-extract.in
+intltool-merge.in
+intltool-update.in

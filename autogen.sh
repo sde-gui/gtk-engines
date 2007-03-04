@@ -43,6 +43,14 @@ fi
 	echo "(or a newer version if it is available)"
 	DIE=1
 }
+
+(intltoolize --version) < /dev/null > /dev/null 2>&1 || {
+	echo
+	echo "You must have intltool installed to compile gtk-engines."
+	DIE=1
+}
+                        
+
 if test "$DIE" -eq 1; then
 	exit 1
 fi
@@ -53,6 +61,8 @@ if test -z "$*"; then
 fi
 
 libtoolize --force --copy
+intltoolize --force --copy --automake
+
 
 $ACLOCAL $ACLOCAL_FLAGS
 autoconf

@@ -1,0 +1,9 @@
+[type: gettext/xml] schema/clearlooks.xml.in
+[type: gettext/xml] schema/crux.xml.in
+[type: gettext/xml] schema/glide.xml.in
+[type: gettext/xml] schema/hc.xml.in
+[type: gettext/xml] schema/industrial.xml.in
+[type: gettext/xml] schema/mist.xml.in
+[type: gettext/xml] schema/redmond.xml.in
+[type: gettext/xml] schema/smooth.xml.in
+[type: gettext/xml] schema/thinice.xml.in

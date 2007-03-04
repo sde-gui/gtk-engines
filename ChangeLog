@@ -1,3 +1,16 @@
+2007-03-04  Thomas Wood  <thos@gnome.org>
+
+	Patch by: Werner Pantke <gnome-color-chooser@punk-ass-bitch.org>
+
+	* .cvsignore:
+	* schema/*:
+	* Makefile.am:
+	* autogen.sh:
+	* configure.ac:
+	* po/*:
+
+	Patch from Werner Pantke to add xml descriptions of engine options.
+
 2007-03-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Makefile.am:

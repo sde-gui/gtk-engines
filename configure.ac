@@ -16,6 +16,10 @@ AM_DISABLE_STATIC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
+dnl Initialize intltool
+AC_PROG_INTLTOOL([0.31.0])
+AM_GLIB_GNU_GETTEXT
+
 AC_ARG_ENABLE(all, 		[  --disable-all           skip all engines/themes by default], [defaultval=$enableval], 	[defaultval="yes"])
 AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks    skip ClearLooks engine/theme], 	[clearlooks=$enableval], 	[clearlooks="$defaultval"])
 AC_ARG_ENABLE(crux, 		[  --disable-crux          skip Crux engine/theme], 		[crux=$enableval], 		[crux="$defaultval"])
@@ -36,49 +40,79 @@ AC_ARG_ENABLE(paranoia, 	[  --enable-paranoia       use wall, werror, ansi, peda
 
 AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated functions in gtk et al],	[deprecated=$enableval],		[deprecated="no"])
 
+AC_ARG_ENABLE(schemas,		[  --disable-schema        disable engine schemas],	[schemas=$enableval],	[schemas="$defaultval"])
+
 BUILD_ENGINES=""
 BUILD_THEMES=""
+BUILD_SCHEMAS=""
 
 if test $clearlooks = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES clearlooks"
 	BUILD_THEMES="$BUILD_THEMES Clearlooks"
+	if test $schemas = "yes"; then
+		BUILD_SCHEMAS="$BUILD_SCHEMAS clearlooks.xml"
+	fi
 fi
 
 if test $crux = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES crux"
 	BUILD_THEMES="$BUILD_THEMES Crux"
+	if test $schemas = "yes"; then
+		BUILD_SCHEMAS="$BUILD_SCHEMAS crux.xml"
+	fi
 fi
 
 if test $hc = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES hc"
+	if test $schemas = "yes"; then
+		BUILD_SCHEMAS="$BUILD_SCHEMAS hc.xml"
+	fi
 fi
 
 if test $industrial = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES industrial"
 	BUILD_THEMES="$BUILD_THEMES Industrial"
+	if test $schemas = "yes"; then
+		BUILD_SCHEMAS="$BUILD_SCHEMAS industrial.xml"
+	fi
 fi
 
 if test $mist = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES mist"
 	BUILD_THEMES="$BUILD_THEMES Mist"
+	if test $schemas = "yes"; then
+		BUILD_SCHEMAS="$BUILD_SCHEMAS mist.xml"
+	fi
 fi
 
 if test $redmond = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES redmond"
 	BUILD_THEMES="$BUILD_THEMES Redmond"
+	if test $schemas = "yes"; then
+		BUILD_SCHEMAS="$BUILD_SCHEMAS redmond.xml"
+	fi
 fi
 
 if test $glide = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES glide"
+	if test $schemas = "yes"; then
+		BUILD_SCHEMAS="$BUILD_SCHEMAS glide.xml"
+	fi
 fi
 
 if test $smooth = "yes"; then
         BUILD_ENGINES="$BUILD_ENGINES smooth"
+        if test $schemas = "yes"; then
+	        BUILD_SCHEMAS="$BUILD_SCHEMAS smooth.xml"
+	fi
 fi
 
 if test $thinice = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES thinice"
 	BUILD_THEMES="$BUILD_THEMES ThinIce"
+	if test $schemas = "yes"; then
+		BUILD_SCHEMAS="$BUILD_SCHEMAS thinice.xml"
+	fi
 fi
 
 if test $lua = "yes"; then
@@ -96,6 +130,7 @@ AC_SUBST(GTK_VERSION)
 
 AC_SUBST(BUILD_ENGINES)
 AC_SUBST(BUILD_THEMES)
+AC_SUBST(BUILD_SCHEMAS)
 
 if test $animation = "yes"; then
 	AC_DEFINE_UNQUOTED(HAVE_ANIMATION, 1, [Defines whether to compile with animation support])
@@ -151,6 +186,17 @@ themes/ThinIce/Makefile
 themes/ThinIce/gtk-2.0/Makefile
 gtk-engines-2.pc
 gtk-engines.spec
+po/Makefile.in
+schema/Makefile
+schema/clearlooks.xml.in
+schema/crux.xml.in
+schema/glide.xml.in
+schema/hc.xml.in
+schema/industrial.xml.in
+schema/mist.xml.in
+schema/redmond.xml.in
+schema/smooth.xml.in
+schema/thinice.xml.in
 ]) 
 
 AC_OUTPUT
@@ -177,6 +223,14 @@ fi
 echo -n "      Disable Deprecated - "
 
 if test "$deprecated" = "yes"; then
+	echo "Enabled"
+else
+	echo "Disabled"
+fi
+
+echo -n "      Engine Schemas - "
+
+if test "$schemas" = "yes"; then
 	echo "Enabled"
 else
 	echo "Disabled"
