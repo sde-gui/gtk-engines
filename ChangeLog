@@ -1,3 +1,9 @@
+2007-03-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+
+	Remove the "foo" color.
+
 2007-03-04  Thomas Wood  <thos@gnome.org>
 
 	Patch by: Werner Pantke <gnome-color-chooser@punk-ass-bitch.org>
