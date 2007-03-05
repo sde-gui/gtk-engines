@@ -40,7 +40,7 @@ AC_ARG_ENABLE(paranoia, 	[  --enable-paranoia       use wall, werror, ansi, peda
 
 AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated functions in gtk et al],	[deprecated=$enableval],		[deprecated="no"])
 
-AC_ARG_ENABLE(schemas,		[  --disable-schema        disable engine schemas],	[schemas=$enableval],	[schemas="$defaultval"])
+AC_ARG_ENABLE(schemas,		[  --disable-schema        disable engine schemas],	[schemas=$enableval],	[schemas="yes"])
 
 BUILD_ENGINES=""
 BUILD_THEMES=""

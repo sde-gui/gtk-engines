@@ -1,5 +1,10 @@
 2007-03-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* configure.ac:
+	Use "yes" instead of $defaultval for the schemas option.
+
+2007-03-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* schema/Makefile.am:
 	List *.xml.in.in in EXTRA_DIST, so that make dist is also possible
 	if an engine is disabled.
