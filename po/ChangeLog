@@ -1,0 +1,11 @@
+2007-03-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	Fix make distcheck:
+
+	* POTFILES.in:
+	* POTFILES.skip:
+
+	List schema/*.xml.in.in in POTFILES.in and list schema/*.xml.in in
+	POTFILES.skip.
+
+	Also needed to add this ChangeLog.
