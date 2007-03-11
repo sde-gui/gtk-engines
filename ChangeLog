@@ -1,3 +1,14 @@
+2007-03-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_inset):
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_inset):
+	* engines/support/cairo-support.c: (ge_cairo_stroke_rectangle),
+	(ge_cairo_simple_border):
+	The cairo stroking performance bug has been fixed for a while. So
+	removing the workaround again.
+
 2007-03-11  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* configure.ac: Define GETTEXT_PACKAGE.

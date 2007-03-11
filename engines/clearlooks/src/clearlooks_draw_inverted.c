@@ -58,7 +58,6 @@ clearlooks_inverted_draw_inset (cairo_t *cr, const ClearlooksColors *colors, int
 	if (corners & CR_CORNER_BOTTOMRIGHT)
 		bot_x2 = width-radius+1;
 	
-#ifdef CAIRO_STROKE_IS_FAST
 	cairo_set_line_width (cr, 1);
 	cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.05);
 	cairo_move_to (cr, top_x1, 0.0);
@@ -69,15 +68,6 @@ clearlooks_inverted_draw_inset (cairo_t *cr, const ClearlooksColors *colors, int
 	cairo_move_to (cr, bot_x1, height);
 	cairo_line_to (cr, bot_x2, height);
 	cairo_stroke (cr);
-#else
-	cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.05);
-	cairo_rectangle (cr, top_x1 - 0.5, -0.5, top_x2 - top_x1 + 1, 1.0);
-	cairo_fill (cr);
-	
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
-	cairo_rectangle (cr, bot_x1 - 0.5, height - 0.5, bot_x2 - bot_x1 + 1, 1.0);
-	cairo_fill (cr);
-#endif
 }
 
 static void

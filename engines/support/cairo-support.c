@@ -372,35 +372,14 @@ ge_cairo_rounded_rectangle (cairo_t *cr,
 /* ge_cairo_stroke_rectangle.
  *
  *  A simple function to stroke the rectangle { x, y, w, h}.
- *  This is essentially the same as:
- *    cairo_rectangle (cr, x, y, width, height);
- *    cairo_stroke (cr);
- *  But works around the fact that cairo currently has problems
- *  with accelerating the pixel aligned case.
+ *  (This function only exists because of a cairo performance bug that
+ *    has been fixed and it may be a good idea to get rid of it again.)
  */
 void
 ge_cairo_stroke_rectangle (cairo_t *cr, double x, double y, double w, double h)
 {
-#ifdef CAIRO_STROKE_IS_FAST
 	cairo_rectangle (cr, x, y, w, h);
 	cairo_stroke (cr);
-#else
-	gfloat line_width;
-	gfloat offset;
-	
-	cairo_save (cr);
-	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
-	
-	line_width = cairo_get_line_width (cr);
-	offset = line_width / 2.0;
-	
-	cairo_rectangle (cr, x - offset, y - offset, w + line_width, h + line_width);
-	cairo_rectangle (cr, x + offset, y + offset, w - line_width, h - line_width);
-	
-	cairo_fill (cr);
-	
-	cairo_restore (cr);
-#endif
 }
 
 /***********************************************
@@ -436,66 +415,33 @@ ge_cairo_simple_border (cairo_t *cr,
 	{
 		ge_cairo_set_color(cr, br);	
 
-#ifdef CAIRO_STROKE_IS_FAST
 		cairo_move_to(cr, x + 0.5, y + height - 0.5);
 		cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
 		cairo_line_to(cr, x + width - 0.5, y + 0.5);
 		
 		cairo_stroke (cr);
-#else
-		cairo_rectangle (cr, x, y + height - 1, width, 1);
-		cairo_rectangle (cr, x+width - 1, y, 1, height - 1);
-
-		cairo_fill(cr);
-#endif
 	}
  
 	ge_cairo_set_color(cr, tl);	
 
-#ifdef CAIRO_STROKE_IS_FAST
 	cairo_move_to(cr, x + 0.5, y + height - 0.5);
 	cairo_line_to(cr, x + 0.5, y + 0.5);
 	cairo_line_to(cr, x + width - 0.5, y + 0.5);
-#else
-	cairo_rectangle (cr, x, y, 1, height);
-	cairo_rectangle (cr, x + 1, y, width - 1, 1);
-#endif
 
 	if (!topleft_overlap)
 	{
 		if (!solid_color)
 		{
-#ifdef CAIRO_STROKE_IS_FAST
 			cairo_stroke(cr);
-#else
-			cairo_fill(cr);
-#endif
 			ge_cairo_set_color(cr, br);	
 		}
 
-#ifdef CAIRO_STROKE_IS_FAST
 		cairo_move_to(cr, x + 0.5, y + height - 0.5);
 		cairo_line_to(cr, x + width - 0.5, y + height - 0.5);
 		cairo_line_to(cr, x + width - 0.5, y + 0.5);
-#else
-		if (solid_color)
-		{
-			cairo_rectangle (cr, x + 1, y + height - 1, width - 1, 1);
-			cairo_rectangle (cr, x + width - 1, y + 1, 1, height - 2);
-		}
-		else
-		{
-			cairo_rectangle (cr, x, y + height - 1, width, 1);
-			cairo_rectangle (cr, x + width - 1, y, 1, height - 1);
-		}
-#endif
 	}
 
-#ifdef CAIRO_STROKE_IS_FAST
 	cairo_stroke(cr);
-#else
-	cairo_fill(cr);
-#endif
 
 	cairo_restore(cr);
 }
