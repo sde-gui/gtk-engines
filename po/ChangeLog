@@ -1,5 +1,9 @@
 2007-03-11  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
+	* LINGUAS: Added nl.
+
+2007-03-11  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
 	* nl.po: Initial Dutch translation by Wouter Bolsterlee.
 
 2007-03-05  Benjamin Berg  <benjamin@sipsolutions.net>
