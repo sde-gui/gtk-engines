@@ -18,6 +18,9 @@ AM_PROG_LIBTOOL
 
 dnl Initialize intltool
 AC_PROG_INTLTOOL([0.31.0])
+GETTEXT_PACKAGE=gtk-engines
+AC_SUBST([GETTEXT_PACKAGE])
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Gettext package])
 AM_GLIB_GNU_GETTEXT
 
 AC_ARG_ENABLE(all, 		[  --disable-all           skip all engines/themes by default], [defaultval=$enableval], 	[defaultval="yes"])
