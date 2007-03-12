@@ -588,6 +588,7 @@ clearlooks_draw_slider (cairo_t *cr,
 
 	/* Draw the border */
 	ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
+
 	if (params->prelight || params->disabled)
 		ge_cairo_set_color (cr, border);
 	else
@@ -1622,25 +1623,24 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		CairoColor *border  = (CairoColor*)&colors->shade[7];
 		CairoColor  fill    = scrollbar->color;
 		CairoColor  hilight;
-		CairoColor  shade1, shade2, shade3, shade4;
+		CairoColor  shade1, shade2, shade3;
 		cairo_pattern_t *pattern;
-				
+
 		if (widget->prelight)
 			ge_shade_color (&fill, 1.1, &fill);
 			
 		cairo_set_line_width (cr, 1);
 		
 		ge_shade_color (&fill, 1.3, &hilight);
-		ge_shade_color (&fill, 1.14, &shade1);
-		ge_shade_color (&fill, 1.04, &shade2);
-		ge_shade_color (&fill, 0.82, &shade3);
-		ge_shade_color (&fill, 0.92, &shade4);
+		ge_shade_color (&fill, 1.1, &shade1);
+		ge_shade_color (&fill, 1.05, &shade2);
+		ge_shade_color (&fill, 0.98, &shade3);
 		
 		pattern = cairo_pattern_create_linear (1, 1, 1, height-2);
-		cairo_pattern_add_color_stop_rgb (pattern, 0,    shade1.r, shade1.g, shade1.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.5,  shade2.r, shade2.g, shade2.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.5,  shade4.r, shade4.g, shade4.b);	
-		cairo_pattern_add_color_stop_rgb (pattern, 1.0,  shade3.r, shade3.g, shade3.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0,   shade1.r, shade1.g, shade1.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.5, shade2.r, shade2.g, shade2.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.5, shade3.r, shade3.g, shade3.b);	
+		cairo_pattern_add_color_stop_rgb (pattern, 1, 	fill.r,  fill.g,  fill.b);
 		cairo_rectangle (cr, 1, 1, width-2, height-2);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);

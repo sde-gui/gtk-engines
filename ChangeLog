@@ -1,3 +1,13 @@
+2007-03-12  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+	Updated for 2.10.0 release
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	Minor tweaks to scrollbar shading from Andrea Cimitan
+
 2007-03-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
