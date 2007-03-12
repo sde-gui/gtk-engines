@@ -1,3 +1,8 @@
+2007-03-12  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+	* LINGUAS: Added en_GB
+
 2007-03-11  Wouter Bolsterlee  <wbolster@svn.gnome.org>
 
 	* LINGUAS: Added nl.
