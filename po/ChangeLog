@@ -1,3 +1,8 @@
+2007-03-20  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* gl.po: Added Galician Translation.
+	* LINGUAS: Added 'gl'.
+
 2007-03-20  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
 
 	* ca.po: Added Catalan translation by
