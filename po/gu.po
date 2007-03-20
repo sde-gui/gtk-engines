@@ -1,0 +1,151 @@
+# translation of gtk-engines.HEAD.gu.po to Gujarati
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
+# Ankit Patel <ankit@redhat.com>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gtk-engines.HEAD.gu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-03-20 03:38+0000\n"
+"PO-Revision-Date: 2007-03-20 11:37+0530\n"
+"Last-Translator: Ankit Patel <ankit@redhat.com>\n"
+"Language-Team: Gujarati <fedora-trans-gu@redhat.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+
+#: ../schema/clearlooks.xml.in.in.h:1
+msgid "3d-ish (button)"
+msgstr "3d-ish (બટન)"
+
+#: ../schema/clearlooks.xml.in.in.h:2
+msgid "3d-ish (gradient)"
+msgstr "3d-ish (ઢાળ)"
+
+#: ../schema/clearlooks.xml.in.in.h:3
+msgid "Animations"
+msgstr "એનીમેશનો"
+
+#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+msgid "Contrast"
+msgstr "કોન્ટ્રાસ્ટ"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
+msgstr "પ્રગતિદર્શક પટ્ટીઓ, રેડિયો-, અને ચકાસણીબટનો પર એનીમેશનો સક્રિય કરો"
+
+#: ../schema/clearlooks.xml.in.in.h:6
+msgid "Flat"
+msgstr "સપાટ"
+
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Menubar Style"
+msgstr "મેનુબાર શૈલી"
+
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Scrollbar Color"
+msgstr "સરકપટ્ટી રંગ"
+
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Sets the Color of Scrollbars"
+msgstr "સરકપટ્ટીનો રંગ સુયોજિત કરે છે"
+
+#: ../schema/hc.xml.in.in.h:1
+msgid "Cell Indicator Size"
+msgstr "ખાનાં સૂચક માપ"
+
+#: ../schema/hc.xml.in.in.h:2
+msgid "Edge Thickness"
+msgstr "બાજુની જાડાઈ"
+
+#: ../schema/hc.xml.in.in.h:3
+msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
+msgstr "વૃક્ષદૃશ્યોમાં ચકાસણી- અને રેડિયોબટનોનું માપ. (Bug #351764)"
+
+#: ../schema/industrial.xml.in.in.h:2
+msgid "If set, button corners are rounded"
+msgstr "જો સુયોજિત હોય, તો બટન કિનારીઓ ગોળ કરવામાં આવે છે"
+
+#: ../schema/industrial.xml.in.in.h:3
+msgid "Rounded Buttons"
+msgstr "ગોળ કિનારીવાળા બટનો"
+
+#: ../schema/thinice.xml.in.in.h:1
+msgid "Arrow"
+msgstr "તીર"
+
+#: ../schema/thinice.xml.in.in.h:2
+msgid "Dot"
+msgstr "ટપકું"
+
+#: ../schema/thinice.xml.in.in.h:3
+msgid "Full"
+msgstr "સંપૂર્ણ"
+
+#: ../schema/thinice.xml.in.in.h:4
+msgid "Handlebox Marks"
+msgstr "નિયંત્રણબોક્સ ચિહ્નો"
+
+#: ../schema/thinice.xml.in.in.h:5
+msgid "Inverted Dot"
+msgstr "ઉલટું કરાયેલ ટપકું"
+
+#: ../schema/thinice.xml.in.in.h:6
+msgid "Inverted Slash"
+msgstr "ઉલટો કરાયેલ સ્લેશ"
+
+#: ../schema/thinice.xml.in.in.h:7
+msgid "Mark Type 1"
+msgstr "ચિહ્ન પ્રકાર ૧"
+
+#: ../schema/thinice.xml.in.in.h:8
+msgid "Mark Type for Scrollbar Buttons"
+msgstr "સરકપટ્ટી બટનો માટે ચિહ્ન પ્રકાર"
+
+#: ../schema/thinice.xml.in.in.h:9
+msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
+msgstr "સરકપટ્ટી સંભાળનારાઓ, નિયંત્રણબોક્સ, વગેરે માટે ચિહ્ન પ્રકાર"
+
+#: ../schema/thinice.xml.in.in.h:10
+msgid "None"
+msgstr "કંઈ નહિં"
+
+#: ../schema/thinice.xml.in.in.h:11
+msgid "Nothing"
+msgstr "કંઈ નહિં"
+
+#: ../schema/thinice.xml.in.in.h:12
+msgid "Paned Dots"
+msgstr "પેનવાળાં ટપકાંઓ"
+
+#: ../schema/thinice.xml.in.in.h:13
+msgid "Rectangle"
+msgstr "લંબચોરસ"
+
+#: ../schema/thinice.xml.in.in.h:14
+msgid "Scrollbar Marks"
+msgstr "સરકપટ્ટી ચિહ્નો"
+
+#: ../schema/thinice.xml.in.in.h:15
+msgid "Scrollbar Type"
+msgstr "સરકપટ્ટી પ્રકાર"
+
+#: ../schema/thinice.xml.in.in.h:16
+msgid "Scrollbutton Marks"
+msgstr "સરકબટન ચિહ્નો"
+
+#: ../schema/thinice.xml.in.in.h:17
+msgid "Shaped"
+msgstr "આકારવાળું"
+
+#: ../schema/thinice.xml.in.in.h:18
+msgid "Slash"
+msgstr "સ્લેશ"
+
+#: ../schema/thinice.xml.in.in.h:19
+msgid "Some"
+msgstr "કંઈક"
+
