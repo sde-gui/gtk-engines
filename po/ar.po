@@ -1,0 +1,148 @@
+# Arabic translations for gnome package.
+# Copyright (C) 2007 THE gnome'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome package.
+# Automatically generated, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome 2-18\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-03-20 12:36+0000\n"
+"PO-Revision-Date: 2007-03-20 12:36+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../schema/clearlooks.xml.in.in.h:1
+msgid "3d-ish (button)"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:2
+msgid "3d-ish (gradient)"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:3
+msgid "Animations"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+msgid "Contrast"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:6
+msgid "Flat"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Menubar Style"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Scrollbar Color"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Sets the Color of Scrollbars"
+msgstr ""
+
+#: ../schema/hc.xml.in.in.h:1
+msgid "Cell Indicator Size"
+msgstr ""
+
+#: ../schema/hc.xml.in.in.h:2
+msgid "Edge Thickness"
+msgstr ""
+
+#: ../schema/hc.xml.in.in.h:3
+msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
+msgstr ""
+
+#: ../schema/industrial.xml.in.in.h:2
+msgid "If set, button corners are rounded"
+msgstr ""
+
+#: ../schema/industrial.xml.in.in.h:3
+msgid "Rounded Buttons"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:1
+msgid "Arrow"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:2
+msgid "Dot"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:3
+msgid "Full"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:4
+msgid "Handlebox Marks"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:5
+msgid "Inverted Dot"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:6
+msgid "Inverted Slash"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:7
+msgid "Mark Type 1"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:8
+msgid "Mark Type for Scrollbar Buttons"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:9
+msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:10
+msgid "None"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:11
+msgid "Nothing"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:12
+msgid "Paned Dots"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:13
+msgid "Rectangle"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:14
+msgid "Scrollbar Marks"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:15
+msgid "Scrollbar Type"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:16
+msgid "Scrollbutton Marks"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:17
+msgid "Shaped"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:18
+msgid "Slash"
+msgstr ""
+
+#: ../schema/thinice.xml.in.in.h:19
+msgid "Some"
+msgstr ""
