@@ -1,3 +1,9 @@
+2007-03-21  Alexander Shopov  <ash@contact.bg>
+
+	* LINGUAS: Added "bg" (Bulgarian).
+	* bg.po: Added Bulgarian translation by
+	Alexander Shopov <ash@contact.bg>
+
 2007-03-20  Stéphane Raimbault  <stephane.raimbault@gmail.com>
 
 	* LINGUAS: Added 'fr'.
