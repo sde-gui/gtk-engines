@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-20 22:02+0000\n"
+"POT-Creation-Date: 2007-03-25 23:55+0200\n"
 "PO-Revision-Date: 2007-03-21 14:37+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -61,7 +61,8 @@ msgstr "Kanttykkelse"
 
 #: ../schema/hc.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr "Størrelse af afkrydsnings- og radioknapper i træperspektiv. (Bug #351764)"
+msgstr ""
+"Størrelse af afkrydsnings- og radioknapper i træperspektiv. (Bug #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
