@@ -1,3 +1,10 @@
+2007-03-28  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_copy):
+	Copy the style. This fixes a bug where the CLASSIC style is used
+	instead of the user specified one. Reported by Andrea Cimitan.
+
 2007-03-14  Thomas Wood  <thos@gnome.org>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

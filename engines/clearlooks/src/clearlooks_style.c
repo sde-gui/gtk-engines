@@ -1244,6 +1244,7 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	cl_style->has_scrollbar_color = cl_src->has_scrollbar_color;
 	cl_style->animation           = cl_src->animation;
 	cl_style->radius              = cl_src->radius;
+	cl_style->style               = cl_src->style;
 	
 	clearlooks_parent_class->copy (style, src);
 }
