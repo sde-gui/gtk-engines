@@ -1,3 +1,8 @@
+2007-03-29  Claudio Saavedra  <csaavedra@alumnos.utalca.cl>
+
+	* LINGUAS: Add 'es'.
+	* es.po: Added Spanish translation by Jorge González.
+
 2007-03-29  Changwoo Ryu  <cwryu@debian.org>
 
 	* LINGUAS: Added 'ko' (Korean).

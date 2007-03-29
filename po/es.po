@@ -1,0 +1,156 @@
+# Spanish translation of gtk-engines
+# Copyright (C) 2007 gtk-engine'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gtk-engines package.
+#
+# Jorge González <jorge.gonzalez.gonzalez@hispalinux.es>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: gtk-engines.HEAD.es\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-03-29 14:41-0400\n"
+"PO-Revision-Date: 2007-03-28 12:03-0400\n"
+"Last-Translator: Jorge González <jorge.gonzalez.gonzalez@hispalinux.es>\n"
+"Language-Team: Español <traductores@es.gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: ../schema/clearlooks.xml.in.in.h:1
+msgid "3d-ish (button)"
+msgstr "3D (botón)"
+
+#: ../schema/clearlooks.xml.in.in.h:2
+msgid "3d-ish (gradient)"
+msgstr "3D (gradiente)"
+
+#: ../schema/clearlooks.xml.in.in.h:3
+msgid "Animations"
+msgstr "Animaciones"
+
+#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+msgid "Contrast"
+msgstr "Contraste"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
+msgstr ""
+"Activar animaciones en las barras de progreso, botones de radio y botones de "
+"casilla"
+
+#: ../schema/clearlooks.xml.in.in.h:6
+msgid "Flat"
+msgstr "Plano"
+
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Menubar Style"
+msgstr "Estilo de la barra de menú"
+
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Scrollbar Color"
+msgstr "Color de la barra de desplazamiento"
+
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Sets the Color of Scrollbars"
+msgstr "Establece el color de las barras de desplazamiento"
+
+#: ../schema/hc.xml.in.in.h:1
+msgid "Cell Indicator Size"
+msgstr "Indicador del tamaño de celda"
+
+#: ../schema/hc.xml.in.in.h:2
+msgid "Edge Thickness"
+msgstr "Grosor del borde"
+
+#: ../schema/hc.xml.in.in.h:3
+msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
+msgstr ""
+"Tamaño de los botones de casilla y botones de radio dentro de las vistas de "
+"árbol"
+
+#: ../schema/industrial.xml.in.in.h:2
+msgid "If set, button corners are rounded"
+msgstr "Si está activado, las esquinas de los botones son redondeadas"
+
+#: ../schema/industrial.xml.in.in.h:3
+msgid "Rounded Buttons"
+msgstr "Botones redondeados"
+
+#: ../schema/thinice.xml.in.in.h:1
+msgid "Arrow"
+msgstr "Flecha"
+
+#: ../schema/thinice.xml.in.in.h:2
+msgid "Dot"
+msgstr "Punto"
+
+#: ../schema/thinice.xml.in.in.h:3
+msgid "Full"
+msgstr "Lleno"
+
+#: ../schema/thinice.xml.in.in.h:4
+msgid "Handlebox Marks"
+msgstr "Marcas de las cajas manipuladoras"
+
+#: ../schema/thinice.xml.in.in.h:5
+msgid "Inverted Dot"
+msgstr "Punto invertido"
+
+#: ../schema/thinice.xml.in.in.h:6
+msgid "Inverted Slash"
+msgstr "Barra invertida"
+
+#: ../schema/thinice.xml.in.in.h:7
+msgid "Mark Type 1"
+msgstr "Tipo de marcas 1"
+
+#: ../schema/thinice.xml.in.in.h:8
+msgid "Mark Type for Scrollbar Buttons"
+msgstr "Tipo de marcas para los botones de la barra de desplazamiento"
+
+#: ../schema/thinice.xml.in.in.h:9
+msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
+msgstr ""
+"Tipo de marcas para los manejadores de la barra de desplazamiento, cajas "
+"manipuladoras, etc"
+
+#: ../schema/thinice.xml.in.in.h:10
+msgid "None"
+msgstr "Ninguna"
+
+#: ../schema/thinice.xml.in.in.h:11
+msgid "Nothing"
+msgstr "Nada"
+
+#: ../schema/thinice.xml.in.in.h:12
+msgid "Paned Dots"
+msgstr "Puntos de panel"
+
+#: ../schema/thinice.xml.in.in.h:13
+msgid "Rectangle"
+msgstr "Rectángulo"
+
+#: ../schema/thinice.xml.in.in.h:14
+msgid "Scrollbar Marks"
+msgstr "Marcas de las barras de desplazamiento"
+
+#: ../schema/thinice.xml.in.in.h:15
+msgid "Scrollbar Type"
+msgstr "Tipo de barras de desplazamiento"
+
+#: ../schema/thinice.xml.in.in.h:16
+msgid "Scrollbutton Marks"
+msgstr "Marcas de los botones de desplazamiento"
+
+#: ../schema/thinice.xml.in.in.h:17
+msgid "Shaped"
+msgstr "Contorno"
+
+#: ../schema/thinice.xml.in.in.h:18
+msgid "Slash"
+msgstr "Barra"
+
+#: ../schema/thinice.xml.in.in.h:19
+msgid "Some"
+msgstr "Algunas"
