@@ -1,3 +1,8 @@
+2007-03-29  Changwoo Ryu  <cwryu@debian.org>
+
+	* LINGUAS: Added 'ko' (Korean).
+	* ko.po: Added Korean translation.
+
 2007-03-28 Maxim Dziumanenko <dziumanenko@gmail.com>
 
 	* LINGUAS: Added entry 'uk' (Ukrainian).
