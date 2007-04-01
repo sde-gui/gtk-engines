@@ -1,5 +1,20 @@
 2007-04-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	Fix appears-as-list mode of GtkComboBox:
+
+	* engines/support/widget-information.c:
+	(ge_combo_box_is_using_list):
+	* engines/support/widget-information.h:
+	Fixed ge_combo_box_is_using_list and make it privat
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_shadow):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Add a workaround for GtkComboBox as it uses a GtkFrame instead of an
+	entry.
+
+2007-04-01  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_normal_arrow), (clearlooks_draw_combo_arrow),
 	(_clearlooks_draw_arrow), (clearlooks_draw_arrow):

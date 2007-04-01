@@ -75,8 +75,6 @@
 
 GE_INTERNAL gboolean ge_object_is_a (const GObject * object, const gchar * type_name);
  
-GE_INTERNAL gboolean ge_combo_box_is_using_list (GtkWidget * widget);
-
 GE_INTERNAL gboolean ge_is_combo_box_entry (GtkWidget * widget);
 GE_INTERNAL gboolean ge_is_combo_box (GtkWidget * widget, gboolean as_list);
 GE_INTERNAL gboolean ge_is_combo (GtkWidget * widget);

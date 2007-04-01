@@ -121,13 +121,14 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	if (DETAIL ("entry") && !(widget && widget->parent && GE_IS_TREE_VIEW (widget->parent)))
+	if ((DETAIL ("entry") && !(widget && widget->parent && GE_IS_TREE_VIEW (widget->parent))) ||
+	    (DETAIL ("frame") && ge_is_in_combo_box (widget)))
 	{
 		WidgetParameters params;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		
-		if (widget && (ge_is_in_combo_box(widget) || GE_IS_SPIN_BUTTON (widget)))
+
+		if (widget && (ge_is_in_combo_box (widget) || GE_IS_SPIN_BUTTON (widget)))
 		{
 			width += style->xthickness;
 			if (!params.ltr)
