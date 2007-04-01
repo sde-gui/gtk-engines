@@ -1036,40 +1036,38 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 {
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
+	WidgetParameters params;
+	ArrowParameters  arrow;
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
-		
+
 	SANITIZE_SIZE
 
-  if (arrow_type == (GtkArrowType)4) { /* NONE - new in GTK 2.10 */
+	if (arrow_type == GTK_ARROW_NONE) {
 		cairo_destroy (cr);
 		return;
 	}
 
-	if (DETAIL ("arrow"))
+	clearlooks_set_widget_parameters (widget, style, state_type, &params);
+	arrow.type = CL_ARROW_NORMAL;
+	arrow.direction = (ClearlooksDirection)arrow_type;
+	
+	if (ge_is_combo_box (widget, FALSE) && !ge_is_combo_box_entry (widget))
 	{
-		WidgetParameters params;
-		ArrowParameters  arrow;
-		
-		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		arrow.type = CL_ARROW_NORMAL;
-		arrow.direction = (ClearlooksDirection)arrow_type;
-			
-    if (ge_is_combo_box (widget, FALSE) && !ge_is_combo_box_entry (widget)) 	 
-    { 	 
-            arrow.type = CL_ARROW_COMBO; 	 
-            y -= 2; 	 
-            height += 4; 	 
-            x += 1; 	 
-    }
-		
-		STYLE_FUNCTION(draw_arrow) (cr, colors, &params, &arrow, x, y, width, height);
+		arrow.type = CL_ARROW_COMBO;
 	}
-	else
+	
+	/* I have no idea why, but the arrow of GtkCombo is larger than in other places.
+	 * Subtracting 3 seems to fix this. */
+	if (widget && widget->parent && GE_IS_COMBO (widget->parent->parent))
 	{
-		clearlooks_parent_class->draw_arrow (style, window, state_type, shadow, area,
-		                          widget, detail, arrow_type, fill,
-		                          x, y, width, height);
+		if (params.ltr)
+			x += 1;
+		else
+			x += 2;
+		width -= 3;
 	}
+	
+	STYLE_FUNCTION(draw_arrow) (cr, colors, &params, &arrow, x, y, width, height);
 	
 	cairo_destroy (cr);
 }
@@ -1124,6 +1122,7 @@ clearlooks_style_realize (GtkStyle * style)
 	
 	for (i=0; i<5; i++)
 	{
+		ge_gdk_color_to_cairo (&style->fg[i], &clearlooks_style->colors.fg[i]);
 		ge_gdk_color_to_cairo (&style->bg[i], &clearlooks_style->colors.bg[i]);
 		ge_gdk_color_to_cairo (&style->base[i], &clearlooks_style->colors.base[i]);
 		ge_gdk_color_to_cairo (&style->text[i], &clearlooks_style->colors.text[i]);

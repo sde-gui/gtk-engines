@@ -120,6 +120,7 @@ typedef struct
 
 typedef struct
 {
+	CairoColor fg[5];
 	CairoColor bg[5];
 	CairoColor base[5];
 	CairoColor text[5];
