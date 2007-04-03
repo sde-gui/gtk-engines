@@ -1,4 +1,4 @@
-# gtk-engines Brazilian Portuguese translation.
+# Brazilian Portuguese translation of gtk-engines
 # Copyright © 2007 gtk-engines
 # This file is distributed under the same license as the gtk-engines package.
 # Washington Lins <washington-lins@uol.com.br>, 2007.
@@ -8,9 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-01 16:47-0300\n"
-"PO-Revision-Date: 2007-04-01 18:53-0300\n"
+"POT-Creation-Date: 2007-04-03 19:32-0300\n"
+"PO-Revision-Date: 2007-04-03 19:37-0300\n"
 "Last-Translator: Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,7 +38,6 @@ msgstr ""
 "Ativar Animações em Barras de Progresso e Botões de Seleção ou de Verificação"
 
 #: ../schema/clearlooks.xml.in.in.h:6
-#, fuzzy
 msgid "Flat"
 msgstr "Plano"
 
@@ -64,7 +64,8 @@ msgstr "Espessura da Borda"
 #: ../schema/hc.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr ""
-"Tamanho dos botões de verificação e de seleção dentro das visões de árvore (\"treeviews\"). (Bug #351764)"
+"Tamanho dos botões de verificação e de seleção dentro das visões de árvore "
+"(\"treeviews\"). (Bug #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
