@@ -1,3 +1,11 @@
+2007-04-06  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (paint_button), (paint_shadow),
+	(paint_entry_shadow), (paint_scrollbar_trough),
+	(paint_scale_trough), (paint_progress_bar), (draw_arrow),
+	(draw_check), (draw_option), (draw_box_gap), (draw_extension),
+	(draw_focus), (draw_slider): Remove the use of some fixed colours and shading
+
 2007-04-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	Fix appears-as-list mode of GtkComboBox:

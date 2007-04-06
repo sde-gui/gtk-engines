@@ -11,10 +11,10 @@
 
 #define DETAIL(xx) ((detail) != 0 && strcmp (xx, detail) == 0)
 
-#define OUTLINE_GRAY 46/255.0, 52/255.0, 54/255.0
+#define OUTLINE_SHADE 0.5
 
-#define CRUX_LIGHT(xx, yy) yy.r = xx.r + 56/255.0;yy.g = xx.g + 47/255.0;yy.b = xx.b + 45/255.0;
-#define CRUX_DARK(xx, yy) yy.r = xx.r - 25/255.0;yy.g = xx.g - 27/255.0;yy.b = xx.b - 21/255.0;
+#define CRUX_LIGHT(xx, yy) ge_shade_color (&xx, 1.5, &yy)//yy.r = xx.r + 56/255.0;yy.g = xx.g + 47/255.0;yy.b = xx.b + 45/255.0;
+#define CRUX_DARK(xx, yy) ge_shade_color (&xx, 0.9, &yy)//yy.r = xx.r - 25/255.0;yy.g = xx.g - 27/255.0;yy.b = xx.b - 21/255.0;
 
 static GtkStyleClass *parent_style_class;
 
@@ -218,7 +218,7 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 {
 	gdouble radius = 2.0;
 	cairo_pattern_t *crp;
-	CairoColor c1, c2;
+	CairoColor bg, c1, c2, border;
 
 
 	if (state_type == GTK_STATE_INSENSITIVE)
@@ -237,9 +237,11 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 	width -= 1.0; height -= 1.0;
 
 	/* calculate start and end colours for the gradient */
-	ge_gdk_color_to_cairo (&style->bg[state_type], &c1);
-	ge_shade_color (&c1, 0.9, &c2); /* darken */
-	ge_shade_color (&c1, 1.1, &c1); /* lighten */
+	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
+	ge_shade_color (&bg, 0.9, &c2); /* darken */
+	ge_shade_color (&bg, 1.1, &c1); /* lighten */
+	ge_shade_color (&bg, OUTLINE_SHADE, &border); /* border */
+
 
 	switch (shadow_type)
 	{
@@ -266,11 +268,15 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 
 			/* outline */
 			if (state_type == GTK_STATE_INSENSITIVE)
+			{
 				/* disabled gray stroke */
 				gdk_cairo_set_source_color (cr, &style->fg [state_type]);
+			}
 			else
+			{
 				/* dark gray */
-				cairo_set_source_rgb (cr, OUTLINE_GRAY);
+				ge_cairo_set_color (cr, &border);
+			}
 			cairo_stroke (cr);
 
 			/* inside shadow */
@@ -317,15 +323,14 @@ paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowTy
 				cairo_fill_preserve (cr);
 				cairo_pattern_destroy (crp);
 
-				/* dark gray */
-
-				cairo_set_source_rgb (cr, OUTLINE_GRAY);
+				/* border */
+				ge_cairo_set_color (cr, &border);
 				cairo_stroke (cr);
 
 				ge_cairo_rounded_rectangle (cr, x+1.0, y+1.0, width-2.0, height-2.0, radius, CR_CORNER_ALL);
 				crp = cairo_pattern_create_linear (x, y, x, y + height);
-				cairo_pattern_add_color_stop_rgb (crp, 0.0, 1.0, 1.0, 1.0);
-				cairo_pattern_add_color_stop_rgba (crp, 1.0, 1.0, 1.0, 1.0, 100/255.0);
+				cairo_pattern_add_color_stop_rgba (crp, 0.0, 1.0, 1.0, 1.0, 0.4);
+				cairo_pattern_add_color_stop_rgba (crp, 1.0, 0.8, 0.8, 0.8, 0.4);
 				cairo_set_source (cr, crp);
 				cairo_stroke (cr);
 				cairo_pattern_destroy (crp);
@@ -341,6 +346,10 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 		    gdouble x, gdouble y, gdouble width, gdouble height)
 {
 	cairo_pattern_t *crp;
+	CairoColor bg, border;
+
+	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
+	ge_shade_color (&bg, OUTLINE_SHADE, &border); /* border */
 
 	x += 0.5; y += 0.5;
 	width -= 1.0; height -= 1.0;
@@ -348,7 +357,7 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 	/* outer rectangle */
 	if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
 	{
-		cairo_set_source_rgb (cr, OUTLINE_GRAY);
+		ge_cairo_set_color (cr, &border);
 		ge_cairo_stroke_rectangle (cr, x, y, width, height);
 	}
 	else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
@@ -386,7 +395,7 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 	else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
 	{
 		/*TODO: Find a way to calculate this value (same as shadow out outer line)*/
-		cairo_set_source_rgb (cr, OUTLINE_GRAY);
+		ge_cairo_set_color (cr, &border);
 		ge_cairo_stroke_rectangle (cr, x, y, width, height);
 
 		/*
@@ -472,17 +481,19 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 {
 	cairo_pattern_t *crp;
 	gdouble gradient_size;
-	CairoColor tl, br;
+	CairoColor bg, tl, br, outline;
 	/* gradient_size is the size of the "shadow" at the ends of the trough
 	 * it needs to be calculated so that it is a fixed size, since cairo takes a ratio when adding gradient stops
 	 */
 
 	#define OFFWHITE 238/255.0, 238/255.0, 238/255.0
 
-	/* bevel */
 	ge_gdk_color_to_cairo (&style->white, &br);
-	ge_gdk_color_to_cairo (&style->bg[state_type], &tl);
-	ge_shade_color (&tl, 1.2, &tl);
+	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
+	ge_shade_color (&bg, 1.2, &tl);
+	ge_shade_color (&bg, OUTLINE_SHADE, &outline);
+
+	/* bevel */
 	ge_cairo_simple_border (cr, &tl, &br, x, y, width, height, FALSE);
 
 	/* set co-ordinates for line drawing */
@@ -501,7 +512,7 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 	cairo_set_source_rgb (cr, OFFWHITE);
 	cairo_fill_preserve (cr);
 
-	cairo_set_source_rgb (cr, OUTLINE_GRAY);
+	ge_cairo_set_color (cr, &outline);
 	cairo_stroke (cr);
 
 
@@ -513,7 +524,7 @@ paint_scrollbar_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, G
 	cairo_set_source_rgb (cr, OFFWHITE);
 	cairo_fill_preserve (cr);
 
-	cairo_set_source_rgb (cr, OUTLINE_GRAY);
+	ge_cairo_set_color (cr, &outline);
 	cairo_stroke (cr);
 
 	if (orientation == GTK_ORIENTATION_HORIZONTAL)
@@ -546,9 +557,19 @@ static void
 paint_scale_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOrientation orientation,
 	gdouble x, gdouble y, gdouble width, gdouble height)
 {
-	CairoColor c1, c2;
+	CairoColor c1, c2, bg, outline;
 	cairo_pattern_t *crp;
 	gdouble radius = 2.0;
+
+	/* set up colours */
+	/* calculate start and end colours for the gradient */
+	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg);
+	ge_shade_color (&bg, 0.7, &c2); /* darken */
+	ge_shade_color (&bg, 1.1, &c1); /* lighten */
+	/* outline colour */
+	ge_shade_color (&bg, OUTLINE_SHADE, &outline);
+
+
 
 	/* set co-ordinates for line drawing */
 	x += 0.5; y += 0.5; width -= 1.0; height -= 1.0;
@@ -561,12 +582,6 @@ paint_scale_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOr
 
 	ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
 
-	/* calculate start and end colours for the gradient */
-	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &c1);
-	ge_shade_color (&c1, 0.7, &c2); /* darken */
-	ge_shade_color (&c1, 1.1, &c1); /* lighten */
-
-
 	cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
 	cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
 
@@ -576,7 +591,7 @@ paint_scale_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOr
 
 	/* dark gray */
 
-	cairo_set_source_rgb (cr, OUTLINE_GRAY);
+	ge_cairo_set_color (cr, &outline);
 	cairo_stroke (cr);
 
 	ge_cairo_rounded_rectangle (cr, x+1.0, y+1.0, width-2.0, height-2.0, radius, CR_CORNER_ALL);
@@ -615,8 +630,8 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	cairo_rectangle (cr, x, y, width, height);
 
 	ge_gdk_color_to_cairo (&style->base[GTK_STATE_SELECTED], &c1);
-	CRUX_DARK(c1, c2)
-	CRUX_LIGHT(c1, c1)
+	CRUX_DARK(c1, c2);
+	CRUX_LIGHT(c1, c1);
 	if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT || orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
 		crp = cairo_pattern_create_linear (x, y, x, y + height);
 	else
@@ -1213,7 +1228,7 @@ draw_check (GtkStyle *style,
 {
 	cairo_t * cr;
 	cairo_pattern_t *crp;
-	CairoColor c1;
+	CairoColor c1, bg, outline;
 	gdouble cx, cy, cw, ch; /* co-ordinates for cairo */
 
 	CHECK_ARGS
@@ -1223,6 +1238,12 @@ draw_check (GtkStyle *style,
 	    detail, state_type, shadow_type, x, y, width, height);
 
 	cr = ge_gdk_drawable_to_cairo (window, NULL);
+
+	/* set up colours */
+	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg);
+	/* outline colour */
+	ge_shade_color (&bg, OUTLINE_SHADE, &outline);
+
 
 	/* set up for line drawing */
 	cx = x + 0.5; cy = y + 0.5;
@@ -1265,7 +1286,7 @@ draw_check (GtkStyle *style,
 			cairo_fill_preserve (cr);
 			cairo_pattern_destroy (crp);
 
-			cairo_set_source_rgb (cr, OUTLINE_GRAY);
+			ge_cairo_set_color (cr, &outline);
 			cairo_stroke (cr);
 
 			/* inner hilight */
@@ -1331,7 +1352,7 @@ draw_option (GtkStyle *style,
 	cairo_t *cr;
 	cairo_pattern_t *crp;
 	gdouble cx, cy, radius; /* cairo co-ordinates */
-	CairoColor c1, c2;
+	CairoColor c1, c2, bg, outline;
 
 	CHECK_ARGS
 	SANITIZE_SIZE
@@ -1340,6 +1361,14 @@ draw_option (GtkStyle *style,
 	    detail, state_type, shadow_type, x, y, width, height);
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
+
+	/* set up colours */
+	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg);
+	/* outline colour */
+	ge_shade_color (&bg, OUTLINE_SHADE, &outline);
+	/* gradient colours */
+	ge_shade_color (&bg, 0.7, &c2);
+	ge_gdk_color_to_cairo (&style->white, &c1);
 
 	cx = x + (height / 2);
 	cy = y + (height / 2);
@@ -1359,10 +1388,6 @@ draw_option (GtkStyle *style,
 		}
 		else
 		{
-			ge_gdk_color_to_cairo (&style->bg[state_type], &c2);
-			ge_shade_color (&c2, 0.7, &c2);
-			ge_gdk_color_to_cairo (&style->white, &c1);
-
 			crp = cairo_pattern_create_linear (x, y, x + height, y + height);
 			if (state_type != GTK_STATE_ACTIVE)
 			{
@@ -1380,7 +1405,7 @@ draw_option (GtkStyle *style,
 			cairo_fill_preserve (cr);
 			cairo_pattern_destroy (crp);
 
-			cairo_set_source_rgb (cr, OUTLINE_GRAY);
+			ge_cairo_set_color (cr, &outline);
 			cairo_stroke (cr);
 
 			cairo_arc (cr, cx, cy, radius - 1.0, 0.0, G_PI * 2);
@@ -1602,7 +1627,7 @@ draw_extension (GtkStyle *style,
 {
 	cairo_t *cr;
 	cairo_pattern_t *crp;
-	CairoColor c1, c2;
+	CairoColor c1, c2, bg, outline;
 	CairoCorners corners;
 
 	debug ("draw_extension: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
@@ -1610,13 +1635,18 @@ draw_extension (GtkStyle *style,
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
+	/* set up colours */
+	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg);
+	ge_shade_color (&bg, 1.1, &c1);
+	c2.r = bg.r; c2.g = bg.g; c2.b = bg.b;
+	/* outline colour */
+	ge_shade_color (&bg, OUTLINE_SHADE, &outline);
+
 	cairo_save (cr); /* save initial clip for later */
 	cairo_rectangle (cr, x, y, width, height);
 	cairo_clip_preserve (cr);
 	cairo_new_path (cr);
 
-	ge_gdk_color_to_cairo (&style->bg[state_type], &c2);
-	ge_shade_color (&c2, 1.1, &c1);
 
 	switch (gap_side)
 	{
@@ -1658,7 +1688,7 @@ draw_extension (GtkStyle *style,
 	cairo_fill_preserve (cr);
 	cairo_pattern_destroy (crp);
 
-	cairo_set_source_rgb (cr, OUTLINE_GRAY);
+	ge_cairo_set_color (cr, &outline);
 	cairo_stroke (cr);
 	
 
@@ -1740,15 +1770,15 @@ draw_slider (GtkStyle *style,
 	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &c2);
 
 	/* light */
-	CRUX_LIGHT (c2, c1)
+	CRUX_LIGHT (c2, c1);
 
 	if (state_type == GTK_STATE_PRELIGHT)
 	{
-		CRUX_LIGHT (c1, c1)
+		ge_shade_color (&c1, 1.2, &c1);
 	}
 
 	/* dark */
-	CRUX_DARK (c2, c2)
+	CRUX_DARK (c2, c2);
 
 	if (widget != NULL && GTK_WIDGET_HAS_FOCUS (widget))
 	{
