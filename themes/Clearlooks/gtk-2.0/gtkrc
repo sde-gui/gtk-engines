@@ -99,8 +99,8 @@ style "clearlooks-tasklist" = "clearlooks-default"
 
 style "clearlooks-menu" = "clearlooks-default"
 {
-  xthickness = 0
-  ythickness = 0
+  xthickness = 2
+  ythickness = 2
   bg[NORMAL] = shade (1.08, @bg_color) # "#f9f7f3"
 }
 

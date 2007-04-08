@@ -1375,13 +1375,14 @@ clearlooks_draw_menuitem (cairo_t *cr,
 {
 	CairoColor *fill = (CairoColor*)&colors->spot[1];
 	CairoColor fill_shade;
-	CairoColor *border = (CairoColor*)&colors->spot[2];
+	CairoColor border = (CairoColor)colors->spot[2];
 	cairo_pattern_t *pattern;
 
+	ge_shade_color (&border, 1.05, &border);
 	ge_shade_color (fill, 0.85, &fill_shade);
 	cairo_set_line_width (cr, 1.0);
 
-	cairo_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1);
+	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, widget->radius, widget->corners);
 
 	pattern = cairo_pattern_create_linear (x, y, x, y + height);
 	cairo_pattern_add_color_stop_rgb (pattern, 0,   fill->r, fill->g, fill->b);
@@ -1391,7 +1392,7 @@ clearlooks_draw_menuitem (cairo_t *cr,
 	cairo_fill_preserve  (cr);
 	cairo_pattern_destroy (pattern);
 
-	ge_cairo_set_color (cr, border);
+	ge_cairo_set_color (cr, &border);
 	cairo_stroke (cr);
 
 }
@@ -1404,9 +1405,10 @@ clearlooks_draw_menubaritem (cairo_t *cr,
 {
 	CairoColor *fill = (CairoColor*)&colors->spot[1];
 	CairoColor fill_shade;
-	CairoColor *border = (CairoColor*)&colors->spot[2];
+	CairoColor border = (CairoColor)colors->spot[2];
 	cairo_pattern_t *pattern;
 	
+	ge_shade_color (&border, 1.05, &border);
 	ge_shade_color (fill, 0.85, &fill_shade);
 	
 	cairo_set_line_width (cr, 1.0);
@@ -1421,7 +1423,7 @@ clearlooks_draw_menubaritem (cairo_t *cr,
 	cairo_fill_preserve  (cr);
 	cairo_pattern_destroy (pattern);
 
-	ge_cairo_set_color (cr, border);
+	ge_cairo_set_color (cr, &border);
 	cairo_stroke_preserve (cr);
 }
 

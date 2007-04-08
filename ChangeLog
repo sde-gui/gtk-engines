@@ -1,3 +1,14 @@
+2007-04-08  Andrea Cimitan  <andrea.cimitan@gnome.org>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_menuitem), (clearlooks_draw_menubaritem):
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_menuitem),
+	(clearlooks_inverted_draw_menubaritem):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Trying to improve menuitems, following old clearlooks style.
+	Changed thickness of menuitems in Clearlooks's gtkrc.
+
 2007-04-06  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (paint_button), (paint_shadow),
