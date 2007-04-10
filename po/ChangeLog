@@ -1,3 +1,8 @@
+2007-04-12  Priit Laes  <plaes@svn.gnome.org>
+
+	* et.po: Added Estonian translation by Ivar Smolin <okul@linux.ee>.
+	* LINGUAS: Added Estonian (et) to the list.
+
 2007-04-09  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	* hu.po: Translation added.
