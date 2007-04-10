@@ -1,4 +1,9 @@
-2007-04-08  Andrea Cimitan  <andrea.cimitan@gnome.org>
+2007-04-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fixes to thickness
+
+2007-04-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_menuitem), (clearlooks_draw_menubaritem):

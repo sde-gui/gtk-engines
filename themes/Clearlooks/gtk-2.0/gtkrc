@@ -132,7 +132,7 @@ style "clearlooks-tooltips" = "clearlooks-default"
 {
   xthickness = 4
   ythickness = 4
-  bg[NORMAL] = { 1.0,1.0,0.75 }
+  bg[NORMAL] = lighter (@selected_bg_color)
 }
 
 style "clearlooks-progressbar" = "clearlooks-wide"
