@@ -128,13 +128,6 @@ style "clearlooks-frame-title" = "clearlooks-default"
   fg[NORMAL] = lighter (@fg_color) # "#404040"
 }
 
-style "clearlooks-tooltips" = "clearlooks-default"
-{
-  xthickness = 4
-  ythickness = 4
-  bg[NORMAL] = lighter (@selected_bg_color)
-}
-
 style "clearlooks-progressbar" = "clearlooks-wide"
 {
   xthickness = 1
@@ -185,9 +178,6 @@ widget_class "*.GtkComboBox.GtkButton" style "clearlooks-combo"
 widget_class "*.GtkCombo.GtkButton"    style "clearlooks-combo"
 # For appears-as-list mode, there is not a real entry, but a GtkFrame
 widget_class "*.GtkComboBox.GtkFrame"  style "clearlooks-wider"
-# tooltips stuff
-widget_class "*.tooltips.*.GtkToggleButton" style "clearlooks-tasklist"
-widget "gtk-tooltips" style "clearlooks-tooltips"
 
 # treeview stuff
 widget_class "*.GtkTreeView.GtkButton" style "clearlooks-tree"

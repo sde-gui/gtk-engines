@@ -1,3 +1,14 @@
+Overview of Changes in 2.10.1 (since 2.10.0)
+============================================
+
+Hilights in this release include:
+  - Several improvements and fixes to Clearlooks
+  - Removal of fixed colours from Crux
+
+Fixed bugs in this release:
+  Bug 412982 - If text color set to white, tooltips are unreadable.
+  Bug 412647 - Remaining problems with dark themes (arrows)
+
 Overview of Changes in 2.10.0 (since 2.9.4)
 ===========================================
 

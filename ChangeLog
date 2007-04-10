@@ -1,3 +1,12 @@
+2007-04-11  Thomas Wood  <thos@gnome.org>
+
+	* NEWS:
+	* configure.ac:
+	Updated for 2.10.1
+
+	* themes/Clearlooks/gtk-2.0/gtkrc: Remove seperate styling of tooltips. Fixes
+	bug 412982.
+
 2007-04-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
