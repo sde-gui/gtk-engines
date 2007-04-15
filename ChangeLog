@@ -1,3 +1,18 @@
+2007-04-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	(redmond_draw_option): Changes to the radius of the radio button and
+	the bullet. (Bug #429761, Tiago Cogumbreiro)
+
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	(redmond_draw_extension): Better fake the original redmond tabs.
+	(Bug #430012, Tiago Cogumbreiro)
+
+	* themes/Redmond/gtk-2.0/gtkrc:
+	- Set appears-as-list mode for GtkComboBox
+	  (Bug #429988, Tiago Cogumbreiro)
+	- Set tab-overlap to 4 pixel.
+
 2007-04-11  Thomas Wood  <thos@gnome.org>
 
 	* NEWS:

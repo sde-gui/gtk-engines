@@ -242,6 +242,7 @@ redmond_draw_option (GtkStyle * style,
              gint height)
 {
   RedmondStyle *redmond_style = REDMOND_STYLE (style);
+  gdouble bullet_radius;
   gint center_x;
   gint center_y;
   gint radius;
@@ -253,7 +254,8 @@ redmond_draw_option (GtkStyle * style,
 
   center_x = x + floor(width/2);
   center_y = y + floor(height/2);
-  radius = floor(MIN(width, height)/2) + 1;
+  radius = floor(MIN(width, height)/2);
+  bullet_radius = MAX((radius - 2) * 0.50, 1);
 
   cr = ge_gdk_drawable_to_cairo (window, area);
 
@@ -263,7 +265,7 @@ redmond_draw_option (GtkStyle * style,
       if (shadow == GTK_SHADOW_IN)
         {
           ge_cairo_set_color(cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL]);
-          cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
+          cairo_arc(cr, center_x, center_y, bullet_radius, 0, 2 * G_PI);
           cairo_fill(cr);
         }
     }
@@ -315,14 +317,14 @@ redmond_draw_option (GtkStyle * style,
       if ((shadow == GTK_SHADOW_ETCHED_IN) || (state == GTK_STATE_INSENSITIVE))
         {
           ge_cairo_set_color(cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL]);
-          cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
+          cairo_arc(cr, center_x, center_y, bullet_radius, 0, 2 * G_PI);
           cairo_fill(cr);
         }
       else if (shadow == GTK_SHADOW_IN)
         {
           /* force insensitive color for inconsistent checkboxes */
           ge_cairo_set_color(cr, &redmond_style->color_cube.fg[GTK_STATE_INSENSITIVE]);
-          cairo_arc(cr, center_x, center_y, radius*0.38, 0, 2 * G_PI);
+          cairo_arc(cr, center_x, center_y, bullet_radius, 0, 2 * G_PI);
           cairo_fill(cr);
         }
     }
@@ -1487,10 +1489,29 @@ redmond_draw_extension (GtkStyle * style,
   CairoColor *color3 = NULL;
   CairoColor *color4 = NULL;
   cairo_t *cr;
+  gint tab_overlap = 0;
  
   CHECK_ARGS
   SANITIZE_SIZE
- 
+
+  if (GE_IS_NOTEBOOK (widget))
+    gtk_widget_style_get (widget, "tab-overlap", &tab_overlap, NULL);
+
+  /* If the tab_overlap is large, then decrease the size of active tabs. */
+  if (state_type == GTK_STATE_ACTIVE && tab_overlap >= 4)
+    {
+      if (gap_side == GTK_POS_TOP || gap_side == GTK_POS_BOTTOM)
+        {
+          x += 2;
+          width -= 4;
+        }
+      else
+        {
+          y += 2;
+          height -= 4;
+        }
+    }
+
   cr = ge_gdk_drawable_to_cairo (window, area);
   ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, GTK_STATE_NORMAL),
                                 x, y, width, height);

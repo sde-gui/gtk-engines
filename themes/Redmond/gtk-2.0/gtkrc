@@ -8,6 +8,8 @@ style "standard-default"
   GtkButton::default_outside_border = { 0, 0, 0, 0 }
   GtkOptionMenu::indicator_size = { 9, 5 }
   GtkOptionMenu::indicator_spacing = { 7, 5, 2, 2 }
+  GtkComboBox::appears-as-list = 1
+  GtkNotebook::tab-overlap = 4
 
   GtkButton::child_displacement_x = 1
   GtkButton::child_displacement_y = 1
