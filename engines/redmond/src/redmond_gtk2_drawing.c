@@ -316,14 +316,14 @@ redmond_draw_option (GtkStyle * style,
 
       if ((shadow == GTK_SHADOW_ETCHED_IN) || (state == GTK_STATE_INSENSITIVE))
         {
-          ge_cairo_set_color(cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL]);
+          /* force insensitive color for inconsistent checkboxes */
+          ge_cairo_set_color(cr, &redmond_style->color_cube.fg[GTK_STATE_INSENSITIVE]);
           cairo_arc(cr, center_x, center_y, bullet_radius, 0, 2 * G_PI);
           cairo_fill(cr);
         }
       else if (shadow == GTK_SHADOW_IN)
         {
-          /* force insensitive color for inconsistent checkboxes */
-          ge_cairo_set_color(cr, &redmond_style->color_cube.fg[GTK_STATE_INSENSITIVE]);
+          ge_cairo_set_color(cr, &redmond_style->color_cube.text[GTK_STATE_NORMAL]);
           cairo_arc(cr, center_x, center_y, bullet_radius, 0, 2 * G_PI);
           cairo_fill(cr);
         }

@@ -1,6 +1,13 @@
 2007-04-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/redmond/src/redmond_gtk2_drawing.c:
+	(redmond_draw_option):
+	Use the correct colors for the radio bullet.
+	(Bug #429730, Tiago Cogumbreiro)
+
+2007-04-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/redmond/src/redmond_gtk2_drawing.c:
 	(redmond_draw_option): Changes to the radius of the radio button and
 	the bullet. (Bug #429761, Tiago Cogumbreiro)
 
