@@ -1,5 +1,10 @@
 2007-04-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/crux/src/crux-draw.c:
+	Replaced two // comments with /* */ ones. Fixes crux build for me.
+
+2007-04-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	* engines/clearlooks/src/clearlooks_draw_inverted.c:
 	Remove some unneccessary casts that break build on Solaris. Patch
