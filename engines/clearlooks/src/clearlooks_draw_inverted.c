@@ -408,7 +408,7 @@ clearlooks_inverted_draw_menuitem (cairo_t *cr,
 {
 	CairoColor *fill = (CairoColor*)&colors->spot[1];
 	CairoColor fill_shade;
-	CairoColor border = (CairoColor)colors->spot[2];
+	CairoColor border = colors->spot[2];
 	cairo_pattern_t *pattern;
 
 	ge_shade_color (&border, 1.05, &border);
@@ -437,7 +437,7 @@ clearlooks_inverted_draw_menubaritem (cairo_t *cr,
 {
 	CairoColor *fill = (CairoColor*)&colors->spot[1];
 	CairoColor fill_shade;
-	CairoColor border = (CairoColor)colors->spot[2];
+	CairoColor border = colors->spot[2];
 	cairo_pattern_t *pattern;
 	
 	ge_shade_color (&border, 1.05, &border);

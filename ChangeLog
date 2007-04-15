@@ -1,5 +1,12 @@
 2007-04-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	Remove some unneccessary casts that break build on Solaris. Patch
+	from Damien Carbery, bug #428772.
+
+2007-04-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/redmond/src/redmond_gtk2_drawing.c:
 	(redmond_draw_option):
 	Use the correct colors for the radio bullet.
