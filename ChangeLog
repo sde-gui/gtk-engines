@@ -1,3 +1,18 @@
+2007-04-20  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_inset), (clearlooks_draw_button),
+	(clearlooks_draw_entry), (clearlooks_draw_scale_trough):
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_button),
+	(clearlooks_register_style_inverted):
+	* engines/clearlooks/src/clearlooks_types.h:
+	Improved inset porting few code originally written by ECHM.
+	Now it is top-left/bottom-right and it is rounded.
+	Fixed problems with alpha backgrounds.
+
 2007-04-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/crux/src/crux-draw.c:

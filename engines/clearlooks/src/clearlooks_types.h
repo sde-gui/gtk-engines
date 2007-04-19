@@ -294,10 +294,9 @@ struct _ClearlooksStyleFunctions
 	                               const OptionMenuParameters	*optionmenu,
 	                               int x, int y, int width, int height);
 					   
-	void (*draw_inset)            (cairo_t				*cr,
-                                   const ClearlooksColors		*colors,
-	                               int width, int height,
-	                               double radius, uint8 corners);
+	void (*draw_inset)            (cairo_t *cr, CairoColor bg_color, 
+                                  double x, double y, double w, double h,
+                                  double radius, uint8 corners);
 
 	void (*draw_menubar)          (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,

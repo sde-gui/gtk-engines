@@ -34,45 +34,8 @@
 #include <cairo.h>
 
 static void
-clearlooks_inverted_draw_inset (cairo_t *cr, const ClearlooksColors *colors, int width, int height,
-                       double radius, uint8 corners)
-{
-	double top_x1 = 0, top_x2 = width, bot_x1 = 0, bot_x2 = width;
-	CairoColor hilight;
-	CairoColor shadow;
-
-	ge_shade_color (&colors->shade[8], 4, &hilight);
-	ge_shade_color (&colors->shade[8], 0.925, &shadow);
-
-	radius = MAX (1, ceil(radius));
-
-	if (corners & CR_CORNER_TOPLEFT)
-		top_x1 = radius-1;
-	
-	if (corners & CR_CORNER_TOPRIGHT)
-		top_x2 = width-radius+1;
-	
-	if (corners & CR_CORNER_BOTTOMLEFT)
-		bot_x1 = radius-1;
-	
-	if (corners & CR_CORNER_BOTTOMRIGHT)
-		bot_x2 = width-radius+1;
-	
-	cairo_set_line_width (cr, 1);
-	cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.05);
-	cairo_move_to (cr, top_x1, 0.0);
-	cairo_line_to (cr, top_x2, 0.0);
-	cairo_stroke (cr);
-	
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
-	cairo_move_to (cr, bot_x1, height);
-	cairo_line_to (cr, bot_x2, height);
-	cairo_stroke (cr);
-}
-
-static void
 clearlooks_draw_top_left_highlight (cairo_t *cr,
-                 										const CairoColor *color,
+                 							const CairoColor *color,
                                     const WidgetParameters *params,
                                     int width, int height, gdouble radius)
 {
@@ -143,7 +106,7 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
 		cairo_translate (cr, 0.5, 0.5);
-		params->style_functions->draw_inset (cr, colors, width-1, height-1, radius, params->corners);
+		params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, radius, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}		
 	
@@ -1029,7 +992,6 @@ clearlooks_inverted_draw_selected_cell (cairo_t                  *cr,
 void
 clearlooks_register_style_inverted (ClearlooksStyleFunctions *functions)
 {
-	functions->draw_inset							= clearlooks_inverted_draw_inset;
 	functions->draw_button        		= clearlooks_inverted_draw_button;
 	functions->draw_slider     				= clearlooks_inverted_draw_slider;
 	functions->draw_slider_button     = clearlooks_inverted_draw_slider_button;

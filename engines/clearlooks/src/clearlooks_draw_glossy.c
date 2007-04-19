@@ -110,7 +110,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		
 		/* Use inset as default for now - would be nice to make this an option */
 		/* if (params->active || shadow->shadow == CL_SHADOW_IN) */
-			params->style_functions->draw_inset (cr, colors, width-1, height-1, params->radius, params->corners);
+			params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, params->radius, params->corners);
 		/* else
 			clearlooks_draw_shadow (cr, params->radius, width-1, height-1);
 		*/

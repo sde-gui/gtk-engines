@@ -15,39 +15,57 @@ typedef void (*menubar_draw_proto) (cairo_t *cr,
                                     int x, int y, int width, int height);
 
 static void
-clearlooks_draw_inset (cairo_t *cr, const ClearlooksColors *colors, int width, int height,
+clearlooks_draw_inset (cairo_t *cr, CairoColor bg_color, 
+                       double x, double y, double w, double h, 
                        double radius, uint8 corners)
 {
-	CairoColor hilight; 
 	CairoColor shadow;
-	double top_x1 = 0, top_x2 = width, bot_x1 = 0, bot_x2 = width;
+	CairoColor highlight;
 
-	ge_shade_color (&colors->shade[8], 4, &hilight);
-	ge_shade_color (&colors->shade[8], 0.925, &shadow);
+	/* not really sure of shading ratios... we will think */
+	ge_shade_color (&bg_color, 0.94, &shadow);
+	ge_shade_color (&bg_color, 1.06, &highlight);
 
-	radius = MAX (1, ceil(radius));
+	/* highlight */
+	cairo_move_to (cr, x + w + (radius * -0.2928932188), y - (radius * -0.2928932188)); /* 0.2928932... 1-sqrt(2)/2 gives middle of curve */
+
+	if (corners & CR_CORNER_TOPRIGHT)
+		cairo_arc (cr, x + w - radius, y + radius, radius, G_PI * 1.75, G_PI * 2);
+	else
+		cairo_line_to (cr, x + w, y);
+
+	if (corners & CR_CORNER_BOTTOMRIGHT)
+		cairo_arc (cr, x + w - radius, y + h - radius, radius, 0, G_PI * 0.5);
+	else
+		cairo_line_to (cr, x + w, y + h);
+
+	if (corners & CR_CORNER_BOTTOMLEFT)
+		cairo_arc (cr, x + radius, y + h - radius, radius, G_PI * 0.5, G_PI * 0.75);
+	else
+		cairo_line_to (cr, x, y + h);
+
+	ge_cairo_set_color (cr, &highlight);
+	cairo_stroke (cr);
+
+	/* shadow */
+	cairo_move_to (cr, x + (radius * 0.2928932188), y + h + (radius * -0.2928932188));
+
+	if (corners & CR_CORNER_BOTTOMLEFT)
+		cairo_arc (cr, x + radius, y + h - radius, radius, M_PI * 0.75, M_PI);
+	else
+		cairo_line_to (cr, x, y + h);
 
 	if (corners & CR_CORNER_TOPLEFT)
-		top_x1 = radius-1;
-	
+		cairo_arc (cr, x + radius, y + radius, radius, M_PI, M_PI * 1.5);
+	else
+		cairo_line_to (cr, x, y);
+
 	if (corners & CR_CORNER_TOPRIGHT)
-		top_x2 = width-radius+1;
-	
-	if (corners & CR_CORNER_BOTTOMLEFT)
-		bot_x1 = radius-1;
-	
-	if (corners & CR_CORNER_BOTTOMRIGHT)
-		bot_x2 = width-radius+1;
-	
-	cairo_set_line_width (cr, 1);
-	cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.05);
-	cairo_move_to (cr, top_x1, 0.0);
-	cairo_line_to (cr, top_x2, 0.0);
-	cairo_stroke (cr);
-	
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
-	cairo_move_to (cr, bot_x1, height);
-	cairo_line_to (cr, bot_x2, height);
+	    cairo_arc (cr, x + w - radius, y + radius, radius, M_PI * 1.5, M_PI * 1.75);
+	else
+		cairo_line_to (cr, x + w, y);
+
+	ge_cairo_set_color (cr, &shadow);
 	cairo_stroke (cr);
 }
 
@@ -225,7 +243,7 @@ clearlooks_draw_button (cairo_t *cr,
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
 		cairo_translate (cr, 0.5, 0.5);
-		params->style_functions->draw_inset (cr, colors, width-1, height-1, radius, params->corners);
+		params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}		
 	
@@ -353,7 +371,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	ge_cairo_set_color (cr, base);
 	cairo_fill (cr);
 	
-	params->style_functions->draw_inset (cr, colors, width-1, height-1, 2.0, params->corners);
+	params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, 3.0, params->corners);
 
 	/* Draw the inner shadow */
 	if (params->focus)
@@ -495,7 +513,7 @@ clearlooks_draw_scale_trough (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);
 	cairo_translate (cr, translate_x, translate_y);
 	
-	params->style_functions->draw_inset (cr, colors, trough_width+2, trough_height+2, 0, 0);
+	params->style_functions->draw_inset (cr, params->parentbg, 0, 0, trough_width+2, trough_height+2, 0, 0);
 	
 	cairo_translate (cr, 1, 1);
 	
