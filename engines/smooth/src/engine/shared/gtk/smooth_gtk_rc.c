@@ -2205,10 +2205,9 @@ void
 smooth_arrow_merge (SmoothArrowPart *dest_arrow,
              SmoothArrowPart *src_arrow)
 {
-  SmoothArrow dummy;
-
-  /* what is this for? */
-  smooth_style_get_arrow(src_arrow, 0, 0, &dummy);
+  /* Make sure the composite inheritance is determined and set so
+   * that it can be copied. */
+  smooth_gtkrc_ensure_arrows(src_arrow);
 
   SmoothCopyArrowPart(dest_arrow, src_arrow);
 
