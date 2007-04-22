@@ -1,5 +1,14 @@
 2007-04-22  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	(redmond_draw_option):
+	Set a minimum radius of 6 pixel for radio buttons. Otherwise the
+	treeview radio buttons are too small. (In theory the indicator-size
+	is 12, but GTK+ subtracts one, and then it gets rounded down to 10
+	by the engine)
+
+2007-04-22  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
 	(smooth_arrow_merge):
 	Call a helper function and added a comment to clarify what the code

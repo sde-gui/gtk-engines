@@ -252,9 +252,9 @@ redmond_draw_option (GtkStyle * style,
   CHECK_ARGS
   SANITIZE_SIZE
 
-  center_x = x + floor(width/2);
-  center_y = y + floor(height/2);
-  radius = floor(MIN(width, height)/2);
+  center_x = x + width/2;
+  center_y = y + height/2;
+  radius = MAX(MIN(width, height)/2, 6);
   bullet_radius = MAX((radius - 2) * 0.50, 1);
 
   cr = ge_gdk_drawable_to_cairo (window, area);
