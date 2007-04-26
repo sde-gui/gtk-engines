@@ -1,3 +1,12 @@
+2007-04-26  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_resize_grip):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_resize_grip):
+	Implement resize grips for all corners. Fixes bug #427265,
+	Christian Persch.
+
 2007-04-22  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/redmond/src/redmond_gtk2_drawing.c:

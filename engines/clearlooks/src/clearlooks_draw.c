@@ -1828,30 +1828,67 @@ clearlooks_draw_resize_grip (cairo_t *cr,
                              const ResizeGripParameters      *grip,
                              int x, int y, int width, int height)
 {
-	CairoColor *dark   = (CairoColor*)&colors->shade[4];
+	const CairoColor *dark   = &colors->shade[4];
 	CairoColor hilight;
 	int lx, ly;
+	int x_down;
+	int y_down;
+	int dots;
 
 	ge_shade_color (dark, 1.5, &hilight);
 
-	cairo_set_line_width (cr, 1);
-	
-	for (ly=0; ly<4; ly++) /* vertically, four rows of dots */
+	/* The number of dots fitting into the area. Just hardcoded to 4 right now. */
+	/* dots = MIN (width - 2, height - 2) / 3; */
+	dots = 4;
+
+	cairo_save (cr);
+
+	switch (grip->edge)
 	{
-		for (lx=0; lx<=ly; lx++) /* horizontally */
+		case CL_WINDOW_EDGE_NORTH_EAST:
+			x_down = 0;
+			y_down = 0;
+			cairo_translate (cr, x + width - 3*dots, y + 1);
+		break;
+		case CL_WINDOW_EDGE_SOUTH_EAST:
+			x_down = 0;
+			y_down = 1;
+			cairo_translate (cr, x + width - 3*dots, y + height - 3*dots);
+		break;
+		case CL_WINDOW_EDGE_SOUTH_WEST:
+			x_down = 1;
+			y_down = 1;
+			cairo_translate (cr, x + 1, y + height - 3*dots);
+		break;
+		case CL_WINDOW_EDGE_NORTH_WEST:
+			x_down = 1;
+			y_down = 0;
+			cairo_translate (cr, x + 1, y + 1);
+		break;
+		default:
+			/* Not implemented. */
+			return;
+	}
+
+	for (lx = 0; lx < dots; lx++) /* horizontally */
+	{
+		for (ly = 0; ly <= lx; ly++) /* vertically */
 		{
-			int ny = (3.5-ly) * 3;
-			int nx = lx * 3;
+			int mx, my;
+			mx = x_down * dots + (1 - x_down * 2) * lx;
+			my = y_down * dots + (1 - y_down * 2) * ly;
 
 			cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
-			cairo_rectangle (cr, x+width-nx-1, y+height-ny-1, 2, 2);
+			cairo_rectangle (cr, mx-1, my-1, 2, 2);
 			cairo_fill (cr);
 
 			cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
-			cairo_rectangle (cr, x+width-nx-1, y+height-ny-1, 1, 1);
+			cairo_rectangle (cr, mx-1, my-1, 1, 1);
 			cairo_fill (cr);
 		}
 	}
+
+	cairo_restore (cr);
 }
 
 static void

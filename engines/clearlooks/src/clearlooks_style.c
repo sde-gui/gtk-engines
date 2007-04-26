@@ -986,9 +986,6 @@ clearlooks_style_draw_resize_grip (GtkStyle       *style,
 
 	g_return_if_fail (window != NULL);
 
-	if (edge != GDK_WINDOW_EDGE_SOUTH_EAST)
-		return; /* sorry... need to work on this :P */
-	
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);	
@@ -997,8 +994,6 @@ clearlooks_style_draw_resize_grip (GtkStyle       *style,
 	                             x, y, width, height);
 
 	cairo_destroy (cr);
-
-	return;
 }
 
 static void
