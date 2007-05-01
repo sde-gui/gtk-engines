@@ -1,7 +1,7 @@
 /* Clearlooks theme engine
  * Copyright (C) 2006 Richard Stellingwerff
  * Copyright (C) 2006 Daniel Borgman
- * Copyright (C) 2006 Benjamin Berg
+ * Copyright (C) 2007 Andrea Cimitan
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -18,10 +18,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Written by Benjamin Berg <benjamin@sipsolutions.net>
- * Based on code by Richard Stellingwerff <remenic@gmail.com>
- *              and Daniel Borgmann <daniel.borgmann@gmail.com>
- * from the ubuntulooks engine.
+ * Written by Andrea Cimitan <andrea.cimitan@gmail.com>
  */
 
 #include "clearlooks_draw.h"

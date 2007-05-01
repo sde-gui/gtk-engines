@@ -797,11 +797,10 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 		if (clearlooks_style->style == CL_STYLE_GLOSSY)
 		{
 			scrollbar.color = colors->spot[1];
-			// ge_shade_color (&scrollbar.color, 0.5, &scrollbar.color);
 			scrollbar.has_color = TRUE;
 		}
-		else
- 
+
+		/* Set scrollbar color also for Glossy */
 		if (clearlooks_style->has_scrollbar_color)
 		{
 			ge_gdk_color_to_cairo (&clearlooks_style->scrollbar_color, &scrollbar.color);
