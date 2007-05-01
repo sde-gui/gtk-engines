@@ -794,13 +794,15 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 		scrollbar.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 
-		if (clearlooks_style->style == CL_STYLE_GLOSSY) /* XXX! */
+		if (clearlooks_style->style == CL_STYLE_GLOSSY)
 		{
-			scrollbar.color = colors->bg[CL_STATE_NORMAL];
-			ge_shade_color (&scrollbar.color, 0.5, &scrollbar.color);
+			scrollbar.color = colors->spot[1];
+			// ge_shade_color (&scrollbar.color, 0.5, &scrollbar.color);
 			scrollbar.has_color = TRUE;
 		}
-		else if (clearlooks_style->has_scrollbar_color)
+		else
+ 
+		if (clearlooks_style->has_scrollbar_color)
 		{
 			ge_gdk_color_to_cairo (&clearlooks_style->scrollbar_color, &scrollbar.color);
 			scrollbar.has_color = TRUE;

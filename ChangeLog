@@ -1,3 +1,27 @@
+
+2007-05-01  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+        * engines/clearlooks/src/clearlooks_draw_glossy.c:
+        (clearlooks_draw_button_gloss), (clearlooks_set_border_color),
+        (clearlooks_glossy_draw_inset),
+        (clearlooks_glossy_draw_highlight_and_shade),
+        (clearlooks_glossy_draw_button),
+        (clearlooks_glossy_draw_progressbar_trough),
+        (clearlooks_glossy_draw_progressbar_fill),
+        (clearlooks_glossy_scale_draw_gradient),
+        (clearlooks_glossy_draw_scale_trough),
+        (clearlooks_glossy_draw_tab), (clearlooks_glossy_draw_slider),
+        (clearlooks_glossy_draw_scrollbar_stepper),
+        (clearlooks_glossy_draw_scrollbar_slider),
+        (clearlooks_register_style_glossy):
+        Glossy Style rewritten to be *cool* :)
+        New Ideas came from my experience with "Murrine Engine"
+
+        * engines/clearlooks/src/clearlooks_style.c:
+        (clearlooks_style_draw_slider):
+        If scrollbar_color is not set then scrollbars will use
+        bg[SELECTED] by default. Nice!
+
 2007-04-26  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
