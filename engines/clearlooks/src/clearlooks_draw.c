@@ -1879,11 +1879,11 @@ clearlooks_draw_resize_grip (cairo_t *cr,
 			my = y_down * dots + (1 - y_down * 2) * ly;
 
 			cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
-			cairo_rectangle (cr, mx-1, my-1, 2, 2);
+			cairo_rectangle (cr, mx*3-1, my*3-1, 2, 2);
 			cairo_fill (cr);
 
 			cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
-			cairo_rectangle (cr, mx-1, my-1, 1, 1);
+			cairo_rectangle (cr, mx*3-1, my*3-1, 1, 1);
 			cairo_fill (cr);
 		}
 	}
