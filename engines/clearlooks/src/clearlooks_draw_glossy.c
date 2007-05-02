@@ -219,21 +219,19 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		
 		if (params->prelight && params->enable_glow)
 		{
-			const CairoColor *glow = &colors->spot[0];
+			/* Glow becomes a shadow to have 3d prelight buttons :) */
+			const CairoColor *glow = &colors->shade[8];
 
 			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
 
 			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
-			ge_cairo_set_color (cr, glow);
+			cairo_set_source_rgba (cr, glow->r, glow->g, glow->b, 0.15);
 			cairo_stroke (cr);
 		}
 		
-		/* Use inset as default for now - would be nice to make this an option */
-		/* if (params->active || shadow->shadow == CL_SHADOW_IN) */
+		if (!(params->prelight && params->enable_glow))
 			params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
-		/* else
-			clearlooks_draw_shadow (cr, params->radius, width-1, height-1);
-		*/
+
 		cairo_translate (cr, -0.5, -0.5);
 	}
 	
@@ -755,7 +753,7 @@ clearlooks_glossy_draw_slider (cairo_t *cr,
 
 	cairo_translate (cr, -0.5, -0.5);
 
-	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 1.0, &fill);
+	ge_shade_color (&colors->bg[params->state_type], 1.0, &fill);
 	if (params->prelight)
 		ge_shade_color (&fill, 1.1, &fill);
 

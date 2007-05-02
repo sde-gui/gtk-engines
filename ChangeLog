@@ -1,3 +1,11 @@
+2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button), (clearlooks_glossy_draw_slider):
+	Now "glow" becomes a shadow for 3d effects on prelight buttons
+	Draw_sliders now use params->state_type for the filled area
+	Check out new gtkrc updates on module gnome-themes for the new buttons
+
 2007-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
@@ -11,7 +19,7 @@
 	(clearlooks_glossy_draw_tab),
 	(clearlooks_glossy_draw_list_view_header),
 	(clearlooks_register_style_glossy):
-	New listview headers for GLossy style
+	New listview headers for Glossy style
 	Shaded inset for pressed buttons
 
 	* engines/clearlooks/src/clearlooks_draw_inverted.c:
