@@ -1,6 +1,18 @@
 2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_set_border_color), (clearlooks_glossy_draw_button):
+	Use new mix code
+
+	* engines/support/cairo-support.c: (ge_saturate_color),
+	(ge_mix_color):
+	* engines/support/cairo-support.h:
+	Added a function to mix colors: 
+	ge_mix_color (cr, color1, color2, factor, new_color)
+
+2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_button):
 	Shadow now is shifted to be more bottom-right
 

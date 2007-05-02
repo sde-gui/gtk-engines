@@ -63,17 +63,17 @@ clearlooks_draw_button_gloss (cairo_t *cr,
 	cairo_pattern_destroy (pt);
 }
 
-/* It blends two colors and set cairo rgb */
 static void
-clearlooks_set_border_color (cairo_t *cr, const CairoColor *color1, const CairoColor *color2, double factor)
+clearlooks_set_border_color (cairo_t *cr, const CairoColor *color1, const CairoColor *color2, double mix_factor)
 {
-	CairoColor blend;
+	CairoColor composite;
 
-	blend.r = color1->r * (1-factor) + color2->r * factor;
-	blend.g = color1->g * (1-factor) + color2->g * factor;
-	blend.b = color1->b * (1-factor) + color2->b * factor;
+	ge_mix_color (cr, color1, color2, mix_factor, &composite);
 
-	cairo_set_source_rgb (cr, blend.r,blend.g,blend.b);
+	cairo_set_source_rgb (cr, composite.r, composite.g, composite.b);
+	/* Not working!!! Why???
+	ge_cairo_set_color (cr, &composite);
+	*/
 }
 
 static void
@@ -217,7 +217,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	{
 		cairo_translate (cr, 0.5, 0.5);
 		
-		if (params->prelight && params->enable_glow)
+		if (params->prelight && params->enable_glow && !params->active)
 		{
 			/* Glow becomes a shadow to have 3d prelight buttons :) */
 			CairoColor glow;
@@ -230,7 +230,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 			cairo_stroke (cr);
 		}
 		
-		if (!(params->prelight && params->enable_glow))
+		if (!(params->prelight && params->enable_glow && !params->active))
 			params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
 
 		cairo_translate (cr, -0.5, -0.5);
@@ -296,6 +296,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	/* Border */
 	if (params->is_default || (params->prelight && params->enable_glow))
 		border_normal = colors->spot[2];
+		/* ge_mix_color (cr, &border_normal, &colors->spot[2], 0.5, &border_normal); */
 	if (params->disabled)
 		ge_cairo_set_color (cr, &border_disabled);
 	else
