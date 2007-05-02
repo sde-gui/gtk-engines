@@ -1,6 +1,12 @@
 2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
+	Updated prelight of active buttons
+
+2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_set_border_color), (clearlooks_glossy_draw_button):
 	Use new mix code
 
