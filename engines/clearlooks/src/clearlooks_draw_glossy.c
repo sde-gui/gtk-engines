@@ -228,6 +228,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 			ge_shade_color (&params->parentbg, 0.96, &glow);			
 			ge_cairo_set_color (cr, &glow);
 			cairo_stroke (cr);
+
 			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, radius+1, params->corners);
 			ge_shade_color (&params->parentbg, 0.88, &glow);
 			ge_cairo_set_color (cr, &glow);
@@ -952,7 +953,7 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
                                   const ListViewHeaderParameters  *header,
                                   int x, int y, int width, int height)
 {
-	CairoColor *border = (CairoColor*)&colors->shade[3];
+	CairoColor *border = (CairoColor*)&colors->shade[4];
 	CairoColor *fill = (CairoColor*)&colors->bg[params->state_type];
 	CairoColor hilight;
 	CairoColor shade1, shade2, shade3;
@@ -991,19 +992,29 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 	
 	cairo_line_to (cr, width, 0.5);
 	
-	cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
 	cairo_stroke (cr);
 	
 	/* Draw bottom border */
 	cairo_move_to (cr, 0.0, height-0.5);
 	cairo_line_to (cr, width, height-0.5);
-	ge_cairo_set_color (cr, border);
+
+	ge_cairo_set_color (cr, !params->prelight? border : &colors->spot[1]);
 	cairo_stroke (cr);
 	
 	/* Draw resize grip */
 	if ((params->ltr && header->order != CL_ORDER_LAST) ||
 	    (!params->ltr && header->order != CL_ORDER_FIRST) || header->resizable)
 	{
+		
+		cairo_set_line_width  (cr, 1.0);
+		cairo_translate       (cr, params->ltr? width-0.5 : 0.5, 0);
+		
+		cairo_move_to         (cr, 0, 0);
+		cairo_line_to         (cr, 0, height);
+		ge_cairo_set_color    (cr, border);
+		cairo_stroke          (cr);
+/*
 		SeparatorParameters separator;
 		separator.horizontal = FALSE;
 		
@@ -1013,6 +1024,7 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 		else
 			params->style_functions->draw_separator (cr, colors, params, &separator,
 			                                         1.5, 4.0, 2, height-8.0);
+*/
 	}
 }
 

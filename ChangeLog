@@ -1,6 +1,13 @@
 2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button),
+	(clearlooks_glossy_draw_list_view_header):
+	Improved listview headers
+
+2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_button):
 	Using 2 stroke with alignment rather than one misaligned, this 
 	fixes 1 px rendering bug of ge_cairo_rounded_rectangle with 
@@ -29,11 +36,6 @@
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_button):
 	Shadow now is shifted to be more bottom-right
-
-2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
-
-	* engines/clearlooks/src/clearlooks_draw_glossy.c:
-	(clearlooks_glossy_draw_button):
 
 2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
