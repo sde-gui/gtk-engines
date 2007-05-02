@@ -1,6 +1,17 @@
 2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
+	Shadow now is shifted to be more bottom-right
+
+2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
+
+2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_button), (clearlooks_glossy_draw_slider):
 	Now "glow" becomes a shadow for 3d effects on prelight buttons
 	Draw_sliders now use params->state_type for the filled area

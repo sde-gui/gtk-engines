@@ -220,12 +220,13 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		if (params->prelight && params->enable_glow)
 		{
 			/* Glow becomes a shadow to have 3d prelight buttons :) */
-			const CairoColor *glow = &colors->shade[8];
+			CairoColor glow;
+			ge_shade_color (&params->parentbg, 0.88, &glow);
 
 			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
 
-			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
-			cairo_set_source_rgba (cr, glow->r, glow->g, glow->b, 0.15);
+			ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1.5, height-1.5, radius+1, params->corners);
+			ge_cairo_set_color (cr, &glow);
 			cairo_stroke (cr);
 		}
 		
