@@ -317,7 +317,7 @@ struct _ClearlooksStyleFunctions
 	                               int x, int y, int width, int height);
 
 	void (*draw_separator)        (cairo_t				*cr,
-	                               const ClearlooksColors		*colors,
+	                               const CairoColor		*color,
 	                               const WidgetParameters		*widget,
 	                               const SeparatorParameters	*separator,
 	                               int x, int y, int width, int height);

@@ -953,6 +953,9 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
                                   const ListViewHeaderParameters  *header,
                                   int x, int y, int width, int height)
 {
+/*
+	CairoColor *border = !params->prelight? (CairoColor*)&colors->shade[4] : (CairoColor*)&colors->spot[1];
+*/
 	CairoColor *border = (CairoColor*)&colors->shade[4];
 	CairoColor *fill = (CairoColor*)&colors->bg[params->state_type];
 	CairoColor hilight;
@@ -973,7 +976,9 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 	cairo_pattern_add_color_stop_rgb (pattern, 0.0, shade1.r, shade1.g, shade1.b);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.5, shade2.r, shade2.g, shade2.b);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.5, fill->r, fill->g, fill->b);
-	cairo_pattern_add_color_stop_rgb (pattern, 1.0, shade3.r, shade3.g, shade3.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0-1.0/height, shade3.r, shade3.g, shade3.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0-1.0/height, border->r, border->g, border->b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, border->r, border->g, border->b);
 
 	cairo_set_source (cr, pattern);
 	cairo_rectangle (cr, 0, 0, width, height);
@@ -995,36 +1000,19 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
 	cairo_stroke (cr);
 	
-	/* Draw bottom border */
-	cairo_move_to (cr, 0.0, height-0.5);
-	cairo_line_to (cr, width, height-0.5);
-
-	ge_cairo_set_color (cr, !params->prelight? border : &colors->spot[1]);
-	cairo_stroke (cr);
-	
 	/* Draw resize grip */
 	if ((params->ltr && header->order != CL_ORDER_LAST) ||
 	    (!params->ltr && header->order != CL_ORDER_FIRST) || header->resizable)
 	{
-		
-		cairo_set_line_width  (cr, 1.0);
-		cairo_translate       (cr, params->ltr? width-0.5 : 0.5, 0);
-		
-		cairo_move_to         (cr, 0, 0);
-		cairo_line_to         (cr, 0, height);
-		ge_cairo_set_color    (cr, border);
-		cairo_stroke          (cr);
-/*
 		SeparatorParameters separator;
 		separator.horizontal = FALSE;
 		
 		if (params->ltr)
-			params->style_functions->draw_separator (cr, colors, params, &separator,
+			params->style_functions->draw_separator (cr, &colors->shade[4], params, &separator,
 			                                         width-1.5, 4.0, 2, height-8.0);
 		else
-			params->style_functions->draw_separator (cr, colors, params, &separator,
+			params->style_functions->draw_separator (cr, &colors->shade[4], params, &separator,
 			                                         1.5, 4.0, 2, height-8.0);
-*/
 	}
 }
 

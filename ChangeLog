@@ -1,3 +1,21 @@
+2007-05-03  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_optionmenu), (clearlooks_draw_separator),
+	(clearlooks_draw_list_view_header):
+	Separator use a custom color
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_list_view_header):
+	Back to an old version, we will think
+
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_list_view_header):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_vline), (clearlooks_style_draw_hline):
+	* engines/clearlooks/src/clearlooks_types.h:
+	Updated usage of draw_separator
+
 2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:

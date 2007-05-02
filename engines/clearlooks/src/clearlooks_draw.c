@@ -880,7 +880,7 @@ clearlooks_draw_optionmenu (cairo_t *cr,
 	params->style_functions->draw_button (cr, colors, params, x, y, width, height);
 	
 	separator.horizontal = FALSE;
-	params->style_functions->draw_separator (cr, colors, params, &separator, x+optionmenu->linepos, y + offset, 2, height - offset*2);
+	params->style_functions->draw_separator (cr, &colors->shade[3], params, &separator, x+optionmenu->linepos, y + offset, 2, height - offset*2);
 }
 
 static void
@@ -1248,14 +1248,13 @@ clearlooks_draw_tab (cairo_t *cr,
 
 static void
 clearlooks_draw_separator (cairo_t *cr,
-                           const ClearlooksColors     *colors,
+                           const CairoColor     *color,
                            const WidgetParameters     *widget,
                            const SeparatorParameters  *separator,
                            int x, int y, int width, int height)
 {
-	CairoColor *dark   = (CairoColor*)&colors->shade[3];
 	CairoColor hilight; 
-	ge_shade_color (dark, 1.5, &hilight);
+	ge_shade_color (color, 1.5, &hilight);
 
 	cairo_save (cr);
 	cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
@@ -1267,7 +1266,7 @@ clearlooks_draw_separator (cairo_t *cr,
 		
 		cairo_move_to         (cr, 0.0,   0.0);
 		cairo_line_to         (cr, width, 0.0);		
-		cairo_set_source_rgb  (cr, dark->r, dark->g, dark->b);
+		cairo_set_source_rgb  (cr, color->r, color->g, color->b);
 		cairo_stroke          (cr);
 		
 		cairo_move_to         (cr, 0.0,   1.0);
@@ -1282,7 +1281,7 @@ clearlooks_draw_separator (cairo_t *cr,
 		
 		cairo_move_to         (cr, 0.0, 0.0);
 		cairo_line_to         (cr, 0.0, height);
-		cairo_set_source_rgb  (cr, dark->r, dark->g, dark->b);
+		cairo_set_source_rgb  (cr, color->r, color->g, color->b);
 		cairo_stroke          (cr);
 		
 		cairo_move_to         (cr, 1.0, 0.0);
@@ -1350,10 +1349,10 @@ clearlooks_draw_list_view_header (cairo_t *cr,
 		separator.horizontal = FALSE;
 		
 		if (params->ltr)
-			params->style_functions->draw_separator (cr, colors, params, &separator,
+			params->style_functions->draw_separator (cr, &colors->shade[3], params, &separator,
 			                                         width-1.5, 4.0, 2, height-8.0);
 		else
-			params->style_functions->draw_separator (cr, colors, params, &separator,
+			params->style_functions->draw_separator (cr, &colors->shade[3], params, &separator,
 			                                         1.5, 4.0, 2, height-8.0);
 	}
 }
