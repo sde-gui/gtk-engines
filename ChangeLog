@@ -2,6 +2,14 @@
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_button):
+	Using 2 stroke with alignment rather than one misaligned, this 
+	fixes 1 px rendering bug of ge_cairo_rounded_rectangle with 
+	alpha colors (I have a 2 px more shaded inthe top-left corner)
+
+2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
 	Updated prelight of active buttons
 
 2007-05-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
