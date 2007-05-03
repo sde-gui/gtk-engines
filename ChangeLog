@@ -1,3 +1,9 @@
+2007-05-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_resize_grip):
+	Correctly align the resize grip.
+
 2007-05-03  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:

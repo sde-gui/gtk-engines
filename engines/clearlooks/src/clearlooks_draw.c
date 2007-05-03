@@ -1833,7 +1833,7 @@ clearlooks_draw_resize_grip (cairo_t *cr,
 	int x_down;
 	int y_down;
 	int dots;
-
+	
 	ge_shade_color (dark, 1.5, &hilight);
 
 	/* The number of dots fitting into the area. Just hardcoded to 4 right now. */
@@ -1847,17 +1847,17 @@ clearlooks_draw_resize_grip (cairo_t *cr,
 		case CL_WINDOW_EDGE_NORTH_EAST:
 			x_down = 0;
 			y_down = 0;
-			cairo_translate (cr, x + width - 3*dots, y + 1);
+			cairo_translate (cr, x + width - 3*dots + 2, y + 1);
 		break;
 		case CL_WINDOW_EDGE_SOUTH_EAST:
 			x_down = 0;
 			y_down = 1;
-			cairo_translate (cr, x + width - 3*dots, y + height - 3*dots);
+			cairo_translate (cr, x + width - 3*dots + 2, y + height - 3*dots + 2);
 		break;
 		case CL_WINDOW_EDGE_SOUTH_WEST:
 			x_down = 1;
 			y_down = 1;
-			cairo_translate (cr, x + 1, y + height - 3*dots);
+			cairo_translate (cr, x + 1, y + height - 3*dots + 2);
 		break;
 		case CL_WINDOW_EDGE_NORTH_WEST:
 			x_down = 1;
@@ -1874,8 +1874,8 @@ clearlooks_draw_resize_grip (cairo_t *cr,
 		for (ly = 0; ly <= lx; ly++) /* vertically */
 		{
 			int mx, my;
-			mx = x_down * dots + (1 - x_down * 2) * lx;
-			my = y_down * dots + (1 - y_down * 2) * ly;
+			mx = x_down * dots + (1 - x_down * 2) * lx - x_down;
+			my = y_down * dots + (1 - y_down * 2) * ly - y_down;
 
 			cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
 			cairo_rectangle (cr, mx*3-1, my*3-1, 2, 2);
