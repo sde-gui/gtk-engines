@@ -64,7 +64,7 @@ clearlooks_draw_button_gloss (cairo_t *cr,
 }
 
 static void
-clearlooks_set_border_color (cairo_t *cr, const CairoColor *color1, const CairoColor *color2, double mix_factor)
+clearlooks_set_mixed_color (cairo_t *cr, const CairoColor *color1, const CairoColor *color2, double mix_factor)
 {
 	CairoColor composite;
 
@@ -307,7 +307,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	if (params->disabled)
 		ge_cairo_set_color (cr, &border_disabled);
 	else
-		clearlooks_set_border_color (cr, &border_normal, &fill, 0.2);
+		clearlooks_set_mixed_color (cr, &border_normal, &fill, 0.2);
 	ge_cairo_rounded_rectangle (cr, xoffset + 0.5, yoffset + 0.5,
                                   width-(xoffset*2)-1, height-(yoffset*2)-1,
                                   radius, params->corners);
@@ -343,7 +343,7 @@ clearlooks_glossy_draw_progressbar_trough (cairo_t *cr,
 
 	/* Draw border */
 	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width-1, height-1, radius, params->corners);
-	clearlooks_set_border_color (cr, border, &colors->shade[2], 0.3);
+	clearlooks_set_mixed_color (cr, border, &colors->shade[2], 0.3);
 	cairo_stroke (cr);
 
 	/* clip the corners of the shadows */
@@ -554,7 +554,7 @@ clearlooks_glossy_scale_draw_gradient (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
-	clearlooks_set_border_color (cr, c3, c1, 0.3);
+	clearlooks_set_mixed_color (cr, c3, c1, 0.3);
 	ge_cairo_stroke_rectangle (cr, x, y, width, height);	
 }
 
@@ -782,7 +782,7 @@ clearlooks_glossy_draw_slider (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 
-	clearlooks_set_border_color (cr, border, &fill, 0.2);
+	clearlooks_set_mixed_color (cr, border, &fill, 0.2);
 	if (params->prelight)
 		ge_cairo_set_color (cr, &colors->spot[2]);
 	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, 2.5, params->corners);
@@ -870,7 +870,7 @@ clearlooks_glossy_draw_scrollbar_stepper (cairo_t *cr,
 	cairo_translate (cr, -0.5, -0.5);
 	
 	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, corners);
-	clearlooks_set_border_color (cr, border, &fill, 0.2);
+	clearlooks_set_mixed_color (cr, border, &fill, 0.2);
 	if (widget->prelight)
 		ge_cairo_set_color (cr, &colors->spot[2]);
 	cairo_stroke (cr);
@@ -942,7 +942,7 @@ clearlooks_glossy_draw_scrollbar_slider (cairo_t *cr,
 	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
 	ge_cairo_stroke_rectangle (cr, 1.5, 1.5, width-3, height-3);
 
-	clearlooks_set_border_color (cr, border, &fill, 0.4);
+	clearlooks_set_mixed_color (cr, border, &fill, 0.4);
 	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);	
 }
 
@@ -1122,7 +1122,10 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 	
 	if (!widget->disabled)
 	{
-		ge_cairo_set_color (cr, &colors->base[0]);
+		if (widget->prelight)
+			clearlooks_set_mixed_color (cr, &colors->base[0], &colors->spot[1], 0.5);
+		else		
+			ge_cairo_set_color (cr, &colors->base[0]);
 		cairo_fill_preserve (cr);
 	}
 	
@@ -1205,8 +1208,11 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 	}
 	
 	if (!widget->disabled)
-	{
-		ge_cairo_set_color (cr, &colors->base[0]);
+	{		
+		if (widget->prelight)
+			clearlooks_set_mixed_color (cr, &colors->base[0], &colors->spot[1], 0.5);
+		else		
+			ge_cairo_set_color (cr, &colors->base[0]);
 		cairo_fill_preserve (cr);
 	}
 	

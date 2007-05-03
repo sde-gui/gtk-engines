@@ -1,5 +1,19 @@
 2007-05-03  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_set_mixed_color), (clearlooks_glossy_draw_button),
+	(clearlooks_glossy_draw_progressbar_trough),
+	(clearlooks_glossy_scale_draw_gradient),
+	(clearlooks_glossy_draw_slider),
+	(clearlooks_glossy_draw_scrollbar_stepper),
+	(clearlooks_glossy_draw_scrollbar_slider),
+	(clearlooks_glossy_draw_radiobutton),
+	(clearlooks_glossy_draw_checkbox):
+	Renamed set_border_color to set_mixed_color
+	Improved prelight on radio and checks, fixes usability problems
+
+2007-05-03  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_radiobutton), (clearlooks_draw_checkbox),
 	(clearlooks_register_style_classic):
