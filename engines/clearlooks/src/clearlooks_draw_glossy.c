@@ -68,12 +68,8 @@ clearlooks_set_mixed_color (cairo_t *cr, const CairoColor *color1, const CairoCo
 {
 	CairoColor composite;
 
-	ge_mix_color (cr, color1, color2, mix_factor, &composite);
-
-	cairo_set_source_rgb (cr, composite.r, composite.g, composite.b);
-	/* Not working!!! Why???
-	ge_cairo_set_color (cr, &composite);
-	*/
+	ge_mix_color (color1, color2, mix_factor, &composite);
+	ge_cairo_set_color (cr, &composite);	
 }
 
 static void
@@ -303,7 +299,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	/* Border */
 	if (params->is_default || (params->prelight && params->enable_glow))
 		border_normal = colors->spot[2];
-		/* ge_mix_color (cr, &border_normal, &colors->spot[2], 0.5, &border_normal); */
+		/* ge_mix_color (&border_normal, &colors->spot[2], 0.5, &border_normal); */
 	if (params->disabled)
 		ge_cairo_set_color (cr, &border_disabled);
 	else

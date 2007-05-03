@@ -222,15 +222,15 @@ ge_saturate_color (const CairoColor *base, gdouble saturate_level, CairoColor *c
 }
 
 void
-ge_mix_color (cairo_t *cr, 
-              const CairoColor *color1, const CairoColor *color2, 
+ge_mix_color (const CairoColor *color1, const CairoColor *color2, 
               gdouble mix_factor, CairoColor *composite)
 {
-	g_return_if_fail (cr && color1 && color2 && composite);
+	g_return_if_fail (color1 && color2 && composite);
 
 	composite->r = color1->r * (1-mix_factor) + color2->r * mix_factor;
 	composite->g = color1->g * (1-mix_factor) + color2->g * mix_factor;
 	composite->b = color1->b * (1-mix_factor) + color2->b * mix_factor;
+	composite->a = 1.0;
 }
 
 cairo_t * 

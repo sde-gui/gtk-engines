@@ -1,6 +1,14 @@
 2007-05-03  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_set_mixed_color), (clearlooks_glossy_draw_button):
+	* engines/support/cairo-support.c: (ge_mix_color):
+	* engines/support/cairo-support.h:
+	Few fixes on ge_mix_color
+
+2007-05-03  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_set_mixed_color), (clearlooks_glossy_draw_button),
 	(clearlooks_glossy_draw_progressbar_trough),
 	(clearlooks_glossy_scale_draw_gradient),
