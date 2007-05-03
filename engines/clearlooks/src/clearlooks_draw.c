@@ -1899,7 +1899,8 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 {
 	const CairoColor *border;
 	const CairoColor *dot;
-	CairoColor hilight;
+	CairoColor shadow;
+	CairoColor highlight;
 	cairo_pattern_t *pt;
 	gboolean inconsistent;
 	gboolean draw_bullet = (checkbox->shadow_type == GTK_SHADOW_IN);
@@ -1917,13 +1918,15 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 		border = &colors->shade[6];
 		dot    = &colors->text[0];
 	}
-	ge_shade_color (&colors->shade[8], 4, &hilight);
+
+	ge_shade_color (&widget->parentbg, 0.9, &shadow);
+	ge_shade_color (&widget->parentbg, 1.1, &highlight);
 
 	pt = cairo_pattern_create_linear (0, 0, 13, 13);
-	cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.1);
-	cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
-	cairo_pattern_add_color_stop_rgba (pt, 0.5, hilight.r, hilight.g, hilight.b, 0);
-	cairo_pattern_add_color_stop_rgba (pt, 1.0, hilight.r, hilight.g, hilight.b, 0.6);
+	cairo_pattern_add_color_stop_rgb (pt, 0.0, shadow.r, shadow.b, shadow.g);
+	cairo_pattern_add_color_stop_rgba (pt, 0.5, shadow.r, shadow.b, shadow.g, 0.5);
+	cairo_pattern_add_color_stop_rgba (pt, 0.5, highlight.r, highlight.g, highlight.b, 0.5);
+	cairo_pattern_add_color_stop_rgb (pt, 1.0, highlight.r, highlight.g, highlight.b);
 	
 	cairo_translate (cr, x, y);
 	
@@ -1966,7 +1969,7 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 			cairo_fill (cr);
 		
 			cairo_arc (cr, 6, 6, 1, 0, G_PI*2);
-			cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
+			cairo_set_source_rgba (cr, highlight.r, highlight.g, highlight.b, 0.5);
 			cairo_fill (cr);
 		}
 	}
@@ -1981,7 +1984,6 @@ clearlooks_draw_checkbox (cairo_t *cr,
 {
 	const CairoColor *border;
 	const CairoColor *dot;
-	CairoColor hilight; 
 	gboolean inconsistent = FALSE;
 	gboolean draw_bullet = (checkbox->shadow_type == GTK_SHADOW_IN);
 	cairo_pattern_t *pt;
@@ -1999,31 +2001,21 @@ clearlooks_draw_checkbox (cairo_t *cr,
 		border = &colors->shade[6];
 		dot    = &colors->text[GTK_STATE_NORMAL];
 	}
-	ge_shade_color (&colors->shade[8], 4, &hilight);
 
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1);
 	
 	if (widget->xthickness > 2 && widget->ythickness > 2)
 	{
-		/* Draw a gradient around the box so it appears sunken. */
-		pt = cairo_pattern_create_linear (0, 0, 0, 13);
-		cairo_pattern_add_color_stop_rgba (pt, 0.0, 0, 0, 0, 0.04);
-		cairo_pattern_add_color_stop_rgba (pt, 0.5, 0, 0, 0, 0);
-		cairo_pattern_add_color_stop_rgba (pt, 0.5, hilight.r, hilight.g, hilight.b, 0);
-		cairo_pattern_add_color_stop_rgba (pt, 1.0, hilight.r, hilight.g, hilight.b, 0.5);
-		
-		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
-		cairo_set_source (cr, pt);
-		cairo_stroke (cr);
-		cairo_pattern_destroy (pt);
+		widget->style_functions->draw_inset (cr, widget->parentbg, 0.5, 0.5, width-1, height-1, 1, CR_CORNER_ALL);
 		
 		/* Draw the rectangle for the checkbox itself */
-		cairo_rectangle (cr, 1.5, 1.5, width-3, height-3);
+		ge_cairo_rounded_rectangle (cr, 1.5, 1.5, width-3, height-3, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
 	}
 	else
 	{
-		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
+		/* Draw the rectangle for the checkbox itself */
+		ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
 	}
 	
 	if (!widget->disabled)
@@ -2171,35 +2163,34 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	g_assert (functions);
 
 	functions->draw_button			= clearlooks_draw_button;
-	functions->draw_scale_trough		= clearlooks_draw_scale_trough;
+	functions->draw_scale_trough	= clearlooks_draw_scale_trough;
 	functions->draw_progressbar_trough	= clearlooks_draw_progressbar_trough;
 	functions->draw_progressbar_fill	= clearlooks_draw_progressbar_fill;
-	functions->draw_slider_button		= clearlooks_draw_slider_button;
+	functions->draw_slider_button	= clearlooks_draw_slider_button;
 	functions->draw_entry			= clearlooks_draw_entry;
 	functions->draw_spinbutton		= clearlooks_draw_spinbutton;
-	functions->draw_spinbutton_down		= clearlooks_draw_spinbutton_down;
+	functions->draw_spinbutton_down	= clearlooks_draw_spinbutton_down;
 	functions->draw_optionmenu		= clearlooks_draw_optionmenu;
 	functions->draw_inset			= clearlooks_draw_inset;
 	functions->draw_menubar			= clearlooks_draw_menubar;
-	functions->draw_tab			= clearlooks_draw_tab;
+	functions->draw_tab			   = clearlooks_draw_tab;
 	functions->draw_frame			= clearlooks_draw_frame;
 	functions->draw_separator		= clearlooks_draw_separator;
 	functions->draw_list_view_header	= clearlooks_draw_list_view_header;
 	functions->draw_toolbar			= clearlooks_draw_toolbar;
 	functions->draw_menuitem		= clearlooks_draw_menuitem;
-	functions->draw_menubaritem		= clearlooks_draw_menubaritem;
-	functions->draw_selected_cell		= clearlooks_draw_selected_cell;
-	functions->draw_scrollbar_stepper	= clearlooks_draw_scrollbar_stepper;
+	functions->draw_menubaritem	= clearlooks_draw_menubaritem;
+	functions->draw_selected_cell	= clearlooks_draw_selected_cell;
+	functions->draw_scrollbar_stepper = clearlooks_draw_scrollbar_stepper;
 	functions->draw_scrollbar_slider	= clearlooks_draw_scrollbar_slider;
 	functions->draw_scrollbar_trough	= clearlooks_draw_scrollbar_trough;
 	functions->draw_statusbar		= clearlooks_draw_statusbar;
 	functions->draw_menu_frame		= clearlooks_draw_menu_frame;
 	functions->draw_handle			= clearlooks_draw_handle;
-	functions->draw_resize_grip		= clearlooks_draw_resize_grip;
+	functions->draw_resize_grip	= clearlooks_draw_resize_grip;
 	functions->draw_arrow			= clearlooks_draw_arrow;
 	functions->draw_checkbox		= clearlooks_draw_checkbox;
-	functions->draw_radiobutton		= clearlooks_draw_radiobutton;
-	
+	functions->draw_radiobutton	= clearlooks_draw_radiobutton;	
 	functions->draw_shadow			= clearlooks_draw_shadow;
 	functions->draw_slider			= clearlooks_draw_slider;
 	functions->draw_gripdots		= clearlooks_draw_gripdots;

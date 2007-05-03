@@ -291,7 +291,7 @@ struct _ClearlooksStyleFunctions
 	void (*draw_optionmenu)       (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
-	                               const OptionMenuParameters	*optionmenu,
+	                               const OptionMenuParameters *optionmenu,
 	                               int x, int y, int width, int height);
 					   
 	void (*draw_inset)            (cairo_t *cr, CairoColor bg_color, 
@@ -301,13 +301,13 @@ struct _ClearlooksStyleFunctions
 	void (*draw_menubar)          (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
-	                               const MenuBarParameters		*menubar,
+	                               const MenuBarParameters	*menubar,
 	                               int x, int y, int width, int height);
 
 	void (*draw_tab)              (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
-	                               const TabParameters		*tab,
+	                               const TabParameters		   *tab,
 	                               int x, int y, int width, int height);
 
 	void (*draw_frame)            (cairo_t				*cr,
@@ -317,7 +317,7 @@ struct _ClearlooksStyleFunctions
 	                               int x, int y, int width, int height);
 
 	void (*draw_separator)        (cairo_t				*cr,
-	                               const CairoColor		*color,
+	                               const CairoColor		      *color,
 	                               const WidgetParameters		*widget,
 	                               const SeparatorParameters	*separator,
 	                               int x, int y, int width, int height);
@@ -349,9 +349,9 @@ struct _ClearlooksStyleFunctions
 	                               int x, int y, int width, int height);
 
 	void (*draw_scrollbar_stepper) (cairo_t				*cr,
-	                                const ClearlooksColors		*colors,
-	                                const WidgetParameters		*widget,
-	                                const ScrollBarParameters	*scrollbar,
+	                                const ClearlooksColors	*colors,
+	                                const WidgetParameters	*widget,
+	                                const ScrollBarParameters *scrollbar,
 	                                const ScrollBarStepperParameters *stepper,
 	                                int x, int y, int width, int height);
 
@@ -390,28 +390,28 @@ struct _ClearlooksStyleFunctions
 	                               int x, int y, int width, int height);
 
 	void (*draw_arrow)      (cairo_t				*cr,
-					                       const ClearlooksColors          *colors,
-					                       const WidgetParameters          *widget,
-					                       const ArrowParameters           *arrow,
+					                       const ClearlooksColors *colors,
+					                       const WidgetParameters *widget,
+					                       const ArrowParameters  *arrow,
 					                       int x, int y, int width, int height);
 	                               
 	void (*draw_checkbox)         (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
-	                               const CheckboxParameters		*checkbox,
+	                               const CheckboxParameters	*checkbox,
 	                               int x, int y, int width, int height);
 
 	void (*draw_radiobutton)      (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
-	                               const CheckboxParameters		*checkbox,
+	                               const CheckboxParameters	*checkbox,
 	                               int x, int y, int width, int height);
 
 	/* Style internal functions */
 	/* XXX: Only used by slider_button, inline it? */
 	void (*draw_shadow)           (cairo_t				*cr,
-                                   const ClearlooksColors		*colors,
-	                               gfloat                            radius,
+                                  const ClearlooksColors		*colors,
+	                               gfloat         radius,
 	                               int				 width,
 	                               int				 height);
 
