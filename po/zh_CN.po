@@ -6,7 +6,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-05-04 04:40+0100\n"
 "PO-Revision-Date: 2007-05-05 00:40+0800\n"
