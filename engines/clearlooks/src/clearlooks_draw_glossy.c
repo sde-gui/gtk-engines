@@ -253,7 +253,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	if (params->active)
 	{
 		CairoColor shadow;
-		ge_shade_color (&border_normal, 0.92, &shadow);
+		ge_shade_color (&fill, 0.92, &shadow);
 
 		cairo_save (cr);
 
@@ -262,7 +262,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		cairo_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, 3);
 	
 		pattern = cairo_pattern_create_linear (xoffset+1, yoffset+1, xoffset+1, yoffset+4);
-		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shadow.r, shadow.g, shadow.b, params->disabled ? 0.15 : 0.2);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shadow.r, shadow.g, shadow.b, 0.58);
 		cairo_pattern_add_color_stop_rgba (pattern, 1.0, shadow.r, shadow.g, shadow.b, 0.0);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
