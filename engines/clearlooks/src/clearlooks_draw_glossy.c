@@ -317,10 +317,10 @@ clearlooks_glossy_draw_progressbar_trough (cairo_t *cr,
                                     const WidgetParameters *params,
                                     int x, int y, int width, int height)
 {
-	CairoColor      *border = (CairoColor*)&colors->shade[6];
-	CairoColor       shadow;
-	cairo_pattern_t *pattern;
-	double          radius = MIN (params->radius, MIN ((height-2.0) / 2.0, (width-2.0) / 2.0));
+	const CairoColor *border = &colors->shade[6];
+	CairoColor        shadow;
+	cairo_pattern_t  *pattern;
+	double           radius = MIN (params->radius, MIN ((height-2.0) / 2.0, (width-2.0) / 2.0));
 	
 	cairo_save (cr);
 
@@ -611,11 +611,10 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
                             int x, int y, int width, int height)
 {
 
-	CairoColor          *border1       = (CairoColor*)&colors->shade[6];
-	CairoColor          *border2       = (CairoColor*)&colors->shade[5];
-	CairoColor          *stripe_fill   = (CairoColor*)&colors->spot[1];
-	CairoColor          *stripe_border = (CairoColor*)&colors->spot[2];
-	CairoColor          *fill;
+	const CairoColor    *border       = &colors->shade[5];
+	const CairoColor    *stripe_fill   = &colors->spot[1];
+	const CairoColor    *stripe_border = &colors->spot[2];
+	const CairoColor    *fill;
 	CairoColor           hilight;
 
 	cairo_pattern_t     *pattern;
@@ -655,7 +654,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	}
 	
 	/* Set the fill color */
-	fill = (CairoColor*)&colors->bg[params->state_type];
+	fill = &colors->bg[params->state_type];
 
 	/* Set tab shape */
 	ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1,
@@ -723,7 +722,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	
 	if (params->active)
 	{
-		ge_cairo_set_color (cr, border2);	
+		ge_cairo_set_color (cr, border);	
 		cairo_stroke (cr);
 	}
 	else
@@ -734,7 +733,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 		                                        tab->gap_side == CL_GAP_BOTTOM ? height   : 2 );
 		
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0, stripe_border->r, stripe_border->g, stripe_border->b);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.8, border2->r,       border2->g,       border2->b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.8, border->r,        border->g,        border->b);
 		cairo_set_source (cr, pattern);
 		cairo_stroke (cr);
 		cairo_pattern_destroy (pattern);
@@ -747,7 +746,7 @@ clearlooks_glossy_draw_slider (cairo_t *cr,
                         const WidgetParameters *params,
                         int x, int y, int width, int height)
 {
-	CairoColor *border  = (CairoColor*)&colors->shade[7];
+	const CairoColor *border  = &colors->shade[7];
 	CairoColor  fill;
 	CairoColor  hilight;
 	CairoColor  a, b, c, d;
@@ -883,6 +882,12 @@ clearlooks_glossy_draw_scrollbar_slider (cairo_t *cr,
                                    const ScrollBarParameters       *scrollbar,
                                    int x, int y, int width, int height)
 {
+	const CairoColor *border  = &colors->shade[7];
+	CairoColor  fill  = scrollbar->color;
+	CairoColor  hilight;
+	CairoColor  shade1, shade2, shade3;
+	cairo_pattern_t *pattern;
+
 	if (scrollbar->junction & CL_JUNCTION_BEGIN)
 	{
 		if (scrollbar->horizontal)
@@ -908,12 +913,6 @@ clearlooks_glossy_draw_scrollbar_slider (cairo_t *cr,
 		ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
 
 	cairo_translate (cr, x, y);	
-
-	CairoColor *border  = (CairoColor*)&colors->shade[7];
-	CairoColor  fill    = scrollbar->color;
-	CairoColor  hilight;
-	CairoColor  shade1, shade2, shade3;
-	cairo_pattern_t *pattern;
 
 	if (widget->prelight)
 		ge_shade_color (&fill, 1.1, &fill);
@@ -952,8 +951,8 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 /*
 	CairoColor *border = !params->prelight? (CairoColor*)&colors->shade[4] : (CairoColor*)&colors->spot[1];
 */
-	CairoColor *border = (CairoColor*)&colors->shade[4];
-	CairoColor *fill = (CairoColor*)&colors->bg[params->state_type];
+	const CairoColor *border = &colors->shade[4];
+	const CairoColor *fill   = &colors->bg[params->state_type];
 	CairoColor hilight;
 	CairoColor shade1, shade2, shade3;
 
@@ -1165,7 +1164,6 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 	const CairoColor *dot; 
 	gboolean inconsistent = FALSE;
 	gboolean draw_bullet = (checkbox->shadow_type == GTK_SHADOW_IN);
-	cairo_pattern_t *pt;
 
 	inconsistent = (checkbox->shadow_type == GTK_SHADOW_ETCHED_IN);
 	draw_bullet |= inconsistent;

@@ -78,8 +78,8 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 	double xoffset = 0, yoffset = 0;
 	double radius = params->radius;
 	const CairoColor *fill = &colors->bg[params->state_type];	
-	CairoColor border_normal;
 	const CairoColor *border_disabled = &colors->shade[4];
+	CairoColor border_normal;
 	CairoColor shadow;
 
 	ge_shade_color(&colors->shade[6], 1.05, &border_normal);
@@ -366,7 +366,7 @@ clearlooks_inverted_draw_menuitem (cairo_t *cr,
                           const WidgetParameters          *widget,
                           int x, int y, int width, int height)
 {
-	CairoColor *fill = (CairoColor*)&colors->spot[1];
+	const CairoColor *fill = &colors->spot[1];
 	CairoColor fill_shade;
 	CairoColor border = colors->spot[2];
 	cairo_pattern_t *pattern;
@@ -425,11 +425,11 @@ clearlooks_inverted_draw_tab (cairo_t *cr,
                      const TabParameters    *tab,
                      int x, int y, int width, int height)
 {
-	CairoColor          *border1       = (CairoColor*)&colors->shade[6];
-	CairoColor          *border2       = (CairoColor*)&colors->shade[5];
-	CairoColor          *stripe_fill   = (CairoColor*)&colors->spot[1];
-	CairoColor          *stripe_border = (CairoColor*)&colors->spot[2];
-	CairoColor          *fill;
+	const CairoColor    *border1       = &colors->shade[6];
+	const CairoColor    *border2       = &colors->shade[5];
+	const CairoColor    *stripe_fill   = &colors->spot[1];
+	const CairoColor    *stripe_border = &colors->spot[2];
+	const CairoColor    *fill;
 	CairoColor           hilight;
 	CairoColor           shadow;
 
@@ -470,7 +470,7 @@ clearlooks_inverted_draw_tab (cairo_t *cr,
 	}
 	
 	/* Set the fill color */
-	fill = (CairoColor*)&colors->bg[params->state_type];
+	fill = &colors->bg[params->state_type];
 
 	/* Set tab shape */
 	ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1,
@@ -691,7 +691,7 @@ clearlooks_inverted_draw_list_view_header (cairo_t *cr,
                                   int x, int y, int width, int height)
 {
 	const CairoColor *fill = &colors->bg[params->state_type];
-	CairoColor      *border = (CairoColor*)&colors->shade[4];
+	const CairoColor *border = &colors->shade[4];
 	cairo_pattern_t *pattern;
 	CairoColor hilight_header;
 	CairoColor hilight;
@@ -761,7 +761,7 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 {
 	CairoCorners corners = CR_CORNER_NONE;
 	CairoColor border;
-	CairoColor  s1, s2, s3;
+	CairoColor s1, s2, s3;
 	cairo_pattern_t *pattern;
 	ShadowParameters shadow;
 	double radius = MIN (widget->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
@@ -853,7 +853,7 @@ clearlooks_inverted_draw_scrollbar_slider (cairo_t *cr,
 
 	if (scrollbar->has_color)
 	{
-		CairoColor *border  = (CairoColor*)&colors->shade[8];
+		const CairoColor *border = &colors->shade[8];
 		CairoColor  fill    = scrollbar->color;
 		CairoColor  hilight;
 		CairoColor  shade1, shade2, shade3;
@@ -892,8 +892,8 @@ clearlooks_inverted_draw_scrollbar_slider (cairo_t *cr,
 		cairo_pattern_t *pattern;
 		int bar_x, i;
 		
-		CairoColor *dark  = (CairoColor*)&colors->shade[4];
-		CairoColor *light = (CairoColor*)&colors->shade[0];		
+		const CairoColor *dark  = &colors->shade[4];
+		const CairoColor *light = &colors->shade[0];		
 
 		ge_shade_color(&colors->shade[6], 1.05, &border);
 

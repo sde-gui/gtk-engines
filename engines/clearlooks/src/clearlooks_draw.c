@@ -188,8 +188,8 @@ clearlooks_draw_gripdots (cairo_t *cr, const ClearlooksColors *colors, int x, in
                           int width, int height, int xr, int yr,
                           float contrast)
 {
+	const CairoColor *dark = &colors->shade[4];
 	CairoColor hilight;
-	CairoColor *dark = (CairoColor*)&colors->shade[4];
 	int i, j;
 	int xoff, yoff;
 
@@ -351,7 +351,7 @@ clearlooks_draw_entry (cairo_t *cr,
                        const WidgetParameters *params,
                        int x, int y, int width, int height)
 {
-	CairoColor *base = (CairoColor*)&colors->base[params->state_type];
+	const CairoColor *base = &colors->base[params->state_type];
 	CairoColor border = colors->shade[params->disabled ? 4 : 6];
 	double radius = MIN (params->radius, MIN ((width - 4.0) / 2.0, (height - 4.0) / 2.0));
 	
@@ -410,7 +410,7 @@ clearlooks_draw_spinbutton (cairo_t *cr,
                             const WidgetParameters *params,
                             int x, int y, int width, int height)
 {
-	CairoColor *border = (CairoColor*)&colors->shade[!params->disabled ? 5 : 3];
+	const CairoColor *border = &colors->shade[!params->disabled ? 5 : 3];
 	CairoColor hilight; 
 
 	params->style_functions->draw_button (cr, colors, params, x, y, width, height);
@@ -658,7 +658,7 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
                                     const WidgetParameters *params,
                                     int x, int y, int width, int height)
 {
-	CairoColor      *border = (CairoColor*)&colors->shade[6];
+	const CairoColor *border = &colors->shade[6];
 	CairoColor       shadow;
 	cairo_pattern_t *pattern;
 	double          radius = MIN (params->radius, MIN ((height-2.0) / 2.0, (width-2.0) / 2.0));
@@ -1023,11 +1023,11 @@ clearlooks_draw_frame            (cairo_t *cr,
                                   const FrameParameters      *frame,
                                   int x, int y, int width, int height)
 {
-	CairoColor *border = frame->border;
+	const CairoColor *border = frame->border;
+	const CairoColor *dark   = (CairoColor*)&colors->shade[4];
 	ClearlooksRectangle bevel_clip = {0, 0, 0, 0};
 	ClearlooksRectangle frame_clip = {0, 0, 0, 0};
 	double radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
-	CairoColor *dark   = (CairoColor*)&colors->shade[4];
 	CairoColor hilight;
 
 	ge_shade_color (dark, 1.5, &hilight);
@@ -1111,11 +1111,11 @@ clearlooks_draw_tab (cairo_t *cr,
                      const TabParameters    *tab,
                      int x, int y, int width, int height)
 {
-	CairoColor          *border1       = (CairoColor*)&colors->shade[6];
-	CairoColor          *border2       = (CairoColor*)&colors->shade[5];
-	CairoColor          *stripe_fill   = (CairoColor*)&colors->spot[1];
-	CairoColor          *stripe_border = (CairoColor*)&colors->spot[2];
-	CairoColor          *fill;
+	const CairoColor    *border1       = &colors->shade[6];
+	const CairoColor    *border2       = &colors->shade[5];
+	const CairoColor    *stripe_fill   = &colors->spot[1];
+	const CairoColor    *stripe_border = &colors->spot[2];
+	const CairoColor    *fill;
 	CairoColor           hilight;
 
 	cairo_pattern_t     *pattern;
@@ -1155,7 +1155,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	}
 	
 	/* Set the fill color */
-	fill = (CairoColor*)&colors->bg[params->state_type];
+	fill = &colors->bg[params->state_type];
 
 	/* Set tab shape */
 	ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1,
@@ -1300,7 +1300,7 @@ clearlooks_draw_list_view_header (cairo_t *cr,
                                   const ListViewHeaderParameters  *header,
                                   int x, int y, int width, int height)
 {
-	CairoColor      *border = (CairoColor*)&colors->shade[5];
+	const CairoColor *border = &colors->shade[5];
 	cairo_pattern_t *pattern;
 	CairoColor hilight; 
 	CairoColor shadow;
@@ -1390,7 +1390,7 @@ clearlooks_draw_menuitem (cairo_t *cr,
                           const WidgetParameters          *widget,
                           int x, int y, int width, int height)
 {
-	CairoColor *fill = (CairoColor*)&colors->spot[1];
+	const CairoColor *fill = &colors->spot[1];
 	CairoColor fill_shade;
 	CairoColor border = colors->spot[2];
 	cairo_pattern_t *pattern;
@@ -1420,7 +1420,7 @@ clearlooks_draw_menubaritem (cairo_t *cr,
                           const WidgetParameters          *widget,
                           int x, int y, int width, int height)
 {
-	CairoColor *fill = (CairoColor*)&colors->spot[1];
+	const CairoColor *fill = &colors->spot[1];
 	CairoColor fill_shade;
 	CairoColor border = colors->spot[2];
 	cairo_pattern_t *pattern;
@@ -1500,9 +1500,9 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
                                   const ScrollBarParameters        *scrollbar,
                                   int x, int y, int width, int height)
 {
-	CairoColor      *bg     = (CairoColor*)&colors->shade[2];
-	CairoColor      *border = (CairoColor*)&colors->shade[5];
-	CairoColor       bg_shade;
+	const CairoColor *bg     = &colors->shade[2];
+	const CairoColor *border = &colors->shade[5];
+	CairoColor        bg_shade;
 	cairo_pattern_t *pattern;
 	
 	ge_shade_color (bg, 0.95, &bg_shade);
@@ -1543,8 +1543,8 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
                                    int x, int y, int width, int height)
 {
 	CairoCorners corners = CR_CORNER_NONE;
-	CairoColor border;
-	CairoColor  s1, s2, s3, s4;
+	CairoColor   border;
+	CairoColor   s1, s2, s3, s4;
 	cairo_pattern_t *pattern;
 	ShadowParameters shadow;
 	double radius = MIN (widget->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
@@ -1641,7 +1641,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 
 	if (scrollbar->has_color)
 	{
-		CairoColor *border  = (CairoColor*)&colors->shade[7];
+		const CairoColor *border  = &colors->shade[7];
 		CairoColor  fill    = scrollbar->color;
 		CairoColor  hilight;
 		CairoColor  shade1, shade2, shade3;
@@ -1675,12 +1675,12 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 	}
 	else
 	{
+		const CairoColor *dark  = &colors->shade[4];
+		const CairoColor *light = &colors->shade[0];
 		CairoColor border;
 		CairoColor s1, s2, s3, s4, s5;
 		cairo_pattern_t *pattern;
 		int bar_x, i;
-		CairoColor *dark  = (CairoColor*)&colors->shade[4];
-		CairoColor *light = (CairoColor*)&colors->shade[0];
 
 		ge_shade_color(&colors->shade[6], 1.05, &border);
 		
@@ -1739,7 +1739,7 @@ clearlooks_draw_statusbar (cairo_t *cr,
                            const WidgetParameters          *widget,
                            int x, int y, int width, int height)
 {
-	CairoColor *dark   = (CairoColor*)&colors->shade[3];
+	const CairoColor *dark = &colors->shade[3];
 	CairoColor hilight;
 
 	ge_shade_color (dark, 1.5, &hilight);
@@ -1764,7 +1764,7 @@ clearlooks_draw_menu_frame (cairo_t *cr,
                             const WidgetParameters          *widget,
                             int x, int y, int width, int height)
 {
-	CairoColor *border = (CairoColor*)&colors->shade[5];
+	const CairoColor *border = &colors->shade[5];
 	cairo_translate      (cr, x, y);
 	cairo_set_line_width (cr, 1);
 /*
@@ -1986,7 +1986,6 @@ clearlooks_draw_checkbox (cairo_t *cr,
 	const CairoColor *dot;
 	gboolean inconsistent = FALSE;
 	gboolean draw_bullet = (checkbox->shadow_type == GTK_SHADOW_IN);
-	cairo_pattern_t *pt;
 
 	inconsistent = (checkbox->shadow_type == GTK_SHADOW_ETCHED_IN);
 	draw_bullet |= inconsistent;
@@ -2053,7 +2052,7 @@ clearlooks_draw_checkbox (cairo_t *cr,
 }
 
 static void
-clearlooks_draw_normal_arrow (cairo_t *cr, CairoColor *color,
+clearlooks_draw_normal_arrow (cairo_t *cr, const CairoColor *color,
                               double x, double y, double width, double height)
 {
 	double arrow_width;
@@ -2084,7 +2083,7 @@ clearlooks_draw_normal_arrow (cairo_t *cr, CairoColor *color,
 }
 
 static void
-clearlooks_draw_combo_arrow (cairo_t *cr, CairoColor *color,
+clearlooks_draw_combo_arrow (cairo_t *cr, const CairoColor *color,
                              double x, double y, double width, double height)
 {
 	double arrow_width = MIN (height * 2 / 3.0, width);
@@ -2101,7 +2100,7 @@ clearlooks_draw_combo_arrow (cairo_t *cr, CairoColor *color,
 }
 
 static void
-_clearlooks_draw_arrow (cairo_t *cr, CairoColor *color,
+_clearlooks_draw_arrow (cairo_t *cr, const CairoColor *color,
                         ClearlooksDirection dir, ClearlooksArrowType type,
                         double x, double y, double width, double height)
 {
@@ -2138,7 +2137,7 @@ clearlooks_draw_arrow (cairo_t *cr,
                        const ArrowParameters           *arrow,
                        int x, int y, int width, int height)
 {
-	CairoColor *color = (CairoColor*)&colors->fg[widget->state_type];
+	const CairoColor *color = &colors->fg[widget->state_type];
 	gdouble tx, ty;
 	
 	tx = x + width/2.0;
@@ -2146,7 +2145,7 @@ clearlooks_draw_arrow (cairo_t *cr,
 	
 	if (widget->disabled)
 	{
-		_clearlooks_draw_arrow (cr, (CairoColor*)&colors->shade[0],
+		_clearlooks_draw_arrow (cr, &colors->shade[0],
 		                        arrow->direction, arrow->type,
 		                        tx+0.5, ty+0.5, width, height);
 	}

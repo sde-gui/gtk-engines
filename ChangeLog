@@ -1,5 +1,16 @@
 2007-05-06  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_types.h:
+	Use const CairoColor pointer everywhere as the color should never
+	be modified.
+	Also removed some unused variables.
+
+2007-05-06  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_box_gap), (clearlooks_style_draw_extension),
 	(clearlooks_style_draw_option), (clearlooks_style_draw_check),

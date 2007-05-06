@@ -176,7 +176,7 @@ typedef struct
 	ClearlooksGapSide gap_side;
 	int gap_x;
 	int gap_width;
-	CairoColor *border; /* maybe changes this to some other hint ... */
+	const CairoColor *border; /* maybe changes this to some other hint ... */
 } FrameParameters;
 
 typedef struct
