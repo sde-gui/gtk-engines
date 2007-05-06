@@ -204,7 +204,10 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
 	cairo_t          *cr;
-	
+
+	CHECK_ARGS
+	SANITIZE_SIZE
+
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (DETAIL ("notebook"))
@@ -246,6 +249,9 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
 	cairo_t          *cr;
+
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
@@ -827,6 +833,9 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	WidgetParameters params;
 	CheckboxParameters checkbox;
 	
+	CHECK_ARGS
+	SANITIZE_SIZE
+
 	cairo_t *cr;
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	colors = &clearlooks_style->colors;
@@ -847,9 +856,11 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	WidgetParameters params;
 	CheckboxParameters checkbox;
-		
-
 	cairo_t *cr;
+
+	CHECK_ARGS
+	SANITIZE_SIZE
+
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
@@ -883,8 +894,9 @@ clearlooks_style_draw_vline                      (GtkStyle               *style,
 	SeparatorParameters separator = { FALSE };
 	cairo_t *cr;
 
-	colors = &clearlooks_style->colors;
+	CHECK_ARGS
 
+	colors = &clearlooks_style->colors;
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
@@ -910,6 +922,8 @@ clearlooks_style_draw_hline                      (GtkStyle               *style,
 	cairo_t *cr;
 	SeparatorParameters separator;
 
+	CHECK_ARGS
+
 	colors = &clearlooks_style->colors;
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
@@ -931,6 +945,9 @@ clearlooks_style_draw_shadow_gap (DRAW_ARGS,
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	const ClearlooksColors *colors;
 	cairo_t *cr;
+
+	CHECK_ARGS
+	SANITIZE_SIZE
 
 	cr     = ge_gdk_drawable_to_cairo (window, area);
 	colors = &clearlooks_style->colors;
@@ -978,11 +995,13 @@ clearlooks_style_draw_resize_grip (GtkStyle       *style,
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
-
 	cairo_t *cr;
-
 	WidgetParameters params;
 	ResizeGripParameters grip;
+
+	CHECK_ARGS
+	SANITIZE_SIZE
+
 	grip.edge = (ClearlooksWindowEdge)edge;
 
 	g_return_if_fail (window != NULL);
@@ -1004,8 +1023,12 @@ clearlooks_style_draw_tab (DRAW_ARGS)
 	ClearlooksColors *colors = &clearlooks_style->colors;
 	WidgetParameters params;
 	ArrowParameters  arrow; 	 
+	cairo_t *cr;
 
-	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
+	CHECK_ARGS
+	SANITIZE_SIZE
+	
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 	arrow.type      = CL_ARROW_COMBO;
@@ -1037,6 +1060,7 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 	ArrowParameters  arrow;
 	cairo_t *cr = ge_gdk_drawable_to_cairo (window, area);
 
+	CHECK_ARGS
 	SANITIZE_SIZE
 
 	if (arrow_type == GTK_ARROW_NONE) {
