@@ -267,7 +267,8 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
 		cairo_translate (cr, 0.5, 0.5);
-		
+
+		/* if (params->enable_glow && !params->active && !params->disabled) */
 		if (params->prelight && params->enable_glow && !params->active)
 		{
 			/* Glow becomes a shadow to have 3d prelight buttons :) */
@@ -276,16 +277,19 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
 
 			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
+			/* ge_shade_color (&params->parentbg, 0.96, &glow); */
 			ge_shade_color (&params->parentbg, 0.96, &glow);			
 			ge_cairo_set_color (cr, &glow);
 			cairo_stroke (cr);
 
 			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, radius+1, params->corners);
+			/* ge_shade_color (&params->parentbg, params->prelight? 0.88 : 0.92, &glow); */
 			ge_shade_color (&params->parentbg, 0.88, &glow);
 			ge_cairo_set_color (cr, &glow);
 			cairo_stroke (cr);
 		}
 		
+		/* if (!(params->enable_glow && !params->active && !params->disabled)) */
 		if (!(params->prelight && params->enable_glow && !params->active))
 			if (!(params->disabled))
 				params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
@@ -320,6 +324,15 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		cairo_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, 3);
 	
 		pattern = cairo_pattern_create_linear (xoffset+1, yoffset+1, xoffset+1, yoffset+4);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shadow.r, shadow.g, shadow.b, 0.58);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, shadow.r, shadow.g, shadow.b, 0.0);
+		cairo_set_source (cr, pattern);
+		cairo_fill (cr);
+		cairo_pattern_destroy (pattern);
+		
+		cairo_rectangle (cr, xoffset+1, yoffset+1, 3, height-(yoffset*2)-2);
+	
+		pattern = cairo_pattern_create_linear (xoffset+1, yoffset+1, xoffset+4, yoffset+1);
 		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shadow.r, shadow.g, shadow.b, 0.58);
 		cairo_pattern_add_color_stop_rgba (pattern, 1.0, shadow.r, shadow.g, shadow.b, 0.0);
 		cairo_set_source (cr, pattern);
@@ -404,7 +417,7 @@ clearlooks_glossy_draw_progressbar_trough (cairo_t *cr,
 	ge_cairo_rounded_rectangle (cr, x+1, y+1, width-2, height-2, radius, params->corners);
 	cairo_clip (cr);
 
-	ge_shade_color (border, 0.925, &shadow);
+	ge_shade_color (border, 0.92, &shadow);
 
 	/* Top shadow */
 	cairo_rectangle (cr, x+1, y+1, width-2, 4);

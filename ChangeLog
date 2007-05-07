@@ -1,5 +1,14 @@
 2007-05-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button),
+	(clearlooks_glossy_draw_progressbar_trough):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Added comments /* code */ to try buttons with a shadow instead the inset
+
+2007-05-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_highlight_and_shade), (clearlooks_draw_frame),
 	(clearlooks_draw_separator), (clearlooks_draw_toolbar),

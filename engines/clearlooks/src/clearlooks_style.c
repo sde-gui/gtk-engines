@@ -460,6 +460,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		else
 		{
 			params.corners    = CR_CORNER_ALL;
+			/* if (!(ge_is_combo_box (widget, FALSE))) */
 			params.enable_glow = TRUE;
 		}		
 	
