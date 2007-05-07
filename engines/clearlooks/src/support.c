@@ -51,7 +51,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	
 	parent = widget->parent;
 	
-	while (parent && GTK_WIDGET_NO_WINDOW (parent))
+	while (parent && GTK_WIDGET_NO_WINDOW (parent) && !((GTK_IS_NOTEBOOK (parent)) || (GTK_IS_TOOLBAR (parent))))
 		parent = parent->parent;
 
 	if (parent == NULL)

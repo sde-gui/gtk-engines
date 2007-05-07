@@ -45,10 +45,10 @@ clearlooks_draw_button_gloss (cairo_t *cr,
 	CairoColor a, b, c, d;
 	cairo_pattern_t *pt;
 
-	ge_shade_color (color, disabled? 1.03 : 1.16, &a);
-	ge_shade_color (color, disabled? 1.01 : 1.08, &b);
-	ge_shade_color (color, disabled? 0.99 : 1.00, &c);
-	ge_shade_color (color, disabled? 1.01 : 1.08, &d);
+	ge_shade_color (color, disabled? 1.06 : 1.16, &a);
+	ge_shade_color (color, disabled? 1.02 : 1.08, &b);
+	ge_shade_color (color, disabled? 0.98 : 1.00, &c);
+	ge_shade_color (color, disabled? 1.02 : 1.08, &d);
 
 	pt = cairo_pattern_create_linear (x, y, x, y+height);
 	cairo_pattern_add_color_stop_rgb (pt, 0.0,  a.r, a.g, a.b);
@@ -83,6 +83,61 @@ clearlooks_glossy_draw_inset (cairo_t *cr, CairoColor bg_color,
 	/* not really sure of shading ratios... we will think */
 	ge_shade_color (&bg_color, 0.92, &shadow);
 	ge_shade_color (&bg_color, 1.08, &highlight);
+
+	/* highlight */
+	cairo_move_to (cr, x + w + (radius * -0.2928932188), y - (radius * -0.2928932188)); /* 0.2928932... 1-sqrt(2)/2 gives middle of curve */
+
+	if (corners & CR_CORNER_TOPRIGHT)
+		cairo_arc (cr, x + w - radius, y + radius, radius, G_PI * 1.75, G_PI * 2);
+	else
+		cairo_line_to (cr, x + w, y);
+
+	if (corners & CR_CORNER_BOTTOMRIGHT)
+		cairo_arc (cr, x + w - radius, y + h - radius, radius, 0, G_PI * 0.5);
+	else
+		cairo_line_to (cr, x + w, y + h);
+
+	if (corners & CR_CORNER_BOTTOMLEFT)
+		cairo_arc (cr, x + radius, y + h - radius, radius, G_PI * 0.5, G_PI * 0.75);
+	else
+		cairo_line_to (cr, x, y + h);
+
+	ge_cairo_set_color (cr, &highlight);
+	cairo_stroke (cr);
+
+	/* shadow */
+	cairo_move_to (cr, x + (radius * 0.2928932188), y + h + (radius * -0.2928932188));
+
+	if (corners & CR_CORNER_BOTTOMLEFT)
+		cairo_arc (cr, x + radius, y + h - radius, radius, M_PI * 0.75, M_PI);
+	else
+		cairo_line_to (cr, x, y + h);
+
+	if (corners & CR_CORNER_TOPLEFT)
+		cairo_arc (cr, x + radius, y + radius, radius, M_PI, M_PI * 1.5);
+	else
+		cairo_line_to (cr, x, y);
+
+	if (corners & CR_CORNER_TOPRIGHT)
+	    cairo_arc (cr, x + w - radius, y + radius, radius, M_PI * 1.5, M_PI * 1.75);
+	else
+		cairo_line_to (cr, x + w, y);
+
+	ge_cairo_set_color (cr, &shadow);
+	cairo_stroke (cr);
+}
+
+static void
+clearlooks_glossy_draw_light_inset (cairo_t *cr, CairoColor bg_color, 
+                       double x, double y, double w, double h, 
+                       double radius, uint8 corners)
+{
+	CairoColor shadow;
+	CairoColor highlight;
+
+	/* not really sure of shading ratios... we will think */
+	ge_shade_color (&bg_color, 0.95, &shadow);
+	ge_shade_color (&bg_color, 1.05, &highlight);
 
 	/* highlight */
 	cairo_move_to (cr, x + w + (radius * -0.2928932188), y - (radius * -0.2928932188)); /* 0.2928932... 1-sqrt(2)/2 gives middle of curve */
@@ -232,8 +287,11 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		}
 		
 		if (!(params->prelight && params->enable_glow && !params->active))
-			params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
-
+			if (!(params->disabled))
+				params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
+			else
+				/*Draw a lighter inset */
+				clearlooks_glossy_draw_light_inset (cr, params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}
 
@@ -1035,13 +1093,13 @@ clearlooks_glossy_draw_menubaritem (cairo_t                   *cr,
                                  int x, int y, int width, int height)
 {
 	cairo_save (cr);
-	cairo_rectangle (cr, x, y + 1, width, height - 2);
+	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height, params->radius, params->corners);
 	cairo_clip (cr);
 	clearlooks_draw_button_gloss (cr, x, y, width, height, &colors->spot[1], params->disabled, 0, CR_CORNER_NONE);
 	cairo_restore (cr);
 
 	ge_cairo_set_color (cr, &colors->spot[2]);
-	cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
+	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height, params->radius, params->corners);
 	cairo_stroke (cr);
 }
 

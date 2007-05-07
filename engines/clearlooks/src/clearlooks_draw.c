@@ -123,8 +123,8 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 	double x = 1.0;
 	double y = 1.0;
 
-	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 1.5, &hilight);
-	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 0.925, &shadow);
+	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 1.06, &hilight);
+	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 0.96, &shadow);
 
 	width  -= 3;
 	height -= 3;
@@ -145,9 +145,9 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 		cairo_line_to (cr, x+width, y);
 	
 	if (params->shadow & CL_SHADOW_OUT)
-		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
+		cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
 	else
-		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.15);
+		cairo_set_source_rgb (cr, shadow.r, shadow.g, shadow.b);
 		
 	cairo_stroke (cr);
 	
@@ -158,9 +158,9 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 	ge_cairo_rounded_corner (cr, x, y+height, radius, corners & CR_CORNER_BOTTOMLEFT);
 	
 	if (params->shadow & CL_SHADOW_OUT)
-		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.15);
+		cairo_set_source_rgb (cr, shadow.r, shadow.g, shadow.b);
 	else
-		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
+		cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
 	
 	cairo_stroke (cr);
 	
@@ -1030,7 +1030,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 	double radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 	CairoColor hilight;
 
-	ge_shade_color (dark, 1.5, &hilight);
+	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 1.05, &hilight);
 	
 	if (frame->shadow == CL_SHADOW_NONE)
 		return;
@@ -1254,7 +1254,7 @@ clearlooks_draw_separator (cairo_t *cr,
                            int x, int y, int width, int height)
 {
 	CairoColor hilight; 
-	ge_shade_color (color, 1.5, &hilight);
+	ge_shade_color (color, 1.4, &hilight);
 
 	cairo_save (cr);
 	cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
@@ -1365,16 +1365,21 @@ clearlooks_draw_toolbar (cairo_t *cr,
                          const WidgetParameters          *widget,
                          int x, int y, int width, int height)
 {
-	const CairoColor *light = &colors->shade[0];
+	const CairoColor *fill  = &colors->bg[GTK_STATE_NORMAL];
 	const CairoColor *dark  = &colors->shade[3];
+	CairoColor light;
+	ge_shade_color (fill, 1.1, &light);
 	
 	cairo_set_line_width (cr, 1.0);
+	cairo_translate     (cr, x, y);
+
+	ge_cairo_set_color  (cr, fill);
+	cairo_paint (cr);
 	
 	/* Draw highlight */
-	cairo_translate     (cr, x, y);
 	cairo_move_to       (cr, 0, 0.5);
 	cairo_line_to       (cr, width-1, 0.5);
-	ge_cairo_set_color  (cr, light);
+	ge_cairo_set_color  (cr, &light);
 	cairo_stroke        (cr);
 
 	/* Draw shadow */
@@ -1430,7 +1435,6 @@ clearlooks_draw_menubaritem (cairo_t *cr,
 	
 	cairo_set_line_width (cr, 1.0);
 	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height, widget->radius, widget->corners);
-
 
 	pattern = cairo_pattern_create_linear (x, y, x, y + height);
 	cairo_pattern_add_color_stop_rgb (pattern, 0,   fill->r, fill->g, fill->b);
