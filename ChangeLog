@@ -4,6 +4,14 @@
 	(clearlooks_glossy_draw_button):
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_box):
+	Reverted back, update to 696 if you want shadows... we will think
+
+2007-05-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
 	(22:48:08) thos: Cimi, it is difficult when I am doing 100 things at once :)
 	Thos is not multitasking :D
 	(AKA useless commit to show shadows on buttons)
