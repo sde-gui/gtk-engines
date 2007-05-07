@@ -1,6 +1,13 @@
 2007-05-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
+	Is it correct as I've added a left inner shadow?
+	Benzea please take a look ;)
+
+2007-05-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_button),
 	(clearlooks_glossy_draw_progressbar_trough):
 	* engines/clearlooks/src/clearlooks_style.c:

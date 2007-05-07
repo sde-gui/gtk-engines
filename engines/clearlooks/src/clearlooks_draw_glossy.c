@@ -319,7 +319,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 
 		cairo_save (cr);
 
-		ge_cairo_rounded_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, height, radius, params->corners & (CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT));
+		ge_cairo_rounded_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, height, radius, params->corners & (CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMLEFT));
 		cairo_clip (cr);
 		cairo_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, 3);
 	
