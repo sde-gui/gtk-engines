@@ -145,9 +145,9 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 		cairo_line_to (cr, x+width, y);
 	
 	if (params->shadow & CL_SHADOW_OUT)
-		cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+		ge_cairo_set_color (cr, &hilight);
 	else
-		cairo_set_source_rgb (cr, shadow.r, shadow.g, shadow.b);
+		ge_cairo_set_color (cr, &shadow);
 		
 	cairo_stroke (cr);
 	
@@ -158,9 +158,9 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 	ge_cairo_rounded_corner (cr, x, y+height, radius, corners & CR_CORNER_BOTTOMLEFT);
 	
 	if (params->shadow & CL_SHADOW_OUT)
-		cairo_set_source_rgb (cr, shadow.r, shadow.g, shadow.b);
+		ge_cairo_set_color (cr, &shadow);
 	else
-		cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+		ge_cairo_set_color (cr, &hilight);
 	
 	cairo_stroke (cr);
 	
@@ -421,12 +421,12 @@ clearlooks_draw_spinbutton (cairo_t *cr,
 
 	cairo_move_to (cr, params->xthickness + 0.5,       (height/2) + 0.5);
 	cairo_line_to (cr, width-params->xthickness - 0.5, (height/2) + 0.5);
-	cairo_set_source_rgb (cr, border->r, border->g, border->b);
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 
 	cairo_move_to (cr, params->xthickness + 0.5,       (height/2)+1.5);
 	cairo_line_to (cr, width-params->xthickness - 0.5, (height/2)+1.5);
-	cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+	ge_cairo_set_color (cr, &hilight);
 	cairo_stroke (cr);
 }
 
@@ -1058,7 +1058,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 	/* Draw the bevel */
 	if (frame->shadow == CL_SHADOW_ETCHED_IN || frame->shadow == CL_SHADOW_ETCHED_OUT)
 	{
-		cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+		ge_cairo_set_color (cr, &hilight);
 		if (frame->shadow == CL_SHADOW_ETCHED_IN)
 			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, radius, params->corners);
 		else
@@ -1088,7 +1088,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 	/* Draw frame */
 	if (frame->shadow == CL_SHADOW_ETCHED_IN || frame->shadow == CL_SHADOW_ETCHED_OUT)
 	{
-		cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
+		ge_cairo_set_color (cr, dark);
 		if (frame->shadow == CL_SHADOW_ETCHED_IN)
 			ge_cairo_rounded_rectangle (cr, 0, 0, width-2, height-2, radius, params->corners);
 		else
@@ -1266,12 +1266,12 @@ clearlooks_draw_separator (cairo_t *cr,
 		
 		cairo_move_to         (cr, 0.0,   0.0);
 		cairo_line_to         (cr, width, 0.0);		
-		cairo_set_source_rgb  (cr, color->r, color->g, color->b);
+		ge_cairo_set_color    (cr, color);
 		cairo_stroke          (cr);
 		
 		cairo_move_to         (cr, 0.0,   1.0);
 		cairo_line_to         (cr, width, 1.0);
-		cairo_set_source_rgb  (cr, hilight.r, hilight.g, hilight.b);
+		ge_cairo_set_color    (cr, &hilight);
 		cairo_stroke          (cr);				
 	}
 	else
@@ -1281,12 +1281,12 @@ clearlooks_draw_separator (cairo_t *cr,
 		
 		cairo_move_to         (cr, 0.0, 0.0);
 		cairo_line_to         (cr, 0.0, height);
-		cairo_set_source_rgb  (cr, color->r, color->g, color->b);
+		ge_cairo_set_color  (cr, color);
 		cairo_stroke          (cr);
 		
 		cairo_move_to         (cr, 1.0, 0.0);
 		cairo_line_to         (cr, 1.0, height);
-		cairo_set_source_rgb  (cr, hilight.r, hilight.g, hilight.b);
+		ge_cairo_set_color  (cr, &hilight);
 		cairo_stroke          (cr);		
 	}
 
@@ -1322,7 +1322,7 @@ clearlooks_draw_list_view_header (cairo_t *cr,
 	
 	cairo_line_to (cr, width, 0.5);
 	
-	cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+	ge_cairo_set_color (cr, &hilight);
 	cairo_stroke (cr);
 	
 	/* Draw bottom border */
@@ -1752,13 +1752,13 @@ clearlooks_draw_statusbar (cairo_t *cr,
 	cairo_translate       (cr, x, y+0.5);
 	cairo_move_to         (cr, 0, 0);
 	cairo_line_to         (cr, width, 0);
-	cairo_set_source_rgb 	(cr, dark->r, dark->g, dark->b);
+	ge_cairo_set_color  (cr, dark);
 	cairo_stroke          (cr);
 
 	cairo_translate       (cr, 0, 1);
 	cairo_move_to         (cr, 0, 0);
 	cairo_line_to         (cr, width, 0);
-	cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+	ge_cairo_set_color    (cr, &hilight);
 	cairo_stroke          (cr);
 }
 
@@ -1881,11 +1881,11 @@ clearlooks_draw_resize_grip (cairo_t *cr,
 			mx = x_down * dots + (1 - x_down * 2) * lx - x_down;
 			my = y_down * dots + (1 - y_down * 2) * ly - y_down;
 
-			cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+			ge_cairo_set_color (cr, &hilight);
 			cairo_rectangle (cr, mx*3-1, my*3-1, 2, 2);
 			cairo_fill (cr);
 
-			cairo_set_source_rgb (cr, dark->r, dark->g, dark->b);
+			ge_cairo_set_color (cr, dark);
 			cairo_rectangle (cr, mx*3-1, my*3-1, 1, 1);
 			cairo_fill (cr);
 		}

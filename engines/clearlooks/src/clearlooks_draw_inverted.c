@@ -715,7 +715,7 @@ clearlooks_inverted_draw_list_view_header (cairo_t *cr,
 	
 	cairo_line_to (cr, width, 0.5);
 	
-	cairo_set_source_rgb (cr, hilight.r, hilight.g, hilight.b);
+	ge_cairo_set_color (cr, &hilight);
 	cairo_stroke (cr);
 	
 	/* Draw bottom border */
