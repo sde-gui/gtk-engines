@@ -187,7 +187,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		frame.gap_x  = -1;
 		frame.border = &colors->shade[5];
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		params.corners = CR_CORNER_NONE;
+		params.corners = CR_CORNER_ALL;
 		
 		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame, x, y, width, height);
 	}
@@ -223,9 +223,82 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		params.corners = CR_CORNER_NONE;
+		/* Modified from Aurora Engine
+		*** 
+		We need to fix the clip problem on first tab and rounded corners
+		Last Active tab could be buggied if the tabs cover more space then the notebook width
+		***
+		*/
+		int current_page = gtk_notebook_get_current_page ((GtkNotebook *) widget);
+		int num_pages = gtk_notebook_get_n_pages ((GtkNotebook *) widget);
+
+		if (frame.gap_side == CL_GAP_TOP) {
+			if ((current_page == 0) && (num_pages - 1 == 0)) {
+				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT;
+			}
+			else if (current_page == 0) {
+				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPRIGHT;
+			}
+			else if (current_page == num_pages - 1) {
+				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT;
+				/* params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPLEFT; */
+			}
+			else {
+				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPRIGHT;
+				/* params.corners = CR_CORNER_ALL; */
+			}
+		}
+		else if (frame.gap_side == CL_GAP_BOTTOM) {
+			if ((current_page == 0) && (num_pages - 1 == 0)) {
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT;
+			}
+			else if (current_page == 0) {
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT;
+			}
+			else if (current_page == num_pages - 1) {
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT;
+				/* params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT; */
+			}
+			else {
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT;
+				/* params.corners = CR_CORNER_ALL; */
+			}
+		}
+		else if (frame.gap_side == CL_GAP_LEFT) {
+			if ((current_page == 0) && (num_pages - 1 == 0)) {
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+			}
+			else if (current_page == 0) {
+				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+			}
+			else if (current_page == num_pages - 1) {
+				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_TOPRIGHT;
+				/* params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT; */
+			}
+			else {
+				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+				/* params.corners = CR_CORNER_ALL; */
+			}
+		}
+		else {
+			if ((current_page == 0) && (num_pages - 1 == 0)) {
+				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
+			}
+			else if (current_page == 0) {
+				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT;
+			}
+			else if (current_page == num_pages - 1) {
+				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPLEFT;
+				/* params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT; */
+			}
+			else {
+				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT;
+				/* params.corners = CR_CORNER_ALL; */
+			}
+		}
+
 		/* Fill the background with bg[NORMAL] */
-		cairo_rectangle (cr, x, y, width, height);
+		ge_cairo_rounded_rectangle (cr, x, y, width, height, params.radius, params.corners);
 		ge_cairo_set_color (cr, &colors->bg[GTK_STATE_NORMAL]);
 		cairo_fill (cr);
 		
@@ -966,7 +1039,7 @@ clearlooks_style_draw_shadow_gap (DRAW_ARGS,
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		params.corners = CR_CORNER_NONE;
+		params.corners = CR_CORNER_ALL;
 		
 		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
 		                       x, y, width, height);
