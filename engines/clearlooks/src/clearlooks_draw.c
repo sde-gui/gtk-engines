@@ -73,7 +73,7 @@ static void
 clearlooks_draw_shadow (cairo_t *cr, const ClearlooksColors *colors, gfloat radius, int width, int height)
 {
 	CairoColor shadow; 
-	ge_shade_color (&colors->shade[6], 0.925, &shadow);
+	ge_shade_color (&colors->shade[6], 0.92, &shadow);
 
 	cairo_set_line_width (cr, 1.0);
 	
@@ -124,7 +124,7 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 	double y = 1.0;
 
 	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 1.06, &hilight);
-	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 0.96, &shadow);
+	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 0.94, &shadow);
 
 	width  -= 3;
 	height -= 3;

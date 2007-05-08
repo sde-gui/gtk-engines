@@ -1072,10 +1072,10 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 		separator.horizontal = FALSE;
 		
 		if (params->ltr)
-			params->style_functions->draw_separator (cr, &colors->shade[4], params, &separator,
+			params->style_functions->draw_separator (cr, &colors->shade[3], params, &separator,
 			                                         width-1.5, 4.0, 2, height-8.0);
 		else
-			params->style_functions->draw_separator (cr, &colors->shade[4], params, &separator,
+			params->style_functions->draw_separator (cr, &colors->shade[3], params, &separator,
 			                                         1.5, 4.0, 2, height-8.0);
 	}
 }
