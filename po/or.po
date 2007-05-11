@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: or\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-05-10 03:39+0100\n"
-"PO-Revision-Date: 2007-05-11 11:12+0530\n"
+"PO-Revision-Date: 2007-05-11 11:57+0530\n"
 "Last-Translator: Subhransu Behera <arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,43 +36,43 @@ msgstr "ଆଲୋକ ପ୍ରଦର୍ଶନର ପ୍ରଭେଦ ମାତ୍
 
 #: ../schema/clearlooks.xml.in.in.h:5
 msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr ""
+msgstr "ଅବସ୍ଥିତି ପଟି, ରେଡିଓ -, ଏବଂ ଚିହ୍ନିତ ବଟନ ମାନଙ୍କରେ ଜୀବନାୟନକୁ ସକ୍ରିୟ କରନ୍ତୁ"
 
 #: ../schema/clearlooks.xml.in.in.h:6
 msgid "Flat"
-msgstr ""
+msgstr "ସମତଳ"
 
 #: ../schema/clearlooks.xml.in.in.h:7
 msgid "Menubar Style"
-msgstr ""
+msgstr "ତାଲିକା ପଟି ଶୈଳୀ"
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Scrollbar Color"
-msgstr ""
+msgstr "ଦୃଶ୍ଯବଦଳା ପଟି ରଙ୍ଗ"
 
 #: ../schema/clearlooks.xml.in.in.h:9
 msgid "Sets the Color of Scrollbars"
-msgstr ""
+msgstr "ଦୃଶ୍ଯବଦଳା ପଟି ମାନଙ୍କର ରଙ୍ଗ ବିନ୍ଯାସ କରନ୍ତୁ"
 
 #: ../schema/hc.xml.in.in.h:1
 msgid "Cell Indicator Size"
-msgstr ""
+msgstr "କୋଷ ସୂଚକ ଆକାର"
 
 #: ../schema/hc.xml.in.in.h:2
 msgid "Edge Thickness"
-msgstr ""
+msgstr "ଧାର ମୋଟାଇ"
 
 #: ../schema/hc.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr ""
+msgstr "ବୃକ୍ଷ ପ୍ରଦର୍ଶନ ମାନଙ୍କ ମଧ୍ଯରେ ଚିହ୍ନିତ- ଏବଂ ରେଡିଓ ବଟନ ମାନଙ୍କର ଆକାର। (ତୃଟି #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
-msgstr ""
+msgstr "ବିନ୍ଯାସ କରାଯାଇଥିଲେ, ବଟନ କୋଣ ଗୁଡିକ ଗୋଲାକାର ହୋଇଥିବେ।"
 
 #: ../schema/industrial.xml.in.in.h:3
 msgid "Rounded Buttons"
-msgstr ""
+msgstr "ଗୋଲାକାର ବଟନ"
 
 #: ../schema/thinice.xml.in.in.h:1
 msgid "Arrow"
@@ -84,31 +84,31 @@ msgstr "ବିନ୍ଦୁ"
 
 #: ../schema/thinice.xml.in.in.h:3
 msgid "Full"
-msgstr ""
+msgstr "ପୂର୍ଣ୍ଣ"
 
 #: ../schema/thinice.xml.in.in.h:4
 msgid "Handlebox Marks"
-msgstr ""
+msgstr "ନିୟନ୍ତ୍ରଣ ବାକ୍ସ ସୂଚକ"
 
 #: ../schema/thinice.xml.in.in.h:5
 msgid "Inverted Dot"
-msgstr ""
+msgstr "ଓଲଟା ବିନ୍ଦୁ"
 
 #: ../schema/thinice.xml.in.in.h:6
 msgid "Inverted Slash"
-msgstr ""
+msgstr "ଓଲଟା ସ୍ଲାଶ"
 
 #: ../schema/thinice.xml.in.in.h:7
 msgid "Mark Type 1"
-msgstr ""
+msgstr "ସୂଚକ ପ୍ରକାର ୧"
 
 #: ../schema/thinice.xml.in.in.h:8
 msgid "Mark Type for Scrollbar Buttons"
-msgstr ""
+msgstr "ଦୃଶ୍ଯବଦଳା ବଟନ ପାଇଁ ସୂଚକ ପ୍ରକାର"
 
 #: ../schema/thinice.xml.in.in.h:9
 msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
-msgstr ""
+msgstr "ଦୃଶ୍ଯବଦଳା ନିୟନ୍ତ୍ରଣ, ନିୟନ୍ତ୍ରଣ ବାକ୍ସ, ଇତ୍ଯାଦି ମାନଙ୍କ ପାଇଁ ପ୍ରକାର ସୂଚୀତ କରନ୍ତୁ"
 
 #: ../schema/thinice.xml.in.in.h:10
 msgid "None"
@@ -116,31 +116,31 @@ msgstr "କିଛି ନୁହେଁ"
 
 #: ../schema/thinice.xml.in.in.h:11
 msgid "Nothing"
-msgstr ""
+msgstr "କିଛି ନୁହେଁ"
 
 #: ../schema/thinice.xml.in.in.h:12
 msgid "Paned Dots"
-msgstr ""
+msgstr "ଆଚ୍ଛାଦିତ ବିନ୍ଦୁ"
 
 #: ../schema/thinice.xml.in.in.h:13
 msgid "Rectangle"
-msgstr ""
+msgstr "ଆୟତାକାର"
 
 #: ../schema/thinice.xml.in.in.h:14
 msgid "Scrollbar Marks"
-msgstr ""
+msgstr "ଦୃଶ୍ଯବଦଳା ପଟି ସୂଚକ"
 
 #: ../schema/thinice.xml.in.in.h:15
 msgid "Scrollbar Type"
-msgstr ""
+msgstr "ଦୃଶ୍ଯବଦଳା ପଟି ପ୍ରକାର"
 
 #: ../schema/thinice.xml.in.in.h:16
 msgid "Scrollbutton Marks"
-msgstr ""
+msgstr "ଦୃଶ୍ଯବଦଳା ବଟନ ସୂଚକ"
 
 #: ../schema/thinice.xml.in.in.h:17
 msgid "Shaped"
-msgstr ""
+msgstr "ନିର୍ଦ୍ଦିଷ୍ଟ ଆକାର ବିଶିଷ୍ଟ"
 
 #: ../schema/thinice.xml.in.in.h:18
 msgid "Slash"
