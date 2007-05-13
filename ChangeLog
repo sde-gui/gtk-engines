@@ -1,3 +1,54 @@
+2007-05-13  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/Makefile.am:
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_entry), (clearlooks_draw_statusbar):
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_draw_glossy_gradient), (clearlooks_glossy_draw_inset),
+	(clearlooks_glossy_draw_button),
+	(clearlooks_glossy_draw_progressbar_fill),
+	(clearlooks_glossy_draw_tab),
+	(clearlooks_glossy_draw_list_view_header),
+	(clearlooks_glossy_draw_menuitem),
+	(clearlooks_glossy_draw_menubaritem),
+	(clearlooks_glossy_draw_selected_cell):
+	Improvements in glossy:
+	Glossy inactive tabs
+	Less glassy listview headers
+	Small fixes
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_draw_gummy_gradient), (clearlooks_set_mixed_color),
+	(clearlooks_gummy_draw_highlight_and_shade),
+	(clearlooks_gummy_draw_button), (clearlooks_gummy_draw_entry),
+	(clearlooks_gummy_draw_progressbar_trough),
+	(clearlooks_gummy_draw_progressbar_fill),
+	(clearlooks_gummy_scale_draw_gradient),
+	(clearlooks_gummy_draw_scale_trough), (clearlooks_gummy_draw_tab),
+	(clearlooks_gummy_draw_separator), (clearlooks_gummy_draw_slider),
+	(clearlooks_gummy_draw_slider_button),
+	(clearlooks_gummy_draw_scrollbar_stepper),
+	(clearlooks_gummy_draw_scrollbar_slider),
+	(clearlooks_gummy_draw_list_view_header),
+	(clearlooks_gummy_draw_toolbar), (clearlooks_gummy_draw_menuitem),
+	(clearlooks_gummy_draw_menubaritem),
+	(clearlooks_gummy_draw_selected_cell),
+	(clearlooks_gummy_draw_statusbar),
+	(clearlooks_gummy_draw_radiobutton),
+	(clearlooks_gummy_draw_checkbox),
+	(clearlooks_register_style_gummy):
+	New "Gummy" style
+	
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_tab):
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_gtk2_rc_parse_style):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_flat_box), (clearlooks_style_draw_box),
+	(clearlooks_style_draw_slider), (clearlooks_style_class_init):
+	* engines/clearlooks/src/clearlooks_types.h:
+	Other fixes and more order in the code
+
 2007-05-09  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

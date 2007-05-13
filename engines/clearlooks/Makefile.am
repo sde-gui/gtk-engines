@@ -20,6 +20,7 @@ libclearlooks_la_SOURCES =		\
 	./src/clearlooks_draw.c		\
 	./src/clearlooks_draw_glossy.c	\
 	./src/clearlooks_draw_inverted.c	\
+	./src/clearlooks_draw_gummy.c	\
 	./src/clearlooks_draw.h		\
 	./src/clearlooks_types.h	\
 	./src/config.h

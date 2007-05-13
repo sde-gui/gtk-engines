@@ -30,6 +30,7 @@
 
 #include <cairo.h>
 
+
 static void
 clearlooks_draw_top_left_highlight (cairo_t *cr,
                  							const CairoColor *color,
@@ -495,7 +496,6 @@ clearlooks_inverted_draw_tab (cairo_t *cr,
 		                                     height, radius);*/
 	}
 	
-
 	if (params->active)
 	{
 		pattern = cairo_pattern_create_linear ( tab->gap_side == CL_GAP_LEFT   ? width-1  : 0,
@@ -989,16 +989,16 @@ clearlooks_inverted_draw_selected_cell (cairo_t                  *cr,
 void
 clearlooks_register_style_inverted (ClearlooksStyleFunctions *functions)
 {
-	functions->draw_button        		= clearlooks_inverted_draw_button;
-	functions->draw_slider     				= clearlooks_inverted_draw_slider;
+	functions->draw_button            = clearlooks_inverted_draw_button;
+	functions->draw_slider            = clearlooks_inverted_draw_slider;
 	functions->draw_slider_button     = clearlooks_inverted_draw_slider_button;
 	functions->draw_progressbar_fill  = clearlooks_inverted_draw_progressbar_fill;
-	functions->draw_menuitem				  = clearlooks_inverted_draw_menuitem;
-	functions->draw_menubaritem				= clearlooks_inverted_draw_menubaritem;
-	functions->draw_tab								= clearlooks_inverted_draw_tab;
-	functions->draw_list_view_header	= clearlooks_inverted_draw_list_view_header;
+	functions->draw_menuitem          = clearlooks_inverted_draw_menuitem;
+	functions->draw_menubaritem       = clearlooks_inverted_draw_menubaritem;
+	functions->draw_tab               = clearlooks_inverted_draw_tab;
+	functions->draw_list_view_header  = clearlooks_inverted_draw_list_view_header;
 	functions->draw_scrollbar_stepper = clearlooks_inverted_draw_scrollbar_stepper;	
 	functions->draw_scrollbar_slider  = clearlooks_inverted_draw_scrollbar_slider;
-	functions->draw_selected_cell			= clearlooks_inverted_draw_selected_cell;
+	functions->draw_selected_cell     = clearlooks_inverted_draw_selected_cell;
 }
 

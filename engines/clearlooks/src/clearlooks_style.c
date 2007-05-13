@@ -97,7 +97,7 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 
 		cairo_destroy (cr);
 	}
-	else if (CLEARLOOKS_STYLE (style)->style == CL_STYLE_GLOSSY &&
+	else if ((CLEARLOOKS_STYLE (style)->style == CL_STYLE_GLOSSY || CLEARLOOKS_STYLE (style)->style == CL_STYLE_GUMMY) &&
 	         ((DETAIL("checkbutton") || DETAIL("radiobutton")) && state_type == GTK_STATE_PRELIGHT))
 	{
 		/* XXX: Don't draw any check/radiobutton bg in GLOSSY mode. */
@@ -752,6 +752,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		GtkBorder indicator_spacing;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		
+		params.enable_glow = TRUE;
 
 		ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 		
@@ -874,7 +876,7 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 		scrollbar.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 
-		if (clearlooks_style->style == CL_STYLE_GLOSSY)
+		if (clearlooks_style->style == CL_STYLE_GLOSSY || clearlooks_style->style == CL_STYLE_GUMMY)
 		{
 			scrollbar.color = colors->spot[1];
 			scrollbar.has_color = TRUE;
@@ -1564,6 +1566,8 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_GLOSSY]);
 	clearlooks_style_class->style_functions[CL_STYLE_INVERTED] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
 	clearlooks_register_style_inverted (&clearlooks_style_class->style_functions[CL_STYLE_INVERTED]);
+	clearlooks_style_class->style_functions[CL_STYLE_GUMMY] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
+	clearlooks_register_style_gummy (&clearlooks_style_class->style_functions[CL_STYLE_GUMMY]);
 }
 
 GType clearlooks_type_style = 0;
