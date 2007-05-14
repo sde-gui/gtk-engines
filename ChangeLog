@@ -1,5 +1,11 @@
 2007-05-14  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.h:
+	Define clearlooks_register_style_gummy and make it internal. This
+	fixes "make check". This commit is part of the 2.11.0 release.
+
+2007-05-14  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* NEWS:
 	* configure.ac:
 	Update for the 2.11.0 release.
