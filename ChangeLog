@@ -1,5 +1,10 @@
 2007-05-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* test/Makefile.am:
+	Forgot to add the clearlooks-gummy rc file to the list.
+
+2007-05-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/smooth/src/engine/smooth_gtk2_misc.c:
 	(smooth_gtk_button_get_props):
 	* engines/support/widget-information.c: (ge_option_menu_get_props),
