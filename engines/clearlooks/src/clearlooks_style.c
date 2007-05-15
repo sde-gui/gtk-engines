@@ -214,6 +214,7 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 	{
 		WidgetParameters params;
 		FrameParameters  frame;
+		int current_page, num_pages;
 		
 		frame.shadow    = shadow_type;
 		frame.gap_side  = gap_side;
@@ -229,8 +230,8 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		Last Active tab could be buggied if the tabs cover more space then the notebook width
 		***
 		*/
-		int current_page = gtk_notebook_get_current_page ((GtkNotebook *) widget);
-		int num_pages = gtk_notebook_get_n_pages ((GtkNotebook *) widget);
+		current_page = gtk_notebook_get_current_page ((GtkNotebook *) widget);
+		num_pages = gtk_notebook_get_n_pages ((GtkNotebook *) widget);
 
 		if (frame.gap_side == CL_GAP_TOP) {
 			if ((current_page == 0) && (num_pages - 1 == 0)) {
@@ -908,11 +909,11 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	const ClearlooksColors *colors;
 	WidgetParameters params;
 	CheckboxParameters checkbox;
+	cairo_t *cr;
 	
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	cairo_t *cr;
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	colors = &clearlooks_style->colors;
 	
@@ -1424,11 +1425,10 @@ clearlooks_style_draw_layout (GtkStyle * style,
     ClearlooksColors *colors = &clearlooks_style->colors;
 
     WidgetParameters params;
-
-    clearlooks_set_widget_parameters (widget, style, state_type, &params);
-
     GdkColor etched;
     CairoColor temp;
+
+    clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
     if (GTK_WIDGET_NO_WINDOW (widget))
       ge_shade_color (&params.parentbg, 1.2, &temp);

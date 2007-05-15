@@ -917,6 +917,7 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t *cr,
 	CairoColor  hilight;
 	CairoColor  shade1, shade2, shade3;
 	cairo_pattern_t *pattern;
+	int bar_x, i;
 
 	if (scrollbar->junction & CL_JUNCTION_BEGIN)
 	{
@@ -971,9 +972,8 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t *cr,
 	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 
 	/* Handles */
-	int bar_x = width/2 - 4;
+	bar_x = width/2 - 4;
 	cairo_translate(cr, 0.5, 0.5);
-	int i;
 	ge_cairo_set_color (cr, border);
 	for (i=0; i<3; i++)
 	{

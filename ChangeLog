@@ -1,5 +1,14 @@
 2007-05-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_scrollbar_slider):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box_gap), (clearlooks_style_draw_option),
+	(clearlooks_style_draw_layout):
+	Correct some C89. Bug #438397, patch by Jens Granseuer.
+
+2007-05-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* test/gtkrcs/clearlooks-gummy:
 	Added rc style to torture test Clearlooks' Gummy style.
 
