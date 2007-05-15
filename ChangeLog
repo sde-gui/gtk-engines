@@ -1,5 +1,14 @@
 2007-05-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/smooth/src/engine/smooth_gtk2_misc.c:
+	(smooth_gtk_button_get_props):
+	* engines/support/widget-information.c: (ge_option_menu_get_props),
+	(ge_button_get_default_border):
+	Replace g_free with gtk_border_free and gtk_requisition_free where
+	appropriate. Bug #438456, based on patch by Carlos Garnacho.
+
+2007-05-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_scrollbar_slider):
 	* engines/clearlooks/src/clearlooks_style.c:

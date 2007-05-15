@@ -316,7 +316,7 @@ smooth_gtk_button_get_props (GtkWidget *widget,
       if (tmp_border)
 	{
 	  *default_border = *tmp_border;
-	  g_free (tmp_border);
+	  gtk_border_free (tmp_border);
 	}
       else 
 	{
@@ -337,7 +337,7 @@ smooth_gtk_button_get_props (GtkWidget *widget,
       if (tmp_border)
 	{
 	  *default_outside_border = *tmp_border;
-	  g_free (tmp_border);
+	  gtk_border_free (tmp_border);
 	}
       else 
 	{

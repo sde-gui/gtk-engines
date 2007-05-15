@@ -258,7 +258,7 @@ ge_option_menu_get_props (GtkWidget * widget,
   if (tmp_size)
     {
       *indicator_size = *tmp_size;
-      g_free (tmp_size);
+      gtk_requisition_free (tmp_size);
     }
   else
     *indicator_size = default_size;
@@ -266,7 +266,7 @@ ge_option_menu_get_props (GtkWidget * widget,
   if (tmp_spacing)
     {
       *indicator_spacing = *tmp_spacing;
-      g_free (tmp_spacing);
+      gtk_border_free (tmp_spacing);
     }
   else
     *indicator_spacing = default_spacing;
@@ -285,7 +285,7 @@ ge_button_get_default_border (GtkWidget *widget,
 	if (tmp_border)
 	{
 		*border = *tmp_border;
-		g_free (tmp_border);
+		gtk_border_free (tmp_border);
 	}
 	else
 	{
