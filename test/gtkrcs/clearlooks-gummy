@@ -1,0 +1,9 @@
+
+style "default"
+{
+	engine "clearlooks" {
+		style = GUMMY
+	}
+}
+
+class "GtkWidget" style "default"
