@@ -70,7 +70,7 @@ typedef enum {
 	FUNCTION_OPTION		= 1 << 13,
 	FUNCTION_RESIZE_GRIP	= 1 << 14,
 	FUNCTION_SLIDER		= 1 << 15,
-	FUNCTION_TAB		= 1 << 15,
+	FUNCTION_TAB		= 1 << 16,
 
 	FUNCTION_ALL		= -1
 } FunctionType;

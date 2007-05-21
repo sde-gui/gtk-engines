@@ -1,5 +1,10 @@
 2007-05-21  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* test/torturetest.c:
+	Counting is hard ... fixed a bit field.
+
+2007-05-21  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_focus):
 	Removed the gtk_widget_grab_focus. This fixes tabbing out of a
 	GtkComboBoxEntry.
