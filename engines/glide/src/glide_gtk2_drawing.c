@@ -2280,11 +2280,6 @@ glide_draw_focus(GtkStyle *style,
 			}
 
 			entry = g_object_get_data(G_OBJECT(ge_find_combo_box_widget_parent (widget)), "entry");
-
-			if (GE_IS_WIDGET(entry) && !GTK_WIDGET_HAS_FOCUS(entry))
-			{
-				gtk_widget_grab_focus(entry);
-			}
 		}
 	 	else if (CHECK_DETAIL(detail, "entry") && (GE_IS_SPIN_BUTTON(widget)) )
 		{
