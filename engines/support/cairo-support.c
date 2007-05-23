@@ -128,9 +128,9 @@ ge_gdk_color_to_cairo (const GdkColor *c, CairoColor *cc)
 
 	g_return_if_fail (c && cc);
 
-	r = c->red / 65536.0;
-	g = c->green / 65536.0;
-	b = c->blue / 65536.0;
+	r = c->red / 65535.0;
+	g = c->green / 65535.0;
+	b = c->blue / 65535.0;
 
 	cc->r = r;
 	cc->g = g;
@@ -145,9 +145,9 @@ ge_cairo_color_to_gtk (const CairoColor *cc, GdkColor *c)
 
 	g_return_if_fail (c && cc);
 
-	r = cc->r * 65536.0;
-	g = cc->g * 65536.0;
-	b = cc->b * 65536.0;
+	r = cc->r * 65535.0;
+	g = cc->g * 65535.0;
+	b = cc->b * 65535.0;
 
 	c->red = r;
 	c->green = g;
