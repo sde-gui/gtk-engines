@@ -1,3 +1,4 @@
+#include <math.h>
 #include "general-support.h"
 #include "cairo-support.h"
 
@@ -24,17 +25,17 @@ ge_hsb_from_color (const CairoColor *color,
 	if (red > green)
 	{
 		max = MAX(red, blue);
-		min = MIN(green, blue);      
+		min = MIN(green, blue);
 	}
 	else
 	{
 		max = MAX(green, blue);
-		min = MIN(red, blue);      
+		min = MIN(red, blue);
 	}
   
 	*brightness = (max + min) / 2;
  	
-	if (max == min)
+	if (fabs(max - min) < 0.0001)
 	{
 		*hue = 0;
 		*saturation = 0;
