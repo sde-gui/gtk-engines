@@ -1,0 +1,150 @@
+# translation of gtk-engines to Bengali (India)
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gtk-engines package.
+#
+# Runa Bhattacharjee <runabh@gmail.com>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: gtk-engines\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-28 03:41+0100\n"
+"PO-Revision-Date: 2007-05-28 14:01+0530\n"
+"Last-Translator: Runa Bhattacharjee <runabh@gmail.com>\n"
+"Language-Team: Bengali (India) <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../schema/clearlooks.xml.in.in.h:1
+msgid "3d-ish (button)"
+msgstr "3d-প্রকৃতি (বাটন)"
+
+#: ../schema/clearlooks.xml.in.in.h:2
+msgid "3d-ish (gradient)"
+msgstr "3d-প্রকৃতি (গ্রেডিয়েন্ট)"
+
+#: ../schema/clearlooks.xml.in.in.h:3
+msgid "Animations"
+msgstr "অ্যানিমেশন"
+
+#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+msgid "Contrast"
+msgstr "বৈপরিত্য"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
+msgstr "প্রগ্রেস-বার, রেডিও- ও চেক-বাটনের জন্য অ্যানিমেশন সক্রিয় করুন"
+
+#: ../schema/clearlooks.xml.in.in.h:6
+msgid "Flat"
+msgstr "সমান্তরাল"
+
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Menubar Style"
+msgstr "মেনু-বারের বিন্যাস"
+
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Scrollbar Color"
+msgstr "স্ক্রোল-বারের রং"
+
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Sets the Color of Scrollbars"
+msgstr "স্ক্রোল-বারের রং নির্ধারণ করতে ব্যবহৃত হয়"
+
+#: ../schema/hc.xml.in.in.h:1
+msgid "Cell Indicator Size"
+msgstr "সেল নির্দেশকচিহ্নের মাপ"
+
+#: ../schema/hc.xml.in.in.h:2
+msgid "Edge Thickness"
+msgstr "প্রান্তের প্রস্থ"
+
+#: ../schema/hc.xml.in.in.h:3
+msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
+msgstr "ট্রি-ভিউয়ের অধীন চেক- এবং রেডিও-বাটনের মাপ। (বাগ সংখ্যা #৩৫১৭৬৪)"
+
+#: ../schema/industrial.xml.in.in.h:2
+msgid "If set, button corners are rounded"
+msgstr "নির্ধারিত হলে, বাটনের কোণাগুলি বৃত্তাকার হবে"
+
+#: ../schema/industrial.xml.in.in.h:3
+msgid "Rounded Buttons"
+msgstr "বৃত্তাকার কোণাসহ বাটন"
+
+#: ../schema/thinice.xml.in.in.h:1
+msgid "Arrow"
+msgstr "তীরচিহ্ন"
+
+#: ../schema/thinice.xml.in.in.h:2
+msgid "Dot"
+msgstr "বিন্দু"
+
+#: ../schema/thinice.xml.in.in.h:3
+msgid "Full"
+msgstr "পূর্ণ"
+
+#: ../schema/thinice.xml.in.in.h:4
+msgid "Handlebox Marks"
+msgstr "হ্যান্ডেল-বক্সের চিহ্ন"
+
+#: ../schema/thinice.xml.in.in.h:5
+msgid "Inverted Dot"
+msgstr "বিপরীত বিন্দু"
+
+#: ../schema/thinice.xml.in.in.h:6
+msgid "Inverted Slash"
+msgstr "বিপরীত স্ল্যাশ চিহ্ন"
+
+#: ../schema/thinice.xml.in.in.h:7
+msgid "Mark Type 1"
+msgstr "চিহ্নের ধরন ১"
+
+#: ../schema/thinice.xml.in.in.h:8
+msgid "Mark Type for Scrollbar Buttons"
+msgstr "স্ক্রোল-বার বাটনের চিহ্নের ধরন"
+
+#: ../schema/thinice.xml.in.in.h:9
+msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
+msgstr "স্ক্রোল-বার হ্যান্ডেল, হ্যান্ডেল-বক্স প্রভৃতির চিহ্নের ধরন"
+
+#: ../schema/thinice.xml.in.in.h:10
+msgid "None"
+msgstr "শূণ্য"
+
+#: ../schema/thinice.xml.in.in.h:11
+msgid "Nothing"
+msgstr "কিছু নয়"
+
+#: ../schema/thinice.xml.in.in.h:12
+msgid "Paned Dots"
+msgstr "পেইনের বিন্দু"
+
+#: ../schema/thinice.xml.in.in.h:13
+msgid "Rectangle"
+msgstr "চতুষ্কোণ"
+
+#: ../schema/thinice.xml.in.in.h:14
+msgid "Scrollbar Marks"
+msgstr "স্ক্রোল-বারের চিহ্ন"
+
+#: ../schema/thinice.xml.in.in.h:15
+msgid "Scrollbar Type"
+msgstr "স্ক্রোল-বারের প্রকৃতি"
+
+#: ../schema/thinice.xml.in.in.h:16
+msgid "Scrollbutton Marks"
+msgstr "স্ক্রোল-বাটনের চিহ্ন"
+
+#: ../schema/thinice.xml.in.in.h:17
+msgid "Shaped"
+msgstr "বিন্যাসে"
+
+#: ../schema/thinice.xml.in.in.h:18
+msgid "Slash"
+msgstr "স্ল্যাশচিহ্ন"
+
+#: ../schema/thinice.xml.in.in.h:19
+msgid "Some"
+msgstr "কিছু"
+
