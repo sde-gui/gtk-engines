@@ -9,11 +9,20 @@
 
 typedef enum {
 	WIDGET_NULL,
-	WIDGET_VSCROLLBAR,
-	WIDGET_TOGGLE_BUTTON
+	WIDGET_SCROLLBAR,
+	WIDGET_TOGGLE_BUTTON,
+	WIDGET_STATUS_BAR,
+	WIDGET_TREE_VIEW,
+	WIDGET_TREE_VIEW_HEADER,
+	WIDGET_SCALE,
+	WIDGET_PROGRESS_BAR,
+	WIDGET_MENUBAR,
+	WIDGET_MENUBAR_ITEM,
+	WIDGET_OPTION_MENU,
+	WIDGET_DEFAULT_BUTTON
 } WidgetType;
 
-#define WIDGET_COUNT (WIDGET_TOGGLE_BUTTON+1)
+#define WIDGET_COUNT (WIDGET_DEFAULT_BUTTON+1)
 #define WIDGET_ALL (-1)
 
 
@@ -24,8 +33,17 @@ widget_type_get_type (void)
 	if (type == 0) {
 		static const GEnumValue values[] = {
 			{ WIDGET_NULL, "WIDGET_NULL", "NULL" },
-			{ WIDGET_VSCROLLBAR, "WIDGET_VSCROLLBAR", "GtkVScrollBar" },
+			{ WIDGET_SCROLLBAR, "WIDGET_SCROLLBAR", "GtkScrollBar" },
 			{ WIDGET_TOGGLE_BUTTON, "WIDGET_TOGGLE_BUTTON", "GtkToggleButton" },
+			{ WIDGET_STATUS_BAR, "WIDGET_STATUS_BAR", "GtkStatusBar" },
+			{ WIDGET_TREE_VIEW, "WIDGET_TREE_VIEW", "GtkTreeView" },
+			{ WIDGET_TREE_VIEW_HEADER, "WIDGET_TREE_VIEW_HEADER", "GtkTreeView-header" },
+			{ WIDGET_SCALE, "WIDGET_SCALE", "GtkScale" },
+			{ WIDGET_PROGRESS_BAR, "WIDGET_PROGRESS_BAR", "GtkProgessBar" },
+			{ WIDGET_MENUBAR, "WIDGET_MENUBAR", "GtkMenubar" },
+			{ WIDGET_MENUBAR_ITEM, "WIDGET_MENUBAR_ITEM", "GtkMenubar-item" },
+			{ WIDGET_OPTION_MENU, "WIDGET_OPTION_MENU", "GtkOptionMenu" },
+			{ WIDGET_DEFAULT_BUTTON, "WIDGET_DEFAULT_BUTTON", "GtkButton-has-default" },
 			{ 0, NULL, NULL }
 		};
 	type = g_enum_register_static ("WidgeType", values);
@@ -220,6 +238,155 @@ static Test tests[] = {
 		GDK_WINDOW_EDGE_SOUTH
 	},
 
+
+	/* The above brute force stuff does not hit enough code paths because it always
+	 * passes in a NULL widget. The following rules are more specilized to hit certain
+	 * code paths inside gtk-engines. Anyone forking may need to add own special things. */
+
+	{
+		FUNCTION_FOCUS,
+		WIDGET_DEFAULT_BUTTON,
+		"NULL:button:add-mode:colorwheel_dark:colorwheel_light",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX,
+		WIDGET_DEFAULT_BUTTON,
+		"NULL:button:buttondefault:togglebutton:togglebuttondefault",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX,
+		WIDGET_TOGGLE_BUTTON,
+		"NULL:button:buttondefault:togglebutton:togglebuttondefault",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX,
+		WIDGET_TREE_VIEW_HEADER,
+		"NULL:button:buttondefault",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_SHADOW,
+		WIDGET_STATUS_BAR,
+		"NULL:frame",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX | FUNCTION_SLIDER,
+		WIDGET_SCALE,
+		"NULL:slider:stepper:trough:hscale:vscale",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX | FUNCTION_SLIDER,
+		WIDGET_SCROLLBAR,
+		"NULL:slider:stepper:trough:hscrollbar:vscrollbar",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX,
+		WIDGET_PROGRESS_BAR,
+		"NULL:trough:bar",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX,
+		WIDGET_MENUBAR_ITEM,
+		"NULL:menuitem",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX,
+		WIDGET_OPTION_MENU,
+		"NULL:optionmenu",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX,
+		WIDGET_OPTION_MENU,
+		"NULL:optionmenu",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+
 };
 
 #define ENUM_NEXT(enum_type, ind, target)				\
@@ -341,59 +508,65 @@ static void
 run_functions (Test *test)
 {
 	GtkStyle *style = window->style;
+	GdkWindow *mywindow = window->window;
+	
+	if (widgets[test->widget]) {
+		style = widgets[test->widget]->style;
+		mywindow = widgets[test->widget]->window;
+	}
 	
 	if (test->function & FUNCTION_ARROW)
-		gtk_paint_arrow (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, test->arrow_type, test->fill, 0, 0, 10, 10);
+		gtk_paint_arrow (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, test->arrow_type, test->fill, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_BOX)
-		gtk_paint_box (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_box (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_SHADOW)
-		gtk_paint_shadow (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_shadow (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_BOX_GAP)
-		gtk_paint_box_gap (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side, 0, 100);
+		gtk_paint_box_gap (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side, 0, 100);
 
 	if (test->function & FUNCTION_SHADOW_GAP)
-		gtk_paint_shadow_gap (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side, 0, 100);
+		gtk_paint_shadow_gap (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side, 0, 100);
 
 
 	if (test->function & FUNCTION_CHECK)
-		gtk_paint_check (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_check (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
 		
 	if (test->function & FUNCTION_EXPANDER)
-		gtk_paint_expander (style, window->window, test->state, NULL, widgets[test->widget], test->detail, 10, 10, test->expander_style);
+		gtk_paint_expander (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, 10, 10, test->expander_style);
 
 	if (test->function & FUNCTION_EXTENSION)
-		gtk_paint_extension (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side);
+		gtk_paint_extension (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side);
 
 	if (test->function & FUNCTION_FLAT_BOX)
-		gtk_paint_flat_box (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_flat_box (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_FOCUS)
-		gtk_paint_focus (style, window->window, test->state, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_focus (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_HANDLE)
-		gtk_paint_handle (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->orientation);
+		gtk_paint_handle (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->orientation);
 
 	if (test->function & FUNCTION_OPTION)
-		gtk_paint_option (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_option (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_RESIZE_GRIP)
-		gtk_paint_resize_grip (style, window->window, test->state, NULL, widgets[test->widget], test->detail, test->edge, 0, 0, 10, 10);
+		gtk_paint_resize_grip (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, test->edge, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_SLIDER)
-		gtk_paint_slider (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->orientation);
+		gtk_paint_slider (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->orientation);
 
 	if (test->function & FUNCTION_TAB)
-		gtk_paint_tab (style, window->window, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_tab (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 
 	if (test->function & FUNCTION_HLINE)
-		gtk_paint_hline (style, window->window, test->state, NULL, widgets[test->widget], test->detail, 1, 10, 4);
+		gtk_paint_hline (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, 1, 10, 4);
 
 	if (test->function & FUNCTION_VLINE)
-		gtk_paint_vline (style, window->window, test->state, NULL, widgets[test->widget], test->detail, 1, 10, 4);
+		gtk_paint_vline (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, 1, 10, 4);
 }
 
 static void
@@ -412,8 +585,45 @@ run_test (gint test)
 static void
 create_testwidgets ()
 {
-	widgets[WIDGET_VSCROLLBAR] = gtk_vscrollbar_new (NULL);
+	GtkWidget *treeview;
+	GtkListStore *store;
+	GtkCellRenderer *renderer;
+	
+	widgets[WIDGET_NULL] = NULL;
+	widgets[WIDGET_SCROLLBAR] = gtk_vscrollbar_new (NULL);
 	widgets[WIDGET_TOGGLE_BUTTON] = gtk_toggle_button_new_with_label ("blah");
+	widgets[WIDGET_STATUS_BAR] = gtk_statusbar_new ();
+
+
+	treeview = gtk_tree_view_new ();
+	
+	/* set up the treeview */
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
+	                                             -1, "Column1", renderer,  
+	                                             "text", 0, NULL);
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
+	                                             -1, "Column2", renderer,  
+	                                             "text", 0, NULL);
+	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (store));
+
+	widgets[WIDGET_TREE_VIEW] = treeview;
+	/* lets abuse the private API ... */
+	widgets[WIDGET_TREE_VIEW_HEADER] = gtk_tree_view_get_column (GTK_TREE_VIEW (treeview), 0)->button;
+	
+	
+	widgets[WIDGET_SCALE] = gtk_hscale_new_with_range (0, 1, 0.1);
+	widgets[WIDGET_PROGRESS_BAR] = gtk_progress_bar_new ();
+	widgets[WIDGET_MENUBAR] = gtk_menu_bar_new ();
+	widgets[WIDGET_MENUBAR_ITEM] = gtk_menu_item_new_with_label ("blah");
+	gtk_menu_shell_append (GTK_MENU_SHELL (widgets[WIDGET_MENUBAR]), widgets[WIDGET_MENUBAR_ITEM]);
+	widgets[WIDGET_OPTION_MENU] = gtk_option_menu_new ();
+	widgets[WIDGET_DEFAULT_BUTTON] = gtk_button_new_with_label ("blah");
+	/* nasty but *shrug* */
+	GTK_WIDGET_SET_FLAGS(widgets[WIDGET_DEFAULT_BUTTON], GTK_CAN_DEFAULT);
+	GTK_WIDGET_SET_FLAGS(widgets[WIDGET_DEFAULT_BUTTON], GTK_HAS_DEFAULT);
 }
 
 int
@@ -429,16 +639,19 @@ main (int argc, char **argv)
         g_object_set (settings, "gtk-theme-name", "Raleigh", NULL);
         
 	create_testwidgets ();
-	
+
 	window = gtk_window_new (GTK_WINDOW_POPUP);
 	box = gtk_hbox_new (FALSE, 0);
 	
 	gtk_container_add ((GtkContainer*)window, box);
 	
 	for (i = 0; i < WIDGET_COUNT; i++) {
-		if (widgets[i])
+		if (widgets[i] && !widgets[i]->parent)
 			gtk_box_pack_end (GTK_BOX (box), widgets[i], FALSE, FALSE, 0);
 	}
+
+	while (gdk_events_pending ())
+		gtk_main_iteration_do (FALSE);
 	
 	gtk_widget_show_all (window);
 	while (gdk_events_pending ())

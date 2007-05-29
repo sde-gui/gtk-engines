@@ -30,7 +30,8 @@ torturetest_LDFLAGS = $(GTK_LIBS)
 # Setup enviroment variables for GTK+
 # ie. add $(top_builddir)/tests to the module searchpath, so that GTK+ finds
 # the engines in tests/engines
-TESTS_ENVIRONMENT=GTK_PATH="."
+# Also set the debug-blocks debugging of g_slice, will be overridden during the valgrind test.
+TESTS_ENVIRONMENT=GTK_PATH="." G_SLICE=debug-blocks
 
 VALGRIND_COMMAND=valgrind --leak-resolution=high --leak-check=full --suppressions=$(srcdir)/valgrind-suppressions --num-callers=20 --log-file-exactly=valgrind-logs/THEME
 # set some flags to make glib more valgrind friendly
