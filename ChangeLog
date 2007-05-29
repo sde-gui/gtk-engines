@@ -1,5 +1,10 @@
 2007-05-29  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* test/valgrind-suppressions:
+	Some more suppressions.
+
+2007-05-29  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* test/*:
 	Improved test coverage, and now also running with
 	G_SLICE=debug-blocks. It now is able to find eg. bug #438456.

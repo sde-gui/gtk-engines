@@ -17,12 +17,8 @@
    Memcheck:Param
    write(buf)
    fun:*write*
-   fun:_X11TransWrite
-   obj:/usr/lib/libX11.so.6.2.0
-   fun:_XEventsQueued
-   fun:XPending
-   fun:_gdk_events_queue
-   fun:gdk_event_dispatch
+   fun:_X11TransWrite*
+   obj:/usr/lib/libX11.so*
 }
 {
    Some home directory stuff, happens when loading the engine
@@ -40,15 +36,12 @@
    pango/fc leak
    Memcheck:Leak
    fun:*alloc
-   fun:FcPatternObjectInsertElt
-   fun:FcPatternObjectAddWithBinding
-   fun:FcPatternObjectAdd
-   fun:FcFontRenderPrepare
-   fun:pango_fc_font_map_load_fontset
-   fun:pango_font_map_load_fontset
-   fun:itemize_state_process_run
-   fun:pango_itemize_with_base_dir
-   fun:pango_layout_check_lines
-   fun:pango_layout_get_extents_internal
-   fun:gtk_label_size_request
+   fun:FcPatternObject*
+}
+{
+   pango/fc leak
+   Memcheck:Leak
+   fun:*alloc
+   fun:FcConfigValues*
+   fun:FcConfigSubstituteWithPat
 }
