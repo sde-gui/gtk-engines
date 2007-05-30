@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-06 03:41+0100\n"
+"POT-Creation-Date: 2007-04-10 21:58+0100\n"
 "PO-Revision-Date: 2007-04-06 15:21+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -68,7 +68,7 @@ msgstr ""
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
-msgstr ""
+msgstr "Määramise korral on nuppude nurgad ümarad"
 
 #: ../schema/industrial.xml.in.in.h:3
 msgid "Rounded Buttons"
@@ -112,7 +112,7 @@ msgstr ""
 
 #: ../schema/thinice.xml.in.in.h:10
 msgid "None"
-msgstr ""
+msgstr "Puudub"
 
 #: ../schema/thinice.xml.in.in.h:11
 msgid "Nothing"
@@ -132,7 +132,7 @@ msgstr ""
 
 #: ../schema/thinice.xml.in.in.h:15
 msgid "Scrollbar Type"
-msgstr ""
+msgstr "Kerimisriba liik"
 
 #: ../schema/thinice.xml.in.in.h:16
 msgid "Scrollbutton Marks"
