@@ -1228,20 +1228,6 @@ clearlooks_style_realize (GtkStyle * style)
 }
 
 static void
-gdk_cairo_set_source_color_alpha (cairo_t  *cr,
-                GdkColor *color, float alpha)
-{
-  g_return_if_fail (cr != NULL);
-  g_return_if_fail (color != NULL);
-
-  cairo_set_source_rgba (cr,
-            color->red / 65535.,
-            color->green / 65535.,
-            color->blue / 65535.,
-	        alpha);
-}
-
-static void
 clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
             GdkRectangle *area, GtkWidget *widget, const gchar *detail,
             gint x, gint y, gint width, gint height)
@@ -1280,8 +1266,8 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	else if (detail && !strcmp (detail, "colorwheel_dark"))
 		cairo_set_source_rgb (cr, 1., 1., 1.);
 	else
-		gdk_cairo_set_source_color_alpha (cr, &style->fg[state_type],
-						  0.7);
+		ge_cairo_set_gdk_color_with_alpha (cr, &style->fg[state_type],
+						       0.7);
 
 	cairo_set_line_width (cr, line_width);
 

@@ -264,6 +264,17 @@ ge_cairo_set_color (cairo_t *cr, const CairoColor *color)
 	cairo_set_source_rgba (cr, color->r, color->g, color->b, color->a);	
 }
 
+void
+ge_cairo_set_gdk_color_with_alpha (cairo_t *cr, const GdkColor *color, gdouble alpha)
+{
+	g_return_if_fail (cr && color);
+
+	cairo_set_source_rgba (cr, color->red / 65535.0,
+	                           color->green / 65535.0,
+	                           color->blue / 65535.0,
+	                           alpha);
+}
+
 void 
 ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, 
 						gfloat offset, 
