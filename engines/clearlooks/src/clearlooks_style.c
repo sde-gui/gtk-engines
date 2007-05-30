@@ -395,8 +395,12 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		/* Is this ever true? -Daniel */
 		if (GE_IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
+			ToolbarParameters toolbar;
+
+			clearlooks_set_toolbar_parameters (&toolbar, widget);
+
 			cairo_save (cr);
-			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, x, y, width, height);
+			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
 			cairo_restore (cr);
 		}
 		
@@ -427,8 +431,12 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		/* Is this ever true? -Daniel */
 		if (GE_IS_TOOLBAR (widget) && shadow_type != GTK_SHADOW_NONE)
 		{
+			ToolbarParameters toolbar;
+
+			clearlooks_set_toolbar_parameters (&toolbar, widget);
+
 			cairo_save (cr);
-			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, x, y, width, height);
+			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
 			cairo_restore (cr);
 		}
 		
@@ -811,9 +819,15 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
+		WidgetParameters  params;
+		ToolbarParameters toolbar;
+
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		clearlooks_set_toolbar_parameters (&toolbar, widget);
+
 		/* Only draw the shadows on horizontal toolbars */
 		if (shadow_type != GTK_SHADOW_NONE && height < 2*width )
-			STYLE_FUNCTION(draw_toolbar) (cr, colors, NULL, x, y, width, height);
+			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
 	}
 	else if (DETAIL ("trough"))
 	{

@@ -1,5 +1,25 @@
 2007-05-30  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_toolbar):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_toolbar):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_handle), (clearlooks_style_draw_box):
+	* engines/clearlooks/src/clearlooks_types.h:
+	* engines/clearlooks/src/support.c:
+	(clearlooks_set_toolbar_parameters):
+	* engines/clearlooks/src/support.h:
+	Added a parameter for the toolbar drawing and detection whether
+	there is any other widget on top of it in the window.
+
+	* test/torturetest.c: (widget_type_get_type), (create_testwidgets),
+	(main):
+	Add a toolbar to the tested widgets. Hopefully testing the new code
+	to some extend.
+
+2007-05-30  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* README:
 	Reworked the README file.
 

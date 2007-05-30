@@ -19,6 +19,7 @@ typedef enum {
 	WIDGET_MENUBAR,
 	WIDGET_MENUBAR_ITEM,
 	WIDGET_OPTION_MENU,
+	WIDGET_TOOLBAR,
 	WIDGET_DEFAULT_BUTTON
 } WidgetType;
 
@@ -43,6 +44,7 @@ widget_type_get_type (void)
 			{ WIDGET_MENUBAR, "WIDGET_MENUBAR", "GtkMenubar" },
 			{ WIDGET_MENUBAR_ITEM, "WIDGET_MENUBAR_ITEM", "GtkMenubar-item" },
 			{ WIDGET_OPTION_MENU, "WIDGET_OPTION_MENU", "GtkOptionMenu" },
+			{ WIDGET_TOOLBAR, "WIDGET_TOOLBAR", "GtkToolbar" },
 			{ WIDGET_DEFAULT_BUTTON, "WIDGET_DEFAULT_BUTTON", "GtkButton-has-default" },
 			{ 0, NULL, NULL }
 		};
@@ -386,6 +388,19 @@ static Test tests[] = {
 		GTK_EXPANDER_EXPANDED,
 		GDK_WINDOW_EDGE_SOUTH
 	},
+	{
+		FUNCTION_BOX,
+		WIDGET_TOOLBAR,
+		"NULL:toolbar:handle",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_SIDE_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
 
 };
 
@@ -620,6 +635,7 @@ create_testwidgets ()
 	widgets[WIDGET_MENUBAR_ITEM] = gtk_menu_item_new_with_label ("blah");
 	gtk_menu_shell_append (GTK_MENU_SHELL (widgets[WIDGET_MENUBAR]), widgets[WIDGET_MENUBAR_ITEM]);
 	widgets[WIDGET_OPTION_MENU] = gtk_option_menu_new ();
+	widgets[WIDGET_TOOLBAR] = gtk_toolbar_new ();
 	widgets[WIDGET_DEFAULT_BUTTON] = gtk_button_new_with_label ("blah");
 	/* nasty but *shrug* */
 	GTK_WIDGET_SET_FLAGS(widgets[WIDGET_DEFAULT_BUTTON], GTK_CAN_DEFAULT);
@@ -641,7 +657,7 @@ main (int argc, char **argv)
 	create_testwidgets ();
 
 	window = gtk_window_new (GTK_WINDOW_POPUP);
-	box = gtk_hbox_new (FALSE, 0);
+	box = gtk_vbox_new (FALSE, 0);
 	
 	gtk_container_add ((GtkContainer*)window, box);
 	

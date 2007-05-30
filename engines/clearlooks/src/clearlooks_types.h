@@ -244,6 +244,11 @@ typedef struct
 	ClearlooksDirection direction;
 } ArrowParameters;
 
+typedef struct
+{
+	boolean  topmost;
+} ToolbarParameters;
+
 struct _ClearlooksStyleFunctions
 {
 	void (*draw_button)           (cairo_t				*cr,
@@ -332,6 +337,7 @@ struct _ClearlooksStyleFunctions
 	void (*draw_toolbar)          (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
+	                               const ToolbarParameters          *toolbar,
 	                               int x, int y, int width, int height);
 
 	void (*draw_menuitem)         (cairo_t				*cr,

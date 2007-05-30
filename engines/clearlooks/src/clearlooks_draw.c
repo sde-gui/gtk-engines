@@ -1363,6 +1363,7 @@ static void
 clearlooks_draw_toolbar (cairo_t *cr,
                          const ClearlooksColors          *colors,
                          const WidgetParameters          *widget,
+                         const ToolbarParameters         *toolbar,
                          int x, int y, int width, int height)
 {
 	const CairoColor *fill  = &colors->bg[GTK_STATE_NORMAL];
