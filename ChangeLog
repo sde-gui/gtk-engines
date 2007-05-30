@@ -1,5 +1,10 @@
 2007-05-30  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* README:
+	Reworked the README file.
+
+2007-05-30  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_focus):
 	* engines/support/cairo-support.c:
