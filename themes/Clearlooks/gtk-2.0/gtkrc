@@ -58,6 +58,7 @@ style "clearlooks-default"
   engine "clearlooks" 
   {
     #scrollbar_color   = "#76acde"
+    colorize_scrollbar = FALSE
     menubarstyle      = 2       # 0 = flat, 1 = sunken, 2 = flat gradient
     animation         = FALSE
     style             = CLASSIC

@@ -998,10 +998,12 @@ clearlooks_glossy_draw_scrollbar_slider (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
-	ge_cairo_stroke_rectangle (cr, 1.5, 1.5, width-3, height-3);
+	if (scrollbar->has_color) {
+		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
+		ge_cairo_stroke_rectangle (cr, 1.5, 1.5, width-3, height-3);
+	}
 
-	clearlooks_set_mixed_color (cr, border, &fill, 0.4);
+	clearlooks_set_mixed_color (cr, border, &fill, scrollbar->has_color? 0.4 : 0.2);
 	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);	
 }
 

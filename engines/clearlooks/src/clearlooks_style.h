@@ -51,6 +51,7 @@ struct _ClearlooksStyle
 	
 	guint8   menubarstyle;
 	GdkColor scrollbar_color;
+	gboolean colorize_scrollbar;
 	gboolean has_scrollbar_color;
 	gboolean animation;
 	gfloat   radius;

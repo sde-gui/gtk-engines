@@ -1,5 +1,25 @@
 2007-05-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_scrollbar_slider):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_scrollbar_slider):
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init), (clearlooks_rc_style_parse),
+	(clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_slider), (clearlooks_style_init_from_rc),
+	(clearlooks_style_copy):
+	* engines/clearlooks/src/clearlooks_style.h:
+	Add an option, colorize_scrollbar, for use bg[SELECTED] to 
+	colorize the slider
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Add colorize_scrollbar = FALSE to the gtkrc
+
+2007-05-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Colorized nautilus-extra-widget using symbolic colors
 	

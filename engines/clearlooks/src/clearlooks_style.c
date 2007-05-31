@@ -891,18 +891,21 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 		scrollbar.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 
-		if (clearlooks_style->style == CL_STYLE_GLOSSY || clearlooks_style->style == CL_STYLE_GUMMY)
-		{
+		if (clearlooks_style->colorize_scrollbar) {
 			scrollbar.color = colors->spot[1];
 			scrollbar.has_color = TRUE;
 		}
 
-		/* Set scrollbar color also for Glossy */
+		/* Set scrollbar color */
 		if (clearlooks_style->has_scrollbar_color)
 		{
 			ge_gdk_color_to_cairo (&clearlooks_style->scrollbar_color, &scrollbar.color);
 			scrollbar.has_color = TRUE;
 		}
+
+		if ((clearlooks_style->style == CL_STYLE_GLOSSY || clearlooks_style->style == CL_STYLE_GUMMY)
+			&& !scrollbar.has_color)
+			scrollbar.color = colors->bg[0];
 		
 		STYLE_FUNCTION(draw_scrollbar_slider) (cr, colors, &params, &scrollbar,
 		                                       x, y, width, height);
@@ -1197,6 +1200,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_SCROLLBAR_COLOR;
+	clearlooks_style->colorize_scrollbar = CLEARLOOKS_RC_STYLE (rc_style)->colorize_scrollbar;
 	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	clearlooks_style->radius            = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
 
@@ -1339,6 +1343,7 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	cl_style->menubarstyle        = cl_src->menubarstyle;
 	cl_style->scrollbar_color     = cl_src->scrollbar_color;
 	cl_style->has_scrollbar_color = cl_src->has_scrollbar_color;
+	cl_style->colorize_scrollbar  = cl_src->colorize_scrollbar;
 	cl_style->animation           = cl_src->animation;
 	cl_style->radius              = cl_src->radius;
 	cl_style->style               = cl_src->style;

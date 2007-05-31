@@ -47,6 +47,7 @@ GType clearlooks_type_rc_style = 0;
 enum
 {
   TOKEN_SCROLLBARCOLOR = G_TOKEN_LAST + 1,
+  TOKEN_COLORIZESCROLLBAR,
   TOKEN_CONTRAST,
   TOKEN_SUNKENMENU,
   TOKEN_PROGRESSBARSTYLE,
@@ -73,24 +74,25 @@ static struct
   }
 clearlooks_gtk2_rc_symbols[] =
 {
-  { "scrollbar_color",   TOKEN_SCROLLBARCOLOR  },
-  { "contrast", 		 TOKEN_CONTRAST  },
-  { "sunkenmenubar",     TOKEN_SUNKENMENU },
-  { "progressbarstyle",  TOKEN_PROGRESSBARSTYLE },
-  { "menubarstyle",      TOKEN_MENUBARSTYLE },
-  { "menuitemstyle",     TOKEN_MENUITEMSTYLE },
-  { "listviewitemstyle", TOKEN_LISTVIEWITEMSTYLE },
-  { "animation",         TOKEN_ANIMATION },
-  { "style",             TOKEN_STYLE },
-  { "radius",            TOKEN_RADIUS },
+  { "scrollbar_color",    TOKEN_SCROLLBARCOLOR  },
+  { "colorize_scrollbar", TOKEN_COLORIZESCROLLBAR },
+  { "contrast",           TOKEN_CONTRAST  },
+  { "sunkenmenubar",      TOKEN_SUNKENMENU },
+  { "progressbarstyle",   TOKEN_PROGRESSBARSTYLE },
+  { "menubarstyle",       TOKEN_MENUBARSTYLE },
+  { "menuitemstyle",      TOKEN_MENUITEMSTYLE },
+  { "listviewitemstyle",  TOKEN_LISTVIEWITEMSTYLE },
+  { "animation",          TOKEN_ANIMATION },
+  { "style",              TOKEN_STYLE },
+  { "radius",             TOKEN_RADIUS },
 
-  { "CLASSIC",           TOKEN_CLASSIC },
-  { "GLOSSY",            TOKEN_GLOSSY },
-  { "INVERTED",          TOKEN_INVERTED },
-  { "GUMMY",             TOKEN_GUMMY },
+  { "CLASSIC",            TOKEN_CLASSIC },
+  { "GLOSSY",             TOKEN_GLOSSY },
+  { "INVERTED",           TOKEN_INVERTED },
+  { "GUMMY",              TOKEN_GUMMY },
   
-  { "TRUE",	TOKEN_TRUE },
-  { "FALSE",	TOKEN_FALSE }
+  { "TRUE",	          TOKEN_TRUE },
+  { "FALSE",	          TOKEN_FALSE }
 };
 
 
@@ -127,6 +129,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
   clearlooks_rc->contrast = 1.0;
   clearlooks_rc->menubarstyle = 0;
   clearlooks_rc->animation = FALSE;
+  clearlooks_rc->colorize_scrollbar = FALSE;
   clearlooks_rc->style = CL_STYLE_CLASSIC;
   clearlooks_rc->radius = 3.0;
 }
@@ -360,6 +363,10 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	  token = clearlooks_gtk2_rc_parse_color (settings, scanner, &clearlooks_style->scrollbar_color);
 	  clearlooks_style->flags |= CL_FLAG_SCROLLBAR_COLOR;
 	  break;
+	case TOKEN_COLORIZESCROLLBAR:
+	  token = clearlooks_gtk2_rc_parse_boolean (settings, scanner, &clearlooks_style->colorize_scrollbar);
+	  clearlooks_style->flags |= CL_FLAG_COLORIZE_SCROLLBAR;
+	  break;
 	case TOKEN_CONTRAST:
 	  token = clearlooks_gtk2_rc_parse_double (settings, scanner, &clearlooks_style->contrast);
 	  clearlooks_style->flags |= CL_FLAG_CONTRAST;
@@ -434,11 +441,13 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 	if (flags & CL_FLAG_STYLE)
 		dest_w->style = src_w->style;
 	if (flags & CL_FLAG_CONTRAST)
-		dest_w->contrast          = src_w->contrast;
+		dest_w->contrast = src_w->contrast;
 	if (flags & CL_FLAG_MENUBARSTYLE)
-		dest_w->menubarstyle      = src_w->menubarstyle;
+		dest_w->menubarstyle = src_w->menubarstyle;
 	if (flags & CL_FLAG_SCROLLBAR_COLOR)
 		dest_w->scrollbar_color = src_w->scrollbar_color;
+	if (flags & CL_FLAG_COLORIZE_SCROLLBAR)
+		dest_w->colorize_scrollbar = src_w->colorize_scrollbar;
 	if (flags & CL_FLAG_ANIMATION)
 		dest_w->animation = src_w->animation;
 	if (flags & CL_FLAG_RADIUS)
