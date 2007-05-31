@@ -154,6 +154,11 @@ style "clearlooks-scale" = "clearooks-button"
 	GtkRange::trough-side-details = 1
 }	
 
+style "nautilus-location" {
+  bg[NORMAL] = mix(0.60, shade (1.05,@bg_color), @selected_bg_color)
+}
+widget "*.nautilus-extra-view-widget" style:highest "nautilus-location"
+
 # widget styles
 class "GtkWidget"    style "clearlooks-default"
 class "GtkButton"    style "clearlooks-button"

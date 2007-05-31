@@ -1,5 +1,10 @@
 2007-05-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Colorized nautilus-extra-widget using symbolic colors
+	
+2007-05-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_toolbar):
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
