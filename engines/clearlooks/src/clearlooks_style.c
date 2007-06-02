@@ -97,6 +97,25 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 
 		cairo_destroy (cr);
 	}
+	else if (DETAIL ("tooltip"))
+	{
+		WidgetParameters params;
+		ClearlooksStyle  *clearlooks_style;
+		ClearlooksColors *colors;
+		cairo_t          *cr;
+
+		CHECK_ARGS
+		SANITIZE_SIZE
+
+		clearlooks_style = CLEARLOOKS_STYLE (style);
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		colors = &clearlooks_style->colors;
+		cr = ge_gdk_drawable_to_cairo (window, area);
+
+		STYLE_FUNCTION (draw_tooltip) (cr, colors, &params, x, y, width, height);
+
+		cairo_destroy (cr);
+	}
 	else if ((CLEARLOOKS_STYLE (style)->style == CL_STYLE_GLOSSY || CLEARLOOKS_STYLE (style)->style == CL_STYLE_GUMMY) &&
 	         ((DETAIL("checkbutton") || DETAIL("radiobutton")) && state_type == GTK_STATE_PRELIGHT))
 	{

@@ -384,6 +384,11 @@ struct _ClearlooksStyleFunctions
 	                               const WidgetParameters		*widget,
 	                               int x, int y, int width, int height);
 
+	void (*draw_tooltip)          (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               int x, int y, int width, int height);
+
 	void (*draw_handle)           (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,

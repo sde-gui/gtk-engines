@@ -1784,6 +1784,31 @@ clearlooks_draw_menu_frame (cairo_t *cr,
 }
 
 static void
+clearlooks_draw_tooltip (cairo_t *cr,
+                         const ClearlooksColors          *colors,
+                         const WidgetParameters          *widget,
+                         int x, int y, int width, int height)
+{
+	CairoColor border;
+
+	ge_shade_color (&colors->bg[widget->state_type], 0.8, &border);
+
+	cairo_save (cr);
+
+	cairo_translate      (cr, x, y);
+	cairo_set_line_width (cr, 1);
+
+	ge_cairo_set_color (cr, &colors->bg[widget->state_type]);
+	cairo_rectangle (cr, 0, 0, width, height);
+	cairo_fill (cr);
+
+	ge_cairo_set_color (cr, &border);
+	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
+
+	cairo_restore (cr);
+}
+
+static void
 clearlooks_draw_handle (cairo_t *cr,
                         const ClearlooksColors          *colors,
                         const WidgetParameters          *params,
@@ -2192,6 +2217,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_scrollbar_trough	= clearlooks_draw_scrollbar_trough;
 	functions->draw_statusbar		= clearlooks_draw_statusbar;
 	functions->draw_menu_frame		= clearlooks_draw_menu_frame;
+	functions->draw_tooltip			= clearlooks_draw_tooltip;
 	functions->draw_handle			= clearlooks_draw_handle;
 	functions->draw_resize_grip	        = clearlooks_draw_resize_grip;
 	functions->draw_arrow			= clearlooks_draw_arrow;
