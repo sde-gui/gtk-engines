@@ -1576,7 +1576,7 @@ glide_draw_flat_box (GtkStyle * style,
 
 		do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
 					GLIDE_BEVEL_STYLE_FLAT, GLIDE_BORDER_TYPE_IN,
-					x, y, width - 1, height - 1);
+					x, y, width, height);
 
 		cairo_destroy(canvas);
 	}

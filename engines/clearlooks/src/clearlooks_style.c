@@ -119,7 +119,7 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 	else if ((CLEARLOOKS_STYLE (style)->style == CL_STYLE_GLOSSY || CLEARLOOKS_STYLE (style)->style == CL_STYLE_GUMMY) &&
 	         ((DETAIL("checkbutton") || DETAIL("radiobutton")) && state_type == GTK_STATE_PRELIGHT))
 	{
-		/* XXX: Don't draw any check/radiobutton bg in GLOSSY mode. */
+		/* XXX: Don't draw any check/radiobutton bg in GLOSSY or GUMMY mode. */
 	}
 	else
 	{

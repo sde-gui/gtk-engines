@@ -1,3 +1,14 @@
+2007-06-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_tooltip):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_flat_box):
+	Changed shading on tooltip's border
+
+	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_flat_box):
+	1 px error before? Fixed...?
+
 2007-06-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

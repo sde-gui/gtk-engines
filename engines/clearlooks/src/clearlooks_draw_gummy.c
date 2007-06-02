@@ -406,7 +406,7 @@ clearlooks_gummy_draw_progressbar_fill (cairo_t *cr,
 	ge_shade_color (&colors->spot[1], 0.92, &e);
 	pattern = cairo_pattern_create_linear (0, 0, 0, height);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.0, a.r, a.g, a.b);
-      	cairo_pattern_add_color_stop_rgb (pattern, 0.5, b.r, b.g, b.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5, b.r, b.g, b.b);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.5, colors->spot[1].r, colors->spot[1].g, colors->spot[1].b);
 	cairo_pattern_add_color_stop_rgb (pattern, 1.0, e.r, e.g, e.b);
 	cairo_set_source (cr, pattern);
