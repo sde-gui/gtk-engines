@@ -1791,7 +1791,7 @@ clearlooks_draw_tooltip (cairo_t *cr,
 {
 	CairoColor border;
 
-	ge_shade_color (&colors->bg[widget->state_type], 0.65, &border);
+	ge_shade_color (&colors->bg[widget->state_type], 0.6, &border);
 
 	cairo_save (cr);
 
