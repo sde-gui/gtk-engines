@@ -1,3 +1,13 @@
+2007-06-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_handle), (clearlooks_style_draw_box):
+	* engines/clearlooks/src/support.c:
+	(clearlooks_set_toolbar_parameters):
+	* engines/clearlooks/src/support.h:
+	Try a different heuristic to figure out if the toolbar is at the top
+	of the window.
+
 2007-05-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:

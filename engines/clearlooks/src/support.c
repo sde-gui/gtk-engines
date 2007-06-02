@@ -175,32 +175,17 @@ clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 }
 
 void
-clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar, GtkWidget *widget)
+clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar, GtkWidget *widget, GdkWindow *window, gint x, gint y)
 {
 	toolbar->topmost = FALSE;
 
-	if (GE_IS_TOOLBAR (widget)) {
-		/* A VBox in a toplevel. */
-		if (ge_object_is_a (G_OBJECT (widget->parent), "GtkVBox") && widget->parent->parent && (widget->parent->parent->parent == NULL)) {
-			GList *list_start;
-			GList *list;
-			
-			list_start = gtk_container_get_children (GTK_CONTAINER (widget->parent));
-			
-			list = list_start;
-			
-			while (list && list->data &&
-			       GTK_WIDGET (list->data) != widget &&
-			       !GTK_WIDGET_VISIBLE (GTK_WIDGET(list->data))) {
-
-
-				list = list->next;
-			}
-			if (list->data == widget) {
+	if (x == 0 && y == 0) {
+		if (widget->allocation.x == 0 && widget->allocation.y == 0)
+		{
+			if (widget->window == window && GE_IS_TOOLBAR (widget))
+			{
 				toolbar->topmost = TRUE;
 			}
-
-			g_list_free (list_start);
 		}
 	}
 }

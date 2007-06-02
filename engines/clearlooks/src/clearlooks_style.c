@@ -397,7 +397,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		{
 			ToolbarParameters toolbar;
 
-			clearlooks_set_toolbar_parameters (&toolbar, widget);
+			clearlooks_set_toolbar_parameters (&toolbar, widget, window, x, y);
 
 			cairo_save (cr);
 			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
@@ -433,7 +433,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		{
 			ToolbarParameters toolbar;
 
-			clearlooks_set_toolbar_parameters (&toolbar, widget);
+			clearlooks_set_toolbar_parameters (&toolbar, widget, window, x, y);
 
 			cairo_save (cr);
 			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
@@ -823,7 +823,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		ToolbarParameters toolbar;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		clearlooks_set_toolbar_parameters (&toolbar, widget);
+		clearlooks_set_toolbar_parameters (&toolbar, widget, window, x, y);
 
 		/* Only draw the shadows on horizontal toolbars */
 		if (shadow_type != GTK_SHADOW_NONE && height < 2*width )
