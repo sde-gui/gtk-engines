@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gtk-engines HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-10 21:58+0100\n"
-"PO-Revision-Date: 2007-04-06 15:21+0300\n"
+"PO-Revision-Date: 2007-06-02 11:16+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -37,6 +37,7 @@ msgstr "Kontrast"
 #: ../schema/clearlooks.xml.in.in.h:5
 msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
 msgstr ""
+"Animatsioonide lubamine edenemisribadel, raadionuppudel ja märkeruutudel"
 
 #: ../schema/clearlooks.xml.in.in.h:6
 msgid "Flat"
@@ -52,7 +53,7 @@ msgstr "Kerimisriba värvus"
 
 #: ../schema/clearlooks.xml.in.in.h:9
 msgid "Sets the Color of Scrollbars"
-msgstr ""
+msgstr "Kerimisribade värvuse määramine"
 
 #: ../schema/hc.xml.in.in.h:1
 msgid "Cell Indicator Size"
@@ -64,7 +65,7 @@ msgstr ""
 
 #: ../schema/hc.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr ""
+msgstr "Märkeruutude ja raadionuppude suurused puuvaadetes. (Viga #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
@@ -104,7 +105,7 @@ msgstr ""
 
 #: ../schema/thinice.xml.in.in.h:8
 msgid "Mark Type for Scrollbar Buttons"
-msgstr ""
+msgstr "Märgi liik kerimisriba nuppudele"
 
 #: ../schema/thinice.xml.in.in.h:9
 msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
@@ -128,7 +129,7 @@ msgstr "Ristkülik"
 
 #: ../schema/thinice.xml.in.in.h:14
 msgid "Scrollbar Marks"
-msgstr ""
+msgstr "Kerimisriba märgid"
 
 #: ../schema/thinice.xml.in.in.h:15
 msgid "Scrollbar Type"
@@ -136,7 +137,7 @@ msgstr "Kerimisriba liik"
 
 #: ../schema/thinice.xml.in.in.h:16
 msgid "Scrollbutton Marks"
-msgstr ""
+msgstr "Kerimisnupu märgid"
 
 #: ../schema/thinice.xml.in.in.h:17
 msgid "Shaped"
