@@ -1,6 +1,11 @@
 2007-06-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
+	Small fix in the 2.11.1 news.
+
+2007-06-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* NEWS:
 	* configure.ac:
 	Update for 2.11.1 release.
 
