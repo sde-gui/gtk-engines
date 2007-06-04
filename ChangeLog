@@ -1,3 +1,9 @@
+2007-06-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/support.c:
+	(clearlooks_set_toolbar_parameters):
+	Added needed NULL pointer check.
+
 2007-06-02  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

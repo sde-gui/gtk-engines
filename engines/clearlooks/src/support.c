@@ -180,7 +180,7 @@ clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar, GtkWidget *widget
 	toolbar->topmost = FALSE;
 
 	if (x == 0 && y == 0) {
-		if (widget->allocation.x == 0 && widget->allocation.y == 0)
+		if (widget && widget->allocation.x == 0 && widget->allocation.y == 0)
 		{
 			if (widget->window == window && GE_IS_TOOLBAR (widget))
 			{
