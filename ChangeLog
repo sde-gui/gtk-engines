@@ -1,5 +1,11 @@
 2007-06-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* configure.ac:
+	Update for 2.11.1 release.
+
+2007-06-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/support.c:
 	(clearlooks_set_toolbar_parameters):
 	Added needed NULL pointer check.

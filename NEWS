@@ -1,3 +1,27 @@
+Overview of Changes in 2.11.1 (since 2.11.0)
+============================================
+
+Hilights in this release include:
+ - Tabbing fix in Glide
+ - Prevent colors from getting too saturated when shading them
+ - Improved torture test to find more bugs
+ - Reworked README file
+ - Tweaked toolbars that do not have any other widget above them in Clearlooks
+ - New option to colorize the Clearlooks scrollbar sliders
+
+Fixed bugs in this release:
+ Bug 438397 - fix build with gcc 2
+ Bug 438456 - Potential invalid g_free() on slice-allocated data
+ Bug 413055 - make tooltip border color themeable (clearlooks)
+
+New Translations:
+ Ignacio Casal Quinteiro (gl)
+
+Updated Translations:
+ Runa Bhattacharjee (bn_IN)
+ Ivar Smolin (et)
+
+
 Overview of Changes in 2.11.0 (since 2.10.1)
 ============================================
 
