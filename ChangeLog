@@ -1,3 +1,10 @@
+2007-06-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Redmond/Makefile.am:
+	* themes/Redmond/gtk/Makefile.am:
+	* themes/Redmond/gtk/gtkrc:
+	Remove GTK+ 1.x theme.
+
 2007-06-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
