@@ -184,7 +184,6 @@ themes/Industrial/gtk-2.0/Makefile
 themes/Mist/Makefile
 themes/Mist/gtk-2.0/Makefile
 themes/Redmond/Makefile
-themes/Redmond/gtk/Makefile
 themes/Redmond/gtk-2.0/Makefile
 themes/ThinIce/Makefile
 themes/ThinIce/gtk-2.0/Makefile
