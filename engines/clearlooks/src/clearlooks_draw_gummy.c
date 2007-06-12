@@ -173,7 +173,8 @@ clearlooks_gummy_draw_button (cairo_t *cr,
 			cairo_stroke (cr);
 		}
 
-		if (params->is_default)		{
+		if (params->is_default)
+		{
 			/* Glow becomes a shadow to have 3d prelight buttons :) */
 			CairoColor glow = colors->spot[1];
 
@@ -965,7 +966,8 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
-	if (scrollbar->has_color) {
+	if (scrollbar->has_color) 
+	{
 		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.2);
 		ge_cairo_stroke_rectangle (cr, 1.5, 1.5, width-3, height-3);
 	}
@@ -1069,17 +1071,43 @@ clearlooks_gummy_draw_toolbar (cairo_t *cr,
 	ge_shade_color (fill, 1.05, &light);
 	
 	cairo_set_line_width (cr, 1.0);
-	cairo_translate     (cr, x, y);
-
-	ge_cairo_set_color  (cr, fill);
-	cairo_paint (cr);
+	cairo_translate (cr, x, y);
 	
-	if (!toolbar->topmost) {
-		/* Draw highlight */
-		cairo_move_to       (cr, 0, 0.5);
-		cairo_line_to       (cr, width-1, 0.5);
-		ge_cairo_set_color  (cr, &light);
-		cairo_stroke        (cr);
+	if (toolbar->style == 1) /* Enable Extra features */
+	{ 
+		cairo_pattern_t *pattern;
+		CairoColor shade1, shade2, shade3;
+		
+		ge_shade_color (fill, 1.07, &shade1);
+		ge_shade_color (fill, 1.02, &shade2);
+		ge_shade_color (fill, 0.95, &shade3);
+
+		/* Draw the fill */
+		pattern = cairo_pattern_create_linear (0, 0, 0, height);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.0, shade1.r, shade1.g, shade1.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.5, shade2.r, shade2.g, shade2.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.5, fill->r, fill->g, fill->b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0, shade3.r, shade3.g, shade3.b);
+
+		cairo_set_source (cr, pattern);
+		cairo_rectangle (cr, 0, 0, width, height);
+		cairo_fill (cr);
+
+		cairo_pattern_destroy (pattern);
+	}
+	else /* Flat */
+	{ 
+		ge_cairo_set_color (cr, fill);
+		cairo_paint (cr);
+
+		if (!toolbar->topmost) 
+		{
+			/* Draw highlight */
+			cairo_move_to       (cr, 0, 0.5);
+			cairo_line_to       (cr, width-1, 0.5);
+			ge_cairo_set_color  (cr, &light);
+			cairo_stroke        (cr);
+		}
 	}
 
 	/* Draw shadow */

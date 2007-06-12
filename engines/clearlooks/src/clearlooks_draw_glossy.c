@@ -998,7 +998,8 @@ clearlooks_glossy_draw_scrollbar_slider (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
-	if (scrollbar->has_color) {
+	if (scrollbar->has_color) 
+	{
 		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
 		ge_cairo_stroke_rectangle (cr, 1.5, 1.5, width-3, height-3);
 	}
@@ -1075,6 +1076,65 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 			params->style_functions->draw_separator (cr, &colors->shade[3], params, &separator,
 			                                         1.5, 4.0, 2, height-8.0);
 	}
+}
+
+static void 
+clearlooks_glossy_draw_toolbar (cairo_t *cr,
+                         const ClearlooksColors          *colors,
+                         const WidgetParameters          *widget,
+                         const ToolbarParameters         *toolbar,
+                         int x, int y, int width, int height)
+{
+	const CairoColor *fill  = &colors->bg[GTK_STATE_NORMAL];
+	const CairoColor *dark  = &colors->shade[3];
+	CairoColor light;
+	ge_shade_color (fill, 1.1, &light);
+	
+	cairo_set_line_width (cr, 1.0);
+	cairo_translate (cr, x, y);
+	
+	if (toolbar->style == 1) /* Enable Extra features */
+	{ 
+		cairo_pattern_t *pattern;
+		CairoColor shade1, shade2, shade3;
+		
+		ge_shade_color (fill, 1.08, &shade1);
+		ge_shade_color (fill, 1.04, &shade2);
+		ge_shade_color (fill, 1.04, &shade3);
+
+		/* Draw the fill */
+		pattern = cairo_pattern_create_linear (0, 0, 0, height);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.0, shade1.r, shade1.g, shade1.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.5, shade2.r, shade2.g, shade2.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.5, fill->r, fill->g, fill->b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0, shade3.r, shade3.g, shade3.b);
+
+		cairo_set_source (cr, pattern);
+		cairo_rectangle (cr, 0, 0, width, height);
+		cairo_fill (cr);
+
+		cairo_pattern_destroy (pattern);
+	}
+	else /* Flat */
+	{ 
+		ge_cairo_set_color (cr, fill);
+		cairo_paint (cr);
+
+		if (!toolbar->topmost) 
+		{
+			/* Draw highlight */
+			cairo_move_to       (cr, 0, 0.5);
+			cairo_line_to       (cr, width-1, 0.5);
+			ge_cairo_set_color  (cr, &light);
+			cairo_stroke        (cr);
+		}	
+	}
+
+	/* Draw shadow */
+	cairo_move_to       (cr, 0, height-0.5);
+	cairo_line_to       (cr, width-1, height-0.5);
+	ge_cairo_set_color  (cr, dark);
+	cairo_stroke        (cr);
 }
 
 static void
@@ -1318,6 +1378,7 @@ clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions)
 	functions->draw_scrollbar_stepper  = clearlooks_glossy_draw_scrollbar_stepper;
 	functions->draw_scrollbar_slider   = clearlooks_glossy_draw_scrollbar_slider;
 	functions->draw_list_view_header   = clearlooks_glossy_draw_list_view_header;
+	functions->draw_toolbar            = clearlooks_glossy_draw_toolbar;
 	functions->draw_menuitem           = clearlooks_glossy_draw_menuitem;
 	functions->draw_menubaritem        = clearlooks_glossy_draw_menubaritem;
 	functions->draw_selected_cell      = clearlooks_glossy_draw_selected_cell;

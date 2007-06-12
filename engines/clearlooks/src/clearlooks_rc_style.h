@@ -44,8 +44,9 @@ typedef enum {
 	CL_FLAG_COLORIZE_SCROLLBAR = 1 <<  2,
 	CL_FLAG_CONTRAST           = 1 <<  3,
 	CL_FLAG_MENUBARSTYLE       = 1 <<  4,
-	CL_FLAG_ANIMATION          = 1 <<  5,
-	CL_FLAG_RADIUS             = 1 <<  6
+	CL_FLAG_TOOLBARSTYLE       = 1 <<  5,
+	CL_FLAG_ANIMATION          = 1 <<  6,
+	CL_FLAG_RADIUS             = 1 <<  7
 } ClearlooksRcFlags;
 
 struct _ClearlooksRcStyle
@@ -60,6 +61,7 @@ struct _ClearlooksRcStyle
 	gboolean colorize_scrollbar;
 	double contrast;
 	guint8 menubarstyle;
+	guint8 toolbarstyle;
 	gboolean animation;
 	double radius;
 };

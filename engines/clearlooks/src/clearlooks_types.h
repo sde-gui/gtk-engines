@@ -246,6 +246,7 @@ typedef struct
 
 typedef struct
 {
+	int      style;
 	boolean  topmost;
 } ToolbarParameters;
 

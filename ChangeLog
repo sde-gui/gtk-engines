@@ -1,3 +1,30 @@
+2007-06-13  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_gripdots), (clearlooks_draw_slider),
+	(clearlooks_draw_menubar), (clearlooks_get_frame_gap_clip),
+	(clearlooks_draw_frame), (clearlooks_draw_toolbar):
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_scrollbar_slider),
+	(clearlooks_glossy_draw_toolbar),
+	(clearlooks_register_style_glossy):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_button),
+	(clearlooks_gummy_draw_scrollbar_slider),
+	(clearlooks_gummy_draw_toolbar):
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init), (clearlooks_rc_style_parse),
+	(clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_handle), (clearlooks_style_draw_box),
+	(clearlooks_style_init_from_rc), (clearlooks_style_copy):
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/clearlooks_types.h:
+	Implemented toolbarstyle!!!
+	toolbarstyle = 1 will enable "specific" drawings for Gummy and Glossy
+	Fixed whitespaces and intendantions
+
 2007-06-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

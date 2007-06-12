@@ -50,6 +50,7 @@ struct _ClearlooksStyle
 	ClearlooksStyles style;
 	
 	guint8   menubarstyle;
+	guint8   toolbarstyle;
 	GdkColor scrollbar_color;
 	gboolean colorize_scrollbar;
 	gboolean has_scrollbar_color;
@@ -59,13 +60,11 @@ struct _ClearlooksStyle
 
 struct _ClearlooksStyleClass
 {
-  GtkStyleClass parent_class;
-  
-  ClearlooksStyleFunctions style_functions[CL_NUM_STYLES];
+	GtkStyleClass parent_class;
+
+	ClearlooksStyleFunctions style_functions[CL_NUM_STYLES];
 };
 
-
 GE_INTERNAL void clearlooks_style_register_type (GTypeModule *module);
-
 
 #endif /* CLEARLOOKS_STYLE_H */

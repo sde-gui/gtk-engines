@@ -418,6 +418,8 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 
 			clearlooks_set_toolbar_parameters (&toolbar, widget, window, x, y);
 
+			toolbar.style = clearlooks_style->toolbarstyle;
+
 			cairo_save (cr);
 			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
 			cairo_restore (cr);
@@ -453,6 +455,8 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 			ToolbarParameters toolbar;
 
 			clearlooks_set_toolbar_parameters (&toolbar, widget, window, x, y);
+
+			toolbar.style = clearlooks_style->toolbarstyle;
 
 			cairo_save (cr);
 			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
@@ -844,6 +848,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		clearlooks_set_toolbar_parameters (&toolbar, widget, window, x, y);
 
+		toolbar.style = clearlooks_style->toolbarstyle;
+
 		/* Only draw the shadows on horizontal toolbars */
 		if (shadow_type != GTK_SHADOW_NONE && height < 2*width )
 			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
@@ -1218,6 +1224,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->style		= CLEARLOOKS_RC_STYLE (rc_style)->style;
 	
 	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
+	clearlooks_style->toolbarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->toolbarstyle;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_SCROLLBAR_COLOR;
 	clearlooks_style->colorize_scrollbar = CLEARLOOKS_RC_STYLE (rc_style)->colorize_scrollbar;
 	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
@@ -1360,6 +1367,7 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	
 	cl_style->colors              = cl_src->colors;
 	cl_style->menubarstyle        = cl_src->menubarstyle;
+	cl_style->toolbarstyle        = cl_src->toolbarstyle;
 	cl_style->scrollbar_color     = cl_src->scrollbar_color;
 	cl_style->has_scrollbar_color = cl_src->has_scrollbar_color;
 	cl_style->colorize_scrollbar  = cl_src->colorize_scrollbar;

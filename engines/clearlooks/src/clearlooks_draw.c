@@ -195,8 +195,10 @@ clearlooks_draw_gripdots (cairo_t *cr, const ClearlooksColors *colors, int x, in
 
 	ge_shade_color (dark, 1.5, &hilight);
 
-	for ( i = 0; i < xr; i++ ) {
-		for ( j = 0; j < yr; j++ ) {
+	for ( i = 0; i < xr; i++ ) 
+	{
+		for ( j = 0; j < yr; j++ )
+		{
 			xoff = x -(xr * 3 / 2) + 3 * i;
 			yoff = y -(yr * 3 / 2) + 3 * j; 
 			
@@ -593,7 +595,8 @@ clearlooks_draw_slider (cairo_t *cr,
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0, spot->r, spot->g, spot->b);
 		cairo_set_source (cr, pattern);
 	}
-	else {
+	else 
+	{
 		CairoColor hilight; 
 		ge_shade_color (fill, 1.5, &hilight);
 		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
@@ -960,9 +963,11 @@ clearlooks_draw_menubar1 (cairo_t *cr,
 
 
 static menubar_draw_proto clearlooks_menubar_draw[3] =
-	{ clearlooks_draw_menubar0, 
-	  clearlooks_draw_menubar1,
-	  clearlooks_draw_menubar2 };
+{ 
+	clearlooks_draw_menubar0, 
+	clearlooks_draw_menubar1,
+	clearlooks_draw_menubar2 
+};
 
 static void
 clearlooks_draw_menubar (cairo_t *cr,
@@ -971,8 +976,6 @@ clearlooks_draw_menubar (cairo_t *cr,
                          const MenuBarParameters *menubar,
                          int x, int y, int width, int height)
 {
-
-
 	if (menubar->style < 0 || menubar->style > 3)
 		return;
 
@@ -1371,12 +1374,13 @@ clearlooks_draw_toolbar (cairo_t *cr,
 	ge_shade_color (fill, 1.1, &light);
 	
 	cairo_set_line_width (cr, 1.0);
-	cairo_translate     (cr, x, y);
+	cairo_translate (cr, x, y);
 
-	ge_cairo_set_color  (cr, fill);
+	ge_cairo_set_color (cr, fill);
 	cairo_paint (cr);
 
-	if (!toolbar->topmost) {
+	if (!toolbar->topmost) 
+	{
 		/* Draw highlight */
 		cairo_move_to       (cr, 0, 0.5);
 		cairo_line_to       (cr, width-1, 0.5);
@@ -2192,37 +2196,37 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 {
 	g_assert (functions);
 
-	functions->draw_button			= clearlooks_draw_button;
-	functions->draw_scale_trough	        = clearlooks_draw_scale_trough;
-	functions->draw_progressbar_trough	= clearlooks_draw_progressbar_trough;
-	functions->draw_progressbar_fill	= clearlooks_draw_progressbar_fill;
-	functions->draw_slider_button	        = clearlooks_draw_slider_button;
-	functions->draw_entry			= clearlooks_draw_entry;
-	functions->draw_spinbutton		= clearlooks_draw_spinbutton;
-	functions->draw_spinbutton_down	        = clearlooks_draw_spinbutton_down;
-	functions->draw_optionmenu		= clearlooks_draw_optionmenu;
-	functions->draw_inset			= clearlooks_draw_inset;
-	functions->draw_menubar			= clearlooks_draw_menubar;
-	functions->draw_tab			= clearlooks_draw_tab;
-	functions->draw_frame			= clearlooks_draw_frame;
-	functions->draw_separator		= clearlooks_draw_separator;
-	functions->draw_list_view_header	= clearlooks_draw_list_view_header;
-	functions->draw_toolbar			= clearlooks_draw_toolbar;
-	functions->draw_menuitem		= clearlooks_draw_menuitem;
-	functions->draw_menubaritem	        = clearlooks_draw_menubaritem;
-	functions->draw_selected_cell	        = clearlooks_draw_selected_cell;
-	functions->draw_scrollbar_stepper       = clearlooks_draw_scrollbar_stepper;
-	functions->draw_scrollbar_slider	= clearlooks_draw_scrollbar_slider;
-	functions->draw_scrollbar_trough	= clearlooks_draw_scrollbar_trough;
-	functions->draw_statusbar		= clearlooks_draw_statusbar;
-	functions->draw_menu_frame		= clearlooks_draw_menu_frame;
-	functions->draw_tooltip			= clearlooks_draw_tooltip;
-	functions->draw_handle			= clearlooks_draw_handle;
-	functions->draw_resize_grip	        = clearlooks_draw_resize_grip;
-	functions->draw_arrow			= clearlooks_draw_arrow;
-	functions->draw_checkbox		= clearlooks_draw_checkbox;
-	functions->draw_radiobutton	        = clearlooks_draw_radiobutton;	
-	functions->draw_shadow			= clearlooks_draw_shadow;
-	functions->draw_slider			= clearlooks_draw_slider;
-	functions->draw_gripdots		= clearlooks_draw_gripdots;
+	functions->draw_button             = clearlooks_draw_button;
+	functions->draw_scale_trough       = clearlooks_draw_scale_trough;
+	functions->draw_progressbar_trough = clearlooks_draw_progressbar_trough;
+	functions->draw_progressbar_fill	  = clearlooks_draw_progressbar_fill;
+	functions->draw_slider_button	     = clearlooks_draw_slider_button;
+	functions->draw_entry              = clearlooks_draw_entry;
+	functions->draw_spinbutton         = clearlooks_draw_spinbutton;
+	functions->draw_spinbutton_down    = clearlooks_draw_spinbutton_down;
+	functions->draw_optionmenu         = clearlooks_draw_optionmenu;
+	functions->draw_inset              = clearlooks_draw_inset;
+	functions->draw_menubar	           = clearlooks_draw_menubar;
+	functions->draw_tab                = clearlooks_draw_tab;
+	functions->draw_frame              = clearlooks_draw_frame;
+	functions->draw_separator          = clearlooks_draw_separator;
+	functions->draw_list_view_header	  = clearlooks_draw_list_view_header;
+	functions->draw_toolbar            = clearlooks_draw_toolbar;
+	functions->draw_menuitem           = clearlooks_draw_menuitem;
+	functions->draw_menubaritem        = clearlooks_draw_menubaritem;
+	functions->draw_selected_cell      = clearlooks_draw_selected_cell;
+	functions->draw_scrollbar_stepper  = clearlooks_draw_scrollbar_stepper;
+	functions->draw_scrollbar_slider   = clearlooks_draw_scrollbar_slider;
+	functions->draw_scrollbar_trough	  = clearlooks_draw_scrollbar_trough;
+	functions->draw_statusbar          = clearlooks_draw_statusbar;
+	functions->draw_menu_frame         = clearlooks_draw_menu_frame;
+	functions->draw_tooltip            = clearlooks_draw_tooltip;
+	functions->draw_handle             = clearlooks_draw_handle;
+	functions->draw_resize_grip        = clearlooks_draw_resize_grip;
+	functions->draw_arrow              = clearlooks_draw_arrow;
+	functions->draw_checkbox           = clearlooks_draw_checkbox;
+	functions->draw_radiobutton        = clearlooks_draw_radiobutton;	
+	functions->draw_shadow             = clearlooks_draw_shadow;
+	functions->draw_slider             = clearlooks_draw_slider;
+	functions->draw_gripdots           = clearlooks_draw_gripdots;
 }
