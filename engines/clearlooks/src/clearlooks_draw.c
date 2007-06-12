@@ -982,7 +982,7 @@ clearlooks_draw_menubar (cairo_t *cr,
 
 static void
 clearlooks_get_frame_gap_clip (int x, int y, int width, int height, 
-                               FrameParameters     *frame,
+                               const FrameParameters     *frame,
                                ClearlooksRectangle *bevel,
                                ClearlooksRectangle *border)
 {
@@ -1037,8 +1037,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 	
 	if (frame->gap_x != -1)
 		clearlooks_get_frame_gap_clip (x, y, width, height,
-		                               (FrameParameters*)frame,
-		                               &bevel_clip, &frame_clip);
+		                               frame, &bevel_clip, &frame_clip);
 	
 	cairo_set_line_width (cr, 1.0);
 	cairo_translate      (cr, x+0.5, y+0.5);
