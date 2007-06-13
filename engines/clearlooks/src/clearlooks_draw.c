@@ -893,16 +893,16 @@ clearlooks_draw_menubar0 (cairo_t *cr,
                           const MenuBarParameters *menubar,
                           int x, int y, int width, int height)
 {
-	const CairoColor *light = &colors->shade[0];
+/* 	const CairoColor *light = &colors->shade[0]; */
 	const CairoColor *dark = &colors->shade[3];
 
 	cairo_set_line_width (cr, 1);
 	cairo_translate (cr, x, y+0.5);
 
-	cairo_move_to (cr, 0, 0);
-	cairo_line_to (cr, width, 0);
-	ge_cairo_set_color (cr, light);
-	cairo_stroke (cr);
+/* 	cairo_move_to (cr, 0, 0); */
+/* 	cairo_line_to (cr, width, 0); */
+/* 	ge_cairo_set_color (cr, light); */
+/* 	cairo_stroke (cr); */
 
 	cairo_move_to (cr, 0, height-1);
 	cairo_line_to (cr, width, height-1);

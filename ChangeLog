@@ -1,6 +1,13 @@
 2007-06-13  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_menubar0):
+	To Benzea: why menubar0 draw a white line on top?
+	Commented those lines to disable that light line
+
+2007-06-13  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_gripdots), (clearlooks_draw_slider),
 	(clearlooks_draw_menubar), (clearlooks_get_frame_gap_clip),
 	(clearlooks_draw_frame), (clearlooks_draw_toolbar):
