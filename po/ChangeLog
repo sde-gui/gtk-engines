@@ -1,3 +1,9 @@
+2007-06-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* POTFILES.in:
+	* POTFILES.skip:
+	Update because I renamed the xml.in.in files to follow the library names.
+
 2007-06-09  Laurent Dhima  <laurenti@alblinux.net>
 
 	* sq.po: Added Albanian translation.
