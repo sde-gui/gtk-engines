@@ -1,3 +1,11 @@
+2007-06-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* configure.ac:
+	* schema/Makefile.am:
+	* schema/*.xml.in.in:
+	Renamed crux, hc and redmond schema files so that they follow the
+	library name, instead of the gtk-engines internal one.
+
 2007-06-13  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

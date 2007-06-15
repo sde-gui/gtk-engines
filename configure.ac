@@ -62,14 +62,14 @@ if test $crux = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES crux"
 	BUILD_THEMES="$BUILD_THEMES Crux"
 	if test $schemas = "yes"; then
-		BUILD_SCHEMAS="$BUILD_SCHEMAS crux.xml"
+		BUILD_SCHEMAS="$BUILD_SCHEMAS crux-engine.xml"
 	fi
 fi
 
 if test $hc = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES hc"
 	if test $schemas = "yes"; then
-		BUILD_SCHEMAS="$BUILD_SCHEMAS hc.xml"
+		BUILD_SCHEMAS="$BUILD_SCHEMAS hcengine.xml"
 	fi
 fi
 
@@ -93,7 +93,7 @@ if test $redmond = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES redmond"
 	BUILD_THEMES="$BUILD_THEMES Redmond"
 	if test $schemas = "yes"; then
-		BUILD_SCHEMAS="$BUILD_SCHEMAS redmond.xml"
+		BUILD_SCHEMAS="$BUILD_SCHEMAS redmond95.xml"
 	fi
 fi
 
@@ -192,12 +192,12 @@ gtk-engines.spec
 po/Makefile.in
 schema/Makefile
 schema/clearlooks.xml.in
-schema/crux.xml.in
+schema/crux-engine.xml.in
 schema/glide.xml.in
-schema/hc.xml.in
+schema/hcengine.xml.in
 schema/industrial.xml.in
 schema/mist.xml.in
-schema/redmond.xml.in
+schema/redmond95.xml.in
 schema/smooth.xml.in
 schema/thinice.xml.in
 ]) 

@@ -2,9 +2,9 @@ xmldir = $(pkgdatadir)
 
 EXTRA_DIST= \
 	clearlooks.xml.in.in	\
-	hc.xml.in.in		\
-	redmond.xml.in.in	\
-	crux.xml.in.in		\
+	hcengine.xml.in.in	\
+	redmond95.xml.in.in	\
+	crux-engine.xml.in.in	\
 	industrial.xml.in.in	\
 	smooth.xml.in.in	\
 	glide.xml.in.in		\
