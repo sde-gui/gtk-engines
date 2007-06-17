@@ -515,11 +515,12 @@ clearlooks_draw_scale_trough (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);
 	cairo_translate (cr, translate_x, translate_y);
 	
-	params->style_functions->draw_inset (cr, params->parentbg, 0, 0, trough_width+2, trough_height+2, 0, 0);
+	if (!slider->fill_level)
+		params->style_functions->draw_inset (cr, params->parentbg, 0, 0, trough_width+2, trough_height+2, 0, 0);
 	
 	cairo_translate (cr, 1, 1);
 	
-	if (!slider->lower)
+	if (!slider->lower && ! slider->fill_level)
 		clearlooks_scale_draw_gradient (cr, &colors->shade[3], /* top */
 		                                    &colors->shade[2], /* bottom */
 		                                    &colors->shade[6], /* border */

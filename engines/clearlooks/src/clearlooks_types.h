@@ -157,6 +157,7 @@ typedef struct
 {
 	boolean lower;
 	boolean horizontal;
+	boolean fill_level;
 } SliderParameters;
 
 typedef struct

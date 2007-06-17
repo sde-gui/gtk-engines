@@ -646,6 +646,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		params.corners    = CR_CORNER_NONE;
 		
 		slider.lower = DETAIL ("trough-lower");
+		slider.fill_level = DETAIL ("trough-fill-level") || DETAIL ("trough-fill-level-full");
+
 		slider.horizontal = (GTK_RANGE (widget)->orientation == GTK_ORIENTATION_HORIZONTAL);
 		
 		STYLE_FUNCTION(draw_scale_trough) (cr, &clearlooks_style->colors,
@@ -896,6 +898,8 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
 		slider.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
+		slider.lower = FALSE;
+		slider.fill_level = FALSE;
 		
 		if (clearlooks_style->style == CL_STYLE_GLOSSY) /* XXX! */
 			params.corners = CR_CORNER_ALL;
