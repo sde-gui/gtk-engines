@@ -753,6 +753,8 @@ real_draw_box (GtkStyle      *style,
 	} else if (CHECK_DETAIL (detail, "trough")
 		   || CHECK_DETAIL (detail, "trough-lower")
 		   || CHECK_DETAIL (detail, "trough-upper")
+		   || CHECK_DETAIL (detail, "trough-fill-level")
+		   || CHECK_DETAIL (detail, "trough-fill-level-full")
 		   || CHECK_DETAIL (detail, "menu")
 		   || CHECK_DETAIL (detail, "dockitem_bin")
 		   || CHECK_DETAIL (detail, "handlebox_bin")
@@ -765,7 +767,9 @@ real_draw_box (GtkStyle      *style,
 		if (fill) {
 			if (CHECK_DETAIL (detail, "trough") ||
 			    CHECK_DETAIL (detail, "trough-lower") ||
-			    CHECK_DETAIL (detail, "trough-upper")) {
+			    CHECK_DETAIL (detail, "trough-upper") ||
+			    CHECK_DETAIL (detail, "trough-fill-level") ||
+			    CHECK_DETAIL (detail, "trough-fill-level-full")) {
 				CairoColor bg_color;
 
 				/* Troughs cannot be transparent!
@@ -782,7 +786,8 @@ real_draw_box (GtkStyle      *style,
 				}
 				
 				/* XXX: This might need improvement, at least now it is "implemented" */
-				if (CHECK_DETAIL (detail, "trough-lower")) {
+				if (CHECK_DETAIL (detail, "trough-lower") ||
+				    CHECK_DETAIL (detail, "trough-fill-level") || CHECK_DETAIL (detail, "trough-fill-level-full")) {
 					ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &bg);
 				} else {
 					ge_gdk_color_to_cairo (&style->fg[state_type], &bg);
