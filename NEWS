@@ -1,3 +1,17 @@
+Overview of Changes in 2.11.2 (since 2.11.1)
+============================================
+
+Hilights in this release include:
+ - Schema file naming now follows the engine library names
+ - GtkRange fill level implemented in Clearlooks and Industrial
+ - New toolbar styles for the gummy and glossy clearlooks styles
+
+New Translations:
+  Laurent Dhima (sq)
+
+Updated Translations:
+  Ivar Smolin: (et)
+
 Overview of Changes in 2.11.1 (since 2.11.0)
 ============================================
 

@@ -1,5 +1,11 @@
 2007-06-19  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* configure.ac:
+	Update for 2.11.2 release.
+
+2007-06-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_scale_trough):
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
