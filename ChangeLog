@@ -1,3 +1,11 @@
+2007-06-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_scale_trough):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_scale_trough):
+	Implement fill level in glossy and gummy.
+
 2007-06-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/industrial/src/industrial_style.c: (real_draw_box):
