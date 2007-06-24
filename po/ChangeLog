@@ -1,5 +1,6 @@
 2007-06-23  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* LINGUAS: Add nb
 	* nb.po: Updated Norwegian bokmål translation.
 
 2007-06-22  I. Felix <ifelix@svn.gnome.org>
