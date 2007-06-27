@@ -1,0 +1,150 @@
+# Vietnamese translation for GTK Engines.
+# Copyright © 2007 Gnome i18n Project for Vietnamese.
+# Clytie Siddall <clytie@riverland.net.au>, 2007.
+#
+msgid ""
+""
+msgstr "Project-Id-Version: gtk-engines\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-27 03:45+0100\n"
+"PO-Revision-Date: 2007-06-27 16:37+0930\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.6.4a5\n"
+
+#: ../schema/clearlooks.xml.in.in.h:1
+msgid "3d-ish (button)"
+msgstr "Kiểu 3D (nút)"
+
+#: ../schema/clearlooks.xml.in.in.h:2
+msgid "3d-ish (gradient)"
+msgstr "Kiểu 3D (dốc)"
+
+#: ../schema/clearlooks.xml.in.in.h:3
+msgid "Animations"
+msgstr "Hoạt ảnh"
+
+#: ../schema/clearlooks.xml.in.in.h:4
+#: ../schema/industrial.xml.in.in.h:1
+msgid "Contrast"
+msgstr "Tương phản"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
+msgstr "Bật hoạt ảnh trên các thanh tiến hành, cái nút chọn một và cái nút kiểm"
+
+#: ../schema/clearlooks.xml.in.in.h:6
+msgid "Flat"
+msgstr "Phẳng"
+
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Menubar Style"
+msgstr "Kiểu thanh trình đơn"
+
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Scrollbar Color"
+msgstr "Màu thanh cuộn"
+
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Sets the Color of Scrollbars"
+msgstr "Đặt màu của thanh cuộn"
+
+#: ../schema/hcengine.xml.in.in.h:1
+msgid "Cell Indicator Size"
+msgstr "Cỡ chỉ thị ô"
+
+#: ../schema/hcengine.xml.in.in.h:2
+msgid "Edge Thickness"
+msgstr "Độ dày cạnh"
+
+#: ../schema/hcengine.xml.in.in.h:3
+msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
+msgstr "Kích cỡ của các cái nút chọn một và cái nút kiểm bên trong ô xem cây. (Lỗi #351764)"
+
+#: ../schema/industrial.xml.in.in.h:2
+msgid "If set, button corners are rounded"
+msgstr "Đặt thì cái nút có góc tròn"
+
+#: ../schema/industrial.xml.in.in.h:3
+msgid "Rounded Buttons"
+msgstr "Nút góc tròn"
+
+#: ../schema/thinice.xml.in.in.h:1
+msgid "Arrow"
+msgstr "Mũi tên"
+
+#: ../schema/thinice.xml.in.in.h:2
+msgid "Dot"
+msgstr "Chấm"
+
+#: ../schema/thinice.xml.in.in.h:3
+msgid "Full"
+msgstr "Đầy"
+
+#: ../schema/thinice.xml.in.in.h:4
+msgid "Handlebox Marks"
+msgstr "Dấu móc hộp"
+
+#: ../schema/thinice.xml.in.in.h:5
+msgid "Inverted Dot"
+msgstr "Chấm đảo"
+
+#: ../schema/thinice.xml.in.in.h:6
+msgid "Inverted Slash"
+msgstr "Xuyệc đảo"
+
+#: ../schema/thinice.xml.in.in.h:7
+msgid "Mark Type 1"
+msgstr "Dấu kiểu 1"
+
+#: ../schema/thinice.xml.in.in.h:8
+msgid "Mark Type for Scrollbar Buttons"
+msgstr "Kiểu dấu cho cái nút trên thanh cuộn"
+
+#: ../schema/thinice.xml.in.in.h:9
+msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
+msgstr "Kiểu dấu cho các móc trên trên thanh cuộn, hộp kéo v.v."
+
+#: ../schema/thinice.xml.in.in.h:10
+msgid "None"
+msgstr "Không có"
+
+#: ../schema/thinice.xml.in.in.h:11
+msgid "Nothing"
+msgstr "Không gì"
+
+#: ../schema/thinice.xml.in.in.h:12
+msgid "Paned Dots"
+msgstr "Chấm ô"
+
+#: ../schema/thinice.xml.in.in.h:13
+msgid "Rectangle"
+msgstr "Chữ nhật"
+
+#: ../schema/thinice.xml.in.in.h:14
+msgid "Scrollbar Marks"
+msgstr "Dấu thanh cuộn"
+
+#: ../schema/thinice.xml.in.in.h:15
+msgid "Scrollbar Type"
+msgstr "Kiểu thanh cuộn"
+
+#: ../schema/thinice.xml.in.in.h:16
+msgid "Scrollbutton Marks"
+msgstr "Dấu nút cuộn"
+
+#: ../schema/thinice.xml.in.in.h:17
+msgid "Shaped"
+msgstr "Vỡ hình"
+
+#: ../schema/thinice.xml.in.in.h:18
+msgid "Slash"
+msgstr "Xuyệc"
+
+#: ../schema/thinice.xml.in.in.h:19
+msgid "Some"
+msgstr "Một số"
