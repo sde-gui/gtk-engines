@@ -305,7 +305,7 @@ clearlooks_gummy_draw_progressbar_trough (cairo_t *cr,
 	const CairoColor *border = &colors->shade[7];
 	CairoColor        shadow;
 	cairo_pattern_t  *pattern;
-	double           radius = MIN (params->radius, MIN ((height-2.0) / 2.0, (width-2.0) / 2.0));
+	double            radius = MIN (params->radius, MIN ((height-2.0) / 2.0, (width-2.0) / 2.0));
 	
 	cairo_save (cr);
 
@@ -362,7 +362,7 @@ clearlooks_gummy_draw_progressbar_fill (cairo_t *cr,
                                   int x, int y, int width, int height,
                                   gint offset)
 {
-	boolean     is_horizontal = progressbar->orientation < 2;
+	boolean      is_horizontal = progressbar->orientation < 2;
 	double       tile_pos = 0;
 	double       stroke_width;
 	double       radius;
@@ -599,7 +599,7 @@ clearlooks_gummy_draw_tab (cairo_t *cr,
                             int x, int y, int width, int height)
 {
 
-	const CairoColor    *border       = &colors->shade[5];
+	const CairoColor    *border        = &colors->shade[5];
 	const CairoColor    *stripe_fill   = &colors->spot[1];
 	const CairoColor    *stripe_border = &colors->spot[2];
 	const CairoColor    *fill;
@@ -780,7 +780,7 @@ clearlooks_gummy_draw_slider (cairo_t *cr,
                         const WidgetParameters *params,
                         int x, int y, int width, int height)
 {
-	const CairoColor *border  = &colors->shade[7];
+	const CairoColor *border = &colors->shade[7];
 	CairoColor  fill;
 	CairoColor  hilight;
 	CairoColor  a, b, c, d;
@@ -914,12 +914,12 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t *cr,
                                    const ScrollBarParameters       *scrollbar,
                                    int x, int y, int width, int height)
 {
-	const CairoColor *border  = &colors->shade[7];
-	CairoColor  fill  = scrollbar->color;
-	CairoColor  hilight;
-	CairoColor  shade1, shade2, shade3;
+	CairoColor fill = scrollbar->color;
+	CairoColor hilight, shade1, shade2, shade3, border;
 	cairo_pattern_t *pattern;
 	int bar_x, i;
+
+	ge_shade_color (&fill, 0.575, &border);
 
 	if (scrollbar->junction & CL_JUNCTION_BEGIN)
 	{
@@ -973,13 +973,13 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t *cr,
 		ge_cairo_stroke_rectangle (cr, 1.5, 1.5, width-3, height-3);
 	}
 
-	clearlooks_set_mixed_color (cr, border, &fill, scrollbar->has_color? 0.3 : 0.2);
+	clearlooks_set_mixed_color (cr, &border, &fill, scrollbar->has_color? 0.3 : 0.2);
 	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 
-	/* Handles */
+	/* Handle */
 	bar_x = width/2 - 4;
 	cairo_translate(cr, 0.5, 0.5);
-	ge_cairo_set_color (cr, border);
+	ge_cairo_set_color (cr, &border);
 	for (i=0; i<3; i++)
 	{
 		cairo_move_to (cr, bar_x, 5);
@@ -1066,8 +1066,8 @@ clearlooks_gummy_draw_toolbar (cairo_t *cr,
                          const ToolbarParameters         *toolbar,
                          int x, int y, int width, int height)
 {
-	const CairoColor *fill  = &colors->bg[GTK_STATE_NORMAL];
-	const CairoColor *dark  = &colors->shade[3];
+	const CairoColor *fill = &colors->bg[GTK_STATE_NORMAL];
+	const CairoColor *dark = &colors->shade[3];
 	CairoColor light;
 	ge_shade_color (fill, 1.05, &light);
 	

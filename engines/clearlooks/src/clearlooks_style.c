@@ -1446,42 +1446,43 @@ clearlooks_style_draw_layout (GtkStyle * style,
 	     GtkWidget * widget,
 	     const gchar * detail, gint x, gint y, PangoLayout * layout)
 {
-  GdkGC *gc;
+	GdkGC *gc;
 
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (window != NULL);
+	g_return_if_fail (GTK_IS_STYLE (style));
+	g_return_if_fail (window != NULL);
 
-  gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
+	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
 
-  if (area)
-    gdk_gc_set_clip_rectangle (gc, area);
+	if (area)
+		gdk_gc_set_clip_rectangle (gc, area);
 
-  if (state_type == GTK_STATE_INSENSITIVE) {
-    ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
-    ClearlooksColors *colors = &clearlooks_style->colors;
+	if (state_type == GTK_STATE_INSENSITIVE) {
+		ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
+		ClearlooksColors *colors = &clearlooks_style->colors;
 
-    WidgetParameters params;
-    GdkColor etched;
-    CairoColor temp;
+		WidgetParameters params;
+		GdkColor etched;
+		CairoColor temp;
 
-    clearlooks_set_widget_parameters (widget, style, state_type, &params);
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-    if (GTK_WIDGET_NO_WINDOW (widget))
-      ge_shade_color (&params.parentbg, 1.2, &temp);
-    else
-      ge_shade_color (&colors->bg[widget->state], 1.2, &temp);
-    etched.red = (int) (temp.r * 65535);
-    etched.green = (int) (temp.g * 65535);
-    etched.blue = (int) (temp.b * 65535);
+		if (GTK_WIDGET_NO_WINDOW (widget))
+			ge_shade_color (&params.parentbg, 1.2, &temp);
+		else
+			ge_shade_color (&colors->bg[widget->state], 1.2, &temp);
+		
+		etched.red = (int) (temp.r * 65535);
+		etched.green = (int) (temp.g * 65535);
+		etched.blue = (int) (temp.b * 65535);
 
-    gdk_draw_layout_with_colors (window, style->text_gc[state_type], x + 1, y + 1, layout, &etched, NULL);
-    gdk_draw_layout (window, style->text_gc[state_type], x, y, layout);
-  }
-  else
-    gdk_draw_layout (window, gc, x, y, layout);
+		gdk_draw_layout_with_colors (window, style->text_gc[state_type], x + 1, y + 1, layout, &etched, NULL);
+		gdk_draw_layout (window, style->text_gc[state_type], x, y, layout);
+	}
+	else
+		gdk_draw_layout (window, gc, x, y, layout);
 
-  if (area)
-    gdk_gc_set_clip_rectangle (gc, NULL);
+	if (area)
+		gdk_gc_set_clip_rectangle (gc, NULL);
 }
 
 static GdkPixbuf *
