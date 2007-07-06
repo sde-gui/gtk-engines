@@ -1,5 +1,11 @@
 2007-07-06  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_button), (clearlooks_gummy_draw_entry):
+	Whitespaces
+
+2007-07-06  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_inset), (clearlooks_draw_button),
 	(clearlooks_draw_entry), (clearlooks_draw_scale_trough),

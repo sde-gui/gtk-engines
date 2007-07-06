@@ -159,7 +159,7 @@ clearlooks_gummy_draw_button (cairo_t               *cr,
 		cairo_translate (cr, 0.5, 0.5);
 
 		if (params->enable_glow && !params->active && !params->disabled && !params->is_default)
-		//if (params->prelight && params->enable_glow && !params->active)
+/* 		if (params->prelight && params->enable_glow && !params->active) */
 		{
 			/* Glow becomes a shadow to have 3d prelight buttons :) */
 			CairoColor glow;
@@ -190,7 +190,7 @@ clearlooks_gummy_draw_button (cairo_t               *cr,
 		}
 		
 		if (!(params->enable_glow && !params->active && !params->disabled))
-		//if (!(params->prelight && params->enable_glow && !params->active))
+/* 		if (!(params->prelight && params->enable_glow && !params->active)) */
 			params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}
@@ -207,7 +207,8 @@ clearlooks_gummy_draw_button (cairo_t               *cr,
 
 		cairo_save (cr);
 
-		ge_cairo_rounded_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, height, radius, params->corners & (CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMLEFT));
+		ge_cairo_rounded_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, height, radius, 
+		                            params->corners & (CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMLEFT));
 		cairo_clip (cr);
 		cairo_rectangle (cr, xoffset+1, yoffset+1, width-(xoffset*2)-2, 3);
 	
@@ -288,7 +289,8 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 		/*
 		cairo_move_to (cr, 2, height-3);
 		cairo_arc (cr, params->xthickness+RADIUS-1, params->ythickness+RADIUS-1, RADIUS, G_PI, 270*(G_PI/180));
-		cairo_line_to (cr, width-3, 2);*/
+		cairo_line_to (cr, width-3, 2);
+		*/
 		cairo_move_to (cr, 2, height-3);
 		cairo_line_to (cr, 2, 2);
 		cairo_line_to (cr, width-3, 2);
