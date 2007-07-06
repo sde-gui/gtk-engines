@@ -1,3 +1,33 @@
+2007-07-06  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_inset), (clearlooks_draw_button),
+	(clearlooks_draw_entry), (clearlooks_draw_scale_trough),
+	(clearlooks_draw_checkbox):
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_draw_glossy_gradient), (clearlooks_set_mixed_color),
+	(clearlooks_glossy_draw_inset),
+	(clearlooks_glossy_draw_light_inset),
+	(clearlooks_glossy_draw_highlight_and_shade),
+	(clearlooks_glossy_draw_button),
+	(clearlooks_glossy_draw_scale_trough),
+	(clearlooks_glossy_draw_tab), (clearlooks_glossy_draw_checkbox):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_draw_gummy_gradient), (clearlooks_set_mixed_color),
+	(clearlooks_gummy_draw_highlight_and_shade),
+	(clearlooks_gummy_draw_button), (clearlooks_gummy_draw_entry),
+	(clearlooks_gummy_draw_progressbar_fill),
+	(clearlooks_gummy_scale_draw_gradient),
+	(clearlooks_gummy_draw_scale_trough), (clearlooks_gummy_draw_tab),
+	(clearlooks_gummy_draw_scrollbar_slider),
+	(clearlooks_gummy_draw_checkbox):
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_button):
+	* engines/clearlooks/src/clearlooks_types.h:
+	Powerful new adaptive shading in gummy scrollbar's borders ;)
+	Use const CairoColor *color where available
+	Indentations/whitespaces
+
 2007-07-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

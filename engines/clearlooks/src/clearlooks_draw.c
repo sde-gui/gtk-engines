@@ -15,7 +15,8 @@ typedef void (*menubar_draw_proto) (cairo_t *cr,
                                     int x, int y, int width, int height);
 
 static void
-clearlooks_draw_inset (cairo_t *cr, CairoColor bg_color, 
+clearlooks_draw_inset (cairo_t          *cr, 
+                       const CairoColor *bg_color, 
                        double x, double y, double w, double h, 
                        double radius, uint8 corners)
 {
@@ -23,8 +24,8 @@ clearlooks_draw_inset (cairo_t *cr, CairoColor bg_color,
 	CairoColor highlight;
 
 	/* not really sure of shading ratios... we will think */
-	ge_shade_color (&bg_color, 0.94, &shadow);
-	ge_shade_color (&bg_color, 1.06, &highlight);
+	ge_shade_color (bg_color, 0.94, &shadow);
+	ge_shade_color (bg_color, 1.06, &highlight);
 
 	/* highlight */
 	cairo_move_to (cr, x + w + (radius * -0.2928932188), y - (radius * -0.2928932188)); /* 0.2928932... 1-sqrt(2)/2 gives middle of curve */
@@ -245,7 +246,7 @@ clearlooks_draw_button (cairo_t *cr,
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
 		cairo_translate (cr, 0.5, 0.5);
-		params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
+		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}		
 	
@@ -373,7 +374,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	ge_cairo_set_color (cr, base);
 	cairo_fill (cr);
 	
-	params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
+	params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
 
 	/* Draw the inner shadow */
 	if (params->focus)
@@ -516,7 +517,7 @@ clearlooks_draw_scale_trough (cairo_t *cr,
 	cairo_translate (cr, translate_x, translate_y);
 	
 	if (!slider->fill_level)
-		params->style_functions->draw_inset (cr, params->parentbg, 0, 0, trough_width+2, trough_height+2, 0, 0);
+		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, trough_width+2, trough_height+2, 0, 0);
 	
 	cairo_translate (cr, 1, 1);
 	
@@ -2042,7 +2043,7 @@ clearlooks_draw_checkbox (cairo_t *cr,
 	
 	if (widget->xthickness > 2 && widget->ythickness > 2)
 	{
-		widget->style_functions->draw_inset (cr, widget->parentbg, 0.5, 0.5, width-1, height-1, 1, CR_CORNER_ALL);
+		widget->style_functions->draw_inset (cr, &widget->parentbg, 0.5, 0.5, width-1, height-1, 1, CR_CORNER_ALL);
 		
 		/* Draw the rectangle for the checkbox itself */
 		ge_cairo_rounded_rectangle (cr, 1.5, 1.5, width-3, height-3, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
@@ -2200,8 +2201,8 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_button             = clearlooks_draw_button;
 	functions->draw_scale_trough       = clearlooks_draw_scale_trough;
 	functions->draw_progressbar_trough = clearlooks_draw_progressbar_trough;
-	functions->draw_progressbar_fill	  = clearlooks_draw_progressbar_fill;
-	functions->draw_slider_button	     = clearlooks_draw_slider_button;
+	functions->draw_progressbar_fill   = clearlooks_draw_progressbar_fill;
+	functions->draw_slider_button      = clearlooks_draw_slider_button;
 	functions->draw_entry              = clearlooks_draw_entry;
 	functions->draw_spinbutton         = clearlooks_draw_spinbutton;
 	functions->draw_spinbutton_down    = clearlooks_draw_spinbutton_down;
@@ -2211,14 +2212,14 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_tab                = clearlooks_draw_tab;
 	functions->draw_frame              = clearlooks_draw_frame;
 	functions->draw_separator          = clearlooks_draw_separator;
-	functions->draw_list_view_header	  = clearlooks_draw_list_view_header;
+	functions->draw_list_view_header   = clearlooks_draw_list_view_header;
 	functions->draw_toolbar            = clearlooks_draw_toolbar;
 	functions->draw_menuitem           = clearlooks_draw_menuitem;
 	functions->draw_menubaritem        = clearlooks_draw_menubaritem;
 	functions->draw_selected_cell      = clearlooks_draw_selected_cell;
 	functions->draw_scrollbar_stepper  = clearlooks_draw_scrollbar_stepper;
 	functions->draw_scrollbar_slider   = clearlooks_draw_scrollbar_slider;
-	functions->draw_scrollbar_trough	  = clearlooks_draw_scrollbar_trough;
+	functions->draw_scrollbar_trough   = clearlooks_draw_scrollbar_trough;
 	functions->draw_statusbar          = clearlooks_draw_statusbar;
 	functions->draw_menu_frame         = clearlooks_draw_menu_frame;
 	functions->draw_tooltip            = clearlooks_draw_tooltip;
@@ -2226,7 +2227,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_resize_grip        = clearlooks_draw_resize_grip;
 	functions->draw_arrow              = clearlooks_draw_arrow;
 	functions->draw_checkbox           = clearlooks_draw_checkbox;
-	functions->draw_radiobutton        = clearlooks_draw_radiobutton;	
+	functions->draw_radiobutton        = clearlooks_draw_radiobutton;
 	functions->draw_shadow             = clearlooks_draw_shadow;
 	functions->draw_slider             = clearlooks_draw_slider;
 	functions->draw_gripdots           = clearlooks_draw_gripdots;

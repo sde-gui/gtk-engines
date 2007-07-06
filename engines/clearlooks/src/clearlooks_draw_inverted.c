@@ -104,7 +104,7 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
 		cairo_translate (cr, 0.5, 0.5);
-		params->style_functions->draw_inset (cr, params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
+		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}		
 	

@@ -302,9 +302,10 @@ struct _ClearlooksStyleFunctions
 	                               const OptionMenuParameters *optionmenu,
 	                               int x, int y, int width, int height);
 					   
-	void (*draw_inset)            (cairo_t *cr, CairoColor bg_color, 
-                                  double x, double y, double w, double h,
-                                  double radius, uint8 corners);
+	void (*draw_inset)            (cairo_t				*cr,
+	                                const CairoColor		*bg_color,
+	                                double x, double y, double w, double h,
+	                                double radius, uint8 corners);
 
 	void (*draw_menubar)          (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
@@ -325,7 +326,7 @@ struct _ClearlooksStyleFunctions
 	                               int x, int y, int width, int height);
 
 	void (*draw_separator)        (cairo_t				*cr,
-	                               const CairoColor		      *color,
+	                               const CairoColor			*color,
 	                               const WidgetParameters		*widget,
 	                               const SeparatorParameters	*separator,
 	                               int x, int y, int width, int height);
@@ -403,11 +404,11 @@ struct _ClearlooksStyleFunctions
 	                               const ResizeGripParameters	*grip,
 	                               int x, int y, int width, int height);
 
-	void (*draw_arrow)      (cairo_t				*cr,
-					                       const ClearlooksColors *colors,
-					                       const WidgetParameters *widget,
-					                       const ArrowParameters  *arrow,
-					                       int x, int y, int width, int height);
+	void (*draw_arrow)            (cairo_t				*cr,
+	                               const ClearlooksColors		*colors,
+	                               const WidgetParameters		*widget,
+	                               const ArrowParameters		*arrow,
+	                               int x, int y, int width, int height);
 	                               
 	void (*draw_checkbox)         (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
@@ -424,7 +425,7 @@ struct _ClearlooksStyleFunctions
 	/* Style internal functions */
 	/* XXX: Only used by slider_button, inline it? */
 	void (*draw_shadow)           (cairo_t				*cr,
-                                  const ClearlooksColors		*colors,
+                                       const ClearlooksColors		*colors,
 	                               gfloat         radius,
 	                               int				 width,
 	                               int				 height);
@@ -435,9 +436,9 @@ struct _ClearlooksStyleFunctions
 	                               int x, int y, int width, int height);
 
 	void (*draw_gripdots)         (cairo_t *cr,
-                                    const ClearlooksColors *colors, int x, int y,
-                                    int width, int height, int xr, int yr,
-                                    float contrast);
+                                       const ClearlooksColors *colors, int x, int y,
+                                       int width, int height, int xr, int yr,
+                                       float contrast);
 };
 
 
