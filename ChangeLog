@@ -1,3 +1,9 @@
+2007-07-09  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* NEWS:
+	* configure.ac:
+	Update for 2.11.3 release.
+
 2007-07-06  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
