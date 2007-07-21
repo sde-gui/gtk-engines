@@ -1,3 +1,9 @@
+2007-07-21  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Use a different match for the progress bar to fix the network
+	manager progress bar padding.
+
 2007-07-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:

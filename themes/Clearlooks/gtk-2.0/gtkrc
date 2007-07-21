@@ -172,8 +172,7 @@ class "GtkMenu"      style "clearlooks-menu"
 class "GtkEntry"     style "clearlooks-wider"
 class "GtkMenuItem"    style "clearlooks-menu-item"
 class "GtkNotebook"    style "clearlooks-notebook"
-class "GtkProgressBar" style "clearlooks-progressbar"
- 
+
 #class "GtkMenuBar" style "clearlooks-menubar"
 
 widget_class "*MenuItem.*" style "clearlooks-menu-item"
@@ -196,3 +195,5 @@ widget_class "*.GtkFrame.GtkLabel" style "clearlooks-frame-title"
 widget_class "*.GtkNotebook.*.GtkEventBox" style "clearlooks-notebook"
 widget_class "*.GtkNotebook.*.GtkViewport" style "clearlooks-notebook"
 
+widget_class "*<GtkProgressBar>" style "clearlooks-progressbar"
+ 
