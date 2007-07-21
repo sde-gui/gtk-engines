@@ -573,13 +573,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
 			params.active = TRUE;
 		
-		/* Fix some firefox crap. */
-		if (GE_IS_BUTTON (widget) && GE_IS_FIXED (widget->parent) && widget->allocation.x == -1 &&  widget->allocation.y == -1)
-		{
-			gtk_style_apply_default_background (widget->parent->style, window, TRUE, GTK_STATE_NORMAL,
-			                                    area, x, y, width, height);
-		}
-		
 		STYLE_FUNCTION(draw_button) (cr, &clearlooks_style->colors, &params,
 		                             x, y, width, height);
 	}
