@@ -489,7 +489,7 @@ clearlooks_glossy_draw_progressbar_fill (cairo_t *cr,
 	ge_shade_color (&colors->spot[1], 1.08, &e);
 	pattern = cairo_pattern_create_linear (0, 0, 0, height);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.0, a.r, a.g, a.b);
-   	cairo_pattern_add_color_stop_rgb (pattern, 0.5, b.r, b.g, b.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5, b.r, b.g, b.b);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.5, colors->spot[1].r, colors->spot[1].g, colors->spot[1].b);
 	cairo_pattern_add_color_stop_rgb (pattern, 1.0, e.r, e.g, e.b);
 	cairo_set_source (cr, pattern);
@@ -518,7 +518,7 @@ clearlooks_glossy_draw_progressbar_fill (cairo_t *cr,
 
 	/* inner highlight border
 	 * This is again kinda ugly. Draw once from each side, clipping away the other. */
-	cairo_set_source_rgba (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b, 0.5);
+	cairo_set_source_rgba (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b, 0.3);
 
 	/* left side */
 	cairo_save (cr);
@@ -764,8 +764,8 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0,        hilight.r, hilight.g, hilight.b);
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0/height, hilight.r, hilight.g, hilight.b);
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0/height, f1.r, f1.g, f1.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.45,        f2.r, f2.g, f2.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.45,        fill->r, fill->g, fill->b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.45,       f2.r, f2.g, f2.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.45,       fill->r, fill->g, fill->b);
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0,        shadow.r, shadow.g, shadow.b);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
@@ -832,7 +832,7 @@ clearlooks_glossy_draw_slider (cairo_t *cr,
 	if (params->prelight)
 		ge_shade_color (&fill, 1.1, &fill);
 
-	ge_shade_color (&fill, 1.3, &hilight);
+	ge_shade_color (&fill, 1.25, &hilight);
 	ge_shade_color (&fill, 1.16, &a);
 	ge_shade_color (&fill, 1.08, &b);
 	ge_shade_color (&fill, 1.0,  &c);
@@ -990,7 +990,7 @@ clearlooks_glossy_draw_scrollbar_slider (cairo_t *cr,
 		
 	cairo_set_line_width (cr, 1);
 	
-	ge_shade_color (&fill, 1.3, &hilight);
+	ge_shade_color (&fill, 1.25, &hilight);
 	ge_shade_color (&fill, 1.16, &shade1);
 	ge_shade_color (&fill, 1.08, &shade2);
 	ge_shade_color (&fill, 1.08, &shade3);
@@ -1150,14 +1150,29 @@ clearlooks_glossy_draw_menuitem (cairo_t                   *cr,
                                  const WidgetParameters    *params,
                                  int x, int y, int width, int height)
 {
-	cairo_save (cr);
-	cairo_rectangle (cr, x, y + 1, width, height - 2);
-	cairo_clip (cr);
-	clearlooks_draw_glossy_gradient (cr, x, y, width, height, &colors->spot[1], params->disabled, 0, CR_CORNER_NONE);
-	cairo_restore (cr);
+	const CairoColor *fill = &colors->spot[1];
+	const CairoColor *border = &colors->spot[2];
+	CairoColor shade1, shade2, shade3;
+	cairo_pattern_t *pattern;
 
-	ge_cairo_set_color (cr, &colors->spot[2]);
-	cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
+	ge_shade_color (fill, 1.1, &shade1);
+	ge_shade_color (fill, 1.02, &shade2);
+	ge_shade_color (fill, 0.92, &shade3);
+	cairo_set_line_width (cr, 1.0);
+
+	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);
+
+	pattern = cairo_pattern_create_linear (x, y, x, y + height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0,   shade1.r, shade1.g, shade1.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5,	shade2.r, shade2.g, shade2.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5, fill->r,  fill->g,  fill->b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1,	shade3.r, shade3.g, shade3.b);
+
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve  (cr);
+	cairo_pattern_destroy (pattern);
+
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 }
 
@@ -1167,14 +1182,29 @@ clearlooks_glossy_draw_menubaritem (cairo_t                   *cr,
                                     const WidgetParameters    *params,
                                     int x, int y, int width, int height)
 {
-	cairo_save (cr);
-	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height, params->radius, params->corners);
-	cairo_clip (cr);
-	clearlooks_draw_glossy_gradient (cr, x, y, width, height, &colors->spot[1], params->disabled, 0, CR_CORNER_NONE);
-	cairo_restore (cr);
+	const CairoColor *fill = &colors->spot[1];
+	const CairoColor *border = &colors->spot[2];
+	CairoColor shade1, shade2, shade3;
+	cairo_pattern_t *pattern;
 
-	ge_cairo_set_color (cr, &colors->spot[2]);
-	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height, params->radius, params->corners);
+	ge_shade_color (fill, 1.16, &shade1);
+	ge_shade_color (fill, 1.08, &shade2);
+	ge_shade_color (fill, 1.08, &shade3);
+	cairo_set_line_width (cr, 1.0);
+
+	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);
+
+	pattern = cairo_pattern_create_linear (x, y, x, y + height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0,   shade1.r, shade1.g, shade1.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5,	shade2.r, shade2.g, shade2.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5, fill->r,  fill->g,  fill->b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1,	shade3.r, shade3.g, shade3.b);
+
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve  (cr);
+	cairo_pattern_destroy (pattern);
+
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 }
 

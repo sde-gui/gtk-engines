@@ -1,3 +1,21 @@
+2007-07-24  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+        * engines/clearlooks/src/clearlooks_draw.c:
+        (clearlooks_draw_menuitem):
+        * engines/clearlooks/src/clearlooks_draw_glossy.c:
+        (clearlooks_glossy_draw_progressbar_fill),
+        (clearlooks_glossy_draw_slider),
+        (clearlooks_glossy_draw_scrollbar_slider),
+        (clearlooks_glossy_draw_menuitem),
+        (clearlooks_glossy_draw_menubaritem):
+        * engines/clearlooks/src/clearlooks_draw_gummy.c:
+        (clearlooks_gummy_draw_menuitem),
+        (clearlooks_gummy_draw_menubaritem):
+        It requires improvements in the gtkrc or it'll look odd.
+        I've added rounded ability to menuitems, I'm using a long code but
+        I guess it is faster then the previous as it's no longer using
+        cairo_clip()
+
 2007-07-21  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:

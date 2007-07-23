@@ -1424,7 +1424,6 @@ clearlooks_draw_menuitem (cairo_t *cr,
 
 	ge_cairo_set_color (cr, &border);
 	cairo_stroke (cr);
-
 }
 
 static void

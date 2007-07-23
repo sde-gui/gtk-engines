@@ -1139,14 +1139,29 @@ clearlooks_gummy_draw_menuitem (cairo_t                *cr,
                                 const WidgetParameters *params,
                                 int x, int y, int width, int height)
 {
-	cairo_save (cr);
-	cairo_rectangle (cr, x, y + 1, width, height - 2);
-	cairo_clip (cr);
-	clearlooks_draw_gummy_gradient (cr, x, y, width, height, &colors->spot[1], params->disabled, 0, CR_CORNER_NONE);
-	cairo_restore (cr);
+	const CairoColor *fill = &colors->spot[1];
+	const CairoColor *border = &colors->spot[2];
+	CairoColor shade1, shade2, shade3;
+	cairo_pattern_t *pattern;
 
-	ge_cairo_set_color (cr, &colors->spot[2]);
-	cairo_rectangle (cr, x+ 0.5, y+0.5, width - 1.0, height - 1.0);
+	ge_shade_color (fill, 1.1, &shade1);
+	ge_shade_color (fill, 1.02, &shade2);
+	ge_shade_color (fill, 0.92, &shade3);
+	cairo_set_line_width (cr, 1.0);
+
+	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);
+
+	pattern = cairo_pattern_create_linear (x, y, x, y + height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0,   shade1.r, shade1.g, shade1.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5,	shade2.r, shade2.g, shade2.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5, fill->r,  fill->g,  fill->b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1,	shade3.r, shade3.g, shade3.b);
+
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve  (cr);
+	cairo_pattern_destroy (pattern);
+
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 }
 
@@ -1156,14 +1171,29 @@ clearlooks_gummy_draw_menubaritem (cairo_t                *cr,
                                    const WidgetParameters *params,
                                    int x, int y, int width, int height)
 {
-	cairo_save (cr);
-	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height, params->radius, params->corners);
-	cairo_clip (cr);
-	clearlooks_draw_gummy_gradient (cr, x, y, width, height, &colors->spot[1], params->disabled, 0, CR_CORNER_NONE);
-	cairo_restore (cr);
+	const CairoColor *fill = &colors->spot[1];
+	const CairoColor *border = &colors->spot[2];
+	CairoColor shade1, shade2, shade3;
+	cairo_pattern_t *pattern;
 
-	ge_cairo_set_color (cr, &colors->spot[2]);
-	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1, height, params->radius, params->corners);
+	ge_shade_color (fill, 1.1, &shade1);
+	ge_shade_color (fill, 1.02, &shade2);
+	ge_shade_color (fill, 0.92, &shade3);
+	cairo_set_line_width (cr, 1.0);
+
+	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);
+
+	pattern = cairo_pattern_create_linear (x, y, x, y + height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0,   shade1.r, shade1.g, shade1.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5,	shade2.r, shade2.g, shade2.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5, fill->r,  fill->g,  fill->b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1,	shade3.r, shade3.g, shade3.b);
+
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve  (cr);
+	cairo_pattern_destroy (pattern);
+
+	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 }
 
