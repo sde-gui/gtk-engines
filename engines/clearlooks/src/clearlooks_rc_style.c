@@ -133,7 +133,6 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
 	clearlooks_rc->toolbarstyle = 0;
 	clearlooks_rc->animation = FALSE;
 	clearlooks_rc->colorize_scrollbar = FALSE;
-	clearlooks_rc->style = CL_STYLE_CLASSIC;
 	clearlooks_rc->radius = 3.0;
 }
 
