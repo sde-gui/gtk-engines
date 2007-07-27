@@ -790,6 +790,8 @@ clearlooks_gummy_draw_slider (cairo_t                *cr,
 	CairoColor  hilight;
 	CairoColor  a, b, c, d;
 	cairo_pattern_t *pattern;
+	int bar_x, i;
+	int shift_x;
 
 	cairo_set_line_width (cr, 1.0);	
 	cairo_translate      (cr, x, y);
@@ -824,6 +826,19 @@ clearlooks_gummy_draw_slider (cairo_t                *cr,
 
 	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.2);
 	ge_cairo_rounded_rectangle (cr, 1.5, 1.5, width-3, height-3, 2.0, params->corners);
+	cairo_stroke (cr);
+
+	/* Handle */
+	shift_x = (width%2 == 0 ? 1 : 0);
+	bar_x = width/2-3+shift_x;
+	cairo_translate(cr, 0.5, 0.5);
+	ge_cairo_set_color (cr, border);
+	for (i=0; i<3-shift_x; i++)
+	{
+		cairo_move_to (cr, bar_x, 4);
+		cairo_line_to (cr, bar_x, height-5);
+		bar_x += 3;
+	}
 	cairo_stroke (cr);
 }
 

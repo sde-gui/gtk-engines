@@ -1,3 +1,9 @@
+2007-07-27  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_slider):
+	Added vertical handles
+
 2007-07-26  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_rc_style.c:
