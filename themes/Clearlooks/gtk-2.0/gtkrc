@@ -1,8 +1,10 @@
 
-gtk_color_scheme = "fg_color:#000\nbg_color:#ede9e3\nbase_color:#fff\ntext_color:#000\nselected_bg_color:#5598d7\nselected_fg_color:#fff"
+gtk_color_scheme = "fg_color:#000\nbg_color:#DFE3E8\nbase_color:#fff\ntext_color:#000\nselected_bg_color:#77A6D9\nselected_fg_color:#fff"
 
 style "clearlooks-default"
 {
+  GtkWidget      ::cursor-color      = @text_color
+
   GtkButton      ::default_border    = { 0, 0, 0, 0 }
   GtkRange       ::trough_border     = 0
   GtkPaned       ::handle_size       = 6
@@ -14,7 +16,7 @@ style "clearlooks-default"
   GtkMenuBar     ::internal-padding  = 0
   GtkTreeView    ::expander_size     = 14
   GtkExpander    ::expander_size     = 16
-  GtkScale       ::slider-length     = 27
+  GtkScale       ::slider-length     = 23
 #  GtkToolbar     ::button-relief     = GTK_RELIEF_NORMAL
 #  GtkMenuBar     ::shadow-type       = GTK_SHADOW_OUT
 #  GtkScrollbar   ::has-secondary-forward-stepper = 1
@@ -23,10 +25,11 @@ style "clearlooks-default"
   GtkButton      ::child-displacement-x = 1
   GtkButton      ::child-displacement-y = 1
 
+  GtkMenu        ::horizontal_padding = 0
+  GtkMenu        ::vertical_padding = 0
+
   WnckTasklist   ::fade-overlay-rect = 0
 
-  GtkMenu::vertical_padding = 0
-  GtkMenu::horizontal_padding = 0
   xthickness = 1
   ythickness = 1
 
@@ -57,15 +60,14 @@ style "clearlooks-default"
 
   engine "clearlooks" 
   {
-    #scrollbar_color   = "#76acde"
-    colorize_scrollbar = FALSE
+#    scrollbar_color   = "#404040"
+    colorize_scrollbar = TRUE
     menubarstyle      = 2       # 0 = flat, 1 = sunken, 2 = flat gradient
+    toolbarstyle      = 1 # 0 = flat, 1 = enable effects
     animation         = FALSE
-    style             = CLASSIC
-    radius            = 3.0
+    style             = GUMMY
   }
 }
-
 
 style "clearlooks-wide" = "clearlooks-default"
 {
@@ -81,15 +83,18 @@ style "clearlooks-wider" = "clearlooks-default"
 
 style "clearlooks-button" = "clearlooks-wider"
 {
-  bg[NORMAL]        = shade (1.05, @bg_color) # "#f6f4f1"
-  bg[INSENSITIVE]   = shade (1.04, @bg_color) # "#f2efeb"
-  bg[PRELIGHT]      = shade (1.08, @bg_color) # "#faf9f8"
+  bg[NORMAL]        = shade (1.04, @bg_color) # "#f6f4f1"
+#  bg[INSENSITIVE]   = shade (1.04, @bg_color) # "#f2efeb"
+  bg[PRELIGHT]      =  shade (1.06, @bg_color)
+#  bg[PRELIGHT]      = shade (1.08, @bg_color) # "#faf9f8"
+  bg[ACTIVE]        = shade (0.85, @bg_color)
 }
 
 style "clearlooks-notebook" = "clearlooks-wide"
 {
 #  bg[NORMAL]      = "#efebe5"
 #  bg[INSENSITIVE] = "#efebe5"
+  bg[NORMAL]        = shade (1.03, @bg_color)
 }
 
 style "clearlooks-tasklist" = "clearlooks-default"
@@ -98,10 +103,15 @@ style "clearlooks-tasklist" = "clearlooks-default"
   ythickness = 3
 }
 
+style "clearlooks-toolbar" = "clearlooks-wide"
+{
+#  bg[NORMAL]       = shade (1.02, @bg_color)
+}
+
 style "clearlooks-menu" = "clearlooks-default"
 {
-  xthickness = 2
-  ythickness = 2
+  xthickness = 0
+  ythickness = 0
   bg[NORMAL] = shade (1.08, @bg_color) # "#f9f7f3"
 }
 
@@ -115,13 +125,15 @@ style "clearlooks-menu-item" = "clearlooks-default"
   xthickness = 2
   ythickness = 3
   fg[PRELIGHT] = @selected_fg_color
-  text[PRELIGHT] = @selected_fg_color
+  engine "clearlooks" {
+  radius = 3.0
+  }
 }
 
 style "clearlooks-tree" = "clearlooks-default"
 {
   xthickness = 2
-  ythickness = 2
+  ythickness = 1
 }
 
 style "clearlooks-frame-title" = "clearlooks-default"
@@ -129,16 +141,18 @@ style "clearlooks-frame-title" = "clearlooks-default"
   fg[NORMAL] = lighter (@fg_color) # "#404040"
 }
 
+style "clearlooks-tooltips" = "clearlooks-default"
+{
+  xthickness = 4
+  ythickness = 4
+  bg[NORMAL] = mix(0.60, shade (1.05,@bg_color), @selected_bg_color)
+}
+
 style "clearlooks-progressbar" = "clearlooks-wide"
 {
   xthickness = 1
   ythickness = 1
-  fg[PRELIGHT]  = @selected_fg_color
-
-  engine "clearlooks"
-  {
-    radius = 1.5
-  }
+  # fg[PRELIGHT]  = "#ffffff"
 }
 
 style "clearlooks-combo" = "clearlooks-button"
@@ -153,7 +167,7 @@ style "clearlooks-menubar" = "blackrock-default"
 style "clearlooks-scale" = "clearooks-button"
 {
 	GtkRange::trough-side-details = 1
-}	
+}
 
 style "nautilus-location" {
   bg[NORMAL] = mix(0.60, shade (1.05,@bg_color), @selected_bg_color)
@@ -172,7 +186,8 @@ class "GtkMenu"      style "clearlooks-menu"
 class "GtkEntry"     style "clearlooks-wider"
 class "GtkMenuItem"    style "clearlooks-menu-item"
 class "GtkNotebook"    style "clearlooks-notebook"
-
+class "GtkProgressBar" style "clearlooks-progressbar"
+class "GtkToolbar"   style "clearlooks-toolbar" 
 #class "GtkMenuBar" style "clearlooks-menubar"
 
 widget_class "*MenuItem.*" style "clearlooks-menu-item"
@@ -181,8 +196,9 @@ widget_class "*MenuItem.*" style "clearlooks-menu-item"
 # combobox stuff
 widget_class "*.GtkComboBox.GtkButton" style "clearlooks-combo"
 widget_class "*.GtkCombo.GtkButton"    style "clearlooks-combo"
-# For appears-as-list mode, there is not a real entry, but a GtkFrame
-widget_class "*.GtkComboBox.GtkFrame"  style "clearlooks-wider"
+# tooltips stuff
+widget_class "*.tooltips.*.GtkToggleButton" style "clearlooks-tasklist"
+widget "gtk-tooltips" style "clearlooks-tooltips"
 
 # treeview stuff
 widget_class "*.GtkTreeView.GtkButton" style "clearlooks-tree"
@@ -194,6 +210,3 @@ widget_class "*.GtkFrame.GtkLabel" style "clearlooks-frame-title"
 # notebook stuff
 widget_class "*.GtkNotebook.*.GtkEventBox" style "clearlooks-notebook"
 widget_class "*.GtkNotebook.*.GtkViewport" style "clearlooks-notebook"
-
-widget_class "*<GtkProgressBar>" style "clearlooks-progressbar"
- 
