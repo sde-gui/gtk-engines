@@ -1,3 +1,8 @@
+2007-07-28  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix menu item matching and add a special match for menubar menu items.
+
 2007-07-28  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:

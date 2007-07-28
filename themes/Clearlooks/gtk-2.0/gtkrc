@@ -115,9 +115,11 @@ style "clearlooks-menu" = "clearlooks-default"
   bg[NORMAL] = shade (1.08, @bg_color) # "#f9f7f3"
 }
 
-style "clearlooks-menubar-item" = "clearlooks-button"
+style "clearlooks-menubar-item"
 {
-#    fg[PRELIGHT] = "#000000"
+  engine "clearlooks" {
+    radius = 3.0
+  }
 }
 
 style "clearlooks-menu-item" = "clearlooks-default"
@@ -126,7 +128,7 @@ style "clearlooks-menu-item" = "clearlooks-default"
   ythickness = 3
   fg[PRELIGHT] = @selected_fg_color
   engine "clearlooks" {
-  radius = 3.0
+    radius = 0.0
   }
 }
 
@@ -184,14 +186,13 @@ class "GtkFrame"     style "clearlooks-wide"
 class "GtkSeparator" style "clearlooks-wide"
 class "GtkMenu"      style "clearlooks-menu"
 class "GtkEntry"     style "clearlooks-wider"
-class "GtkMenuItem"    style "clearlooks-menu-item"
 class "GtkNotebook"    style "clearlooks-notebook"
 class "GtkProgressBar" style "clearlooks-progressbar"
 class "GtkToolbar"   style "clearlooks-toolbar" 
 #class "GtkMenuBar" style "clearlooks-menubar"
 
-widget_class "*MenuItem.*" style "clearlooks-menu-item"
-#widget_class "*.GtkMenuBar.*MenuItem.*" style "clearlooks-menubar-item"
+widget_class "*.<GtkMenuItem>*" style "clearlooks-menu-item"
+widget_class "*.<GtkMenuBar>.*" style "clearlooks-menubar-item"
 
 # combobox stuff
 widget_class "*.GtkComboBox.GtkButton" style "clearlooks-combo"
