@@ -1,5 +1,5 @@
 
-gtk_color_scheme = "fg_color:#000\nbg_color:#DFE3E8\nbase_color:#fff\ntext_color:#000\nselected_bg_color:#77A6D9\nselected_fg_color:#fff"
+gtk_color_scheme = "fg_color:#000\nbg_color:#EBECED\nbase_color:#fff\ntext_color:#1A1A1A\nselected_bg_color:#86AED9\nselected_fg_color:#fff"
 
 style "clearlooks-default"
 {
@@ -115,7 +115,7 @@ style "clearlooks-menu" = "clearlooks-default"
   bg[NORMAL] = shade (1.08, @bg_color) # "#f9f7f3"
 }
 
-style "clearlooks-menubar-item"
+style "clearlooks-menubar-item" = "clearlooks-default"
 {
   engine "clearlooks" {
     radius = 3.0
