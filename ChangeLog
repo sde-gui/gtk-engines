@@ -1,6 +1,11 @@
 2007-07-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Hue to 213 instead 211
+
+2007-07-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
 	New ColorScheme
 
 2007-07-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
