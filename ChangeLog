@@ -1,3 +1,8 @@
+2007-07-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Everytime we add engine "clearlooks" we need to specify the style
+
 2007-07-28  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
