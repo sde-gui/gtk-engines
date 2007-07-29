@@ -31,6 +31,13 @@
 
 #include <cairo.h>
 
+#define SHADE_TOP 1.1
+#define SHADE_CENTER_TOP 1.02
+#define SHADE_BOTTOM 0.92
+
+#define LIGHT_SHADE_TOP 1.07
+#define LIGHT_SHADE_CENTER_TOP 1.02
+#define LIGHT_SHADE_BOTTOM 0.95
 
 static void
 clearlooks_draw_gummy_gradient (cairo_t          *cr,
@@ -38,19 +45,20 @@ clearlooks_draw_gummy_gradient (cairo_t          *cr,
                                 const CairoColor *color,
                                 gboolean disabled, gboolean radius, CairoCorners corners)
 {
-	CairoColor a, b, c, d;
+	CairoColor fill;
+	CairoColor shade1, shade2, shade3;
 	cairo_pattern_t *pt;
 
-	ge_shade_color (color, disabled? 1.04 : 1.1, &a);
-	ge_shade_color (color, disabled? 1.01 : 1.02, &b);
-	ge_shade_color (color, disabled? 0.99 : 1.00, &c);
-	ge_shade_color (color, disabled? 0.96 : 0.92, &d);
+	ge_shade_color (color, disabled? 1.04 : SHADE_TOP, &shade1);
+	ge_shade_color (color, disabled? 1.01 : SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (color, disabled? 0.99 : 1.0, &fill);
+	ge_shade_color (color, disabled? 0.96 : SHADE_BOTTOM, &shade3);
 
 	pt = cairo_pattern_create_linear (x, y, x, y+height);
-	cairo_pattern_add_color_stop_rgb (pt, 0.0, a.r, a.g, a.b);
-	cairo_pattern_add_color_stop_rgb (pt, 0.5, b.r, b.g, b.b);
-	cairo_pattern_add_color_stop_rgb (pt, 0.5, c.r, c.g, c.b);
-	cairo_pattern_add_color_stop_rgb (pt, 1.0, d.r, d.g, d.b);
+	cairo_pattern_add_color_stop_rgb (pt, 0.0, shade1.r, shade1.g, shade1.b);
+	cairo_pattern_add_color_stop_rgb (pt, 0.5, shade2.r, shade2.g, shade2.b);
+	cairo_pattern_add_color_stop_rgb (pt, 0.5, fill.r, fill.g, fill.b);
+	cairo_pattern_add_color_stop_rgb (pt, 1.0, shade3.r, shade3.g, shade3.b);
 
 	cairo_set_source (cr, pt);
 	ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, corners);
@@ -159,38 +167,34 @@ clearlooks_gummy_draw_button (cairo_t               *cr,
 		cairo_translate (cr, 0.5, 0.5);
 
 		if (params->enable_glow && !params->active && !params->disabled && !params->is_default)
-/* 		if (params->prelight && params->enable_glow && !params->active) */
 		{
-			/* Glow becomes a shadow to have 3d prelight buttons :) */
-			CairoColor glow;
+			CairoColor shadow;
 
 			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
 
 			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
-			ge_shade_color (&params->parentbg, 0.96, &glow);
-			ge_cairo_set_color (cr, &glow);
+			ge_shade_color (&params->parentbg, 0.96, &shadow);
+			ge_cairo_set_color (cr, &shadow);
 			cairo_stroke (cr);
 
 			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, radius+1, params->corners);
-			ge_shade_color (&params->parentbg, 0.92, &glow);
-			ge_cairo_set_color (cr, &glow);
+			ge_shade_color (&params->parentbg, 0.92, &shadow);
+			ge_cairo_set_color (cr, &shadow);
 			cairo_stroke (cr);
 		}
 
 		if (params->is_default)
 		{
-			/* Glow becomes a shadow to have 3d prelight buttons :) */
-			CairoColor glow = colors->spot[1];
+			CairoColor shadow = colors->spot[1];
 
 			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
 
 			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
-			clearlooks_set_mixed_color (cr, &params->parentbg, &glow, 0.5);
+			clearlooks_set_mixed_color (cr, &params->parentbg, &shadow, 0.5);
 			cairo_stroke (cr);
 		}
 		
 		if (!(params->enable_glow && !params->active && !params->disabled))
-/* 		if (!(params->prelight && params->enable_glow && !params->active)) */
 			params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}
@@ -374,9 +378,7 @@ clearlooks_gummy_draw_progressbar_fill (cairo_t                     *cr,
 	int          x_step;
 
 	cairo_pattern_t *pattern;
-	CairoColor       a;
-	CairoColor       b;
-	CairoColor       e;
+	CairoColor       shade1, shade2, shade3;
 	CairoColor       border;
 	CairoColor       shadow;
 
@@ -407,14 +409,14 @@ clearlooks_gummy_draw_progressbar_fill (cairo_t                     *cr,
 	cairo_clip (cr);
 
 	/* Draw the background gradient */
-	ge_shade_color (&colors->spot[1], 1.1, &a);
-	ge_shade_color (&colors->spot[1], 1.02, &b);
-	ge_shade_color (&colors->spot[1], 0.92, &e);
+	ge_shade_color (&colors->spot[1], SHADE_TOP, &shade1);
+	ge_shade_color (&colors->spot[1], SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (&colors->spot[1], SHADE_BOTTOM, &shade3);
 	pattern = cairo_pattern_create_linear (0, 0, 0, height);
-	cairo_pattern_add_color_stop_rgb (pattern, 0.0, a.r, a.g, a.b);
-	cairo_pattern_add_color_stop_rgb (pattern, 0.5, b.r, b.g, b.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.0, shade1.r, shade1.g, shade1.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.5, shade2.r, shade2.g, shade2.b);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.5, colors->spot[1].r, colors->spot[1].g, colors->spot[1].b);
-	cairo_pattern_add_color_stop_rgb (pattern, 1.0, e.r, e.g, e.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, shade3.r, shade3.g, shade3.b);
 	cairo_set_source (cr, pattern);
 	cairo_paint (cr);
 	cairo_pattern_destroy (pattern);
@@ -669,7 +671,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 
 	if (params->active)
 	{
-		CairoColor shadow, hilight, f1, f2;
+		CairoColor hilight;
+		CairoColor shade1, shade2, shade3;
 		
 		pattern = cairo_pattern_create_linear (tab->gap_side == CL_GAP_LEFT   ? width-1  : 0,
 		                                       tab->gap_side == CL_GAP_TOP    ? height-2 : 1,
@@ -678,17 +681,17 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 		
-		ge_shade_color (fill, 0.92, &shadow);
 		ge_shade_color (fill, 1.16, &hilight);
-		ge_shade_color (fill, 1.10, &f1);
-		ge_shade_color (fill, 1.02, &f2);
+		ge_shade_color (fill, SHADE_TOP, &shade1);
+		ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
+		ge_shade_color (fill, SHADE_BOTTOM, &shade3);
 
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0,        hilight.r, hilight.g, hilight.b);     
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0/height, hilight.r, hilight.g, hilight.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 1.0/height, f1.r, f1.g, f1.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.45,        f2.r, f2.g, f2.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.45,        fill->r, fill->g, fill->b);
-		cairo_pattern_add_color_stop_rgb (pattern, 1.0,        shadow.r, shadow.g, shadow.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0/height, shade1.r, shade1.g, shade1.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.45,       shade2.r, shade2.g, shade2.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 0.45,       fill->r, fill->g, fill->b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0,        shade3.r, shade3.g, shade3.b);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
 		cairo_pattern_destroy (pattern);
@@ -788,7 +791,7 @@ clearlooks_gummy_draw_slider (cairo_t                *cr,
 	const CairoColor *border = &colors->shade[7];
 	CairoColor  fill;
 	CairoColor  hilight;
-	CairoColor  a, b, c, d;
+	CairoColor  shade1, shade2, shade3;
 	cairo_pattern_t *pattern;
 	int bar_x, i;
 	int shift_x;
@@ -803,16 +806,15 @@ clearlooks_gummy_draw_slider (cairo_t                *cr,
 		ge_shade_color (&fill, 1.1, &fill);
 
 	ge_shade_color (&fill, 1.3, &hilight);
-	ge_shade_color (&fill, 1.1, &a);
-	ge_shade_color (&fill, 1.02, &b);
-	ge_shade_color (&fill, 1.0,  &c);
-	ge_shade_color (&fill, 0.92, &d);
+	ge_shade_color (&fill, SHADE_TOP, &shade1);
+	ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (&fill, SHADE_BOTTOM, &shade3);
 
 	pattern = cairo_pattern_create_linear (1, 1, 1, height-2);
-	cairo_pattern_add_color_stop_rgb (pattern, 0,   a.r, a.g, a.b);
-	cairo_pattern_add_color_stop_rgb (pattern, 0.5, b.r, b.g, b.b);
-	cairo_pattern_add_color_stop_rgb (pattern, 0.5, c.r, c.g, c.b);	
-	cairo_pattern_add_color_stop_rgb (pattern, 1.0, d.r, d.g, d.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 0,   shade1.r, shade1.g, shade1.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 0.5, shade2.r, shade2.g, shade2.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 0.5, fill.r, fill.g, fill.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 1.0, shade3.r, shade3.g, shade3.b);
 	cairo_rectangle (cr, 1, 1, width-2, height-2);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
@@ -872,7 +874,8 @@ clearlooks_gummy_draw_scrollbar_stepper (cairo_t                          *cr,
 {
 	CairoCorners corners = CR_CORNER_NONE;
 	const CairoColor *border = &colors->shade[7];
-	CairoColor  fill, s1, s2, s4;
+	CairoColor fill;
+	CairoColor shade1, shade2, shade3;
 	cairo_pattern_t *pattern;
 	ShadowParameters shadow;
 	double radius = MIN (widget->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
@@ -903,14 +906,14 @@ clearlooks_gummy_draw_scrollbar_stepper (cairo_t                          *cr,
 		pattern = cairo_pattern_create_linear (0, 0, width, 0);
 	
 	fill = colors->bg[widget->state_type];
-	ge_shade_color(&fill, 1.1, &s1);
-	ge_shade_color(&fill, 1.02, &s2); 
-	ge_shade_color(&fill, 0.92, &s4); 
+	ge_shade_color(&fill, SHADE_TOP, &shade1);
+	ge_shade_color(&fill, SHADE_CENTER_TOP, &shade2); 
+	ge_shade_color(&fill, SHADE_BOTTOM, &shade3); 
 	
-	cairo_pattern_add_color_stop_rgb(pattern, 0,   s1.r, s1.g, s1.b);
-	cairo_pattern_add_color_stop_rgb(pattern, 0.5, s2.r, s2.g, s2.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 0,   shade1.r, shade1.g, shade1.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 0.5, shade2.r, shade2.g, shade2.b);
 	cairo_pattern_add_color_stop_rgb(pattern, 0.5, fill.r, fill.g, fill.b);
-	cairo_pattern_add_color_stop_rgb(pattern, 1.0, s4.r, s4.g, s4.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 1.0, shade3.r, shade3.g, shade3.b);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
@@ -935,7 +938,9 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
                                         int x, int y, int width, int height)
 {
 	CairoColor fill = scrollbar->color;
-	CairoColor hilight, shade1, shade2, shade3, border;
+	CairoColor border;
+	CairoColor hilight;
+	CairoColor shade1, shade2, shade3;
 	cairo_pattern_t *pattern;
 	int bar_x, i;
 
@@ -978,20 +983,20 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
 	cairo_translate (cr, x, y);
 
 	if (widget->prelight)
-		ge_shade_color (&fill, 1.1, &fill);
+		ge_shade_color (&fill, 1.08, &fill);
 		
 	cairo_set_line_width (cr, 1);
 	
 	ge_shade_color (&fill, 1.3, &hilight);
-	ge_shade_color (&fill, 1.1, &shade1);
-	ge_shade_color (&fill, 1.02, &shade2);
-	ge_shade_color (&fill, 0.92, &shade3);
+	ge_shade_color (&fill, SHADE_TOP, &shade1);
+	ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (&fill, SHADE_BOTTOM, &shade3);
 	
 	pattern = cairo_pattern_create_linear (1, 1, 1, height-2);
 	cairo_pattern_add_color_stop_rgb (pattern, 0,   shade1.r, shade1.g, shade1.b);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.5,	shade2.r, shade2.g, shade2.b);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.5, fill.r,  fill.g,  fill.b);
-	cairo_pattern_add_color_stop_rgb (pattern, 1,	shade3.r, shade3.g, shade3.b);	
+	cairo_pattern_add_color_stop_rgb (pattern, 1,   shade3.r, shade3.g, shade3.b);	
 	cairo_rectangle (cr, 1, 1, width-2, height-2);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
@@ -1037,9 +1042,9 @@ clearlooks_gummy_draw_list_view_header (cairo_t                        *cr,
 	cairo_pattern_t *pattern;
 
  	ge_shade_color (fill, 1.1, &hilight);
-	ge_shade_color (fill, 1.07, &shade1);
-	ge_shade_color (fill, 1.02, &shade2);
-	ge_shade_color (fill, 0.95, &shade3);
+	ge_shade_color (fill, LIGHT_SHADE_TOP, &shade1);
+	ge_shade_color (fill, LIGHT_SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (fill, LIGHT_SHADE_BOTTOM, &shade3);
 
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
@@ -1109,9 +1114,9 @@ clearlooks_gummy_draw_toolbar (cairo_t                 *cr,
 		cairo_pattern_t *pattern;
 		CairoColor shade1, shade2, shade3;
 		
-		ge_shade_color (fill, 1.07, &shade1);
-		ge_shade_color (fill, 1.02, &shade2);
-		ge_shade_color (fill, 0.95, &shade3);
+		ge_shade_color (fill, LIGHT_SHADE_TOP, &shade1);
+		ge_shade_color (fill, LIGHT_SHADE_CENTER_TOP, &shade2);
+		ge_shade_color (fill, LIGHT_SHADE_BOTTOM, &shade3);
 
 		/* Draw the fill */
 		pattern = cairo_pattern_create_linear (0, 0, 0, height);
@@ -1159,9 +1164,9 @@ clearlooks_gummy_draw_menuitem (cairo_t                *cr,
 	CairoColor shade1, shade2, shade3;
 	cairo_pattern_t *pattern;
 
-	ge_shade_color (fill, 1.1, &shade1);
-	ge_shade_color (fill, 1.02, &shade2);
-	ge_shade_color (fill, 0.92, &shade3);
+	ge_shade_color (fill, SHADE_TOP, &shade1);
+	ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (fill, SHADE_BOTTOM, &shade3);
 	cairo_set_line_width (cr, 1.0);
 
 	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);
@@ -1191,9 +1196,9 @@ clearlooks_gummy_draw_menubaritem (cairo_t                *cr,
 	CairoColor shade1, shade2, shade3;
 	cairo_pattern_t *pattern;
 
-	ge_shade_color (fill, 1.1, &shade1);
-	ge_shade_color (fill, 1.02, &shade2);
-	ge_shade_color (fill, 0.92, &shade3);
+	ge_shade_color (fill, SHADE_TOP, &shade1);
+	ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (fill, SHADE_BOTTOM, &shade3);
 	cairo_set_line_width (cr, 1.0);
 
 	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);
@@ -1243,7 +1248,7 @@ clearlooks_gummy_draw_statusbar (cairo_t                *cr,
 	cairo_translate       (cr, x, y+0.5);
 	cairo_move_to         (cr, 0, 0);
 	cairo_line_to         (cr, width, 0);
-	ge_cairo_set_color  (cr, dark);
+	ge_cairo_set_color    (cr, dark);
 	cairo_stroke          (cr);
 
 	cairo_translate       (cr, 0, 1);

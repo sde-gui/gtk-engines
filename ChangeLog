@@ -1,5 +1,18 @@
 2007-07-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_draw_gummy_gradient), (clearlooks_gummy_draw_button),
+	(clearlooks_gummy_draw_progressbar_fill),
+	(clearlooks_gummy_draw_tab), (clearlooks_gummy_draw_slider),
+	(clearlooks_gummy_draw_scrollbar_stepper),
+	(clearlooks_gummy_draw_scrollbar_slider),
+	(clearlooks_gummy_draw_list_view_header),
+	(clearlooks_gummy_draw_toolbar), (clearlooks_gummy_draw_menuitem),
+	(clearlooks_gummy_draw_menubaritem):
+	Ordered the code with few useful #define for the gradients
+
+2007-07-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Everytime we add engine "clearlooks" we need to specify the style
 
