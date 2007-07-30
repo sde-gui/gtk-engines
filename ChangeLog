@@ -1,3 +1,9 @@
+2007-07-31  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* NEWS:
+	* configure.ac:
+	Update for 2.11.4 release.
+
 2007-07-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:

@@ -1,3 +1,12 @@
+Overview of Changes in 2.11.4 (since 2.11.3)
+============================================
+
+Hilights in this release include:
+ - Moved default Clearlooks theme to the Gummy style
+ - Minor improvements to the Glossy and Gummy style of Clearlooks
+ - Radius support for menuitems in Clearlooks
+ - Vertical handles for the Gummy style
+
 Overview of Changes in 2.11.3 (since 2.11.2)
 ============================================
 
