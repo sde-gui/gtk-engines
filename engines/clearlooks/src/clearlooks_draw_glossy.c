@@ -1155,9 +1155,9 @@ clearlooks_glossy_draw_menuitem (cairo_t                   *cr,
 	CairoColor shade1, shade2, shade3;
 	cairo_pattern_t *pattern;
 
-	ge_shade_color (fill, 1.1, &shade1);
-	ge_shade_color (fill, 1.02, &shade2);
-	ge_shade_color (fill, 0.92, &shade3);
+	ge_shade_color (fill, 1.16, &shade1);
+	ge_shade_color (fill, 1.08, &shade2);
+	ge_shade_color (fill, 1.08, &shade3);
 	cairo_set_line_width (cr, 1.0);
 
 	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);

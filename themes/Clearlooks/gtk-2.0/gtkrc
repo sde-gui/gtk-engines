@@ -121,7 +121,6 @@ style "clearlooks-menubar-item" = "clearlooks-default"
   fg[PRELIGHT] = @selected_fg_color
   engine "clearlooks" {
     radius = 3.0
-    style  = GUMMY
   }
 }
 
@@ -132,7 +131,6 @@ style "clearlooks-menu-item" = "clearlooks-default"
   fg[PRELIGHT] = @selected_fg_color  
   engine "clearlooks" {
     radius = 0.0
-    style  = GUMMY
   }
 }
 

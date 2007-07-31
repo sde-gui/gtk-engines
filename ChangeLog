@@ -1,5 +1,14 @@
 2007-07-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_menuitem):
+	Fixed a bug in Glossy's menuitems that appears as Gummy's ones
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Removed useless style declaration
+
+2007-07-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_slider):
 	* themes/Clearlooks/gtk-2.0/gtkrc:
