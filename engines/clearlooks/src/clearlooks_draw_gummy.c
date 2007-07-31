@@ -833,7 +833,7 @@ clearlooks_gummy_draw_slider (cairo_t                *cr,
 	/* Handle */
 	shift_x = (width%2 == 0 ? 1 : 0);
 	bar_x = width/2-3+shift_x;
-	cairo_translate(cr, 0.5, 0.5);
+	cairo_translate (cr, 0.5, 0.5);
 	ge_cairo_set_color (cr, border);
 	for (i=0; i<3-shift_x; i++)
 	{
