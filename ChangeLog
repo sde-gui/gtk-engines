@@ -1,3 +1,8 @@
+2007-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Reworked the Clearlooks gtkrc to be--in my opinion--cleaner.
+
 2007-07-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
