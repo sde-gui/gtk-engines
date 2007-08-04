@@ -207,7 +207,7 @@ widget_class "*.<GtkFrame>.<GtkLabel>" style "clearlooks-frame-title"
 # quite a bit to get this working correctly.
 # (It will involve setting different priorities, etc.)
 ################################
-widget "gtk-tooltips*" style "clearlooks-tooltips"
+widget "gtk-tooltip*" style "clearlooks-tooltips"
 
 
 
