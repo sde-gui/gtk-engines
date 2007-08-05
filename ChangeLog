@@ -1,3 +1,9 @@
+2007-08-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Removed that *shit* gold tooltip color, using a
+	"salmon color"
+
 2007-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
