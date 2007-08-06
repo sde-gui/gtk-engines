@@ -1,3 +1,8 @@
+2007-08-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Using yellow tooltip with Apple's yellow tooltip color (just a try)
+
 2007-08-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
