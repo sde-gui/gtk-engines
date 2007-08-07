@@ -95,8 +95,8 @@ style "clearlooks-button"
 
 style "clearlooks-notebook"
 {
-	xthickness = 3
-	ythickness = 3
+	xthickness = 2
+	ythickness = 2
 
 	bg[NORMAL] = shade (1.03, @bg_color)
 }
@@ -135,7 +135,7 @@ style "clearlooks-menu-item"
 	text[INSENSITIVE]  = darker (@bg_color)
 }
 
-style "clearlooks-treeview-header"
+style "clearlooks-treeview-header" = "clearlooks-default"
 {
 	xthickness = 2
 	ythickness = 1
@@ -183,12 +183,6 @@ class "GtkEntry"     style "clearlooks-wider"
 # General matching following, the order is choosen so that the right styles override each other
 # eg. progressbar needs to be more important then the menu match.
 
-# Treeview header
-widget_class "*.<GtkTreeView>.<GtkButton>" style "clearlooks-treeview-header"
-widget_class "*.<GtkCTree>.<GtkButton>"    style "clearlooks-treeview-header"
-widget_class "*.<GtkList>.<GtkButton>"     style "clearlooks-treeview-header"
-widget_class "*.<GtkCList>.<GtkButton>"    style "clearlooks-treeview-header"
-
 widget_class "*<GtkButton>"      style "clearlooks-button"
 widget_class "*<GtkNotebook>"    style "clearlooks-notebook"
 widget_class "*<GtkProgressBar>" style "clearlooks-progressbar"
@@ -198,6 +192,11 @@ widget_class "*<GtkMenuItem>*"      style "clearlooks-menu-item"
 
 widget_class "*.<GtkFrame>.<GtkLabel>" style "clearlooks-frame-title"
 
+# Treeview header
+widget_class "*.<GtkTreeView>.<GtkButton>" style "clearlooks-treeview-header"
+widget_class "*.<GtkCTree>.<GtkButton>"    style "clearlooks-treeview-header"
+widget_class "*.<GtkList>.<GtkButton>"     style "clearlooks-treeview-header"
+widget_class "*.<GtkCList>.<GtkButton>"    style "clearlooks-treeview-header"
 
 # The window of the tooltip is called "gtk-tooltips"
 ################################
