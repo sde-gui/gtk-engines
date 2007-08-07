@@ -10,28 +10,30 @@ style "clearlooks-default"
 	########
 	GtkButton      ::child-displacement-x = 1
 	GtkButton      ::child-displacement-y = 1
-	GtkButton      ::default-border    = { 0, 0, 0, 0 }
-	GtkCheckButton ::indicator-size    = 14
+	GtkButton      ::default-border       = { 0, 0, 0, 0 }
+	GtkCheckButton ::indicator-size       = 14
 
-	GtkPaned       ::handle-size       = 6
+	GtkPaned       ::handle-size          = 6
 
-	GtkRange       ::trough-border     = 0
-	GtkRange       ::slider-width      = 15
-	GtkRange       ::stepper-size      = 15
+	GtkRange       ::trough-border        = 0
+	GtkRange       ::slider-width         = 15
+	GtkRange       ::stepper-size         = 15
 
-	GtkScale       ::slider-length       = 23
-	GtkScale       ::trough-side-details = 1
-	GtkScrollbar   ::min-slider-length   = 30
+	GtkScale       ::slider-length        = 23
+	GtkScale       ::trough-side-details  = 1
+	GtkScrollbar   ::min-slider-length    = 30
 
-	GtkMenuBar     ::internal-padding  = 0
-	GtkTreeView    ::expander-size     = 14
-	GtkExpander    ::expander-size     = 16
+	GtkMenuBar     ::internal-padding     = 0
+	GtkExpander    ::expander-size        = 16
+	GtkToolbar     ::internal-padding     = 1
+	GtkTreeView    ::expander-size        = 14
+	GtkTreeView    ::vertical-separator   = 1
 
-	GtkMenu        ::horizontal-padding = 0
-	GtkMenu        ::vertical-padding = 0
+	GtkMenu        ::horizontal-padding   = 0
+	GtkMenu        ::vertical-padding     = 0
 
 	# Glow the tasklist by changing the color, instead of overlaying it with a rectangle
-	WnckTasklist   ::fade-overlay-rect = 0
+	WnckTasklist   ::fade-overlay-rect    = 0
 
 	xthickness = 1
 	ythickness = 1
@@ -159,6 +161,8 @@ style "clearlooks-progressbar"
 {
 	xthickness = 1
 	ythickness = 1
+
+	fg[PRELIGHT] = @selected_fg_color
 }
 
 style "clearlooks-nautilus-location" {
@@ -174,7 +178,7 @@ style "clearlooks-nautilus-location" {
 class "GtkWidget"    style "clearlooks-default"
 
 # Increase the x/ythickness in some widgets
-class "GtkToolbar"   style "clearlooks-wide" 
+class "GtkToolbar"   style "clearlooks-default" 
 class "GtkRange"     style "clearlooks-wide"
 class "GtkFrame"     style "clearlooks-wide"
 class "GtkSeparator" style "clearlooks-wide"

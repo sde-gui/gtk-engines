@@ -1,6 +1,11 @@
 2007-08-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix at the progressbar and made treeview_items smaller
+
+2007-08-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Get rid of few bugs.
 
 2007-08-07  Andrea Cimitan  <andrea.cimitan@gmail.com>
