@@ -1,5 +1,16 @@
 2007-08-12  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* AUTHORS:
+	* engines/clearlooks/AUTHORS:
+	* engines/clearlooks/src/animation.c:
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/support.c:
+	Try to update the AUTHORS file and copyright notices in
+	Clearlooks.
+
+2007-08-12  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* MAINTAINERS:
 	Update MAINTAINERS file to follow the new standard.
 

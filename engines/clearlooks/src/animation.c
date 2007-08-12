@@ -1,7 +1,27 @@
-/* Yes, this is evil code. But many people seem to like hazardous things, so
- * it exists. Most of this was written by Kulyk Nazar.
+/* Clearlooks theme engine
  *
- * heavily modified by Benjamin Berg <benjamin@sipsolutions.net>.
+ * Copyright (C) 2006 Kulyk Nazar <schamane@myeburg.net>
+ * Copyright (C) 2006 Benjamin Berg <benjamin@sipsolutions.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ */
+
+/* This code is responsible for the clearlooks animation support. The code
+ * works by forcing a redraw on the animated widget.
  */
 
 #include "animation.h"
