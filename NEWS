@@ -1,3 +1,18 @@
+Overview of Changes in 2.11.5 (since 2.11.4)
+============================================
+
+Hilights in this release include:
+ - Cleaned up Clearlooks gtkrc
+ - The Clearlooks menubar height has been fixed
+ - Clearlooks now supports the tooltip color option
+
+New and updated Translations:
+  Dr.T.Vasudevan (ta)
+  Theppitak Karoonboonyanan (th)
+  Hendrik Brandt (de)
+  Kjartan Maraas (nb)
+
+
 Overview of Changes in 2.11.4 (since 2.11.3)
 ============================================
 

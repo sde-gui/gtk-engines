@@ -1,5 +1,11 @@
 2007-08-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* configure.ac:
+	Update for the 2.11.5 release.
+
+2007-08-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Added a comment to clarify why the treeview header style inherits
 	from clearlooks-default.
