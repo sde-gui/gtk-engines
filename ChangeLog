@@ -1,3 +1,9 @@
+2007-08-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Added a comment to clarify why the treeview header style inherits
+	from clearlooks-default.
+
 2007-08-12  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* AUTHORS:

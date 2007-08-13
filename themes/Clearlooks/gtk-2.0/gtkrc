@@ -137,6 +137,8 @@ style "clearlooks-menu-item"
 	text[INSENSITIVE]  = darker (@bg_color)
 }
 
+# Based on the default style so that the colors from the button
+# style are overriden again.
 style "clearlooks-treeview-header" = "clearlooks-default"
 {
 	xthickness = 2
