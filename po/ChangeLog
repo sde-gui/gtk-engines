@@ -1,3 +1,8 @@
+2007-08-14  Simos Xenitellis  <simos@gnome.org>
+
+	* el.po: Added Greek translation.
+	* LINGUAS: Added Greek (el) to the list of languages.
+
 2007-08-06  I. Felix <ifelix@svn.gnome.org>
 
 	* ta.po:  Tamil Translation updated by Tirumurthi Vasudevan
