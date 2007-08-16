@@ -1,3 +1,17 @@
+Overview of Changes in 2.11.6 (since 2.11.5)
+============================================
+
+Hilights in this release include:
+ - Clearlooks theme scrollbars are no longer colored (Bug #462723)
+ - Improved Gummy scale fill level drawing
+ - Clearlooks notebook fix for right to left langues
+
+New and updated Translations:
+  Ilkka Tuohela (fi)
+  Simos Xenitellis (el)
+  Dr.T.Vasudevan (ta)
+
+
 Overview of Changes in 2.11.5 (since 2.11.4)
 ============================================
 
