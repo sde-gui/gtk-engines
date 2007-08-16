@@ -1,6 +1,12 @@
 2007-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box_gap):
+	Removed two unused variables.
+
+2007-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_layout):
 	Use the correct color when drawing insensitive text.
 

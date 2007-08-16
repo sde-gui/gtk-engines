@@ -254,7 +254,6 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 	{
 		WidgetParameters params;
 		FrameParameters  frame;
-		int current_page, num_pages;
 		
 		frame.shadow    = shadow_type;
 		frame.gap_side  = gap_side;
