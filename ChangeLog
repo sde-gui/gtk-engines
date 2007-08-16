@@ -1,5 +1,12 @@
 2007-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_scale_draw_gradient),
+	(clearlooks_gummy_draw_scale_trough):
+	Improved fill drawing in the GUMMY style.
+
+2007-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Don't colorize the scrollbar.
 

@@ -536,8 +536,8 @@ clearlooks_gummy_scale_draw_gradient (cairo_t          *cr,
 	ge_shade_color (fill, in? 1.05 : 0.9, &f2);
 
 	pattern = cairo_pattern_create_linear (0, 0, horizontal ? 0 :  width, horizontal ? height : 0);
-	cairo_pattern_add_color_stop_rgb (pattern, 0.0, f1.r, f1.g, f1.b);
-	cairo_pattern_add_color_stop_rgb (pattern, 1.0, f2.r, f2.g, f2.b);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, f1.r, f1.g, f1.b, f1.a);
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, f2.r, f2.g, f2.b, f2.a);
 
 	cairo_rectangle (cr, x+0.5, y+0.5, width-1, height-1);
 	cairo_set_source (cr, pattern);
@@ -586,16 +586,30 @@ clearlooks_gummy_draw_scale_trough (cairo_t                *cr,
 	
 	if (!slider->lower && !slider->fill_level)
 		clearlooks_gummy_scale_draw_gradient (cr, 
-		                                    &colors->shade[2], /* bottom */
-		                                    &colors->shade[6], /* border */
-		                                    0, 0, trough_width, trough_height,
-		                                    slider->horizontal, TRUE);
-	else
+		                                      &colors->shade[2], /* bottom */
+		                                      &colors->shade[6], /* border */
+		                                      0, 0, trough_width, trough_height,
+		                                      slider->horizontal, TRUE);
+	else if (!slider->fill_level)
 		clearlooks_gummy_scale_draw_gradient (cr, 
-		                                    &colors->spot[1], /* bottom */
-		                                    &colors->spot[2], /* border */
-		                                    0, 0, trough_width, trough_height,
-		                                    slider->horizontal, FALSE);
+		                                      &colors->spot[1], /* bottom */
+		                                      &colors->spot[2], /* border */
+		                                      0, 0, trough_width, trough_height,
+		                                      slider->horizontal, FALSE);
+	else {
+		CairoColor c1 = colors->spot[1];
+		CairoColor c2 = colors->spot[2];
+
+		c1.a = 0.25;
+		c2.a = 0.25;
+
+		clearlooks_gummy_scale_draw_gradient (cr, 
+		                                      &c1, /* bottom */
+		                                      &c2, /* border */
+		                                      0, 0, trough_width, trough_height,
+		                                      slider->horizontal, FALSE);
+	}
+
 }
 
 static void
