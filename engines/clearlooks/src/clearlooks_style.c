@@ -264,78 +264,25 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		/* Modified from Aurora Engine
-		*** 
-		We need to fix the clip problem on first tab and rounded corners
-		Last Active tab could be buggied if the tabs cover more space then the notebook width
-		***
-		*/
-		current_page = gtk_notebook_get_current_page ((GtkNotebook *) widget);
-		num_pages = gtk_notebook_get_n_pages ((GtkNotebook *) widget);
-
-		if (frame.gap_side == CL_GAP_TOP) {
-			if ((current_page == 0) && (num_pages - 1 == 0)) {
-				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT;
-			}
-			else if (current_page == 0) {
-				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPRIGHT;
-			}
-			else if (current_page == num_pages - 1) {
-				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT;
-				/* params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPLEFT; */
-			}
-			else {
-				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPRIGHT;
-				/* params.corners = CR_CORNER_ALL; */
-			}
-		}
-		else if (frame.gap_side == CL_GAP_BOTTOM) {
-			if ((current_page == 0) && (num_pages - 1 == 0)) {
-				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT;
-			}
-			else if (current_page == 0) {
-				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT;
-			}
-			else if (current_page == num_pages - 1) {
-				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT;
-				/* params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT; */
-			}
-			else {
-				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT;
-				/* params.corners = CR_CORNER_ALL; */
-			}
-		}
-		else if (frame.gap_side == CL_GAP_LEFT) {
-			if ((current_page == 0) && (num_pages - 1 == 0)) {
-				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
-			}
-			else if (current_page == 0) {
-				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
-			}
-			else if (current_page == num_pages - 1) {
-				params.corners = CR_CORNER_BOTTOMRIGHT | CR_CORNER_TOPRIGHT;
-				/* params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT; */
-			}
-			else {
-				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
-				/* params.corners = CR_CORNER_ALL; */
-			}
-		}
-		else {
-			if ((current_page == 0) && (num_pages - 1 == 0)) {
-				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
-			}
-			else if (current_page == 0) {
-				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT;
-			}
-			else if (current_page == num_pages - 1) {
-				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPLEFT;
-				/* params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT; */
-			}
-			else {
-				params.corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMRIGHT;
-				/* params.corners = CR_CORNER_ALL; */
-			}
+		switch (gap_side) {
+			case GTK_POS_LEFT:
+				params.corners = CR_CORNER_ALL ^ CR_CORNER_TOPLEFT;
+			break;
+			case GTK_POS_RIGHT:
+				params.corners = CR_CORNER_ALL ^ CR_CORNER_TOPRIGHT;
+			break;
+			case GTK_POS_TOP:
+				if (ge_widget_is_ltr (widget))
+					params.corners = CR_CORNER_ALL ^ CR_CORNER_TOPLEFT;
+				else
+					params.corners = CR_CORNER_ALL ^ CR_CORNER_TOPRIGHT;
+			break;
+			case GTK_POS_BOTTOM:
+				if (ge_widget_is_ltr (widget))
+					params.corners = CR_CORNER_ALL ^ CR_CORNER_BOTTOMLEFT;
+				else
+					params.corners = CR_CORNER_ALL ^ CR_CORNER_BOTTOMRIGHT;
+			break;
 		}
 
 		/* Fill the background with bg[NORMAL] */
