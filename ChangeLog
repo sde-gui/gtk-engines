@@ -1,3 +1,8 @@
+2007-08-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Don't colorize the scrollbar.
+
 2007-08-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
