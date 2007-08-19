@@ -31,13 +31,13 @@
 
 #include <cairo.h>
 
-#define SHADE_TOP 1.1
+#define SHADE_TOP 1.08
 #define SHADE_CENTER_TOP 1.02
-#define SHADE_BOTTOM 0.92
+#define SHADE_BOTTOM 0.94
 
-#define LIGHT_SHADE_TOP 1.07
+#define LIGHT_SHADE_TOP 1.06
 #define LIGHT_SHADE_CENTER_TOP 1.02
-#define LIGHT_SHADE_BOTTOM 0.95
+#define LIGHT_SHADE_BOTTOM 0.96
 
 static void
 clearlooks_draw_gummy_gradient (cairo_t          *cr,
@@ -695,7 +695,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 		
-		ge_shade_color (fill, 1.16, &hilight);
+		ge_shade_color (fill, 1.14, &hilight);
 		ge_shade_color (fill, SHADE_TOP, &shade1);
 		ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
 		ge_shade_color (fill, SHADE_BOTTOM, &shade3);
