@@ -1,5 +1,11 @@
 2007-08-19  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_scrollbar_slider):
+	Changed prelight on scrollbars
+
+2007-08-19  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Recolorize the scrollbar as it default. I need to work on shadings 
 	if we decide to remove the colorization, as I don't like the 

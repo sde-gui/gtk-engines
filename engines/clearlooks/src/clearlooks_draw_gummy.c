@@ -997,7 +997,7 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
 	cairo_translate (cr, x, y);
 
 	if (widget->prelight)
-		ge_shade_color (&fill, 1.08, &fill);
+		ge_shade_color (&fill, 1.04, &fill);
 		
 	cairo_set_line_width (cr, 1);
 	
