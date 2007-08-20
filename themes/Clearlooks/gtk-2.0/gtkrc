@@ -91,7 +91,7 @@ style "clearlooks-button"
 	ythickness   = 3
 
 	bg[NORMAL]   = shade (1.04, @bg_color) # "#f6f4f1"
-	bg[PRELIGHT] =  shade (1.06, @bg_color)
+	bg[PRELIGHT] = shade (1.06, @bg_color)
 	bg[ACTIVE]   = shade (0.85, @bg_color)
 }
 
@@ -100,7 +100,7 @@ style "clearlooks-notebook"
 	xthickness = 2
 	ythickness = 2
 
-	bg[NORMAL] = shade (1.03, @bg_color)
+	bg[NORMAL] = shade (1.02, @bg_color)
 }
 
 style "clearlooks-tasklist"

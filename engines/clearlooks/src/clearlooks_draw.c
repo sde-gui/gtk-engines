@@ -1724,10 +1724,10 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		ge_shade_color(&s2, 0.94, &s4); 
 	
 		pattern = cairo_pattern_create_linear(1, 1, 1, height-1);
-		cairo_pattern_add_color_stop_rgb(pattern, 0,    s1.r, s1.g, s1.b);
-		cairo_pattern_add_color_stop_rgb(pattern, 0.5,	s2.r, s2.g, s2.b);
-		cairo_pattern_add_color_stop_rgb(pattern, 0.7,	s3.r, s3.g, s3.b);
-		cairo_pattern_add_color_stop_rgb(pattern, 1.0,  s4.r, s4.g, s4.b);
+		cairo_pattern_add_color_stop_rgb(pattern, 0,   s1.r, s1.g, s1.b);
+		cairo_pattern_add_color_stop_rgb(pattern, 0.5, s2.r, s2.g, s2.b);
+		cairo_pattern_add_color_stop_rgb(pattern, 0.7, s3.r, s3.g, s3.b);
+		cairo_pattern_add_color_stop_rgb(pattern, 1.0, s4.r, s4.g, s4.b);
 
 		cairo_rectangle (cr, 1, 1, width-2, height-2);
 		cairo_set_source(cr, pattern);
@@ -1741,7 +1741,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_line_to (cr, 1.5, 1.5);
 		cairo_line_to (cr, width-1.5, 1.5);
 		ge_shade_color (&s2, 1.3, &s5);
-		cairo_set_source_rgba(cr, s5.r, s5.g, s5.b, 0.5);
+		cairo_set_source_rgba (cr, s5.r, s5.g, s5.b, 0.5);
 		cairo_stroke(cr);
 		
 		/* draw handles */

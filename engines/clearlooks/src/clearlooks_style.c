@@ -794,7 +794,11 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		scrollbar.has_color  = FALSE;
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
-		
+
+		if (clearlooks_style->colorize_scrollbar || clearlooks_style->has_scrollbar_color) {
+			scrollbar.has_color = TRUE;
+		}
+
 		scrollbar.horizontal = DETAIL ("hscrollbar");
 		
 		stepper.stepper = clearlooks_scrollbar_get_stepper (widget, &this_rectangle);
