@@ -1,3 +1,11 @@
+2007-08-21  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_top_left_highlight),
+	(clearlooks_gummy_draw_slider),
+	(clearlooks_gummy_draw_scrollbar_slider):
+	Using #define for few constants
+
 2007-08-20  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

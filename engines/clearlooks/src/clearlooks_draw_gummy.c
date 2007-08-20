@@ -36,6 +36,8 @@
 #define LIGHT_SHADE_CENTER_TOP 1.02
 #define LIGHT_SHADE_BOTTOM 0.96
 
+#define TOPLEFT_HIGHLIGHT_SHADE 1.3
+#define TOPLEFT_HIGHLIGHT_ALPHA 0.4
 
 static void
 clearlooks_draw_gummy_gradient (cairo_t          *cr,
@@ -143,13 +145,13 @@ clearlooks_gummy_draw_top_left_highlight (cairo_t *cr, const CairoColor *color,
 	       light_left = params->xthickness-1,
 	       light_right = width - params->xthickness - 1;
 
-	ge_shade_color (color, 1.3, &hilight);
+	ge_shade_color (color, TOPLEFT_HIGHLIGHT_SHADE, &hilight);
 	cairo_move_to (cr, light_left, light_bottom - (int)radius/2);
 
 	ge_cairo_rounded_corner (cr, light_left, light_top, radius, params->corners & CR_CORNER_TOPLEFT);
 
 	cairo_line_to (cr, light_right - (int)radius/2, light_top);
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
+	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, TOPLEFT_HIGHLIGHT_ALPHA);
 	cairo_stroke (cr);
 }
 
@@ -830,7 +832,6 @@ clearlooks_gummy_draw_slider (cairo_t                *cr,
 {
 	const CairoColor *border = &colors->shade[7];
 	CairoColor  fill;
-	CairoColor  hilight;
 	CairoColor  shade1, shade2, shade3;
 	cairo_pattern_t *pattern;
 	int bar_x, i;
@@ -845,7 +846,6 @@ clearlooks_gummy_draw_slider (cairo_t                *cr,
 	if (params->prelight)
 		ge_shade_color (&fill, 1.04, &fill);
 
-	ge_shade_color (&fill, 1.3, &hilight);
 	ge_shade_color (&fill, SHADE_TOP, &shade1);
 	ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
 	ge_shade_color (&fill, SHADE_BOTTOM, &shade3);
@@ -1029,7 +1029,7 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
 	
 	cairo_set_line_width (cr, 1);
 	
-	ge_shade_color (&fill, 1.3, &hilight);
+	ge_shade_color (&fill, TOPLEFT_HIGHLIGHT_SHADE, &hilight);
 	ge_shade_color (&fill, SHADE_TOP, &shade1);
 	ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
 	ge_shade_color (&fill, SHADE_BOTTOM, &shade3);
@@ -1054,7 +1054,7 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
 		cairo_move_to (cr, 1.5, height-1.5);
 		cairo_line_to (cr, 1.5, 1.5);
 		cairo_line_to (cr, width-1.5, 1.5);
-		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
+		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, TOPLEFT_HIGHLIGHT_ALPHA);
 		cairo_stroke(cr);
 	}
 
