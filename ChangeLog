@@ -1,5 +1,11 @@
 2007-08-20  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_slider):
+	Improvements in the slider, mostly in shadings
+
+2007-08-20  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_top_left_highlight),
