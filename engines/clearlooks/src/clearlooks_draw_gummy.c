@@ -1,7 +1,4 @@
-/* Clearlooks theme engine
- * Copyright (C) 2006 Richard Stellingwerff
- * Copyright (C) 2006 Daniel Borgman
- * Copyright (C) 2006 Benjamin Berg
+/* Clearlooks Gummy style
  * Copyright (C) 2007 Andrea Cimitan
  *
  * This library is free software; you can redistribute it and/or
@@ -38,6 +35,7 @@
 #define LIGHT_SHADE_TOP 1.06
 #define LIGHT_SHADE_CENTER_TOP 1.02
 #define LIGHT_SHADE_BOTTOM 0.96
+
 
 static void
 clearlooks_draw_gummy_gradient (cairo_t          *cr,
@@ -151,12 +149,12 @@ clearlooks_gummy_draw_top_left_highlight (cairo_t *cr, const CairoColor *color,
 	ge_cairo_rounded_corner (cr, light_left, light_top, radius, params->corners & CR_CORNER_TOPLEFT);
 
 	cairo_line_to (cr, light_right - (int)radius/2, light_top);
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.4);
+	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
 	cairo_stroke (cr);
 }
 
 static void
-clearlooks_gummy_draw_button (cairo_t               *cr,
+clearlooks_gummy_draw_button (cairo_t                *cr,
                               const ClearlooksColors *colors,
                               const WidgetParameters *params,
                               int x, int y, int width, int height)
@@ -1058,7 +1056,7 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
 		cairo_move_to (cr, 1.5, height-1.5);
 		cairo_line_to (cr, 1.5, 1.5);
 		cairo_line_to (cr, width-1.5, 1.5);
-		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.4);
+		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
 		cairo_stroke(cr);
 	}
 

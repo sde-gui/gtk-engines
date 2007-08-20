@@ -1,6 +1,4 @@
-/* Clearlooks theme engine
- * Copyright (C) 2006 Richard Stellingwerff
- * Copyright (C) 2006 Daniel Borgman
+/* Clearlooks Glossy style
  * Copyright (C) 2006 Benjamin Berg
  * Copyright (C) 2007 Andrea Cimitan
  *

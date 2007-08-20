@@ -1,6 +1,4 @@
-/* Clearlooks theme engine
- * Copyright (C) 2006 Richard Stellingwerff
- * Copyright (C) 2006 Daniel Borgman
+/* Clearlooks Inverted style
  * Copyright (C) 2007 Andrea Cimitan
  *
  * This library is free software; you can redistribute it and/or
