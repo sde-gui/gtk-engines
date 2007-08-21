@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-20 22:58+0100\n"
-"PO-Revision-Date: 2007-05-13 14:56+0200\n"
+"POT-Creation-Date: 2007-08-18 03:55+0100\n"
+"PO-Revision-Date: 2007-08-21 00:37+0200\n"
 "Last-Translator: Yannig MARCHEGAY (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: ../schema/clearlooks.xml.in.in.h:3
 msgid "Animations"
-msgstr ""
+msgstr "Animacions"
 
 #: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
@@ -43,7 +43,7 @@ msgstr "Plan"
 
 #: ../schema/clearlooks.xml.in.in.h:7
 msgid "Menubar Style"
-msgstr ""
+msgstr "Estil de la barra de menuts"
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Scrollbar Color"
@@ -53,15 +53,15 @@ msgstr ""
 msgid "Sets the Color of Scrollbars"
 msgstr ""
 
-#: ../schema/hc.xml.in.in.h:1
+#: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
 msgstr ""
 
-#: ../schema/hc.xml.in.in.h:2
+#: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
 msgstr ""
 
-#: ../schema/hc.xml.in.in.h:3
+#: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr ""
 
