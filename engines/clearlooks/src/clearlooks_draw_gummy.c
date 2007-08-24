@@ -37,7 +37,7 @@
 #define LIGHT_SHADE_BOTTOM 0.96
 
 #define TOPLEFT_HIGHLIGHT_SHADE 1.3
-#define TOPLEFT_HIGHLIGHT_ALPHA 0.5
+#define TOPLEFT_HIGHLIGHT_ALPHA 0.4
 
 static void
 clearlooks_draw_gummy_gradient (cairo_t          *cr,
