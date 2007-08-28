@@ -1,3 +1,8 @@
+2007-08-28  Ani Peter <peter.ani@gmail.com>
+
+	* ml.po: Added Malayalam (ml) Translation
+	* LINGUAS: Added Malayalam (ml) to the list of languages
+
 2007-08-15  Ilkka Tuohela  <hile@iki.fi>
 
 	* fi.po: Added Finnish translation.
