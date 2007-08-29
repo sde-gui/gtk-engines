@@ -16,8 +16,7 @@ libcrux_engine_la_SOURCES = \
 	./src/crux-style.c            \
 	./src/crux-style.h            \
 	./src/crux-rc-style.c            \
-	./src/crux-rc-style.h            \
-	./src/eazel-theme.h
+	./src/crux-rc-style.h
 
 libcrux_engine_la_LDFLAGS = -module -avoid-version -no-undefined
 libcrux_engine_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la

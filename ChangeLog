@@ -1,3 +1,12 @@
+2007-08-29  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* configure.ac:
+	* engines/crux/Makefile.am:
+	* engines/crux/src/crux-gradient.c:
+	* engines/crux/src/crux-gradient.h:
+	* engines/crux/src/eazel-theme.h:
+	Removed some unused files from crux.
+
 2007-08-24  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

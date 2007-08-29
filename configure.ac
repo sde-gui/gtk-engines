@@ -156,7 +156,6 @@ fi
 AC_SUBST(DEVELOPMENT_CFLAGS)
 
 AM_CONFIG_HEADER([engines/clearlooks/src/config.h])
-AM_CONFIG_HEADER([engines/crux/src/config.h])
 AM_CONFIG_HEADER([engines/smooth/src/config.h])
 
 AC_CONFIG_FILES([
