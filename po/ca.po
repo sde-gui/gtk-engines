@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-20 08:49+0100\n"
-"PO-Revision-Date: 2006-12-17 15:32+0100\n"
+"POT-Creation-Date: 2007-09-01 20:21+0200\n"
+"PO-Revision-Date: 2007-08-04 20:02+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -53,15 +53,15 @@ msgstr "Color de la barra de desplaçament"
 msgid "Sets the Color of Scrollbars"
 msgstr "Estableix el color de les barres de desplaçament"
 
-#: ../schema/hc.xml.in.in.h:1
+#: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
 msgstr "Mida de l'indicador de la cel·la"
 
-#: ../schema/hc.xml.in.in.h:2
+#: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
 msgstr "Gruix de la vora"
 
-#: ../schema/hc.xml.in.in.h:3
+#: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr ""
 "Mida dels botons d'opció i de selecció dins de la vista d'arbre. (Bug "
@@ -122,9 +122,8 @@ msgid "Nothing"
 msgstr "Res"
 
 #: ../schema/thinice.xml.in.in.h:12
-#, fuzzy
 msgid "Paned Dots"
-msgstr "Punts "
+msgstr "Punts del quadre"
 
 #: ../schema/thinice.xml.in.in.h:13
 msgid "Rectangle"
