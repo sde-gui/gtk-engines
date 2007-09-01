@@ -174,7 +174,7 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 	cairo_set_line_width (cr, 1.0);
 
 	/* Shadows and Glow */
-	if (params->xthickness == 3 || params->ythickness == 3)
+	if (params->xthickness >= 2 || params->ythickness >= 2)
 	{
 		if (params->xthickness == 3)
 			xoffset = 1;
@@ -184,7 +184,7 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 
 	radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0, (height - 2.0 - 2*yoffset) / 2.0));
 
-	if (params->xthickness == 3 || params->ythickness == 3)
+	if (params->xthickness >= 2 || params->ythickness >= 2)
 	{
 		cairo_translate (cr, 0.5, 0.5);
 

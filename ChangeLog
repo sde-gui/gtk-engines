@@ -1,3 +1,12 @@
+2007-09-01  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_menubar2):
+	Shadings
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_button):
+	offset when >=2 and not == 3. Correct benzea?
+
 2007-08-29  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* configure.ac:

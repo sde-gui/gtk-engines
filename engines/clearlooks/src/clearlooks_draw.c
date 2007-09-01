@@ -945,7 +945,7 @@ clearlooks_draw_menubar2 (cairo_t *cr,
 	CairoColor lower;
 	cairo_pattern_t *pattern;
 
-	ge_shade_color (&colors->bg[0], 0.95, &lower);
+	ge_shade_color (&colors->bg[0], 0.96, &lower);
 	
 	cairo_translate (cr, x, y);
 	cairo_rectangle (cr, 0, 0, width, height);
