@@ -998,7 +998,7 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
 	/* The following lines increase contrast when the HUE is between 25 and 195, */
 	/* fixing a LOT of colorschemes! */
 	if ((hue_scroll < 195) && (hue_scroll > 25))
-		ge_shade_color (&border, 0.85, &border);
+		ge_shade_color (&border, 0.86, &border);
 
 	handles = border;
 	ge_mix_color (&border, &fill, scrollbar->has_color? 0.3 : 0.2, &border);
