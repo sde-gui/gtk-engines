@@ -1,3 +1,10 @@
+2007-09-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_scrollbar_slider):
+	Second fix on scrollbar_color adjust, for 2.20! :)
+	Fixes a lot of light colorschemes
+
 2007-09-01  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
