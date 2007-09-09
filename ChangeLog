@@ -17,7 +17,6 @@
 	(clearlooks_gummy_draw_scrollbar_slider):
 	0.86 --> 0.85
 
-
 2007-09-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
@@ -299,21 +298,21 @@
 
 2007-07-24  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
-        * engines/clearlooks/src/clearlooks_draw.c:
-        (clearlooks_draw_menuitem):
-        * engines/clearlooks/src/clearlooks_draw_glossy.c:
-        (clearlooks_glossy_draw_progressbar_fill),
-        (clearlooks_glossy_draw_slider),
-        (clearlooks_glossy_draw_scrollbar_slider),
-        (clearlooks_glossy_draw_menuitem),
-        (clearlooks_glossy_draw_menubaritem):
-        * engines/clearlooks/src/clearlooks_draw_gummy.c:
-        (clearlooks_gummy_draw_menuitem),
-        (clearlooks_gummy_draw_menubaritem):
-        It requires improvements in the gtkrc or it'll look odd.
-        I've added rounded ability to menuitems, I'm using a long code but
-        I guess it is faster then the previous as it's no longer using
-        cairo_clip()
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_menuitem):
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_progressbar_fill),
+	(clearlooks_glossy_draw_slider),
+	(clearlooks_glossy_draw_scrollbar_slider),
+	(clearlooks_glossy_draw_menuitem),
+	(clearlooks_glossy_draw_menubaritem):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_menuitem),
+	(clearlooks_gummy_draw_menubaritem):
+	It requires improvements in the gtkrc or it'll look odd.
+	I've added rounded ability to menuitems, I'm using a long code but
+	I guess it is faster then the previous as it's no longer using
+	cairo_clip()
 
 2007-07-21  Benjamin Berg  <benjamin@sipsolutions.net>
 
@@ -985,26 +984,26 @@
 
 2007-05-01  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
-        * engines/clearlooks/src/clearlooks_draw_glossy.c:
-        (clearlooks_draw_button_gloss), (clearlooks_set_border_color),
-        (clearlooks_glossy_draw_inset),
-        (clearlooks_glossy_draw_highlight_and_shade),
-        (clearlooks_glossy_draw_button),
-        (clearlooks_glossy_draw_progressbar_trough),
-        (clearlooks_glossy_draw_progressbar_fill),
-        (clearlooks_glossy_scale_draw_gradient),
-        (clearlooks_glossy_draw_scale_trough),
-        (clearlooks_glossy_draw_tab), (clearlooks_glossy_draw_slider),
-        (clearlooks_glossy_draw_scrollbar_stepper),
-        (clearlooks_glossy_draw_scrollbar_slider),
-        (clearlooks_register_style_glossy):
-        Glossy Style rewritten to be *cool* :)
-        New Ideas came from my experience with "Murrine Engine"
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_draw_button_gloss), (clearlooks_set_border_color),
+	(clearlooks_glossy_draw_inset),
+	(clearlooks_glossy_draw_highlight_and_shade),
+	(clearlooks_glossy_draw_button),
+	(clearlooks_glossy_draw_progressbar_trough),
+	(clearlooks_glossy_draw_progressbar_fill),
+	(clearlooks_glossy_scale_draw_gradient),
+	(clearlooks_glossy_draw_scale_trough),
+	(clearlooks_glossy_draw_tab), (clearlooks_glossy_draw_slider),
+	(clearlooks_glossy_draw_scrollbar_stepper),
+	(clearlooks_glossy_draw_scrollbar_slider),
+	(clearlooks_register_style_glossy):
+	Glossy Style rewritten to be *cool* :)
+	New Ideas came from my experience with "Murrine Engine"
 
-        * engines/clearlooks/src/clearlooks_style.c:
-        (clearlooks_style_draw_slider):
-        If scrollbar_color is not set then scrollbars will use
-        bg[SELECTED] by default. Nice!
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_slider):
+	If scrollbar_color is not set then scrollbars will use
+	bg[SELECTED] by default. Nice!
 
 2007-04-26  Benjamin Berg  <benjamin@sipsolutions.net>
 
@@ -3073,10 +3072,10 @@
 
 2006-07-24 Andrew Johnson <acjgenius@earthlink.net>
 
-        * NEWS:
-        * configure.ac:
+	* NEWS:
+	* configure.ac:
 
-        Update for 2.7.6 release
+	Update for 2.7.6 release
 
 2006-07-24 Andrew Johnson <acjgenius@earthlink.net>
 
@@ -4482,7 +4481,7 @@
 
 2005-09-09  Andrew Johnson  <ajgenius@ajgenius.us>
 
-        * engines/mist/src/mist-style.c: fix disabled/selected option
+	* engines/mist/src/mist-style.c: fix disabled/selected option
 	
 	* engines/redmond/src/redmond_gtk2_drawing.c:
 	* engines/redmond/src/redmond_gtk2_drawing.h:
@@ -4528,16 +4527,16 @@
 
 2005-08-31  Andrew Johnson  <ajgenius@ajgenius.us>
 
-        * engines/mist/src/mist-style.c: more cairo conversions - initial
+	* engines/mist/src/mist-style.c: more cairo conversions - initial
 	change mostly complete now
 	
 2005-08-30  Andrew Johnson  <ajgenius@ajgenius.us>
 
-        * engines/mist/src/mist-style.c: funky change to improve option
+	* engines/mist/src/mist-style.c: funky change to improve option
 	
 2005-08-30  Andrew Johnson  <ajgenius@ajgenius.us>
 
-        * engines/mist/src/mist-style.c: more changes toward cairo
+	* engines/mist/src/mist-style.c: more changes toward cairo
 	
 2005-08-30  Andrew Johnson  <ajgenius@ajgenius.us>
 
@@ -4887,7 +4886,7 @@
 	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.c:
 	* engines/smooth/src/engine/shared/gtk/smooth_gtk_rc.h:
 	* engines/smooth/src/engine/smooth_gtk2_engine.c:
-        * engines/smooth/src/utils/draw_arrows.c:
+	* engines/smooth/src/utils/draw_arrows.c:
 	* engines/smooth/src/utils/draw_arrows.h:
 
 	ensure composite arrows immediately after parse i
@@ -4971,12 +4970,12 @@
 	(GDK2CanvasFillRectangle), (GDK2CanvasFillChord),
 	(GDKInitializeCanvas), (GDKFinalizeCanvas),
 	(_DrawingInterfaceInitialize), (_DrawingInterfaceFinalize):
-        * engines/smooth/src/interfaces/gdk2/gdk2_private_drawing_interface.h:
+	* engines/smooth/src/interfaces/gdk2/gdk2_private_drawing_interface.h:
 
 	Remove unused experimental Cairo/Xrender, Bezier, & Blur Cruft
 	
-        * engines/smooth/src/interfaces/gdk2/gdk2_drawing_interface.c:
-        (GDK2CanvasFrameRectangle):
+	* engines/smooth/src/interfaces/gdk2/gdk2_drawing_interface.c:
+	(GDK2CanvasFrameRectangle):
 	* engines/smooth/src/engine/smooth_gtk2_drawing.c:
 	(do_smooth_draw_focus):
 
