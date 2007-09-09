@@ -821,12 +821,12 @@ clearlooks_gummy_draw_separator (cairo_t                   *cr,
 		
 		cairo_move_to         (cr, 0.0, 0.0);
 		cairo_line_to         (cr, 0.0, height);
-		ge_cairo_set_color  (cr, color);
+		ge_cairo_set_color    (cr, color);
 		cairo_stroke          (cr);
 		
 		cairo_move_to         (cr, 1.0, 0.0);
 		cairo_line_to         (cr, 1.0, height);
-		ge_cairo_set_color  (cr, &hilight);
+		ge_cairo_set_color    (cr, &hilight);
 		cairo_stroke          (cr);
 	}
 
