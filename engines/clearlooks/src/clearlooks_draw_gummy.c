@@ -28,16 +28,25 @@
 
 #include <cairo.h>
 
+/* Normal shadings */
 #define SHADE_TOP 1.08
 #define SHADE_CENTER_TOP 1.02
 #define SHADE_BOTTOM 0.94
 
-#define LIGHT_SHADE_TOP 1.06
-#define LIGHT_SHADE_CENTER_TOP 1.02
-#define LIGHT_SHADE_BOTTOM 0.96
-
+/* Topleft highlight */
 #define TOPLEFT_HIGHLIGHT_SHADE 1.3
 #define TOPLEFT_HIGHLIGHT_ALPHA 0.4
+
+/* Listview */
+#define LISTVIEW_SHADE_TOP 1.06
+#define LISTVIEW_SHADE_CENTER_TOP 1.02
+#define LISTVIEW_SHADE_BOTTOM 0.96
+
+/* Toolbar */
+#define TOOLBAR_SHADE_TOP 1.05
+#define TOOLBAR_SHADE_CENTER_TOP 1.01
+#define TOOLBAR_SHADE_BOTTOM 0.96
+
 
 static void
 clearlooks_draw_gummy_gradient (cairo_t          *cr,
@@ -1097,9 +1106,9 @@ clearlooks_gummy_draw_list_view_header (cairo_t                        *cr,
 	cairo_pattern_t *pattern;
 
  	ge_shade_color (fill, 1.1, &hilight);
-	ge_shade_color (fill, LIGHT_SHADE_TOP, &shade1);
-	ge_shade_color (fill, LIGHT_SHADE_CENTER_TOP, &shade2);
-	ge_shade_color (fill, LIGHT_SHADE_BOTTOM, &shade3);
+	ge_shade_color (fill, LISTVIEW_SHADE_TOP, &shade1);
+	ge_shade_color (fill, LISTVIEW_SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (fill, LISTVIEW_SHADE_BOTTOM, &shade3);
 
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
@@ -1169,9 +1178,9 @@ clearlooks_gummy_draw_toolbar (cairo_t                 *cr,
 		cairo_pattern_t *pattern;
 		CairoColor shade1, shade2, shade3;
 		
-		ge_shade_color (fill, LIGHT_SHADE_TOP, &shade1);
-		ge_shade_color (fill, LIGHT_SHADE_CENTER_TOP, &shade2);
-		ge_shade_color (fill, LIGHT_SHADE_BOTTOM, &shade3);
+		ge_shade_color (fill, TOOLBAR_SHADE_TOP, &shade1);
+		ge_shade_color (fill, TOOLBAR_SHADE_CENTER_TOP, &shade2);
+		ge_shade_color (fill, TOOLBAR_SHADE_BOTTOM, &shade3);
 
 		/* Draw the fill */
 		pattern = cairo_pattern_create_linear (0, 0, 0, height);
