@@ -1253,7 +1253,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	
 	if (params->active)
 	{
-		ge_cairo_set_color (cr, border2);	
+		ge_cairo_set_color (cr, border2);
 		cairo_stroke (cr);
 	}
 	else

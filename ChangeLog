@@ -1,6 +1,12 @@
 2007-09-09  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_toolbar):
+	Improvements in toolbar's shadings
+
+2007-09-09  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_list_view_header),
 	(clearlooks_gummy_draw_toolbar):
 	Organized code and tweaks in toolbar shadings

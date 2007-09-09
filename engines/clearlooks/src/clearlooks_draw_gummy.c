@@ -1168,7 +1168,7 @@ clearlooks_gummy_draw_toolbar (cairo_t                 *cr,
 	const CairoColor *fill = &colors->bg[GTK_STATE_NORMAL];
 	const CairoColor *dark = &colors->shade[3];
 	CairoColor light;
-	ge_shade_color (fill, 1.05, &light);
+	ge_shade_color (fill, toolbar->style == 1 ? 1.1 : 1.05, &light);
 	
 	cairo_set_line_width (cr, 1.0);
 	cairo_translate (cr, x, y);
@@ -1196,18 +1196,18 @@ clearlooks_gummy_draw_toolbar (cairo_t                 *cr,
 		cairo_pattern_destroy (pattern);
 	}
 	else /* Flat */
-	{ 
+	{
 		ge_cairo_set_color (cr, fill);
 		cairo_paint (cr);
+	}
 
-		if (!toolbar->topmost) 
-		{
-			/* Draw highlight */
-			cairo_move_to       (cr, 0, 0.5);
-			cairo_line_to       (cr, width-1, 0.5);
-			ge_cairo_set_color  (cr, &light);
-			cairo_stroke        (cr);
-		}
+	if (!toolbar->topmost)
+	{
+		/* Draw highlight */
+		cairo_move_to       (cr, 0, 0.5);
+		cairo_line_to       (cr, width-1, 0.5);
+		ge_cairo_set_color  (cr, &light);
+		cairo_stroke        (cr);
 	}
 
 	/* Draw shadow */
