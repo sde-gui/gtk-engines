@@ -254,6 +254,7 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 	{
 		WidgetParameters params;
 		FrameParameters  frame;
+		gboolean start, end;
 		
 		frame.shadow    = shadow_type;
 		frame.gap_side  = gap_side;
@@ -263,24 +264,47 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
+		clearlooks_get_notebook_tab_position (widget, &start, &end);
+
+		params.corners = CR_CORNER_ALL;
 		switch (gap_side) {
 			case GTK_POS_LEFT:
-				params.corners = CR_CORNER_ALL ^ CR_CORNER_TOPLEFT;
+				if (start)
+					params.corners ^= CR_CORNER_TOPLEFT;
+				if (end)
+					params.corners ^= CR_CORNER_BOTTOMLEFT;
 			break;
 			case GTK_POS_RIGHT:
-				params.corners = CR_CORNER_ALL ^ CR_CORNER_TOPRIGHT;
+				if (start)
+					params.corners ^= CR_CORNER_TOPRIGHT;
+				if (end)
+					params.corners ^= CR_CORNER_BOTTOMRIGHT;
 			break;
 			case GTK_POS_TOP:
-				if (ge_widget_is_ltr (widget))
-					params.corners = CR_CORNER_ALL ^ CR_CORNER_TOPLEFT;
-				else
-					params.corners = CR_CORNER_ALL ^ CR_CORNER_TOPRIGHT;
+				if (ge_widget_is_ltr (widget)) {
+					if (start)
+						params.corners ^= CR_CORNER_TOPLEFT;
+					if (end)
+						params.corners ^= CR_CORNER_TOPRIGHT;
+				} else {
+					if (start)
+						params.corners ^= CR_CORNER_TOPRIGHT;
+					if (end)
+						params.corners ^= CR_CORNER_TOPLEFT;
+				}
 			break;
 			case GTK_POS_BOTTOM:
-				if (ge_widget_is_ltr (widget))
-					params.corners = CR_CORNER_ALL ^ CR_CORNER_BOTTOMLEFT;
-				else
-					params.corners = CR_CORNER_ALL ^ CR_CORNER_BOTTOMRIGHT;
+				if (ge_widget_is_ltr (widget)) {
+					if (start)
+						params.corners ^= CR_CORNER_BOTTOMLEFT;
+					if (end)
+						params.corners ^= CR_CORNER_BOTTOMRIGHT;
+				} else {
+					if (start)
+						params.corners ^= CR_CORNER_BOTTOMRIGHT;
+					if (end)
+						params.corners ^= CR_CORNER_BOTTOMLEFT;
+				}
 			break;
 		}
 

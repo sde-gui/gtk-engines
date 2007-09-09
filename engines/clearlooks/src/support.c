@@ -211,3 +211,72 @@ clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar, GtkWidget *widget
 	}
 }
 
+void
+clearlooks_get_notebook_tab_position (GtkWidget *widget,
+                                      gboolean  *start,
+                                      gboolean  *end)
+{
+	/* default value */
+	*start = TRUE;
+	*end = FALSE;
+
+	if (GE_IS_NOTEBOOK (widget)) {
+		gboolean found_tabs = FALSE;
+		gint i, n_pages;
+		GtkNotebook *notebook = GTK_NOTEBOOK (widget);
+
+		/* got a notebook, so walk over all the tabs and decide based
+		 * on that ...
+		 * It works like this:
+		 *   - If there is any visible tab that is expanded, set both.
+		 *   - Set start/end if there is any visible tab that is at
+		 *     the start/end.
+		 * The heuristic falls over if there is a notebook that just
+		 * happens to fill up all the available space. ie. All tabs
+		 * are left aligned, but it does not require scrolling.
+		 * Another error is that if scroll arrows are present, it
+		 * marks both corners, but none should be.
+		 * (a more complex heuristic could calculate the tabs width
+		 * and add them all up) */
+
+		n_pages = gtk_notebook_get_n_pages (notebook);
+		for (i = 0; i < n_pages; i++) {
+			GtkWidget *tab_child;
+			GtkWidget *tab_label;
+			gboolean expand;
+			GtkPackType pack_type;
+						
+			tab_child = gtk_notebook_get_nth_page (notebook, i);
+
+			/* Skip invisible tabs, is this correct? */
+			tab_label = gtk_notebook_get_tab_label (notebook, tab_child);
+			if (!tab_label || !GTK_WIDGET_VISIBLE (tab_label))
+				continue;
+
+			gtk_notebook_query_tab_label_packing (notebook, tab_child,
+			                                      &expand,
+			                                      NULL, /* don't need fill */
+			                                      &pack_type);
+
+			if (!found_tabs) {
+				found_tabs = TRUE;
+				*start = FALSE;
+				*end = FALSE;
+			}
+
+			if (expand) {
+				*start = TRUE;
+				*end = TRUE;
+			} else if (pack_type == GTK_PACK_START) {
+				*start = TRUE;
+			} else {
+				*end = TRUE;
+			}
+			
+			if (*start == TRUE && *end == TRUE)
+				return;
+		}
+	}
+}
+
+
