@@ -1105,7 +1105,7 @@ clearlooks_gummy_draw_list_view_header (cairo_t                        *cr,
 
 	cairo_pattern_t *pattern;
 
- 	ge_shade_color (fill, 1.1, &hilight);
+ 	ge_shade_color (fill, 1.11, &hilight);
 	ge_shade_color (fill, LISTVIEW_SHADE_TOP, &shade1);
 	ge_shade_color (fill, LISTVIEW_SHADE_CENTER_TOP, &shade2);
 	ge_shade_color (fill, LISTVIEW_SHADE_BOTTOM, &shade3);
@@ -1131,7 +1131,7 @@ clearlooks_gummy_draw_list_view_header (cairo_t                        *cr,
 	/* Draw highlight */
 	if (header->order == CL_ORDER_FIRST)
 	{
-		cairo_move_to (cr, 0.5, height-1);
+		cairo_move_to (cr, 0.5, height-1.5);
 		cairo_line_to (cr, 0.5, 0.5);
 	}
 	else
@@ -1139,7 +1139,7 @@ clearlooks_gummy_draw_list_view_header (cairo_t                        *cr,
 	
 	cairo_line_to (cr, width, 0.5);
 	
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
+	ge_cairo_set_color (cr, &hilight);
 	cairo_stroke (cr);
 	
 	/* Draw resize grip */
