@@ -1,7 +1,7 @@
 
 # Set GtkSettings color scheme property.
 # This can be overriden (via an xsetting) with eg. the gnome-appearance-properties.
-gtk_color_scheme = "fg_color:#000\nbg_color:#EDECEB\nbase_color:#fff\ntext_color:#1A1A1A\nselected_bg_color:#86ABD9\nselected_fg_color:#fff\ntooltips_bg_color:#F5F5B5\ntooltips_fg_color:#000"
+gtk_color_scheme = "fg_color:#000\nbg_color:#EDECEB\nbase_color:#fff\ntext_color:#1A1A1A\nselected_bg_color:#86ABD9\nselected_fg_color:#fff\ntooltip_bg_color:#F5F5B5\ntooltip_fg_color:#000"
 
 style "clearlooks-default"
 {
@@ -155,8 +155,8 @@ style "clearlooks-tooltips"
 	xthickness = 4
 	ythickness = 4
 
-	bg[NORMAL] = @tooltips_bg_color
-	fg[NORMAL] = @tooltips_fg_color
+	bg[NORMAL] = @tooltip_bg_color
+	fg[NORMAL] = @tooltip_fg_color
 }
 
 style "clearlooks-progressbar"

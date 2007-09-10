@@ -1,3 +1,8 @@
+2007-09-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix tooltip_*_color in Clearlooks. It said tooltips_*_color ...
+
 2007-09-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
