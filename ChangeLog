@@ -1,3 +1,10 @@
+2007-09-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_scrollbar_slider):
+	Forgot to use adaptive HUE shading just on colored scrollbar.
+	Fixed. No more bugs now? :)
+
 2007-09-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
