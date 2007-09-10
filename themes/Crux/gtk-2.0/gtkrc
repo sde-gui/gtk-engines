@@ -29,7 +29,8 @@
 
 # Default style for all widgets to build from
 
-gtk_color_scheme = "fg_color:#000\nbg_color:#c4c6c0\nbase_color:#fff\ntext_color:#000\nselected_bg_color:#75507b\nselected_fg_color:#fff"
+gtk_color_scheme = "fg_color:#000\nbg_color:#c4c6c0\nbase_color:#fff\ntext_color:#000\nselected_bg_color:#75507b\nselected_fg_color:#fff\ntooltip_bg_color:#F
+5F5B5\ntooltip_fg_color:#000"
 
 
 style "default"
@@ -128,3 +129,22 @@ style "statusbar"
    ythickness = 3
 }
 class "GtkStatusbar" style "statusbar"
+
+style "crux-tooltips"
+{
+        xthickness = 4
+        ythickness = 4
+
+        bg[NORMAL] = @tooltip_bg_color
+        fg[NORMAL] = @tooltip_fg_color
+}
+
+# The window of the tooltip is called "gtk-tooltips"
+################################
+# FIXME:
+# This will not work if one embeds eg. a button into the tooltip.
+# As far as I can tell right now we will need to rework the theme
+# quite a bit to get this working correctly.
+# (It will involve setting different priorities, etc.)
+################################
+widget "gtk-tooltip*" style "crux-tooltips"

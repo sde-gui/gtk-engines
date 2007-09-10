@@ -1,5 +1,10 @@
 2007-09-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Crux/gtk-2.0/gtkrc:
+	Apply patch from Luca Ferretti to add tooltip color support to Crux.
+
+2007-09-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Fix tooltip_*_color in Clearlooks. It said tooltips_*_color ...
 
