@@ -204,7 +204,7 @@ widget_class "*.<GtkCTree>.<GtkButton>"    style "clearlooks-treeview-header"
 widget_class "*.<GtkList>.<GtkButton>"     style "clearlooks-treeview-header"
 widget_class "*.<GtkCList>.<GtkButton>"    style "clearlooks-treeview-header"
 
-# The window of the tooltip is called "gtk-tooltips"
+# The window of the tooltip is called "gtk-tooltip"
 ################################
 # FIXME:
 # This will not work if one embeds eg. a button into the tooltip.

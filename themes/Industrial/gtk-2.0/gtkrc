@@ -1,4 +1,4 @@
-gtk-color-scheme = "bg_color: #f6f6f6\nfg_color: #000\nbase_color: #fff\ntext_color: #000\nselected_bg_color: #6484a4\nselected_fg_color: #fff"
+gtk-color-scheme = "bg_color: #f6f6f6\nfg_color: #000\nbase_color: #fff\ntext_color: #000\nselected_bg_color: #6484a4\nselected_fg_color: #fff\ntooltip_bg_color: #e5e5e5\ntooltip_fg_color: #000000"
 
 style "industrial-default"
 {
@@ -153,7 +153,8 @@ style "industrial-tooltips"
 {
   xthickness = 4
   ythickness = 4
-  bg[NORMAL] = shade (0.85, @bg_color) # bg[ACTIVE], before { 0.9, 0.9, 0.9}
+  bg[NORMAL] = @tooltip_bg_color
+  fg[NORMAL] = @tooltip_fg_color
 }
 
 style "industrial-druid"
@@ -216,7 +217,7 @@ widget_class "*<GtkMenuItem>*" style "industrial-menuitem"
 # druide
 widget_class "*GnomeDruidPage*" style "industrial-druid"
 
-widget "gtk-tooltips" style "industrial-tooltips"
+widget "gtk-tooltip*" style "industrial-tooltips"
 
 widget "*.tasklist-button" style "industrial-squared"
 

@@ -72,7 +72,7 @@ style "menu-item" {
 }
 
 class "GtkWidget" style "default"
-widget "gtk-tooltips*" style "tooltips"
+widget "gtk-tooltip*" style "tooltips"
 class "GtkProgressBar" style "progress-bar"
 class "*MenuItem*" style "menu-item"
 widget_class "*MenuItem*" style "menu-item"

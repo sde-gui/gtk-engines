@@ -1,5 +1,16 @@
 2007-09-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Industrial/gtk-2.0/gtkrc:
+	Make industrial use the configurable tooltip colors
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	* themes/Crux/gtk-2.0/gtkrc:
+	* themes/ThinIce/gtk-2.0/gtkrc:
+	Fix the matching and comments, it is called gtk-tooltip not
+	gtk-tooltips (now?)
+
+2007-09-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* themes/Crux/gtk-2.0/gtkrc:
 	Apply patch from Luca Ferretti to add tooltip color support to Crux.
 
