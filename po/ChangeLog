@@ -1,3 +1,8 @@
+2007-09-10  Luca Ferretti  <elle.uca@libero.it>
+
+	* LINGUAS: Added Italian to list of languages.
+	* it.po: Added Italian translation.
+
 2007-09-01  Gil Forcada  <gforcada@svn.gnome.org>
 
 	* ca.po: Updated catalan translation.
