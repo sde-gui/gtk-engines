@@ -1,3 +1,8 @@
+2007-09-12  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
+
+	* LINUGUAS: Added Russian to the list of languages.
+	* ru.po: Updated Russian translation.
+
 2007-09-12  Goran Rakić  <grakic@devbase.net>
 
 	* sr.po, sr@Latn.po: Added Serbian translation.
