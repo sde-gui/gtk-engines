@@ -1,3 +1,9 @@
+2007-09-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* NEWS:
+	* configure.ac:
+	Update for 2.12.0 release.
+
 2007-09-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Industrial/gtk-2.0/gtkrc:

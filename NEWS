@@ -1,3 +1,22 @@
+Overview of Changes in 2.12.0 (since 2.11.7)
+============================================
+
+Hilights in this release include:
+ - A set of tweaks to the Clearlooks theme and Gummy engine code
+ - Fixed color scheme support in Clearlooks, Crux and Industrial
+ - Fixed GTK+ 2.12 tooltips in Clearlooks, Crux, Industrial and Thinice
+ - Better notebook edge drawing in Clearlooks that addresses bug #457087.
+
+New and updated Translations:
+ Djihed Afifi (ar)
+ Nickolay V. Shmyrev (ru)
+ Горан Ракић (sr)
+ Goran Rakić (sr@Latn)
+ Luca Ferretti (it)
+ Gil Forcada (ca)
+ Ani Peter (ml)
+ Ilkka Tuohela (fi)
+
 Overview of Changes in 2.11.7 (since 2.11.6)
 ============================================
 

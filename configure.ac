@@ -1,5 +1,5 @@
 
-AC_INIT([gtk-engines], [2.11.7])
+AC_INIT([gtk-engines], [2.12.0])
 AC_CONFIG_SRCDIR([README])
 
 AM_INIT_AUTOMAKE
@@ -123,6 +123,7 @@ if test $lua = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES lua"
 fi
 
+# Don't forget to update the README when changing this.
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.10.0,,
                   AC_MSG_ERROR([GTK+-2.10 is required to compile gtk-engines]))
 
