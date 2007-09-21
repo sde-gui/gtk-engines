@@ -1,4 +1,4 @@
-2007-09-12  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
+2007-09-22  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
 
 	* LINGUAS: Added be@latin to the list of languages.
 	* be@latin.po: Added Belarusian Latin translation.
