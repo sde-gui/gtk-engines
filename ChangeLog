@@ -1,3 +1,9 @@
+2007-09-21  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Crux/gtk-2.0/gtkrc:
+	Fix the crux theme by removing the stray new line in the
+	color scheme setting.
+
 2007-09-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
