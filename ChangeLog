@@ -1,3 +1,9 @@
+2007-09-23  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	* engines/clearlooks/src/clearlooks_types.h:
+	Minor fixes to toolbar's shadings.
+
 2007-09-21  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:

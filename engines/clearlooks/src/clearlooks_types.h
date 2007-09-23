@@ -425,10 +425,9 @@ struct _ClearlooksStyleFunctions
 	/* Style internal functions */
 	/* XXX: Only used by slider_button, inline it? */
 	void (*draw_shadow)           (cairo_t				*cr,
-                                       const ClearlooksColors		*colors,
-	                               gfloat         radius,
-	                               int				 width,
-	                               int				 height);
+	                               const ClearlooksColors		*colors,
+	                               gfloat				 radius,
+	                               int width, int height);
 
 	void (*draw_slider)           (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
@@ -436,9 +435,9 @@ struct _ClearlooksStyleFunctions
 	                               int x, int y, int width, int height);
 
 	void (*draw_gripdots)         (cairo_t *cr,
-                                       const ClearlooksColors *colors, int x, int y,
-                                       int width, int height, int xr, int yr,
-                                       float contrast);
+	                               const ClearlooksColors *colors, int x, int y,
+	                               int width, int height, int xr, int yr,
+	                               float contrast);
 };
 
 

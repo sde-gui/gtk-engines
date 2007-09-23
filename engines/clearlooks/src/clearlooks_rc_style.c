@@ -114,8 +114,8 @@ clearlooks_rc_style_register_type (GTypeModule *module)
 		(GInstanceInitFunc) clearlooks_rc_style_init,
 		NULL
 	};
-  
-  clearlooks_type_rc_style = g_type_module_register_type (module,
+
+	clearlooks_type_rc_style = g_type_module_register_type (module,
 						     GTK_TYPE_RC_STYLE,
 						     "ClearlooksRcStyle",
 						     &object_info, 0);

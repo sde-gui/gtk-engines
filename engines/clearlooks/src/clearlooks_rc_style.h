@@ -56,7 +56,7 @@ struct _ClearlooksRcStyle
 	ClearlooksRcFlags flags;
 
 	ClearlooksStyles style;
-  
+
 	GdkColor scrollbar_color;
 	gboolean colorize_scrollbar;
 	double contrast;
