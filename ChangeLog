@@ -1,6 +1,12 @@
 2007-09-23  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_button):
+	minor fixes in shadings
+
+2007-09-23  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	* engines/clearlooks/src/clearlooks_types.h:
 	Minor fixes to toolbar's shadings.
 

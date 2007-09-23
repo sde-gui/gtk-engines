@@ -204,12 +204,12 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
 
 			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
-			ge_shade_color (&params->parentbg, 0.96, &shadow);
+			ge_shade_color (&params->parentbg, 0.97, &shadow);
 			ge_cairo_set_color (cr, &shadow);
 			cairo_stroke (cr);
 
 			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, radius+1, params->corners);
-			ge_shade_color (&params->parentbg, 0.92, &shadow);
+			ge_shade_color (&params->parentbg, 0.93, &shadow);
 			ge_cairo_set_color (cr, &shadow);
 			cairo_stroke (cr);
 		}
