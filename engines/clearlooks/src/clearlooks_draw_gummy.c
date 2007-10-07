@@ -302,12 +302,12 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 	cairo_translate (cr, x+0.5, y+0.5);
 	cairo_set_line_width (cr, 1.0);
 
-	/* Fill the background (shouldn't have to) */
+	/* Fill the background to get the correct corners. */
 	cairo_rectangle (cr, -0.5, -0.5, width, height);
 	ge_cairo_set_color (cr, &params->parentbg);
 	cairo_fill (cr);
 
-	/* Fill the entry's base color (why isn't is large enough by default?) */
+	/* Fill with the base color, because it was just cleared above */
 	cairo_rectangle (cr, 1.5, 1.5, width-4, height-4);
 	ge_cairo_set_color (cr, base);
 	cairo_fill (cr);

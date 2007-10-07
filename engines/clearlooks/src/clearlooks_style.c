@@ -61,9 +61,6 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
                                   GtkStateType          state_type,
                                   WidgetParameters     *params)
 {
-	if (widget && GE_IS_ENTRY (widget))
-		state_type = GTK_WIDGET_STATE (widget);
-
 	params->style_functions = &(clearlooks_style_class->style_functions[CLEARLOOKS_STYLE (style)->style]);
 
 	params->active      = (state_type == GTK_STATE_ACTIVE);
@@ -167,6 +164,11 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		WidgetParameters params;
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
+
+		/* Override the entries state type, because we are too lame to handle this via
+		 * the focus ring, and GtkEntry doesn't even set the INSENSITIVE state ... */
+		if (state_type == GTK_STATE_NORMAL && widget && GE_IS_ENTRY (widget))
+			params.state_type = GTK_WIDGET_STATE (widget);
 
 		if (widget && (ge_is_in_combo_box (widget) || GE_IS_SPIN_BUTTON (widget)))
 		{

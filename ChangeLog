@@ -1,3 +1,14 @@
+2007-10-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_entry):
+	Fix some comments.
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters), (clearlooks_style_draw_shadow):
+	Only do the entry state hack if we are drawing an entry, not things
+	like spinbutton arrows. (#475629, Diego Escalante Urrelo)
+
 2007-09-23  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
