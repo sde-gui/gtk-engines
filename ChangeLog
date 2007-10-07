@@ -1,5 +1,11 @@
 2007-10-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix progress bars in menus (eg. network manager). These were broken
+	even though the comment above said what needs to be done ...
+
+2007-10-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_entry):
 	Fix some comments.
