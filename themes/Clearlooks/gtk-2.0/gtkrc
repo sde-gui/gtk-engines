@@ -242,6 +242,5 @@ style "clearlooks-combobox-text-color-workaround"
 	text[ACTIVE]      = @fg_color
 	text[INSENSITIVE] = darker (@bg_color)
 }
-widget_class "*.GtkComboBox"   style "clearlooks-combobox-text-color-workaround"
-
+widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-combobox-text-color-workaround"
 
