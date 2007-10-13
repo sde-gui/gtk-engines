@@ -13,10 +13,21 @@ GE_INTERNAL extern GType thinice_type_rc_style;
 #define THINICE_IS_RC_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), THINICE_TYPE_RC_STYLE))
 #define THINICE_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), THINICE_TYPE_RC_STYLE, ThiniceRcStyleClass))
 
+typedef enum {
+  THINICE_FLAG_SCROLLBAR_TYPE      = 1 << 0,
+  THINICE_FLAG_SCROLLBAR_MARKS     = 1 << 1,
+  THINICE_FLAG_SCROLL_BUTTON_MARKS = 1 << 2,
+  THINICE_FLAG_HANDLEBOX_MARKS     = 1 << 3,
+  THINICE_FLAG_MARK_TYPE1          = 1 << 4,
+  THINICE_FLAG_MARK_TYPE2          = 1 << 5,
+  THINICE_FLAG_PANED_DOTS          = 1 << 5,
+} ThiniceRcFlags;
+
 struct _ThiniceRcStyle
 {
   GtkRcStyle parent_instance;
 
+  ThiniceRcFlags flags;
   guint scrollbar_type:1;
   guint scrollbar_marks:1;
   guint scroll_button_marks:1;

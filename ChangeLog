@@ -1,5 +1,15 @@
 2007-10-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/hc/src/hc_gtk2_engine.c: (hc_rc_style_parse),
+	(hc_rc_style_merge), (hc_rc_style_init), (hc_style_init):
+	* engines/hc/src/hc_gtk2_engine.h:
+	* engines/thinice/src/thinice_rc_style.c: (thinice_rc_style_init),
+	(thinice_rc_style_parse), (thinice_rc_style_merge):
+	* engines/thinice/src/thinice_rc_style.h:
+	Fix RC merging in both thinice and high contrast.
+
+2007-10-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/hc/src/hc-style.c: (hc_draw_slider), (hc_draw_check):
 	Fixed incorrect rounding in hc engine and reworked checkmark
 	drawing. (#482542, Josselin Mouette)

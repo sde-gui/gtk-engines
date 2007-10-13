@@ -37,9 +37,18 @@ GE_INTERNAL extern GtkStyleClass *hc_parent_class;
 #define HC_IS_RC_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), HC_TYPE_RC_STYLE))
 #define HC_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), HC_TYPE_RC_STYLE, HcRcStyleClass))
  
+typedef enum
+{
+  HC_RC_FLAG_EDGE_THICKNESS      = 1 << 0,
+  HC_RC_FLAG_CELL_INDICATOR_SIZE = 1 << 1
+} HcRcFlags;
+ 
 typedef struct
 {
   GtkRcStyle parent_instance;
+  
+  HcRcFlags flags;
+  
   gint edge_thickness;
   gint cell_indicator_size;
 } HcRcStyle;

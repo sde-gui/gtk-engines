@@ -124,9 +124,11 @@ hc_rc_style_parse (GtkRcStyle  *rc_style,
 		switch (token) {
 		case TOKEN_EDGE_THICKNESS:
 			token = hc_rc_parse_int (scanner, TOKEN_EDGE_THICKNESS, 2, &hc_rc_style->edge_thickness, 1, 25);
+			hc_rc_style->flags |= HC_RC_FLAG_EDGE_THICKNESS;
 			break;
 		case TOKEN_CELL_INDICATOR_SIZE:
 			token = hc_rc_parse_int (scanner, TOKEN_CELL_INDICATOR_SIZE, 12, &hc_rc_style->cell_indicator_size, 1, 100);
+			hc_rc_style->flags |= HC_RC_FLAG_CELL_INDICATOR_SIZE;
 			break;		
 		default:
 			g_scanner_get_next_token (scanner);
@@ -164,6 +166,7 @@ static void
 hc_rc_style_merge (GtkRcStyle *dest,
 			   GtkRcStyle *src)
 {
+	HcRcFlags flags;
 	HcRcStyle *dest_w, *src_w;
 
 	hc_parent_rc_class->merge (dest, src);
@@ -174,8 +177,14 @@ hc_rc_style_merge (GtkRcStyle *dest,
 	src_w = HC_RC_STYLE (src);
 	dest_w = HC_RC_STYLE (dest);
 
-	dest_w->edge_thickness = src_w->edge_thickness;
-	dest_w->cell_indicator_size = src_w->cell_indicator_size;
+	flags = (~dest_w->flags) & src_w->flags;
+
+	if (flags & HC_RC_FLAG_EDGE_THICKNESS)
+		dest_w->edge_thickness = src_w->edge_thickness;
+	if (flags & HC_RC_FLAG_CELL_INDICATOR_SIZE)
+		dest_w->cell_indicator_size = src_w->cell_indicator_size;
+
+	dest_w->flags = dest_w->flags | src_w->flags;
 }
 
 
@@ -193,6 +202,7 @@ static void hc_rc_style_class_init (HcRcStyleClass *klass)
 static void
 hc_rc_style_init (HcRcStyle *hc_rc_style)
 {
+	hc_rc_style->flags = 0;
 	hc_rc_style->edge_thickness = -1;
 	hc_rc_style->cell_indicator_size = -1;
 }
@@ -392,6 +402,7 @@ static void
 hc_style_init (HcStyle * style)
 {
 	style->edge_thickness = floor(MIN(GTK_STYLE(style)->xthickness,GTK_STYLE(style)->ythickness)*1.5);
+	style->cell_indicator_size = 12;
 }
 
 GType hc_type_style = 0;

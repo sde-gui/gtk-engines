@@ -74,6 +74,7 @@ thinice_rc_style_register_type (GTypeModule *module)
 static void
 thinice_rc_style_init (ThiniceRcStyle *style)
 {
+  style->flags = 0;
 }
 
 static void
@@ -278,6 +279,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
             theme_data->scrollbar_type = SCROLL_SHAPED;
           else
             theme_data->scrollbar_type = SCROLL_RECT;
+          theme_data->flags |= THINICE_FLAG_SCROLLBAR_TYPE;
           break;
 
         case TOKEN_SCROLLBUTTONMARKS:
@@ -288,6 +290,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
             theme_data->mark_type2 = MARKS_SLASH;
           else
             theme_data->mark_type2 = MARKS_NOTHING;
+          theme_data->flags |= THINICE_FLAG_MARK_TYPE2;
           /*
           if (i == TRUE)
             theme_data->scroll_button_marks = MARKS_ON;
@@ -304,6 +307,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
             theme_data->mark_type1 = MARKS_SLASH;
           else
             theme_data->mark_type1 = MARKS_NOTHING;
+          theme_data->flags |= THINICE_FLAG_MARK_TYPE1;
           /*
           if (i == TRUE)
             theme_data->scrollbar_marks = MARKS_ON;
@@ -320,6 +324,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
             theme_data->handlebox_marks = MARKS_ON;
           else
             theme_data->handlebox_marks = MARKS_OFF;
+          theme_data->flags |= THINICE_FLAG_HANDLEBOX_MARKS;
           break;
 
         case TOKEN_MARKTYPE1:
@@ -327,6 +332,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
           if (token != G_TOKEN_NONE)
             break;
           theme_data->mark_type1 = i;
+          theme_data->flags |= THINICE_FLAG_MARK_TYPE1;
           break;
 
         case TOKEN_MARKTYPE2:
@@ -334,6 +340,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
           if (token != G_TOKEN_NONE)
             break;
           theme_data->mark_type2 = i;
+          theme_data->flags |= THINICE_FLAG_MARK_TYPE2;
           break;
 
         case TOKEN_PANEDDOTS:
@@ -341,6 +348,7 @@ thinice_rc_style_parse (GtkRcStyle *rc_style,
           if (token != G_TOKEN_NONE)
             break;
           theme_data->paned_dots = i;
+          theme_data->flags |= THINICE_FLAG_PANED_DOTS;
           break;
 
 	default:
@@ -368,20 +376,28 @@ thinice_rc_style_merge (GtkRcStyle * dest,
 			GtkRcStyle * src)
 {
   if (THINICE_IS_RC_STYLE (src)) {
-    ThiniceRcStyle        *src_data = THINICE_RC_STYLE (src);
-    ThiniceRcStyle        *dest_data = THINICE_RC_STYLE (dest);
+    ThiniceRcFlags  flags;
+    ThiniceRcStyle *src_data = THINICE_RC_STYLE (src);
+    ThiniceRcStyle *dest_data = THINICE_RC_STYLE (dest);
 
-    /*
-      g_print("theme_merge_rc_style(\"%s\", \"%s\")\n", dest->name, src->name);
-    */
-    
-    dest_data->scrollbar_type = src_data->scrollbar_type;
-    dest_data->scrollbar_marks = src_data->scrollbar_marks;
-    dest_data->scroll_button_marks = src_data->scroll_button_marks;
-    dest_data->handlebox_marks = src_data->handlebox_marks;
-    dest_data->mark_type1 = src_data->mark_type1;
-    dest_data->mark_type2 = src_data->mark_type2;
-    dest_data->paned_dots = src_data->paned_dots;
+    flags = (~dest_data->flags) & src_data->flags;
+
+    if (flags & THINICE_FLAG_SCROLLBAR_TYPE)
+      dest_data->scrollbar_type = src_data->scrollbar_type;
+    if (flags & THINICE_FLAG_SCROLLBAR_MARKS)
+      dest_data->scrollbar_marks = src_data->scrollbar_marks;
+    if (flags & THINICE_FLAG_SCROLL_BUTTON_MARKS)
+      dest_data->scroll_button_marks = src_data->scroll_button_marks;
+    if (flags & THINICE_FLAG_HANDLEBOX_MARKS)
+      dest_data->handlebox_marks = src_data->handlebox_marks;
+    if (flags & THINICE_FLAG_MARK_TYPE1)
+      dest_data->mark_type1 = src_data->mark_type1;
+    if (flags & THINICE_FLAG_MARK_TYPE2)
+      dest_data->mark_type2 = src_data->mark_type2;
+    if (flags & THINICE_FLAG_PANED_DOTS)
+      dest_data->paned_dots = src_data->paned_dots;
+
+    dest_data->flags = dest_data->flags | src_data->flags;
   }
   
   thinice_parent_rc_style_class->merge (dest, src);
