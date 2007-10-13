@@ -231,11 +231,11 @@ clearlooks_get_notebook_tab_position (GtkWidget *widget,
 		 *   - If there is any visible tab that is expanded, set both.
 		 *   - Set start/end if there is any visible tab that is at
 		 *     the start/end.
+		 *   - If one has the child_visibility set to false, arrows
+		 *     are present; so none
 		 * The heuristic falls over if there is a notebook that just
 		 * happens to fill up all the available space. ie. All tabs
 		 * are left aligned, but it does not require scrolling.
-		 * Another error is that if scroll arrows are present, it
-		 * marks both corners, but none should be.
 		 * (a more complex heuristic could calculate the tabs width
 		 * and add them all up) */
 
@@ -248,10 +248,18 @@ clearlooks_get_notebook_tab_position (GtkWidget *widget,
 						
 			tab_child = gtk_notebook_get_nth_page (notebook, i);
 
-			/* Skip invisible tabs, is this correct? */
+			/* Skip invisible tabs */
 			tab_label = gtk_notebook_get_tab_label (notebook, tab_child);
 			if (!tab_label || !GTK_WIDGET_VISIBLE (tab_label))
 				continue;
+			/* This is the same what the notebook does internally. */
+			if (tab_label && !gtk_widget_get_child_visible (tab_label)) {
+				/* One child is hidden because scroll arrows are present.
+				 * So both corners are rounded. */
+				*start = FALSE;
+				*end = FALSE;
+				return;
+			}
 
 			gtk_notebook_query_tab_label_packing (notebook, tab_child,
 			                                      &expand,

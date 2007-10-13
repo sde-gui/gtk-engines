@@ -1,5 +1,12 @@
 2007-10-14  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/support.c:
+	(clearlooks_get_notebook_tab_position):
+	Detect if scroll arrows are visible on notebooks
+        (#457087, Christian Persch)
+
+2007-10-14  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_vline), (clearlooks_style_draw_hline):
 	Draw lines long enough, they were one pixel too short.
