@@ -254,3 +254,14 @@ style "clearlooks-combobox-text-color-workaround"
 }
 widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-combobox-text-color-workaround"
 
+
+# Work around the evolution "New" button bug by making the toolbar flat.
+# http://bugzilla.gnome.org/show_bug.cgi?id=446953
+# Maybe remove this workaround in unstable releases.
+style "clearlooks-evo-new-button-workaround"
+{
+	engine "clearlooks" {
+		toolbarstyle = 0
+	}
+}
+widget_class "EShellWindow.GtkVBox.BonoboDock.BonoboDockBand.BonoboDockItem*" style "clearlooks-evo-new-button-workaround"

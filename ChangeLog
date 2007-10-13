@@ -1,5 +1,11 @@
 2007-10-14  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Work around the evolution new button bug by making the whole toolbar
+	flat. (#482922)
+
+2007-10-14  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/support.c:
 	(clearlooks_get_notebook_tab_position):
 	Don't stop walking the notebook tabs if. There could still be scroll
