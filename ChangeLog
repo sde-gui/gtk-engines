@@ -1,3 +1,9 @@
+2007-10-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/hc/src/hc-style.c: (hc_draw_slider), (hc_draw_check):
+	Fixed incorrect rounding in hc engine and reworked checkmark
+	drawing. (#482542, Josselin Mouette)
+
 2007-10-08  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:

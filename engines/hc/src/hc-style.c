@@ -639,9 +639,9 @@ hc_draw_slider (GtkStyle * style,
 		{
 			do_hc_draw_line (canvas, &HC_STYLE(style)->color_cube.fg[state_type],
 						line_width /2, 
-						x + ceil(width/2) + 0.5, 
+						x + ceil(width/2.0) + 0.5, 
 						y + line_width, 
-						x + ceil(width/2) + 0.5, 
+						x + ceil(width/2.0) + 0.5, 
 						y + height - line_width);     
 		}
 		else
@@ -649,9 +649,9 @@ hc_draw_slider (GtkStyle * style,
 			do_hc_draw_line (canvas, &HC_STYLE(style)->color_cube.fg[state_type],
 						line_width /2, 
 						x + line_width, 
-						y + ceil(height/2) + 0.5,
+						y + ceil(height/2.0) + 0.5,
 						x + width - line_width, 
-						y + ceil(height/2) + 0.5);     
+						y + ceil(height/2.0) + 0.5);     
 		}
 	}
 
@@ -692,7 +692,7 @@ hc_draw_check (GtkStyle      *style,
 	
 	inconsistent = (shadow_type == GTK_SHADOW_ETCHED_IN);
 
-	line_width = ceil(HC_STYLE(style)->edge_thickness/2);
+	line_width = ceil(HC_STYLE(style)->edge_thickness/2.0);
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	cairo_save(cr);
@@ -707,70 +707,47 @@ hc_draw_check (GtkStyle      *style,
 	ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);
 	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
 
-	/* Pixel Alignedness -
-			
-		If even line width, + 1.0 
-		If odd line width,  + 0.5 
-	 */
-	cairo_set_line_width (cr, line_width + ((line_width%2)?1.0:0.5));
+	cairo_set_line_width (cr, line_width);
 
 	/* Stroke Rectangle */
-	ge_cairo_stroke_rectangle (cr, x, y, width, height);
+	ge_cairo_stroke_rectangle (cr, x + line_width/2.0, y + line_width/2.0, width - line_width, height - line_width);
 
 	cairo_restore(cr);
 
 	if ((shadow_type == GTK_SHADOW_IN) || inconsistent)
 	{
-		/* The X is inside the outer line_width */
-		gdouble offset = line_width;
+		cairo_save (cr);
+		/* Clip to the inner area. */
+		cairo_rectangle (cr, x + line_width, y + line_width, width - 2*line_width, height - 2*line_width);
+		cairo_clip (cr);
 
-		/*#warning - MATH && DIAGONALS && PIXEL SNAPPING == PAIN IN MY ARSE*/
-		ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);	
+		ge_cairo_set_color(cr, &hc_style->color_cube.fg[state_type]);
 		
-		/* What should the line width be? not the same as border... 
-			but why this?
-		 */
-		line_width = floor(line_width*3.5); /* ceil(MIN(width,height)/5); */
-
-		/* The X is capped square, 
-				so uh. inset by line_width/2 to center line
-				and.. line_width/2 space? 
-
-				so total inner line_width?
-
-				and + 0.5 if not (line_width - 1) % 2, pixel alignedness, 
-				1 pixel center + even numbers for 45 diagonal?  
-
-				My Head hurts. 
-		 */
-
-		cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE);
+		line_width = ceil(MIN(width,height)/5.0);
 
 		if (inconsistent)
 		{
-			cairo_set_line_width (cr, line_width + 0.5);
+			cairo_set_line_width (cr, line_width);
 
-			cairo_move_to(cr, x + offset, y + floor(height/2.0) + (((line_width - 1) % 2)?0.5:0));
-			cairo_line_to(cr, x + width - offset, y + floor(height/2.0) + (((line_width - 1) % 2)?0.5:0));
+			cairo_move_to(cr, x, y + floor(height/2.0) + (line_width%2)/2.0);
+			cairo_line_to(cr, x + width, y + floor(height/2.0) + (line_width%2)/2.0);
 		}
 		else
 		{
-			/* Again with the + 0.5 if not (line_width - 1) % 2 for pixel alignedness
-					Sort of. I don't think this works for extra large sizes,
-					which means I don't really understand the problem at all....
-			 */
-			cairo_set_line_width (cr, line_width + (((line_width - 1) % 2)?0:0.5));
+			cairo_set_line_width (cr, line_width);
 
 			/* Backward Diagonal */
-			cairo_move_to(cr, x + offset, y + offset);
-			cairo_line_to(cr, x + width - offset, y + height - offset);
+			cairo_move_to(cr, x, y);
+			cairo_line_to(cr, x + width, y + height);
 
 			/* Forward Diagonal */
-			cairo_move_to(cr, x + offset, y + height - offset);
-			cairo_line_to(cr, x + width - offset, y + offset);
+			cairo_move_to(cr, x, y + height);
+			cairo_line_to(cr, x + width, y);
 		}
 
 		cairo_stroke (cr);
+
+		cairo_restore (cr);
 	}
 
 	cairo_destroy(cr);
