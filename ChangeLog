@@ -2,6 +2,13 @@
 
 	* engines/clearlooks/src/support.c:
 	(clearlooks_get_notebook_tab_position):
+	Don't stop walking the notebook tabs if. There could still be scroll
+	arrows in theory.
+
+2007-10-14  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/support.c:
+	(clearlooks_get_notebook_tab_position):
 	Detect if scroll arrows are visible on notebooks
         (#457087, Christian Persch)
 

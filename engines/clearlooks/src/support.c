@@ -280,9 +280,6 @@ clearlooks_get_notebook_tab_position (GtkWidget *widget,
 			} else {
 				*end = TRUE;
 			}
-			
-			if (*start == TRUE && *end == TRUE)
-				return;
 		}
 	}
 }
