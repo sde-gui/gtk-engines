@@ -137,6 +137,13 @@ style "clearlooks-menu-item"
 	text[INSENSITIVE]  = darker (@bg_color)
 }
 
+style "clearlooks-separator-menu-item"
+{
+	GtkSeparatorMenuItem::horizontal-padding = 0
+	xthickness = 1
+	ythickness = 1
+}
+
 # Based on the default style so that the colors from the button
 # style are overriden again.
 style "clearlooks-treeview-header" = "clearlooks-default"
@@ -195,8 +202,9 @@ class "GtkEntry"     style "clearlooks-wider"
 # General matching following, the order is choosen so that the right styles override each other
 # eg. progressbar needs to be more important then the menu match.
 
-widget_class "*<GtkMenu>*"       style "clearlooks-menu"
-widget_class "*<GtkMenuItem>*"      style "clearlooks-menu-item"
+widget_class "*<GtkMenu>*"              style "clearlooks-menu"
+widget_class "*<GtkMenuItem>*"          style "clearlooks-menu-item"
+widget_class "*<GtkSeparatorMenuItem>*" style "clearlooks-separator-menu-item"
 
 widget_class "*<GtkButton>"      style "clearlooks-button"
 widget_class "*<GtkNotebook>"    style "clearlooks-notebook"

@@ -1014,7 +1014,7 @@ clearlooks_style_draw_vline                      (GtkStyle               *style,
 	cr = ge_gdk_drawable_to_cairo (window, area);
 	
 	STYLE_FUNCTION(draw_separator) (cr, &colors->shade[3], NULL, &separator,
-	                           x, y1, 2, y2-y1);
+	                           x, y1, 2, y2-y1+1);
 	
 	cairo_destroy (cr);
 }
@@ -1044,7 +1044,7 @@ clearlooks_style_draw_hline                      (GtkStyle               *style,
 	separator.horizontal = TRUE;
 	
 	STYLE_FUNCTION(draw_separator) (cr, &colors->shade[3], NULL, &separator,
-	                           x1, y, x2-x1, 2);
+	                           x1, y, x2-x1+1, 2);
 	
 	cairo_destroy (cr);
 }
