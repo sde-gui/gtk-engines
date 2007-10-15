@@ -1,3 +1,16 @@
+2007-10-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_types.h:
+	Reworked separator drawing a little bit and added a special
+	function to handle separators in menus.
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Use wide separators to get the correct height.
+
 2007-10-14  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:

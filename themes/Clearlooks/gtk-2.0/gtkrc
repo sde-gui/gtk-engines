@@ -140,8 +140,13 @@ style "clearlooks-menu-item"
 style "clearlooks-separator-menu-item"
 {
 	GtkSeparatorMenuItem::horizontal-padding = 0
+	# We are setting the desired height by using wide-separators
+	# There is no other way to get the odd height ...
+	GtkWidget::wide-separators = 1
+	GtkWidget::separator-width = 1
+	GtkWidget::separator-height = 5
 	xthickness = 1
-	ythickness = 1
+	ythickness = 0
 }
 
 # Based on the default style so that the colors from the button

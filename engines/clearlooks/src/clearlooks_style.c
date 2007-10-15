@@ -858,6 +858,24 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		
 		STYLE_FUNCTION(draw_menu_frame) (cr, colors, &params, x, y, width, height);
 	}
+	else if (DETAIL ("hseparator") || DETAIL ("vseparator"))
+	{
+		gchar *new_detail = detail;
+		/* Draw a normal separator, we just use this because it gives more control
+		 * over sizing (currently). */
+
+		/* This isn't nice ... but it seems like the best cleanest way to me right now.
+		 * It will get slightly nicer in the future hopefully. */
+		if (GE_IS_MENU_ITEM (widget))
+			new_detail = "menuitem";
+
+		if (DETAIL ("hseparator")) {
+			gtk_paint_hline (style, window, state_type, area, widget, new_detail,
+			                 x, x + width - 1, y + height/2);
+		} else
+			gtk_paint_vline (style, window, state_type, area, widget, new_detail,
+			                 y, y + height - 1, x + width/2);
+	}
 	else
 	{
 		clearlooks_parent_class->draw_box (style, window, state_type, shadow_type, area,
@@ -992,15 +1010,15 @@ clearlooks_style_draw_check (DRAW_ARGS)
 }
 
 static void
-clearlooks_style_draw_vline                      (GtkStyle               *style,
-                                 GdkWindow              *window,
-                                 GtkStateType            state_type,
-                                 GdkRectangle           *area,
-                                 GtkWidget              *widget,
-                                 const gchar            *detail,
-                                 gint                    y1,
-                                 gint                    y2,
-                                 gint                    x)
+clearlooks_style_draw_vline (GtkStyle               *style,
+                             GdkWindow              *window,
+                             GtkStateType            state_type,
+                             GdkRectangle           *area,
+                             GtkWidget              *widget,
+                             const gchar            *detail,
+                             gint                    y1,
+                             gint                    y2,
+                             gint                    x)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	const ClearlooksColors *colors;
@@ -1012,23 +1030,25 @@ clearlooks_style_draw_vline                      (GtkStyle               *style,
 	colors = &clearlooks_style->colors;
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
-	
-	STYLE_FUNCTION(draw_separator) (cr, &colors->shade[3], NULL, &separator,
-	                           x, y1, 2, y2-y1+1);
+
+	/* There is no such thing as a vertical menu separator
+	 * (and even if, a normal one should be better on menu bars) */
+	STYLE_FUNCTION(draw_separator) (cr, colors, NULL, &separator,
+	                                x, y1, 2, y2-y1+1);
 	
 	cairo_destroy (cr);
 }
 
 static void
-clearlooks_style_draw_hline                      (GtkStyle               *style,
-                                 GdkWindow              *window,
-                                 GtkStateType            state_type,
-                                 GdkRectangle           *area,
-                                 GtkWidget              *widget,
-                                 const gchar            *detail,
-                                 gint                    x1,
-                                 gint                    x2,
-                                 gint                    y)
+clearlooks_style_draw_hline (GtkStyle               *style,
+                             GdkWindow              *window,
+                             GtkStateType            state_type,
+                             GdkRectangle           *area,
+                             GtkWidget              *widget,
+                             const gchar            *detail,
+                             gint                    x1,
+                             gint                    x2,
+                             gint                    y)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	const ClearlooksColors *colors;
@@ -1043,8 +1063,12 @@ clearlooks_style_draw_hline                      (GtkStyle               *style,
 	
 	separator.horizontal = TRUE;
 	
-	STYLE_FUNCTION(draw_separator) (cr, &colors->shade[3], NULL, &separator,
-	                           x1, y, x2-x1+1, 2);
+	if (!DETAIL ("menuitem"))
+		STYLE_FUNCTION(draw_separator) (cr, colors, NULL, &separator,
+		                                x1, y, x2-x1+1, 2);
+	else
+		STYLE_FUNCTION(draw_menu_item_separator) (cr, colors, NULL, &separator,
+		                                           x1, y, x2-x1+1, 2);
 	
 	cairo_destroy (cr);
 }

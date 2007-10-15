@@ -788,13 +788,14 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 
 static void
 clearlooks_gummy_draw_separator (cairo_t                   *cr,
-                                 const CairoColor          *color,
+                                 const ClearlooksColors    *colors,
                                  const WidgetParameters    *widget,
                                  const SeparatorParameters *separator,
                                  int x, int y, int width, int height)
 {
+	CairoColor color = colors->shade[3];
 	CairoColor hilight;
-	ge_shade_color (color, 1.3, &hilight);
+	ge_shade_color (&color, 1.3, &hilight);
 
 	cairo_save (cr);
 	cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
@@ -806,7 +807,7 @@ clearlooks_gummy_draw_separator (cairo_t                   *cr,
 
 		cairo_move_to         (cr, 0.0,   0.0);
 		cairo_line_to         (cr, width, 0.0);
-		ge_cairo_set_color    (cr, color);
+		ge_cairo_set_color    (cr, &color);
 		cairo_stroke          (cr);
 
 		cairo_move_to         (cr, 0.0,   1.0);
@@ -821,7 +822,7 @@ clearlooks_gummy_draw_separator (cairo_t                   *cr,
 
 		cairo_move_to         (cr, 0.0, 0.0);
 		cairo_line_to         (cr, 0.0, height);
-		ge_cairo_set_color    (cr, color);
+		ge_cairo_set_color    (cr, &color);
 		cairo_stroke          (cr);
 
 		cairo_move_to         (cr, 1.0, 0.0);
@@ -1150,10 +1151,10 @@ clearlooks_gummy_draw_list_view_header (cairo_t                        *cr,
 		separator.horizontal = FALSE;
 
 		if (params->ltr)
-			params->style_functions->draw_separator (cr, &colors->shade[3], params, &separator,
+			params->style_functions->draw_separator (cr, colors, params, &separator,
 			                                         width-1.5, 4.0, 2, height-8.0);
 		else
-			params->style_functions->draw_separator (cr, &colors->shade[3], params, &separator,
+			params->style_functions->draw_separator (cr, colors, params, &separator,
 			                                         1.5, 4.0, 2, height-8.0);
 	}
 }
