@@ -1,5 +1,11 @@
 2007-10-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_list_view_header):
+	Forgot to update a draw_separator call.
+
+2007-10-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
