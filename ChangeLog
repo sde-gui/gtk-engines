@@ -1,3 +1,8 @@
+2007-10-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* test/Makefile.am:
+	Unset the GTK_MODULES enviroment variable during tests.
+
 2007-10-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw_inverted.c:
