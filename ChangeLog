@@ -1,5 +1,11 @@
 2007-10-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* configure.ac:
+	Update for 2.12.2 release.
+
+2007-10-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* test/Makefile.am:
 	Unset the GTK_MODULES enviroment variable during tests.
 

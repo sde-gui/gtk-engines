@@ -1,3 +1,25 @@
+Overview of Changes in 2.12.2 (since 2.12.1)
+============================================
+
+Hilights in this release include:
+ - Clearlooks progress bars in menus are now correct
+ - The workaround for the combobox text colors has been fixed in Clearlooks
+ - The RC file parsing in both Thinice and HighContrast has been fixed to
+   correctly merge styles.
+
+Fixed bugs in this release:
+ Bug #475629 – Themes doesn't reflect GtkSpinButton range limits visually
+ Bug #482542 – with edge_thickness = 1, checkboxes always appear unchecked
+ Bug #480629 – Make the padding on menu separators smaller
+ Bug #457087 – gap between notebook and tab label for pack-end tabs in vertical tabs
+ Bug #482922 – Work around evolution new button
+
+New and updated Translations:
+ Ivar Smolin (et)
+ Ihar Hrachyshka (be@latin)
+ Djihed Afifi (ar)
+ Nickolay V. Shmyrev (ru)
+
 Overview of Changes in 2.12.1 (since 2.12.0)
 ============================================
 
