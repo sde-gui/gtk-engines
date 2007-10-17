@@ -14,7 +14,7 @@ for RC_FILE in $srcdir/gtkrcs/$ENGINE*; do
 	RC_FILE_BASENAME="`basename $RC_FILE`"
 	MY_EXEC_WRAPPER="`echo "$EXEC_WRAPPER" | sed s/THEME/$RC_FILE_BASENAME/`"
 	
-	$MY_EXEC_WRAPPER ./torturetest 2>/dev/null >/dev/null
+	./runinx $MY_EXEC_WRAPPER ./torturetest 2>/dev/null >/dev/null
 
 	if [ "$?" != "0" ]; then
 		FAILED=1;

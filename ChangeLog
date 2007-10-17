@@ -1,3 +1,11 @@
+2007-10-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* test/Makefile.am:
+	* test/runinx:
+	* test/torture:
+	Added a script "runinx" that dynamically starts an Xvfb server if
+	needed. It seems to work ...
+
 2007-10-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:

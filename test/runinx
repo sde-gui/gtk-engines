@@ -1,0 +1,42 @@
+#! /bin/sh
+
+# This script is a wrapper to start an X server for tests.
+# there may be better ways to do this, but I don't know any ...
+
+if [ "$DISPLAY" != "" ]; then
+	# Just start everything, and exit after that
+	"$@"
+	exit $?
+fi
+
+for port in `seq 20 1000`; do
+	# Check if there is a lock file, if yes test if the server is running
+	if [ -f /tmp/.X$port-lock ]; then
+		# Test if there is anything running with the PID
+		pid="`cat /tmp/.X$port-lock | sed 's/ //g'`"
+
+		if [ "`ps -e | grep -c ^\\ *$pid`" = "0" ]; then
+			# Remove the stale lock file
+			rm -f /tmp/.X$port-lock
+			break
+		fi
+	else
+		break
+	fi
+done
+
+
+export DISPLAY=:$port
+
+# Start the Xvfb server -- try to ...
+# We need 24bpp as cairo does not support everything
+Xvfb $DISPLAY -ac -screen 0 1280x1024x24 & 2>/dev/null >/dev/null
+xvfb_pid=$!
+
+"$@"
+result="$?"
+
+kill $xvfb_pid 2>/dev/null >/dev/null
+
+exit $result
+

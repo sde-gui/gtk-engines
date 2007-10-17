@@ -18,7 +18,7 @@ GTKRCS =				\
 	gtkrcs/smooth			\
 	gtkrcs/thinice
 
-EXTRA_DIST = exported torture valgrind-suppressions $(GTKRCS)
+EXTRA_DIST = exported torture runinx valgrind-suppressions $(GTKRCS)
 
 
 EXTRA_PROGRAMS = torturetest
