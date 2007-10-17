@@ -1,5 +1,10 @@
 2007-10-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* test/torture:
+	Change message a bit.
+
+2007-10-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* test/Makefile.am:
 	* test/runinx:
 	* test/torture:
