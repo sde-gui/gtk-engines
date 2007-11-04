@@ -4,7 +4,23 @@ style "default"
 	GtkWidget::focus-line-pattern = "\1\1"
 	GtkOptionMenu::indicator-spacing = { 1, 1, 1, 1 }
 	GtkOptionMenu::indicator-size = { 1, 1 }
-	engine "clearlooks" {}
+	engine "clearlooks" {
+		# Test the parsing
+		scrollbar_color = "#ff0000"
+		colorize_scrollbar = FALSE
+		contrast = 1.0
+		menubarstyle = 1
+		toolbarstyle = 1
+		animation = FALSE
+		style = CLASSIC
+		radius = 3.0
+
+		# Options that are ignored ... just some junk
+		sunkenmenu = "JUNK"
+		progressbar_style = JUNK
+		menuitems_style = 12345
+		listviewitem_style = TRUE
+	}
 }
 
 class "GtkWidget" style "default"
