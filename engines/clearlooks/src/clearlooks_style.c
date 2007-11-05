@@ -1159,7 +1159,7 @@ clearlooks_style_draw_tab (DRAW_ARGS)
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
 	WidgetParameters params;
-	ArrowParameters  arrow; 	 
+	ArrowParameters  arrow;
 	cairo_t *cr;
 
 	CHECK_ARGS
@@ -1169,7 +1169,7 @@ clearlooks_style_draw_tab (DRAW_ARGS)
 
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 	arrow.type      = CL_ARROW_COMBO;
-	arrow.direction = CL_DIRECTION_DOWN; 	 
+	arrow.direction = CL_DIRECTION_DOWN;
 
 	STYLE_FUNCTION(draw_arrow) (cr, colors, &params, &arrow, x, y, width, height);
 
@@ -1200,7 +1200,8 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	if (arrow_type == GTK_ARROW_NONE) {
+	if (arrow_type == GTK_ARROW_NONE)
+	{
 		cairo_destroy (cr);
 		return;
 	}

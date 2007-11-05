@@ -665,7 +665,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	cairo_pattern_t     *pattern;
 
 	double               radius;
-//	double               strip_size;
+	double               stripe_size;
+	double               stripe_border_pos;
 
 	gboolean horizontal = FALSE;
 
@@ -685,8 +686,9 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	if (tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM)
 	{
 		height += 3.0;
-//		strip_size = 2.0/height;  /* 2 pixel high strip */
-
+		stripe_size = (tab->gap_side == CL_GAP_TOP ? 2.0/height : 2.0/(height-2));
+		stripe_border_pos = (tab->gap_side == CL_GAP_TOP ? 3.0/height : 3.0/(height-2));
+		
 		horizontal = TRUE;
 
 		if (tab->gap_side == CL_GAP_TOP)
@@ -695,7 +697,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	else
 	{
 		width += 3.0;
-//		strip_size = 2.0/width;
+		stripe_size = (tab->gap_side == CL_GAP_LEFT ? 2.0/width : 2.0/(width-2));
+		stripe_border_pos = (tab->gap_side == CL_GAP_LEFT ? 3.0/width : 3.0/(width-2));
 
 		if (tab->gap_side == CL_GAP_LEFT)
 			cairo_translate (cr, -3.0, 0.0); /* gap at the other side */
@@ -765,10 +768,10 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		ge_shade_color (fill, SHADE_TOP, &shade1);
 
 		cairo_pattern_add_color_stop_rgba (pattern, 0.0, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
-		cairo_pattern_add_color_stop_rgba (pattern, 3.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
-		cairo_pattern_add_color_stop_rgba (pattern, 3.0/(horizontal ? height : width), stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
-		cairo_pattern_add_color_stop_rgba (pattern, 4.0/(horizontal ? height : width), stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
-		cairo_pattern_add_color_stop_rgb (pattern, 4.0/(horizontal ? height : width), shade1.r, shade1.g, shade1.b);
+		cairo_pattern_add_color_stop_rgba (pattern, stripe_size, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
+		cairo_pattern_add_color_stop_rgba (pattern, stripe_size, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
+		cairo_pattern_add_color_stop_rgba (pattern, stripe_border_pos, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
+		cairo_pattern_add_color_stop_rgb (pattern, stripe_border_pos, shade1.r, shade1.g, shade1.b);
 		cairo_pattern_add_color_stop_rgb (pattern, 0.8, fill->r, fill->g, fill->b);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
