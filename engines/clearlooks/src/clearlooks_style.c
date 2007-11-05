@@ -838,7 +838,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("hseparator") || DETAIL ("vseparator"))
 	{
-		gchar *new_detail = detail;
+		gchar *new_detail = (gchar*) detail;
 		/* Draw a normal separator, we just use this because it gives more control
 		 * over sizing (currently). */
 

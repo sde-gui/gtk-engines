@@ -662,7 +662,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	const CairoColor    *stripe_border = &colors->spot[2];
 	const CairoColor    *fill;
 
-	cairo_pattern_t     *pattern;
+	cairo_pattern_t     *pattern = NULL;
 
 	double               radius;
 	

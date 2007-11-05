@@ -293,11 +293,14 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		
 		/* if (!(params->enable_glow && !params->active && !params->disabled)) */
 		if (!(params->prelight && params->enable_glow && !params->active))
+		{
 			if (!(params->disabled))
 				params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
 			else
 				/*Draw a lighter inset */
 				clearlooks_glossy_draw_light_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
+		}
+
 		cairo_translate (cr, -0.5, -0.5);
 	}
 
