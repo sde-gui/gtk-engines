@@ -1,5 +1,167 @@
 2007-11-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	Merged all the changes from the less-widget-check branch.
+
+2007-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	* themes/Industrial/gtk-2.0/gtkrc:
+	Set a dummy hint to disable engine fallbacks.
+
+2007-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c: (real_draw_box):
+	* themes/Industrial/gtk-2.0/gtkrc:
+	Nice new treeview header for industrial.
+
+2007-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c: (real_draw_box),
+	(draw_focus):
+	* themes/Industrial/gtk-2.0/gtkrc:
+	Use hints in Industrial!
+
+2007-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_rc_style.c:
+	(industrial_rc_style_init), (industrial_rc_style_merge):
+	* engines/industrial/src/industrial_rc_style.h:
+	* engines/industrial/src/industrial_style.h:
+	* engines/industrial/src/industrial_style_versioned_code.h:
+	* engines/industrial/src/parse_rc_style.h:
+	Added hint parsing to industrial.
+
+2007-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_parse):
+	* engines/support/general-support.h:
+	* engines/support/widget-information.c: (ge_rc_parse_hint):
+	* engines/support/widget-information.h:
+	Make hint parsing a support function.
+
+2007-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/support/widget-information.c: (ge_check_hint):
+	Small cleanup.
+
+2007-08-18  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_handle):
+	Removed hack with unknown purpose. If someone knows what it is for,
+	please report.
+
+2007-08-18  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_handle):
+	Remove the handle orientation hack. I think both the panel and GTK+
+	have been fixed for quite some time.
+
+2007-08-18  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix hscrollbar match.
+
+2007-08-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fixed name of spinbutton style.
+
+2007-08-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	* engines/support/widget-information.c: (ge_check_hint):
+	* engines/support/widget-information.h:
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Added menubar hint. And styles for the treeview hint.
+
+2007-08-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters), (clearlooks_style_draw_shadow):
+	* engines/support/widget-information.c: (ge_check_hint):
+	* engines/support/widget-information.h:
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Added spinbutton and treeview hints, that are needed for Clearlooks.
+
+2007-08-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/support/widget-information.c: (ge_check_hint):
+	Add fallbacks.
+
+2007-08-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/support/widget-information.c: (ge_check_hint):
+	* engines/support/widget-information.h:
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Change theme and add the needed special cases to ge_check_init. Plus
+	some small bugfixes.
+
+2007-08-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters), (clearlooks_style_draw_shadow),
+	(clearlooks_style_draw_box):
+	* engines/support/widget-information.c:
+	* engines/support/widget-information.h:
+	Added a lot of hint constants and changed clearlooks to use them.
+	No fallbacks and other things yet though.
+
+2007-08-14  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_gtk2_rc_parse_hint):
+	Register the string, instead of only calling g_quark_try_string
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Use the new ge_check_hint function for treeview headers.
+
+	* engines/support/widget-information.c: (ge_check_hint):
+	Fix the assert. The hint may be 0.
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Added a hint to the treeview-header style.
+
+2007-08-14  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* autogen.sh:
+	* configure.ac:
+	* engines/clearlooks/src/animation.h:
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_class_init):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/config.h.in:
+	* engines/crux/src/crux-gradient.c:
+	* engines/support/widget-information.c: (ge_check_hint):
+	* engines/support/widget-information.h:
+	- Removed all config.h files and added a common one to engines/support
+	- Added a function to check widgets based on gtkrc hints to support
+	- Added a configure option to disable widget check fallbacks
+	- Removed some code again from clearlooks that I started earlier
+
+2007-08-12  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init), (clearlooks_rc_style_class_init),
+	(clearlooks_gtk2_rc_parse_hint), (clearlooks_rc_style_parse),
+	(clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	- Add support for parsing a hint argument in the engine.
+	- Small cleanups and warning fixes.
+
+2007-08-12  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_parse):
+	Cause less relocations on module load by storing the rc file options
+	in one large string.
+
+2007-11-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* README:
 	Add a note that this is an unstable version of gtk-engines.
 

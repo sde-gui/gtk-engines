@@ -37,6 +37,7 @@ AC_ARG_ENABLE(thinice,		[  --disable-thinice       skip ThinIce engine/theme], 	
 AC_ARG_ENABLE(lua,			[  --enable-lua            enable Lua engine], 			[lua=$enableval], 			[lua="no"])
 
 AC_ARG_ENABLE(animation, 	[  --enable-animation      compile clearlooks with animation support], 	[animation=$enableval],	[animation="no"])
+AC_ARG_ENABLE(widget_checks, 	[  --disable-widget-checks disable superfluous widget checks (needs updated themes)], 	[widget_checks=$enableval],	[widget_checks="yes"])
 
 AC_ARG_ENABLE(development, 	[  --enable-development    Enable any development warnings/incomplete code],	[development=$enableval],	[development="no"])
 
@@ -141,6 +142,10 @@ if test $animation = "yes"; then
 	AC_DEFINE_UNQUOTED(HAVE_ANIMATION, 1, [Defines whether to compile with animation support])
 fi
 
+if test $widget_checks = "yes"; then
+	AC_DEFINE_UNQUOTED(ENABLE_WIDGET_CHECKS, 1, [Defines whether to enable runtime widget checks as a fallback to hints from the theme.])
+fi
+
 DEVELOPMENT_CFLAGS=
 if test $development = "yes"; then
 	DEVELOPMENT_CFLAGS+=" -DDEVELOPMENT"
@@ -156,8 +161,7 @@ fi
 
 AC_SUBST(DEVELOPMENT_CFLAGS)
 
-AM_CONFIG_HEADER([engines/clearlooks/src/config.h])
-AM_CONFIG_HEADER([engines/smooth/src/config.h])
+AM_CONFIG_HEADER([engines/support/config.h])
 
 AC_CONFIG_FILES([
 Makefile
@@ -237,6 +241,14 @@ if test "$schemas" = "yes"; then
 	echo "Enabled"
 else
 	echo "Disabled"
+fi
+
+echo -n "      Fallback Widget Checks - "
+
+if test "$schemas" = "yes"; then
+	echo "Enabled"
+else
+	echo "Disabled -- Warning this WILL break themes that are not updated."
 fi
 
 echo

@@ -67,6 +67,7 @@ intltoolize --force --copy --automake
 $ACLOCAL $ACLOCAL_FLAGS
 autoconf
 $AUTOMAKE --add-missing
+autoheader
 cd $THEDIR
 
 $srcdir/configure --enable-maintainer-mode "$@"

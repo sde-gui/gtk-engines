@@ -36,6 +36,7 @@ industrial_rc_style_init (IndustrialRcStyle *industrial_rc)
 {
 	industrial_rc->contrast = 1.0;
 	industrial_rc->rounded_buttons = TRUE;
+	industrial_rc->hint = 0;
 	industrial_rc->fields = 0;
 }
 
@@ -79,6 +80,8 @@ industrial_rc_style_merge (GtkRcStyle *dest,
 		dest_w->contrast = src_w->contrast;
 	if (fields & INDUSTRIAL_FIELDS_ROUNDED_BUTTONS)
 		dest_w->rounded_buttons = src_w->rounded_buttons;
+	if (fields & INDUSTRIAL_FIELDS_HINT)
+		dest_w->hint = src_w->hint;
 
 	dest_w->fields = dest_w->fields | src_w->fields;
 }

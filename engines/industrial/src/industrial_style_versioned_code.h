@@ -19,6 +19,7 @@ industrial_style_init_from_rc (GtkStyle * style, GtkRcStyle * rc_style)
 
 	industrial_style->contrast = INDUSTRIAL_RC_STYLE (rc_style)->contrast;
 	industrial_style->rounded_buttons = INDUSTRIAL_RC_STYLE (rc_style)->rounded_buttons;
+	industrial_style->hint = INDUSTRIAL_RC_STYLE (rc_style)->hint;
 }
 
 static void
@@ -26,6 +27,7 @@ industrial_style_init (IndustrialStyle * style)
 {
 	style->contrast = 1.0;
 	style->rounded_buttons = TRUE;
+	style->hint = 0;
 }
 
 static void

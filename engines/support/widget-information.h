@@ -1,4 +1,31 @@
 
+#ifndef WIDGET_INFORMATION_H
+#define WIDGET_INFORMATION_H
+
+#include "general-support.h"
+#include <glib.h>
+#include <gtk/gtkwidget.h>
+
+typedef enum {
+	GE_HINT_TREEVIEW,
+	GE_HINT_TREEVIEW_HEADER,
+	GE_HINT_STATUSBAR,
+	GE_HINT_COMBOBOX_ENTRY,
+	GE_HINT_SPINBUTTON,
+	GE_HINT_SCALE,
+	GE_HINT_VSCALE,
+	GE_HINT_HSCALE,
+	GE_HINT_SCROLLBAR,
+	GE_HINT_VSCROLLBAR,
+	GE_HINT_HSCROLLBAR,
+	GE_HINT_PROGRESSBAR,
+	GE_HINT_MENUBAR,
+	GE_HINT_COUNT
+} GEHint;
+
+/* ALL OF THE FOLLOWING SHOULD DIE ...
+ * instead the hint system will be used, and a huge switch ;-) */
+
 /* Object Type Lookups/Macros
    
    Based on/modified from functions in
@@ -73,6 +100,9 @@
 
 #define GE_WIDGET_HAS_DEFAULT(object) ((object) && GE_IS_WIDGET(object) && GTK_WIDGET_HAS_DEFAULT(object))
 
+
+GE_INTERNAL gboolean ge_check_hint (GEHint hint, GQuark style_hint, GtkWidget *widget);
+
 GE_INTERNAL gboolean ge_object_is_a (const GObject * object, const gchar * type_name);
  
 GE_INTERNAL gboolean ge_is_combo_box_entry (GtkWidget * widget);
@@ -97,3 +127,6 @@ GE_INTERNAL void ge_button_get_default_border (GtkWidget *widget,
 
 GE_INTERNAL gboolean ge_widget_is_ltr (GtkWidget *widget);
 
+GE_INTERNAL guint ge_rc_parse_hint (GScanner *scanner, GQuark *quark);
+
+#endif /* WIDGET_INFORMATION_H */

@@ -44,6 +44,7 @@ struct _IndustrialStyle {
 
 	double contrast;
 	gboolean rounded_buttons;
+	GQuark hint;
 };
 
 struct _IndustrialStyleClass {

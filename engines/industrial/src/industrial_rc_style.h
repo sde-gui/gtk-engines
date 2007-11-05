@@ -40,7 +40,8 @@ GE_INTERNAL extern GType industrial_type_rc_style;
 
 typedef enum {
 	INDUSTRIAL_FIELDS_CONTRAST		= 1 << 0,
-	INDUSTRIAL_FIELDS_ROUNDED_BUTTONS	= 1 << 1
+	INDUSTRIAL_FIELDS_ROUNDED_BUTTONS	= 1 << 1,
+	INDUSTRIAL_FIELDS_HINT                  = 1 << 2
 } IndustrialFields;
 
 struct _IndustrialRcStyle {
@@ -48,6 +49,7 @@ struct _IndustrialRcStyle {
 
 	double contrast;
 	gboolean rounded_buttons;
+	GQuark hint;
 
 	IndustrialFields fields;
 };

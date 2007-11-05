@@ -3,7 +3,7 @@ enum {
 	TOKEN_CONTRAST = G_TOKEN_LAST + 1,
 	TOKEN_CONTRAST_CENTER,
 	TOKEN_ROUNDED_BUTTONS,
-	TOKEN_WIDE,
+	TOKEN_HINT,
 	TOKEN_TRUE,
 	TOKEN_FALSE
 };
@@ -14,6 +14,7 @@ static struct {
 } theme_symbols[] = {
 	{ "contrast",		TOKEN_CONTRAST },
 	{ "rounded_buttons",	TOKEN_ROUNDED_BUTTONS },
+	{ "hint",               TOKEN_HINT },
 	{ "TRUE",		TOKEN_TRUE },
 	{ "FALSE",		TOKEN_FALSE }
 };
@@ -111,6 +112,10 @@ parse_rc_style (GScanner * scanner,
 		case TOKEN_ROUNDED_BUTTONS:
 			token = theme_parse_boolean (scanner, TOKEN_ROUNDED_BUTTONS, &rc->rounded_buttons);
 			rc->fields |= INDUSTRIAL_FIELDS_ROUNDED_BUTTONS;
+			break;
+		case TOKEN_HINT:
+			token = ge_rc_parse_hint (scanner, &rc->hint);
+			rc->fields |= INDUSTRIAL_FIELDS_HINT;
 			break;
 		default:
 			g_scanner_get_next_token (scanner);

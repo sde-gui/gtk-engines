@@ -76,7 +76,11 @@ style "industrial-default"
 #  #base[NORMAL]  = "#b6c9cf"
 #  #text[NORMAL]  = "#000000"
 #
-  engine "industrial" {}
+  engine "industrial"
+  {
+    # Set a hint to disable backward compatibility fallbacks.
+    hint = "use-hints"
+  }
 }
 
 # Style to apply an exterior forcus to GtkEntry
@@ -143,7 +147,7 @@ style "industrial-tree-header"
 {
   engine "industrial" 
   {
-    rounded_buttons = FALSE
+    hint = "treeview-header"
   }
   xthickness = 2
   ythickness = 2
@@ -184,6 +188,22 @@ style "metacity-frame"
 	fg[SELECTED]	= @selected_fg_color
 }
 
+style "industrial-spinbutton"
+{
+	engine "industrial"
+	{
+		hint	= "spinbutton"
+	}
+}
+
+style "industrial-comboboxentry"
+{
+	engine "industrial"
+	{
+		hint	= "comboboxentry"
+	}
+}
+
 # default style
 class "GtkWidget" style "industrial-default"
 
@@ -196,20 +216,23 @@ class "GtkFrame"      style "industrial-wide"
 class "GtkStatusbar"  style "industrial-wide"
 class "GtkEntry"      style "industrial-wide"
 
-class "GtkEntry"    style "industrial-exterior-focus"
-class "GtkProgress" style "industrial-progress"
-class "GtkScale"    style "industrial-scale"
+class "GtkEntry"      style "industrial-exterior-focus"
+class "GtkSpinButton" style "industrial-spinbutton"
+class "GtkProgress"   style "industrial-progress"
+class "GtkScale"      style "industrial-scale"
 
 class "GtkVScrollbar" style "industrial-arrows"
 class "GtkHScrollbar" style "industrial-arrows"
 
+widget_class "*<GtkComboBoxEntry>.*" style "industrial-comboboxentry"
+widget_class "*<GtkCombo>.*" style "industrial-comboboxentry"
 
 # treeview
-widget_class "*.GtkTreeView.*" style "industrial-tree-header"
-widget_class "*.GtkList.*"     style "industrial-tree-header"
-widget_class "*.GtkCList.*"    style "industrial-tree-header"
-widget_class "*.ETree.*"       style "industrial-tree-header"
-widget_class "*.ETable.*"      style "industrial-tree-header"
+widget_class "*.<GtkTreeView>.GtkButton" style "industrial-tree-header"
+widget_class "*.<GtkList>.GtkButton"     style "industrial-tree-header"
+widget_class "*.<GtkCList>.GtkButton"    style "industrial-tree-header"
+widget_class "*.<ETree>.*"               style "industrial-tree-header"
+widget_class "*.<ETable>.*"              style "industrial-tree-header"
 
 # menuitems and interior
 widget_class "*<GtkMenuItem>*" style "industrial-menuitem"

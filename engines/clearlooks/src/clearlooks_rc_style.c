@@ -22,6 +22,8 @@
  * Modified by Kulyk Nazar <schamane@myeburg.net>
  */
 
+#include <string.h>
+#include <widget-information.h>
 #include "clearlooks_style.h"
 #include "clearlooks_rc_style.h"
 
@@ -58,6 +60,7 @@ enum
 	TOKEN_ANIMATION,
 	TOKEN_STYLE,
 	TOKEN_RADIUS,
+	TOKEN_HINT,
 
 	TOKEN_CLASSIC,
 	TOKEN_GLOSSY,
@@ -65,38 +68,34 @@ enum
 	TOKEN_GUMMY,
 
 	TOKEN_TRUE,
-	TOKEN_FALSE
+	TOKEN_FALSE,
+
+	TOKEN_LAST
 };
 
-static struct
-{
-	const gchar        *name;
-	guint               token;
-}
-clearlooks_gtk2_rc_symbols[] =
-{
-	{ "scrollbar_color",    TOKEN_SCROLLBARCOLOR  },
-	{ "colorize_scrollbar", TOKEN_COLORIZESCROLLBAR },
-	{ "contrast",           TOKEN_CONTRAST  },
-	{ "sunkenmenubar",      TOKEN_SUNKENMENU },
-	{ "progressbarstyle",   TOKEN_PROGRESSBARSTYLE },
-	{ "menubarstyle",       TOKEN_MENUBARSTYLE }, 
-	{ "toolbarstyle",       TOKEN_TOOLBARSTYLE },
-	{ "menuitemstyle",      TOKEN_MENUITEMSTYLE },
-	{ "listviewitemstyle",  TOKEN_LISTVIEWITEMSTYLE },
-	{ "animation",          TOKEN_ANIMATION },
-	{ "style",              TOKEN_STYLE },
-	{ "radius",             TOKEN_RADIUS },
 
-	{ "CLASSIC",            TOKEN_CLASSIC },
-	{ "GLOSSY",             TOKEN_GLOSSY },
-	{ "INVERTED",           TOKEN_INVERTED },
-	{ "GUMMY",              TOKEN_GUMMY },
+static gchar* clearlooks_rc_symbols =
+	"scrollbar_color\0"
+	"colorize_scrollbar\0"
+	"contrast\0"
+	"sunkenmenubar\0"
+	"progressbarstyle\0"
+	"menubarstyle\0"
+	"toolbarstyle\0"
+	"menuitemstyle\0"
+	"listviewitemstyle\0"
+	"animation\0"
+	"style\0"
+	"radius\0"
+	"hint\0"
 
-	{ "TRUE",               TOKEN_TRUE },
-	{ "FALSE",              TOKEN_FALSE }
-};
+	"CLASSIC\0"
+	"GLOSSY\0"
+	"INVERTED\0"
+	"GUMMY\0"
 
+	"TRUE\0"
+	"FALSE\0";
 
 void
 clearlooks_rc_style_register_type (GTypeModule *module)
@@ -134,6 +133,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
 	clearlooks_rc->animation = FALSE;
 	clearlooks_rc->colorize_scrollbar = FALSE;
 	clearlooks_rc->radius = 3.0;
+	clearlooks_rc->hint = 0;
 }
 
 #ifdef HAVE_ANIMATION
@@ -328,7 +328,6 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 
 	guint old_scope;
 	guint token;
-	guint i;
 
 	/* Set up a new scope in this scanner. */
 
@@ -344,13 +343,18 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	* (in some previous call to clearlooks_rc_style_parse for the
 	* same scanner.
 	*/
+	if (!g_scanner_lookup_symbol(scanner, clearlooks_rc_symbols)) {
+		gchar *current_symbol = clearlooks_rc_symbols;
+		gint i = G_TOKEN_LAST + 1;
 
-	if (!g_scanner_lookup_symbol(scanner, clearlooks_gtk2_rc_symbols[0].name))
-	{
-		for (i = 0; i < G_N_ELEMENTS (clearlooks_gtk2_rc_symbols); i++)
-			g_scanner_scope_add_symbol(scanner, scope_id,
-				   	clearlooks_gtk2_rc_symbols[i].name,
-				   	GINT_TO_POINTER(clearlooks_gtk2_rc_symbols[i].token));
+		/* Add our symbols */
+		while ((current_symbol[0] != '\0') && (i < TOKEN_LAST)) {
+			g_scanner_scope_add_symbol(scanner, scope_id, current_symbol, GINT_TO_POINTER (i));
+
+			current_symbol += strlen(current_symbol) + 1;
+			i++;
+		}
+		g_assert (i == TOKEN_LAST && current_symbol[0] == '\0');
 	}
 
 	/* We're ready to go, now parse the top level */
@@ -391,6 +395,10 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 			case TOKEN_RADIUS:
 				token = clearlooks_gtk2_rc_parse_double (settings, scanner, &clearlooks_style->radius);
 				clearlooks_style->flags |= CL_FLAG_RADIUS;
+				break;
+			case TOKEN_HINT:
+				token = ge_rc_parse_hint (scanner, &clearlooks_style->hint);
+				clearlooks_style->flags |= CL_FLAG_HINT;
 				break;
 
 			/* stuff to ignore */
@@ -459,6 +467,8 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 		dest_w->animation = src_w->animation;
 	if (flags & CL_FLAG_RADIUS)
 		dest_w->radius = src_w->radius;
+	if (flags & CL_FLAG_HINT)
+		dest_w->hint = src_w->hint;
 
 	dest_w->flags |= src_w->flags;
 }

@@ -70,6 +70,9 @@ style "clearlooks-default"
 		toolbarstyle      = 1      # 0 = flat, 1 = enable effects
 		animation         = FALSE
 		style             = GUMMY
+
+		# Set a hint to disable backward compatibility fallbacks.
+		hint = "use-hints"
 	}
 }
 
@@ -150,12 +153,23 @@ style "clearlooks-separator-menu-item"
 	ythickness = 0
 }
 
+style "clearlooks-treeview"
+{
+	engine "clearlooks" {
+		hint = "treeview"
+	}
+}
+
 # Based on the default style so that the colors from the button
 # style are overriden again.
 style "clearlooks-treeview-header" = "clearlooks-default"
 {
 	xthickness = 2
 	ythickness = 1
+
+	engine "clearlooks" {
+		hint = "treeview-header"
+	}
 }
 
 style "clearlooks-frame-title"
@@ -184,6 +198,91 @@ style "clearlooks-progressbar"
 		# Explicitly set the radius, for progress
 		# bars inside menuitems
 		radius = 3.0
+
+		hint	= "progressbar"
+	}
+}
+
+style "clearlooks-statusbar"
+{
+	engine "clearlooks"
+	{
+		hint	= "statusbar"
+	}
+}
+
+style "clearlooks-comboboxentry"
+{
+	# NOTE:
+	# If you set the appears-as-list option on comboboxes in the theme
+	# you should set this hint on the combobox instead.
+	engine "clearlooks"
+	{
+		hint	= "comboboxentry"
+	}
+}
+
+style "clearlooks-spinbutton"
+{
+	engine "clearlooks"
+	{
+		hint	= "spinbutton"
+	}
+}
+
+style "clearlooks-scale"
+{
+	engine "clearlooks"
+	{
+		hint	= "scale"
+	}
+}
+
+style "clearlooks-hscale"
+{
+	engine "clearlooks"
+	{
+		hint	= "hscale"
+	}
+}
+
+style "clearlooks-vscale"
+{
+	engine "clearlooks"
+	{
+		hint	= "vscale"
+	}
+}
+
+style "clearlooks-scrollbar"
+{
+	engine "clearlooks"
+	{
+		hint	= "scrollbar"
+	}
+}
+
+style "clearlooks-hscrollbar"
+{
+	engine "clearlooks"
+	{
+		hint	= "hscrollbar"
+	}
+}
+
+style "clearlooks-vscrollbar"
+{
+	engine "clearlooks"
+	{
+		hint	= "vscrollbar"
+	}
+}
+
+style "clearlooks-menubar"
+{
+	engine "clearlooks"
+	{
+		hint	= "menubar"
 	}
 }
 
@@ -207,6 +306,14 @@ class "GtkFrame"     style "clearlooks-wide"
 class "GtkSeparator" style "clearlooks-wide"
 class "GtkEntry"     style "clearlooks-wider"
 
+class "GtkSpinButton"  style "clearlooks-spinbutton"
+class "GtkScale"       style "clearlooks-scale"
+class "GtkVScale"      style "clearlooks-vscale"
+class "GtkHScale"      style "clearlooks-hscale"
+class "GtkScrollbar"   style "clearlooks-scrollbar"
+class "GtkVScrollbar"  style "clearlooks-vscrollbar"
+class "GtkHScrollbar"  style "clearlooks-hscrollbar"
+
 # General matching following, the order is choosen so that the right styles override each other
 # eg. progressbar needs to be more important then the menu match.
 
@@ -217,8 +324,18 @@ widget_class "*<GtkSeparatorMenuItem>*" style "clearlooks-separator-menu-item"
 widget_class "*<GtkButton>"      style "clearlooks-button"
 widget_class "*<GtkNotebook>"    style "clearlooks-notebook"
 widget_class "*<GtkProgressBar>" style "clearlooks-progressbar"
+widget_class "*<GtkStatusbar>*"  style "clearlooks-statusbar"
+
+widget_class "*<GtkComboBoxEntry>*" style "clearlooks-comboboxentry"
+widget_class "*<GtkCombo>*"         style "clearlooks-comboboxentry"
+
+widget_class "*<GtkMenuBar>*"    style "clearlooks-menubar"
+widget_class "*<GtkMenu>*"       style "clearlooks-menu"
+widget_class "*<GtkMenuItem>*"      style "clearlooks-menu-item"
 
 widget_class "*.<GtkFrame>.<GtkLabel>" style "clearlooks-frame-title"
+
+widget_class "*.<GtkTreeView>*"        style "clearlooks-treeview"
 
 # Treeview header
 widget_class "*.<GtkTreeView>.<GtkButton>" style "clearlooks-treeview-header"
