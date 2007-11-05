@@ -98,7 +98,7 @@ style "clearlooks-button"
 style "clearlooks-notebook"
 {
 	xthickness = 2
-	ythickness = 2
+	ythickness = 3
 
 	bg[NORMAL] = shade (1.02, @bg_color)
 }
@@ -117,7 +117,8 @@ style "clearlooks-menu"
 	bg[NORMAL] = shade (1.08, @bg_color)
 
 	# Radius of the menu items (inside menus)
-	engine "clearlooks" {
+	engine "clearlooks" 
+	{
 		radius = 0.0
 	}
 }
@@ -178,14 +179,16 @@ style "clearlooks-progressbar"
 
 	fg[PRELIGHT] = @selected_fg_color
 
-	engine "clearlooks" {
+	engine "clearlooks"
+	{
 		# Explicitly set the radius, for progress
 		# bars inside menuitems
 		radius = 3.0
 	}
 }
 
-style "clearlooks-nautilus-location" {
+style "clearlooks-nautilus-location"
+{
 	bg[NORMAL] = mix(0.60, shade (1.05,@bg_color), @selected_bg_color)
 }
 
@@ -265,7 +268,8 @@ widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-combobox-text-c
 # Maybe remove this workaround in unstable releases.
 style "clearlooks-evo-new-button-workaround"
 {
-	engine "clearlooks" {
+	engine "clearlooks"
+	{
 		toolbarstyle = 0
 	}
 }

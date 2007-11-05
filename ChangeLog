@@ -1,5 +1,10 @@
 2007-11-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Changed notebook's ythickness to 3
+
+2007-11-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_tab):
 	A new variable for the size, with some added thickness mods
