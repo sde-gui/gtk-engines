@@ -245,7 +245,7 @@ fi
 
 echo -n "      Fallback Widget Checks - "
 
-if test "$schemas" = "yes"; then
+if test "$widget_checks" = "yes"; then
 	echo "Enabled"
 else
 	echo "Disabled -- Warning this WILL break themes that are not updated."

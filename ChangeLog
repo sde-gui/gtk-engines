@@ -1,5 +1,10 @@
 2007-11-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* configure.ac:
+	Fix the output of the configure script (wrong variable was checked).
+
+2007-11-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	Merged all the changes from the less-widget-check branch.
 
 2007-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
