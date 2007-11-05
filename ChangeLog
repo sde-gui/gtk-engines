@@ -1,3 +1,9 @@
+2007-11-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_tab):
+	Using switch
+
 2007-11-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* configure.ac:
