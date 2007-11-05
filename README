@@ -1,6 +1,15 @@
 gtk-engines
 ===========
 
+This is an unstable release!
+============================
+
+This release of gtk-engines is unstable and may result in problems in the
+user interface or in some cases even stability. If you notice any kind of
+issue please report a bug. See the "Bugs" section for more details.
+
+----
+
 gtk-engines provides a central location for commonly used GTK+ engines.
 
 It currently supplies several engines and default themes for those which have one.

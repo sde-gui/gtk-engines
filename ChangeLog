@@ -1,3 +1,8 @@
+2007-11-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* README:
+	Add a note that this is an unstable version of gtk-engines.
+
 2007-11-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
