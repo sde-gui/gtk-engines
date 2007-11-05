@@ -665,10 +665,15 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	cairo_pattern_t     *pattern;
 
 	double               radius;
-	double               stripe_size;
+	
+	double               stripe_size = 2.0;
+	double               stripe_fill_size;
 	double               stripe_border_pos;
 
 	gboolean horizontal = FALSE;
+
+	if (params->ythickness == 3)
+		stripe_size = 3.0;
 
 	radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 
@@ -686,8 +691,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	if (tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM)
 	{
 		height += 3.0;
-		stripe_size = (tab->gap_side == CL_GAP_TOP ? 2.0/height : 2.0/(height-2));
-		stripe_border_pos = (tab->gap_side == CL_GAP_TOP ? 3.0/height : 3.0/(height-2));
+		stripe_fill_size = (tab->gap_side == CL_GAP_TOP ? stripe_size/height : stripe_size/(height-2));
+		stripe_border_pos = (tab->gap_side == CL_GAP_TOP ? (stripe_size+1.0)/height : (stripe_size+1.0)/(height-2));
 		
 		horizontal = TRUE;
 
@@ -697,8 +702,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	else
 	{
 		width += 3.0;
-		stripe_size = (tab->gap_side == CL_GAP_LEFT ? 2.0/width : 2.0/(width-2));
-		stripe_border_pos = (tab->gap_side == CL_GAP_LEFT ? 3.0/width : 3.0/(width-2));
+		stripe_fill_size = (tab->gap_side == CL_GAP_LEFT ? stripe_size/width : stripe_size/(width-2));
+		stripe_border_pos = (tab->gap_side == CL_GAP_LEFT ? (stripe_size+1.0)/width : (stripe_size+1.0)/(width-2));
 
 		if (tab->gap_side == CL_GAP_LEFT)
 			cairo_translate (cr, -3.0, 0.0); /* gap at the other side */
@@ -739,7 +744,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 
-		ge_shade_color (fill, 1.16, &hilight);
+		ge_shade_color (fill, 1.15, &hilight);
 		ge_shade_color (fill, SHADE_TOP, &shade1);
 		ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
 		ge_shade_color (fill, SHADE_BOTTOM, &shade3);
@@ -768,8 +773,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		ge_shade_color (fill, SHADE_TOP, &shade1);
 
 		cairo_pattern_add_color_stop_rgba (pattern, 0.0, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
-		cairo_pattern_add_color_stop_rgba (pattern, stripe_size, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
-		cairo_pattern_add_color_stop_rgba (pattern, stripe_size, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
+		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
+		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
 		cairo_pattern_add_color_stop_rgba (pattern, stripe_border_pos, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
 		cairo_pattern_add_color_stop_rgb (pattern, stripe_border_pos, shade1.r, shade1.g, shade1.b);
 		cairo_pattern_add_color_stop_rgb (pattern, 0.8, fill->r, fill->g, fill->b);
@@ -1463,17 +1468,17 @@ clearlooks_gummy_draw_checkbox (cairo_t                  *cr,
 	if (widget->xthickness > 2 && widget->ythickness > 2)
 	{
 		widget->style_functions->draw_inset (cr, &widget->parentbg, 0.5, 0.5,
-                                  width-1, height-1, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
+		                         width-1, height-1, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
 
 		/* Draw the rectangle for the checkbox itself */
 		ge_cairo_rounded_rectangle (cr, 1.5, 1.5,
-                                  width-3, height-3, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
+		                            width-3, height-3, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
 	}
 	else
 	{
 		/* Draw the rectangle for the checkbox itself */
 		ge_cairo_rounded_rectangle (cr, 0.5, 0.5,
-                                  width-1, height-1, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
+		                            width-1, height-1, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
 	}
 
 	if (!widget->disabled)
