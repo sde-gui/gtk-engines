@@ -231,8 +231,8 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 	}
 
 	clearlooks_draw_gummy_gradient (cr, xoffset+1, yoffset+1,
-	                              width-(xoffset*2)-2, height-(yoffset*2)-2,
-	                              &fill, params->disabled, radius, params->corners);
+	                                width-(xoffset*2)-2, height-(yoffset*2)-2,
+	                                &fill, params->disabled, radius, params->corners);
 
 	/* Pressed button shadow */
 	if (params->active)
@@ -274,8 +274,8 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 	else
 		clearlooks_set_mixed_color (cr, &border_normal, &fill, 0.2);
 	ge_cairo_rounded_rectangle (cr, xoffset + 0.5, yoffset + 0.5,
-                                  width-(xoffset*2)-1, height-(yoffset*2)-1,
-                                  radius, params->corners);
+	                            width-(xoffset*2)-1, height-(yoffset*2)-1,
+	                            radius, params->corners);
 	cairo_stroke (cr);
 
 	if (!params->active)
@@ -666,14 +666,14 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 
 	double               radius;
 	
-	double               stripe_size = 2.0;
-	double               stripe_fill_size;
-	double               stripe_border_pos;
+//	double               stripe_size = 2.0;
+//	double               stripe_fill_size;
+//	double               stripe_border_pos;
 
 	gboolean horizontal = FALSE;
 
-	if (params->ythickness == 3)
-		stripe_size = 3.0;
+//	if (params->ythickness == 3)
+//		stripe_size = 3.0;
 
 	radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 
@@ -691,8 +691,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	if (tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM)
 	{
 		height += 3.0;
-		stripe_fill_size = (tab->gap_side == CL_GAP_TOP ? stripe_size/height : stripe_size/(height-2));
-		stripe_border_pos = (tab->gap_side == CL_GAP_TOP ? (stripe_size+1.0)/height : (stripe_size+1.0)/(height-2));
+//		stripe_fill_size = (tab->gap_side == CL_GAP_TOP ? stripe_size/height : stripe_size/(height-2));
+//		stripe_border_pos = (tab->gap_side == CL_GAP_TOP ? (stripe_size+1.0)/height : (stripe_size+1.0)/(height-2));
 		
 		horizontal = TRUE;
 
@@ -702,8 +702,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	else
 	{
 		width += 3.0;
-		stripe_fill_size = (tab->gap_side == CL_GAP_LEFT ? stripe_size/width : stripe_size/(width-2));
-		stripe_border_pos = (tab->gap_side == CL_GAP_LEFT ? (stripe_size+1.0)/width : (stripe_size+1.0)/(width-2));
+//		stripe_fill_size = (tab->gap_side == CL_GAP_LEFT ? stripe_size/width : stripe_size/(width-2));
+//		stripe_border_pos = (tab->gap_side == CL_GAP_LEFT ? (stripe_size+1.0)/width : (stripe_size+1.0)/(width-2));
 
 		if (tab->gap_side == CL_GAP_LEFT)
 			cairo_translate (cr, -3.0, 0.0); /* gap at the other side */
@@ -729,13 +729,18 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		shadow.corners = params->corners;
 
 		clearlooks_gummy_draw_highlight_and_shade (cr, &colors->bg[0], &shadow,
-		                                     width, height, radius);
+		                                           width, height, radius);
 	}
 
 	if (params->active)
 	{
 		CairoColor hilight;
 		CairoColor shade1, shade2, shade3;
+		
+		ge_shade_color (fill, 1.15, &hilight);
+		ge_shade_color (fill, SHADE_TOP, &shade1);
+		ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
+		ge_shade_color (fill, SHADE_BOTTOM, &shade3);
 
 		pattern = cairo_pattern_create_linear (tab->gap_side == CL_GAP_LEFT   ? width-1  : 0,
 		                                       tab->gap_side == CL_GAP_TOP    ? height-2 : 1,
@@ -743,11 +748,6 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		                                       tab->gap_side == CL_GAP_BOTTOM ? height   : 0);
 
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
-
-		ge_shade_color (fill, 1.15, &hilight);
-		ge_shade_color (fill, SHADE_TOP, &shade1);
-		ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
-		ge_shade_color (fill, SHADE_BOTTOM, &shade3);
 
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0, hilight.r, hilight.g, hilight.b);
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0/(horizontal ? height : width), hilight.r, hilight.g, hilight.b);
@@ -761,7 +761,10 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	}
 	else
 	{
-		CairoColor shade1;
+//		CairoColor shade1;
+		
+//		ge_shade_color (fill, SHADE_TOP, &shade1);
+		
 		/* Draw shade */
 		pattern = cairo_pattern_create_linear (tab->gap_side == CL_GAP_LEFT   ? width-2  : 0,
 		                                       tab->gap_side == CL_GAP_TOP    ? height-2 : 0,
@@ -770,14 +773,14 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 
-		ge_shade_color (fill, SHADE_TOP, &shade1);
-
-		cairo_pattern_add_color_stop_rgba (pattern, 0.0, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
-		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
-		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
-		cairo_pattern_add_color_stop_rgba (pattern, stripe_border_pos, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
-		cairo_pattern_add_color_stop_rgb (pattern, stripe_border_pos, shade1.r, shade1.g, shade1.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 0.8, fill->r, fill->g, fill->b);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.34);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.34);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.5);
+//		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.8);
+//		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
+//		cairo_pattern_add_color_stop_rgba (pattern, stripe_border_pos, stripe_border->r, stripe_border->g, stripe_border->b, 0.7);
+//		cairo_pattern_add_color_stop_rgb  (pattern, stripe_border_pos, shade1.r, shade1.g, shade1.b);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.8, fill->r, fill->g, fill->b, 0.0);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
 		cairo_pattern_destroy (pattern);

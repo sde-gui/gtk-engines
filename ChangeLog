@@ -1,5 +1,13 @@
 2007-11-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_tab):
+	Commented the piece of code that changed the look.
+	Now we have compatibility with 2.20.x release.
+	I wait the branch :)
+
+2007-11-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Changed notebook's ythickness to 3
 
