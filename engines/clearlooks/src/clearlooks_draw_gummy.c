@@ -747,14 +747,14 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 			case CL_GAP_TOP:
 				pattern = cairo_pattern_create_linear (0, height-2, 0, 0);
 				break;
-			case CL_GAP_RIGHT:
-				pattern = cairo_pattern_create_linear (0, 1, width, 0);
-				break;
 			case CL_GAP_BOTTOM:
 				pattern = cairo_pattern_create_linear (0, 1, 0, height);
 				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (1, 0, width-2, 0);
+				break;
 			case CL_GAP_LEFT:
-				pattern = cairo_pattern_create_linear (width-1, 1, 0, 0);
+				pattern = cairo_pattern_create_linear (width-2, 0, 1, 0);
 				break;
 		}
 
@@ -781,11 +781,11 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 			case CL_GAP_TOP:
 				pattern = cairo_pattern_create_linear (0, height-2, 0, 0);
 				break;
-			case CL_GAP_RIGHT:
-				pattern = cairo_pattern_create_linear (0, 0, width, 0);
-				break;
 			case CL_GAP_BOTTOM:
 				pattern = cairo_pattern_create_linear (0, 0, 0, height);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (0, 0, width, 0);
 				break;
 			case CL_GAP_LEFT:
 				pattern = cairo_pattern_create_linear (width-2, 0, 0, 0);
@@ -799,7 +799,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		cairo_pattern_add_color_stop_rgba (pattern, 1.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.34);
 		cairo_pattern_add_color_stop_rgba (pattern, 1.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.5);
 */
-		cairo_pattern_add_color_stop_rgb (pattern, stripe_fill_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
+		cairo_pattern_add_color_stop_rgb  (pattern, stripe_fill_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
 		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, stripe_border->r, stripe_border->g, stripe_border->b, 0.72);
 		cairo_pattern_add_color_stop_rgba (pattern, stripe_border_pos, stripe_border->r, stripe_border->g, stripe_border->b, 0.72);
 		cairo_pattern_add_color_stop_rgb  (pattern, stripe_border_pos, shade1.r, shade1.g, shade1.b);
