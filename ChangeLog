@@ -1,3 +1,17 @@
+2007-11-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_tab):
+	Changed the tab design, so jimmac will not stress me anymore :)
+	The horizontal instead check should be backported to 2.20.x
+	
+	I have an issue with epiphany, gedit etc etc: 
+	when the notebook label has some icons (or buttons not sure)
+	then the stripe *lost* one pixel, it seems like the "height" parameter
+	sent to clearlooks_draw_tab is exactly 2.0 px smaller.
+	why?
+	we must add an hack here.
+
 2007-11-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* test/gtkrcs/clearlooks:
