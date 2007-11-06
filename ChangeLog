@@ -1,3 +1,17 @@
+2007-11-06  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_focus), (clearlooks_register_style_classic):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_tab), (clearlooks_gummy_draw_focus),
+	(clearlooks_register_style_gummy):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box_gap), (clearlooks_style_draw_extension),
+	(clearlooks_style_draw_box), (clearlooks_style_draw_focus),
+	(scale_or_ref):
+	* engines/clearlooks/src/clearlooks_types.h:
+	Implemented focus drawing, we need to write the code for the dots in clearlooks_draw
+
 2007-11-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:

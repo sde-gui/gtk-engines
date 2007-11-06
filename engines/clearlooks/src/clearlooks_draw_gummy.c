@@ -750,11 +750,11 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 			case CL_GAP_BOTTOM:
 				pattern = cairo_pattern_create_linear (0, 1, 0, height);
 				break;
-			case CL_GAP_RIGHT:
-				pattern = cairo_pattern_create_linear (1, 0, width-2, 0);
-				break;
 			case CL_GAP_LEFT:
 				pattern = cairo_pattern_create_linear (width-2, 0, 1, 0);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (1, 0, width-2, 0);
 				break;
 		}
 
@@ -784,11 +784,11 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 			case CL_GAP_BOTTOM:
 				pattern = cairo_pattern_create_linear (0, 0, 0, height);
 				break;
-			case CL_GAP_RIGHT:
-				pattern = cairo_pattern_create_linear (0, 0, width, 0);
-				break;
 			case CL_GAP_LEFT:
 				pattern = cairo_pattern_create_linear (width-2, 0, 0, 0);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (0, 0, width, 0);
 				break;
 		}
 
@@ -818,10 +818,21 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	}
 	else
 	{
-		pattern = cairo_pattern_create_linear (tab->gap_side == CL_GAP_LEFT   ? width-2  : 2,
-		                                       tab->gap_side == CL_GAP_TOP    ? height-2 : 2,
-		                                       tab->gap_side == CL_GAP_RIGHT  ? width    : 2,
-		                                       tab->gap_side == CL_GAP_BOTTOM ? height   : 2);
+		switch	(tab->gap_side)
+		{
+			case CL_GAP_TOP:
+				pattern = cairo_pattern_create_linear (2, height-2, 2, 2);
+				break;
+			case CL_GAP_BOTTOM:
+				pattern = cairo_pattern_create_linear (2, 2, 2, height);
+				break;
+			case CL_GAP_LEFT:
+				pattern = cairo_pattern_create_linear (width-2, 2, 2, 2);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (2, 2, width, 2);
+				break;
+		}
 
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0, stripe_border->r, stripe_border->g, stripe_border->b);
 		cairo_pattern_add_color_stop_rgb (pattern, 0.8, border->r,        border->g,        border->b);
@@ -1544,6 +1555,37 @@ clearlooks_gummy_draw_checkbox (cairo_t                  *cr,
 	}
 }
 
+static void
+clearlooks_gummy_draw_focus (cairo_t *cr,
+                             const ClearlooksColors          *colors,
+                             const WidgetParameters          *widget,
+                             const FocusParameters           *focus,
+                             int x, int y, int width, int height)
+{
+	double xoffset, yoffset;
+	const CairoColor *fill = &colors->spot[1];
+	CairoColor border = colors->spot[2];
+	cairo_pattern_t *pattern;
+	
+	xoffset = 1.5;
+	yoffset = 1.5;
+	
+	cairo_set_line_width (cr, 1);
+	
+	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width - xoffset*2, height - yoffset*2, widget->radius, widget->corners);
+	
+	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, fill->r, fill->g, fill->b, 0.1);
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, fill->r, fill->g, fill->b, 0.2);
+	cairo_set_source (cr, pattern);
+	cairo_fill_preserve (cr);
+	cairo_pattern_destroy (pattern);
+	
+	border.a = 0.5;
+	ge_cairo_set_color (cr, &border);
+	cairo_stroke(cr);
+}
+
 void
 clearlooks_register_style_gummy (ClearlooksStyleFunctions *functions)
 {
@@ -1566,4 +1608,5 @@ clearlooks_register_style_gummy (ClearlooksStyleFunctions *functions)
 	functions->draw_statusbar           = clearlooks_gummy_draw_statusbar;
 	functions->draw_checkbox            = clearlooks_gummy_draw_checkbox;
 	functions->draw_radiobutton         = clearlooks_gummy_draw_radiobutton;
+	functions->draw_focus               = clearlooks_gummy_draw_focus;
 }

@@ -2237,6 +2237,16 @@ clearlooks_draw_arrow (cairo_t *cr,
 	                        tx, ty, width, height);
 }
 
+static void
+clearlooks_draw_focus (cairo_t *cr,
+                       const ClearlooksColors          *colors,
+                       const WidgetParameters          *widget,
+                       const FocusParameters           *focus,
+                       int x, int y, int width, int height)
+{
+	/* Do nothing */
+}
+
 void
 clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 {
@@ -2271,6 +2281,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_handle             = clearlooks_draw_handle;
 	functions->draw_resize_grip        = clearlooks_draw_resize_grip;
 	functions->draw_arrow              = clearlooks_draw_arrow;
+	functions->draw_focus              = clearlooks_draw_focus;
 	functions->draw_checkbox           = clearlooks_draw_checkbox;
 	functions->draw_radiobutton        = clearlooks_draw_radiobutton;
 	functions->draw_shadow             = clearlooks_draw_shadow;

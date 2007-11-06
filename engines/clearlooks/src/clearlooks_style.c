@@ -270,18 +270,6 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		params.corners = CR_CORNER_ALL;
 		switch (gap_side)
 		{
-			case GTK_POS_LEFT:
-				if (start)
-					params.corners ^= CR_CORNER_TOPLEFT;
-				if (end)
-					params.corners ^= CR_CORNER_BOTTOMLEFT;
-			break;
-			case GTK_POS_RIGHT:
-				if (start)
-					params.corners ^= CR_CORNER_TOPRIGHT;
-				if (end)
-					params.corners ^= CR_CORNER_BOTTOMRIGHT;
-			break;
 			case GTK_POS_TOP:
 				if (ge_widget_is_ltr (widget))
 				{
@@ -313,6 +301,18 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 					if (end)
 						params.corners ^= CR_CORNER_BOTTOMLEFT;
 				}
+			break;
+			case GTK_POS_LEFT:
+				if (start)
+					params.corners ^= CR_CORNER_TOPLEFT;
+				if (end)
+					params.corners ^= CR_CORNER_BOTTOMLEFT;
+			break;
+			case GTK_POS_RIGHT:
+				if (start)
+					params.corners ^= CR_CORNER_TOPRIGHT;
+				if (end)
+					params.corners ^= CR_CORNER_BOTTOMRIGHT;
 			break;
 		}
 
@@ -364,11 +364,12 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 			case CL_GAP_BOTTOM:
 				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
 				break;
+			case CL_GAP_LEFT:
+				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+				break;
 			case CL_GAP_RIGHT:
 				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 				break;
-			case CL_GAP_LEFT:
-				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 		}
 		
 		STYLE_FUNCTION(draw_tab) (cr, colors, &params, &tab,
@@ -525,13 +526,13 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				if (params.ltr)
 					x--;
 				width++;
-			}			
+			}
 		}
 		else
 		{
 			params.corners    = CR_CORNER_ALL;
 			params.enable_glow = TRUE;
-		}		
+		}
 		
 		STYLE_FUNCTION(draw_button) (cr, &clearlooks_style->colors, &params,
 		                             x, y, width, height);
@@ -588,7 +589,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		}
 		
 		STYLE_FUNCTION(draw_spinbutton) (cr, &clearlooks_style->colors, &params,
-		                            x, y, width, height);
+		                                 x, y, width, height);
 	}
 	else if (detail && g_str_has_prefix (detail, "trough") && CHECK_HINT (GE_HINT_SCALE))
 	{
@@ -609,8 +610,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			slider.horizontal = width >= height;
 		
 		STYLE_FUNCTION(draw_scale_trough) (cr, &clearlooks_style->colors,
-		                              &params, &slider,
-		                              x, y, width, height);
+		                                   &params, &slider,
+		                                   x, y, width, height);
 	}
 	else if (DETAIL ("trough") && CHECK_HINT (GE_HINT_PROGRESSBAR))
 	{
@@ -653,7 +654,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		}
 		
 		STYLE_FUNCTION(draw_scrollbar_trough) (cr, colors, &params, &scrollbar,
-		                                  x, y, width, height);
+		                                       x, y, width, height);
 	}
 	else if (DETAIL ("bar"))
 	{
@@ -738,8 +739,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		}
 		
 		STYLE_FUNCTION(draw_progressbar_fill) (cr, colors, &params, &progressbar,
-		                                  x, y, width, height,
-		                                  10 - (int)(elapsed * 10.0) % 10);
+		                                       x, y, width, height,
+		                                       10 - (int)(elapsed * 10.0) % 10);
 	}
 	else if (DETAIL ("optionmenu"))
 	{
@@ -761,7 +762,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			optionmenu.linepos = (indicator_size.width + indicator_spacing.left + indicator_spacing.right) + 1;
 			
 		STYLE_FUNCTION(draw_optionmenu) (cr, colors, &params, &optionmenu,
-		                                 x, y, width, height);		
+		                                 x, y, width, height);
 	}
 	else if (DETAIL ("menuitem"))
 	{
@@ -808,7 +809,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		stepper.stepper = clearlooks_scrollbar_get_stepper (widget, &this_rectangle);
 
 		STYLE_FUNCTION(draw_scrollbar_stepper) (cr, colors, &params, &scrollbar, &stepper,
-			                                x, y, width, height);
+			                                    x, y, width, height);
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
@@ -847,10 +848,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		if (GE_IS_MENU_ITEM (widget))
 			new_detail = "menuitem";
 
-		if (DETAIL ("hseparator")) {
+		if (DETAIL ("hseparator"))
+		{
 			gtk_paint_hline (style, window, state_type, area, widget, new_detail,
 			                 x, x + width - 1, y + height/2);
-		} else
+		} 
+		else
 			gtk_paint_vline (style, window, state_type, area, widget, new_detail,
 			                 y, y + height - 1, x + width/2);
 	}
@@ -928,7 +931,7 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 	else
 	{
 		clearlooks_parent_class->draw_slider (style, window, state_type, shadow_type, area,
-		                           widget, detail, x, y, width, height, orientation);
+		                                      widget, detail, x, y, width, height, orientation);
 	}
 
 	cairo_destroy (cr);
@@ -951,7 +954,7 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	
 	checkbox.shadow_type = shadow_type;
 	checkbox.in_menu = (widget && GTK_IS_MENU(widget->parent));
-		
+	
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 	
 	STYLE_FUNCTION(draw_radiobutton) (cr, colors, &params, &checkbox, x, y, width, height);
@@ -982,7 +985,7 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	checkbox.in_menu = (widget && widget->parent && GTK_IS_MENU(widget->parent));
 
 	STYLE_FUNCTION(draw_checkbox) (cr, &clearlooks_style->colors, &params, &checkbox,
-	                          x, y, width, height);
+	                               x, y, width, height);
 	
 	cairo_destroy (cr);
 }
@@ -1046,7 +1049,7 @@ clearlooks_style_draw_hline (GtkStyle               *style,
 		                                x1, y, x2-x1+1, 2);
 	else
 		STYLE_FUNCTION(draw_menu_item_separator) (cr, colors, NULL, &separator,
-		                                           x1, y, x2-x1+1, 2);
+		                                          x1, y, x2-x1+1, 2);
 	
 	cairo_destroy (cr);
 }
@@ -1083,13 +1086,13 @@ clearlooks_style_draw_shadow_gap (DRAW_ARGS,
 		params.corners = CR_CORNER_ALL;
 		
 		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
-		                       x, y, width, height);
+		                            x, y, width, height);
 	}
 	else
 	{
 		clearlooks_parent_class->draw_shadow_gap (style, window, state_type, shadow_type, area,
-									   widget, detail, x, y, width, height,
-									   gap_side, gap_x, gap_width);
+	                                              widget, detail, x, y, width, height,
+	                                              gap_side, gap_x, gap_width);
 	}
 	
 	cairo_destroy (cr);
@@ -1126,7 +1129,7 @@ clearlooks_style_draw_resize_grip (GtkStyle       *style,
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);	
 
 	STYLE_FUNCTION(draw_resize_grip) (cr, colors, &params, &grip,
-	                             x, y, width, height);
+	                                  x, y, width, height);
 
 	cairo_destroy (cr);
 }
@@ -1273,7 +1276,14 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
             GdkRectangle *area, GtkWidget *widget, const gchar *detail,
             gint x, gint y, gint width, gint height)
 {
+	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
+	ClearlooksColors *colors = &clearlooks_style->colors;
+	WidgetParameters params;
+	FocusParameters focus;
+
 	cairo_t *cr;
+	
+/*
 	gboolean free_dash_list = FALSE;
 	gint line_width = 1;
 	gint8 *dash_list = (gint8 *)"\1\1";
@@ -1296,12 +1306,12 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		dash_list = (gint8 *)"\4\4";
 		free_dash_list = FALSE;
 	}
-
+*/
 	CHECK_ARGS
 	SANITIZE_SIZE
 
 	cr = gdk_cairo_create (window);
-
+/*
 	if (detail && !strcmp (detail, "colorwheel_light"))
 		cairo_set_source_rgb (cr, 0., 0., 0.);
 	else if (detail && !strcmp (detail, "colorwheel_dark"))
@@ -1325,12 +1335,13 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 			dashes[i] = dash_list[i];
 			total_length += dash_list[i];
 		}
-
+*/
 		/* The dash offset here aligns the pattern to integer pixels
 		 * by starting the dash at the right side of the left border
 		 * Negative dash offsets in cairo don't work
 		 * (https://bugs.freedesktop.org/show_bug.cgi?id=2729)
 		 */
+/*
 		dash_offset = -line_width / 2.;
 		while (dash_offset < 0)
 			dash_offset += total_length;
@@ -1354,6 +1365,14 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 
 	if (free_dash_list)
 		g_free (dash_list);
+*/
+	clearlooks_set_widget_parameters (widget, style, state_type, &params);
+	
+	params.corners = CR_CORNER_ALL;
+	
+	STYLE_FUNCTION(draw_focus) (cr, colors, &params, &focus, x, y, width, height);
+	
+	cairo_destroy (cr);
 }
 
 static void
@@ -1421,12 +1440,15 @@ scale_or_ref (GdkPixbuf *src,
               int height)
 {
 	if (width == gdk_pixbuf_get_width (src) &&
-	    height == gdk_pixbuf_get_height (src)) {
+	    height == gdk_pixbuf_get_height (src))
+	{
 		return g_object_ref (src);
-	} else {
+	}
+	else
+	{
 		return gdk_pixbuf_scale_simple (src,
-                                        width, height,
-                                        GDK_INTERP_BILINEAR);
+		                                width, height,
+		                                GDK_INTERP_BILINEAR);
 	}
 }
 
