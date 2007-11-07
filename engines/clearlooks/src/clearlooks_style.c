@@ -1,6 +1,7 @@
 /* Clearlooks theme engine
  * Copyright (C) 2005 Richard Stellingwerff.
  * Copyright (C) 2007 Benjamin Berg <benjamin@sipsolutions.net>.
+ * Copyright (C) 2007 Andrea Cimitan <andrea.cimitan@gmail.com>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -66,7 +67,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 
 	params->active      = (state_type == GTK_STATE_ACTIVE);
 	params->prelight    = (state_type == GTK_STATE_PRELIGHT);
-	params->disabled    = (state_type == GTK_STATE_INSENSITIVE);			
+	params->disabled    = (state_type == GTK_STATE_INSENSITIVE);
 	params->state_type  = (ClearlooksStateType)state_type;
 	params->corners     = CR_CORNER_ALL;
 	params->ltr         = ge_widget_is_ltr ((GtkWidget*)widget);
@@ -140,9 +141,9 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 	else
 	{
 		clearlooks_parent_class->draw_flat_box (style, window, state_type,
-		                             shadow_type,
-		                             area, widget, detail,
-		                             x, y, width, height);
+		                                        shadow_type,
+		                                        area, widget, detail,
+		                                        x, y, width, height);
 	}
 }
 
@@ -182,7 +183,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		}
 		
 		STYLE_FUNCTION (draw_entry) (cr, &clearlooks_style->colors, &params,
-		                       x, y, width, height);
+		                             x, y, width, height);
 	}
 	else if (DETAIL ("frame") && CHECK_HINT (GE_HINT_STATUSBAR))
 	{
@@ -194,14 +195,14 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		                                    area, x, y, width, height);
 		
 		STYLE_FUNCTION (draw_statusbar) (cr, colors, &params,
-		                           x, y, width, height);
+		                                 x, y, width, height);
 	}
 	else if (DETAIL ("frame"))
 	{
 		WidgetParameters params;
 		FrameParameters  frame;
 		frame.shadow  = shadow_type;
-		frame.gap_x   = -1;                 /* No gap will be drawn */
+		frame.gap_x   = -1;  /* No gap will be drawn */
 		frame.border  = &colors->shade[4];
 		
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
@@ -209,7 +210,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 	
 		if (widget && !g_str_equal ("XfcePanelWindow", gtk_widget_get_name (gtk_widget_get_toplevel (widget))))
 			STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
-			                       x, y, width, height);
+			                            x, y, width, height);
 	}
 	else if (DETAIL ("scrolled_window") || DETAIL ("viewport") || detail == NULL)
 	{
@@ -238,9 +239,9 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 
 static void 
 clearlooks_style_draw_box_gap (DRAW_ARGS,
-	          GtkPositionType gap_side,
-	          gint            gap_x,
-	          gint            gap_width)
+                               GtkPositionType gap_side,
+                               gint            gap_x,
+                               gint            gap_width)
 {
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
@@ -322,14 +323,14 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 		cairo_fill (cr);
 		
 		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
-		                       x, y, width, height);
+		                            x, y, width, height);
 	}
 	else
 	{
 		clearlooks_parent_class->draw_box_gap (style, window, state_type, shadow_type,
-									   area, widget, detail,
-									   x, y, width, height,
-									   gap_side, gap_x, gap_width);
+		                                       area, widget, detail,
+		                                       x, y, width, height,
+		                                       gap_side, gap_x, gap_width);
 	}
 	
 	cairo_destroy (cr);	
@@ -373,13 +374,13 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 		}
 		
 		STYLE_FUNCTION(draw_tab) (cr, colors, &params, &tab,
-		                     x, y, width, height);
+		                          x, y, width, height);
 	}
 	else
 	{
 		clearlooks_parent_class->draw_extension (style, window, state_type, shadow_type, area,
-		                              widget, detail, x, y, width, height,
-		                              gap_side);
+		                                         widget, detail, x, y, width, height,
+		                                         gap_side);
 
 	}
 	
@@ -408,7 +409,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
 		
 		STYLE_FUNCTION(draw_handle) (cr, colors, &params, &handle,
-		                        x, y, width, height);
+		                             x, y, width, height);
 	}
 	else if (DETAIL ("paned"))
 	{
@@ -420,7 +421,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
 			
 		STYLE_FUNCTION(draw_handle) (cr, colors, &params, &handle,
-		                        x, y, width, height);
+		                             x, y, width, height);
 	}
 	else
 	{
@@ -432,7 +433,7 @@ clearlooks_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 		handle.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
 		
 		STYLE_FUNCTION(draw_handle) (cr, colors, &params, &handle,
-		                        x, y, width, height);
+		                             x, y, width, height);
 	}
 
 	cairo_destroy (cr);
@@ -461,7 +462,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		menubar.style = clearlooks_style->menubarstyle;
 
 		STYLE_FUNCTION(draw_menubar) (cr, colors, &params, &menubar,
-		                         x, y, width, height);
+		                              x, y, width, height);
 	}
 	else if (DETAIL ("button") && CHECK_HINT (GE_HINT_TREEVIEW_HEADER))
 	{
@@ -482,13 +483,13 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		if (GE_IS_TREE_VIEW (widget->parent))
 		{
 			clearlooks_treeview_get_header_index (GTK_TREE_VIEW(widget->parent),
-										   widget, &column_index, &columns,
-										   &resizable);
+			                                      widget, &column_index, &columns,
+			                                      &resizable);
 		}
 		else if (GE_IS_CLIST (widget->parent))
 		{
 			clearlooks_clist_get_header_index (GTK_CLIST(widget->parent),
-										widget, &column_index, &columns);
+			                                   widget, &column_index, &columns);
 		}
 		
 		header.resizable = resizable;
@@ -503,7 +504,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		gtk_style_apply_default_background (style, window, FALSE, state_type, area, x, y, width, height);
 		
 		STYLE_FUNCTION(draw_list_view_header) (cr, colors, &params, &header,
-		                                  x, y, width, height);
+		                                       x, y, width, height);
 	}
 	else if (DETAIL ("button") || DETAIL ("buttondefault"))
 	{
@@ -617,10 +618,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	{
 		WidgetParameters params;
 		
-		clearlooks_set_widget_parameters (widget, style, state_type, &params);		
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		
 		STYLE_FUNCTION(draw_progressbar_trough) (cr, colors, &params, 
-		                                    x, y, width, height);
+		                                         x, y, width, height);
 	}
 	else if (DETAIL ("trough") && CHECK_HINT (GE_HINT_SCROLLBAR))
 	{
@@ -827,7 +828,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("trough"))
 	{
-			
+		/* Nothing? Why benjamin? */
 	}
 	else if (DETAIL ("menu"))
 	{
@@ -860,7 +861,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	else
 	{
 		clearlooks_parent_class->draw_box (style, window, state_type, shadow_type, area,
-		                        widget, detail, x, y, width, height);
+		                                   widget, detail, x, y, width, height);
 	}
 	
 	cairo_destroy (cr);
@@ -894,8 +895,8 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 			params.corners = CR_CORNER_ALL;
 		
 		STYLE_FUNCTION(draw_slider_button) (cr, &clearlooks_style->colors,
-		                               &params, &slider,
-		                               x, y, width, height);
+		                                    &params, &slider,
+		                                    x, y, width, height);
 	}
 	else if (DETAIL ("slider"))
 	{
@@ -909,7 +910,8 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 		scrollbar.horizontal = (orientation == GTK_ORIENTATION_HORIZONTAL);
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 
-		if (clearlooks_style->colorize_scrollbar) {
+		if (clearlooks_style->colorize_scrollbar)
+		{
 			scrollbar.color = colors->spot[1];
 			scrollbar.has_color = TRUE;
 		}
@@ -1056,9 +1058,9 @@ clearlooks_style_draw_hline (GtkStyle               *style,
 
 static void 
 clearlooks_style_draw_shadow_gap (DRAW_ARGS,
-                 GtkPositionType gap_side,
-                 gint            gap_x,
-                 gint            gap_width)
+                                  GtkPositionType gap_side,
+                                  gint            gap_x,
+                                  gint            gap_width)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	const ClearlooksColors *colors;
@@ -1100,16 +1102,16 @@ clearlooks_style_draw_shadow_gap (DRAW_ARGS,
 
 static void
 clearlooks_style_draw_resize_grip (GtkStyle       *style,
-                  GdkWindow      *window,
-                  GtkStateType    state_type,
-                  GdkRectangle   *area,
-                  GtkWidget      *widget,
-                  const gchar    *detail,
-                  GdkWindowEdge   edge,
-                  gint            x,
-                  gint            y,
-                  gint            width,
-                  gint            height)
+                                   GdkWindow      *window,
+                                   GtkStateType    state_type,
+                                   GdkRectangle   *area,
+                                   GtkWidget      *widget,
+                                   const gchar    *detail,
+                                   GdkWindowEdge   edge,
+                                   gint            x,
+                                   gint            y,
+                                   gint            width,
+                                   gint            height)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
@@ -1159,18 +1161,18 @@ clearlooks_style_draw_tab (DRAW_ARGS)
 
 static void
 clearlooks_style_draw_arrow (GtkStyle  *style,
-                       GdkWindow     *window,
-                       GtkStateType   state_type,
-                       GtkShadowType  shadow,
-                       GdkRectangle  *area,
-                       GtkWidget     *widget,
-                       const gchar   *detail,
-                       GtkArrowType   arrow_type,
-                       gboolean       fill,
-                       gint           x,
-                       gint           y,
-                       gint           width,
-                       gint           height)
+                             GdkWindow     *window,
+                             GtkStateType   state_type,
+                             GtkShadowType  shadow,
+                             GdkRectangle  *area,
+                             GtkWidget     *widget,
+                             const gchar   *detail,
+                             GtkArrowType   arrow_type,
+                             gboolean       fill,
+                             gint           x,
+                             gint           y,
+                             gint           width,
+                             gint           height)
 {
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
@@ -1190,7 +1192,7 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 	arrow.type = CL_ARROW_NORMAL;
 	arrow.direction = (ClearlooksDirection)arrow_type;
-	
+
 	if (ge_is_combo_box (widget, FALSE) && !ge_is_combo_box_entry (widget))
 	{
 		arrow.type = CL_ARROW_COMBO;
@@ -1206,15 +1208,15 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 			x += 2;
 		width -= 3;
 	}
-	
+
 	STYLE_FUNCTION(draw_arrow) (cr, colors, &params, &arrow, x, y, width, height);
-	
+
 	cairo_destroy (cr);
 }
 
 static void
 clearlooks_style_init_from_rc (GtkStyle * style,
-			       GtkRcStyle * rc_style)
+                               GtkRcStyle * rc_style)
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 	
@@ -1223,12 +1225,12 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	g_assert ((CLEARLOOKS_RC_STYLE (rc_style)->style >= 0) && (CLEARLOOKS_RC_STYLE (rc_style)->style < CL_NUM_STYLES));
 	clearlooks_style->style		= CLEARLOOKS_RC_STYLE (rc_style)->style;
 	
-	clearlooks_style->menubarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
-	clearlooks_style->toolbarstyle      = CLEARLOOKS_RC_STYLE (rc_style)->toolbarstyle;
+	clearlooks_style->menubarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
+	clearlooks_style->toolbarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->toolbarstyle;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_SCROLLBAR_COLOR;
-	clearlooks_style->colorize_scrollbar = CLEARLOOKS_RC_STYLE (rc_style)->colorize_scrollbar;
-	clearlooks_style->animation         = CLEARLOOKS_RC_STYLE (rc_style)->animation;
-	clearlooks_style->radius            = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
+	clearlooks_style->colorize_scrollbar  = CLEARLOOKS_RC_STYLE (rc_style)->colorize_scrollbar;
+	clearlooks_style->animation           = CLEARLOOKS_RC_STYLE (rc_style)->animation;
+	clearlooks_style->radius              = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
 
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
@@ -1243,7 +1245,7 @@ clearlooks_style_realize (GtkStyle * style)
 	CairoColor bg_normal;
 	double contrast;
 	int i;
-	
+
 	clearlooks_parent_class->realize (style);
 
 	contrast = CLEARLOOKS_RC_STYLE (style->rc_style)->contrast;
@@ -1255,13 +1257,13 @@ clearlooks_style_realize (GtkStyle * style)
 	{
 		ge_shade_color(&bg_normal, (shades[i]-0.7) * contrast + 0.7, &clearlooks_style->colors.shade[i]);
 	}
-		
+
 	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &spot_color);
-	
+
 	ge_shade_color(&spot_color, 1.42, &clearlooks_style->colors.spot[0]);
 	ge_shade_color(&spot_color, 1.05, &clearlooks_style->colors.spot[1]);
 	ge_shade_color(&spot_color, 0.65, &clearlooks_style->colors.spot[2]);
-	
+
 	for (i=0; i<5; i++)
 	{
 		ge_gdk_color_to_cairo (&style->fg[i], &clearlooks_style->colors.fg[i]);
@@ -1273,8 +1275,8 @@ clearlooks_style_realize (GtkStyle * style)
 
 static void
 clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_type,
-            GdkRectangle *area, GtkWidget *widget, const gchar *detail,
-            gint x, gint y, gint width, gint height)
+                             GdkRectangle *area, GtkWidget *widget, const gchar *detail,
+                             gint x, gint y, gint width, gint height)
 {
 	ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 	ClearlooksColors *colors = &clearlooks_style->colors;
@@ -1367,11 +1369,11 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		g_free (dash_list);
 */
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
-	
+
 	params.corners = CR_CORNER_ALL;
-	
+
 	STYLE_FUNCTION(draw_focus) (cr, colors, &params, &focus, x, y, width, height);
-	
+
 	cairo_destroy (cr);
 }
 
@@ -1380,7 +1382,7 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 {
 	ClearlooksStyle * cl_style = CLEARLOOKS_STYLE (style);
 	ClearlooksStyle * cl_src = CLEARLOOKS_STYLE (src);
-	
+
 	cl_style->colors              = cl_src->colors;
 	cl_style->menubarstyle        = cl_src->menubarstyle;
 	cl_style->toolbarstyle        = cl_src->toolbarstyle;
@@ -1390,7 +1392,7 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	cl_style->animation           = cl_src->animation;
 	cl_style->radius              = cl_src->radius;
 	cl_style->style               = cl_src->style;
-	
+
 	clearlooks_parent_class->copy (style, src);
 }
 
@@ -1422,8 +1424,10 @@ set_transparency (const GdkPixbuf *pixbuf, gdouble alpha_percent)
 	rowstride = gdk_pixbuf_get_rowstride (target);
 	data = gdk_pixbuf_get_pixels (target);
 
-	for (y = 0; y < height; y++) {
-		for (x = 0; x < width; x++) {
+	for (y = 0; y < height; y++)
+	{
+		for (x = 0; x < width; x++)
+		{
 			/* The "4" is the number of chars per pixel, in this case, RGBA,
 			   the 3 means "skip to the alpha" */
 			current = data + (y * rowstride) + (x * 4) + 3; 
@@ -1454,12 +1458,12 @@ scale_or_ref (GdkPixbuf *src,
 
 static void
 clearlooks_style_draw_layout (GtkStyle * style,
-	     GdkWindow * window,
-	     GtkStateType state_type,
-	     gboolean use_text,
-	     GdkRectangle * area,
-	     GtkWidget * widget,
-	     const gchar * detail, gint x, gint y, PangoLayout * layout)
+                              GdkWindow * window,
+                              GtkStateType state_type,
+                              gboolean use_text,
+                              GdkRectangle * area,
+                              GtkWidget * widget,
+                              const gchar * detail, gint x, gint y, PangoLayout * layout)
 {
 	GdkGC *gc;
 
@@ -1471,7 +1475,8 @@ clearlooks_style_draw_layout (GtkStyle * style,
 	if (area)
 		gdk_gc_set_clip_rectangle (gc, area);
 
-	if (state_type == GTK_STATE_INSENSITIVE) {
+	if (state_type == GTK_STATE_INSENSITIVE)
+	{
 		ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 		ClearlooksColors *colors = &clearlooks_style->colors;
 
@@ -1502,12 +1507,12 @@ clearlooks_style_draw_layout (GtkStyle * style,
 
 static GdkPixbuf *
 clearlooks_style_draw_render_icon (GtkStyle            *style,
-             const GtkIconSource *source,
-             GtkTextDirection     direction,
-             GtkStateType         state,
-             GtkIconSize          size,
-             GtkWidget           *widget,
-             const char          *detail)
+                                   const GtkIconSource *source,
+                                   GtkTextDirection     direction,
+                                   GtkStateType         state,
+                                   GtkIconSize          size,
+                                   GtkWidget           *widget,
+                                   const char          *detail)
 {
 	int width = 1;
 	int height = 1;
@@ -1526,20 +1531,25 @@ clearlooks_style_draw_render_icon (GtkStyle            *style,
 	
 	g_return_val_if_fail (base_pixbuf != NULL, NULL);
 	
-	if (widget && gtk_widget_has_screen (widget)) {
+	if (widget && gtk_widget_has_screen (widget))
+	{
 		screen = gtk_widget_get_screen (widget);
 		settings = gtk_settings_get_for_screen (screen);
-	} else if (style->colormap) {
+	}
+	else if (style->colormap)
+	{
 		screen = gdk_colormap_get_screen (style->colormap);
 		settings = gtk_settings_get_for_screen (screen);
-	} else {
+	}
+	else
+	{
 		settings = gtk_settings_get_default ();
 		GTK_NOTE (MULTIHEAD,
 			  g_warning ("Using the default screen for gtk_default_render_icon()"));
 	}
-	
-  
-	if (size != (GtkIconSize) -1 && !gtk_icon_size_lookup_for_settings (settings, size, &width, &height)) {
+
+	if (size != (GtkIconSize) -1 && !gtk_icon_size_lookup_for_settings (settings, size, &width, &height))
+	{
 		g_warning (G_STRLOC ": invalid icon size '%d'", size);
 		return NULL;
 	}
@@ -1553,28 +1563,32 @@ clearlooks_style_draw_render_icon (GtkStyle            *style,
 		scaled = g_object_ref (base_pixbuf);
 	
 	/* If the state was wildcarded, then generate a state. */
-	if (gtk_icon_source_get_state_wildcarded (source)) {
-		if (state == GTK_STATE_INSENSITIVE) {
+	if (gtk_icon_source_get_state_wildcarded (source))
+	{
+		if (state == GTK_STATE_INSENSITIVE)
+		{
 			stated = set_transparency (scaled, 0.3);
-			gdk_pixbuf_saturate_and_pixelate (stated, stated,
-							  0.1, FALSE);
+			gdk_pixbuf_saturate_and_pixelate (stated, stated, 0.1, FALSE);
 			
 			g_object_unref (scaled);
-		} else if (state == GTK_STATE_PRELIGHT) {
-			stated = gdk_pixbuf_copy (scaled);      
+		} 
+		else if (state == GTK_STATE_PRELIGHT)
+		{
+			stated = gdk_pixbuf_copy (scaled);
 			
-			gdk_pixbuf_saturate_and_pixelate (scaled, stated,
-							  1.2, FALSE);
+			gdk_pixbuf_saturate_and_pixelate (scaled, stated, 1.2, FALSE);
 			
 			g_object_unref (scaled);
-		} else {
+		}
+		else
+		{
 			stated = scaled;
 		}
 	}
 	else
 		stated = scaled;
-  
-  return stated;
+
+	return stated;
 }
 
 static void

@@ -1,3 +1,11 @@
+2007-11-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box), (clearlooks_style_draw_slider),
+	(set_transparency), (clearlooks_style_draw_layout),
+	(clearlooks_style_draw_render_icon):
+	Whitespaces
+
 2007-11-06  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

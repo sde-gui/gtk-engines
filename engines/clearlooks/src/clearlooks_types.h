@@ -305,7 +305,7 @@ struct _ClearlooksStyleFunctions
 	                               const WidgetParameters		*widget,
 	                               const OptionMenuParameters *optionmenu,
 	                               int x, int y, int width, int height);
-	
+
 	void (*draw_inset)            (cairo_t				*cr,
 	                                const CairoColor		*bg_color,
 	                                double x, double y, double w, double h,
@@ -419,13 +419,13 @@ struct _ClearlooksStyleFunctions
 	                               const WidgetParameters		*widget,
 	                               const ArrowParameters		*arrow,
 	                               int x, int y, int width, int height);
-	                               
+
 	void (*draw_focus)            (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
 	                               const FocusParameters		*focus,
 	                               int x, int y, int width, int height);
-	                               
+
 	void (*draw_checkbox)         (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
