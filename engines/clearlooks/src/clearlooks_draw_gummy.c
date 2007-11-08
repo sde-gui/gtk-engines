@@ -1565,6 +1565,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	CairoColor shade1, shade2, shade3;
 	CairoColor border;
 	boolean fill_focus = TRUE; /* Useful in the future for selected cells */
+	boolean stroke_focus = TRUE; /* Useful? */
 	double radius = widget->radius - 1.0;
 	
 	ge_shade_color (fill, 0.65, &border);
@@ -1602,7 +1603,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			break;
 	};
 	
-	cairo_set_line_width (cr, 1);
+	cairo_set_line_width (cr, 1.0);
 	
 	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width - xoffset*2, height - yoffset*2, radius, widget->corners);
 	
@@ -1622,9 +1623,12 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 		cairo_pattern_destroy (pattern);
 	}
 	
-	border.a = 0.6;
-	ge_cairo_set_color (cr, &border);
-	cairo_stroke(cr);
+	if (stroke_focus)
+	{
+		border.a = 0.6;
+		ge_cairo_set_color (cr, &border);
+		cairo_stroke(cr);
+	}
 }
 
 void
