@@ -1546,7 +1546,6 @@ clearlooks_gummy_draw_checkbox (cairo_t                  *cr,
 			cairo_curve_to (cr, 0.5 + (width*0.4), (height*0.7),
 			                    0.5 + (width*0.5), (height*0.4),
 			                    0.5 + (width*0.70), (height*0.25));
-
 		}
 
 		ge_cairo_set_color (cr, dot);
@@ -1566,6 +1565,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	CairoColor shade1, shade2, shade3;
 	CairoColor border;
 	boolean fill_focus = TRUE; /* Useful in the future for selected cells */
+	double radius = widget->radius - 1.0;
 	
 	ge_shade_color (fill, 0.65, &border);
 	ge_shade_color (fill, SHADE_TOP, &shade1);
@@ -1604,7 +1604,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	
 	cairo_set_line_width (cr, 1);
 	
-	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width - xoffset*2, height - yoffset*2, widget->radius, widget->corners);
+	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width - xoffset*2, height - yoffset*2, radius, widget->corners);
 	
 	if (fill_focus)
 	{

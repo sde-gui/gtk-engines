@@ -78,7 +78,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 
 	params->xthickness = style->xthickness;
 	params->ythickness = style->ythickness;
-		
+	
 	/* This is used in GtkEntry to fake transparency. The reason to do this
 	 * is that the entry has it's entire background filled with base[STATE].
 	 * This is not a very good solution as it will eg. fail if one changes
@@ -1286,7 +1286,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	FocusParameters focus;
 
 	cairo_t *cr;
-	
+
 	CHECK_ARGS
 	SANITIZE_SIZE
 
@@ -1294,8 +1294,8 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
+	/* Corners */
 	params.corners = CR_CORNER_ALL;
-	
 	if (CHECK_HINT (GE_HINT_COMBOBOX_ENTRY))
 	{
 		if (params.ltr)
@@ -1311,18 +1311,19 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		}
 	}
 	
+	/* Focus type */
 	if (DETAIL("button"))
 		focus.type = CL_FOCUS_BUTTON;
+	if (DETAIL("checkbutton") || DETAIL("radiobutton"))
+		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
 	if (DETAIL ("button") && CHECK_HINT (GE_HINT_TREEVIEW_HEADER))
 		focus.type = CL_FOCUS_LISTVIEW;
 	if (detail && g_str_has_prefix (detail, "trough") && CHECK_HINT (GE_HINT_SCALE))
 		focus.type = CL_FOCUS_SCALE;
 	if (DETAIL("tab"))
 		focus.type = CL_FOCUS_TAB;
-	if (DETAIL("checkbutton") || DETAIL("radiobutton"))
-		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
-		
-	/* Set focus color */
+	
+	/* Focus color */
 	if (clearlooks_style->has_focus_color)
 	{
 		ge_gdk_color_to_cairo (&clearlooks_style->focus_color, &focus.color);
