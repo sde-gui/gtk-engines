@@ -90,7 +90,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 static void
 clearlooks_style_draw_flat_box (DRAW_ARGS)
 {
-	if (detail && 	
+	if (detail && 
 	    state_type == GTK_STATE_SELECTED && (
 	    !strncmp ("cell_even", detail, 9) ||
 	    !strncmp ("cell_odd", detail, 8)))
@@ -1319,6 +1319,8 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		focus.type = CL_FOCUS_SCALE;
 	if (DETAIL("tab"))
 		focus.type = CL_FOCUS_TAB;
+	if (DETAIL("checkbutton") || DETAIL("radiobutton"))
+		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
 		
 	/* Set focus color */
 	if (clearlooks_style->has_focus_color)

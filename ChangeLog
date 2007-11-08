@@ -1,5 +1,17 @@
 2007-11-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_focus):
+	* engines/clearlooks/src/clearlooks_types.h:
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Other types added to focus
+	Fixed progressbar and menuseparator problems in the gtkrc
+	(as Benjamin suggested that was related to the order)
+
+2007-11-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_focus):
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

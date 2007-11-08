@@ -88,6 +88,7 @@ typedef enum
 typedef enum
 {
 	CL_FOCUS_BUTTON,
+	CL_FOCUS_LABEL,
 	CL_FOCUS_LISTVIEW,
 	CL_FOCUS_SCALE,
 	CL_FOCUS_TAB

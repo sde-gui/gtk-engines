@@ -317,21 +317,18 @@ class "GtkHScrollbar"  style "clearlooks-hscrollbar"
 # General matching following, the order is choosen so that the right styles override each other
 # eg. progressbar needs to be more important then the menu match.
 
-widget_class "*<GtkMenu>*"              style "clearlooks-menu"
-widget_class "*<GtkMenuItem>*"          style "clearlooks-menu-item"
-widget_class "*<GtkSeparatorMenuItem>*" style "clearlooks-separator-menu-item"
-
 widget_class "*<GtkButton>"      style "clearlooks-button"
 widget_class "*<GtkNotebook>"    style "clearlooks-notebook"
-widget_class "*<GtkProgressBar>" style "clearlooks-progressbar"
 widget_class "*<GtkStatusbar>*"  style "clearlooks-statusbar"
+widget_class "*<GtkProgressBar>" style "clearlooks-progressbar"
 
 widget_class "*<GtkComboBoxEntry>*" style "clearlooks-comboboxentry"
 widget_class "*<GtkCombo>*"         style "clearlooks-comboboxentry"
 
-widget_class "*<GtkMenuBar>*"    style "clearlooks-menubar"
-widget_class "*<GtkMenu>*"       style "clearlooks-menu"
-widget_class "*<GtkMenuItem>*"      style "clearlooks-menu-item"
+widget_class "*<GtkMenuBar>*"           style "clearlooks-menubar"
+widget_class "*<GtkMenu>*"              style "clearlooks-menu"
+widget_class "*<GtkMenuItem>*"          style "clearlooks-menu-item"
+widget_class "*<GtkSeparatorMenuItem>*" style "clearlooks-separator-menu-item"
 
 widget_class "*.<GtkFrame>.<GtkLabel>" style "clearlooks-frame-title"
 

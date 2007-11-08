@@ -1565,18 +1565,23 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	const CairoColor *fill = &focus->color;
 	CairoColor shade1, shade2, shade3;
 	CairoColor border;
-	cairo_pattern_t *pattern;
+	boolean fill_focus = TRUE; /* Useful in the future for selected cells */
 	
 	ge_shade_color (fill, 0.65, &border);
 	ge_shade_color (fill, SHADE_TOP, &shade1);
 	ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
 	ge_shade_color (fill, SHADE_BOTTOM, &shade3);
 	
+	/* Do some useful things to adjust focus */
 	switch (focus->type)
 	{
 		case CL_FOCUS_BUTTON:
 			xoffset = -0.5;
 			yoffset = -0.5;
+			break;
+		case CL_FOCUS_LABEL:
+			xoffset = 0.5;
+			yoffset = 0.5;
 			break;
 		case CL_FOCUS_LISTVIEW:
 			cairo_translate (cr, -1, 0);
@@ -1592,8 +1597,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			yoffset = 1.5;
 			break;
 		default:
-			xoffset = 0.5;
-			yoffset = 0.5;
+			xoffset = 1.5;
+			yoffset = 1.5;
 			break;
 	};
 	
@@ -1601,16 +1606,21 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	
 	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width - xoffset*2, height - yoffset*2, widget->radius, widget->corners);
 	
-	cairo_translate (cr, x, y);
-	
-	pattern = cairo_pattern_create_linear (0, 0, 0, height);
-	cairo_pattern_add_color_stop_rgba (pattern, 0.0, shade1.r, shade1.g, shade1.b, 0.16);
-	cairo_pattern_add_color_stop_rgba (pattern, 0.5, shade2.r, shade2.g, shade2.b, 0.16);
-	cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill->r,  fill->g,  fill->b,  0.16);
-	cairo_pattern_add_color_stop_rgba (pattern, 1.0, shade3.r, shade3.g, shade3.b, 0.16);
-	cairo_set_source (cr, pattern);
-	cairo_fill_preserve (cr);
-	cairo_pattern_destroy (pattern);
+	if (fill_focus)
+	{
+		cairo_pattern_t *pattern;
+		
+		cairo_translate (cr, x, y);
+		
+		pattern = cairo_pattern_create_linear (0, 0, 0, height);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shade1.r, shade1.g, shade1.b, 0.16);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.5, shade2.r, shade2.g, shade2.b, 0.16);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill->r,  fill->g,  fill->b,  0.16);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, shade3.r, shade3.g, shade3.b, 0.16);
+		cairo_set_source (cr, pattern);
+		cairo_fill_preserve (cr);
+		cairo_pattern_destroy (pattern);
+	}
 	
 	border.a = 0.6;
 	ge_cairo_set_color (cr, &border);
