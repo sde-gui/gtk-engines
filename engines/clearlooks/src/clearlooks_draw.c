@@ -2244,7 +2244,80 @@ clearlooks_draw_focus (cairo_t *cr,
                        const FocusParameters           *focus,
                        int x, int y, int width, int height)
 {
-	/* Do nothing */
+	/* XXX: Do nothing */
+	
+/* 
+	gboolean free_dash_list = FALSE;
+	gint line_width = 1;
+	gint8 *dash_list = (gint8 *)"\1\1";
+
+	if (widget)
+	{
+		gtk_widget_style_get (widget,
+				      "focus-line-width", &line_width,
+				      "focus-line-pattern",
+				      (gchar *) & dash_list, NULL);
+
+		free_dash_list = TRUE;
+	}
+
+	if (detail && !strcmp (detail, "add-mode"))
+	{
+		if (free_dash_list)
+			g_free (dash_list);
+
+		dash_list = (gint8 *)"\4\4";
+		free_dash_list = FALSE;
+	}
+	
+	if (detail && !strcmp (detail, "colorwheel_light"))
+		cairo_set_source_rgb (cr, 0., 0., 0.);
+	else if (detail && !strcmp (detail, "colorwheel_dark"))
+		cairo_set_source_rgb (cr, 1., 1., 1.);
+	else
+		ge_cairo_set_gdk_color_with_alpha (cr, &style->fg[state_type],
+						       0.7);
+
+	cairo_set_line_width (cr, line_width);
+
+	if (dash_list[0])
+	{
+		gint n_dashes = strlen ((gchar *)dash_list);
+		gdouble *dashes = g_new (gdouble, n_dashes);
+		gdouble total_length = 0;
+		gdouble dash_offset;
+		gint i;
+
+		for (i = 0; i < n_dashes; i++)
+		{
+			dashes[i] = dash_list[i];
+			total_length += dash_list[i];
+		}
+
+		dash_offset = -line_width / 2.;
+		while (dash_offset < 0)
+			dash_offset += total_length;
+
+		cairo_set_dash (cr, dashes, n_dashes, dash_offset);
+		g_free (dashes);
+	}
+
+	if (area)
+	{
+		gdk_cairo_rectangle (cr, area);
+		cairo_clip (cr);
+	}
+
+	cairo_rectangle (cr,
+			 x + line_width / 2.,
+			 y + line_width / 2.,
+			 width - line_width, height - line_width);
+	cairo_stroke (cr);
+	cairo_destroy (cr);
+
+	if (free_dash_list)
+		g_free (dash_list);
+*/
 }
 
 void

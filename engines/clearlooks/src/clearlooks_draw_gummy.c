@@ -47,7 +47,6 @@
 #define TOOLBAR_SHADE_CENTER_TOP 1.01
 #define TOOLBAR_SHADE_BOTTOM 0.97
 
-
 static void
 clearlooks_draw_gummy_gradient (cairo_t          *cr,
                                 double x, double y, int width, int height,
@@ -458,7 +457,7 @@ clearlooks_gummy_draw_progressbar_fill (cairo_t                     *cr,
 	cairo_paint (cr);
 	cairo_pattern_destroy (pattern);
 
-	/* Draw the Strokes */
+	/* Draw the strokes */
 	while (tile_pos <= width+x_step)
 	{
 		cairo_move_to (cr, stroke_width/2-x_step, 0);
@@ -1563,25 +1562,57 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
                              int x, int y, int width, int height)
 {
 	double xoffset, yoffset;
-	const CairoColor *fill = &colors->spot[1];
-	CairoColor border = colors->spot[2];
+	const CairoColor *fill = &focus->color;
+	CairoColor shade1, shade2, shade3;
+	CairoColor border;
 	cairo_pattern_t *pattern;
 	
-	xoffset = 1.5;
-	yoffset = 1.5;
+	ge_shade_color (fill, 0.65, &border);
+	ge_shade_color (fill, SHADE_TOP, &shade1);
+	ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
+	ge_shade_color (fill, SHADE_BOTTOM, &shade3);
+	
+	switch (focus->type)
+	{
+		case CL_FOCUS_BUTTON:
+			xoffset = -0.5;
+			yoffset = -0.5;
+			break;
+		case CL_FOCUS_LISTVIEW:
+			cairo_translate (cr, -1, 0);
+			xoffset = 1.5;
+			yoffset = 1.5;
+			break;
+		case CL_FOCUS_TAB:
+			xoffset = 1.5;
+			yoffset = 1.5;
+			break;
+		case CL_FOCUS_SCALE:
+			xoffset = 1.5;
+			yoffset = 1.5;
+			break;
+		default:
+			xoffset = 0.5;
+			yoffset = 0.5;
+			break;
+	};
 	
 	cairo_set_line_width (cr, 1);
 	
 	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width - xoffset*2, height - yoffset*2, widget->radius, widget->corners);
 	
+	cairo_translate (cr, x, y);
+	
 	pattern = cairo_pattern_create_linear (0, 0, 0, height);
-	cairo_pattern_add_color_stop_rgba (pattern, 0.0, fill->r, fill->g, fill->b, 0.1);
-	cairo_pattern_add_color_stop_rgba (pattern, 1.0, fill->r, fill->g, fill->b, 0.2);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, shade1.r, shade1.g, shade1.b, 0.16);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.5, shade2.r, shade2.g, shade2.b, 0.16);
+	cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill->r,  fill->g,  fill->b,  0.16);
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, shade3.r, shade3.g, shade3.b, 0.16);
 	cairo_set_source (cr, pattern);
 	cairo_fill_preserve (cr);
 	cairo_pattern_destroy (pattern);
 	
-	border.a = 0.5;
+	border.a = 0.6;
 	ge_cairo_set_color (cr, &border);
 	cairo_stroke(cr);
 }
@@ -1589,24 +1620,24 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 void
 clearlooks_register_style_gummy (ClearlooksStyleFunctions *functions)
 {
-	functions->draw_button              = clearlooks_gummy_draw_button;
-	functions->draw_entry               = clearlooks_gummy_draw_entry;
-	functions->draw_progressbar_trough  = clearlooks_gummy_draw_progressbar_trough;
-	functions->draw_progressbar_fill    = clearlooks_gummy_draw_progressbar_fill;
-	functions->draw_scale_trough        = clearlooks_gummy_draw_scale_trough;
-	functions->draw_tab                 = clearlooks_gummy_draw_tab;
-	functions->draw_separator           = clearlooks_gummy_draw_separator;
-	functions->draw_slider              = clearlooks_gummy_draw_slider;
-	functions->draw_slider_button       = clearlooks_gummy_draw_slider_button;
-	functions->draw_scrollbar_stepper   = clearlooks_gummy_draw_scrollbar_stepper;
-	functions->draw_scrollbar_slider    = clearlooks_gummy_draw_scrollbar_slider;
-	functions->draw_list_view_header    = clearlooks_gummy_draw_list_view_header;
-	functions->draw_toolbar             = clearlooks_gummy_draw_toolbar;
-	functions->draw_menuitem            = clearlooks_gummy_draw_menuitem;
-	functions->draw_menubaritem         = clearlooks_gummy_draw_menubaritem;
-	functions->draw_selected_cell       = clearlooks_gummy_draw_selected_cell;
-	functions->draw_statusbar           = clearlooks_gummy_draw_statusbar;
-	functions->draw_checkbox            = clearlooks_gummy_draw_checkbox;
-	functions->draw_radiobutton         = clearlooks_gummy_draw_radiobutton;
-	functions->draw_focus               = clearlooks_gummy_draw_focus;
+	functions->draw_button             = clearlooks_gummy_draw_button;
+	functions->draw_entry              = clearlooks_gummy_draw_entry;
+	functions->draw_progressbar_trough = clearlooks_gummy_draw_progressbar_trough;
+	functions->draw_progressbar_fill   = clearlooks_gummy_draw_progressbar_fill;
+	functions->draw_scale_trough       = clearlooks_gummy_draw_scale_trough;
+	functions->draw_tab                = clearlooks_gummy_draw_tab;
+	functions->draw_separator          = clearlooks_gummy_draw_separator;
+	functions->draw_slider             = clearlooks_gummy_draw_slider;
+	functions->draw_slider_button      = clearlooks_gummy_draw_slider_button;
+	functions->draw_scrollbar_stepper  = clearlooks_gummy_draw_scrollbar_stepper;
+	functions->draw_scrollbar_slider   = clearlooks_gummy_draw_scrollbar_slider;
+	functions->draw_list_view_header   = clearlooks_gummy_draw_list_view_header;
+	functions->draw_toolbar            = clearlooks_gummy_draw_toolbar;
+	functions->draw_menuitem           = clearlooks_gummy_draw_menuitem;
+	functions->draw_menubaritem        = clearlooks_gummy_draw_menubaritem;
+	functions->draw_selected_cell      = clearlooks_gummy_draw_selected_cell;
+	functions->draw_statusbar          = clearlooks_gummy_draw_statusbar;
+	functions->draw_checkbox           = clearlooks_gummy_draw_checkbox;
+	functions->draw_radiobutton        = clearlooks_gummy_draw_radiobutton;
+	functions->draw_focus              = clearlooks_gummy_draw_focus;
 }

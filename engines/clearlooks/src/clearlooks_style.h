@@ -1,6 +1,7 @@
-/* Clearlooks Engine
+/* Clearlooks theme engine
  * Copyright (C) 2005 Richard Stellingwerff.
- * Copyright (C) 2006 Benjamin Berg
+ * Copyright (C) 2007 Benjamin Berg
+ * Copyright (C) 2007 Andrea Cimitan
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -21,6 +22,7 @@
  * and by Alexander Larsson <alexl@redhat.com>
  * Modified by Richard Stellingwerff <remenic@gmail.com>
  */
+ 
 #include <gtk/gtkstyle.h>
 
 #ifndef CLEARLOOKS_STYLE_H
@@ -48,9 +50,11 @@ struct _ClearlooksStyle
 	ClearlooksColors colors;
 
 	ClearlooksStyles style;
-	
+
 	guint8   menubarstyle;
 	guint8   toolbarstyle;
+	GdkColor focus_color;
+	gboolean has_focus_color;
 	GdkColor scrollbar_color;
 	gboolean colorize_scrollbar;
 	gboolean has_scrollbar_color;

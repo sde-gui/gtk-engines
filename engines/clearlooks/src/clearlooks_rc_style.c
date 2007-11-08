@@ -1,5 +1,7 @@
 /* Clearlooks theme engine
- * Copyright (C) 2005 Richard Stellingwerff.
+ * Copyright (C) 2005 Richard Stellingwerff
+ * Copyright (C) 2007 Benjamin Berg
+ * Copyright (C) 2007 Andrea Cimitan
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -36,10 +38,10 @@ static void      clearlooks_rc_style_finalize     (GObject                *objec
 static void      clearlooks_rc_style_class_init   (ClearlooksRcStyleClass *klass);
 static GtkStyle *clearlooks_rc_style_create_style (GtkRcStyle             *rc_style);
 static guint     clearlooks_rc_style_parse        (GtkRcStyle             *rc_style,
-						   GtkSettings            *settings,
-						   GScanner               *scanner);
+                                                   GtkSettings            *settings,
+                                                   GScanner               *scanner);
 static void      clearlooks_rc_style_merge        (GtkRcStyle             *dest,
-						   GtkRcStyle             *src);
+                                                   GtkRcStyle             *src);
 
 
 static GtkRcStyleClass *clearlooks_parent_rc_class;
@@ -48,7 +50,8 @@ GType clearlooks_type_rc_style = 0;
 
 enum
 {
-	TOKEN_SCROLLBARCOLOR = G_TOKEN_LAST + 1,
+	TOKEN_FOCUSCOLOR = G_TOKEN_LAST + 1,
+	TOKEN_SCROLLBARCOLOR,
 	TOKEN_COLORIZESCROLLBAR,
 	TOKEN_CONTRAST,
 	TOKEN_SUNKENMENU,
@@ -73,8 +76,8 @@ enum
 	TOKEN_LAST
 };
 
-
 static gchar* clearlooks_rc_symbols =
+	"focus_color\0"
 	"scrollbar_color\0"
 	"colorize_scrollbar\0"
 	"contrast\0"
@@ -115,9 +118,9 @@ clearlooks_rc_style_register_type (GTypeModule *module)
 	};
 
 	clearlooks_type_rc_style = g_type_module_register_type (module,
-						     GTK_TYPE_RC_STYLE,
-						     "ClearlooksRcStyle",
-						     &object_info, 0);
+	                                                        GTK_TYPE_RC_STYLE,
+	                                                        "ClearlooksRcStyle",
+	                                                        &object_info, 0);
 }
 
 static void
@@ -170,8 +173,8 @@ clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
 
 static guint
 clearlooks_gtk2_rc_parse_boolean (GtkSettings *settings,
-                     GScanner     *scanner,
-                     gboolean *retval)
+                                  GScanner     *scanner,
+                                  gboolean *retval)
 {
 	guint token;
 	token = g_scanner_get_next_token(scanner);
@@ -193,8 +196,8 @@ clearlooks_gtk2_rc_parse_boolean (GtkSettings *settings,
 
 static guint
 clearlooks_gtk2_rc_parse_color(GtkSettings  *settings,
-		  GScanner     *scanner,
-		  GdkColor     *color)
+                               GScanner     *scanner,
+                               GdkColor     *color)
 {
 	guint token;
 
@@ -233,8 +236,8 @@ clearlooks_gtk2_rc_parse_double (GtkSettings  *settings,
 
 static guint
 clearlooks_gtk2_rc_parse_int (GtkSettings  *settings,
-		         GScanner     *scanner,
-		         guint8       *progressbarstyle)
+                              GScanner     *scanner,
+                              guint8       *progressbarstyle)
 {
 	guint token;
 
@@ -271,7 +274,7 @@ clearlooks_gtk2_rc_parse_style (GtkSettings      *settings,
 	   return G_TOKEN_EQUAL_SIGN;
 
 	token = g_scanner_get_next_token (scanner);
-  
+
 	switch (token)
 	{
 		case TOKEN_CLASSIC:
@@ -319,9 +322,8 @@ clearlooks_gtk2_rc_parse_dummy (GtkSettings      *settings,
 
 static guint
 clearlooks_rc_style_parse (GtkRcStyle *rc_style,
-			   GtkSettings  *settings,
-			   GScanner   *scanner)
-		     
+                           GtkSettings  *settings,
+                           GScanner   *scanner)
 {
 	static GQuark scope_id = 0;
 	ClearlooksRcStyle *clearlooks_style = CLEARLOOKS_RC_STYLE (rc_style);
@@ -364,6 +366,10 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 	{
 		switch (token)
 		{
+			case TOKEN_FOCUSCOLOR:
+				token = clearlooks_gtk2_rc_parse_color (settings, scanner, &clearlooks_style->focus_color);
+				clearlooks_style->flags |= CL_FLAG_FOCUS_COLOR;
+				break;
 			case TOKEN_SCROLLBARCOLOR:
 				token = clearlooks_gtk2_rc_parse_color (settings, scanner, &clearlooks_style->scrollbar_color);
 				clearlooks_style->flags |= CL_FLAG_SCROLLBAR_COLOR;
@@ -436,7 +442,7 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 
 static void
 clearlooks_rc_style_merge (GtkRcStyle *dest,
-			   GtkRcStyle *src)
+                           GtkRcStyle *src)
 {
 	ClearlooksRcStyle *dest_w, *src_w;
 	ClearlooksRcFlags flags;
@@ -459,6 +465,8 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 		dest_w->menubarstyle = src_w->menubarstyle;
 	if (flags & CL_FLAG_TOOLBARSTYLE)
 		dest_w->toolbarstyle = src_w->toolbarstyle;
+	if (flags & CL_FLAG_FOCUS_COLOR)
+		dest_w->focus_color = src_w->focus_color;
 	if (flags & CL_FLAG_SCROLLBAR_COLOR)
 		dest_w->scrollbar_color = src_w->scrollbar_color;
 	if (flags & CL_FLAG_COLORIZE_SCROLLBAR)

@@ -1,5 +1,32 @@
 2007-11-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_focus):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_progressbar_fill),
+	(clearlooks_gummy_draw_focus):
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_parse), (clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box), (clearlooks_style_init_from_rc),
+	(clearlooks_style_draw_focus), (clearlooks_style_copy):
+	* engines/clearlooks/src/clearlooks_style.h:
+	* engines/clearlooks/src/clearlooks_types.h:
+	A lot of changes for the focus ring:
+	1) Added "type" parameter to focus
+	2) Added "color" parameter
+	3) Added a clearlooks option to specify the color of the focus:
+	   "focus_color", in the gtkrc.
+	   Suddenly it seems not to work with symbolic colors.
+	   (ehm: why??? shouldn't was fixed in 2.12?)
+	   the error is (when using symbolic colors):
+	   [...] /gtk-2.0/gtkrc:68: Invalid symbolic color 'text_color'
+	   [...] /gtk-2.0/gtkrc:68: error: invalid identifier `text_color', 
+	         expected valid identifier
+
+2007-11-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_box), (clearlooks_style_draw_slider),
 	(set_transparency), (clearlooks_style_draw_layout),

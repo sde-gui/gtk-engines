@@ -87,6 +87,15 @@ typedef enum
 
 typedef enum
 {
+	CL_FOCUS_BUTTON,
+	CL_FOCUS_LISTVIEW,
+	CL_FOCUS_SCALE,
+	CL_FOCUS_TAB
+} ClearlooksFocusType;
+
+
+typedef enum
+{
 	CL_DIRECTION_UP,
 	CL_DIRECTION_DOWN,
 	CL_DIRECTION_LEFT,
@@ -189,7 +198,7 @@ typedef struct
 typedef struct
 {
 	CairoCorners    corners;
-	ClearlooksShadowType shadow;	
+	ClearlooksShadowType shadow;
 } ShadowParameters;
 
 typedef struct
@@ -206,7 +215,7 @@ typedef struct
 typedef struct
 {
 	CairoColor         color;
-	ClearlooksJunction junction;       /* On which sides the slider junctions */
+	ClearlooksJunction junction; /* On which sides the slider junctions */
 	boolean            horizontal;
 	boolean            has_color;
 } ScrollBarParameters;
@@ -219,7 +228,7 @@ typedef struct
 
 typedef struct
 {
-	ClearlooksStepper stepper;         /* Which stepper to draw */
+	ClearlooksStepper stepper;  /* Which stepper to draw */
 } ScrollBarStepperParameters;
 
 typedef struct
@@ -247,6 +256,9 @@ typedef struct
 
 typedef struct
 {
+	ClearlooksFocusType type;
+	CairoColor          color;
+	boolean             has_color;
 } FocusParameters;
 
 typedef struct
@@ -307,7 +319,7 @@ struct _ClearlooksStyleFunctions
 	                               int x, int y, int width, int height);
 
 	void (*draw_inset)            (cairo_t				*cr,
-	                                const CairoColor		*bg_color,
+	                                const CairoColor			*bg_color,
 	                                double x, double y, double w, double h,
 	                                double radius, uint8 corners);
 
@@ -320,7 +332,7 @@ struct _ClearlooksStyleFunctions
 	void (*draw_tab)              (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
-	                               const TabParameters		   *tab,
+	                               const TabParameters		 	*tab,
 	                               int x, int y, int width, int height);
 
 	void (*draw_frame)            (cairo_t				*cr,
@@ -350,7 +362,7 @@ struct _ClearlooksStyleFunctions
 	void (*draw_toolbar)          (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
 	                               const WidgetParameters		*widget,
-	                               const ToolbarParameters          *toolbar,
+	                               const ToolbarParameters		*toolbar,
 	                               int x, int y, int width, int height);
 
 	void (*draw_menuitem)         (cairo_t				*cr,
@@ -442,8 +454,7 @@ struct _ClearlooksStyleFunctions
 	/* XXX: Only used by slider_button, inline it? */
 	void (*draw_shadow)           (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,
-	                               gfloat				 radius,
-	                               int width, int height);
+	                               gfloat radius, int width, int height);
 
 	void (*draw_slider)           (cairo_t				*cr,
 	                               const ClearlooksColors		*colors,

@@ -1,7 +1,7 @@
 /* Clearlooks theme engine
- * Copyright (C) 2005 Richard Stellingwerff.
- * Copyright (C) 2007 Benjamin Berg <benjamin@sipsolutions.net>.
- * Copyright (C) 2007 Andrea Cimitan <andrea.cimitan@gmail.com>.
+ * Copyright (C) 2005 Richard Stellingwerff
+ * Copyright (C) 2007 Benjamin Berg
+ * Copyright (C) 2007 Andrea Cimitan
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -801,9 +801,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 
-		if (clearlooks_style->colorize_scrollbar || clearlooks_style->has_scrollbar_color) {
+		if (clearlooks_style->colorize_scrollbar || clearlooks_style->has_scrollbar_color)
 			scrollbar.has_color = TRUE;
-		}
 
 		scrollbar.horizontal = DETAIL ("hscrollbar");
 		
@@ -1227,11 +1226,14 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	
 	clearlooks_style->menubarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->toolbarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->toolbarstyle;
+	clearlooks_style->has_focus_color     = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_FOCUS_COLOR;
 	clearlooks_style->has_scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_SCROLLBAR_COLOR;
 	clearlooks_style->colorize_scrollbar  = CLEARLOOKS_RC_STYLE (rc_style)->colorize_scrollbar;
 	clearlooks_style->animation           = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	clearlooks_style->radius              = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
 
+	if (clearlooks_style->has_focus_color)
+		clearlooks_style->focus_color = CLEARLOOKS_RC_STYLE (rc_style)->focus_color;
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
 }
@@ -1285,92 +1287,47 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 
 	cairo_t *cr;
 	
-/*
-	gboolean free_dash_list = FALSE;
-	gint line_width = 1;
-	gint8 *dash_list = (gint8 *)"\1\1";
-
-	if (widget)
-	{
-		gtk_widget_style_get (widget,
-				      "focus-line-width", &line_width,
-				      "focus-line-pattern",
-				      (gchar *) & dash_list, NULL);
-
-		free_dash_list = TRUE;
-	}
-
-	if (detail && !strcmp (detail, "add-mode"))
-	{
-		if (free_dash_list)
-			g_free (dash_list);
-
-		dash_list = (gint8 *)"\4\4";
-		free_dash_list = FALSE;
-	}
-*/
 	CHECK_ARGS
 	SANITIZE_SIZE
 
 	cr = gdk_cairo_create (window);
-/*
-	if (detail && !strcmp (detail, "colorwheel_light"))
-		cairo_set_source_rgb (cr, 0., 0., 0.);
-	else if (detail && !strcmp (detail, "colorwheel_dark"))
-		cairo_set_source_rgb (cr, 1., 1., 1.);
-	else
-		ge_cairo_set_gdk_color_with_alpha (cr, &style->fg[state_type],
-						       0.7);
 
-	cairo_set_line_width (cr, line_width);
-
-	if (dash_list[0])
-	{
-		gint n_dashes = strlen ((gchar *)dash_list);
-		gdouble *dashes = g_new (gdouble, n_dashes);
-		gdouble total_length = 0;
-		gdouble dash_offset;
-		gint i;
-
-		for (i = 0; i < n_dashes; i++)
-		{
-			dashes[i] = dash_list[i];
-			total_length += dash_list[i];
-		}
-*/
-		/* The dash offset here aligns the pattern to integer pixels
-		 * by starting the dash at the right side of the left border
-		 * Negative dash offsets in cairo don't work
-		 * (https://bugs.freedesktop.org/show_bug.cgi?id=2729)
-		 */
-/*
-		dash_offset = -line_width / 2.;
-		while (dash_offset < 0)
-			dash_offset += total_length;
-
-		cairo_set_dash (cr, dashes, n_dashes, dash_offset);
-		g_free (dashes);
-	}
-
-	if (area)
-	{
-		gdk_cairo_rectangle (cr, area);
-		cairo_clip (cr);
-	}
-
-	cairo_rectangle (cr,
-			 x + line_width / 2.,
-			 y + line_width / 2.,
-			 width - line_width, height - line_width);
-	cairo_stroke (cr);
-	cairo_destroy (cr);
-
-	if (free_dash_list)
-		g_free (dash_list);
-*/
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 	params.corners = CR_CORNER_ALL;
+	
+	if (CHECK_HINT (GE_HINT_COMBOBOX_ENTRY))
+	{
+		if (params.ltr)
+			params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+		else
+			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
+			
+		if (params.xthickness > 2)
+		{
+			if (params.ltr)
+				x--;
+			width++;
+		}
+	}
+	
+	if (DETAIL("button"))
+		focus.type = CL_FOCUS_BUTTON;
+	if (DETAIL ("button") && CHECK_HINT (GE_HINT_TREEVIEW_HEADER))
+		focus.type = CL_FOCUS_LISTVIEW;
+	if (detail && g_str_has_prefix (detail, "trough") && CHECK_HINT (GE_HINT_SCALE))
+		focus.type = CL_FOCUS_SCALE;
+	if (DETAIL("tab"))
+		focus.type = CL_FOCUS_TAB;
+		
+	/* Set focus color */
+	if (clearlooks_style->has_focus_color)
+	{
+		ge_gdk_color_to_cairo (&clearlooks_style->focus_color, &focus.color);
+		focus.has_color = TRUE;
+	}
+	else
+		focus.color = colors->spot[1];
 
 	STYLE_FUNCTION(draw_focus) (cr, colors, &params, &focus, x, y, width, height);
 
@@ -1386,6 +1343,8 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	cl_style->colors              = cl_src->colors;
 	cl_style->menubarstyle        = cl_src->menubarstyle;
 	cl_style->toolbarstyle        = cl_src->toolbarstyle;
+	cl_style->focus_color         = cl_src->focus_color;
+	cl_style->has_focus_color     = cl_src->has_focus_color;
 	cl_style->scrollbar_color     = cl_src->scrollbar_color;
 	cl_style->has_scrollbar_color = cl_src->has_scrollbar_color;
 	cl_style->colorize_scrollbar  = cl_src->colorize_scrollbar;

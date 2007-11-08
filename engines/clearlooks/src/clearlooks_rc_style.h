@@ -1,5 +1,7 @@
-/* Clearlooks Theme Engine
- * Copyright (C) 2005 Richard Stellingwerff.
+/* Clearlooks theme engine
+ * Copyright (C) 2005 Richard Stellingwerff
+ * Copyright (C) 2007 Benjamin Berg
+ * Copyright (C) 2007 Andrea Cimitan
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -40,14 +42,15 @@ GE_INTERNAL extern GType clearlooks_type_rc_style;
 /* XXX: needs fixing! */
 typedef enum {
 	CL_FLAG_STYLE              = 1 <<  0,
-	CL_FLAG_SCROLLBAR_COLOR    = 1 <<  1,
-	CL_FLAG_COLORIZE_SCROLLBAR = 1 <<  2,
-	CL_FLAG_CONTRAST           = 1 <<  3,
-	CL_FLAG_MENUBARSTYLE       = 1 <<  4,
-	CL_FLAG_TOOLBARSTYLE       = 1 <<  5,
-	CL_FLAG_ANIMATION          = 1 <<  6,
-	CL_FLAG_RADIUS             = 1 <<  7,
-	CL_FLAG_HINT               = 1 <<  8
+	CL_FLAG_FOCUS_COLOR        = 1 <<  1,
+	CL_FLAG_SCROLLBAR_COLOR    = 1 <<  2,
+	CL_FLAG_COLORIZE_SCROLLBAR = 1 <<  3,
+	CL_FLAG_CONTRAST           = 1 <<  4,
+	CL_FLAG_MENUBARSTYLE       = 1 <<  5,
+	CL_FLAG_TOOLBARSTYLE       = 1 <<  6,
+	CL_FLAG_ANIMATION          = 1 <<  7,
+	CL_FLAG_RADIUS             = 1 <<  8,
+	CL_FLAG_HINT               = 1 <<  9
 } ClearlooksRcFlags;
 
 
@@ -59,6 +62,7 @@ struct _ClearlooksRcStyle
 
 	ClearlooksStyles style;
 
+	GdkColor focus_color;
 	GdkColor scrollbar_color;
 	gboolean colorize_scrollbar;
 	double contrast;
