@@ -1613,10 +1613,10 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 		cairo_translate (cr, x, y);
 		
 		pattern = cairo_pattern_create_linear (0, 0, 0, height);
-		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shade1.r, shade1.g, shade1.b, 0.16);
-		cairo_pattern_add_color_stop_rgba (pattern, 0.5, shade2.r, shade2.g, shade2.b, 0.16);
-		cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill->r,  fill->g,  fill->b,  0.16);
-		cairo_pattern_add_color_stop_rgba (pattern, 1.0, shade3.r, shade3.g, shade3.b, 0.16);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shade1.r, shade1.g, shade1.b, 0.2);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.5, shade2.r, shade2.g, shade2.b, 0.2);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill->r,  fill->g,  fill->b,  0.2);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, shade3.r, shade3.g, shade3.b, 0.2);
 		cairo_set_source (cr, pattern);
 		cairo_fill_preserve (cr);
 		cairo_pattern_destroy (pattern);

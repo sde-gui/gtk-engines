@@ -809,7 +809,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		stepper.stepper = clearlooks_scrollbar_get_stepper (widget, &this_rectangle);
 
 		STYLE_FUNCTION(draw_scrollbar_stepper) (cr, colors, &params, &scrollbar, &stepper,
-			                                    x, y, width, height);
+		                                        x, y, width, height);
 	}
 	else if (DETAIL ("toolbar") || DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin"))
 	{
