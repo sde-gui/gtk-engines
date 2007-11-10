@@ -1261,14 +1261,14 @@ clearlooks_gummy_draw_toolbar (cairo_t                 *cr,
 	{
 		/* Draw highlight */
 		cairo_move_to       (cr, 0, 0.5);
-		cairo_line_to       (cr, width-1, 0.5);
+		cairo_line_to       (cr, width-0.5, 0.5);
 		ge_cairo_set_color  (cr, &light);
 		cairo_stroke        (cr);
 	}
 
 	/* Draw shadow */
 	cairo_move_to       (cr, 0, height-0.5);
-	cairo_line_to       (cr, width-1, height-0.5);
+	cairo_line_to       (cr, width-0.5, height-0.5);
 	ge_cairo_set_color  (cr, dark);
 	cairo_stroke        (cr);
 }

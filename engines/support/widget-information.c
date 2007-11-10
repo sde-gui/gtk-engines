@@ -200,7 +200,7 @@ ge_is_combo_box_entry (GtkWidget * widget)
     }
   return result;
 }
- 
+
 static gboolean
 ge_combo_box_is_using_list (GtkWidget * widget)
 {
@@ -402,8 +402,8 @@ ge_find_combo_box_widget_parent (GtkWidget * widget)
  ***********************************************/ 
 void
 ge_option_menu_get_props (GtkWidget * widget,
-		       GtkRequisition * indicator_size,
-		       GtkBorder * indicator_spacing)
+                          GtkRequisition * indicator_size,
+                          GtkBorder * indicator_spacing)
 {
   GtkRequisition default_size = { 9, 5 };
   GtkBorder default_spacing = { 7, 5, 2, 2 };
@@ -452,7 +452,6 @@ ge_button_get_default_border (GtkWidget *widget,
 		*border = default_border;
 	}
 }
-
 
 gboolean
 ge_widget_is_ltr (GtkWidget *widget)

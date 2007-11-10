@@ -1,3 +1,15 @@
+2007-11-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_toolbar):
+	A fix in the cairo drawing (0.5 misalignment)
+	
+	* engines/support/cairo-support.c: (ge_cairo_rounded_corner):
+	* engines/support/ge-support.h:
+	* engines/support/general-support.h:
+	* engines/support/widget-information.c:
+	whitespaces
+
 2007-11-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
