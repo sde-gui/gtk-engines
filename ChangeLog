@@ -4,6 +4,16 @@
 	(clearlooks_gummy_draw_focus):
 	First fix to treeview rows
 
+2007-11-12  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_focus):
+	* engines/clearlooks/src/clearlooks_types.h:
+
+	Detect treeview row focus drawing and the position of the focus.
+
 2007-11-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
