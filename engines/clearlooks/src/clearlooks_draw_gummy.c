@@ -1584,8 +1584,17 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			xoffset = 0.5;
 			yoffset = 0.5;
 			break;
+		case CL_FOCUS_TREEVIEW_DND:
+			xoffset = 1.5;
+			yoffset = 1.5;
+			break;
 		case CL_FOCUS_TREEVIEW_HEADER:
 			cairo_translate (cr, -1, 0);
+			xoffset = 1.5;
+			yoffset = 1.5;
+			break;
+		case CL_FOCUS_TREEVIEW_ROW:
+			fill_focus = FALSE;
 			xoffset = 1.5;
 			yoffset = 1.5;
 			break;
