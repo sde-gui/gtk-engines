@@ -1302,7 +1302,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 			params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 		else
 			params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
-			
+
 		if (params.xthickness > 2)
 		{
 			if (params.ltr)
@@ -1313,15 +1313,63 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	
 	/* Focus type */
 	if (DETAIL("button"))
-		focus.type = CL_FOCUS_BUTTON;
-	if (DETAIL("checkbutton") || DETAIL("radiobutton"))
-		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
-	if (DETAIL ("button") && CHECK_HINT (GE_HINT_TREEVIEW_HEADER))
-		focus.type = CL_FOCUS_LISTVIEW;
-	if (detail && g_str_has_prefix (detail, "trough") && CHECK_HINT (GE_HINT_SCALE))
+	{
+		if (CHECK_HINT (GE_HINT_TREEVIEW_HEADER))
+			focus.type = CL_FOCUS_TREEVIEW_HEADER;
+		else
+			focus.type = CL_FOCUS_BUTTON;
+	}
+	else if (detail && g_str_has_prefix (detail, "treeview"))
+	{
+		/* Focus in a treeview, and that means a lot of different detail strings. */
+		if (g_str_has_prefix (detail, "treeview-drop-indicator"))
+			focus.type = CL_FOCUS_TREEVIEW_DND;
+		else
+			focus.type = CL_FOCUS_TREEVIEW_ROW;
+
+		if (g_str_has_suffix (detail, "left"))
+		{
+			focus.continue_side = CL_CONT_RIGHT;
+		}
+		else if (g_str_has_suffix (detail, "right"))
+		{
+			focus.continue_side = CL_CONT_LEFT;
+		}
+		else if (g_str_has_suffix (detail, "middle"))
+		{
+			focus.continue_side = CL_CONT_LEFT | CL_CONT_RIGHT;
+		}
+		else
+		{
+			/* This may either mean no continuation, or unknown ... 
+			 * if it is unknown we assume it continues on both sides */
+			gboolean row_ending_details = FALSE;
+
+			/* Try to get the style property. */
+			if (widget)
+				gtk_widget_style_get (widget,
+				                      "row-ending-details", &row_ending_details,
+				                      NULL);
+
+			if (row_ending_details)
+				focus.continue_side = CL_CONT_NONE;
+			else
+				focus.continue_side = CL_CONT_LEFT | CL_CONT_RIGHT;
+		}
+		
+	}
+	else if (detail && g_str_has_prefix (detail, "trough") && CHECK_HINT (GE_HINT_SCALE))
+	{
 		focus.type = CL_FOCUS_SCALE;
-	if (DETAIL("tab"))
+	}
+	else if (DETAIL("tab"))
+	{
 		focus.type = CL_FOCUS_TAB;
+	}
+	else
+	{
+		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
+	}
 	
 	/* Focus color */
 	if (clearlooks_style->has_focus_color)

@@ -50,6 +50,13 @@ typedef enum
 
 typedef enum
 {
+	CL_CONT_NONE       = 0,
+	CL_CONT_LEFT       = 1 << 0,
+	CL_CONT_RIGHT      = 1 << 1
+} ClearlooksContinue;
+
+typedef enum
+{
 	CL_ORIENTATION_LEFT_TO_RIGHT,
 	CL_ORIENTATION_RIGHT_TO_LEFT,
 	CL_ORIENTATION_BOTTOM_TO_TOP,
@@ -89,7 +96,9 @@ typedef enum
 {
 	CL_FOCUS_BUTTON,
 	CL_FOCUS_LABEL,
-	CL_FOCUS_LISTVIEW,
+	CL_FOCUS_TREEVIEW_HEADER,
+	CL_FOCUS_TREEVIEW_ROW,
+	CL_FOCUS_TREEVIEW_DND,
 	CL_FOCUS_SCALE,
 	CL_FOCUS_TAB
 } ClearlooksFocusType;
@@ -258,6 +267,7 @@ typedef struct
 typedef struct
 {
 	ClearlooksFocusType type;
+	ClearlooksContinue  continue_side;
 	CairoColor          color;
 	boolean             has_color;
 } FocusParameters;
