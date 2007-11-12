@@ -15,13 +15,58 @@
       <email>daniel.borgmann@gmail.com</email>
     </author>
   </metainfo>
+
+  <option name="style" type="enumeration" default="GUMMY">
+    <_long_name>Style</_long_name>
+    <enumeration value="CLASSIC">
+      <_label>Classic</_label>
+    </enumeration>
+    <enumeration value="GLOSSY">
+      <_label>Glossy</_label>
+    </enumeration>
+    <enumeration value="GUMMY">
+      <_label>Gummy</_label>
+    </enumeration>
+    <enumeration value="INVERTED">
+      <_label>Inverted</_label>
+    </enumeration>
+  </option>
+
+  <option name="menubarstyle" type="enumeration" default="0">
+    <_long_name>Menubar Style</_long_name>
+    <enumeration value="0">
+      <_label>Flat</_label>
+    </enumeration>
+    <enumeration value="1">
+      <_label>3d-ish (gradient)</_label>
+    </enumeration>
+    <enumeration value="2">
+      <_label>3d-ish (button)</_label>
+    </enumeration>
+  </option>
+
+  <option name="toolbarstyle" type="enumeration" default="0">
+    <_long_name>Toolbar Style</_long_name>
+    <_comment>Requires style Glossy or Gummy</_comment>
+    <enumeration value="0">
+      <_label>Flat</_label>
+    </enumeration>
+    <enumeration value="1">
+      <_label>3d-ish (gradient)</_label>
+    </enumeration>
+  </option>
+  
+  <option name="colorize_scrollbar" type="boolean" default="FALSE">
+    <_long_name>Colorize Scrollbar</_long_name>
+    <_description>Enable Animations on Progressbars, Radio-, and CheckButtons</_description>
+  </option>
   
   <option name="scrollbar_color" type="color" default="#999999">
     <_long_name>Scrollbar Color</_long_name>
     <_description>Sets the Color of Scrollbars</_description>
   </option>
   
-  <option name="animation" type="boolean" default="TRUE">
+  <option name="animation" type="boolean" default="FALSE">
     <_long_name>Animations</_long_name>
     <_description>Enable Animations on Progressbars, Radio-, and CheckButtons</_description>
   </option>
@@ -34,17 +79,12 @@
     <preferred_widget>slider</preferred_widget>
   </option>
   
-  <option name="menubarstyle" type="enumeration" default="1">
-    <_long_name>Menubar Style</_long_name>
-    <enumeration value="0">
-      <_label>Flat</_label>
-    </enumeration>
-    <enumeration value="1">
-      <_label>3d-ish (gradient)</_label>
-    </enumeration>
-    <enumeration value="2">
-      <_label>3d-ish (button)</_label>
-    </enumeration>
+  <option name="radius" type="real" default="3.0">
+    <minimum>0</minimum>
+    <maximum>10</maximum>
+    <precision>2</precision>
+    <_long_name>Radius</_long_name>
+    <preferred_widget>slider</preferred_widget>
   </option>
   
 </engine>
