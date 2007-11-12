@@ -1,3 +1,24 @@
+Overview of Changes in 2.13.0 (since 2.12.2)
+============================================
+
+This is the first release in the 2.13 unstable series. A major change is
+that the clearlooks and industrial engines now use styles from the rc
+file to determine what to draw, instead of checking widgets that often.
+
+This adresses bug 453499 – Widget specific special cases in the engine.
+
+Other changes and bugfixes include:
+ - Improved treeview header in Industrial
+ - The clearlooks (gummy) vertical tabs were fixed (Bug #475291)
+ - New tab design for the gummy style in Clearlooks
+ - New focus drawing code in Clearlooks with a new style in gummy
+ - Added missing options to the clearlooks schema file. (Bug #475294)
+
+New and udpated translations:
+ Djihed Afifi (ar)
+ Matej Urbančič (sl)
+ Ivar Smolin (et)
+
 Overview of Changes in 2.12.2 (since 2.12.1)
 ============================================
 
