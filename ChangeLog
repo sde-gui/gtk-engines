@@ -1,3 +1,10 @@
+2007-11-12  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/Makefile.am:
+	* engines/smooth/Makefile.am:
+	* engines/support/Makefile.am:
+	Fix the distribution of the config.h and config.h.in files.
+
 2007-11-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

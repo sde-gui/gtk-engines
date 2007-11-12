@@ -46,7 +46,6 @@ EXTRA_DIST =								\
 	./src/engine/smooth_gtk2_drawing.h				\
 	./src/engine/smooth_gtk2_engine.h				\
 	./src/engine/smooth_gtk2_rc.h					\
-	./src/config.h.in						\
 	./AUTHORS
 
 libsmooth_la_SOURCES =							\

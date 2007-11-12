@@ -4,9 +4,6 @@ INCLUDES = $(GTK_CFLAGS) $(DEVELOPMENT_CFLAGS) \
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libclearlooks.la
 
-EXTRA_DIST = ./src/config.h.in
-
-
 libclearlooks_la_SOURCES =		\
         ./src/clearlooks_rc_style.c	\
         ./src/clearlooks_rc_style.h	\
@@ -22,8 +19,7 @@ libclearlooks_la_SOURCES =		\
 	./src/clearlooks_draw_inverted.c	\
 	./src/clearlooks_draw_gummy.c	\
 	./src/clearlooks_draw.h		\
-	./src/clearlooks_types.h	\
-	./src/config.h
+	./src/clearlooks_types.h
 
 libclearlooks_la_LDFLAGS = -module -avoid-version -no-undefined
 libclearlooks_la_LIBADD =  $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
