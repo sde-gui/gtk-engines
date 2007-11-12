@@ -2284,7 +2284,6 @@ clearlooks_draw_focus (cairo_t *cr,
 			 y + focus->line_width / 2.0,
 			 width - focus->line_width, height - focus->line_width);
 	cairo_stroke (cr);
-	cairo_destroy (cr);
 }
 
 void
