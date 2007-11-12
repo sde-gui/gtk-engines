@@ -100,7 +100,9 @@ typedef enum
 	CL_FOCUS_TREEVIEW_ROW,
 	CL_FOCUS_TREEVIEW_DND,
 	CL_FOCUS_SCALE,
-	CL_FOCUS_TAB
+	CL_FOCUS_TAB,
+	CL_FOCUS_COLOR_WHEEL_DARK,
+	CL_FOCUS_COLOR_WHEEL_LIGHT
 } ClearlooksFocusType;
 
 
@@ -270,6 +272,9 @@ typedef struct
 	ClearlooksContinue  continue_side;
 	CairoColor          color;
 	boolean             has_color;
+	gint                line_width;
+	guint8*             dash_list;
+	boolean             interior;
 } FocusParameters;
 
 typedef struct

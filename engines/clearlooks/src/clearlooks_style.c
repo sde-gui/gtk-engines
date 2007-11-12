@@ -1284,6 +1284,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	ClearlooksColors *colors = &clearlooks_style->colors;
 	WidgetParameters params;
 	FocusParameters focus;
+	guint8* dash_list;
 
 	cairo_t *cr;
 
@@ -1310,6 +1311,23 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 			width++;
 		}
 	}
+
+	focus.interior = FALSE;
+	focus.line_width = 1;
+	dash_list = NULL;
+
+	if (widget)
+	{
+		gtk_widget_style_get (widget,
+		                      "focus-line-width", &focus.line_width,
+		                      "focus-line-pattern", &dash_list,
+		                      "interior-focus", &focus.interior,
+		                      NULL);
+	}
+	if (dash_list)
+		focus.dash_list = dash_list;
+	else
+		focus.dash_list = (guint8*) g_strdup ("\1\1");
 	
 	/* Focus type */
 	if (DETAIL("button"))
@@ -1366,6 +1384,13 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	{
 		focus.type = CL_FOCUS_TAB;
 	}
+	else if (detail && g_str_has_prefix (detail, "colorwheel"))
+	{
+		if (DETAIL ("colorwheel_dark"))
+			focus.type = CL_FOCUS_COLOR_WHEEL_DARK;
+		else
+			focus.type = CL_FOCUS_COLOR_WHEEL_LIGHT;
+	}
 	else
 	{
 		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
@@ -1381,6 +1406,8 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		focus.color = colors->spot[1];
 
 	STYLE_FUNCTION(draw_focus) (cr, colors, &params, &focus, x, y, width, height);
+
+	g_free (focus.dash_list);
 
 	cairo_destroy (cr);
 }
