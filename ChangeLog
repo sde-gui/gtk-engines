@@ -1,3 +1,16 @@
+2007-11-14  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_entry), (clearlooks_gummy_draw_slider),
+	(clearlooks_gummy_draw_scrollbar_stepper),
+	(clearlooks_gummy_draw_scrollbar_slider),
+	(clearlooks_gummy_draw_radiobutton), (clearlooks_gummy_draw_focus):
+	Changed gummy focused entry color
+	and whiteuselessspaces :)
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_realize):
+	Changed spot[0]. (I'd like to deprecate it in the future)
+
 2007-11-12  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
