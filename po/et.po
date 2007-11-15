@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-10 21:58+0100\n"
-"PO-Revision-Date: 2007-09-19 08:35+0300\n"
+"POT-Creation-Date: 2007-11-12 19:20+0000\n"
+"PO-Revision-Date: 2007-11-15 06:36+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -30,40 +30,76 @@ msgstr ""
 msgid "Animations"
 msgstr "Animatsioonid"
 
-#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Klassikaline"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Kerimisribade värvuse määramine"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: ../schema/clearlooks.xml.in.in.h:5
+#: ../schema/clearlooks.xml.in.in.h:7
 msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
 msgstr ""
 "Animatsioonide lubamine edenemisribadel, raadionuppudel ja märkeruutudel"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "Lame"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr "Läikiv"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr "Kleepuv"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inverted"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Menubar Style"
 msgstr "Menüüriba laad"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Radius"
+msgstr "Raadius"
+
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Requires style Glossy or Gummy"
+msgstr "Sellele tuleb määrata läikiv või kleepuv laad"
+
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Scrollbar Color"
 msgstr "Kerimisriba värvus"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Sets the Color of Scrollbars"
 msgstr "Kerimisribade värvuse määramine"
 
-#: ../schema/hc.xml.in.in.h:1
-msgid "Cell Indicator Size"
-msgstr ""
+#: ../schema/clearlooks.xml.in.in.h:17
+msgid "Style"
+msgstr "Laad"
 
-#: ../schema/hc.xml.in.in.h:2
+#: ../schema/clearlooks.xml.in.in.h:18
+msgid "Toolbar Style"
+msgstr "Tööriistariba laad"
+
+#: ../schema/hcengine.xml.in.in.h:1
+msgid "Cell Indicator Size"
+msgstr "Lahtri näidiku suurus"
+
+#: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
 msgstr "Serva paksus"
 
-#: ../schema/hc.xml.in.in.h:3
+#: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr "Märkeruutude ja raadionuppude suurused puuvaadetes. (Viga #351764)"
 
