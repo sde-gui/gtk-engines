@@ -1312,6 +1312,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		}
 	}
 
+	focus.has_color = FALSE;
 	focus.interior = FALSE;
 	focus.line_width = 1;
 	dash_list = NULL;

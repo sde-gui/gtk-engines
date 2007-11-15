@@ -1560,13 +1560,18 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
                              const FocusParameters           *focus,
                              int x, int y, int width, int height)
 {
-	double xoffset, yoffset;
 	CairoColor fill = focus->color;
 	CairoColor shade1, shade2, shade3;
 	CairoColor border;
-	boolean fill_focus = TRUE; /* Useful in the future for selected cells */
-	boolean stroke_focus = TRUE; /* Useful? */
-	double radius = widget->radius - 1.0;
+	
+	/* Default values */
+	double xoffset = 1.5;
+	double yoffset = 1.5;
+	double radius = widget->radius-1.0;
+	double border_alpha = 0.6;
+	double fill_alpha = 0.2;
+	boolean fill_focus = TRUE;
+	boolean stroke_focus = TRUE;
 	
 	ge_shade_color (&fill, 0.65, &border);
 	ge_shade_color (&fill, SHADE_TOP, &shade1);
@@ -1585,36 +1590,24 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			yoffset = 0.5;
 			break;
 		case CL_FOCUS_TREEVIEW_DND:
-			xoffset = 1.5;
-			yoffset = 1.5;
 			break;
 		case CL_FOCUS_TREEVIEW_HEADER:
 			cairo_translate (cr, -1, 0);
-			xoffset = 1.5;
-			yoffset = 1.5;
 			break;
 		case CL_FOCUS_TREEVIEW_ROW:
 			fill_focus = FALSE;
-			xoffset = 1.5;
-			yoffset = 1.5;
 			break;
 		case CL_FOCUS_TAB:
-			xoffset = 1.5;
-			yoffset = 1.5;
 			break;
 		case CL_FOCUS_SCALE:
-			xoffset = 1.5;
-			yoffset = 1.5;
 			break;
 		default:
-			xoffset = 1.5;
-			yoffset = 1.5;
 			break;
 	};
 	
-	cairo_set_line_width (cr, 1.0);
+	cairo_set_line_width (cr, focus->line_width);
 	
-	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width - xoffset*2, height - yoffset*2, radius, widget->corners);
+	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width-(xoffset*2), height-(yoffset*2), radius, widget->corners);
 	
 	if (fill_focus)
 	{
@@ -1623,18 +1616,19 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 		cairo_translate (cr, x, y);
 		
 		pattern = cairo_pattern_create_linear (0, 0, 0, height);
-		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shade1.r, shade1.g, shade1.b, 0.2);
-		cairo_pattern_add_color_stop_rgba (pattern, 0.5, shade2.r, shade2.g, shade2.b, 0.2);
-		cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill.r,   fill.g,   fill.b,   0.2);
-		cairo_pattern_add_color_stop_rgba (pattern, 1.0, shade3.r, shade3.g, shade3.b, 0.2);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shade1.r, shade1.g, shade1.b, fill_alpha);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.5, shade2.r, shade2.g, shade2.b, fill_alpha);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill.r,   fill.g,   fill.b,   fill_alpha);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, shade3.r, shade3.g, shade3.b, fill_alpha);
 		cairo_set_source (cr, pattern);
 		cairo_fill_preserve (cr);
+		
 		cairo_pattern_destroy (pattern);
 	}
 	
 	if (stroke_focus)
 	{
-		border.a = 0.6;
+		border.a = border_alpha;
 		ge_cairo_set_color (cr, &border);
 		cairo_stroke (cr);
 	}

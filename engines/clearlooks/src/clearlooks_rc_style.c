@@ -197,6 +197,7 @@ clearlooks_gtk2_rc_parse_boolean (GtkSettings *settings,
 static guint
 clearlooks_gtk2_rc_parse_color(GtkSettings  *settings,
                                GScanner     *scanner,
+                               GtkRcStyle   *style,
                                GdkColor     *color)
 {
 	guint token;
@@ -208,7 +209,7 @@ clearlooks_gtk2_rc_parse_color(GtkSettings  *settings,
 	if (token != G_TOKEN_EQUAL_SIGN)
 	   return G_TOKEN_EQUAL_SIGN;
 
-	return gtk_rc_parse_color (scanner, color);
+	return gtk_rc_parse_color_full (scanner, style, color);
 }
 
 static guint
@@ -367,11 +368,11 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 		switch (token)
 		{
 			case TOKEN_FOCUSCOLOR:
-				token = clearlooks_gtk2_rc_parse_color (settings, scanner, &clearlooks_style->focus_color);
+				token = clearlooks_gtk2_rc_parse_color (settings, scanner, rc_style, &clearlooks_style->focus_color);
 				clearlooks_style->flags |= CL_FLAG_FOCUS_COLOR;
 				break;
 			case TOKEN_SCROLLBARCOLOR:
-				token = clearlooks_gtk2_rc_parse_color (settings, scanner, &clearlooks_style->scrollbar_color);
+				token = clearlooks_gtk2_rc_parse_color (settings, scanner, rc_style, &clearlooks_style->scrollbar_color);
 				clearlooks_style->flags |= CL_FLAG_SCROLLBAR_COLOR;
 				break;
 			case TOKEN_COLORIZESCROLLBAR:

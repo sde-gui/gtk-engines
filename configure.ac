@@ -125,8 +125,8 @@ if test $lua = "yes"; then
 fi
 
 # Don't forget to update the README when changing this.
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.10.0,,
-                  AC_MSG_ERROR([GTK+-2.10 is required to compile gtk-engines]))
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.12.0,,
+                  AC_MSG_ERROR([GTK+-2.12 is required to compile gtk-engines]))
 
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)

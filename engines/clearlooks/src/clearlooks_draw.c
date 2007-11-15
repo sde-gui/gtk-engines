@@ -2244,7 +2244,9 @@ clearlooks_draw_focus (cairo_t *cr,
                        const FocusParameters           *focus,
                        int x, int y, int width, int height)
 {
-	if (focus->type == CL_FOCUS_COLOR_WHEEL_LIGHT)
+	if (focus->has_color)
+		ge_cairo_set_color (cr, &focus->color);
+	else if (focus->type == CL_FOCUS_COLOR_WHEEL_LIGHT)
 		cairo_set_source_rgb (cr, 0., 0., 0.);
 	else if (focus->type == CL_FOCUS_COLOR_WHEEL_DARK)
 		cairo_set_source_rgb (cr, 1., 1., 1.);
@@ -2280,9 +2282,9 @@ clearlooks_draw_focus (cairo_t *cr,
 	}
 
 	cairo_rectangle (cr,
-			 x + focus->line_width / 2.0,
-			 y + focus->line_width / 2.0,
-			 width - focus->line_width, height - focus->line_width);
+	                 x + focus->line_width / 2.0,
+	                 y + focus->line_width / 2.0,
+	                 width - focus->line_width, height - focus->line_width);
 	cairo_stroke (cr);
 }
 
