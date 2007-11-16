@@ -1,5 +1,11 @@
 2007-11-16  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_optionmenu):
+	More offset
+
+2007-11-16  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_focus):
 	Mmm... Still very undecided

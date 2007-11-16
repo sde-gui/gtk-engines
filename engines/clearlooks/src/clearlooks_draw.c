@@ -903,7 +903,7 @@ clearlooks_draw_optionmenu (cairo_t *cr,
                             int x, int y, int width, int height)
 {
 	SeparatorParameters separator;
-	int offset = params->ythickness + 1;
+	int offset = params->ythickness + 2;
 	
 	params->style_functions->draw_button (cr, colors, params, x, y, width, height);
 	
