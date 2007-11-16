@@ -1582,8 +1582,9 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	switch (focus->type)
 	{
 		case CL_FOCUS_BUTTON:
-			xoffset = -0.5;
-			yoffset = -0.5;
+			radius--;
+			xoffset = 1.5;
+			yoffset = 1.5;
 			break;
 		case CL_FOCUS_LABEL:
 			xoffset = 0.5;
@@ -1598,6 +1599,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			fill_focus = FALSE;
 			break;
 		case CL_FOCUS_TAB:
+			radius--;
 			break;
 		case CL_FOCUS_SCALE:
 			break;

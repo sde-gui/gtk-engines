@@ -1,3 +1,9 @@
+2007-11-16  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
+	Mmm... Still very undecided
+
 2007-11-15  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* README:
