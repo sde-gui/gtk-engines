@@ -1607,15 +1607,14 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			break;
 	};
 	
+	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, focus->line_width);
 	
-	ge_cairo_rounded_rectangle (cr, x+xoffset, y+yoffset, width-(xoffset*2), height-(yoffset*2), radius, widget->corners);
+	ge_cairo_rounded_rectangle (cr, xoffset, yoffset, width-(xoffset*2), height-(yoffset*2), radius, widget->corners);
 	
 	if (fill_focus)
 	{
 		cairo_pattern_t *pattern;
-		
-		cairo_translate (cr, x, y);
 		
 		pattern = cairo_pattern_create_linear (0, 0, 0, height);
 		cairo_pattern_add_color_stop_rgba (pattern, 0.0, shade1.r, shade1.g, shade1.b, fill_alpha);
