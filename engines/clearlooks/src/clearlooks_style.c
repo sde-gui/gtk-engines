@@ -531,7 +531,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		}
 		else
 		{
-			params.corners    = CR_CORNER_ALL;
+			params.corners = CR_CORNER_ALL;
 			params.enable_glow = TRUE;
 		}
 		
@@ -607,7 +607,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			slider.horizontal = TRUE;
 		else if (CHECK_HINT (GE_HINT_VSCALE))
 			slider.horizontal = FALSE;
-		else /* Fallback based on the size  ... */
+		else /* Fallback based on the size... */
 			slider.horizontal = width >= height;
 		
 		STYLE_FUNCTION(draw_scale_trough) (cr, &clearlooks_style->colors,

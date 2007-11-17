@@ -1568,12 +1568,14 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	double xoffset = 1.5;
 	double yoffset = 1.5;
 	double radius = widget->radius-1.0;
-	double border_alpha = 0.6;
+	double border_alpha = 0.7;
 	double fill_alpha = 0.2;
-	boolean fill_focus = TRUE;
-	boolean stroke_focus = TRUE;
+	double shadow_alpha = 0.5;
+	boolean focus_fill = TRUE;
+	boolean focus_border = TRUE;
+	boolean focus_shadow = FALSE;
 	
-	ge_shade_color (&fill, 0.65, &border);
+	ge_shade_color (&fill, 0.6, &border);
 	ge_shade_color (&fill, SHADE_TOP, &shade1);
 	ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
 	ge_shade_color (&fill, SHADE_BOTTOM, &shade3);
@@ -1582,13 +1584,18 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	switch (focus->type)
 	{
 		case CL_FOCUS_BUTTON:
-			radius--;
-			xoffset = 1.5;
-			yoffset = 1.5;
+			xoffset = -2.5;
+			yoffset = -2.5;
+			radius++;
+			border_alpha = 1.0;
+			focus_shadow = TRUE;
+			ge_shade_color (&fill, SHADE_TOP+0.1, &shade1);
+			ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
+			ge_shade_color (&fill, SHADE_BOTTOM-0.1, &shade3);
 			break;
 		case CL_FOCUS_LABEL:
-			xoffset = 0.5;
-			yoffset = 0.5;
+			xoffset = 1.5;
+			yoffset = 1.5;
 			break;
 		case CL_FOCUS_TREEVIEW_DND:
 			break;
@@ -1596,7 +1603,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			cairo_translate (cr, -1, 0);
 			break;
 		case CL_FOCUS_TREEVIEW_ROW:
-			fill_focus = FALSE;
+			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TAB:
 			radius--;
@@ -1612,7 +1619,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	
 	ge_cairo_rounded_rectangle (cr, xoffset, yoffset, width-(xoffset*2), height-(yoffset*2), radius, widget->corners);
 	
-	if (fill_focus)
+	if (focus_fill)
 	{
 		cairo_pattern_t *pattern;
 		
@@ -1627,10 +1634,16 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 		cairo_pattern_destroy (pattern);
 	}
 	
-	if (stroke_focus)
+	if (focus_border)
 	{
-		border.a = border_alpha;
-		ge_cairo_set_color (cr, &border);
+		clearlooks_set_mixed_color (cr, &widget->parentbg, &border, border_alpha);
+		cairo_stroke (cr);
+	}
+	
+	if (focus_shadow)
+	{
+		ge_cairo_rounded_rectangle (cr, xoffset-1, yoffset-1, width-(xoffset*2)+2, height-(yoffset*2)+2, radius+1, widget->corners);
+		clearlooks_set_mixed_color (cr, &widget->parentbg, &fill, shadow_alpha);
 		cairo_stroke (cr);
 	}
 }

@@ -1,3 +1,13 @@
+2007-11-17  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
+	New design for button's focus
+	
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Whitespaces
+
 2007-11-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* test/gtkrcs/clearlooks:
