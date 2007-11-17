@@ -1,3 +1,8 @@
+2007-11-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* test/gtkrcs/clearlooks:
+	Some of the old options that are ignored were wrong.
+
 2007-11-16  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

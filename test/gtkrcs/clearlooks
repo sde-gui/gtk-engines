@@ -16,10 +16,10 @@ style "default"
 		radius = 3.0
 
 		# Options that are ignored ... just some junk
-		sunkenmenu = "JUNK"
-		progressbar_style = JUNK
-		menuitems_style = 12345
-		listviewitem_style = TRUE
+		sunkenmenubar = "JUNK"
+		progressbarstyle = JUNK
+		menuitemstyle = 12345
+		listviewitemstyle = TRUE
 	}
 }
 
