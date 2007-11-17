@@ -1575,7 +1575,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	boolean focus_border = TRUE;
 	boolean focus_shadow = FALSE;
 	
-	ge_shade_color (&fill, 0.6, &border);
+	ge_shade_color (&fill, 0.65, &border);
 	ge_shade_color (&fill, SHADE_TOP, &shade1);
 	ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
 	ge_shade_color (&fill, SHADE_BOTTOM, &shade3);
@@ -1588,6 +1588,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			yoffset = -2.5;
 			radius++;
 			border_alpha = 1.0;
+			fill_alpha = 0.16;
 			focus_shadow = TRUE;
 			ge_shade_color (&fill, SHADE_TOP+0.1, &shade1);
 			ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
