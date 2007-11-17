@@ -273,6 +273,7 @@ typedef struct
 	CairoColor          color;
 	boolean             has_color;
 	gint                line_width;
+	gint                padding;
 	guint8*             dash_list;
 	boolean             interior;
 } FocusParameters;

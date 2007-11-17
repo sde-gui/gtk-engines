@@ -1576,23 +1576,20 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	boolean focus_shadow = FALSE;
 	
 	ge_shade_color (&fill, 0.65, &border);
-	ge_shade_color (&fill, SHADE_TOP, &shade1);
-	ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
-	ge_shade_color (&fill, SHADE_BOTTOM, &shade3);
+	ge_shade_color (&fill, 1.18, &shade1);
+	ge_shade_color (&fill, 1.02, &shade2);
+	ge_shade_color (&fill, 0.84, &shade3);
 	
 	/* Do some useful things to adjust focus */
 	switch (focus->type)
 	{
 		case CL_FOCUS_BUTTON:
-			xoffset = -2.5;
-			yoffset = -2.5;
+			xoffset = -1.5-(focus->padding);
+			yoffset = -1.5-(focus->padding);
 			radius++;
 			border_alpha = 1.0;
-			fill_alpha = 0.16;
+			fill_alpha = 0.15;
 			focus_shadow = TRUE;
-			ge_shade_color (&fill, SHADE_TOP+0.1, &shade1);
-			ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
-			ge_shade_color (&fill, SHADE_BOTTOM-0.1, &shade3);
 			break;
 		case CL_FOCUS_LABEL:
 			xoffset = 1.5;

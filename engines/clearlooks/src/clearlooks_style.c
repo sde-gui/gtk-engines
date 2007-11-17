@@ -1322,6 +1322,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		gtk_widget_style_get (widget,
 		                      "focus-line-width", &focus.line_width,
 		                      "focus-line-pattern", &dash_list,
+		                      "focus-padding", &focus.padding,
 		                      "interior-focus", &focus.interior,
 		                      NULL);
 	}
