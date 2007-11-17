@@ -1587,8 +1587,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			xoffset = -1.5-(focus->padding);
 			yoffset = -1.5-(focus->padding);
 			radius++;
-			border_alpha = 1.0;
-			fill_alpha = 0.15;
+			border_alpha = 0.9;
+			fill_alpha = 0.14;
 			focus_shadow = TRUE;
 			break;
 		case CL_FOCUS_LABEL:
