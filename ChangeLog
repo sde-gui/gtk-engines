@@ -2,6 +2,12 @@
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_focus):
+	No shadow on active buttons
+
+2007-11-17  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
 	Shadings
 
 2007-11-17  Andrea Cimitan  <andrea.cimitan@gmail.com>

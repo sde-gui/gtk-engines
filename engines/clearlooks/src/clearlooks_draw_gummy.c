@@ -1589,7 +1589,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			radius++;
 			border_alpha = 0.9;
 			fill_alpha = 0.14;
-			focus_shadow = TRUE;
+			if (!widget->active)
+				focus_shadow = TRUE;
 			break;
 		case CL_FOCUS_LABEL:
 			xoffset = 1.5;
