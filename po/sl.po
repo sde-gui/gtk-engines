@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-17 04:26+0100\n"
-"PO-Revision-Date: 2007-11-14 15:04+0100\n"
+"PO-Revision-Date: 2007-11-19 15:30+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -32,29 +32,65 @@ msgid "Animations"
 msgstr "Animacije"
 
 #: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Klasično"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Obarvanje drsnikov"
+
+#: ../schema/clearlooks.xml.in.in.h:6
 #: ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: ../schema/clearlooks.xml.in.in.h:5
+#: ../schema/clearlooks.xml.in.in.h:7
 msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
 msgstr "Omogoči animacije na elementih oken"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "Plosko"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr "Bleščeče"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr "Guma"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inverted"
+msgstr "Preobrnjeno"
+
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Menubar Style"
 msgstr "Stil orodne vrstice"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Radius"
+msgstr "Radij"
+
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Requires style Glossy or Gummy"
+msgstr "Zahteva bleščeč ali pa gumast slog"
+
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Scrollbar Color"
 msgstr "Barva drsnika"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Sets the Color of Scrollbars"
 msgstr "Določitev barve drsnikov"
+
+#: ../schema/clearlooks.xml.in.in.h:17
+msgid "Style"
+msgstr "Slog"
+
+#: ../schema/clearlooks.xml.in.in.h:18
+msgid "Toolbar Style"
+msgstr "Slog orodne vrstice"
 
 #: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
