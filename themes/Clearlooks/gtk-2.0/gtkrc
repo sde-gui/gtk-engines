@@ -27,7 +27,7 @@ style "clearlooks-default"
 	GtkExpander    ::expander-size        = 16
 	GtkToolbar     ::internal-padding     = 1
 	GtkTreeView    ::expander-size        = 14
-	GtkTreeView    ::vertical-separator   = 1
+	GtkTreeView    ::vertical-separator   = 0
 
 	GtkMenu        ::horizontal-padding   = 0
 	GtkMenu        ::vertical-padding     = 0
@@ -100,7 +100,7 @@ style "clearlooks-button"
 
 style "clearlooks-notebook"
 {
-	xthickness = 2
+	xthickness = 3
 	ythickness = 3
 
 	bg[NORMAL] = shade (1.02, @bg_color)

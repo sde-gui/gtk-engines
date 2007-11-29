@@ -191,6 +191,16 @@ ge_shade_color(const CairoColor *base, gdouble shade_ratio, CairoColor *composit
 	gdouble brightness = 0;
 
 	g_return_if_fail (base && composite);
+	
+	if (shade_ratio == 1.0)
+	{
+		composite->r = base->r;
+		composite->g = base->g;
+		composite->b = base->b;
+		composite->a = base->a;
+		
+		return;
+	}
 
 	ge_hsb_from_color (base, &hue, &saturation, &brightness);
 

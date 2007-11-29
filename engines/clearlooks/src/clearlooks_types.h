@@ -16,7 +16,6 @@ typedef enum
 	CL_NUM_STYLES = 4
 } ClearlooksStyles;
 
-
 typedef enum
 {
 	CL_STATE_NORMAL,
@@ -96,6 +95,7 @@ typedef enum
 {
 	CL_FOCUS_BUTTON,
 	CL_FOCUS_LABEL,
+	CL_FOCUS_TREEVIEW,
 	CL_FOCUS_TREEVIEW_HEADER,
 	CL_FOCUS_TREEVIEW_ROW,
 	CL_FOCUS_TREEVIEW_DND,

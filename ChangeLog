@@ -1,3 +1,16 @@
+2007-11-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c: (clearlooks_draw_tab):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_tab), (clearlooks_gummy_draw_focus):
+	* engines/clearlooks/src/clearlooks_types.h:
+	* engines/clearlooks/src/support.c:
+	(clearlooks_set_toolbar_parameters):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Various whitespaces and intentations, BUT, in clearlooks_draw_gummy.c
+	I've refined the calculation of the tab stripe and used a new look for 
+	listview focus
+
 2007-11-17  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

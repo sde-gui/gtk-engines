@@ -720,8 +720,8 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	/* Top shadow */
 	cairo_rectangle (cr, x+1, y+1, width-2, 4);
 	pattern = cairo_pattern_create_linear (x, y, x, y+4);
-	cairo_pattern_add_color_stop_rgba (pattern, 0.0, shadow.r, shadow.g, shadow.b, 0.3);	
-	cairo_pattern_add_color_stop_rgba (pattern, 1.0, shadow.r, shadow.g, shadow.b, 0.);	
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, shadow.r, shadow.g, shadow.b, 0.3);
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, shadow.r, shadow.g, shadow.b, 0.);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
@@ -729,8 +729,8 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	/* Left shadow */
 	cairo_rectangle (cr, x+1, y+1, 4, height-2);
 	pattern = cairo_pattern_create_linear (x, y, x+4, y);
-	cairo_pattern_add_color_stop_rgba (pattern, 0.0, shadow.r, shadow.g, shadow.b, 0.3);	
-	cairo_pattern_add_color_stop_rgba (pattern, 1.0, shadow.r, shadow.g, shadow.b, 0.);	
+	cairo_pattern_add_color_stop_rgba (pattern, 0.0, shadow.r, shadow.g, shadow.b, 0.3);
+	cairo_pattern_add_color_stop_rgba (pattern, 1.0, shadow.r, shadow.g, shadow.b, 0.);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
@@ -1242,10 +1242,10 @@ clearlooks_draw_tab (cairo_t *cr,
 		
 		ge_shade_color (fill, 0.92, &shadow);
 
-		cairo_pattern_add_color_stop_rgba  (pattern, 0.0,  				hilight.r, hilight.g, hilight.b, 0.4);     
-		cairo_pattern_add_color_stop_rgba  (pattern, 1.0/height,  hilight.r, hilight.g, hilight.b, 0.4); 
-		cairo_pattern_add_color_stop_rgb	(pattern, 1.0/height, 	fill->r,fill->g,fill->b);
-		cairo_pattern_add_color_stop_rgb 	(pattern, 1.0, 					shadow.r,shadow.g,shadow.b);
+		cairo_pattern_add_color_stop_rgba  (pattern, 0.0,        hilight.r, hilight.g, hilight.b, 0.4);
+		cairo_pattern_add_color_stop_rgba  (pattern, 1.0/height, hilight.r, hilight.g, hilight.b, 0.4);
+		cairo_pattern_add_color_stop_rgb   (pattern, 1.0/height, fill->r,fill->g,fill->b);
+		cairo_pattern_add_color_stop_rgb   (pattern, 1.0,        shadow.r,shadow.g,shadow.b);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
 		cairo_pattern_destroy (pattern);
@@ -1260,7 +1260,6 @@ clearlooks_draw_tab (cairo_t *cr,
 	
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 		
-
 		cairo_pattern_add_color_stop_rgb  (pattern, 0.0,        stripe_fill->r, stripe_fill->g, stripe_fill->b);
 		cairo_pattern_add_color_stop_rgb  (pattern, strip_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
 		cairo_pattern_add_color_stop_rgba (pattern, strip_size, hilight.r, hilight.g, hilight.b, 0.5);
@@ -1804,7 +1803,7 @@ clearlooks_draw_statusbar (cairo_t *cr,
 	cairo_translate       (cr, x, y+0.5);
 	cairo_move_to         (cr, 0, 0);
 	cairo_line_to         (cr, width, 0);
-	ge_cairo_set_color  (cr, dark);
+	ge_cairo_set_color    (cr, dark);
 	cairo_stroke          (cr);
 
 	cairo_translate       (cr, 0, 1);
@@ -2201,7 +2200,7 @@ _clearlooks_draw_arrow (cairo_t *cr, const CairoColor *color,
 	if (type == CL_ARROW_NORMAL)
 	{
 		cairo_translate (cr, x, y);
-		cairo_rotate (cr, -rotate);		
+		cairo_rotate (cr, -rotate);
 		clearlooks_draw_normal_arrow (cr, color, 0, 0, width, height);
 	}
 	else if (type == CL_ARROW_COMBO)

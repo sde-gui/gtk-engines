@@ -196,7 +196,10 @@ clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 }
 
 void
-clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar, GtkWidget *widget, GdkWindow *window, gint x, gint y)
+clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar,
+                                   GtkWidget *widget,
+                                   GdkWindow *window,
+                                   gint x, gint y)
 {
 	toolbar->topmost = FALSE;
 

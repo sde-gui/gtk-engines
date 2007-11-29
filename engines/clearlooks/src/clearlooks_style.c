@@ -1222,7 +1222,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_parent_class->init_from_rc (style, rc_style);
 	
 	g_assert ((CLEARLOOKS_RC_STYLE (rc_style)->style >= 0) && (CLEARLOOKS_RC_STYLE (rc_style)->style < CL_NUM_STYLES));
-	clearlooks_style->style		= CLEARLOOKS_RC_STYLE (rc_style)->style;
+	clearlooks_style->style               = CLEARLOOKS_RC_STYLE (rc_style)->style;
 	
 	clearlooks_style->menubarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->toolbarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->toolbarstyle;
@@ -1395,7 +1395,10 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	}
 	else
 	{
-		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
+		if (CHECK_HINT (GE_HINT_TREEVIEW))
+			focus.type = CL_FOCUS_TREEVIEW; /* Let's call it "LABEL" :) */
+		else
+			focus.type = CL_FOCUS_LABEL;
 	}
 	
 	/* Focus color */
@@ -1405,7 +1408,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		focus.has_color = TRUE;
 	}
 	else
-		focus.color = colors->spot[1];
+		focus.color = colors->bg[GTK_STATE_SELECTED];
 
 	STYLE_FUNCTION(draw_focus) (cr, colors, &params, &focus, x, y, width, height);
 
