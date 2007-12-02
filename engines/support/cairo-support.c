@@ -419,6 +419,35 @@ ge_cairo_stroke_rectangle (cairo_t *cr, double x, double y, double w, double h)
 	cairo_stroke (cr);
 }
 
+void
+ge_cairo_inner_rectangle (cairo_t *cr,
+                          double x, double y,
+                          double width, double height)
+{
+	double line_width = cairo_get_line_width (cr);
+
+	cairo_rectangle (cr, x + line_width / 2.0,
+	                     y + line_width / 2.0,
+	                     width - line_width,
+	                     height - line_width);
+}
+
+void
+ge_cairo_inner_rounded_rectangle (cairo_t *cr,
+                                  double x, double y,
+                                  double width, double height,
+                                  double radius, CairoCorners corners)
+{
+	double line_width = cairo_get_line_width (cr);
+
+	ge_cairo_rounded_rectangle (cr,
+                                    x + line_width / 2.0,
+                                    y + line_width / 2.0,
+                                    width - line_width,
+                                    height - line_width,
+                                    radius, corners);
+}
+
 /***********************************************
  * ge_cairo_simple_border -
  *  

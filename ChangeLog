@@ -1,5 +1,13 @@
 2007-12-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/support/cairo-support.c: (ge_cairo_inner_rectangle),
+	(ge_cairo_inner_rounded_rectangle):
+	* engines/support/cairo-support.h:
+	Add ge_cairo_inner_rectangle and ge_cairo_inner_rounded_rectangle
+	functions.
+
+2007-12-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* schema/clearlooks.xml.in.in:
 	Fixed the descriptions of the animations and colorize_scrollbar
 	options. Thanks for Werner Pantke for pointing this out.
