@@ -25,19 +25,17 @@
 
 void 
 hc_simple_border_gap_clip(cairo_t *canvas,
-				gint border_thickness,
+			  gint border_thickness,
 
-				gint x,
-				gint y,
-				gint width,
-				gint height,
+			  gint x,
+			  gint y,
+			  gint width,
+			  gint height,
 
-				GtkPositionType gap_side,
-				gint gap_pos,
-				gint gap_size)
+			  GtkPositionType gap_side,
+			  gint gap_pos,
+			  gint gap_size)
 {
-	cairo_set_line_width(canvas, 1.0);
-
 	switch (gap_side)
 	{
 		default:
@@ -50,7 +48,7 @@ hc_simple_border_gap_clip(cairo_t *canvas,
 			cairo_line_to(canvas, x + gap_pos + gap_size, y + border_thickness + 1);
 			cairo_line_to(canvas, x + gap_pos, y + border_thickness + 1);
 			cairo_line_to(canvas, x + gap_pos, y);
-			cairo_line_to(canvas, x, y);
+			cairo_close_path(canvas);
 		break;
 
 		case GTK_POS_LEFT:
@@ -62,7 +60,7 @@ hc_simple_border_gap_clip(cairo_t *canvas,
 			cairo_line_to(canvas, x + border_thickness + 1, y + gap_pos + gap_size);
 			cairo_line_to(canvas, x + border_thickness + 1, y + gap_pos);
 			cairo_line_to(canvas, x, y + gap_pos);
-			cairo_line_to(canvas, x, y);
+			cairo_close_path(canvas);
 		break;
 
 		case GTK_POS_BOTTOM:
@@ -74,7 +72,7 @@ hc_simple_border_gap_clip(cairo_t *canvas,
 			cairo_line_to(canvas, x + gap_pos, y + height - border_thickness - 1);
 			cairo_line_to(canvas, x + gap_pos + gap_size, y + height - border_thickness - 1);
 			cairo_line_to(canvas, x + gap_pos + gap_size, y + height);
-			cairo_line_to(canvas, x + width, y + height);
+			cairo_close_path(canvas);
 		break;
 
 		case GTK_POS_RIGHT:
@@ -86,7 +84,7 @@ hc_simple_border_gap_clip(cairo_t *canvas,
 			cairo_line_to(canvas, x + width - border_thickness - 1, y + gap_pos + gap_size);
 			cairo_line_to(canvas, x + width - border_thickness - 1, y + gap_pos);
 			cairo_line_to(canvas, x + width, y + gap_pos);
-			cairo_line_to(canvas, x + width, y);
+			cairo_close_path(canvas);
 		break;
 	}
 
@@ -224,7 +222,7 @@ do_hc_draw_arrow (cairo_t *canvas,
 	cairo_move_to(canvas, points[0].x + 0.5, points[0].y + 0.5);
 	cairo_line_to(canvas, points[1].x + 0.5, points[1].y + 0.5);
 	cairo_line_to(canvas, points[2].x + 0.5, points[2].y + 0.5);
-	cairo_line_to(canvas, points[0].x + 0.5, points[0].y + 0.5);
+	cairo_close_path(canvas);
 
 	if (fill)
 	{

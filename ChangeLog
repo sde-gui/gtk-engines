@@ -1,5 +1,12 @@
 2007-12-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/hc/src/hc_gtk2_support.c: (hc_simple_border_gap_clip),
+	(do_hc_draw_arrow):
+	Minor changes to the code (use cairo_close_path instead of
+	explicitly going back to the start point.)
+
+2007-12-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/support/cairo-support.c: (ge_cairo_inner_rectangle),
 	(ge_cairo_inner_rounded_rectangle):
 	* engines/support/cairo-support.h:
