@@ -1,3 +1,9 @@
+2007-12-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* schema/clearlooks.xml.in.in:
+	Fixed the descriptions of the animations and colorize_scrollbar
+	options. Thanks for Werner Pantke for pointing this out.
+
 2007-11-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c: (clearlooks_draw_tab):

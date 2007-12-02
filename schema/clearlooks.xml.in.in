@@ -58,7 +58,7 @@
   
   <option name="colorize_scrollbar" type="boolean" default="FALSE">
     <_long_name>Colorize Scrollbar</_long_name>
-    <_description>Enable Animations on Progressbars, Radio-, and CheckButtons</_description>
+    <_description>Colorize Scrollbar</_description>
   </option>
   
   <option name="scrollbar_color" type="color" default="#999999">
@@ -68,7 +68,7 @@
   
   <option name="animation" type="boolean" default="FALSE">
     <_long_name>Animations</_long_name>
-    <_description>Enable Animations on Progressbars, Radio-, and CheckButtons</_description>
+    <_description>Enable Animations on Progressbars</_description>
   </option>
   
   <option name="contrast" type="real" default="1.0">
