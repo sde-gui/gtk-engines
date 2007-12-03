@@ -1,5 +1,11 @@
 2007-12-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* configure.ac:
+	Update for 2.13.1 release.
+
+2007-12-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/hc/src/hc-style.c: (hc_draw_shadow),
 	(hc_draw_shadow_gap), (hc_draw_extension):
 	Fix some outline drawings. Fixes bug #486418 at least partially.

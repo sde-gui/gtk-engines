@@ -1,3 +1,22 @@
+Overview of Changes in 2.13.1 (since 2.13.0)
+============================================
+
+Other changes and bugfixes include:
+ - gtk-engines now depends on GTK+ 2.12 for color parsing (used by Clearlooks)
+ - Some modifications and fixes for the Gummy focus ring.
+ - Fixed descriptions in the clearlooks schema file.
+ - Some initial fixes for bug #486418.
+
+New and udpated translations:
+ Ignacio Casal Quinteiro (gl)
+ Ivar Smolin (et)
+ Matej Urbančič (sl)
+ Ihar Hrachyshka (be@latin)
+ Daniel Nylander (sv)
+ Jorge González (es)
+ Djihed Afifi (ar)
+
+
 Overview of Changes in 2.13.0 (since 2.12.2)
 ============================================
 
