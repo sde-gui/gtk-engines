@@ -148,15 +148,8 @@ hc_draw_shadow(GtkStyle * style,
 	ge_cairo_set_color(canvas, &foreground);
 	cairo_set_line_cap(canvas, CAIRO_LINE_CAP_BUTT);
 
-	/* Pixel Alignedness -
-			
-		If even line width, + 1.0 
-		If odd line width,  + 0.5 
-	 */
-	cairo_set_line_width (canvas, line_width + ((line_width%2)?1.0:0.5));
-
-	/* Stroke Rectangle */
-	ge_cairo_stroke_rectangle (canvas, x, y, width, height);
+	cairo_set_line_width (canvas, line_width);
+	ge_cairo_inner_stroke_rectangle (canvas, x, y, width, height);
 
 	cairo_destroy(canvas);
 }
@@ -219,15 +212,8 @@ hc_draw_shadow_gap (GtkStyle       *style,
 	ge_cairo_set_color(canvas, foreground);
 	cairo_set_line_cap(canvas, CAIRO_LINE_CAP_BUTT);
 
-	/* Pixel Alignedness -
-			
-		If even line width, + 1.0 
-		If odd line width,  + 0.5 
-	 */
-	cairo_set_line_width (canvas, line_width + ((line_width%2)?1.0:0.5));
-
-	/* Stroke Rectangle */
-	ge_cairo_stroke_rectangle (canvas, x, y, width, height);
+	cairo_set_line_width (canvas, line_width);
+	ge_cairo_inner_stroke_rectangle (canvas, x, y, width, height);
 
 	cairo_destroy(canvas);
 }
@@ -364,15 +350,8 @@ hc_draw_extension (GtkStyle       *style,
 	ge_cairo_set_color(canvas, foreground);
 	cairo_set_line_cap(canvas, CAIRO_LINE_CAP_BUTT);
 
-	/* Pixel Alignedness -
-			
-		If even line width, + 1.0 
-		If odd line width,  + 0.5 
-	 */
-	cairo_set_line_width (canvas, line_width + ((line_width%2)?1.0:0.5));
-
-	/* Stroke Rectangle */
-	ge_cairo_stroke_rectangle (canvas, x, y, width, height);
+	cairo_set_line_width (canvas, line_width);
+	ge_cairo_inner_stroke_rectangle (canvas, x, y, width, height);
 
 	cairo_destroy(canvas);
 }
