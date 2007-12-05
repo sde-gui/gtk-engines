@@ -1,5 +1,11 @@
 2007-12-05  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_menubar):
+        Fix array overrun. (Bug #501612, reported by coverity)
+
+2007-12-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/support/widget-information.c:
 	(ge_combo_box_is_using_list):
 	Removed some dead code. (Bug #501611, reported by coverity)

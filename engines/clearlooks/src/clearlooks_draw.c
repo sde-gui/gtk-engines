@@ -1022,7 +1022,7 @@ clearlooks_draw_menubar (cairo_t *cr,
                          const MenuBarParameters *menubar,
                          int x, int y, int width, int height)
 {
-	if (menubar->style < 0 || menubar->style > 3)
+	if (menubar->style < 0 || menubar->style >= G_N_ELEMENTS (clearlooks_menubar_draw))
 		return;
 
 	clearlooks_menubar_draw[menubar->style](cr, colors, params, menubar,
