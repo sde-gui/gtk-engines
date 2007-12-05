@@ -207,14 +207,7 @@ ge_combo_box_is_using_list (GtkWidget * widget)
   gboolean result = FALSE;
  
   if (GE_IS_COMBO_BOX (widget))
-    {
-      gboolean *tmp = NULL;
- 
-      gtk_widget_style_get (widget, "appears-as-list", &result, NULL);
-
-      if (tmp)
-	result = *tmp;
-    }
+    gtk_widget_style_get (widget, "appears-as-list", &result, NULL);
  
   return result;
 }

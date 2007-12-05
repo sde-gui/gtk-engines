@@ -1,3 +1,9 @@
+2007-12-05  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/support/widget-information.c:
+	(ge_combo_box_is_using_list):
+	Removed some dead code. (Bug #501611, reported by coverity)
+
 2007-12-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
