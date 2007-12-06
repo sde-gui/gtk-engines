@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-12 19:20+0000\n"
-"PO-Revision-Date: 2007-11-12 23:28+0100\n"
+"POT-Creation-Date: 2007-12-02 19:13+0000\n"
+"PO-Revision-Date: 2007-12-06 16:20+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,10 +43,8 @@ msgid "Contrast"
 msgstr "Contraste"
 
 #: ../schema/clearlooks.xml.in.in.h:7
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr ""
-"Activar animaciones en las barras de progreso, botones de radio y botones de "
-"casilla"
+msgid "Enable Animations on Progressbars"
+msgstr "Activar animaciones en las barras de progreso"
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
