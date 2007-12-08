@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-13 18:45+0200\n"
-"PO-Revision-Date: 2007-09-22 00:19+0300\n"
+"POT-Creation-Date: 2007-12-08 11:04+0200\n"
+"PO-Revision-Date: 2007-12-08 11:04+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <be-latin.open-tran.eu>\n"
 "MIME-Version: 1.0\n"
@@ -40,8 +40,8 @@ msgid "Contrast"
 msgstr "Kantrast"
 
 #: ../schema/clearlooks.xml.in.in.h:7
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "Uklučy animavańnie panelaŭ prahresu, opcyj vybaru j zaznačeńnia"
+msgid "Enable Animations on Progressbars"
+msgstr "Uklučy animavańnie na panelach prahresu"
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
