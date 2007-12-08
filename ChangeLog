@@ -2,6 +2,12 @@
 
 	* engines/hc/src/hc-style.c: (hc_draw_shadow),
 	(hc_draw_shadow_gap), (hc_draw_extension):
+	Now *really* fixed :)
+
+2007-12-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/hc/src/hc-style.c: (hc_draw_shadow),
+	(hc_draw_shadow_gap), (hc_draw_extension):
 	Fix #501816
 
 2007-12-05  Benjamin Berg  <benjamin@sipsolutions.net>

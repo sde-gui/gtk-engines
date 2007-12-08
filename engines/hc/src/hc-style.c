@@ -151,7 +151,7 @@ hc_draw_shadow(GtkStyle * style,
 	cairo_set_line_width (canvas, line_width);
 	ge_cairo_inner_rectangle (canvas, x, y, width, height);
 	
-	cairo_stroke(cr);
+	cairo_stroke(canvas);
 
 	cairo_destroy(canvas);
 }
@@ -217,7 +217,7 @@ hc_draw_shadow_gap (GtkStyle       *style,
 	cairo_set_line_width (canvas, line_width);
 	ge_cairo_inner_rectangle (canvas, x, y, width, height);
 	
-	cairo_stroke(cr);
+	cairo_stroke(canvas);
 
 	cairo_destroy(canvas);
 }
@@ -357,7 +357,7 @@ hc_draw_extension (GtkStyle       *style,
 	cairo_set_line_width (canvas, line_width);
 	ge_cairo_inner_rectangle (canvas, x, y, width, height);
 	
-	cairo_stroke(cr);
+	cairo_stroke(canvas);
 
 	cairo_destroy(canvas);
 }
