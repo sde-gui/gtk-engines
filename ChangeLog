@@ -1,3 +1,9 @@
+2007-12-09  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
+	Implemented focus_button_flat custom drawing
+
 2007-12-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/hc/src/hc_gtk2_engine.c: (hc_style_init):
