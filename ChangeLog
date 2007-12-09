@@ -1,5 +1,10 @@
 2007-12-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/hc/src/hc_gtk2_engine.c: (hc_style_init):
+	Default edge_thickness to be the same as the x/ythickness.
+
+2007-12-09  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_focus):
 	* engines/clearlooks/src/clearlooks_types.h:

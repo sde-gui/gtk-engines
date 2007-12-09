@@ -401,7 +401,7 @@ hc_style_class_init (HcStyleClass *klass)
 static void
 hc_style_init (HcStyle * style)
 {
-	style->edge_thickness = floor(MIN(GTK_STYLE(style)->xthickness,GTK_STYLE(style)->ythickness)*1.5);
+	style->edge_thickness = floor(MIN(GTK_STYLE(style)->xthickness,GTK_STYLE(style)->ythickness));
 	style->cell_indicator_size = 12;
 }
 
