@@ -1628,6 +1628,9 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			break;
 		case CL_FOCUS_SCALE:
 			break;
+		case CL_FOCUS_UNKNOWN:
+			return;
+			break;
 		default:
 			break;
 	};

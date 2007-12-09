@@ -1373,7 +1373,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		}
 		else
 		{
-			/* This may either mean no continuation, or unknown ... 
+			/* This may either mean no continuation, or unknown ...
 			 * if it is unknown we assume it continues on both sides */
 			gboolean row_ending_details = FALSE;
 
@@ -1405,12 +1405,17 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		else
 			focus.type = CL_FOCUS_COLOR_WHEEL_LIGHT;
 	}
+	else if (DETAIL("checkbutton") || DETAIL("radiobutton"))
+	{
+		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
+	}
+	else if (CHECK_HINT (GE_HINT_TREEVIEW))
+	{
+		focus.type = CL_FOCUS_TREEVIEW; /* Treeview without content is focused. */
+	}
 	else
 	{
-		if (CHECK_HINT (GE_HINT_TREEVIEW))
-			focus.type = CL_FOCUS_TREEVIEW; /* Treeview without content is focused. */
-		else
-			focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
+		focus.type = CL_FOCUS_UNKNOWN; /* Custom widgets (Beagle) and something unknown */
 	}
 	
 	/* Focus color */
