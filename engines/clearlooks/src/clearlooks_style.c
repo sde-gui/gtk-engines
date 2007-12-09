@@ -1335,9 +1335,21 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	if (DETAIL("button"))
 	{
 		if (CHECK_HINT (GE_HINT_TREEVIEW_HEADER))
+		{
 			focus.type = CL_FOCUS_TREEVIEW_HEADER;
+		}
 		else
-			focus.type = CL_FOCUS_BUTTON;
+		{
+			GtkReliefStyle relief = GTK_RELIEF_NORMAL;
+			/* Check for the shadow type. */
+			if (widget && GTK_IS_BUTTON (widget))
+				g_object_get (G_OBJECT (widget), "relief", &relief, NULL);
+			
+			if (relief == GTK_RELIEF_NORMAL)
+				focus.type = CL_FOCUS_BUTTON;
+			else
+				focus.type = CL_FOCUS_BUTTON_FLAT;
+		}
 	}
 	else if (detail && g_str_has_prefix (detail, "treeview"))
 	{
@@ -1396,9 +1408,9 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 	else
 	{
 		if (CHECK_HINT (GE_HINT_TREEVIEW))
-			focus.type = CL_FOCUS_TREEVIEW; /* Let's call it "LABEL" :) */
+			focus.type = CL_FOCUS_TREEVIEW; /* Treeview without content is focused. */
 		else
-			focus.type = CL_FOCUS_LABEL;
+			focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
 	}
 	
 	/* Focus color */

@@ -1,3 +1,10 @@
+2007-12-09  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_focus):
+	* engines/clearlooks/src/clearlooks_types.h:
+	Add CL_FOCUS_BUTTON_FLAT and correct/added some comments.
+
 2007-12-08  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/hc/src/hc-style.c: (hc_draw_shadow),
