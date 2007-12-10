@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-17 04:26+0100\n"
-"PO-Revision-Date: 2007-11-19 15:30+0100\n"
+"PO-Revision-Date: 2007-12-10 15:17+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -45,8 +45,8 @@ msgid "Contrast"
 msgstr "Kontrast"
 
 #: ../schema/clearlooks.xml.in.in.h:7
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "Omogoči animacije na elementih oken"
+msgid "Enable Animations on Progressbars"
+msgstr "Omogoči animacije na vrstici stanja"
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
