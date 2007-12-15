@@ -1,16 +1,17 @@
-# Norwegian bokmål translation of gtk-engines.
+# Norwegian nynorsk translation of gtk-engines.
 # Copyright (C) 2007
 # This file is distributed under the same license as the gtk-engines package.
 # Kjartan Maraas <kmaraas@gnome.org>, 2007.
+# Eskild Hustvedt <i18n@zerodogg.org>, 2007
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines 2.19.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-02 19:13+0000\n"
-"PO-Revision-Date: 2007-12-14 19:14+0100\n"
-"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
-"Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
+"PO-Revision-Date: 2007-12-14 19:17+0100\n"
+"Last-Translator: Eskild Hustvedt <i18n@zerodogg.org>\n"
+"Language-Team: Norwegian nynorsk <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,7 +26,7 @@ msgstr "3D (gradient)"
 
 #: ../schema/clearlooks.xml.in.in.h:3
 msgid "Animations"
-msgstr "Animasjoner"
+msgstr "Animasjonar"
 
 #: ../schema/clearlooks.xml.in.in.h:4
 msgid "Classic"
@@ -33,7 +34,7 @@ msgstr "Klassisk"
 
 #: ../schema/clearlooks.xml.in.in.h:5
 msgid "Colorize Scrollbar"
-msgstr "Sett farge på rullefeltene"
+msgstr "Set farge på rullefelta"
 
 #: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
@@ -41,7 +42,7 @@ msgstr "Kontrast"
 
 #: ../schema/clearlooks.xml.in.in.h:7
 msgid "Enable Animations on Progressbars"
-msgstr "Slå på animerte framdriftsindikatorer."
+msgstr "Slå på animerte framdriftsindikatorar."
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
@@ -49,7 +50,7 @@ msgstr "Flat"
 
 #: ../schema/clearlooks.xml.in.in.h:9
 msgid "Glossy"
-msgstr "Skinnende"
+msgstr "Skinnande"
 
 #: ../schema/clearlooks.xml.in.in.h:10
 msgid "Gummy"
@@ -69,7 +70,7 @@ msgstr "Radius"
 
 #: ../schema/clearlooks.xml.in.in.h:14
 msgid "Requires style Glossy or Gummy"
-msgstr "Krev skinnende eller gummi-stil"
+msgstr "Krev skinnande eller gummi-stil"
 
 #: ../schema/clearlooks.xml.in.in.h:15
 msgid "Scrollbar Color"
@@ -77,7 +78,7 @@ msgstr "Farge for rullefelt"
 
 #: ../schema/clearlooks.xml.in.in.h:16
 msgid "Sets the Color of Scrollbars"
-msgstr "Setter farge på rullefeltene"
+msgstr "Set farge på rullefelta"
 
 #: ../schema/clearlooks.xml.in.in.h:17
 msgid "Style"
@@ -89,7 +90,7 @@ msgstr "Stil for verktøylinje"
 
 #: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
-msgstr "Størrelse på celleindikator"
+msgstr "Storleik på celleindikator"
 
 #: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
@@ -97,15 +98,15 @@ msgstr "Tykkelse for kant"
 
 #: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr "Størrelsen på radio- og avkryssningsknapper (Feil #351764)."
+msgstr "Storleiken på radio- og avkryssningsknapper (Feil #351764)."
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
-msgstr "Gir knapper avrundede kanter"
+msgstr "Gjev knappar avrundede kantar"
 
 #: ../schema/industrial.xml.in.in.h:3
 msgid "Rounded Buttons"
-msgstr "Avrundete knapper"
+msgstr "Avrundete knappar"
 
 #: ../schema/thinice.xml.in.in.h:1
 msgid "Arrow"
@@ -137,7 +138,7 @@ msgstr "Markeringstype 1"
 
 #: ../schema/thinice.xml.in.in.h:8
 msgid "Mark Type for Scrollbar Buttons"
-msgstr "Markeringstype for knapper på rullefelt"
+msgstr "Markeringstype for knappar på rullefelt"
 
 #: ../schema/thinice.xml.in.in.h:9
 msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
@@ -145,7 +146,7 @@ msgstr ""
 
 #: ../schema/thinice.xml.in.in.h:10
 msgid "None"
-msgstr "Ingen"
+msgstr "Inga"
 
 #: ../schema/thinice.xml.in.in.h:11
 msgid "Nothing"
@@ -161,7 +162,7 @@ msgstr "Rektangel"
 
 #: ../schema/thinice.xml.in.in.h:14
 msgid "Scrollbar Marks"
-msgstr "Markeringer på rullefelt"
+msgstr "Markeringar på rullefelt"
 
 #: ../schema/thinice.xml.in.in.h:15
 msgid "Scrollbar Type"
@@ -169,7 +170,7 @@ msgstr "Type rullefelt"
 
 #: ../schema/thinice.xml.in.in.h:16
 msgid "Scrollbutton Marks"
-msgstr "Markeringer på rulleknapper"
+msgstr "Markeringar på rulleknapper"
 
 #: ../schema/thinice.xml.in.in.h:17
 msgid "Shaped"
