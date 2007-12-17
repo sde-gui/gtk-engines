@@ -98,12 +98,15 @@ style "clearlooks-button"
 	bg[ACTIVE]   = shade (0.85, @bg_color)
 }
 
-style "clearlooks-notebook"
+style "clearlooks-notebook-bg"
+{
+	bg[NORMAL] = shade (1.02, @bg_color)
+}
+
+style "clearlooks-notebook" = "clearlooks-notebook-bg"
 {
 	xthickness = 3
 	ythickness = 3
-
-	bg[NORMAL] = shade (1.02, @bg_color)
 }
 
 style "clearlooks-tasklist"
@@ -316,6 +319,14 @@ class "GtkHScrollbar"  style "clearlooks-hscrollbar"
 
 # General matching following, the order is choosen so that the right styles override each other
 # eg. progressbar needs to be more important then the menu match.
+
+# This is not perfect, it could be done better
+# (That is modify *every* widget in the notebook, and change those back that
+# we really don't want changed)
+widget_class "*<GtkNotebook>*<GtkEventBox>"     style "clearlooks-notebook-bg"
+widget_class "*<GtkNotebook>*<GtkDrawingArea>"  style "clearlooks-notebook-bg"
+widget_class "*<GtkNotebook>*<GtkLayout>"       style "clearlooks-notebook-bg"
+
 
 widget_class "*<GtkButton>"      style "clearlooks-button"
 widget_class "*<GtkNotebook>"    style "clearlooks-notebook"

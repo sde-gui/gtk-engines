@@ -1,5 +1,11 @@
 2007-12-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Modify some widgets background color if they are inside notebooks.
+	(#488850, Federico Pelloni)
+
+2007-12-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c: (clearlooks_draw_tab):
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_tab):
