@@ -340,6 +340,10 @@ widget_class "*.<GtkCTree>.<GtkButton>"    style "clearlooks-treeview-header"
 widget_class "*.<GtkList>.<GtkButton>"     style "clearlooks-treeview-header"
 widget_class "*.<GtkCList>.<GtkButton>"    style "clearlooks-treeview-header"
 
+# Workarounds for Evolution
+widget_class "*.ETable.ECanvas"    style "clearlooks-treeview-header"
+widget_class "*.ETree.ECanvas"    style "clearlooks-treeview-header"
+
 # The window of the tooltip is called "gtk-tooltip"
 ################################
 # FIXME:

@@ -1,3 +1,9 @@
+2007-12-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Work around evolution ETree and ETable headers
+	(#492372, Michael Monreal)
+
 2007-12-09  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
