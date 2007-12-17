@@ -1166,7 +1166,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	const CairoColor    *fill;
 	CairoColor           hilight;
 
-	cairo_pattern_t     *pattern = NULL;
+	cairo_pattern_t     *pattern;
 	
 	double               radius;
 	double               strip_size;
@@ -1250,6 +1250,8 @@ clearlooks_draw_tab (cairo_t *cr,
 			case CL_GAP_RIGHT:
 				pattern = cairo_pattern_create_linear (1, 0, width-2, 0);
 				break;
+			default:
+				pattern = NULL;
 		}
 
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
@@ -1281,6 +1283,8 @@ clearlooks_draw_tab (cairo_t *cr,
 			case CL_GAP_RIGHT:
 				pattern = cairo_pattern_create_linear (0, 0, width, 0);
 				break;
+			default:
+				pattern = NULL;
 		}
 	
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
@@ -1317,6 +1321,8 @@ clearlooks_draw_tab (cairo_t *cr,
 			case CL_GAP_RIGHT:
 				pattern = cairo_pattern_create_linear (2, 2, width, 2);
 				break;
+			default:
+				pattern = NULL;
 		}
 		
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0,        stripe_border->r, stripe_border->g, stripe_border->b);
