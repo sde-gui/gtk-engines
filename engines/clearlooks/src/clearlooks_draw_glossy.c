@@ -688,6 +688,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	
 	double               radius;
 	double               strip_size;
+	double               length;
 
 	radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 
@@ -706,6 +707,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	if (tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM)
 	{
 		height += 3.0;
+		length = height;
 	 	strip_size = 2.0/height; /* 2 pixel high strip */
 		
 		if (tab->gap_side == CL_GAP_TOP)
@@ -714,6 +716,7 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	else
 	{
 		width += 3.0;
+		length = width;
 	 	strip_size = 2.0/width;
 		
 		if (tab->gap_side == CL_GAP_LEFT) 
@@ -750,10 +753,21 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	{
 		CairoColor shadow, hilight, f1, f2;
 
-		pattern = cairo_pattern_create_linear (tab->gap_side == CL_GAP_LEFT   ? width-1  : 0,
-		                                       tab->gap_side == CL_GAP_TOP    ? height-2 : 1,
-		                                       tab->gap_side == CL_GAP_RIGHT  ? width    : 0,
-		                                       tab->gap_side == CL_GAP_BOTTOM ? height   : 0);
+		switch (tab->gap_side)
+		{
+			case CL_GAP_TOP:
+				pattern = cairo_pattern_create_linear (0, height-2, 0, 0);
+				break;
+			case CL_GAP_BOTTOM:
+				pattern = cairo_pattern_create_linear (0, 1, 0, height);
+				break;
+			case CL_GAP_LEFT:
+				pattern = cairo_pattern_create_linear (width-2, 0, 1, 0);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (1, 0, width-2, 0);
+				break;
+		}
 
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 		
@@ -763,8 +777,8 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 		ge_shade_color (fill, 1.06, &f2);
 
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0,        hilight.r, hilight.g, hilight.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 1.0/height, hilight.r, hilight.g, hilight.b);
-		cairo_pattern_add_color_stop_rgb (pattern, 1.0/height, f1.r, f1.g, f1.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0/length, hilight.r, hilight.g, hilight.b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0/length, f1.r, f1.g, f1.b);
 		cairo_pattern_add_color_stop_rgb (pattern, 0.45,       f2.r, f2.g, f2.b);
 		cairo_pattern_add_color_stop_rgb (pattern, 0.45,       fill->r, fill->g, fill->b);
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0,        shadow.r, shadow.g, shadow.b);
@@ -775,10 +789,21 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	else
 	{
 		/* Draw shade */
-		pattern = cairo_pattern_create_linear (tab->gap_side == CL_GAP_LEFT   ? width-2  : 0,
-		                                       tab->gap_side == CL_GAP_TOP    ? height-2 : 0,
-		                                       tab->gap_side == CL_GAP_RIGHT  ? width    : 0,
-		                                       tab->gap_side == CL_GAP_BOTTOM ? height   : 0);
+		switch (tab->gap_side)
+		{
+			case CL_GAP_TOP:
+				pattern = cairo_pattern_create_linear (0, height-2, 0, 0);
+				break;
+			case CL_GAP_BOTTOM:
+				pattern = cairo_pattern_create_linear (0, 0, 0, height);
+				break;
+			case CL_GAP_LEFT:
+				pattern = cairo_pattern_create_linear (width-2, 0, 0, 0);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (0, 0, width, 0);
+				break;
+		}
 	
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 		
@@ -799,10 +824,21 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 	}
 	else
 	{
-		pattern = cairo_pattern_create_linear (tab->gap_side == CL_GAP_LEFT   ? width-2  : 2,
-		                                       tab->gap_side == CL_GAP_TOP    ? height-2 : 2,
-		                                       tab->gap_side == CL_GAP_RIGHT  ? width    : 2,
-		                                       tab->gap_side == CL_GAP_BOTTOM ? height   : 2);
+		switch (tab->gap_side)
+		{
+			case CL_GAP_TOP:
+				pattern = cairo_pattern_create_linear (2, height-2, 2, 2);
+				break;
+			case CL_GAP_BOTTOM:
+				pattern = cairo_pattern_create_linear (2, 2, 2, height);
+				break;
+			case CL_GAP_LEFT:
+				pattern = cairo_pattern_create_linear (width-2, 2, 2, 2);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (2, 2, width, 2);
+				break;
+		}
 		
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0, stripe_border->r, stripe_border->g, stripe_border->b);
 		cairo_pattern_add_color_stop_rgb (pattern, 0.8, border->r,        border->g,        border->b);
