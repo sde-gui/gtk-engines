@@ -1,5 +1,10 @@
 2007-12-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* test/valgrind-suppressions:
+	Added a suppression.
+
+2007-12-17  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* test/Makefile.am:
 	Looks like the --log-file-exact option for valgrind is gone.
 

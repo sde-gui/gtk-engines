@@ -13,6 +13,16 @@
    fun:gdk_display_open
 }
 {
+   Some ld thing.
+   Memcheck:Cond
+   fun:_dl_start
+   fun:_start
+   obj:*
+   obj:*
+   obj:*
+   obj:*
+}
+{
    something else, dunno what exactly
    Memcheck:Param
    write(buf)
