@@ -34,7 +34,7 @@ torturetest_LDFLAGS = $(GTK_LIBS)
 # Unset GTK_MODULES to not load a11y stuff or similar.
 TESTS_ENVIRONMENT=GTK_PATH="." G_SLICE=debug-blocks GTK_MODULES=""
 
-VALGRIND_COMMAND=valgrind --leak-resolution=high --leak-check=full --suppressions=$(srcdir)/valgrind-suppressions --num-callers=20 --log-file-exactly=valgrind-logs/THEME
+VALGRIND_COMMAND=valgrind --leak-resolution=high --leak-check=full --suppressions=$(srcdir)/valgrind-suppressions --num-callers=20 --log-file=valgrind-logs/THEME
 # set some flags to make glib more valgrind friendly
 VALGRIND_ENV=G_SLICE=always-malloc G_DEBUG=gc-friendly,resident-modules
 
