@@ -1,3 +1,28 @@
+Overview of Changes in 2.13.2 (since 2.13.1)
+============================================
+
+Important changes in this release:
+ - The high contrast engine is fixed and now works again.
+ - Some focus improvements for the gummy style in clearlooks
+
+Bugs fixed in this release:
+ 501611 – Dead code in widget-information.c (ge_combo_box_is_using_list)
+ 501612 – overrun variable in clearlooks
+ 501816 – highcontrast engine is broken with gtk-engines 2.21.3
+ 492372 – ETree fix for other evolution compnoents
+ 475291 – Clearlooks vertical tabs fixes
+ 488850 – Wrong background for disk-usage graph in nautilus
+
+New and udpated translations:
+ Daniel Nylander (sv)
+ Kjartan Maraas (nb)
+ Eskild Hustvedt (nn)
+ Matej Urbančič (sl)
+ Ihar Hrachyshka (be@latin)
+ Jorge González (es)
+ Ignacio Casal Quinteiro (gl)
+
+
 Overview of Changes in 2.13.1 (since 2.13.0)
 ============================================
 
