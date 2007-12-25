@@ -1,3 +1,9 @@
+2007-12-25  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_shadow):
+	Do not draw a status bar if the shadow is NONE.
+
 2007-12-18  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
