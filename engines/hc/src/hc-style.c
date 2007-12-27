@@ -195,10 +195,10 @@ hc_draw_shadow_gap (GtkStyle       *style,
 	/***********************************************/
 	line_width = HC_STYLE(style)->edge_thickness;
 
-	if (gap_size > 0)
+	if (CHECK_DETAIL (detail, "notebook"))
 	{
-		gap_pos += floor(line_width/2.0) + 1; 
-		gap_size -= (floor(line_width/2.0) + 1)*2;
+		gap_pos += line_width;
+		gap_size -= 2*line_width;
 	}
 
 	/***********************************************/

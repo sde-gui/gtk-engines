@@ -1,3 +1,10 @@
+2007-12-27  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/hc/src/hc-style.c: (hc_draw_shadow_gap):
+	Correct the length of the gaps for shadows and notebooks. The gap
+	for notebooks is shorter by the line width, while the oen for
+	shadows is not.
+
 2007-12-25  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
