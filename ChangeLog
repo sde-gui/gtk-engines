@@ -1,3 +1,8 @@
+2007-12-31  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* autogen.sh:
+	Seems like the order of automake and autoheader were wrong.
+
 2007-12-27  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/hc/src/hc-style.c: (hc_draw_shadow_gap):
