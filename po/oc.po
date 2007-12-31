@@ -1,24 +1,21 @@
-# translation of oc.po to Occitan
+# Translation of oc.po to Occitan
 # Occitan translation of gtk-engines.
 # Copyright (C) 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gtk-engines package.
 #
-# Yannig MARCHEGAY (yannig@marchegay.org) - 2006-2007
-#
-# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2007.
+# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2006-2008
 msgid ""
 msgstr ""
 "Project-Id-Version: oc\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 12:11+0100\n"
-"PO-Revision-Date: 2007-11-20 14:31+0100\n"
+"POT-Creation-Date: 2007-12-27 13:23+0100\n"
+"PO-Revision-Date: 2007-12-27 13:34+0100\n"
 "Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: KBabel 1.11.4\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
@@ -32,29 +29,65 @@ msgstr ""
 msgid "Animations"
 msgstr "Animacions"
 
-#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Classic"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Contrast"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Enable Animations on Progressbars"
 msgstr ""
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "Plan"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inverted"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Menubar Style"
 msgstr "Estil de la barra de menuts"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Radius"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Requires style Glossy or Gummy"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Scrollbar Color"
 msgstr ""
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Sets the Color of Scrollbars"
 msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:17
+msgid "Style"
+msgstr "Estil"
+
+#: ../schema/clearlooks.xml.in.in.h:18
+msgid "Toolbar Style"
+msgstr "Estil de barra d'espleches"
 
 #: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
