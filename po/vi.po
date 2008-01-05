@@ -1,20 +1,20 @@
 # Vietnamese translation for GTK Engines.
-# Copyright © 2007 Gnome i18n Project for Vietnamese.
-# Clytie Siddall <clytie@riverland.net.au>, 2007.
-#
+# Copyright © 2008 Gnome i18n Project for Vietnamese.
+# Clytie Siddall <clytie@riverland.net.au>, 2007-2008.
+# 
 msgid ""
 ""
 msgstr "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-27 03:45+0100\n"
-"PO-Revision-Date: 2007-06-27 16:37+0930\n"
+"POT-Creation-Date: 2007-12-02 19:13+0000\n"
+"PO-Revision-Date: 2008-01-05 18:52+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: LocFactoryEditor 1.6.4a5\n"
+"X-Generator: LocFactoryEditor 1.7b1\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
@@ -29,29 +29,65 @@ msgid "Animations"
 msgstr "Hoạt ảnh"
 
 #: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Cổ điển"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Đặt màu của thanh cuộn"
+
+#: ../schema/clearlooks.xml.in.in.h:6
 #: ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Tương phản"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "Bật hoạt ảnh trên các thanh tiến hành, cái nút chọn một và cái nút kiểm"
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Enable Animations on Progressbars"
+msgstr "Bật hoạt ảnh trên các thanh tiến hành"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "Phẳng"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr "Bóng loáng"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr "Dính"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inverted"
+msgstr "Đảo"
+
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Menubar Style"
 msgstr "Kiểu thanh trình đơn"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Radius"
+msgstr "Bán kính"
+
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Requires style Glossy or Gummy"
+msgstr "Yêu cầu kiểu dáng Bóng loáng hay Dính"
+
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Scrollbar Color"
 msgstr "Màu thanh cuộn"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Sets the Color of Scrollbars"
 msgstr "Đặt màu của thanh cuộn"
+
+#: ../schema/clearlooks.xml.in.in.h:17
+msgid "Style"
+msgstr "Kiểu dáng"
+
+#: ../schema/clearlooks.xml.in.in.h:18
+msgid "Toolbar Style"
+msgstr "Kiểu thanh công cụ"
 
 #: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
