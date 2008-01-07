@@ -1,3 +1,21 @@
+Overview of Changes in 2.13.3 (since 2.13.2)
+============================================
+
+Changes in this release:
+ - autogen.sh script fix
+ - Correct gap size in notebooks and shadows in the HighContrast engine
+ - Added a missing initilization in clearlooks focus drawing
+ - Clearlooks now does not draw a status bar if the shadow is set to NONE
+
+New and udpated translations:
+ Ivar Smolin (et)
+ Clytie Siddall (vi)
+ Kjartan Maraas (nb)
+ Yannig Marchegay (Kokoyaya) (oc)
+ sandeep shedmake (mr)
+ Daniel Nylander (sv)
+
+
 Overview of Changes in 2.13.2 (since 2.13.1)
 ============================================
 

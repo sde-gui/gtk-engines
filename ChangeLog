@@ -1,3 +1,9 @@
+2008-01-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* NEWS:
+	* configure.ac:
+	2.13.3 release.
+
 2007-12-31  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* autogen.sh:
