@@ -1,7 +1,7 @@
 2008-01-11  Inaki Larranaga Murgoitio  <dooteo@euskalgnu.org>
 
-        * eu.po: Added Basque translation.
-        * LINGUAS: Added "eu" (Basque) entry.
+	* eu.po: Added Basque translation.
+	* LINGUAS: Added "eu" (Basque) entry.
 
 2008-01-07  Priit Laes  <plaes at svn dot gnome dot org>
 
