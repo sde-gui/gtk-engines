@@ -651,7 +651,6 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
                            const TabParameters    *tab,
                            int x, int y, int width, int height)
 {
-
 	const CairoColor *border        = &colors->shade[5];
 	const CairoColor *stripe_fill   = &colors->spot[1];
 	const CairoColor *stripe_border = &colors->spot[2];
@@ -683,11 +682,11 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	{
 		if (params->ythickness == 3)
 			stripe_size = 3.0;
-		
+
 		height += 3.0;
 		stripe_fill_size = (tab->gap_side == CL_GAP_TOP ? stripe_size/height : stripe_size/(height-2));
 		stripe_border_pos = (tab->gap_side == CL_GAP_TOP ? (stripe_size+1.0)/height : (stripe_size+1.0)/(height-2));
-		
+
 		horizontal = TRUE;
 
 		if (tab->gap_side == CL_GAP_TOP)
@@ -697,7 +696,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	{
 		if (params->xthickness == 3)
 			stripe_size = 3.0;
-		
+
 		width += 3.0;
 		stripe_fill_size = (tab->gap_side == CL_GAP_LEFT ? stripe_size/width : stripe_size/(width-2));
 		stripe_border_pos = (tab->gap_side == CL_GAP_LEFT ? (stripe_size+1.0)/width : (stripe_size+1.0)/(width-2));
@@ -733,7 +732,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	{
 		CairoColor hilight;
 		CairoColor shade1, shade2, shade3;
-		
+
 		ge_shade_color (fill, 1.15, &hilight);
 		ge_shade_color (fill, SHADE_TOP, &shade1);
 		ge_shade_color (fill, SHADE_CENTER_TOP, &shade2);
@@ -770,9 +769,9 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 	else
 	{
 		CairoColor shade1;
-		
+
 		ge_shade_color (fill, SHADE_TOP, &shade1);
-		
+
 		switch	(tab->gap_side)
 		{
 			case CL_GAP_TOP:
@@ -1561,7 +1560,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	CairoColor fill = focus->color;
 	CairoColor fill_shade1, fill_shade2, fill_shade3;
 	CairoColor border;
-	
+
 	/* Default values */
 	double xoffset = 1.5;
 	double yoffset = 1.5;
@@ -1572,12 +1571,12 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	boolean focus_fill = TRUE;
 	boolean focus_border = TRUE;
 	boolean focus_shadow = FALSE;
-	
+
 	ge_shade_color (&fill, 0.65, &border);
 	ge_shade_color (&fill, 1.18, &fill_shade1);
 	ge_shade_color (&fill, 1.02, &fill_shade2);
 	ge_shade_color (&fill, 0.84, &fill_shade3);
-	
+
 	/* Do some useful things to adjust focus */
 	switch (focus->type)
 	{
@@ -1624,26 +1623,27 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TAB:
-			radius--;
 			break;
 		case CL_FOCUS_SCALE:
 			break;
 		case CL_FOCUS_UNKNOWN:
+			/* Fallback to classic function, dots */
+			clearlooks_draw_focus (cr, colors, widget, focus, x, y, width, height);
 			return;
 			break;
 		default:
 			break;
 	};
-	
+
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, focus->line_width);
-	
+
 	ge_cairo_rounded_rectangle (cr, xoffset, yoffset, width-(xoffset*2), height-(yoffset*2), radius, widget->corners);
-	
+
 	if (focus_fill)
 	{
 		cairo_pattern_t *pattern;
-		
+
 		pattern = cairo_pattern_create_linear (0, 0, 0, height);
 		cairo_pattern_add_color_stop_rgba (pattern, 0.0, fill_shade1.r, fill_shade1.g, fill_shade1.b, fill_alpha);
 		cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill_shade2.r, fill_shade2.g, fill_shade2.b, fill_alpha);
@@ -1651,16 +1651,16 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 		cairo_pattern_add_color_stop_rgba (pattern, 1.0, fill_shade3.r, fill_shade3.g, fill_shade3.b, fill_alpha);
 		cairo_set_source (cr, pattern);
 		cairo_fill_preserve (cr);
-		
+
 		cairo_pattern_destroy (pattern);
 	}
-	
+
 	if (focus_border)
 	{
 		clearlooks_set_mixed_color (cr, &widget->parentbg, &border, border_alpha);
 		cairo_stroke (cr);
 	}
-	
+
 	if (focus_shadow)
 	{
 		if (radius > 0)

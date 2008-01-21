@@ -1,3 +1,14 @@
+2008-01-22  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_tab), (clearlooks_gummy_draw_focus):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_extension):
+	Fixed #509226 and minor changes to intends.
+	To benzea: Check if you like the current fallback behaviour
+
 2008-01-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:

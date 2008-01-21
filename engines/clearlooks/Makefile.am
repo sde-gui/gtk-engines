@@ -5,11 +5,11 @@ enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libclearlooks.la
 
 libclearlooks_la_SOURCES =		\
-        ./src/clearlooks_rc_style.c	\
-        ./src/clearlooks_rc_style.h	\
-        ./src/clearlooks_style.c	\
-        ./src/clearlooks_style.h	\
-        ./src/clearlooks_theme_main.c	\
+	./src/clearlooks_rc_style.c	\
+	./src/clearlooks_rc_style.h	\
+	./src/clearlooks_style.c	\
+	./src/clearlooks_style.h	\
+	./src/clearlooks_theme_main.c	\
 	./src/support.c			\
 	./src/animation.c		\
 	./src/animation.h		\
