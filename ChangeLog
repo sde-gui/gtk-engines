@@ -1,5 +1,10 @@
 2008-01-22  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fixed GtkProgressbars inside GtkMenu
+
+2008-01-22  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	* engines/clearlooks/src/clearlooks_draw.h:
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

@@ -1,4 +1,3 @@
-
 # Set GtkSettings color scheme property.
 # This can be overriden (via an xsetting) with eg. the gnome-appearance-properties.
 gtk_color_scheme = "fg_color:#000\nbg_color:#EDECEB\nbase_color:#fff\ntext_color:#1A1A1A\nselected_bg_color:#86ABD9\nselected_fg_color:#fff\ntooltip_bg_color:#F5F5B5\ntooltip_fg_color:#000"
@@ -327,11 +326,9 @@ widget_class "*<GtkNotebook>*<GtkEventBox>"     style "clearlooks-notebook-bg"
 widget_class "*<GtkNotebook>*<GtkDrawingArea>"  style "clearlooks-notebook-bg"
 widget_class "*<GtkNotebook>*<GtkLayout>"       style "clearlooks-notebook-bg"
 
-
 widget_class "*<GtkButton>"      style "clearlooks-button"
 widget_class "*<GtkNotebook>"    style "clearlooks-notebook"
 widget_class "*<GtkStatusbar>*"  style "clearlooks-statusbar"
-widget_class "*<GtkProgressBar>" style "clearlooks-progressbar"
 
 widget_class "*<GtkComboBoxEntry>*" style "clearlooks-comboboxentry"
 widget_class "*<GtkCombo>*"         style "clearlooks-comboboxentry"
@@ -342,8 +339,9 @@ widget_class "*<GtkMenuItem>*"          style "clearlooks-menu-item"
 widget_class "*<GtkSeparatorMenuItem>*" style "clearlooks-separator-menu-item"
 
 widget_class "*.<GtkFrame>.<GtkLabel>" style "clearlooks-frame-title"
-
 widget_class "*.<GtkTreeView>*"        style "clearlooks-treeview"
+
+widget_class "*<GtkProgressBar>"       style "clearlooks-progressbar"
 
 # Treeview header
 widget_class "*.<GtkTreeView>.<GtkButton>" style "clearlooks-treeview-header"
@@ -364,8 +362,6 @@ widget_class "*.ETree.ECanvas"    style "clearlooks-treeview-header"
 # (It will involve setting different priorities, etc.)
 ################################
 widget "gtk-tooltip*" style "clearlooks-tooltips"
-
-
 
 ###################################################
 # Special cases and work arounds
@@ -390,7 +386,6 @@ style "clearlooks-combobox-text-color-workaround"
 	text[INSENSITIVE] = darker (@bg_color)
 }
 widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-combobox-text-color-workaround"
-
 
 # Work around the evolution "New" button bug by making the toolbar flat.
 # http://bugzilla.gnome.org/show_bug.cgi?id=446953
