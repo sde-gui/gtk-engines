@@ -65,19 +65,19 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 {
 	params->style_functions = &(clearlooks_style_class->style_functions[CLEARLOOKS_STYLE (style)->style]);
 
-	params->active      = (state_type == GTK_STATE_ACTIVE);
-	params->prelight    = (state_type == GTK_STATE_PRELIGHT);
-	params->disabled    = (state_type == GTK_STATE_INSENSITIVE);
-	params->state_type  = (ClearlooksStateType)state_type;
-	params->corners     = CR_CORNER_ALL;
-	params->ltr         = ge_widget_is_ltr ((GtkWidget*)widget);
-	params->focus       = widget && GTK_WIDGET_HAS_FOCUS (widget);
-	params->is_default  = widget && GE_WIDGET_HAS_DEFAULT (widget);
-	params->enable_glow = FALSE;
-	params->radius      = CLEARLOOKS_STYLE (style)->radius;
+	params->active        = (state_type == GTK_STATE_ACTIVE);
+	params->prelight      = (state_type == GTK_STATE_PRELIGHT);
+	params->disabled      = (state_type == GTK_STATE_INSENSITIVE);
+	params->state_type    = (ClearlooksStateType)state_type;
+	params->corners       = CR_CORNER_ALL;
+	params->ltr           = ge_widget_is_ltr ((GtkWidget*)widget);
+	params->focus         = widget && GTK_WIDGET_HAS_FOCUS (widget);
+	params->is_default    = widget && GE_WIDGET_HAS_DEFAULT (widget);
+	params->enable_shadow = FALSE;
+	params->radius        = CLEARLOOKS_STYLE (style)->radius;
 
-	params->xthickness = style->xthickness;
-	params->ythickness = style->ythickness;
+	params->xthickness    = style->xthickness;
+	params->ythickness    = style->ythickness;
 
 	/* This is used in GtkEntry to fake transparency. The reason to do this
 	 * is that the entry has it's entire background filled with base[STATE].
@@ -531,7 +531,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		else
 		{
 			params.corners = CR_CORNER_ALL;
-			params.enable_glow = TRUE;
+			if (clearlooks_style->reliefstyle != 0)
+				params.enable_shadow = TRUE;
 		}
 
 		STYLE_FUNCTION(draw_button) (cr, &clearlooks_style->colors, &params,
@@ -752,7 +753,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		params.enable_glow = TRUE;
+		if (clearlooks_style->reliefstyle != 0)
+			params.enable_shadow = TRUE;
 
 		ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 
@@ -1223,6 +1225,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	g_assert ((CLEARLOOKS_RC_STYLE (rc_style)->style >= 0) && (CLEARLOOKS_RC_STYLE (rc_style)->style < CL_NUM_STYLES));
 	clearlooks_style->style               = CLEARLOOKS_RC_STYLE (rc_style)->style;
 
+	clearlooks_style->reliefstyle         = CLEARLOOKS_RC_STYLE (rc_style)->reliefstyle;
 	clearlooks_style->menubarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->toolbarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->toolbarstyle;
 	clearlooks_style->has_focus_color     = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_FOCUS_COLOR;
@@ -1441,6 +1444,7 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	ClearlooksStyle * cl_src = CLEARLOOKS_STYLE (src);
 
 	cl_style->colors              = cl_src->colors;
+	cl_style->reliefstyle         = cl_src->reliefstyle;
 	cl_style->menubarstyle        = cl_src->menubarstyle;
 	cl_style->toolbarstyle        = cl_src->toolbarstyle;
 	cl_style->focus_color         = cl_src->focus_color;

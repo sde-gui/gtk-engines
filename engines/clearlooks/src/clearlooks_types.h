@@ -161,7 +161,7 @@ typedef struct
 	boolean focus;
 	boolean is_default;
 	boolean ltr;
-	boolean enable_glow;
+	boolean enable_shadow;
 
 	gfloat  radius;
 	

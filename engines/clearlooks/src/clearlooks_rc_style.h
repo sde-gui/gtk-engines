@@ -46,11 +46,12 @@ typedef enum {
 	CL_FLAG_SCROLLBAR_COLOR    = 1 <<  2,
 	CL_FLAG_COLORIZE_SCROLLBAR = 1 <<  3,
 	CL_FLAG_CONTRAST           = 1 <<  4,
-	CL_FLAG_MENUBARSTYLE       = 1 <<  5,
-	CL_FLAG_TOOLBARSTYLE       = 1 <<  6,
-	CL_FLAG_ANIMATION          = 1 <<  7,
-	CL_FLAG_RADIUS             = 1 <<  8,
-	CL_FLAG_HINT               = 1 <<  9
+	CL_FLAG_RELIEFSTYLE        = 1 <<  5,
+	CL_FLAG_MENUBARSTYLE       = 1 <<  6,
+	CL_FLAG_TOOLBARSTYLE       = 1 <<  7,
+	CL_FLAG_ANIMATION          = 1 <<  8,
+	CL_FLAG_RADIUS             = 1 <<  9,
+	CL_FLAG_HINT               = 1 <<  10
 } ClearlooksRcFlags;
 
 
@@ -66,6 +67,7 @@ struct _ClearlooksRcStyle
 	GdkColor scrollbar_color;
 	gboolean colorize_scrollbar;
 	double contrast;
+	guint8 reliefstyle;
 	guint8 menubarstyle;
 	guint8 toolbarstyle;
 	gboolean animation;

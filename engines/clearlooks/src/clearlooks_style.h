@@ -51,6 +51,7 @@ struct _ClearlooksStyle
 
 	ClearlooksStyles style;
 
+	guint8   reliefstyle;
 	guint8   menubarstyle;
 	guint8   toolbarstyle;
 	GdkColor focus_color;

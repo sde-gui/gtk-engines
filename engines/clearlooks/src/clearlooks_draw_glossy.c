@@ -257,7 +257,7 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 
-	/* Shadows and Glow */
+	/* Shadows and shadow */
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
 		if (params->xthickness == 3)
@@ -272,27 +272,27 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	{
 		cairo_translate (cr, 0.5, 0.5);
 
-		/* if (params->enable_glow && !params->active && !params->disabled) */
-		if (params->prelight && params->enable_glow && !params->active)
+		/* if (params->enable_shadow && !params->active && !params->disabled) */
+		if (params->prelight && params->enable_shadow && !params->active)
 		{
-			/* Glow becomes a shadow to have 3d prelight buttons :) */
-			CairoColor glow;
+			/* shadow becomes a shadow to have 3d prelight buttons :) */
+			CairoColor shadow;
 
 			radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0 - 1.0, (height - 2.0 - 2*yoffset) / 2.0 - 1.0));
 
 			ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius+1, params->corners);
-			ge_shade_color (&params->parentbg, 0.96, &glow);
-			ge_cairo_set_color (cr, &glow);
+			ge_shade_color (&params->parentbg, 0.96, &shadow);
+			ge_cairo_set_color (cr, &shadow);
 			cairo_stroke (cr);
 
 			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, radius+1, params->corners);
-			ge_shade_color (&params->parentbg, 0.92, &glow);
-			ge_cairo_set_color (cr, &glow);
+			ge_shade_color (&params->parentbg, 0.92, &shadow);
+			ge_cairo_set_color (cr, &shadow);
 			cairo_stroke (cr);
 		}
 		
-		/* if (!(params->enable_glow && !params->active && !params->disabled)) */
-		if (!(params->prelight && params->enable_glow && !params->active))
+		/* if (!(params->enable_shadow && !params->active && !params->disabled)) */
+		if (!(params->prelight && params->enable_shadow && !params->active))
 		{
 			if (!(params->disabled))
 				params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
@@ -342,30 +342,30 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 	/* Default button highlight */
 	if (params->is_default && !params->active && !params->disabled)
 	{
-		const CairoColor *glow = &colors->spot[0];
+		const CairoColor *shadow = &colors->spot[0];
 		double hh = (height-5)/2.0 + 1;
 		
 		cairo_rectangle (cr, 3.5, 3.5, width-7, height-7);
-		ge_cairo_set_color (cr, glow);
+		ge_cairo_set_color (cr, shadow);
 		cairo_stroke (cr);
 
-		glow = &colors->spot[0];
+		shadow = &colors->spot[0];
 		cairo_move_to (cr, 2.5, 2.5+hh); cairo_rel_line_to (cr, 0, -hh);
 		cairo_rel_line_to (cr, width-5, 0); cairo_rel_line_to (cr, 0, hh);
-		ge_cairo_set_color (cr, glow);
+		ge_cairo_set_color (cr, shadow);
 		cairo_stroke (cr);
 		
 		hh--;
 
-		glow = &colors->spot[1];
+		shadow = &colors->spot[1];
 		cairo_move_to (cr, 2.5, 2.5+hh); cairo_rel_line_to (cr, 0, hh);
 		cairo_rel_line_to (cr, width-5, 0); cairo_rel_line_to (cr, 0, -hh);
-		ge_cairo_set_color (cr, glow);
+		ge_cairo_set_color (cr, shadow);
 		cairo_stroke (cr);
 	}
 	
 	/* Border */
-	if (params->is_default || (params->prelight && params->enable_glow))
+	if (params->is_default || (params->prelight && params->enable_shadow))
 		border_normal = colors->spot[2];
 		/* ge_mix_color (&border_normal, &colors->spot[2], 0.5, &border_normal); */
 	if (params->disabled)

@@ -192,7 +192,7 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 	{
 		cairo_translate (cr, 0.5, 0.5);
 
-		if (params->enable_glow && !params->active && !params->disabled && !params->is_default)
+		if (params->enable_shadow && !params->active && !params->disabled && !params->is_default)
 		{
 			CairoColor shadow;
 
@@ -220,7 +220,7 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 			cairo_stroke (cr);
 		}
 
-		if (!(params->enable_glow && !params->active && !params->disabled))
+		if (!(params->enable_shadow && !params->active && !params->disabled))
 			params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}
@@ -262,7 +262,7 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 	}
 
 	/* Border */
-	if (params->is_default) /* || (params->prelight && params->enable_glow)) */
+	if (params->is_default) /* || (params->prelight && params->enable_shadow)) */
 		border_normal = colors->spot[2];
 	if (params->disabled)
 		ge_cairo_set_color (cr, &border_disabled);

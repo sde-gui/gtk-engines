@@ -56,6 +56,7 @@ enum
 	TOKEN_CONTRAST,
 	TOKEN_SUNKENMENU,
 	TOKEN_PROGRESSBARSTYLE,
+	TOKEN_RELIEFSTYLE,
 	TOKEN_MENUBARSTYLE,
 	TOKEN_TOOLBARSTYLE,
 	TOKEN_MENUITEMSTYLE,
@@ -83,6 +84,7 @@ static gchar* clearlooks_rc_symbols =
 	"contrast\0"
 	"sunkenmenubar\0"
 	"progressbarstyle\0"
+	"reliefstyle\0"
 	"menubarstyle\0"
 	"toolbarstyle\0"
 	"menuitemstyle\0"
@@ -131,6 +133,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
 	clearlooks_rc->flags = 0;
 
 	clearlooks_rc->contrast = 1.0;
+	clearlooks_rc->reliefstyle = 1;
 	clearlooks_rc->menubarstyle = 0;
 	clearlooks_rc->toolbarstyle = 0;
 	clearlooks_rc->animation = FALSE;
@@ -242,7 +245,7 @@ clearlooks_gtk2_rc_parse_int (GtkSettings  *settings,
 {
 	guint token;
 
-	/* Skip 'sunkenmenubar' */
+	/* Skip option name */
 	token = g_scanner_get_next_token(scanner);
 
 	token = g_scanner_get_next_token(scanner);
@@ -383,6 +386,10 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 				token = clearlooks_gtk2_rc_parse_double (settings, scanner, &clearlooks_style->contrast);
 				clearlooks_style->flags |= CL_FLAG_CONTRAST;
 				break;
+			case TOKEN_RELIEFSTYLE:
+				token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->reliefstyle);
+				clearlooks_style->flags |= CL_FLAG_RELIEFSTYLE;
+				break;
 			case TOKEN_MENUBARSTYLE:
 				token = clearlooks_gtk2_rc_parse_int (settings, scanner, &clearlooks_style->menubarstyle);
 				clearlooks_style->flags |= CL_FLAG_MENUBARSTYLE;
@@ -462,6 +469,8 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 		dest_w->style = src_w->style;
 	if (flags & CL_FLAG_CONTRAST)
 		dest_w->contrast = src_w->contrast;
+	if (flags & CL_FLAG_RELIEFSTYLE)
+		dest_w->reliefstyle = src_w->reliefstyle;
 	if (flags & CL_FLAG_MENUBARSTYLE)
 		dest_w->menubarstyle = src_w->menubarstyle;
 	if (flags & CL_FLAG_TOOLBARSTYLE)
