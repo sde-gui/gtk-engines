@@ -36,9 +36,9 @@
 
 static void
 clearlooks_draw_glossy_gradient (cairo_t         *cr,
-                                double x, double y, int width, int height,
-                                const CairoColor *color,
-                                gboolean disabled, gboolean radius, CairoCorners corners)
+                                 double x, double y, int width, int height,
+                                 const CairoColor *color,
+                                 gboolean disabled, gboolean radius, CairoCorners corners)
 {
 	CairoColor a, b, c, d;
 	cairo_pattern_t *pt;

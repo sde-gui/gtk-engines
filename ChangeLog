@@ -1,5 +1,11 @@
 2008-01-23  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
+	No shadow on prelight button (previous revision)
+
+2008-01-23  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_rc_style.c:
 	(clearlooks_rc_style_init):
 	* engines/clearlooks/src/clearlooks_style.c:
