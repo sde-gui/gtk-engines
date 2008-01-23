@@ -133,7 +133,6 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
 	clearlooks_rc->flags = 0;
 
 	clearlooks_rc->contrast = 1.0;
-	clearlooks_rc->reliefstyle = 1;
 	clearlooks_rc->menubarstyle = 0;
 	clearlooks_rc->toolbarstyle = 0;
 	clearlooks_rc->animation = FALSE;

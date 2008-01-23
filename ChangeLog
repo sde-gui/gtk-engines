@@ -1,5 +1,13 @@
 2008-01-23  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_init_from_rc):
+	Better approach to reliefstyle default state
+
+2008-01-23  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_button):
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

@@ -1225,7 +1225,15 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	g_assert ((CLEARLOOKS_RC_STYLE (rc_style)->style >= 0) && (CLEARLOOKS_RC_STYLE (rc_style)->style < CL_NUM_STYLES));
 	clearlooks_style->style               = CLEARLOOKS_RC_STYLE (rc_style)->style;
 
-	clearlooks_style->reliefstyle         = CLEARLOOKS_RC_STYLE (rc_style)->reliefstyle;
+	if (!(CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_RELIEFSTYLE))
+	{
+		if (clearlooks_style->style == CL_STYLE_GUMMY)
+			clearlooks_style->reliefstyle = 1;
+		else
+			clearlooks_style->reliefstyle = 0;
+	}
+	else
+		clearlooks_style->reliefstyle = CLEARLOOKS_RC_STYLE (rc_style)->reliefstyle;
 	clearlooks_style->menubarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->menubarstyle;
 	clearlooks_style->toolbarstyle        = CLEARLOOKS_RC_STYLE (rc_style)->toolbarstyle;
 	clearlooks_style->has_focus_color     = CLEARLOOKS_RC_STYLE (rc_style)->flags & CL_FLAG_FOCUS_COLOR;
@@ -1235,7 +1243,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->radius              = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
 
 	if (clearlooks_style->has_focus_color)
-		clearlooks_style->focus_color = CLEARLOOKS_RC_STYLE (rc_style)->focus_color;
+		clearlooks_style->focus_color     = CLEARLOOKS_RC_STYLE (rc_style)->focus_color;
 	if (clearlooks_style->has_scrollbar_color)
 		clearlooks_style->scrollbar_color = CLEARLOOKS_RC_STYLE (rc_style)->scrollbar_color;
 }
