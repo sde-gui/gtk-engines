@@ -1608,12 +1608,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			break;
 		case CL_FOCUS_TREEVIEW:
 			parentbg = colors->base[widget->state_type];
-			border_alpha = 0.6;
-			xoffset = 0.5;
-			yoffset = 0.5;
-			radius = 0;
-			focus_shadow = TRUE;
-			focus_fill = FALSE;
+			fill_alpha = 0.08;
+			focus_border = FALSE;
 			break;
 		case CL_FOCUS_TREEVIEW_DND:
 			parentbg = colors->base[widget->state_type];
@@ -1623,10 +1619,9 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			break;
 		case CL_FOCUS_TREEVIEW_ROW:
 			parentbg = colors->base[widget->state_type];
-			xoffset = -0.5; /* hack to hide vertical lines */
+			xoffset = -2.5; /* hack to hide vertical lines */
 			yoffset = 0.5;
-			radius = 0;
-			border_alpha = 1.0;
+			CLAMP (radius, 0.0, 2.0);
 			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TAB:
