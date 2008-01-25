@@ -1606,8 +1606,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			yoffset = 1.5;
 			break;
 		case CL_FOCUS_TREEVIEW:
-			border_alpha = 0.5;
-			fill_alpha = 0.14;
+			border_alpha = 0.4;
+			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TREEVIEW_DND:
 			break;
