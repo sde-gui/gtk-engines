@@ -1608,6 +1608,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			break;
 		case CL_FOCUS_TREEVIEW:
 			parentbg = colors->base[widget->state_type];
+			xoffset = -1.5;
+			yoffset = -1.5;
 			fill_alpha = 0.08;
 			focus_border = FALSE;
 			break;
