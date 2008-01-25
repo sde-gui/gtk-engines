@@ -1560,6 +1560,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	CairoColor fill = focus->color;
 	CairoColor fill_shade1, fill_shade2, fill_shade3;
 	CairoColor border;
+	CairoColor parentbg = widget->parentbg;
 
 	/* Default values */
 	double xoffset = 1.5;
@@ -1606,19 +1607,25 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			yoffset = 1.5;
 			break;
 		case CL_FOCUS_TREEVIEW:
-			border_alpha = 0.4;
+			parentbg = colors->base[widget->state_type];
+			border_alpha = 0.6;
+			xoffset = 0.5;
+			yoffset = 0.5;
+			radius = 0;
+			focus_shadow = TRUE;
 			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TREEVIEW_DND:
+			parentbg = colors->base[widget->state_type];
 			break;
 		case CL_FOCUS_TREEVIEW_HEADER:
 			cairo_translate (cr, -1, 0);
 			break;
 		case CL_FOCUS_TREEVIEW_ROW:
+			parentbg = colors->base[widget->state_type];
 			xoffset = -0.5; /* hack to hide vertical lines */
 			yoffset = 0.5;
 			radius = 0;
-			ge_shade_color (&colors->base[widget->state_type], 0.75, &border);
 			border_alpha = 1.0;
 			focus_fill = FALSE;
 			break;
@@ -1659,7 +1666,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 
 	if (focus_border)
 	{
-		clearlooks_set_mixed_color (cr, &widget->parentbg, &border, border_alpha);
+		clearlooks_set_mixed_color (cr, &parentbg, &border, border_alpha);
 		cairo_stroke (cr);
 	}
 
@@ -1668,7 +1675,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 		if (radius > 0)
 			radius++;
 		ge_cairo_rounded_rectangle (cr, xoffset-1, yoffset-1, width-(xoffset*2)+2, height-(yoffset*2)+2, radius, widget->corners);
-		clearlooks_set_mixed_color (cr, &widget->parentbg, &fill, shadow_alpha);
+		clearlooks_set_mixed_color (cr, &parentbg, &fill, shadow_alpha);
 		cairo_stroke (cr);
 	}
 }

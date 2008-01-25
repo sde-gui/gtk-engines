@@ -2,6 +2,12 @@
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_focus):
+	Just for testing
+
+2008-01-25  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
 	Reduced "flashy" mistakes to focus drawing in nautilus (treeview)
 
 2008-01-25  Andrea Cimitan  <andrea.cimitan@gmail.com>
