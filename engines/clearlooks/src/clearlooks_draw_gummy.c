@@ -1623,6 +1623,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TAB:
+			border_alpha = 0.6;
+			fill_alpha = 0.17;
 			break;
 		case CL_FOCUS_SCALE:
 			break;
