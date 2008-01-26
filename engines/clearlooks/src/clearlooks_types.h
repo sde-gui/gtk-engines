@@ -178,6 +178,18 @@ typedef struct
 
 typedef struct
 {
+	ClearlooksFocusType type;
+	ClearlooksContinue  continue_side;
+	CairoColor          color;
+	boolean             has_color;
+	gint                line_width;
+	gint                padding;
+	guint8*             dash_list;
+	boolean             interior;
+} FocusParameters;
+
+typedef struct
+{
 	boolean lower;
 	boolean horizontal;
 	boolean fill_level;
@@ -207,6 +219,7 @@ typedef struct
 typedef struct
 {
 	ClearlooksGapSide gap_side;
+	FocusParameters   focus;
 } TabParameters;
 
 typedef struct
@@ -267,18 +280,6 @@ typedef struct
 	ClearlooksArrowType type;
 	ClearlooksDirection direction;
 } ArrowParameters;
-
-typedef struct
-{
-	ClearlooksFocusType type;
-	ClearlooksContinue  continue_side;
-	CairoColor          color;
-	boolean             has_color;
-	gint                line_width;
-	gint                padding;
-	guint8*             dash_list;
-	boolean             interior;
-} FocusParameters;
 
 typedef struct
 {

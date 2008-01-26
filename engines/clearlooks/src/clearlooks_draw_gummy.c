@@ -791,10 +791,8 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 
 		cairo_pattern_add_color_stop_rgba (pattern, 0.0, stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.6);
-/*
-		cairo_pattern_add_color_stop_rgba (pattern, 1.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.34);
-		cairo_pattern_add_color_stop_rgba (pattern, 1.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.5);
-*/
+		/* cairo_pattern_add_color_stop_rgba (pattern, 1.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.34);
+		   cairo_pattern_add_color_stop_rgba (pattern, 1.0/(horizontal ? height : width), stripe_fill->r, stripe_fill->g, stripe_fill->b, 0.5); */
 		cairo_pattern_add_color_stop_rgb  (pattern, stripe_fill_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
 		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, stripe_border->r, stripe_border->g, stripe_border->b, 0.72);
 		cairo_pattern_add_color_stop_rgba (pattern, stripe_border_pos, stripe_border->r, stripe_border->g, stripe_border->b, 0.72);
@@ -835,6 +833,38 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		cairo_set_source (cr, pattern);
 		cairo_stroke (cr);
 		cairo_pattern_destroy (pattern);
+	}
+
+	if (params->focus && !params->active)
+	{
+		CairoColor focus_fill = tab->focus.color;
+		CairoColor fill_shade1, fill_shade2, fill_shade3;
+		CairoColor focus_border;
+
+		double focus_inset_x = ((tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM) ? 4 : stripe_size + 3);
+		double focus_inset_y = ((tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM) ? stripe_size + 3 : 4);
+		double border_alpha = 0.5;
+		double fill_alpha = 0.17;
+
+		ge_shade_color (&focus_fill, 0.65, &focus_border);
+		ge_shade_color (&focus_fill, 1.18, &fill_shade1);
+		ge_shade_color (&focus_fill, 1.02, &fill_shade2);
+		ge_shade_color (&focus_fill, 0.84, &fill_shade3);
+
+		ge_cairo_rounded_rectangle (cr, focus_inset_x, focus_inset_y, width-focus_inset_x*2-1, height-focus_inset_y*2-1, radius-1, CR_CORNER_ALL);
+		pattern = cairo_pattern_create_linear (0, 0, 0, height);
+
+		cairo_pattern_add_color_stop_rgba (pattern, 0.0, fill_shade1.r, fill_shade1.g, fill_shade1.b, fill_alpha);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.5, fill_shade2.r, fill_shade2.g, fill_shade2.b, fill_alpha);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.5, focus_fill.r,   focus_fill.g, focus_fill.b,  fill_alpha);
+		cairo_pattern_add_color_stop_rgba (pattern, 1.0, fill_shade3.r, fill_shade3.g, fill_shade3.b, fill_alpha);
+		cairo_set_source (cr, pattern);
+		cairo_fill_preserve (cr);
+
+		cairo_pattern_destroy (pattern);
+
+		clearlooks_set_mixed_color (cr, &params->parentbg, &focus_border, border_alpha);
+		cairo_stroke (cr);
 	}
 }
 
@@ -1627,6 +1657,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TAB:
+			if (widget->focus)
+				return;
 			border_alpha = 0.6;
 			fill_alpha = 0.17;
 			break;

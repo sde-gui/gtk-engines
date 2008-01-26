@@ -352,6 +352,7 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 	{
 		WidgetParameters params;
 		TabParameters    tab;
+		FocusParameters  focus;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
@@ -372,6 +373,17 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 				break;
 		}
+
+		/* Focus color */
+		if (clearlooks_style->has_focus_color)
+		{
+			ge_gdk_color_to_cairo (&clearlooks_style->focus_color, &focus.color);
+			focus.has_color = TRUE;
+		}
+		else
+			focus.color = colors->bg[GTK_STATE_SELECTED];
+
+		tab.focus = focus;
 
 		STYLE_FUNCTION(draw_tab) (cr, colors, &params, &tab,
 		                          x, y, width, height);
