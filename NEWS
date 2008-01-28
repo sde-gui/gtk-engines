@@ -1,3 +1,21 @@
+Overview of Changes in 2.13.4 (since 2.13.3)
+============================================
+
+Changes in this release:
+ - Clearlooks progressbar padding inside menus has been fixed.
+ - New "reliefstyle" option for clearlooks, which controls inset vs. shadow
+   around buttons. GUMMY based themes will now use inset by default and need
+   to be modified.
+ - Updated focus drawing for treeviews and notebook tabs in GUMMY
+
+GNOME Bugs fixed in this release:
+ 509226 – focus rect not painted in aisleriot with clearlooks
+
+New and udpated translations:
+ Iñaki Larrañaga Murgoitio (eu)
+ Ivar Smolin (et)
+
+
 Overview of Changes in 2.13.3 (since 2.13.2)
 ============================================
 

@@ -1,3 +1,9 @@
+2008-01-28  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* NEWS:
+	* configure.ac:
+	2.13.4 release.
+
 2008-01-28  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* schema/clearlooks.xml.in.in:
