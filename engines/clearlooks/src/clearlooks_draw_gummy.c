@@ -835,6 +835,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		cairo_pattern_destroy (pattern);
 	}
 
+    /* In current GTK+ focus and active cannot happen together, but we are robust against it. */
 	if (params->focus && !params->active)
 	{
 		CairoColor focus_fill = tab->focus.color;
@@ -1657,7 +1658,9 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TAB:
-			if (widget->focus)
+	        /* In current GTK+ focus and active cannot happen together, but we are robust against it.
+	         * IF the application sets the state to ACTIVE while drawing the tabs focus. */
+			if (widget->focus && !widget->active)
 				return;
 			border_alpha = 0.6;
 			fill_alpha = 0.17;

@@ -1,3 +1,10 @@
+2008-01-28  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_tab), (clearlooks_gummy_draw_focus):
+	Added a comment and more restrictive no-focus drawing for the
+	notebook tab.
+
 2008-01-26  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
