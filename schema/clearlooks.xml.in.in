@@ -7,6 +7,14 @@
     <version>@VERSION@</version>
     <website>http://www.gnome.org</website>
     <author>
+      <name>Andrea Cimitan</name>
+      <email>andrea.cimitan@gmail.com</email>
+    </author>
+    <author>
+      <name>Benjamin Berg</name>
+      <email>benjamin@sipsolutions.net</email>
+    </author>
+    <author>
       <name>Richard Stellingwerff</name>
       <email>remenic@gmail.com</email>
     </author>
@@ -29,6 +37,16 @@
     </enumeration>
     <enumeration value="INVERTED">
       <_label>Inverted</_label>
+    </enumeration>
+  </option>
+
+  <option name="reliefstyle" type="enumeration" default="0">
+    <_long_name>Relief Style</_long_name>
+    <enumeration value="0">
+      <_label>Inset</_label>
+    </enumeration>
+    <enumeration value="1">
+      <_label>Shadow</_label>
     </enumeration>
   </option>
 

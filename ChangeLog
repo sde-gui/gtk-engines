@@ -1,5 +1,10 @@
 2008-01-28  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* schema/clearlooks.xml.in.in:
+	Updated Clearlook's schema file
+
+2008-01-28  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_rc_style.c:
 	(clearlooks_rc_style_init):
 	* engines/clearlooks/src/clearlooks_style.c:
