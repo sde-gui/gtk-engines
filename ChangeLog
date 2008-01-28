@@ -1,3 +1,14 @@
+2008-01-28  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_init_from_rc):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Clearlooks/Gummy MUST set reliefstyle = 1 to looks as the 
+	default theme.
+	You should update your Clearlooks themes!
+
 2008-01-28  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

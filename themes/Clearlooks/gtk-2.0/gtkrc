@@ -65,10 +65,11 @@ style "clearlooks-default"
 	engine "clearlooks" 
 	{
 		colorize_scrollbar = TRUE
-		menubarstyle      = 2      # 0 = flat, 1 = sunken, 2 = flat gradient
-		toolbarstyle      = 1      # 0 = flat, 1 = enable effects
-		animation         = FALSE
-		style             = GUMMY
+		reliefstyle        = 1
+		menubarstyle       = 2      # 0 = flat, 1 = sunken, 2 = flat gradient
+		toolbarstyle       = 1      # 0 = flat, 1 = enable effects
+		animation          = FALSE
+		style              = GUMMY
 
 		# Set a hint to disable backward compatibility fallbacks.
 		hint = "use-hints"
