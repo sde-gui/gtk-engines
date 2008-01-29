@@ -1597,8 +1597,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	double xoffset = 1.5;
 	double yoffset = 1.5;
 	double radius = widget->radius-1.0;
-	double border_alpha = 0.7;
-	double fill_alpha = 0.2;
+	double border_alpha = 0.6;
+	double fill_alpha = 0.18;
 	double shadow_alpha = 0.5;
 	boolean focus_fill = TRUE;
 	boolean focus_border = TRUE;
@@ -1634,8 +1634,8 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			}
 			break;
 		case CL_FOCUS_LABEL:
-			xoffset = 1.5;
-			yoffset = 1.5;
+			xoffset = 0.5;
+			yoffset = 0.5;
 			break;
 		case CL_FOCUS_TREEVIEW:
 			parentbg = colors->base[widget->state_type];
@@ -1655,15 +1655,14 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			xoffset = -2.5; /* hack to hide vertical lines */
 			yoffset = 0.5;
 			CLAMP (radius, 0.0, 2.0);
+			border_alpha = 0.7;
 			focus_fill = FALSE;
 			break;
 		case CL_FOCUS_TAB:
-	        /* In current GTK+ focus and active cannot happen together, but we are robust against it.
-	         * IF the application sets the state to ACTIVE while drawing the tabs focus. */
+			/* In current GTK+ focus and active cannot happen together, but we are robust against it.
+			 * IF the application sets the state to ACTIVE while drawing the tabs focus. */
 			if (widget->focus && !widget->active)
 				return;
-			border_alpha = 0.6;
-			fill_alpha = 0.17;
 			break;
 		case CL_FOCUS_SCALE:
 			break;

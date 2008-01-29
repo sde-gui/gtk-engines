@@ -1,3 +1,9 @@
+2008-01-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
+	Shading improvements in focus, more padding to CL_FOCUS_LABEL
+
 2008-01-28  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
