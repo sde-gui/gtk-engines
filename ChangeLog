@@ -1,3 +1,15 @@
+2008-01-30  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_menuitem):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Set the xthickness of GtkMenu to 1px and special cased the menu item
+	drawing to not draw a line on the left/right for the radius == 0
+	case.
+	This helps with usability, as no item is selected after opening a
+	context menu, and also helps with menus that have an empty area because
+	of scrolling.
+
 2008-01-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
