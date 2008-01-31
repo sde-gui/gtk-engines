@@ -1600,7 +1600,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 	double xoffset = 1.5;
 	double yoffset = 1.5;
 	double radius = widget->radius-1.0;
-	double border_alpha = 0.6;
+	double border_alpha = 0.64;
 	double fill_alpha = 0.18;
 	double shadow_alpha = 0.5;
 	boolean focus_fill = TRUE;
