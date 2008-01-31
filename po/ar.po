@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome 2-18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-20 12:36+0000\n"
+"POT-Creation-Date: 2008-01-31 08:08+0000\n"
 "PO-Revision-Date: 2007-03-20 13:00+0100\n"
 "Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team: Arabeyes <doc@arabeyes.org>\n"
@@ -29,39 +29,92 @@ msgid "Animations"
 msgstr "رسوم متحركة"
 
 #: ../schema/clearlooks.xml.in.in.h:4
-#: ../schema/industrial.xml.in.in.h:1
+msgid "Classic"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:5
+#, fuzzy
+msgid "Colorize Scrollbar"
+msgstr "يحدد لون عمود التحريك"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "تباين"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
+#: ../schema/clearlooks.xml.in.in.h:7
+#, fuzzy
+msgid "Enable Animations on Progressbars"
 msgstr "تفعيل الريوم المتحركة في اشرطة التقدم و ازرار الإختيار"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "مسطح"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:11
+#, fuzzy
+msgid "Inset"
+msgstr "نقطة مقلوبة"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+#, fuzzy
+msgid "Inverted"
+msgstr "نقطة مقلوبة"
+
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Menubar Style"
 msgstr "اسلوب شريط القوائم"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Radius"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Relief Style"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Requires style Glossy or Gummy"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
 msgstr "لون عمود التحريك"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Sets the Color of Scrollbars"
 msgstr "يحدد لون عمود التحريك"
 
-#: ../schema/hc.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:19
+#, fuzzy
+msgid "Shadow"
+msgstr "مشكلة"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Style"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:21
+#, fuzzy
+msgid "Toolbar Style"
+msgstr "اسلوب شريط القوائم"
+
+#: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
 msgstr "حجم مؤشر الخلايا"
 
-#: ../schema/hc.xml.in.in.h:2
+#: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
 msgstr "سمك الحد"
 
-#: ../schema/hc.xml.in.in.h:3
+#: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr "حجم ازرار الإختيار في مظهر الشجرة"
 
@@ -148,4 +201,3 @@ msgstr "قطع"
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
 msgstr "بعض"
-
