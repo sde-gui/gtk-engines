@@ -669,7 +669,10 @@ mist_style_draw_check(GtkStyle *style,
 	ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width - 2, height - 2);
 	
 	if (shadow_type == GTK_SHADOW_IN) {
-		ge_cairo_set_color(cr, &mist_style->color_cube.base[GTK_STATE_SELECTED]);	
+		if (state_type == GTK_STATE_INSENSITIVE)
+			ge_cairo_set_color(cr, &mist_style->color_cube.dark[state_type]);
+		else
+			ge_cairo_set_color(cr, &mist_style->color_cube.base[GTK_STATE_SELECTED]);
 		cairo_rectangle(cr, x + 2, y + 2, width - 5, height - 5);
 		cairo_fill(cr);
 	} else if (shadow_type == GTK_SHADOW_ETCHED_IN) { /* inconsistent */
@@ -757,7 +760,10 @@ mist_style_draw_option(GtkStyle *style,
 	else if (shadow_type == GTK_SHADOW_IN)
 	{
 		/* checked */
-		ge_cairo_set_color(cr, &mist_style->color_cube.bg[GTK_STATE_SELECTED]);	
+		if (state_type == GTK_STATE_INSENSITIVE)
+			ge_cairo_set_color(cr, &mist_style->color_cube.dark[state_type]);
+		else
+			ge_cairo_set_color(cr, &mist_style->color_cube.base[GTK_STATE_SELECTED]);
 		cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * G_PI);
 		cairo_fill (cr);
 	}

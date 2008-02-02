@@ -1,3 +1,9 @@
+2008-02-03  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/mist/src/mist-style.c: (mist_style_draw_check),
+	(mist_style_draw_option):
+	I guess thix should fix 500952, but it's just a 30 seconds patch :)
+
 2008-01-31  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
