@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
-# Ignacio Casal Quinteiro <icq@svn.gnome.org>, 2007.
+# Ignacio Casal Quinteiro <icq@svn.gnome.org>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 11:30+0100\n"
-"PO-Revision-Date: 2007-12-01 11:32+0100\n"
+"POT-Creation-Date: 2008-02-02 20:17+0100\n"
+"PO-Revision-Date: 2008-02-02 20:18+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <icq@svn.gnome.org>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -42,8 +42,8 @@ msgid "Contrast"
 msgstr "Contraste"
 
 #: ../schema/clearlooks.xml.in.in.h:7
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "Activar animacións en barras de progreso, radios, e caixas"
+msgid "Enable Animations on Progressbars"
+msgstr "Activar animacións en barras de progreso"
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
@@ -58,34 +58,46 @@ msgid "Gummy"
 msgstr "Pegañento"
 
 #: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inset"
+msgstr "Inserir"
+
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Inverted"
 msgstr "Invertido"
 
-#: ../schema/clearlooks.xml.in.in.h:12
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Menubar Style"
 msgstr "Estilo da barra de menú"
 
-#: ../schema/clearlooks.xml.in.in.h:13
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Radius"
 msgstr "Radio"
 
-#: ../schema/clearlooks.xml.in.in.h:14
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Relief Style"
+msgstr "Estilo do relieve"
+
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Requires style Glossy or Gummy"
 msgstr "Necesita estilo Pulido ou Pegañento"
 
-#: ../schema/clearlooks.xml.in.in.h:15
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
 msgstr "Cor da barra de desprazamento"
 
-#: ../schema/clearlooks.xml.in.in.h:16
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Sets the Color of Scrollbars"
 msgstr "Establece a cor das barras de desprazamento"
 
-#: ../schema/clearlooks.xml.in.in.h:17
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Shadow"
+msgstr "Sombra"
+
+#: ../schema/clearlooks.xml.in.in.h:20
 msgid "Style"
 msgstr "Estilo"
 
-#: ../schema/clearlooks.xml.in.in.h:18
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Toolbar Style"
 msgstr "Estilo da barra de ferramentas"
 
