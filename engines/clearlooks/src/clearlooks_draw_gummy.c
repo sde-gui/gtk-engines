@@ -1317,10 +1317,7 @@ clearlooks_gummy_draw_menuitem (cairo_t                *cr,
 	ge_shade_color (fill, SHADE_BOTTOM, &shade3);
 	cairo_set_line_width (cr, 1.0);
 
-	if (params->radius == 0)
-		cairo_rectangle (cr, x-0.5, y+0.5, width + 1, height - 1);
-	else
-		ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);
+	ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width - 1, height - 1, params->radius, params->corners);
 
 	pattern = cairo_pattern_create_linear (x, y, x, y + height);
 	cairo_pattern_add_color_stop_rgb (pattern, 0,   shade1.r, shade1.g, shade1.b);

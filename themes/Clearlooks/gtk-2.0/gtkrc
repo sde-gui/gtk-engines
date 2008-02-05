@@ -30,6 +30,8 @@ style "clearlooks-default"
 
 	GtkMenu        ::horizontal-padding   = 0
 	GtkMenu        ::vertical-padding     = 0
+	GtkMenuBar::shadow-type = GTK_SHADOW_NONE
+	GtkToolbar::shadow-type = GTK_SHADOW_NONE
 
 	# Glow the tasklist by changing the color, instead of overlaying it with a rectangle
 	WnckTasklist   ::fade-overlay-rect    = 0
@@ -117,7 +119,7 @@ style "clearlooks-tasklist"
 
 style "clearlooks-menu"
 {
-	xthickness = 1
+	xthickness = 0
 	ythickness = 0
 
 	bg[NORMAL] = shade (1.08, @bg_color)

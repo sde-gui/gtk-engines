@@ -472,8 +472,9 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		menubar.style = clearlooks_style->menubarstyle;
 
-		STYLE_FUNCTION(draw_menubar) (cr, colors, &params, &menubar,
-		                              x, y, width, height);
+		if (shadow_type != GTK_SHADOW_NONE)
+			STYLE_FUNCTION(draw_menubar) (cr, colors, &params, &menubar,
+			                              x, y, width, height);
 	}
 	else if (DETAIL ("button") && CHECK_HINT (GE_HINT_TREEVIEW_HEADER))
 	{
@@ -835,7 +836,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		toolbar.style = clearlooks_style->toolbarstyle;
 
 		/* Only draw the shadows on horizontal toolbars */
-		if (shadow_type != GTK_SHADOW_NONE && height < 2*width )
+		/* if (shadow_type != GTK_SHADOW_NONE && height < 2*width) */
+		if (shadow_type != GTK_SHADOW_NONE)
 			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
 	}
 	else if (DETAIL ("trough"))
