@@ -1,5 +1,15 @@
 2008-02-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Removed the test case for the gtkrc.
+	Ok flat menubars and toolbars works in a sane way, except
+	few applications with detachable toolbars.
+	Need to investigate on it.
+	PS: on the previous commit I forgot (yes I forgot :P) to say
+	I've reverted the menuitems to their nicer behaviour ;-)
+
+2008-02-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_menuitem):
 	* engines/clearlooks/src/clearlooks_style.c:

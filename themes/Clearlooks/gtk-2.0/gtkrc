@@ -30,8 +30,6 @@ style "clearlooks-default"
 
 	GtkMenu        ::horizontal-padding   = 0
 	GtkMenu        ::vertical-padding     = 0
-	GtkMenuBar::shadow-type = GTK_SHADOW_NONE
-	GtkToolbar::shadow-type = GTK_SHADOW_NONE
 
 	# Glow the tasklist by changing the color, instead of overlaying it with a rectangle
 	WnckTasklist   ::fade-overlay-rect    = 0
@@ -395,6 +393,7 @@ widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-combobox-text-c
 # Maybe remove this workaround in unstable releases.
 style "clearlooks-evo-new-button-workaround"
 {
+
 	engine "clearlooks"
 	{
 		toolbarstyle = 0
