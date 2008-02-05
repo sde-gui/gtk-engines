@@ -31,15 +31,15 @@ typedef enum {
    Based on/modified from functions in
    Smooth-Engine.
 */ 
-#define GE_IS_WIDGET(object) ((object)  && ge_object_is_a ((GObject*)(object), "GtkWidget"))
-#define GE_IS_CONTAINER(object) ((object)  && ge_object_is_a ((GObject*)(object), "GtkContainer"))
-#define GE_IS_BIN(object) ((object)  && ge_object_is_a ((GObject*)(object), "GtkBin"))
+#define GE_IS_WIDGET(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkWidget"))
+#define GE_IS_CONTAINER(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkContainer"))
+#define GE_IS_BIN(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkBin"))
 
-#define GE_IS_ARROW(object) ((object)  && ge_object_is_a ((GObject*)(object), "GtkArrow"))
+#define GE_IS_ARROW(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkArrow"))
 
-#define GE_IS_SEPARATOR(object) ((object)  && ge_object_is_a ((GObject*)(object), "GtkSeparator"))
-#define GE_IS_VSEPARATOR(object) ((object)  && ge_object_is_a ((GObject*)(object), "GtkVSeparator"))
-#define GE_IS_HSEPARATOR(object) ((object)  && ge_object_is_a ((GObject*)(object), "GtkHSeparator"))
+#define GE_IS_SEPARATOR(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkSeparator"))
+#define GE_IS_VSEPARATOR(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkVSeparator"))
+#define GE_IS_HSEPARATOR(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkHSeparator"))
  
 #define GE_IS_HANDLE_BOX(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkHandleBox"))
 #define GE_IS_HANDLE_BOX_ITEM(object) ((object) && GE_IS_HANDLE_BOX(object->parent))

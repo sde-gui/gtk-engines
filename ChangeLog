@@ -1,5 +1,15 @@
 2008-02-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Managed handlebox_bin and dockitem_bin special cases
+	for toolbar's shadow-type
+	To use this setting place this in the gtkrc:
+	GtkMenuBar::shadow_type = GTK_SHADOW_NONE
+	GtkToolbar::shadow_type = GTK_SHADOW_NONE
+
+2008-02-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Removed the test case for the gtkrc.
 	Ok flat menubars and toolbars works in a sane way, except
