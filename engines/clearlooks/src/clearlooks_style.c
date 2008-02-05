@@ -837,7 +837,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		if ((DETAIL ("handlebox_bin") || DETAIL ("dockitem_bin")) && GE_IS_BIN (widget))
 		{
-			GtkWidget* child = gtk_bin_get_child ((GtkBin*) &widget);
+			GtkWidget* child = gtk_bin_get_child ((GtkBin*) widget);
 			if (GE_IS_TOOLBAR (child))
 				gtk_widget_style_get (child, "shadow-type", &shadow_type, NULL);
 		}
