@@ -1,3 +1,9 @@
+2008-02-06  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Added a small comment to the handlebox/toolbar special case.
+
 2008-02-05  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c:
