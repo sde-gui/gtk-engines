@@ -463,7 +463,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	CHECK_ARGS
 	SANITIZE_SIZE
 
-	if (DETAIL ("menubar") && !ge_is_panel_widget_item(widget))
+	if (DETAIL ("menubar"))
 	{
 		WidgetParameters params;
 		MenuBarParameters menubar;
