@@ -1,3 +1,28 @@
+Overview of Changes in 2.13.5 (since 2.13.4)
+============================================
+
+Changes in this release:
+ - Read the shadow before drawing toolbars and menubars (Clearlooks)
+
+GNOME Bugs fixed in this release:
+ 500952 – check/radio buttons have no insensitive states (mist)
+
+New and udpated translations:
+ Lukáš Lommer (cs)
+ Duarte Loreto (pt)
+ Hendrik Brandt (de)
+ Theppitak Karoonboonyanan (th)
+ Iñaki Larrañaga Murgoitio (eu)
+ Tomasz Dominikowski (pl)
+ Arangel Angov (mk)
+ Takeshi AIHANA (ja)
+ Kjartan Maraas (nb)
+ Ignacio Casal Quinteiro (gl)
+ Djihed Afifi (ar)
+ Jorge González (es)
+ Daniel Nylander (sv)
+
+
 Overview of Changes in 2.13.4 (since 2.13.3)
 ============================================
 

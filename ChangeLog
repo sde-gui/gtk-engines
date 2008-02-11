@@ -1,5 +1,11 @@
 2008-02-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* configure.ac:
+	Update for 2.14.5 release.
+
+2008-02-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_focus):
 	Fixed small warning. (Some useless code.)
