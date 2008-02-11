@@ -467,12 +467,15 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	{
 		WidgetParameters params;
 		MenuBarParameters menubar;
+		gboolean horizontal;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		menubar.style = clearlooks_style->menubarstyle;
 
-		if (shadow_type != GTK_SHADOW_NONE)
+		horizontal = height < 2*width;
+		/* This is not that great. Ideally we would have a nice vertical menubar. */
+		if ((shadow_type != GTK_SHADOW_NONE) && horizontal)
 			STYLE_FUNCTION(draw_menubar) (cr, colors, &params, &menubar,
 			                              x, y, width, height);
 	}
@@ -829,6 +832,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	{
 		WidgetParameters  params;
 		ToolbarParameters toolbar;
+		gboolean horizontal;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		clearlooks_set_toolbar_parameters (&toolbar, widget, window, x, y);
@@ -844,8 +848,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			if (GE_IS_TOOLBAR (child))
 				gtk_widget_style_get (child, "shadow-type", &shadow_type, NULL);
 		}
-
-		if (shadow_type != GTK_SHADOW_NONE)
+		
+		horizontal = height < 2*width;
+		/* This is not that great. Ideally we would have a nice vertical toolbar. */
+		if ((shadow_type != GTK_SHADOW_NONE) && horizontal)
 			STYLE_FUNCTION(draw_toolbar) (cr, colors, &params, &toolbar, x, y, width, height);
 	}
 	else if (DETAIL ("trough"))

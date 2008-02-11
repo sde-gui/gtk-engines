@@ -1,3 +1,10 @@
+2008-02-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Add checks for vertical toolbars and menubars. These are will not be
+	drawn at for now.
+
 2008-02-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
