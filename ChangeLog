@@ -2,6 +2,12 @@
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_focus):
+	... forgot to assign the CLAMP to the radius :)
+
+2008-02-13  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_focus):
 	Reverted some code, that was not useless :P
 
 2008-02-11  Benjamin Berg  <benjamin@sipsolutions.net>
