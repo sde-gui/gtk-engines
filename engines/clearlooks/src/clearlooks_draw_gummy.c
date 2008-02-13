@@ -1654,6 +1654,7 @@ clearlooks_gummy_draw_focus (cairo_t *cr,
 			parentbg = colors->base[widget->state_type];
 			xoffset = -2.5; /* hack to hide vertical lines */
 			yoffset = 0.5;
+			CLAMP (radius, 0.0, 2.0);
 			border_alpha = 0.7;
 			focus_fill = FALSE;
 			break;
