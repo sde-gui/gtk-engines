@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-08 11:04+0200\n"
-"PO-Revision-Date: 2007-12-08 11:04+0200\n"
+"POT-Creation-Date: 2008-02-17 01:36+0200\n"
+"PO-Revision-Date: 2008-02-17 01:38+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin <be-latin.open-tran.eu>\n"
 "MIME-Version: 1.0\n"
@@ -56,34 +56,46 @@ msgid "Gummy"
 msgstr "Smolny"
 
 #: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inset"
+msgstr "Uklejka"
+
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Inverted"
 msgstr "Invertavany"
 
-#: ../schema/clearlooks.xml.in.in.h:12
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Menubar Style"
 msgstr "Styl paneli menu"
 
-#: ../schema/clearlooks.xml.in.in.h:13
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Radius"
 msgstr "Radyjus"
 
-#: ../schema/clearlooks.xml.in.in.h:14
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Relief Style"
+msgstr "Reliefny styl"
+
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Requires style Glossy or Gummy"
 msgstr "Vymahaje ci Bliskučaha, ci Smolnaha stylu"
 
-#: ../schema/clearlooks.xml.in.in.h:15
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
 msgstr "Koler paneli prakrutki"
 
-#: ../schema/clearlooks.xml.in.in.h:16
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Sets the Color of Scrollbars"
 msgstr "Akreślaje koler dla panelaŭ prakrutki"
 
-#: ../schema/clearlooks.xml.in.in.h:17
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Shadow"
+msgstr "Cień"
+
+#: ../schema/clearlooks.xml.in.in.h:20
 msgid "Style"
 msgstr "Styl"
 
-#: ../schema/clearlooks.xml.in.in.h:18
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Toolbar Style"
 msgstr "Styl paneli pryładździa"
 
