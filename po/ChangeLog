@@ -1,3 +1,8 @@
+2008-02-17 Baris Cicek <baris@teamforce.name.tr>
+
+	* tr.po: Added Turkish translation
+	* LINGUAS: Added tr (turkish)
+	
 2008-02-17  Gil Forcada  <gforcada@gnome.org>
 
 	* ca.po: Updated Catalan translation.
