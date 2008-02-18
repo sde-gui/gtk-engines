@@ -24,7 +24,7 @@
     </author>
   </metainfo>
 
-  <option name="style" type="enumeration" default="GUMMY">
+  <option name="style" type="enumeration" default="CLASSIC">
     <_long_name>Style</_long_name>
     <enumeration value="CLASSIC">
       <_label>Classic</_label>
