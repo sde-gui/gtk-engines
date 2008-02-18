@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-13 12:23+0300\n"
+"POT-Creation-Date: 2008-02-18 07:41+0300\n"
 "PO-Revision-Date: 2007-03-05 18:02+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -51,15 +51,15 @@ msgstr "Litteä"
 
 #: ../schema/clearlooks.xml.in.in.h:9
 msgid "Glossy"
-msgstr ""
+msgstr "Kiiltävä"
 
 #: ../schema/clearlooks.xml.in.in.h:10
 msgid "Gummy"
-msgstr ""
+msgstr "Kumimainen"
 
 #: ../schema/clearlooks.xml.in.in.h:11
 msgid "Inset"
-msgstr ""
+msgstr "Upotettu"
 
 #: ../schema/clearlooks.xml.in.in.h:12
 msgid "Inverted"
@@ -79,7 +79,7 @@ msgstr "Reunuksen tyyli"
 
 #: ../schema/clearlooks.xml.in.in.h:16
 msgid "Requires style Glossy or Gummy"
-msgstr ""
+msgstr "Vaatii tyylin \"kiiltävä\" tai \"kumimainen\""
 
 #: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
