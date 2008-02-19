@@ -1,3 +1,11 @@
+2008-02-19  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_top_left_highlight),
+	(clearlooks_gummy_draw_tab):
+	A little bit more contrast on tab focus (+8%)
+	Indents
+
 2008-02-18  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* schema/clearlooks.xml.in.in:

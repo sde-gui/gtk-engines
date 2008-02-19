@@ -142,7 +142,8 @@ clearlooks_gummy_draw_highlight_and_shade (cairo_t                *cr,
 }
 
 static void
-clearlooks_gummy_draw_top_left_highlight (cairo_t *cr, const CairoColor *color,
+clearlooks_gummy_draw_top_left_highlight (cairo_t                *cr,
+                                          const CairoColor       *color,
                                           const WidgetParameters *params,
                                           int width, int height, gdouble radius)
 {
@@ -835,7 +836,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 		cairo_pattern_destroy (pattern);
 	}
 
-    /* In current GTK+ focus and active cannot happen together, but we are robust against it. */
+	/* In current GTK+ focus and active cannot happen together, but we are robust against it. */
 	if (params->focus && !params->active)
 	{
 		CairoColor focus_fill = tab->focus.color;
@@ -844,7 +845,7 @@ clearlooks_gummy_draw_tab (cairo_t                *cr,
 
 		double focus_inset_x = ((tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM) ? 4 : stripe_size + 3);
 		double focus_inset_y = ((tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM) ? stripe_size + 3 : 4);
-		double border_alpha = 0.5;
+		double border_alpha = 0.54;
 		double fill_alpha = 0.17;
 
 		ge_shade_color (&focus_fill, 0.65, &focus_border);
@@ -1582,7 +1583,7 @@ clearlooks_gummy_draw_checkbox (cairo_t                  *cr,
 }
 
 static void
-clearlooks_gummy_draw_focus (cairo_t *cr,
+clearlooks_gummy_draw_focus (cairo_t                *cr,
                              const ClearlooksColors *colors,
                              const WidgetParameters *widget,
                              const FocusParameters  *focus,
