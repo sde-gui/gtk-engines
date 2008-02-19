@@ -1618,7 +1618,7 @@ clearlooks_gummy_draw_focus (cairo_t                *cr,
 			yoffset = -1.5-(focus->padding);
 			radius++;
 			border_alpha = 0.9;
-			fill_alpha = 0.14;
+			fill_alpha = 0.1;
 			if (!widget->active)
 				focus_shadow = TRUE;
 			break;
@@ -1629,7 +1629,7 @@ clearlooks_gummy_draw_focus (cairo_t                *cr,
 			if (widget->active || widget->prelight)
 			{
 				border_alpha = 0.9;
-				fill_alpha = 0.14;
+				fill_alpha = 0.1;
 				if (!widget->active)
 					focus_shadow = TRUE;
 			}
