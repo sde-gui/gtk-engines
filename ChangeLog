@@ -1,3 +1,9 @@
+2008-02-26  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* NEWS:
+	* configure.ac:
+	Update for the 2.13.6 release.
+
 2008-02-20  Thomas Wood  <thos@gnome.org>
 
 	* themes/Crux/gtk-2.0/gtkrc: Lighten the bg colour a little

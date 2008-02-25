@@ -1,3 +1,31 @@
+Overview of Changes in 2.13.6 (since 2.13.5)
+============================================
+
+Changes in this release:
+ - Fix in the clearlooks schema file. It listed the wrong default style.
+ - Lighter background color in the Crux theme.
+ - Some small changes in the Clearlooks GUMMY focus drawing.
+
+New and udpated translations:
+ Luca Ferretti (it)
+ Yair Hershkovitz (he)
+ Ivar Smolin (et)
+ Ilkka Tuohela (fi)
+ Wouter Bolsterlee (nl)
+ Baris Cicek (tr)
+ Gil Forcada (ca)
+ Ihar Hrachyshka (be@latin)
+ Chao-Hsiung Liao (zh_HK)
+ Chao-Hsiung Liao (zh_TW)
+ Claude Paroz (fr)
+ Petr Kovar (cs)
+ Arangel Angov (mk)
+ Jorge González (es)
+ Clytie Siddall (vi)
+ Tomasz Dominikowski (pl)
+ Ask Hjorth Larsen (da)
+
+
 Overview of Changes in 2.13.5 (since 2.13.4)
 ============================================
 
