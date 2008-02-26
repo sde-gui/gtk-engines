@@ -1287,7 +1287,9 @@ clearlooks_style_realize (GtkStyle * style)
 
 	for (i = 0; i < 9; i++)
 	{
-		ge_shade_color (&bg_normal, (shades[i]-0.7) * contrast + 0.7, &clearlooks_style->colors.shade[i]);
+		ge_shade_color (&bg_normal, (shades[i] < 1.0) ?
+		                (shades[i]/contrast) : (shades[i]*contrast),
+		                &clearlooks_style->colors.shade[i]);
 	}
 
 	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &spot_color);

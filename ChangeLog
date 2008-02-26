@@ -1,3 +1,9 @@
+2008-02-26  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_realize):
+	Fixed broken algorithm for the contrast option
+
 2008-02-26  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
