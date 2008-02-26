@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome 2-18\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-01-31 08:08+0000\n"
-"PO-Revision-Date: 2007-03-20 13:00+0100\n"
+"PO-Revision-Date: 2008-02-26 11:07+0100\n"
 "Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team: Arabeyes <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,21 +30,20 @@ msgstr "رسوم متحركة"
 
 #: ../schema/clearlooks.xml.in.in.h:4
 msgid "Classic"
-msgstr ""
+msgstr "كلاسيّ"
 
 #: ../schema/clearlooks.xml.in.in.h:5
-#, fuzzy
 msgid "Colorize Scrollbar"
-msgstr "يحدد لون عمود التحريك"
+msgstr "لوّن شريط التمرير"
 
-#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "تباين"
 
 #: ../schema/clearlooks.xml.in.in.h:7
-#, fuzzy
 msgid "Enable Animations on Progressbars"
-msgstr "تفعيل الريوم المتحركة في اشرطة التقدم و ازرار الإختيار"
+msgstr "تفعيل التحريك في أشرطة التقدّم"
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
@@ -52,21 +51,19 @@ msgstr "مسطح"
 
 #: ../schema/clearlooks.xml.in.in.h:9
 msgid "Glossy"
-msgstr ""
+msgstr "لمّاع"
 
 #: ../schema/clearlooks.xml.in.in.h:10
 msgid "Gummy"
-msgstr ""
+msgstr "مصمّغ"
 
 #: ../schema/clearlooks.xml.in.in.h:11
-#, fuzzy
 msgid "Inset"
-msgstr "نقطة مقلوبة"
+msgstr "داخلي"
 
 #: ../schema/clearlooks.xml.in.in.h:12
-#, fuzzy
 msgid "Inverted"
-msgstr "نقطة مقلوبة"
+msgstr "معكوس"
 
 #: ../schema/clearlooks.xml.in.in.h:13
 msgid "Menubar Style"
@@ -74,15 +71,15 @@ msgstr "اسلوب شريط القوائم"
 
 #: ../schema/clearlooks.xml.in.in.h:14
 msgid "Radius"
-msgstr ""
+msgstr "نصف القطر"
 
 #: ../schema/clearlooks.xml.in.in.h:15
 msgid "Relief Style"
-msgstr ""
+msgstr "أسلوب التخلي"
 
 #: ../schema/clearlooks.xml.in.in.h:16
 msgid "Requires style Glossy or Gummy"
-msgstr ""
+msgstr "يتطلّب أسلوبا لمّاعا أو مصمّغا"
 
 #: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
@@ -93,18 +90,16 @@ msgid "Sets the Color of Scrollbars"
 msgstr "يحدد لون عمود التحريك"
 
 #: ../schema/clearlooks.xml.in.in.h:19
-#, fuzzy
 msgid "Shadow"
-msgstr "مشكلة"
+msgstr "ظل"
 
 #: ../schema/clearlooks.xml.in.in.h:20
 msgid "Style"
-msgstr ""
+msgstr "أسلوب"
 
 #: ../schema/clearlooks.xml.in.in.h:21
-#, fuzzy
 msgid "Toolbar Style"
-msgstr "اسلوب شريط القوائم"
+msgstr "أسلوب شريط الأدوات"
 
 #: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
@@ -201,3 +196,4 @@ msgstr "قطع"
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
 msgstr "بعض"
+
