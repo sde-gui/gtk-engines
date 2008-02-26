@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-29 07:19+0900\n"
-"PO-Revision-Date: 2007-03-29 09:36+0900\n"
+"POT-Creation-Date: 2008-02-26 19:02+0900\n"
+"PO-Revision-Date: 2008-02-26 19:05+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
@@ -26,39 +26,87 @@ msgstr "3차원 모양 (그라디언트)"
 msgid "Animations"
 msgstr "애니메이션"
 
-#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "클래식"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "스크롤 막대 색 설정"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "색 대비"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "진행률 표시줄, 라디오 단추, 확인란의 애니메이션 사용"
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Enable Animations on Progressbars"
+msgstr "진행률 표시줄의 애니메이션 사용"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "평평하게"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr "광택"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr "끈적"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inset"
+msgstr "조각조각"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inverted"
+msgstr "반전"
+
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Menubar Style"
 msgstr "메뉴모음 종류"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Radius"
+msgstr "반지름"
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Relief Style"
+msgstr "들어가기 스타일"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Requires style Glossy or Gummy"
+msgstr "광택이나 끈적 스타일 중 하나가 필요합니다"
+
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
 msgstr "스크롤 막대 색"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Sets the Color of Scrollbars"
 msgstr "스크롤 막대의 색을 설정합니다"
 
-#: ../schema/hc.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Shadow"
+msgstr "그림자"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Style"
+msgstr "종류"
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "Toolbar Style"
+msgstr "도구 모음 종류"
+
+#: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
 msgstr "셀 컨트롤 크기"
 
-#: ../schema/hc.xml.in.in.h:2
+#: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
 msgstr "가장자리 두께"
 
-#: ../schema/hc.xml.in.in.h:3
+#: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr "트리뷰 안에서 확인란 및 라디오 단추의 크기. (버그 #351764)"
 
