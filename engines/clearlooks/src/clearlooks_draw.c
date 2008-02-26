@@ -1601,6 +1601,7 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	const CairoColor *border = &colors->shade[5];
 	CairoColor        bg_shade;
 	cairo_pattern_t *pattern;
+	double radius = MIN (widget->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 
 	ge_shade_color (bg, 0.95, &bg_shade);
 
@@ -1613,7 +1614,11 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	cairo_translate (cr, x, y);
 
 	/* Draw fill */
-	cairo_rectangle (cr, 1, 0, width-2, height);
+	if (radius > 3.0)
+		ge_cairo_rounded_rectangle (cr, 1, 0, width-2, height,
+		                            radius, widget->corners);
+	else
+		cairo_rectangle (cr, 1, 0, width-2, height);
 	ge_cairo_set_color (cr, bg);
 	cairo_fill (cr);
 
@@ -1627,8 +1632,13 @@ clearlooks_draw_scrollbar_trough (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 
 	/* Draw border */
+	if (radius > 3.0)
+		ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1,
+		                            radius, widget->corners);
+	else
+		cairo_rectangle (cr, 0.5, 0.5, width-1, height-1);
 	ge_cairo_set_color (cr, border);
-	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
+	cairo_stroke (cr);
 }
 
 static void
@@ -1864,11 +1874,7 @@ clearlooks_draw_menu_frame (cairo_t *cr,
 	const CairoColor *border = &colors->shade[5];
 	cairo_translate      (cr, x, y);
 	cairo_set_line_width (cr, 1);
-/*
-	cairo_set_source_rgba (cr, colors->bg[0].r, colors->bg[0].g, colors->bg[0].b, 0.9);
-	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-	cairo_paint          (cr);
-*/
+
 	ge_cairo_set_color (cr, border);
 	ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 }

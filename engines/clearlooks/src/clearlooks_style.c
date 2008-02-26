@@ -645,7 +645,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		ScrollBarParameters scrollbar;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-		params.corners = CR_CORNER_NONE;
+		params.corners = CR_CORNER_ALL;
 
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);

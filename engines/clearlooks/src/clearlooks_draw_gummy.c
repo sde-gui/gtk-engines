@@ -1051,7 +1051,8 @@ clearlooks_gummy_draw_scrollbar_stepper (cairo_t                          *cr,
 	cairo_pattern_destroy (pattern);
 
 	cairo_translate (cr, 0.5, 0.5);
-	clearlooks_gummy_draw_top_left_highlight (cr, &fill, widget, width, height, (stepper->stepper == CL_STEPPER_A) ? radius : 0);
+	clearlooks_gummy_draw_top_left_highlight (cr, &fill, widget, width, height,
+	                                          (stepper->stepper == CL_STEPPER_A) ? radius : 0);
 	cairo_translate (cr, -0.5, -0.5);
 
 	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, corners);
