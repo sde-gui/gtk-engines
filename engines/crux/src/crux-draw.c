@@ -213,129 +213,163 @@ paint_menuitem (cairo_t *cr, GtkStyle *style, GtkStateType state_type,
 }
 
 static void
-paint_button (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkShadowType shadow_type,
+paint_button (cairo_t *cr, GtkStyle *style,
+		GtkStateType state_type, GtkShadowType shadow_type, gboolean has_focus,
 	gdouble x, gdouble y, gdouble width, gdouble height)
 {
-	gdouble radius = 2.0;
+	gdouble radius = 3.0;
 	cairo_pattern_t *crp;
-	CairoColor bg, c1, c2, border;
+	CairoColor base, inner_top, inner_bot, grad_top, grad_bot, stroke;
+        gdouble h, s, b;
 
+	if (shadow_type == GTK_SHADOW_NONE)
+		return;
 
-	if (state_type == GTK_STATE_INSENSITIVE)
+	/* calculate colours */
+	ge_gdk_color_to_cairo (&style->bg[state_type], &base);
+	ge_hsb_from_color (&base, &h, &s, &b);
+	ge_color_from_hsb (h, s, b - 0.52, &stroke);
+
+	/* shadow and focus indicator */
+	if (has_focus)
 	{
-		/* solid fill for insensitive */
+		CairoColor c;
+		ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &c);
+		cairo_set_source_rgba (cr, c.r, c.g, c.b, 0.6);
+	}
+	else
+	{
+		cairo_set_source_rgba (cr, 0, 0, 0, 0.1);
+	}
+	ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
+	cairo_fill (cr);
+
+	--radius;
+	++x; ++y; width -= 2; height -= 2;
+
+	if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
+	{
+		/* outline */
+		if (state_type == GTK_STATE_INSENSITIVE)
+			gdk_cairo_set_source_color (cr, &style->fg [state_type]);
+		else
+			ge_cairo_set_color (cr, &stroke);
 		ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
-		gdk_cairo_set_source_color (cr, &style->bg[state_type]);
 		cairo_fill (cr);
 
-		/* reduce height so that a shadow appears beneath the button */
-		height -= 1.0;
+		++x; ++y; width -= 2; height -= 2;
+
+		ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
+		if (state_type != GTK_STATE_INSENSITIVE)
+		{
+			/* gradient fill */
+			crp = cairo_pattern_create_linear (x, y, x, y +height);
+			ge_color_from_hsb (h, s, b - 0.05, &grad_top);
+			ge_color_from_hsb (h, s, b - 0.2, &grad_bot);
+			cairo_pattern_add_color_stop_rgb (crp, 0.0, grad_top.r, grad_top.g, grad_top.b);
+			cairo_pattern_add_color_stop_rgb (crp, 0.3, grad_top.r, grad_top.g, grad_top.b);
+			cairo_pattern_add_color_stop_rgb (crp, 0.9, grad_bot.r, grad_bot.g, grad_bot.b);
+			cairo_pattern_add_color_stop_rgb (crp, 1.0, grad_bot.r, grad_bot.g, grad_bot.b);
+			cairo_set_source (cr, crp);
+			cairo_fill (cr);
+			cairo_pattern_destroy (crp);
+		}
+		else
+		{
+			ge_cairo_set_color (cr, &base);
+			cairo_fill (cr);
+		}
+
+		x += 0.5; y += 0.5; height--; width--;
+
+		/* inside shadow */
+		--radius;
+		cairo_move_to (cr, x, y + height);
+		cairo_arc (cr, x + radius, y + radius, radius, G_PI, G_PI * 1.5);
+		cairo_line_to (cr, x + width, y);
+		if (state_type == GTK_STATE_INSENSITIVE)
+			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.1);
+		else
+			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
+		cairo_stroke (cr);
+
+		cairo_move_to (cr, x + 1.0, y + height);
+		cairo_line_to (cr, x + 1.0, y + 1);
+		cairo_line_to (cr, x + width, y + 1);
+		cairo_line_to (cr, x + width, y + height);
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.05);
+		cairo_stroke (cr);
+
+
+		if (state_type == GTK_STATE_INSENSITIVE)
+			return;
+
+		cairo_rectangle (cr, x + 1.0, y + 1.0, width - 2, height - 1);
+		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.03);
+		cairo_stroke (cr);
+		return;
 	}
 
-	/* optimise for line drawing */
-	x += 0.5; y += 0.5;
-	width -= 1.0; height -= 1.0;
-
-	/* calculate start and end colours for the gradient */
-	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
-	ge_shade_color (&bg, 0.9, &c2); /* darken */
-	ge_shade_color (&bg, 1.1, &c1); /* lighten */
-	ge_shade_color (&bg, OUTLINE_SHADE, &border); /* border */
-
-
-	switch (shadow_type)
+	if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
 	{
-		case GTK_SHADOW_NONE:
-			return;
-		case GTK_SHADOW_IN:
-		case GTK_SHADOW_ETCHED_IN:
+		if (state_type == GTK_STATE_INSENSITIVE)
+		{
+			/* disabled gray stroke */
 			ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
-			if (state_type != GTK_STATE_INSENSITIVE)
-			{
-				/* gradient fill */
-				crp = cairo_pattern_create_linear (x, y, x, y +height);
-				/*
-				 * cairo_pattern_add_color_stop_rgb (crp, 0.0, 186/255.0, 189/255.0, 182/255.0);
-				 * cairo_pattern_add_color_stop_rgb (crp, 1.0, 136/255.0, 138/255.0, 133/255.0);
-				 */
+			gdk_cairo_set_source_color (cr, &style->fg [state_type]);
+			cairo_fill (cr);
 
-				cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
-				cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
-				cairo_set_source (cr, crp);
-				cairo_fill_preserve (cr);
-				cairo_pattern_destroy (crp);
-			}
+			--radius;
+			++x; ++y; width -= 2; height -= 2;
 
-			/* outline */
-			if (state_type == GTK_STATE_INSENSITIVE)
-			{
-				/* disabled gray stroke */
-				gdk_cairo_set_source_color (cr, &style->fg [state_type]);
-			}
-			else
-			{
-				/* dark gray */
-				ge_cairo_set_color (cr, &border);
-			}
-			cairo_stroke (cr);
+			ge_cairo_rounded_rectangle (cr, x, y, width, height , radius, CR_CORNER_ALL);
+			gdk_cairo_set_source_color (cr, &style->bg [state_type]);
+			cairo_fill (cr);
 
-			/* inside shadow */
-			radius = 1.0;
-			cairo_move_to (cr, x + 1.0, y + height - 1.0);
-			cairo_arc (cr, x + radius + 1.0, y + radius + 1.0, radius, G_PI, G_PI * 1.5);
-			cairo_line_to (cr, x + width - 1.0, y + 1.0);
-			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.22);
-			cairo_stroke (cr);
+			return;
+		}
 
-			cairo_move_to (cr, x + 2.0, y + height - 1.0);
-			cairo_line_to (cr, x + 2.0, y + 2.0);
-			cairo_line_to (cr, x + width - 1.0, y + 2.0);
-			cairo_line_to (cr, x + width - 1.0, y + height - 1.0);
-			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.12);
-			cairo_stroke (cr);
 
-			cairo_rectangle (cr, x + 3.0, y + 3.0, width - 5.0, height - 4.0);
-			cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.03);
-			cairo_stroke (cr);
-			break;
-		case GTK_SHADOW_OUT:
-		case GTK_SHADOW_ETCHED_OUT:
-			if (state_type == GTK_STATE_INSENSITIVE)
-			{
-				ge_cairo_rounded_rectangle (cr, x, y, width, height , radius, CR_CORNER_ALL);
-				/* disabled gray stroke */
-				gdk_cairo_set_source_color (cr, &style->fg [state_type]);
-				cairo_stroke (cr);
-			}
-			else
-			{
-				ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
+		ge_color_from_hsb (h, s, b + 0.156, &inner_top);
+		ge_color_from_hsb (h, s, b, &inner_bot);
+		ge_color_from_hsb (h, s, b + 0.117, &grad_top);
+		ge_color_from_hsb (h, s, b - 0.117, &grad_bot);
 
-				crp = cairo_pattern_create_linear (x, y+2.0, x, y+height-2.0);
+		/* border */
+		ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
+		ge_cairo_set_color (cr, &stroke);
+		cairo_fill (cr);
 
-				cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
-				cairo_pattern_add_color_stop_rgb (crp, 1.0, c2.r, c2.g, c2.b);
-				/*
-				cairo_pattern_add_color_stop_rgb (crp, 0.0, 238/255.0, 238/255.0, 236/255.0);
-				cairo_pattern_add_color_stop_rgb (crp, 1.0, 186/255.0, 189/255.0, 182/255.0);
-				*/
-				cairo_set_source (cr, crp);
-				cairo_fill_preserve (cr);
-				cairo_pattern_destroy (crp);
 
-				/* border */
-				ge_cairo_set_color (cr, &border);
-				cairo_stroke (cr);
+		/* inner stroke */
+		++x; ++y;
+		width -= 2; height -= 2;
+		--radius;
 
-				ge_cairo_rounded_rectangle (cr, x+1.0, y+1.0, width-2.0, height-2.0, radius, CR_CORNER_ALL);
-				crp = cairo_pattern_create_linear (x, y, x, y + height);
-				cairo_pattern_add_color_stop_rgba (crp, 0.0, 1.0, 1.0, 1.0, 0.4);
-				cairo_pattern_add_color_stop_rgba (crp, 1.0, 0.8, 0.8, 0.8, 0.4);
-				cairo_set_source (cr, crp);
-				cairo_stroke (cr);
-				cairo_pattern_destroy (crp);
-			}
-			break;
+		crp = cairo_pattern_create_linear (x, y, x, y + height);
+		cairo_pattern_add_color_stop_rgb (crp, 0.0, inner_top.r, inner_top.g, inner_top.b);
+		cairo_pattern_add_color_stop_rgb (crp, 1.0, inner_bot.r, inner_bot.g, inner_bot.b);
+		cairo_set_source (cr, crp);
+
+		ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
+		cairo_fill (cr);
+		cairo_pattern_destroy (crp);
+
+
+		/* gradient */
+		x+=.5; y+=.5;
+		width -= 1; height -= 1;
+
+		crp = cairo_pattern_create_linear (x, y, x, y + height);
+		cairo_pattern_add_color_stop_rgb (crp, 0.0, grad_top.r, grad_top.g, grad_top.b);
+		cairo_pattern_add_color_stop_rgb (crp, 0.14, grad_top.r, grad_top.g, grad_top.b);
+		cairo_pattern_add_color_stop_rgb (crp, 0.86, grad_bot.r, grad_bot.g, grad_bot.b);
+		cairo_pattern_add_color_stop_rgb (crp, 1.0, grad_bot.r, grad_bot.g, grad_bot.b);
+		cairo_set_source (cr, crp);
+
+		cairo_rectangle (cr, x, y, width, height);
+		cairo_fill (cr);
+		cairo_pattern_destroy (crp);
 	}
 }
 
@@ -975,17 +1009,19 @@ draw_box (GtkStyle *style,
 			x += 1; y += 1;
 			width -= 2; height -= 2;
 		}
-		paint_button (cr, style, state_type, shadow_type, x, y, width, height);
+		paint_button (cr, style, state_type, shadow_type, GTK_WIDGET_HAS_FOCUS (widget), x, y, width, height);
 	}
 	else if (DETAIL ("buttondefault"))
 	{
 		/* draw Default Button marking, but only when sensitive */
-		if (widget && state_type != GTK_STATE_INSENSITIVE)
+		if (state_type != GTK_STATE_INSENSITIVE)
 		{
-			gdk_cairo_set_source_color (cr, &style->bg[GTK_STATE_SELECTED]);
-			cx = x + 0.5; cy = y + 0.5; cw = width - 1.0; ch = height - 1.0;
-			ge_cairo_rounded_rectangle (cr, cx, cy, cw, ch, 3.0, CR_CORNER_ALL);
-			cairo_stroke (cr);
+			CairoColor c;
+			ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &c);
+			cairo_set_source_rgba (cr, c.r, c.g, c.b, 0.6);
+
+			ge_cairo_rounded_rectangle (cr, x, y, width, height, 3.0, CR_CORNER_ALL);
+			cairo_fill (cr);
 		}
 	}
 	else if (DETAIL ("menuitem"))
@@ -1738,6 +1774,11 @@ draw_focus (GtkStyle *style,
 		cairo_destroy (cr);
 		return;
 	}
+
+	/* buttons draw their own focus indicator */
+	if (DETAIL ("button"))
+		return;
+
 	/* Make sure no widget is without a focus indicator! */
 	parent_style_class->draw_focus(style, window, state_type, area, widget,
 	                               detail, x, y, width, height);
