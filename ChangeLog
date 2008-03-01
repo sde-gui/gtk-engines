@@ -1,5 +1,10 @@
 2008-03-01  Thomas Wood  <thos@gnome.org>
 
+	* engines/crux/src/crux-draw.c: (paint_button), (draw_box): Only draw an
+	extra shadow on widgets with "button" detail, and fix spinbutton padding
+
+2008-03-01  Thomas Wood  <thos@gnome.org>
+
 	* engines/crux/src/crux-draw.c: (draw_extension): Use correct background
 	colour according to state_type
 

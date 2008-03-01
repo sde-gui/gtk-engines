@@ -214,8 +214,9 @@ paint_menuitem (cairo_t *cr, GtkStyle *style, GtkStateType state_type,
 
 static void
 paint_button (cairo_t *cr, GtkStyle *style,
-		GtkStateType state_type, GtkShadowType shadow_type, gboolean has_focus,
-	gdouble x, gdouble y, gdouble width, gdouble height)
+		GtkStateType state_type, GtkShadowType shadow_type,
+		gboolean has_focus, gboolean extra_shadow,
+		gdouble x, gdouble y, gdouble width, gdouble height)
 {
 	gdouble radius = 3.0;
 	cairo_pattern_t *crp;
@@ -230,22 +231,25 @@ paint_button (cairo_t *cr, GtkStyle *style,
 	ge_hsb_from_color (&base, &h, &s, &b);
 	ge_color_from_hsb (h, s, b - 0.52, &stroke);
 
-	/* shadow and focus indicator */
-	if (has_focus)
+	if (extra_shadow)
 	{
-		CairoColor c;
-		ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &c);
-		cairo_set_source_rgba (cr, c.r, c.g, c.b, 0.6);
-	}
-	else
-	{
-		cairo_set_source_rgba (cr, 0, 0, 0, 0.1);
-	}
-	ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
-	cairo_fill (cr);
+		/* extra shadow and focus indicator */
+		if (has_focus)
+		{
+			CairoColor c;
+			ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &c);
+			cairo_set_source_rgba (cr, c.r, c.g, c.b, 0.6);
+		}
+		else
+		{
+			cairo_set_source_rgba (cr, 0, 0, 0, 0.1);
+		}
+		ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
+		cairo_fill (cr);
 
-	--radius;
-	++x; ++y; width -= 2; height -= 2;
+		--radius;
+		++x; ++y; width -= 2; height -= 2;
+	}
 
 	if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
 	{
@@ -916,15 +920,11 @@ draw_box (GtkStyle *style,
 		if (DETAIL ("spinbutton_down") || DETAIL ("spinbutton_up"))
 		{
 			/* add some padding */
-			x++; y++; width -= 2;
+			x++; y++; width -= 3;
 			if (DETAIL ("spinbutton_up")) 
 				height--;
 			else
 				height -= 2;
-
-			if (state_type == GTK_STATE_INSENSITIVE)
-				height++;
-
 		}
 
 		if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
@@ -973,7 +973,7 @@ draw_box (GtkStyle *style,
 			x += 1; y += 1;
 			width -= 2; height -= 2;
 		}
-		paint_button (cr, style, state_type, shadow_type, GTK_WIDGET_HAS_FOCUS (widget), x, y, width, height);
+		paint_button (cr, style, state_type, shadow_type, GTK_WIDGET_HAS_FOCUS (widget), DETAIL ("button"), x, y, width, height);
 	}
 	else if (DETAIL ("buttondefault"))
 	{
