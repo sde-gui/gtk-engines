@@ -385,74 +385,38 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 	ge_shade_color (&bg, OUTLINE_SHADE, &border); /* border */
 
-	x += 0.5; y += 0.5;
-	width -= 1.0; height -= 1.0;
+	x += 0.5; y += 0.5; width--; height--;
 
-	/* outer rectangle */
-	if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
+	CairoColor tl, bl;
+	tl.r = 1; tl.g = 1; tl.b = 1; tl.a = 0.7;
+	bl.r = 0; bl.g = 0; bl.b = 0; bl.a = 0.2;
+
+	if (shadow_type == GTK_SHADOW_OUT)
 	{
 		ge_cairo_set_color (cr, &border);
 		ge_cairo_stroke_rectangle (cr, x, y, width, height);
+		x++; y++; width -= 2.0; height -= 2.0;
+		ge_cairo_simple_border (cr, &tl, &bl, x, y, width +1, height +1, TRUE);
 	}
-	else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
+	else if (shadow_type == GTK_SHADOW_IN)
 	{
-		/*
-		cairo_pattern_add_color_stop_rgb (crp, 0.0, 186/255.0, 189/255.0, 182/255.0);
-		cairo_pattern_add_color_stop_rgb (crp, 1.0, 238/255.0, 238/255.0, 236/255.0);
-		*/
-		crp = cairo_pattern_create_linear (x, y, x, y + height);
-		cairo_pattern_add_color_stop_rgba (crp, 1.0, 1.0, 1.0, 1.0, 0.5);
-		cairo_pattern_add_color_stop_rgba (crp, 0.0, .0, .0, .0, 0.2);
-		cairo_set_source (cr, crp);
-		ge_cairo_stroke_rectangle (cr, x, y, width, height);
-		cairo_pattern_destroy (crp);
-	}
-
-	/* inner rectangle */
-	x += 1.0; y += 1.0;
-	width -= 2.0; height -= 2.0;
-
-	/* stroke */
-	if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
-	{
-		crp = cairo_pattern_create_linear (x, y, x, y + height);
-		/*
-		cairo_pattern_add_color_stop_rgb (crp, 0.0, 1.0, 1.0, 1.0);
-		cairo_pattern_add_color_stop_rgb (crp, 1.0, 136/255.0, 138/255.0, 133/255.0);
-		*/
-		cairo_pattern_add_color_stop_rgba (crp, 0.0, 1.0, 1.0, 1.0, 0.5);
-		cairo_pattern_add_color_stop_rgba (crp, 1.0, .0, .0, .0, 0.2);
-		cairo_set_source (cr, crp);
-		ge_cairo_stroke_rectangle (cr, x, y, width, height);
-		cairo_pattern_destroy (crp);
-	}
-	else if (shadow_type == GTK_SHADOW_IN || shadow_type == GTK_SHADOW_ETCHED_IN)
-	{
-		/*TODO: Find a way to calculate this value (same as shadow out outer line)*/
+		ge_cairo_simple_border (cr, &bl, &tl, x, y, width +1, height +1, TRUE);
+		x++; y++; width -= 2.0; height -= 2.0;
 		ge_cairo_set_color (cr, &border);
 		ge_cairo_stroke_rectangle (cr, x, y, width, height);
-
-		/*
-		// three lines of alpha: 0.22, 0.12, 0.03
-		cairo_move_to (cr, x + 1.0, y + height);
-		cairo_line_to (cr, x + 1.0, y + 1.0);
-		cairo_line_to (cr, x + width - 1.0, y + 1.0);
-		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.22);
-		cairo_stroke (cr);
-
-		cairo_move_to (cr, x + 2.0, y + height);
-		cairo_line_to (cr, x + 2.0, y + 2.0);
-		cairo_line_to (cr, x + width - 1.0, y + 2.0);
-		cairo_line_to (cr, x + width - 1.0, y + height - 1.0);
-		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.12);
-		cairo_stroke (cr);
-
-		cairo_rectangle (cr, x + 3.0, y + 3.0, width - 5.0, height - 4.0);
-		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.03);
-		cairo_stroke (cr);
-		*/
 	}
-
+	else if (shadow_type == GTK_SHADOW_ETCHED_IN)
+	{
+		ge_cairo_simple_border (cr, &bl, &tl, x, y, width +1, height +1, TRUE);
+		x++; y++; width -= 2.0; height -= 2.0;
+		ge_cairo_simple_border (cr, &tl, &bl, x, y, width +1, height +1, TRUE);
+	}
+	else if (shadow_type == GTK_SHADOW_ETCHED_OUT)
+	{
+		ge_cairo_simple_border (cr, &tl, &bl, x, y, width +1, height +1, TRUE);
+		x++; y++; width -= 2.0; height -= 2.0;
+		ge_cairo_simple_border (cr, &bl, &tl, x, y, width +1, height +1, TRUE);
+	}
 
 }
 
@@ -1594,8 +1558,26 @@ draw_box_gap (GtkStyle *style,
     debug ("draw_box_gap: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
-    gtk_paint_box (style, window, state_type, shadow_type, area, widget,
-		   detail, x, y, width, height);
+    if (DETAIL ("notebook"))
+    {
+	cairo_t *cr;
+	CairoColor bg, border, hl;
+
+	cr = ge_gdk_drawable_to_cairo (window, area);
+	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
+	ge_shade_color (&bg, OUTLINE_SHADE, &border); /* border */
+	hl.r = 1; hl.g = 1; hl.b = 1; hl.a = 0.7; /* hilight */
+
+	ge_cairo_set_color (cr, &border);
+	ge_cairo_stroke_rectangle (cr, x+.5, y+.5, width-1, height-1);
+
+	ge_cairo_set_color (cr, &hl);
+	ge_cairo_stroke_rectangle (cr, x+1.5, y+1.5, width-3, height-3);
+	cairo_destroy (cr);
+    }
+    else
+	gtk_paint_box (style, window, state_type, shadow_type, area, widget,
+			detail, x, y, width, height);
 
     /* XXX Eavel hack to prevent a hole being draw when the
        XXX active tab is on the far left */
@@ -1745,10 +1727,7 @@ draw_extension (GtkStyle *style,
 	}
 
 	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, 1.0, corners);
-	if (gap_side == GTK_POS_TOP && state_type == GTK_STATE_NORMAL)
-		cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.2);
-	else
-		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5); /* must be same colour as corresponding draw_box highlight */
+	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5); 
 	cairo_stroke (cr);
 	cairo_destroy (cr);
 }

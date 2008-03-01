@@ -1,3 +1,8 @@
+2008-03-01  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (paint_shadow), (draw_box_gap):
+	Implement all shadow types
+
 2008-02-28  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: Improve button border contrast
