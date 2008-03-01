@@ -1654,7 +1654,7 @@ draw_extension (GtkStyle *style,
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	/* set up colours */
-	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg);
+	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 	ge_shade_color (&bg, 1.1, &c1);
 	c2.r = bg.r; c2.g = bg.g; c2.b = bg.b;
 	/* outline colour */
