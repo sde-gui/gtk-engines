@@ -135,13 +135,6 @@ style "clearlooks-menu-item"
 	ythickness = 3
 
 	fg[PRELIGHT] = @selected_fg_color
-
-	# Work around for http://bugzilla.gnome.org/show_bug.cgi?id=382646
-	text[NORMAL]       = @fg_color
-	text[PRELIGHT]     = @selected_fg_color
-	text[SELECTED]     = @selected_fg_color
-	text[ACTIVE]       = @fg_color
-	text[INSENSITIVE]  = darker (@bg_color)
 }
 
 style "clearlooks-separator-menu-item"
@@ -378,7 +371,7 @@ widget "*.nautilus-extra-view-widget" style : highest "clearlooks-nautilus-locat
 # Similar hack also in the menuitem style.
 # This style does not affect GtkComboBoxEntry, it does have an effect
 # on comboboxes in appears-as-list mode though.
-style "clearlooks-combobox-text-color-workaround"
+style "clearlooks-text-is-fg-color-workaround"
 {
 	text[NORMAL]      = @fg_color
 	text[PRELIGHT]    = @fg_color
@@ -386,7 +379,8 @@ style "clearlooks-combobox-text-color-workaround"
 	text[ACTIVE]      = @fg_color
 	text[INSENSITIVE] = darker (@bg_color)
 }
-widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-combobox-text-color-workaround"
+widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-text-is-fg-color-workaround"
+widget "*.gtk-combobox-popup-menu.*"   style "clearlooks-text-is-fg-color-workaround"
 
 # Work around the usage of GtkLabel inside GtkListItems to display text.
 # This breaks because the label is shown on a background that is based on the

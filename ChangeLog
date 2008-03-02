@@ -1,6 +1,12 @@
 2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Use the special name menus get for comboboxes to work around the text
+	color bug. The old work around breaks radio/check menu items.
+
+2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Added a workaround for GtkCList/GtkCTree and GtkList text colors.
 	Fixes bug #505334 for clearlooks.
 
