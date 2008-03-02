@@ -163,12 +163,12 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 	{
 		WidgetParameters params;
 
-		clearlooks_set_widget_parameters (widget, style, state_type, &params);
-
 		/* Override the entries state type, because we are too lame to handle this via
 		 * the focus ring, and GtkEntry doesn't even set the INSENSITIVE state ... */
 		if (state_type == GTK_STATE_NORMAL && widget && GE_IS_ENTRY (widget))
-			params.state_type = GTK_WIDGET_STATE (widget);
+			state_type = GTK_WIDGET_STATE (widget);
+
+		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		if (CHECK_HINT (GE_HINT_COMBOBOX_ENTRY) || CHECK_HINT (GE_HINT_SPINBUTTON))
 		{
