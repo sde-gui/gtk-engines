@@ -1,5 +1,14 @@
 2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Crux/gtk-2.0/gtkrc:
+	* themes/Industrial/gtk-2.0/gtkrc:
+	* themes/Mist/gtk-2.0/gtkrc:
+	Port the workarounds for GtkComboBox (cell renderer),
+	GtkCList/GtkCTree and GtkList to other color scheme supporting
+	themes in gtk-engines.
+
+2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* themes/Clearlooks/gtk-2.0/gtkrc:
 	Use the special name menus get for comboboxes to work around the text
 	color bug. The old work around breaks radio/check menu items.
