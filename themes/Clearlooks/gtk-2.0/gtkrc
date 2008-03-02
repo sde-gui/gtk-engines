@@ -380,7 +380,16 @@ style "clearlooks-text-is-fg-color-workaround"
 	text[INSENSITIVE] = darker (@bg_color)
 }
 widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-text-is-fg-color-workaround"
-widget "*.gtk-combobox-popup-menu.*"   style "clearlooks-text-is-fg-color-workaround"
+
+style "clearlooks-menuitem-text-is-fg-color-workaround"
+{
+	text[NORMAL]        = @fg_color
+	text[PRELIGHT]      = @selected_fg_color
+	text[SELECTED]      = @selected_fg_color
+	text[ACTIVE]        = @fg_color
+	text[INSENSITIVE]   = darker (@bg_color)
+}
+widget "*.gtk-combobox-popup-menu.*"   style "clearlooks-menuitem-text-is-fg-color-workaround"
 
 # Work around the usage of GtkLabel inside GtkListItems to display text.
 # This breaks because the label is shown on a background that is based on the

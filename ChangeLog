@@ -1,5 +1,10 @@
 2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix the color of prelit menu items in the combobox menu.
+
+2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* themes/Crux/gtk-2.0/gtkrc:
 	* themes/Industrial/gtk-2.0/gtkrc:
 	* themes/Mist/gtk-2.0/gtkrc:
