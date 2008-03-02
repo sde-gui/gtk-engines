@@ -1,5 +1,11 @@
 2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Added a workaround for GtkCList/GtkCTree and GtkList text colors.
+	Fixes bug #505334 for clearlooks.
+
+2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_shadow):
 	Override the entry state early enough so that the params are set

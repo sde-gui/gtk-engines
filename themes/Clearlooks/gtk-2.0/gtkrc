@@ -388,6 +388,22 @@ style "clearlooks-combobox-text-color-workaround"
 }
 widget_class "*.<GtkComboBox>.<GtkCellView>"   style "clearlooks-combobox-text-color-workaround"
 
+# Work around the usage of GtkLabel inside GtkListItems to display text.
+# This breaks because the label is shown on a background that is based on the
+# base color set.
+style "clearlooks-fg-is-text-color-workaround"
+{
+	fg[NORMAL]      = @text_color
+	fg[PRELIGHT]    = @text_color
+	fg[ACTIVE]      = @selected_fg_color
+	fg[SELECTED]    = @selected_fg_color
+	fg[INSENSITIVE] = darker (@bg_color)
+}
+widget_class "*<GtkListItem>*" style "clearlooks-fg-is-text-color-workaround"
+# The same problem also exists for GtkCList and GtkCTree
+# Only match GtkCList and not the parent widgets, because that would also change the headers.
+widget_class "*<GtkCList>" style "clearlooks-fg-is-text-color-workaround"
+
 # Work around the evolution "New" button bug by making the toolbar flat.
 # http://bugzilla.gnome.org/show_bug.cgi?id=446953
 # Maybe remove this workaround in unstable releases.
