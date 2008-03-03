@@ -1571,7 +1571,7 @@ draw_shadow_gap (GtkStyle *style,
 	break;
     }
 
-    gtk_style_apply_default_pixmap (style, window, state_type, area,
+    gtk_style_apply_default_background (style, window, TRUE, state_type, area,
 				    rect.x, rect.y, rect.width, rect.height);
 }
 
@@ -1667,7 +1667,7 @@ draw_box_gap (GtkStyle *style,
 	break;
     }
 
-    gtk_style_apply_default_pixmap (style, window, state_type, area,
+    gtk_style_apply_default_background (style, window, TRUE, state_type, area,
 				    rect.x, rect.y, rect.width, rect.height);
 }
 
