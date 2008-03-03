@@ -930,7 +930,11 @@ draw_box (GtkStyle *style,
 		GtkWidget *entry;
 		state_type = GTK_WIDGET_STATE (widget);
 		focused = GTK_WIDGET_HAS_FOCUS (widget);
-		paint_entry_shadow (cr, style, state_type, focused, x - 3, y, width + 3, height);
+		width += 3;
+		if (ge_widget_is_ltr (widget))
+			x -= 3;
+
+		paint_entry_shadow (cr, style, state_type, focused, x, y, width, height);
 		g_object_set_data ((GObject*) widget->parent, "button", widget);
 		return;
 	}
@@ -955,6 +959,8 @@ draw_box (GtkStyle *style,
 				y += 1;
 				height -= 4;
 			}
+			if (!ge_widget_is_ltr (widget))
+				x += 3;
 			extra_shadow = FALSE;
 		}
 
@@ -1192,7 +1198,10 @@ draw_arrow (GtkStyle *style,
 
 	if (DETAIL ("spinbutton"))
 	{
-		x--;
+		if (ge_widget_is_ltr (widget))
+			x--;
+		else
+			x += 1;
 		if (arrow_type == GTK_ARROW_UP)
 			y++;
 	}

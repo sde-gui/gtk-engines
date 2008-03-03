@@ -1,5 +1,10 @@
 2008-03-03  Thomas Wood  <thos@gnome.org>
 
+	* engines/crux/src/crux-draw.c: (draw_box), (draw_arrow): Fix spin
+	buttons for RTL locales
+
+2008-03-03  Thomas Wood  <thos@gnome.org>
+
 	* engines/crux/src/crux-draw.c:
 	(paint_button): Reduce radius on buttons without an extra shadow and
 	reduce opacity of extra shadow on insensitive buttons
