@@ -1,5 +1,10 @@
 2008-03-03  Thomas Wood  <thos@gnome.org>
 
+	* engines/crux/src/crux-draw.c: (draw_box_gap), (draw_extension): Add
+	bevel to notebooks
+
+2008-03-03  Thomas Wood  <thos@gnome.org>
+
 	* engines/crux/src/crux-draw.c: (draw_shadow_gap), (draw_box_gap):
 	Replace use of deprecated function
 

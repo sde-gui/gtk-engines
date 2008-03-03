@@ -1594,80 +1594,43 @@ draw_box_gap (GtkStyle *style,
     CHECK_ARGS
     SANITIZE_SIZE
 
-    debug ("draw_box_gap: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
-	    detail, state_type, shadow_type, x, y, width, height);
+	debug ("draw_box_gap: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
+		detail, state_type, shadow_type, x, y, width, height);
 
-    if (DETAIL ("notebook"))
-    {
-	cairo_t *cr;
-	CairoColor bg, border, hl;
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
-	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
-	ge_shade_color (&bg, OUTLINE_SHADE, &border); /* border */
-	hl.r = 1; hl.g = 1; hl.b = 1; hl.a = 0.7; /* hilight */
-
-	ge_cairo_set_color (cr, &border);
-	ge_cairo_stroke_rectangle (cr, x+.5, y+.5, width-1, height-1);
-
-	ge_cairo_set_color (cr, &hl);
-	ge_cairo_stroke_rectangle (cr, x+1.5, y+1.5, width-3, height-3);
-	cairo_destroy (cr);
-    }
-    else
 	gtk_paint_box (style, window, state_type, shadow_type, area, widget,
 			detail, x, y, width, height);
 
-    /* XXX Eavel hack to prevent a hole being draw when the
-       XXX active tab is on the far left */
-    if (gap_x < 1)
-    {
-	gap_width -= (1 - gap_x);
-	gap_x = 1;
-    }
-    switch (gap_side)
-    {
-    case GTK_POS_TOP:
-    case GTK_POS_BOTTOM:
-      gap_width = MIN (gap_width, width - gap_x - 1);
-      break;
-    case GTK_POS_LEFT:
-    case GTK_POS_RIGHT:
-      gap_width = MIN (gap_width, height - gap_x - 1);
-      break;
-    }
 
+	switch (gap_side)
+	{
+		case GTK_POS_TOP:
+			rect.x = x + gap_x + 1;
+			rect.y = y;
+			rect.width = gap_width - 2;
+			rect.height = 2;
+			break;
+		default:
+		case GTK_POS_BOTTOM:
+			rect.x = x + gap_x + 1;
+			rect.y = y + height - 2;
+			rect.width = gap_width - 2;
+			rect.height = 2;
+			break;
+		case GTK_POS_LEFT:
+			rect.x = x;
+			rect.y = y + gap_x + 1;
+			rect.width = 2;
+			rect.height = gap_width - 2;
+			break;
+		case GTK_POS_RIGHT:
+			rect.x = x + width - 2;
+			rect.y = y + gap_x + 1;
+			rect.width = 2;
+			rect.height = gap_width - 2;
+			break;
+	}
 
-    switch (gap_side)
-    {
-    case GTK_POS_TOP:
-	rect.x = x + gap_x;
-	rect.y = y;
-	rect.width = gap_width - 1;
-	rect.height = 2;
-	break;
-    default:
-    case GTK_POS_BOTTOM:
-	rect.x = x + gap_x;
-	rect.y = y + height - 2;
-	rect.width = gap_width - 1;
-	rect.height = 2;
-	break;
-    case GTK_POS_LEFT:
-	rect.x = x;
-	rect.y = y + gap_x;
-	rect.width = 2;
-	rect.height = gap_width - 1;
-	break;
-    case GTK_POS_RIGHT:
-	rect.x = x + width - 2;
-	rect.y = y + gap_x;
-	rect.width = 2;
-	rect.height = gap_width - 1;
-	break;
-    }
-
-    gtk_style_apply_default_background (style, window, TRUE, state_type, area,
+	gtk_style_apply_default_background (style, window, TRUE, state_type, area,
 				    rect.x, rect.y, rect.width, rect.height);
 }
 
@@ -1686,6 +1649,7 @@ draw_extension (GtkStyle *style,
 	cairo_pattern_t *crp;
 	CairoColor c1, c2, bg, outline;
 	CairoCorners corners;
+	gdouble radius = 2;
 
 	debug ("draw_extension: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 		detail, state_type, shadow_type, x, y, width, height);
@@ -1696,14 +1660,13 @@ draw_extension (GtkStyle *style,
 	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 	ge_shade_color (&bg, 1.1, &c1);
 	c2.r = bg.r; c2.g = bg.g; c2.b = bg.b;
+
+	/* make sure the correct area is clipped */
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_clip (cr);
+
 	/* outline colour */
 	ge_shade_color (&bg, OUTLINE_SHADE, &outline);
-
-	cairo_save (cr); /* save initial clip for later */
-	cairo_rectangle (cr, x, y, width, height);
-	cairo_clip_preserve (cr);
-	cairo_new_path (cr);
-
 
 	switch (gap_side)
 	{
@@ -1737,7 +1700,7 @@ draw_extension (GtkStyle *style,
 			break;
 	}
 
-	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, 2.0, corners);
+	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, radius, corners);
 
 	cairo_pattern_add_color_stop_rgb (crp, 0.0, c1.r, c1.g, c1.b);
 	cairo_pattern_add_color_stop_rgb (crp, 0.3, c2.r, c2.g, c2.b);
@@ -1747,27 +1710,90 @@ draw_extension (GtkStyle *style,
 
 	ge_cairo_set_color (cr, &outline);
 	cairo_stroke (cr);
-	
 
 	x++; y++; width -= 2.0; height -= 2.0;
+	radius--;
+
+	/* setup for stroke */
+	cairo_translate (cr, 0.5, 0.5);
+	width--; height--;
+
 	if (state_type == GTK_STATE_NORMAL)
 	{
-		cairo_restore (cr); /* restore the original clip */
+		/* we want to draw outside the width/height now */
+		cairo_reset_clip (cr);
+
 		switch (gap_side)
 		{
-			case GTK_POS_BOTTOM: height += 2; cairo_rectangle (cr, x, y, width, height -1); break; /* top */
-			case GTK_POS_TOP: y -= 2; height += 2; cairo_rectangle (cr, x, y + 1, width, height - 1); break; /* bottom */
-			case GTK_POS_LEFT: x -= 2; width += 2; cairo_rectangle (cr, x + 1, y, width - 1, height); break; /* right */
-			case GTK_POS_RIGHT: width += 2; cairo_rectangle (cr, x, y, width - 1, height); break; /* left */
+			/* top */
+			case GTK_POS_BOTTOM:
+				height++;
+				cairo_move_to (cr, x, y + height);
+				cairo_arc (cr, x + radius, y + radius, radius, M_PI, M_PI * 1.5);
+				cairo_line_to (cr, x + width - radius, y);
+				cairo_set_source_rgba (cr, 1, 1, 1, 0.7);
+				cairo_stroke (cr);
+
+				cairo_arc (cr, x + width - radius, y + radius, radius, M_PI * 1.5, 0);
+				cairo_line_to (cr, x + width, y + height - 1);
+				cairo_set_source_rgba (cr, 0, 0, 0, 0.2);
+				cairo_stroke (cr);
+				break;
+			/* bottom */
+			case GTK_POS_TOP:
+				y -= 1; height += 1;
+				cairo_move_to (cr, x, y);
+				cairo_arc_negative (cr, x + radius, y + height - radius, radius, M_PI, M_PI * 0.5);
+				cairo_set_source_rgba (cr, 1, 1, 1, 0.7);
+				cairo_stroke (cr);
+
+				cairo_move_to (cr, x + 1, y + height);
+				cairo_line_to (cr, x + width - radius, y + height);
+				cairo_arc_negative (cr, x + width - radius, y + height - radius, radius, M_PI * 0.5, 0);
+				cairo_line_to (cr, x + width, y);
+				cairo_set_source_rgba (cr, 0, 0, 0, 0.2);
+				cairo_stroke (cr);
+				break;
+			/* right */
+			case GTK_POS_LEFT:
+				x -= 1; width += 1;
+				cairo_move_to (cr, x, y);
+				cairo_arc (cr, x + width - radius, y + radius, radius, M_PI * 1.5, 0);
+				cairo_arc (cr, x + width - radius, y + height - radius, radius, 0, M_PI * 0.5);
+				cairo_set_source_rgba (cr, 1, 1, 1, 0.7);
+				cairo_stroke (cr);
+				
+				cairo_move_to (cr, x + width - 1, y + height);
+				cairo_line_to (cr, x, y + height);
+				cairo_set_source_rgba (cr, 0, 0, 0, 0.2);
+				cairo_stroke (cr);
+				break;
+			/* left */
+			case GTK_POS_RIGHT:
+				width += 1;
+				cairo_move_to (cr, x + width, y);
+				cairo_arc_negative (cr, x + radius, y + radius, radius, M_PI * 1.5, M_PI);
+				cairo_arc_negative (cr, x + radius, y + height - radius, radius, M_PI, M_PI * 0.5);
+				cairo_set_source_rgba (cr, 1, 1, 1, 0.7);
+				cairo_stroke (cr);
+
+				cairo_move_to (cr, x + 1, y + height);
+				cairo_line_to (cr, x + width, y + height);
+				cairo_set_source_rgba (cr, 0, 0, 0, 0.2);
+				cairo_stroke (cr);
+				break;
 		}
 		
-		cairo_clip_preserve (cr);
-		cairo_new_path (cr);
+	}
+	else
+	{
+		ge_cairo_rounded_rectangle (cr, x, y, width, height, 1.0, corners);
+		cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5); 
+		cairo_stroke (cr);
 	}
 
-	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, 1.0, corners);
-	cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.5); 
-	cairo_stroke (cr);
+
+
 	cairo_destroy (cr);
 }
 
