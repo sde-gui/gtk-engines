@@ -119,6 +119,8 @@ class "GtkText" style "entry"
 style "trough"
 {
    bg[NORMAL] = shade (0.9, @bg_color)
+   # fg[PRELIGHT] is used for the text underneath the bar.
+   fg[PRELIGHT] = @selected_fg_color
 }
 class "GtkProgressBar" style "trough"
 

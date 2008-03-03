@@ -1,3 +1,8 @@
+2008-03-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Crux/gtk-2.0/gtkrc:
+	Use the right text color for text in progress bars.
+
 2008-03-03  Thomas Wood  <thos@gnome.org>
 
 	* engines/crux/src/crux-draw.c: (draw_box), (draw_arrow): Fix spin
