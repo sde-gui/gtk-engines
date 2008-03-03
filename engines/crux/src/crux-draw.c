@@ -1088,9 +1088,40 @@ draw_box (GtkStyle *style,
 		/* fill  */
 		cairo_rectangle (cr, x, y, width, height);
 
-		if (DETAIL ("toolbar") || DETAIL ("menubar") || DETAIL ("vscrollbar")
-				|| DETAIL ("hscrollbar") || DETAIL ("handlebox") || DETAIL ("dockitem"))
+		if (DETAIL ("toolbar") || DETAIL ("menubar")
+			|| DETAIL ("vscrollbar") || DETAIL ("hscrollbar")
+			|| DETAIL ("handlebox_bin") || DETAIL ("dockitem"))
 		{
+			/* make the handle and child widget appear as one */
+			if (widget && widget->parent && GTK_IS_HANDLE_BOX (widget->parent))
+			{
+				GtkPositionType position;
+				position = gtk_handle_box_get_handle_position (GTK_HANDLE_BOX (widget->parent));
+				if (!ge_widget_is_ltr (widget->parent))
+				{
+					if (position == GTK_POS_TOP) position = GTK_POS_BOTTOM;
+					else if (position == GTK_POS_BOTTOM) position = GTK_POS_TOP;
+					else if (position == GTK_POS_LEFT) position = GTK_POS_RIGHT;
+					else if (position == GTK_POS_RIGHT) position = GTK_POS_LEFT;
+				}
+				switch (position)
+				{
+					case GTK_POS_TOP:
+						y -= 3;
+						height += 3;
+						break;
+					case GTK_POS_BOTTOM:
+						height += 3;
+						break;
+					case GTK_POS_LEFT:
+						x -= 3;
+						width += 3;
+						break;
+					case GTK_POS_RIGHT:
+						width += 3;
+				}
+			}
+
 			if (shadow_type == GTK_SHADOW_OUT || shadow_type == GTK_SHADOW_ETCHED_OUT)
 			{
 				cairo_pattern_t *crp;
@@ -1912,14 +1943,11 @@ draw_handle (GtkStyle *style,
 	state_type = GTK_STATE_ACTIVE;
 
 
-	if (!ge_is_panel_widget_item (widget) && !ge_object_is_a ((GObject*)widget, "PanelToplevel"))
-		draw_box (style, window, state_type, shadow_type, area, widget, detail, x, y, width, height);
-
     light_gc = style->light_gc[state_type];
     dark_gc = style->dark_gc[state_type];
 
-    xthick = style->xthickness;
-    ythick = style->ythickness;
+    xthick = style->xthickness + 1;
+    ythick = style->ythickness + 1;
 
     dest.x = x + xthick;
     dest.y = y + ythick;

@@ -1,3 +1,8 @@
+2008-03-03  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c: (draw_box),
+	(draw_handle): Make handlboxes appear "attached" to their child
+
 2008-03-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Crux/gtk-2.0/gtkrc:
