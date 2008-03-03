@@ -1,5 +1,10 @@
 2008-03-03  Thomas Wood  <thos@gnome.org>
 
+	* engines/crux/src/crux-draw.c: (draw_hline), (draw_vline): Convert
+	hline and vline functions to cairo
+
+2008-03-03  Thomas Wood  <thos@gnome.org>
+
 	* engines/crux/src/crux-draw.c: (draw_box),
 	(draw_handle): Make handlboxes appear "attached" to their child
 

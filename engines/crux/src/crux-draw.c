@@ -742,44 +742,28 @@ draw_hline (GtkStyle *style,
 	    const gchar *detail,
 	    gint x1, gint x2, gint y)
 {
-    gint thickness_light;
-    gint thickness_dark;
-    gint i;
+	CairoColor base, light, dark;
+	cairo_t *cr;
 
-    CHECK_ARGS
+	CHECK_ARGS
 
-    debug ("draw_hline: detail=%s state=%d x1=%d x2=%d y=%d\n",
-	    detail, state_type, x1, x2, y);
+	debug ("draw_hline: detail=%s state=%d x1=%d x2=%d y=%d\n",
+		detail, state_type, x1, x2, y);
 
-    thickness_light = style->ythickness / 2;
-    thickness_dark = style->ythickness - thickness_light;
-
-    if (area)
-    {
-	gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-	gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-    }
-    for (i = 0; i < thickness_dark; i++)
-    {
-	gdk_draw_line (window, style->light_gc[state_type], x2 - i - 1,
-		       y + i, x2, y + i);
-	gdk_draw_line (window, style->dark_gc[state_type], x1, y + i,
-		       x2 - i - 1, y + i);
-    }
-
-    y += thickness_dark;
-    for (i = 0; i < thickness_light; i++)
-    {
-	gdk_draw_line (window, style->dark_gc[state_type], x1, y + i,
-		       x1 + thickness_light - i - 1, y + i);
-	gdk_draw_line (window, style->light_gc[state_type],
-		       x1 + thickness_light - i - 1, y + i, x2, y + i);
-    }
-    if (area)
-    {
-	gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-	gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-    }
+	cr = ge_gdk_drawable_to_cairo (window, area);
+	ge_gdk_color_to_cairo (&style->bg[state_type], &base);
+	ge_shade_color (&base, 0.88, &dark);
+	ge_shade_color (&base, 1.12, &light);
+	ge_cairo_set_color (cr, &dark);
+	cairo_move_to (cr, x1 + 0.5, y + 0.5);
+	cairo_line_to (cr, x2 + 0.5, y + 0.5);
+	cairo_stroke (cr);
+	y++;
+	ge_cairo_set_color (cr, &light);
+	cairo_move_to (cr, x1 + 0.5, y + 0.5);
+	cairo_line_to (cr, x2 + 0.5, y + 0.5);
+	cairo_stroke (cr);
+	cairo_destroy (cr);
 }
 
 static void
@@ -789,44 +773,28 @@ draw_vline (GtkStyle *style,
 	    GdkRectangle *area,
 	    GtkWidget *widget, const gchar *detail, gint y1, gint y2, gint x)
 {
-    gint thickness_light;
-    gint thickness_dark;
-    gint i;
+	CairoColor base, light, dark;
+	cairo_t *cr;
 
-    CHECK_ARGS
+	CHECK_ARGS
 
-    debug ("draw_vline: detail=%s state=%d x=%d y1=%d y2=%d\n",
-	    detail, state_type, x, y1, y2);
+	debug ("draw_vline: detail=%s state=%d x=%d y1=%d y2=%d\n",
+		detail, state_type, x, y1, y2);
 
-    thickness_light = style->xthickness / 2;
-    thickness_dark = style->xthickness - thickness_light;
-
-    if (area)
-    {
-	gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-	gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-    }
-    for (i = 0; i < thickness_dark; i++)
-    {
-	gdk_draw_line (window, style->light_gc[state_type], x + i,
-		       y2 - i - 1, x + i, y2);
-	gdk_draw_line (window, style->dark_gc[state_type], x + i, y1, x + i,
-		       y2 - i - 1);
-    }
-
-    x += thickness_dark;
-    for (i = 0; i < thickness_light; i++)
-    {
-	gdk_draw_line (window, style->dark_gc[state_type], x + i, y1, x + i,
-		       y1 + thickness_light - i);
-	gdk_draw_line (window, style->light_gc[state_type], x + i,
-		       y1 + thickness_light - i, x + i, y2);
-    }
-    if (area)
-    {
-	gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-	gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-    }
+	cr = ge_gdk_drawable_to_cairo (window, area);
+	ge_gdk_color_to_cairo (&style->bg[state_type], &base);
+	ge_shade_color (&base, 0.88, &dark);
+	ge_shade_color (&base, 1.12, &light);
+	ge_cairo_set_color (cr, &dark);
+	cairo_move_to (cr, x + 0.5, y1 + 0.5);
+	cairo_line_to (cr, x + 0.5, y2 + 0.5);
+	cairo_stroke (cr);
+	x++;
+	ge_cairo_set_color (cr, &light);
+	cairo_move_to (cr, x + 0.5, y1 + 0.5);
+	cairo_line_to (cr, x + 0.5, y2 + 0.5);
+	cairo_stroke (cr);
+	cairo_destroy (cr);
 }
 
 static void
