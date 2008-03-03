@@ -1,3 +1,14 @@
+2008-03-03  Thomas Wood  <thos@gnome.org>
+
+	* engines/crux/src/crux-draw.c:
+	(paint_button): Reduce radius on buttons without an extra shadow and
+	reduce opacity of extra shadow on insensitive buttons
+	(draw_shadow): Extend shadow on spinbutton entry widgets to allow
+	buttons to appears "inside" the entry
+	(draw_box): Turn extra shadow off for some other widgets and draw a
+	shadow so that spin button buttons appear "inside" the entry
+	(draw_arrow): Tweak placement for spin buttons
+
 2008-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:

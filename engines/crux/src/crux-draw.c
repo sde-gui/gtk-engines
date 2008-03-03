@@ -218,7 +218,7 @@ paint_button (cairo_t *cr, GtkStyle *style,
 		gboolean has_focus, gboolean extra_shadow,
 		gdouble x, gdouble y, gdouble width, gdouble height)
 {
-	gdouble radius = 3.0;
+	gdouble radius = (extra_shadow) ? 3.5 : 2.5;
 	cairo_pattern_t *crp;
 	CairoColor base, inner_top, inner_bot, grad_top, grad_bot, stroke;
         gdouble h, s, b;
@@ -242,7 +242,10 @@ paint_button (cairo_t *cr, GtkStyle *style,
 		}
 		else
 		{
-			cairo_set_source_rgba (cr, 0, 0, 0, 0.1);
+			if (state_type == GTK_STATE_INSENSITIVE)
+				cairo_set_source_rgba (cr, 0, 0, 0, 0.05);
+			else
+				cairo_set_source_rgba (cr, 0, 0, 0, 0.1);
 		}
 		ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, CR_CORNER_ALL);
 		cairo_fill (cr);
@@ -874,6 +877,22 @@ draw_shadow (GtkStyle *style,
 		if (GE_IS_WIDGET (button))
 			gtk_widget_queue_draw_area (button,  button->allocation.x, button->allocation.y, button->allocation.width,button->allocation.height);
 	}
+
+	if (widget && GTK_IS_SPIN_BUTTON (widget))
+	{
+		GtkWidget *button;
+		if (ge_widget_is_ltr (widget))
+			width += 2;
+		else
+		{
+			x -= 3;
+			width += 3;
+		}
+
+		if (area == NULL)
+			area = &area2;
+	}
+	
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (DETAIL ("entry"))
@@ -902,29 +921,41 @@ draw_box (GtkStyle *style,
     debug ("draw_box: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	    detail, state_type, shadow_type, x, y, width, height);
 
-	if (DETAIL ("spinbutton"))
-	{
-		/* this is a border round spin buttons - we don't want anything here */
-		gtk_style_apply_default_background (style, window, TRUE, state_type, area, x, y, width, height);
-		return;
-	}
-
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	/* no pressed state for scollbar buttons yet... */
+	if (DETAIL ("spinbutton"))
+	{
+		gboolean focused;
+		GtkWidget *entry;
+		state_type = GTK_WIDGET_STATE (widget);
+		focused = GTK_WIDGET_HAS_FOCUS (widget);
+		paint_entry_shadow (cr, style, state_type, focused, x - 3, y, width + 3, height);
+		g_object_set_data ((GObject*) widget->parent, "button", widget);
+		return;
+	}
+
 	if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
 		shadow_type = GTK_SHADOW_OUT;
 
 	if (DETAIL ("button") || DETAIL ("optionmenu") || DETAIL ("spinbutton_down") || DETAIL ("spinbutton_up"))
 	{
+		gboolean extra_shadow = TRUE;
 		if (DETAIL ("spinbutton_down") || DETAIL ("spinbutton_up"))
 		{
 			/* add some padding */
-			x++; y++; width -= 3;
-			if (DETAIL ("spinbutton_up")) 
-				height--;
+			width -= 3;
+			if (DETAIL ("spinbutton_up"))
+			{
+				y += 3;
+				height -= 3;
+			}
 			else
-				height -= 2;
+			{
+				y += 1;
+				height -= 4;
+			}
+			extra_shadow = FALSE;
 		}
 
 		if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
@@ -954,11 +985,9 @@ draw_box (GtkStyle *style,
 			else
 				paint_entry_shadow (cr, style, state_type, focused, x, y, width + 4, height);
 
-			if (state_type == GTK_STATE_INSENSITIVE)
-				height++;
-
 			x += 3; y += 3;
 			width -= 6; height -= 6;
+			extra_shadow = FALSE;
 		}
 		if (widget && (GE_IS_TREE_VIEW (widget->parent)))
 		{
@@ -972,8 +1001,9 @@ draw_box (GtkStyle *style,
 					
 			x += 1; y += 1;
 			width -= 2; height -= 2;
+			extra_shadow = FALSE;
 		}
-		paint_button (cr, style, state_type, shadow_type, GTK_WIDGET_HAS_FOCUS (widget), DETAIL ("button"), x, y, width, height);
+		paint_button (cr, style, state_type, shadow_type, GTK_WIDGET_HAS_FOCUS (widget), extra_shadow, x, y, width, height);
 	}
 	else if (DETAIL ("buttondefault"))
 	{
@@ -1162,8 +1192,9 @@ draw_arrow (GtkStyle *style,
 
 	if (DETAIL ("spinbutton"))
 	{
-		if (arrow_type == GTK_ARROW_DOWN)
-			y+=2;
+		x--;
+		if (arrow_type == GTK_ARROW_UP)
+			y++;
 	}
 	if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
 	{
