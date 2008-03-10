@@ -7,15 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-14 01:05+0100\n"
-"PO-Revision-Date: 2007-08-14 01:18+0100\n"
-"Last-Translator: Simos Xenitellis <simos@gnome.org>\n"
+"POT-Creation-Date: 2008-03-10 17:13+0200\n"
+"PO-Revision-Date: 2008-03-10 15:57+0200\n"
+"Last-Translator: Giannis Katsampirhs <giannis1_86@hotmail.com>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Greek\n"
+"X-Poedit-Country: GREECE\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
@@ -29,50 +31,99 @@ msgstr "3Δ (απόχρωση)"
 msgid "Animations"
 msgstr "Κινούμενα σχέδια"
 
-#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Κλασικό"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Χρωματισμός γραμμής κύλισης"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Αντίθεση"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "Ενεργοποίηση κινούμενων σχεδίων σε μπάρες προόδου και κουμπιά ράδιο, επιλογής"
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Enable Animations on Progressbars"
+msgstr "Ενεργοποίηση κινούμενων σχεδίων στις μπάρες προόδου"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "Πλατύ"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr "Γυαλιστερό"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr "Κολλώδες"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inset"
+msgstr "Ένθεμα"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inverted"
+msgstr "Ανεστραμμένη"
+
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Menubar Style"
 msgstr "Στυλ Μπάρας Μενού"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Radius"
+msgstr "Ακτίνα"
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Relief Style"
+msgstr "Ανάγλυφο στυλ"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Requires style Glossy or Gummy"
+msgstr "Απαιτεί γυαλιστερό στυλ ή κολλώδες"
+
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
 msgstr "Χρώμα γραμμής κύλισης"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Sets the Color of Scrollbars"
-msgstr ""
+msgstr "Καθορίζει το χρώμα των γραμμών κύλισης"
+
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Shadow"
+msgstr "Σκιά"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Style"
+msgstr "Στυλ"
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "Toolbar Style"
+msgstr "Στυλ εργαλειοθήκης"
 
 #: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
-msgstr ""
+msgstr "Ένδειξη μεγέθους κελιών"
 
 #: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
-msgstr ""
+msgstr "Πάχος των άκρων"
 
 #: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr ""
+"Μέγεθος του check- και κουμπιών αλληλοαποκλειώμενων επιλογών μέσα στις "
+"δενδρικές προβολές. (Σφάλμα #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
-msgstr ""
+msgstr "Αν καθοριστεί, οι γωνίες των πλήκτρων στρογγυλεύουν"
 
 #: ../schema/industrial.xml.in.in.h:3
-#, fuzzy
 msgid "Rounded Buttons"
-msgstr "Κουμπί Γραμματοσειράς"
+msgstr "Στρογγυλεμένα κουμπιά"
 
 #: ../schema/thinice.xml.in.in.h:1
 msgid "Arrow"
@@ -87,40 +138,30 @@ msgid "Full"
 msgstr "Γεμάτο"
 
 #: ../schema/thinice.xml.in.in.h:4
-#, fuzzy
 msgid "Handlebox Marks"
-msgstr "Κουτί Διαχείρισης (Handle)"
+msgstr "Σημειώσεις κουτιού διαχείρισης"
 
 #: ../schema/thinice.xml.in.in.h:5
-#, fuzzy
 msgid "Inverted Dot"
-msgstr ""
-"#-#-#-#-#  gtk+-properties.HEAD.el.po (el)  #-#-#-#-#\n"
-"Αντεστραμμένη\n"
-"#-#-#-#-#  gnome-control-center.HEAD.el.po (el)  #-#-#-#-#\n"
-"Ανεστραμμένη"
+msgstr "Ανεστραμμένη τελεία"
 
 #: ../schema/thinice.xml.in.in.h:6
-#, fuzzy
 msgid "Inverted Slash"
-msgstr ""
-"#-#-#-#-#  gtk+-properties.HEAD.el.po (el)  #-#-#-#-#\n"
-"Αντεστραμμένη\n"
-"#-#-#-#-#  gnome-control-center.HEAD.el.po (el)  #-#-#-#-#\n"
-"Ανεστραμμένη"
+msgstr "Ανεστραμμένη κάθετος"
 
 #: ../schema/thinice.xml.in.in.h:7
-#, fuzzy
 msgid "Mark Type 1"
-msgstr "Τύπος 1"
+msgstr "Τύπος σημείωσης 1"
 
 #: ../schema/thinice.xml.in.in.h:8
 msgid "Mark Type for Scrollbar Buttons"
-msgstr ""
+msgstr "Τύπος σημείωσης για τα πλήκτρα της γραμμής κύλισης"
 
 #: ../schema/thinice.xml.in.in.h:9
 msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
 msgstr ""
+"Τύπος σημείωσης για τις επικεφαλίδες της γραμμής κύλισης, των κουτιών "
+"διαχείρισης, κλπ"
 
 # #-#-#-#-#  nautilus.HEAD.el.po (el)  #-#-#-#-#
 #
@@ -136,33 +177,28 @@ msgid "Nothing"
 msgstr "Τίποτα"
 
 #: ../schema/thinice.xml.in.in.h:12
-#, fuzzy
 msgid "Paned Dots"
-msgstr "Μέσα σε Pane"
+msgstr "Τελείες του ταμπλό"
 
 #: ../schema/thinice.xml.in.in.h:13
 msgid "Rectangle"
 msgstr "Ορθογώνιο"
 
 #: ../schema/thinice.xml.in.in.h:14
-#, fuzzy
 msgid "Scrollbar Marks"
-msgstr "_Η μπάρα κύλισης είναι:"
+msgstr "Σημειώσεις γραμμής κύλισης"
 
 #: ../schema/thinice.xml.in.in.h:15
-#, fuzzy
 msgid "Scrollbar Type"
-msgstr "Γραμμή κύλισης"
+msgstr "Τύπος γραμμής κύλισης"
 
 #: ../schema/thinice.xml.in.in.h:16
-#, fuzzy
 msgid "Scrollbutton Marks"
-msgstr "Γραμμή κύλισης"
+msgstr "Σημειώσεις πλήκτρων κύλισης"
 
 #: ../schema/thinice.xml.in.in.h:17
-#, fuzzy
 msgid "Shaped"
-msgstr "Σχήμα"
+msgstr "Σχηματισμένη"
 
 #: ../schema/thinice.xml.in.in.h:18
 msgid "Slash"
@@ -171,4 +207,3 @@ msgstr "Κάθετος"
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
 msgstr "Κάποια"
-
