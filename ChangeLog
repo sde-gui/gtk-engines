@@ -1,5 +1,12 @@
 2008-03-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* README:
+	* configure.ac:
+	Update for the 2.14.0 stable release.
+
+2008-03-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/crux/src/crux-draw.c: (draw_box):
 	Fix a memory leak in the new spinbutton handling code.
 

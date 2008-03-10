@@ -1,3 +1,35 @@
+Overview of Changes in 2.14.0 (since 2.13.6)
+============================================
+
+Changes in this release:
+ - Several improvements in Crux, this includes spinbuttons and comboboxes.
+ - Text color fixes and workarounds in the different themes
+ - Correct shadow for insensitive entries in Clearlooks
+ - Changed contrast handling in Clearlooks
+
+GNOME Bugs fixed in this release:
+ 395013 – Visual artifacts setting radius to 10.0 (max value)
+ 505334 – work around GtkList label colors
+
+New and udpated translations:
+ Giannis Katsampirhs (el)
+ Kenneth Nielsen (da)
+ Gabor Kelemen (hu)
+ Chao-Hsiung Liao (zh_HK)
+ Chao-Hsiung Liao (zh_TW)
+ Runa Bhattacharjee (bn_IN)
+ Ivar Smolin (et)
+ Maxim V. Dziumanenko (uk)
+ Rajesh Ranjan (hi)
+ Alexandre Prokoudine (ru)
+ David Lodge (en_GB)
+ Sandeep Shedmake (mr)
+ Gintautas Miliauskas (lt)
+ Djihed Afifi (ar)
+ Changwoo Ryu (ko)
+ Luca Ferretti (it)
+
+
 Overview of Changes in 2.13.6 (since 2.13.5)
 ============================================
 
