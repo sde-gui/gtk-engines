@@ -904,6 +904,8 @@ draw_box (GtkStyle *style,
 			x -= 3;
 
 		paint_entry_shadow (cr, style, state_type, focused, x, y, width, height);
+
+		cairo_destroy (cr);
 		return;
 	}
 

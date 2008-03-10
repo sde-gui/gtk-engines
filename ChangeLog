@@ -1,6 +1,11 @@
 2008-03-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/crux/src/crux-draw.c: (draw_box):
+	Fix a memory leak in the new spinbutton handling code.
+
+2008-03-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/crux/src/crux-draw.c: (draw_box):
 	Fix a regression:
 	crux would access widget to check the focused state even if widget
 	is NULL. This could potentially crash applications.
