@@ -891,28 +891,34 @@ draw_box (GtkStyle *style,
 
 	cr = ge_gdk_drawable_to_cairo (window, area);
 
-	/* no pressed state for scollbar buttons yet... */
 	if (DETAIL ("spinbutton"))
 	{
-		gboolean focused;
+		gboolean focused = FALSE;
 		GtkWidget *entry;
-		state_type = GTK_WIDGET_STATE (widget);
-		focused = GTK_WIDGET_HAS_FOCUS (widget);
+		if (widget) {
+			state_type = GTK_WIDGET_STATE (widget);
+			focused = GTK_WIDGET_HAS_FOCUS (widget);
+		}
 		width += 3;
 		if (ge_widget_is_ltr (widget))
 			x -= 3;
 
 		paint_entry_shadow (cr, style, state_type, focused, x, y, width, height);
-		g_object_set_data ((GObject*) widget->parent, "button", widget);
 		return;
 	}
 
+	/* no pressed state for scollbar buttons yet... */
 	if (DETAIL ("vscrollbar") || DETAIL ("hscrollbar"))
 		shadow_type = GTK_SHADOW_OUT;
 
 	if (DETAIL ("button") || DETAIL ("optionmenu") || DETAIL ("spinbutton_down") || DETAIL ("spinbutton_up"))
 	{
 		gboolean extra_shadow = TRUE;
+		gboolean focused = FALSE;
+
+		if (widget)
+			focused = GTK_WIDGET_HAS_FOCUS (widget);
+
 		if (DETAIL ("spinbutton_down") || DETAIL ("spinbutton_up"))
 		{
 			/* add some padding */
@@ -935,15 +941,14 @@ draw_box (GtkStyle *style,
 		if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
 		{
 			/* Combobox buttons */
-			gboolean focused = FALSE;
 			GtkWidget *entry;
-			/* TODO: need RTL support */
+			gboolean entry_focused = FALSE;
+
 			if ((entry = g_object_get_data ((GObject*) widget->parent, "entry")))
 			{
-				focused = (GTK_WIDGET_HAS_FOCUS (entry));
+				entry_focused = (GTK_WIDGET_HAS_FOCUS (entry));
 				state_type = GTK_WIDGET_STATE (entry);
 			}
-
 
 			if (state_type == GTK_STATE_INSENSITIVE)
 				gdk_cairo_set_source_color (cr, &style->base[GTK_STATE_INSENSITIVE]);
@@ -955,9 +960,9 @@ draw_box (GtkStyle *style,
 			g_object_set_data ((GObject*) widget->parent, "button", widget);
 
 			if (ge_widget_is_ltr (widget))
-				paint_entry_shadow (cr, style, state_type, focused, x - 4, y, width + 4, height);
+				paint_entry_shadow (cr, style, state_type, entry_focused, x - 4, y, width + 4, height);
 			else
-				paint_entry_shadow (cr, style, state_type, focused, x, y, width + 4, height);
+				paint_entry_shadow (cr, style, state_type, entry_focused, x, y, width + 4, height);
 
 			x += 3; y += 3;
 			width -= 6; height -= 6;
@@ -977,7 +982,7 @@ draw_box (GtkStyle *style,
 			width -= 2; height -= 2;
 			extra_shadow = FALSE;
 		}
-		paint_button (cr, style, state_type, shadow_type, GTK_WIDGET_HAS_FOCUS (widget), extra_shadow, x, y, width, height);
+		paint_button (cr, style, state_type, shadow_type, focused, extra_shadow, x, y, width, height);
 	}
 	else if (DETAIL ("buttondefault"))
 	{
