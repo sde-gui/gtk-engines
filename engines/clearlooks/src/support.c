@@ -66,14 +66,34 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	GtkStateType state_type;
 	const GtkWidget *parent;
 	GdkColor *gcolor;
+	gboolean stop;
 	
 	if (widget == NULL)
 		return;
 	
 	parent = widget->parent;
+	stop = FALSE;
 	
-	while (parent && GTK_WIDGET_NO_WINDOW (parent) && !((GTK_IS_NOTEBOOK (parent)) || (GTK_IS_TOOLBAR (parent))))
-		parent = parent->parent;
+	while (parent && !stop)
+	{
+		stop = FALSE;
+
+		stop |= !GTK_WIDGET_NO_WINDOW (parent);
+		stop |= GTK_IS_NOTEBOOK (parent) &&
+		        !gtk_notebook_get_show_tabs (GTK_NOTEBOOK (parent)) &&
+		        gtk_notebook_get_show_border (GTK_NOTEBOOK (parent));
+
+		if (GTK_IS_TOOLBAR (parent))
+		{
+			GtkShadowType shadow = GTK_SHADOW_OUT;
+			gtk_widget_style_get (GTK_WIDGET (parent), "shadow-type", &shadow, NULL);
+			
+			stop |= (shadow != GTK_SHADOW_NONE);
+		}
+
+		if (!stop)
+			parent = parent->parent;
+	}
 
 	if (parent == NULL)
 		return;

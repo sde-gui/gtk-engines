@@ -1,3 +1,8 @@
+2008-03-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/support.c: (clearlooks_get_parent_bg):
+	Only use the notebooks background if it draws a border.
+
 2008-03-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
