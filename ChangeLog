@@ -1,5 +1,10 @@
 2008-03-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/support.c: (clearlooks_get_parent_bg):
+	Got the notebook check a bit wrong earlier.
+
+2008-03-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_inset):
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:

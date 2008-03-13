@@ -80,7 +80,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 
 		stop |= !GTK_WIDGET_NO_WINDOW (parent);
 		stop |= GTK_IS_NOTEBOOK (parent) &&
-		        !gtk_notebook_get_show_tabs (GTK_NOTEBOOK (parent)) &&
+		        gtk_notebook_get_show_tabs (GTK_NOTEBOOK (parent)) &&
 		        gtk_notebook_get_show_border (GTK_NOTEBOOK (parent));
 
 		if (GTK_IS_TOOLBAR (parent))
