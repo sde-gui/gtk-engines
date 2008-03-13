@@ -20,7 +20,7 @@ typedef enum {
   THINICE_FLAG_HANDLEBOX_MARKS     = 1 << 3,
   THINICE_FLAG_MARK_TYPE1          = 1 << 4,
   THINICE_FLAG_MARK_TYPE2          = 1 << 5,
-  THINICE_FLAG_PANED_DOTS          = 1 << 5,
+  THINICE_FLAG_PANED_DOTS          = 1 << 6
 } ThiniceRcFlags;
 
 struct _ThiniceRcStyle

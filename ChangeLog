@@ -1,5 +1,11 @@
 2008-03-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/thinice/src/thinice_rc_style.h:
+	mark_type2 and paned_dots used the same bit (also fixes compiling
+	with --enable-paranoia)
+
+2008-03-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/support.c: (clearlooks_get_parent_bg):
 	Only use the notebooks background if it draws a border.
 
