@@ -386,15 +386,14 @@ paint_shadow (cairo_t *cr, GtkStyle *style,
 		    GtkShadowType shadow_type,
 		    gdouble x, gdouble y, gdouble width, gdouble height)
 {
-	cairo_pattern_t *crp;
 	CairoColor bg, border;
+	CairoColor tl, bl;
 
 	ge_gdk_color_to_cairo (&style->bg[state_type], &bg);
 	ge_shade_color (&bg, OUTLINE_SHADE, &border); /* border */
 
 	x += 0.5; y += 0.5; width--; height--;
 
-	CairoColor tl, bl;
 	tl.r = 1; tl.g = 1; tl.b = 1; tl.a = 0.7;
 	bl.r = 0; bl.g = 0; bl.b = 0; bl.a = 0.2;
 
@@ -848,7 +847,6 @@ draw_shadow (GtkStyle *style,
 
 	if (widget && GTK_IS_SPIN_BUTTON (widget))
 	{
-		GtkWidget *button;
 		if (ge_widget_is_ltr (widget))
 			width += 2;
 		else
@@ -894,7 +892,6 @@ draw_box (GtkStyle *style,
 	if (DETAIL ("spinbutton"))
 	{
 		gboolean focused = FALSE;
-		GtkWidget *entry;
 		if (widget) {
 			state_type = GTK_WIDGET_STATE (widget);
 			focused = GTK_WIDGET_HAS_FOCUS (widget);
@@ -1736,12 +1733,12 @@ draw_extension (GtkStyle *style,
 			case GTK_POS_BOTTOM:
 				height++;
 				cairo_move_to (cr, x, y + height);
-				cairo_arc (cr, x + radius, y + radius, radius, M_PI, M_PI * 1.5);
+				cairo_arc (cr, x + radius, y + radius, radius, G_PI, G_PI * 1.5);
 				cairo_line_to (cr, x + width - radius, y);
 				cairo_set_source_rgba (cr, 1, 1, 1, 0.7);
 				cairo_stroke (cr);
 
-				cairo_arc (cr, x + width - radius, y + radius, radius, M_PI * 1.5, 0);
+				cairo_arc (cr, x + width - radius, y + radius, radius, G_PI * 1.5, 0);
 				cairo_line_to (cr, x + width, y + height - 1);
 				cairo_set_source_rgba (cr, 0, 0, 0, 0.2);
 				cairo_stroke (cr);
@@ -1750,13 +1747,13 @@ draw_extension (GtkStyle *style,
 			case GTK_POS_TOP:
 				y -= 1; height += 1;
 				cairo_move_to (cr, x, y);
-				cairo_arc_negative (cr, x + radius, y + height - radius, radius, M_PI, M_PI * 0.5);
+				cairo_arc_negative (cr, x + radius, y + height - radius, radius, G_PI, G_PI * 0.5);
 				cairo_set_source_rgba (cr, 1, 1, 1, 0.7);
 				cairo_stroke (cr);
 
 				cairo_move_to (cr, x + 1, y + height);
 				cairo_line_to (cr, x + width - radius, y + height);
-				cairo_arc_negative (cr, x + width - radius, y + height - radius, radius, M_PI * 0.5, 0);
+				cairo_arc_negative (cr, x + width - radius, y + height - radius, radius, G_PI * 0.5, 0);
 				cairo_line_to (cr, x + width, y);
 				cairo_set_source_rgba (cr, 0, 0, 0, 0.2);
 				cairo_stroke (cr);
@@ -1765,8 +1762,8 @@ draw_extension (GtkStyle *style,
 			case GTK_POS_LEFT:
 				x -= 1; width += 1;
 				cairo_move_to (cr, x, y);
-				cairo_arc (cr, x + width - radius, y + radius, radius, M_PI * 1.5, 0);
-				cairo_arc (cr, x + width - radius, y + height - radius, radius, 0, M_PI * 0.5);
+				cairo_arc (cr, x + width - radius, y + radius, radius, G_PI * 1.5, 0);
+				cairo_arc (cr, x + width - radius, y + height - radius, radius, 0, G_PI * 0.5);
 				cairo_set_source_rgba (cr, 1, 1, 1, 0.7);
 				cairo_stroke (cr);
 				
@@ -1779,8 +1776,8 @@ draw_extension (GtkStyle *style,
 			case GTK_POS_RIGHT:
 				width += 1;
 				cairo_move_to (cr, x + width, y);
-				cairo_arc_negative (cr, x + radius, y + radius, radius, M_PI * 1.5, M_PI);
-				cairo_arc_negative (cr, x + radius, y + height - radius, radius, M_PI, M_PI * 0.5);
+				cairo_arc_negative (cr, x + radius, y + radius, radius, G_PI * 1.5, G_PI);
+				cairo_arc_negative (cr, x + radius, y + height - radius, radius, G_PI, G_PI * 0.5);
 				cairo_set_source_rgba (cr, 1, 1, 1, 0.7);
 				cairo_stroke (cr);
 

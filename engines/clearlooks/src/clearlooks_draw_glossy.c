@@ -111,17 +111,17 @@ clearlooks_glossy_draw_inset (cairo_t          *cr,
 	cairo_move_to (cr, x + (radius * 0.2928932188), y + h + (radius * -0.2928932188));
 
 	if (corners & CR_CORNER_BOTTOMLEFT)
-		cairo_arc (cr, x + radius, y + h - radius, radius, M_PI * 0.75, M_PI);
+		cairo_arc (cr, x + radius, y + h - radius, radius, G_PI * 0.75, G_PI);
 	else
 		cairo_line_to (cr, x, y + h);
 
 	if (corners & CR_CORNER_TOPLEFT)
-		cairo_arc (cr, x + radius, y + radius, radius, M_PI, M_PI * 1.5);
+		cairo_arc (cr, x + radius, y + radius, radius, G_PI, G_PI * 1.5);
 	else
 		cairo_line_to (cr, x, y);
 
 	if (corners & CR_CORNER_TOPRIGHT)
-	    cairo_arc (cr, x + w - radius, y + radius, radius, M_PI * 1.5, M_PI * 1.75);
+	    cairo_arc (cr, x + w - radius, y + radius, radius, G_PI * 1.5, G_PI * 1.75);
 	else
 		cairo_line_to (cr, x + w, y);
 
@@ -167,17 +167,17 @@ clearlooks_glossy_draw_light_inset (cairo_t          *cr,
 	cairo_move_to (cr, x + (radius * 0.2928932188), y + h + (radius * -0.2928932188));
 
 	if (corners & CR_CORNER_BOTTOMLEFT)
-		cairo_arc (cr, x + radius, y + h - radius, radius, M_PI * 0.75, M_PI);
+		cairo_arc (cr, x + radius, y + h - radius, radius, G_PI * 0.75, G_PI);
 	else
 		cairo_line_to (cr, x, y + h);
 
 	if (corners & CR_CORNER_TOPLEFT)
-		cairo_arc (cr, x + radius, y + radius, radius, M_PI, M_PI * 1.5);
+		cairo_arc (cr, x + radius, y + radius, radius, G_PI, G_PI * 1.5);
 	else
 		cairo_line_to (cr, x, y);
 
 	if (corners & CR_CORNER_TOPRIGHT)
-	    cairo_arc (cr, x + w - radius, y + radius, radius, M_PI * 1.5, M_PI * 1.75);
+	    cairo_arc (cr, x + w - radius, y + radius, radius, G_PI * 1.5, G_PI * 1.75);
 	else
 		cairo_line_to (cr, x + w, y);
 

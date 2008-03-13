@@ -1,5 +1,17 @@
 2008-03-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_inset):
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_inset),
+	(clearlooks_glossy_draw_light_inset):
+	* engines/crux/src/crux-draw.c: (paint_shadow), (draw_shadow),
+	(draw_box), (draw_extension):
+	Fix compiling with --enable-paranoia. Included here is the patch
+	from Jens Granseuer for bug #521679.
+
+2008-03-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/thinice/src/thinice_rc_style.h:
 	mark_type2 and paned_dots used the same bit (also fixes compiling
 	with --enable-paranoia)
