@@ -1,3 +1,9 @@
+2008-03-18  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_scale_trough):
+	Use shade[2] taken from parentbg to draw the scale trough
+
 2008-03-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/support.c: (clearlooks_get_parent_bg):

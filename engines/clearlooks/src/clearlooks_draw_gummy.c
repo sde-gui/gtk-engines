@@ -618,18 +618,26 @@ clearlooks_gummy_draw_scale_trough (cairo_t                *cr,
 	cairo_translate (cr, 1, 1);
 
 	if (!slider->lower && !slider->fill_level)
+	{
+		CairoColor fill;
+
+		/* 0.896 = shade[2], as previous code, but now is shading parentbg */
+		ge_shade_color (&params->parentbg, 0.896, &fill);
+
 		clearlooks_gummy_scale_draw_gradient (cr,
-		                                      &colors->shade[2], /* bottom */
+		                                      &fill, /* bottom */
 		                                      &colors->shade[6], /* border */
 		                                      0, 0, trough_width, trough_height,
 		                                      slider->horizontal, TRUE);
+	}
 	else if (!slider->fill_level)
 		clearlooks_gummy_scale_draw_gradient (cr,
 		                                      &colors->spot[1], /* bottom */
 		                                      &colors->spot[2], /* border */
 		                                      0, 0, trough_width, trough_height,
 		                                      slider->horizontal, FALSE);
-	else {
+	else
+	{
 		CairoColor c1 = colors->spot[1];
 		CairoColor c2 = colors->spot[2];
 
