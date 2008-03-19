@@ -1,3 +1,10 @@
+2008-03-19  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters):
+	Fix? Workaround?
+	Anyway this fixes insensitive spinbuttons
+
 2008-03-18  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

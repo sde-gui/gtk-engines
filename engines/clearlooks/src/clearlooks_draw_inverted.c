@@ -31,7 +31,7 @@
 
 static void
 clearlooks_draw_top_left_highlight (cairo_t *cr,
-                 							const CairoColor *color,
+                                    const CairoColor *color,
                                     const WidgetParameters *params,
                                     int width, int height, gdouble radius)
 {
