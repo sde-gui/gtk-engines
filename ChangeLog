@@ -1,3 +1,7 @@
+2008-03-20  Christian Persch  <chpe@gnome.org>
+
+	* configure.ac: Add AM_PROG_CC_C_O. Bug #523369.
+
 2008-03-19  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c:
