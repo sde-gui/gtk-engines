@@ -1,6 +1,13 @@
 2008-04-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_focus):
+	Add a workaround for the panel ButtonWidget. This is hopefully just
+	a intermediate solution until a real fix exists.
+
+2008-04-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_box):
 	Work around GTK+ drawing the "spinbutton" box always with state
 	NORMAL.

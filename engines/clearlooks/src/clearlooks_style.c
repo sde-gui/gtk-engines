@@ -1387,6 +1387,14 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 				focus.type = CL_FOCUS_BUTTON;
 			else
 				focus.type = CL_FOCUS_BUTTON_FLAT;
+
+			/* This is a workaround for the bogus focus handling that
+			 * clearlooks has currently.
+			 * I truely dislike putting it here, but I guess it is better
+			 * then having such a visible bug. It should be removed in the
+			 * next unstable release cycle.  -- Benjamin */
+			if (ge_object_is_a (G_OBJECT (widget), "ButtonWidget"))
+				focus.type = CL_FOCUS_LABEL;
 		}
 	}
 	else if (detail && g_str_has_prefix (detail, "treeview"))
