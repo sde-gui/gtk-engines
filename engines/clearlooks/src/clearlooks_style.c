@@ -591,6 +591,11 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	{
 		WidgetParameters params;
 
+		/* The "spinbutton" box is always drawn with state NORMAL, even if it is insensitive.
+		 * So work around this here. */
+		if (state_type == GTK_STATE_NORMAL && widget && GE_IS_ENTRY (widget))
+			state_type = GTK_WIDGET_STATE (widget);
+
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
 		if (params.ltr)

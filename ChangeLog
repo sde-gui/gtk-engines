@@ -1,6 +1,13 @@
 2008-04-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Work around GTK+ drawing the "spinbutton" box always with state
+	NORMAL.
+
+2008-04-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_set_widget_parameters):
 	Undo Andrea's change from 2008-03-19. The check was moved to fix
 	the spinbutton arrow sensitivity. (See bug #475629.)
