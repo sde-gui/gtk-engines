@@ -65,10 +65,6 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 {
 	params->style_functions = &(clearlooks_style_class->style_functions[CLEARLOOKS_STYLE (style)->style]);
 
-	/* Taken from Murrine, seems to fix insensitive spinbuttons */
-	if (widget && GE_IS_ENTRY (widget))
-		state_type = GTK_WIDGET_STATE (widget);
-
 	params->active        = (state_type == GTK_STATE_ACTIVE);
 	params->prelight      = (state_type == GTK_STATE_PRELIGHT);
 	params->disabled      = (state_type == GTK_STATE_INSENSITIVE);
