@@ -1,3 +1,22 @@
+Overview of Changes in 2.14.1 (since 2.14.0)
+============================================
+
+Changes in this release:
+ - Warning and C89 fixes
+ - Parser fix in thinice
+ - Added a workaround for bug 514400 (Glitches on panel launcher)
+ - Some improvements in Clearlooks (insensitive spinbuttons, scales,
+   notebook background color)
+
+GNOME Bugs fixed in this release:
+ 521679 – compile error
+ 523369 – automake warning
+
+New and udpated translations:
+ Eskild Hustvedt (nn)
+ Giannis Katsampirhs (el)
+
+
 Overview of Changes in 2.14.0 (since 2.13.6)
 ============================================
 

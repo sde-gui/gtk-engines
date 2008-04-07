@@ -1,5 +1,11 @@
 2008-04-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* configure.ac:
+	Update for 2.14.1 release.
+
+2008-04-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* test/torture:
 	Fix running the tests when building out of tree.
 
