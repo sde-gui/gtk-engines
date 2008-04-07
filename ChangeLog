@@ -1,5 +1,10 @@
 2008-04-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* test/torture:
+	Fix running the tests when building out of tree.
+
+2008-04-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_focus):
 	Add a workaround for the panel ButtonWidget. This is hopefully just
