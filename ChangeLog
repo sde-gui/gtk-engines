@@ -1,5 +1,10 @@
 2008-04-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/industrial/src/industrial_style.c: (draw_slider):
+	The stepper button check was only missing in industrial.
+
+2008-04-09  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/support.c:
 	(clearlooks_scrollbar_get_junction):
 	* engines/industrial/src/industrial_style.c: (draw_slider):
