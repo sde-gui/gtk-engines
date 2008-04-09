@@ -203,13 +203,19 @@ clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 	if (adj->value <= adj->lower &&
 		(GTK_RANGE (widget)->has_stepper_a || GTK_RANGE (widget)->has_stepper_b))
 	{
-		junction |= CL_JUNCTION_BEGIN;
+		if (!gtk_range_get_inverted (GTK_RANGE (widget)))
+			junction |= CL_JUNCTION_BEGIN;
+		else
+			junction |= CL_JUNCTION_END;
 	}
 	
 	if (adj->value >= adj->upper - adj->page_size &&
 		(GTK_RANGE (widget)->has_stepper_c || GTK_RANGE (widget)->has_stepper_d))
 	{
-		junction |= CL_JUNCTION_END;
+		if (!gtk_range_get_inverted (GTK_RANGE (widget)))
+			junction |= CL_JUNCTION_END;
+		else
+			junction |= CL_JUNCTION_BEGIN;
 	}
 	
 	return junction;

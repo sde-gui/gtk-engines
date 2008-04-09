@@ -525,17 +525,23 @@ draw_slider (GtkStyle      *style,
 		    adjustment->page_size) {
 			if (adjustment->value <= adjustment->lower) {
 				if (orientation == GTK_ORIENTATION_VERTICAL) {
-					y--;
+					if (!gtk_range_get_inverted (GTK_RANGE (widget)))
+						y--;
 					height++;
 				} else {
-					x--;
+					if (!gtk_range_get_inverted (GTK_RANGE (widget)))
+						x--;
 					width++;
 				}
 			}
 			if (adjustment->value >= adjustment->upper - adjustment->page_size) {
 				if (orientation == GTK_ORIENTATION_VERTICAL) {
+					if (gtk_range_get_inverted (GTK_RANGE (widget)))
+						y--;
 					height++;
 				} else {
+					if (gtk_range_get_inverted (GTK_RANGE (widget)))
+						x--;
 					width++;
 				}
 			}

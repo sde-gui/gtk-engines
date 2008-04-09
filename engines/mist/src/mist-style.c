@@ -603,10 +603,12 @@ mist_style_draw_box(GtkStyle *style,
 			     GTK_RANGE (widget)->has_stepper_b)) {
 				if (GE_IS_VSCROLLBAR (widget)) {
 					height += 1;
-					y -= 1;
+					if (!gtk_range_get_inverted (GTK_RANGE (widget)))
+						y -= 1;
 				} else if (GE_IS_HSCROLLBAR (widget)) {
 					width += 1;
-					x -= 1;
+					if (!gtk_range_get_inverted (GTK_RANGE (widget)))
+						x -= 1;
 				}
 			}
 			
@@ -615,8 +617,12 @@ mist_style_draw_box(GtkStyle *style,
 			     GTK_RANGE (widget)->has_stepper_d)) {
 				if (GE_IS_VSCROLLBAR (widget)) {
 					height += 1;
+					if (gtk_range_get_inverted (GTK_RANGE (widget)))
+						y -= 1;
 				} else if (GE_IS_HSCROLLBAR (widget)) {
 					width += 1;
+					if (gtk_range_get_inverted (GTK_RANGE (widget)))
+						x -= 1;
 				}
 			}
 		}
