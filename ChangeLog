@@ -1,3 +1,8 @@
+2008-04-11  Thomas Wood  <thos@gnome.org>
+
+	* themes/Redmond/gtk-2.0/gtkrc: Use new scrollbars-within-bevel
+	property for GtkScrolledWindow
+
 2008-04-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* Makefile.am:
