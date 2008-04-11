@@ -1,4 +1,5 @@
-SUBDIRS = po engines themes test schema
+SUBDIRS = engines themes test schema
+DIST_SUBDIRS = $(SUBDIRS) po
 
 EXTRA_DIST = \
 	autogen.sh	\

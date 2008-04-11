@@ -1,3 +1,8 @@
+2008-04-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* Makefile.am:
+	Do not install the translations. Patch from Werner Pantke.
+
 2008-04-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/industrial/src/industrial_style.c: (draw_slider):
