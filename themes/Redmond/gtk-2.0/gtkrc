@@ -14,6 +14,10 @@ style "standard-default"
   GtkButton::child_displacement_x = 1
   GtkButton::child_displacement_y = 1
 
+  GtkMenu::horizontal-padding = 1
+  GtkMenu::vertical-padding = 1
+  GtkMenu::horizontal-offset = -6
+
   GtkScrolledWindow::scrollbar-spacing = 0
   GtkScrolledWindow::scrollbars-within-bevel = 1
 

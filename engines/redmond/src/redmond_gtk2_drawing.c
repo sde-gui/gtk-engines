@@ -588,6 +588,15 @@ redmond_draw_shadow (GtkStyle * style,
 			  &redmond_style->color_cube.dark[state_type], x, y, width, height,
 			  FALSE);
 	}
+      else if (CHECK_DETAIL (detail, "menu"))
+        {
+          ge_cairo_simple_border (cr, &redmond_style->color_cube.bg[state_type],
+                          &redmond_style->black_border[state_type], x, y,
+                          width, height, FALSE);
+          ge_cairo_simple_border (cr, &redmond_style->color_cube.light[state_type],
+                          &redmond_style->color_cube.dark[state_type], x + 1, y + 1, width - 2,
+                          height - 2, FALSE);
+        }
       else
 	{
 	  /* Normal OUT Border */
