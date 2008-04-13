@@ -1,3 +1,9 @@
+2008-04-13  Thomas Wood  <thos@gnome.org>
+
+	* engines/redmond/src/redmond_gtk2_drawing.c:
+	(redmond_draw_shadow), (redmond_draw_box): Don't draw a shadow on
+	scrollbars now that we don't provide them with any padding.
+
 2008-04-11  Thomas Wood  <thos@gnome.org>
 
 	* themes/Redmond/gtk-2.0/gtkrc: Use new scrollbars-within-bevel

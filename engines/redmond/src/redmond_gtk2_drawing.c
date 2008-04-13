@@ -538,8 +538,7 @@ redmond_draw_shadow (GtkStyle * style,
 			      height - 2, FALSE);
 	    }
 	}
-      else if ((CHECK_DETAIL (detail, "trough"))
-	       || ((GE_IS_STATUSBAR (widget)))
+      else if (((GE_IS_STATUSBAR (widget)))
 	       || ((CHECK_DETAIL (detail, "frame")))
 	       || ((CHECK_DETAIL (detail, "button"))
 		   && (ge_is_toolbar_item (widget))))
@@ -1017,10 +1016,8 @@ redmond_draw_box (GtkStyle * style,
                                          &redmond_style->color_cube.light[state_type],
                                          x, y, width, height);
  
-           cairo_destroy(cr);			          
+      cairo_destroy(cr);
 
-      redmond_draw_shadow (style, window, state_type, GTK_SHADOW_IN, area,
-			widget, detail, x, y, width, height);
     }
   else if ((CHECK_DETAIL (detail, "trough"))
 	   && (widget && GE_IS_SCALE (widget)))
