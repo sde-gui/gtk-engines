@@ -1,3 +1,9 @@
+2008-04-21  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* NEWS:
+	* configure.ac:
+	gtk-engines 2.15.0 release.
+
 2008-04-13  Thomas Wood  <thos@gnome.org>
 
 	* engines/redmond/src/redmond_gtk2_drawing.c:

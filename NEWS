@@ -1,3 +1,14 @@
+Overview of Changes in 2.15.0 (since 2.14.1)
+============================================
+
+Changes in this release:
+ - Schema translations are no longer installed.
+ - Improvements to the Redmond scrollbars, scrolled window and menus.
+
+GNOME Bugs fixed in this release:
+ 526890 – Support inverted scrollbars (ranges)
+
+
 Overview of Changes in 2.14.1 (since 2.14.0)
 ============================================
 
