@@ -49,10 +49,10 @@ clearlooks_draw_glossy_gradient (cairo_t         *cr,
 	ge_shade_color (color, disabled? 1.02 : 1.08, &d);
 
 	pt = cairo_pattern_create_linear (x, y, x, y+height);
-	cairo_pattern_add_color_stop_rgb (pt, 0.0,  a.r, a.g, a.b);
-	cairo_pattern_add_color_stop_rgb (pt, 0.5,  b.r, b.g, b.b);
-	cairo_pattern_add_color_stop_rgb (pt, 0.5,  c.r, c.g, c.b);
-	cairo_pattern_add_color_stop_rgb (pt, 1.0,  d.r, d.g, d.b);
+	cairo_pattern_add_color_stop_rgb (pt, 0.0, a.r, a.g, a.b);
+	cairo_pattern_add_color_stop_rgb (pt, 0.5, b.r, b.g, b.b);
+	cairo_pattern_add_color_stop_rgb (pt, 0.5, c.r, c.g, c.b);
+	cairo_pattern_add_color_stop_rgb (pt, 1.0, d.r, d.g, d.b);
 
 	cairo_set_source (cr, pt);
 	ge_cairo_rounded_rectangle (cr, x, y, width, height, radius, corners);

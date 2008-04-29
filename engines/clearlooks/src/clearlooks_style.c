@@ -1280,6 +1280,8 @@ clearlooks_style_realize (GtkStyle * style)
 	double shades[] = {1.15, 0.95, 0.896, 0.82, 0.7, 0.665, 0.475, 0.45, 0.4};
 	CairoColor spot_color;
 	CairoColor bg_normal;
+	gdouble hue_spot, brightness_spot, saturation_spot;
+	gdouble hue_bg, brightness_bg, saturation_bg;
 	double contrast;
 	int i;
 
@@ -1298,6 +1300,12 @@ clearlooks_style_realize (GtkStyle * style)
 	}
 
 	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &spot_color);
+
+	ge_hsb_from_color (&style->bg[GTK_STATE_SELECTED], &hue_spot, &saturation_spot, &brightness_spot);
+	ge_hsb_from_color (&style->bg[GTK_STATE_NORMAL],   &hue_bg,   &saturation_bg,   &brightness_bg);
+
+	/* Here to place some checks for dark themes.
+	 * We should use a different shade value for spot[2]. */
 
 	ge_shade_color (&spot_color, 1.25, &clearlooks_style->colors.spot[0]);
 	ge_shade_color (&spot_color, 1.05, &clearlooks_style->colors.spot[1]);

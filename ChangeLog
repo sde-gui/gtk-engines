@@ -1,3 +1,10 @@
+2008-04-29  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_realize):
+	Added the variables we should use to adjust spot[2] for dark themes.
+	Still no algorithm.
+
 2008-04-21  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:
