@@ -1,5 +1,12 @@
 2008-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_scrollbar_stepper),
+	(clearlooks_draw_scrollbar_slider):
+	Removed dead code; one translation 0.5 less.
+
+2008-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c: (clearlooks_draw_tab):
 	Removed the 0.5 translation.
 

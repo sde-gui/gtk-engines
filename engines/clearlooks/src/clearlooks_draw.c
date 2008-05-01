@@ -1693,7 +1693,6 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 	CairoColor   border;
 	CairoColor   s1, s2, s3, s4;
 	cairo_pattern_t *pattern;
-	ShadowParameters shadow;
 	double radius = MIN (widget->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 
 	ge_shade_color(&colors->shade[6], 1.05, &border);
@@ -1741,14 +1740,6 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 	ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, corners);
 	clearlooks_set_border_gradient (cr, &border, 1.2, (scrollbar->horizontal ? 0 : width), (scrollbar->horizontal ? height: 0));
 	cairo_stroke (cr);
-
-	cairo_translate (cr, 0.5, 0.5);
-	shadow.shadow  = CL_SHADOW_OUT;
-	shadow.corners = corners;
-	/*
-	clearlooks_draw_highlight_and_shade (cr, &shadow,
-	                                     width,
-	                                     height, params->radius);*/
 }
 
 static void
@@ -1758,6 +1749,8 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
                                    const ScrollBarParameters       *scrollbar,
                                    int x, int y, int width, int height)
 {
+	cairo_save (cr);
+
 	if (scrollbar->junction & CL_JUNCTION_BEGIN)
 	{
 		if (scrollbar->horizontal)
@@ -1857,18 +1850,19 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 
 		/* draw handles */
 		cairo_set_line_width (cr, 1);
+		cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
 
 		bar_x = width/2 - 4;
-		cairo_translate(cr, 0.5, 0.5);
+
 		for (i=0; i<3; i++)
 		{
-			cairo_move_to (cr, bar_x, 4);
-			cairo_line_to (cr, bar_x, height-5);
+			cairo_move_to (cr, bar_x + 0.5, 4);
+			cairo_line_to (cr, bar_x + 0.5, height-4);
 			ge_cairo_set_color (cr, dark);
 			cairo_stroke (cr);
 
-			cairo_move_to (cr, bar_x+1, 4);
-			cairo_line_to (cr, bar_x+1, height-5);
+			cairo_move_to (cr, bar_x+1.5, 4);
+			cairo_line_to (cr, bar_x+1.5, height-4);
 			ge_cairo_set_color (cr, light);
 			cairo_stroke (cr);
 
@@ -1876,6 +1870,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		}
 	}
 
+	cairo_restore (cr);
 }
 
 static void
