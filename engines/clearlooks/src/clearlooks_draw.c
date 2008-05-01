@@ -174,23 +174,23 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 1.06, &hilight);
 	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 0.94, &shadow);
 
-	width  -= 3;
-	height -= 3;
+	width  -= 2;
+	height -= 2;
 
 	cairo_save (cr);
 
 	/* Top/Left highlight */
 	if (corners & CR_CORNER_BOTTOMLEFT)
-		cairo_move_to (cr, x, y+height-radius);
+		cairo_move_to (cr, x + 0.5, y+height-radius);
 	else
-		cairo_move_to (cr, x, y+height);
+		cairo_move_to (cr, x + 0.5, y+height);
 
-	ge_cairo_rounded_corner (cr, x, y, radius, corners & CR_CORNER_TOPLEFT);
+	ge_cairo_rounded_corner (cr, x + 0.5, y + 0.5, radius, corners & CR_CORNER_TOPLEFT);
 
 	if (corners & CR_CORNER_TOPRIGHT)
-		cairo_line_to (cr, x+width-radius, y);
+		cairo_line_to (cr, x+width-radius, y + 0.5);
 	else
-		cairo_line_to (cr, x+width, y);
+		cairo_line_to (cr, x+width, y + 0.5);
 
 	if (params->shadow & CL_SHADOW_OUT)
 		ge_cairo_set_color (cr, &hilight);
@@ -201,9 +201,9 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 
 	/* Bottom/Right highlight -- this includes the corners */
 	cairo_move_to (cr, x+width-radius, y); /* topright and by radius to the left */
-	ge_cairo_rounded_corner (cr, x+width, y, radius, corners & CR_CORNER_TOPRIGHT);
-	ge_cairo_rounded_corner (cr, x+width, y+height, radius, corners & CR_CORNER_BOTTOMRIGHT);
-	ge_cairo_rounded_corner (cr, x, y+height, radius, corners & CR_CORNER_BOTTOMLEFT);
+	ge_cairo_rounded_corner (cr, x+width - 0.5, y, radius, corners & CR_CORNER_TOPRIGHT);
+	ge_cairo_rounded_corner (cr, x+width - 0.5, y+height - 0.5, radius, corners & CR_CORNER_BOTTOMRIGHT);
+	ge_cairo_rounded_corner (cr, x, y+height - 0.5, radius, corners & CR_CORNER_BOTTOMLEFT);
 
 	if (params->shadow & CL_SHADOW_OUT)
 		ge_cairo_set_color (cr, &shadow);
@@ -973,21 +973,19 @@ clearlooks_draw_menubar0 (cairo_t *cr,
                           const MenuBarParameters *menubar,
                           int x, int y, int width, int height)
 {
-/* 	const CairoColor *light = &colors->shade[0]; */
 	const CairoColor *dark = &colors->shade[3];
 
+	cairo_save (cr);
+
 	cairo_set_line_width (cr, 1);
-	cairo_translate (cr, x, y+0.5);
+	cairo_translate (cr, x, y);
 
-/* 	cairo_move_to (cr, 0, 0); */
-/* 	cairo_line_to (cr, width, 0); */
-/* 	ge_cairo_set_color (cr, light); */
-/* 	cairo_stroke (cr); */
-
-	cairo_move_to (cr, 0, height-1);
-	cairo_line_to (cr, width, height-1);
+	cairo_move_to (cr, 0, height-0.5);
+	cairo_line_to (cr, width, height-0.5);
 	ge_cairo_set_color (cr, dark);
 	cairo_stroke (cr);
+
+	cairo_restore (cr);
 }
 
 static void
@@ -999,6 +997,8 @@ clearlooks_draw_menubar2 (cairo_t *cr,
 {
 	CairoColor lower;
 	cairo_pattern_t *pattern;
+
+	cairo_save (cr);
 
 	ge_shade_color (&colors->bg[0], 0.96, &lower);
 
@@ -1023,6 +1023,8 @@ clearlooks_draw_menubar2 (cairo_t *cr,
 	cairo_line_to        (cr, width, height-0.5);
 	ge_cairo_set_color   (cr, &colors->shade[3]);
 	cairo_stroke         (cr);
+
+	cairo_restore (cr);
 }
 
 static void
@@ -1071,31 +1073,31 @@ clearlooks_get_frame_gap_clip (int x, int y, int width, int height,
 {
 	if (frame->gap_side == CL_GAP_TOP)
 	{
-		CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  -0.5,
-											 frame->gap_width - 3, 2.0);
-		CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  -0.5,
-											 frame->gap_width - 2, 2.0);
+		CLEARLOOKS_RECTANGLE_SET (*bevel,  2.0 + frame->gap_x,  0.0,
+		                          frame->gap_width - 3, 2.0);
+		CLEARLOOKS_RECTANGLE_SET (*border, 1.0 + frame->gap_x,  0.0,
+		                         frame->gap_width - 2, 2.0);
 	}
 	else if (frame->gap_side == CL_GAP_BOTTOM)
 	{
-		CLEARLOOKS_RECTANGLE_SET ((*bevel),  1.5 + frame->gap_x,  height - 2.5,
-											 frame->gap_width - 3, 2.0);
-		CLEARLOOKS_RECTANGLE_SET ((*border), 0.5 + frame->gap_x,  height - 1.5,
-											 frame->gap_width - 2, 2.0);
+		CLEARLOOKS_RECTANGLE_SET (*bevel,  2.0 + frame->gap_x,  height - 2.0,
+		                          frame->gap_width - 3, 2.0);
+		CLEARLOOKS_RECTANGLE_SET (*border, 1.0 + frame->gap_x,  height - 1.0,
+		                          frame->gap_width - 2, 2.0);
 	}
 	else if (frame->gap_side == CL_GAP_LEFT)
 	{
-		CLEARLOOKS_RECTANGLE_SET ((*bevel),  -0.5, 1.5 + frame->gap_x,
-											 2.0, frame->gap_width - 3);
-		CLEARLOOKS_RECTANGLE_SET ((*border), -0.5, 0.5 + frame->gap_x,
-											 1.0, frame->gap_width - 2);
+		CLEARLOOKS_RECTANGLE_SET (*bevel,  0.0, 2.0 + frame->gap_x,
+		                          2.0, frame->gap_width - 3);
+		CLEARLOOKS_RECTANGLE_SET (*border, 0.0, 1.0 + frame->gap_x,
+		                          1.0, frame->gap_width - 2);
 	}
 	else if (frame->gap_side == CL_GAP_RIGHT)
 	{
-		CLEARLOOKS_RECTANGLE_SET ((*bevel),  width - 2.5, 1.5 + frame->gap_x,
-											 2.0, frame->gap_width - 3);
-		CLEARLOOKS_RECTANGLE_SET ((*border), width - 1.5, 0.5 + frame->gap_x,
-											 1.0, frame->gap_width - 2);
+		CLEARLOOKS_RECTANGLE_SET (*bevel,  width - 2.0, 2.0 + frame->gap_x,
+		                          2.0, frame->gap_width - 3);
+		CLEARLOOKS_RECTANGLE_SET (*border, width - 1.0, 1.0 + frame->gap_x,
+		                          1.0, frame->gap_width - 2);
 	}
 }
 
@@ -1123,7 +1125,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 		                               frame, &bevel_clip, &frame_clip);
 
 	cairo_set_line_width (cr, 1.0);
-	cairo_translate      (cr, x+0.5, y+0.5);
+	cairo_translate      (cr, x, y);
 
 	/* save everything */
 	cairo_save (cr);
@@ -1132,7 +1134,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		/* Set clip for gap */
 		cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
-		cairo_rectangle      (cr, -0.5, -0.5, width, height);
+		cairo_rectangle      (cr, 0, 0, width, height);
 		cairo_rectangle      (cr, bevel_clip.x, bevel_clip.y, bevel_clip.width, bevel_clip.height);
 		cairo_clip           (cr);
 	}
@@ -1142,9 +1144,9 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		ge_cairo_set_color (cr, &hilight);
 		if (frame->shadow == CL_SHADOW_ETCHED_IN)
-			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, radius, params->corners);
+			ge_cairo_inner_rounded_rectangle (cr, 1, 1, width-1, height-1, radius, params->corners);
 		else
-			ge_cairo_rounded_rectangle (cr, 0, 0, width-2, height-2, radius, params->corners);
+			ge_cairo_inner_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 		cairo_stroke (cr);
 	}
 	else if (frame->shadow != CL_SHADOW_NONE)
@@ -1152,7 +1154,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 		ShadowParameters shadow;
 		shadow.corners = params->corners;
 		shadow.shadow  = frame->shadow;
-		clearlooks_draw_highlight_and_shade (cr, colors, &shadow, width, height, 0);
+		clearlooks_draw_highlight_and_shade (cr, colors, &shadow, width, height, radius);
 	}
 
 	/* restore the previous clip region */
@@ -1162,7 +1164,7 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		/* Set clip for gap */
 		cairo_set_fill_rule  (cr, CAIRO_FILL_RULE_EVEN_ODD);
-		cairo_rectangle      (cr, -0.5, -0.5, width, height);
+		cairo_rectangle      (cr, 0, 0, width, height);
 		cairo_rectangle      (cr, frame_clip.x, frame_clip.y, frame_clip.width, frame_clip.height);
 		cairo_clip           (cr);
 	}
@@ -1172,14 +1174,14 @@ clearlooks_draw_frame            (cairo_t *cr,
 	{
 		ge_cairo_set_color (cr, dark);
 		if (frame->shadow == CL_SHADOW_ETCHED_IN)
-			ge_cairo_rounded_rectangle (cr, 0, 0, width-2, height-2, radius, params->corners);
+			ge_cairo_inner_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
 		else
-			ge_cairo_rounded_rectangle (cr, 1, 1, width-2, height-2, radius, params->corners);
+			ge_cairo_inner_rounded_rectangle (cr, 1, 1, width-1, height-1, radius, params->corners);
 	}
 	else
 	{
 		ge_cairo_set_color (cr, border);
-		ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
+		ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, params->corners);
 	}
 	cairo_stroke (cr);
 
@@ -1261,9 +1263,11 @@ clearlooks_draw_tab (cairo_t *cr,
 		shadow.shadow  = CL_SHADOW_OUT;
 		shadow.corners = params->corners;
 
+		cairo_translate (cr, -0.5, -0.5);
 		clearlooks_draw_highlight_and_shade (cr, colors, &shadow,
 		                                     width,
 		                                     height, radius);
+		cairo_translate (cr, 0.5, 0.5);
 	}
 
 

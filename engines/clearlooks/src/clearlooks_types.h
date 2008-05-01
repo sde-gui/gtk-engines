@@ -488,9 +488,9 @@ struct _ClearlooksStyleFunctions
 };
 
 
-#define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) rect.x      = _x; \
-                                                       rect.y      = _y; \
-                                                       rect.width  = _w; \
-                                                       rect.height = _h;
+#define CLEARLOOKS_RECTANGLE_SET(rect, _x, _y, _w, _h) (rect).x      = (_x); \
+                                                       (rect).y      = (_y); \
+                                                       (rect).width  = (_w); \
+                                                       (rect).height = (_h);
 
 #endif /* CLEARLOOKS_TYPES_H */
