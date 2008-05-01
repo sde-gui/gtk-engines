@@ -1,6 +1,13 @@
 2008-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_top_left_highlight), (clearlooks_draw_button),
+	(clearlooks_draw_scrollbar_stepper):
+	Button and clearlooks_draw_top_left_highlight cleanup and small fixes.
+
+2008-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_entry):
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_entry):
