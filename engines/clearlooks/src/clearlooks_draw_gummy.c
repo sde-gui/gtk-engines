@@ -222,7 +222,7 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 		}
 
 		if (!(params->enable_shadow && !params->active && !params->disabled))
-			params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
+			params->style_functions->draw_inset (cr, &params->parentbg, -0.5, -0.5, width, height, params->radius+1, params->corners);
 		cairo_translate (cr, -0.5, -0.5);
 	}
 
@@ -308,7 +308,7 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 	ge_cairo_set_color (cr, base);
 	cairo_fill (cr);
 
-	params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
+	params->style_functions->draw_inset (cr, &params->parentbg, -0.5, -0.5, width, height, radius+1, params->corners);
 
 	/* Draw the inner shadow */
 	if (params->focus)
@@ -572,16 +572,17 @@ clearlooks_gummy_scale_draw_gradient (cairo_t          *cr,
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, f1.r, f1.g, f1.b, f1.a);
 	cairo_pattern_add_color_stop_rgba (pattern, 1.0, f2.r, f2.g, f2.b, f2.a);
 
-	cairo_rectangle (cr, x+0.5, y+0.5, width-1, height-1);
+	cairo_rectangle (cr, x, y, width, height);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 
 	clearlooks_set_mixed_color (cr, border, fill, 0.2);
-	ge_cairo_stroke_rectangle (cr, x, y, width, height);
+	ge_cairo_inner_rectangle (cr, x, y, width, height);
+	cairo_stroke (cr);
 }
 
-#define TROUGH_SIZE 6
+#define TROUGH_SIZE 7
 static void
 clearlooks_gummy_draw_scale_trough (cairo_t                *cr,
                                     const ClearlooksColors *colors,
@@ -591,66 +592,64 @@ clearlooks_gummy_draw_scale_trough (cairo_t                *cr,
 {
 	int    trough_width, trough_height;
 	double translate_x, translate_y;
+	CairoColor fill, border;
+	gboolean in;
+
+	cairo_save (cr);
 
 	if (slider->horizontal)
 	{
-		trough_width  = width-3;
-		trough_height = TROUGH_SIZE-2;
+		trough_width  = width;
+		trough_height = TROUGH_SIZE;
 
-		translate_x   = x + 0.5;
-		translate_y   = y + 0.5 + (height/2) - (TROUGH_SIZE/2);
+		translate_x   = x;
+		translate_y   = y + (height/2) - (TROUGH_SIZE/2);
 	}
 	else
 	{
-		trough_width  = TROUGH_SIZE-2;
-		trough_height = height-3;
+		trough_width  = TROUGH_SIZE;
+		trough_height = height;
 
-		translate_x   = x + 0.5 + (width/2) - (TROUGH_SIZE/2);
-		translate_y  = y + 0.5;
+		translate_x   = x + (width/2) - (TROUGH_SIZE/2);
+		translate_y   = y;
 	}
 
 	cairo_set_line_width (cr, 1.0);
 	cairo_translate (cr, translate_x, translate_y);
 
 	if (!slider->fill_level)
-		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, trough_width+2, trough_height+2, 0, 0);
-
-	cairo_translate (cr, 1, 1);
+		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, trough_width, trough_height, 0, 0);
 
 	if (!slider->lower && !slider->fill_level)
 	{
-		CairoColor fill;
-
-		/* 0.896 = shade[2], as previous code, but now is shading parentbg */
 		ge_shade_color (&params->parentbg, 0.896, &fill);
-
-		clearlooks_gummy_scale_draw_gradient (cr,
-		                                      &fill, /* bottom */
-		                                      &colors->shade[6], /* border */
-		                                      0, 0, trough_width, trough_height,
-		                                      slider->horizontal, TRUE);
+		border = colors->shade[6];
+		in = TRUE;
 	}
 	else if (!slider->fill_level)
-		clearlooks_gummy_scale_draw_gradient (cr,
-		                                      &colors->spot[1], /* bottom */
-		                                      &colors->spot[2], /* border */
-		                                      0, 0, trough_width, trough_height,
-		                                      slider->horizontal, FALSE);
+	{
+		fill = colors->spot[1];
+		border = colors->spot[2];
+		in = FALSE;
+	}
 	else
 	{
-		CairoColor c1 = colors->spot[1];
-		CairoColor c2 = colors->spot[2];
+		fill = colors->spot[1];
+		border = colors->spot[2];
 
-		c1.a = 0.25;
-		c2.a = 0.25;
-
-		clearlooks_gummy_scale_draw_gradient (cr,
-		                                      &c1, /* bottom */
-		                                      &c2, /* border */
-		                                      0, 0, trough_width, trough_height,
-		                                      slider->horizontal, FALSE);
+		fill.a = 0.25;
+		border.a = 0.25;
+		
+		in = FALSE;
 	}
 
+	clearlooks_gummy_scale_draw_gradient (cr,
+	                                      &fill,
+	                                      &border,
+	                                      1, 1, trough_width - 2, trough_height - 2,
+	                                      slider->horizontal, in);
+
+	cairo_restore (cr);
 }
 
 static void
@@ -1541,8 +1540,8 @@ clearlooks_gummy_draw_checkbox (cairo_t                  *cr,
 
 	if (widget->xthickness > 2 && widget->ythickness > 2)
 	{
-		widget->style_functions->draw_inset (cr, &widget->parentbg, 0.5, 0.5,
-		                                     width-1, height-1, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
+		widget->style_functions->draw_inset (cr, &widget->parentbg, 0, 0,
+		                                     width, height, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
 
 		/* Draw the rectangle for the checkbox itself */
 		ge_cairo_rounded_rectangle (cr, 1.5, 1.5,
