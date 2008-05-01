@@ -386,27 +386,30 @@ clearlooks_draw_entry (cairo_t *cr,
 	if (params->focus)
 		border = colors->spot[2];
 
-	cairo_translate (cr, x+0.5, y+0.5);
+	cairo_save (cr);
+
+	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 
-	/* Fill the background (shouldn't have to) */
-	cairo_rectangle (cr, -0.5, -0.5, width, height);
+	/* Fill the background as it is initilized to base[NORMAL].
+	 * Relevant GTK+ bug: http://bugzilla.gnome.org/show_bug.cgi?id=513471 */
+	cairo_rectangle (cr, 0, 0, width, height);
 	ge_cairo_set_color (cr, &params->parentbg);
 	cairo_fill (cr);
 
-	/* Fill the entry's base color (why isn't is large enough by default?) */
-	cairo_rectangle (cr, 1.5, 1.5, width-4, height-4);
+	/* Now fill the area we want to be base[NORMAL] again. */
+	ge_cairo_rounded_rectangle (cr, 2, 2, width-4, height-4, MAX(0, radius-1), params->corners);
 	ge_cairo_set_color (cr, base);
 	cairo_fill (cr);
 
-	params->style_functions->draw_inset (cr, &params->parentbg, -0.5, -0.5, width, height, radius+1, params->corners);
+	params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width, height, radius+1, params->corners);
 
 	/* Draw the inner shadow */
 	if (params->focus)
 	{
-		/* ge_cairo_rounded_rectangle (cr, 2, 2, width-5, height-5, RADIUS-1, params->corners); */
 		ge_cairo_set_color (cr, &colors->spot[0]);
-		ge_cairo_stroke_rectangle (cr, 2, 2, width-5, height-5);
+		ge_cairo_inner_rounded_rectangle (cr, 2, 2, width-4, height-4, MAX(0, radius-1), params->corners);
+		cairo_stroke (cr);
 	}
 	else
 	{
@@ -414,22 +417,21 @@ clearlooks_draw_entry (cairo_t *cr,
 		ge_shade_color (&border, 0.925, &shadow);
 
 		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, params->disabled ? 0.05 : 0.1);
-		/*
-		cairo_move_to (cr, 2, height-3);
-		cairo_arc (cr, params->xthickness+RADIUS-1, params->ythickness+RADIUS-1, RADIUS, G_PI, 270*(G_PI/180));
-		cairo_line_to (cr, width-3, 2);*/
-		cairo_move_to (cr, 2, height-3);
-		cairo_line_to (cr, 2, 2);
-		cairo_line_to (cr, width-3, 2);
+
+		cairo_move_to (cr, 2, height-2-radius);
+		cairo_arc (cr, 2+MAX(0, radius-1), 2+MAX(0, radius-1), MAX(0, radius-1), G_PI, 270*(G_PI/180));
+		cairo_line_to (cr, width-2-radius, 2);
 		cairo_stroke (cr);
 	}
 
-	ge_cairo_rounded_rectangle (cr, 1, 1, width-3, height-3, radius, params->corners);
+	ge_cairo_inner_rounded_rectangle (cr, 1, 1, width-2, height-2, radius, params->corners);
 	if (params->focus || params->disabled)
 		ge_cairo_set_color (cr, &border);
 	else
 		clearlooks_set_border_gradient (cr, &border, 1.32, 0, height);
 	cairo_stroke (cr);
+
+	cairo_restore (cr);
 }
 
 static void

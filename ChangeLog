@@ -1,5 +1,13 @@
 2008-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_entry):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_entry):
+	Some entry drawing cleanups, and better "radius" handeling.
+
+2008-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw*.c:
 	Start to clean up the 0.5 translation mess.
 
