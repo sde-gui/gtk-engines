@@ -1,5 +1,10 @@
 2008-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c: (clearlooks_draw_tab):
+	Removed the 0.5 translation.
+
+2008-05-01  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_highlight_and_shade), (clearlooks_draw_menubar0),
 	(clearlooks_draw_menubar2), (clearlooks_get_frame_gap_clip),
