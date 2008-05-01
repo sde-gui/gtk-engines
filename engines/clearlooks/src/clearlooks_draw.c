@@ -101,17 +101,21 @@ static void
 clearlooks_draw_shadow (cairo_t *cr, const ClearlooksColors *colors, gfloat radius, int width, int height)
 {
 	CairoColor shadow;
+	cairo_save (cr);
+
 	ge_shade_color (&colors->shade[6], 0.92, &shadow);
 
 	cairo_set_line_width (cr, 1.0);
+	cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
 
 	cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.1);
 
-	cairo_move_to (cr, width, radius);
+	cairo_move_to (cr, width - 0.5, radius);
 	ge_cairo_rounded_corner (cr, width, height, radius, CR_CORNER_BOTTOMRIGHT);
-	cairo_line_to (cr, radius, height);
+	cairo_line_to (cr, radius, height - 0.5);
 
 	cairo_stroke (cr);
+	cairo_restore (cr);
 }
 
 static void
@@ -246,10 +250,10 @@ clearlooks_draw_gripdots (cairo_t *cr, const ClearlooksColors *colors, int x, in
 			xoff = x -(xr * 3 / 2) + 3 * i;
 			yoff = y -(yr * 3 / 2) + 3 * j;
 
-			cairo_rectangle (cr, width/2+0.5+xoff, height/2+0.5+yoff, 2, 2);
+			cairo_rectangle (cr, width/2+xoff, height/2+yoff, 2, 2);
 			cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.8+contrast);
 			cairo_fill (cr);
-			cairo_rectangle (cr, width/2+0.5+xoff, height/2+0.5+yoff, 1, 1);
+			cairo_rectangle (cr, width/2+xoff, height/2+yoff, 1, 1);
 			cairo_set_source_rgba (cr, dark->r, dark->g, dark->b, 0.8+contrast);
 			cairo_fill (cr);
 		}
@@ -605,7 +609,7 @@ clearlooks_draw_slider (cairo_t *cr,
 		border = &colors->spot[2];
 
 	/* fill the widget */
-	cairo_rectangle (cr, 0.5, 0.5, width-2, height-2);
+	ge_cairo_rounded_rectangle (cr, 1.0, 1.0, width-2, height-2, radius, params->corners);
 
 	/* Fake light */
 	if (!params->disabled)
@@ -623,21 +627,20 @@ clearlooks_draw_slider (cairo_t *cr,
 	else
 	{
 		ge_cairo_set_color (cr, fill);
-		cairo_rectangle    (cr, 0.5, 0.5, width-2, height-2);
 		cairo_fill         (cr);
 	}
 
 	/* Set the clip */
 	cairo_save (cr);
-	cairo_rectangle (cr, 0.5, 0.5, 6, height-2);
-	cairo_rectangle (cr, width-7.5, 0.5, 6 , height-2);
+	cairo_rectangle (cr, 1.0, 1.0, 6, height-2);
+	cairo_rectangle (cr, width-8.0, 1.0, 6, height-2);
 	cairo_clip_preserve (cr);
 
 	cairo_new_path (cr);
 
 	/* Draw the handles */
-	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, params->corners);
-	pattern = cairo_pattern_create_linear (0.5, 0.5, 0.5, 0.5+height);
+	ge_cairo_rounded_rectangle (cr, 1.0, 1.0, width-1, height-1, radius, params->corners);
+	pattern = cairo_pattern_create_linear (1.0, 1.0, 1.0, 1.0+height);
 
 	if (params->prelight)
 	{
@@ -660,7 +663,7 @@ clearlooks_draw_slider (cairo_t *cr,
 	cairo_restore (cr);
 
 	/* Draw the border */
-	ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
+	ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, params->corners);
 
 	if (params->prelight || params->disabled)
 		ge_cairo_set_color (cr, border);
@@ -671,11 +674,11 @@ clearlooks_draw_slider (cairo_t *cr,
 	/* Draw handle lines */
 	if (width > 14)
 	{
-		cairo_move_to (cr, 6, 0.5);
-		cairo_line_to (cr, 6, height-1);
+		cairo_move_to (cr, 6.5, 1.0);
+		cairo_line_to (cr, 6.5, height-1);
 
-		cairo_move_to (cr, width-7, 0.5);
-		cairo_line_to (cr, width-7, height-1);
+		cairo_move_to (cr, width-7.5, 1.0);
+		cairo_line_to (cr, width-7.5, height-0.5);
 
 		cairo_set_line_width (cr, 1.0);
 		cairo_set_source_rgba (cr, border->r,
@@ -693,18 +696,22 @@ clearlooks_draw_slider_button (cairo_t *cr,
                                const SliderParameters *slider,
                                int x, int y, int width, int height)
 {
-	double radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
+	double radius = MIN (params->radius, MIN ((width - 1.0) / 2.0, (height - 1.0) / 2.0));
+
+	cairo_save (cr);
 	cairo_set_line_width (cr, 1.0);
 
 	if (!slider->horizontal)
 		ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
-	cairo_translate (cr, x+0.5, y+0.5);
+	cairo_translate (cr, x, y);
 
-	params->style_functions->draw_shadow (cr, colors, radius, width-1, height-1);
+	params->style_functions->draw_shadow (cr, colors, radius, width, height);
 	params->style_functions->draw_slider (cr, colors, params, 1, 1, width-2, height-2);
 
 	if (width > 24)
-		params->style_functions->draw_gripdots (cr, colors, 0, 0, width-2, height-2, 3, 3, 0);
+		params->style_functions->draw_gripdots (cr, colors, 1, 1, width-2, height-2, 3, 3, 0);
+
+	cairo_restore (cr);
 }
 
 static void
@@ -1940,6 +1947,8 @@ clearlooks_draw_handle (cairo_t *cr,
 	int num_bars = 6; /* shut up gcc warnings */
 	int bar_spacing;
 
+	cairo_save (cr);
+
 	switch (handle->type)
 	{
 		case CL_HANDLE_TOOLBAR:
@@ -1959,7 +1968,7 @@ clearlooks_draw_handle (cairo_t *cr,
 		cairo_fill (cr);
 	}
 
-	cairo_translate (cr, x+0.5, y+0.5);
+	cairo_translate (cr, x, y);
 
 	cairo_set_line_width (cr, 1);
 
@@ -1971,6 +1980,8 @@ clearlooks_draw_handle (cairo_t *cr,
 	{
 		params->style_functions->draw_gripdots (cr, colors, 0, 0, width, height, 2, num_bars, 0.1);
 	}
+
+	cairo_restore (cr);
 }
 
 static void
