@@ -1328,8 +1328,12 @@ clearlooks_style_realize (GtkStyle * style)
 
 	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_SELECTED], &spot_color);
 
-	ge_hsb_from_color (&style->bg[GTK_STATE_SELECTED], &hue_spot, &saturation_spot, &brightness_spot);
-	ge_hsb_from_color (&style->bg[GTK_STATE_NORMAL],   &hue_bg,   &saturation_bg,   &brightness_bg);
+	/* Andrea Cimitan wants something like the following to handle dark themes.
+	 * However, these two lines are broken currently, as ge_hsb_from_color expects
+	 * a CairoColor and not GdkColor
+	 *  ge_hsb_from_color (&style->bg[GTK_STATE_SELECTED], &hue_spot, &saturation_spot, &brightness_spot);
+	 *  ge_hsb_from_color (&style->bg[GTK_STATE_NORMAL],   &hue_bg,   &saturation_bg,   &brightness_bg);
+	 */
 
 	/* Here to place some checks for dark themes.
 	 * We should use a different shade value for spot[2]. */
