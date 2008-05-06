@@ -1309,8 +1309,6 @@ clearlooks_style_realize (GtkStyle * style)
 	double shades[] = {1.15, 0.95, 0.896, 0.82, 0.7, 0.665, 0.475, 0.45, 0.4};
 	CairoColor spot_color;
 	CairoColor bg_normal;
-	gdouble hue_spot, brightness_spot, saturation_spot;
-	gdouble hue_bg, brightness_bg, saturation_bg;
 	double contrast;
 	int i;
 

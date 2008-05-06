@@ -1,6 +1,12 @@
 2008-05-06  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_realize):
+	Removed unused variables.
+
+2008-05-06  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_draw_box):
 	Use the present steppers, not the slider position.
 
