@@ -648,6 +648,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	{
 		WidgetParameters params;
 		ScrollBarParameters scrollbar;
+		gboolean trough_under_steppers = TRUE;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CR_CORNER_ALL;
@@ -663,16 +664,42 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		else /* Fallback based on the size  ... */
 			scrollbar.horizontal = width >= height;
 
-		/* What is this about? */
-		if (scrollbar.horizontal)
+		if (widget)
+			gtk_widget_style_get (widget,
+			                      "trough-under-steppers", &trough_under_steppers,
+			                      NULL);
+
+		if (trough_under_steppers)
 		{
-			x += 2;
-			width -= 4;
-		}
-		else
-		{
-			y += 2;
-			height -= 4;
+			/* If trough under steppers is set, then we decrease the size
+			 * slightly. The size is decreased so that the trough is not
+			 * visible underneath the steppers. This is not really needed
+			 * as one can use the trough-under-steppers style property,
+			 * but it needs to exist for backward compatibility. */
+			if (scrollbar.horizontal)
+			{
+				if (scrollbar.junction & CL_JUNCTION_BEGIN)
+				{
+					x += 2;
+					width -= 2;
+				}
+				if (scrollbar.junction & CL_JUNCTION_END)
+				{
+					width -= 2;
+				}
+			}
+			else
+			{
+				if (scrollbar.junction & CL_JUNCTION_END)
+				{
+					y += 2;
+					height -= 2;
+				}
+				if (scrollbar.junction & CL_JUNCTION_END)
+				{
+					height -= 2;
+				}
+			}
 		}
 
 		STYLE_FUNCTION(draw_scrollbar_trough) (cr, colors, &params, &scrollbar,
