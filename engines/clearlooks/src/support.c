@@ -171,8 +171,10 @@ clearlooks_scrollbar_visible_steppers (GtkWidget *widget)
 {
 	ClearlooksStepper steppers = 0;
 	
+	/* If this is not a range widget, assume that the primary steppers
+	 * are present. */
 	if (!GE_IS_RANGE (widget))
-		return 0;
+		return CL_STEPPER_A | CL_STEPPER_D;
 	
 	if (GTK_RANGE (widget)->has_stepper_a)
 		steppers |= CL_STEPPER_A;

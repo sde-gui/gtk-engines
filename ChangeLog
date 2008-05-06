@@ -1,6 +1,16 @@
 2008-05-06  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	Use the present steppers, not the slider position.
+
+	* engines/clearlooks/src/support.c:
+	(clearlooks_scrollbar_visible_steppers):
+	If this is not a range, assume stepper A and D.
+
+2008-05-06  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_realize):
 	Comment out two broken and unneded lines.
 

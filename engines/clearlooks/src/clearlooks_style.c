@@ -649,13 +649,15 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		WidgetParameters params;
 		ScrollBarParameters scrollbar;
 		gboolean trough_under_steppers = TRUE;
+		ClearlooksStepper steppers;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CR_CORNER_ALL;
 
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
-
+		
+		steppers = clearlooks_scrollbar_visible_steppers (widget);
 
 		if (CHECK_HINT (GE_HINT_HSCROLLBAR))
 			scrollbar.horizontal = TRUE;
@@ -678,24 +680,24 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			 * but it needs to exist for backward compatibility. */
 			if (scrollbar.horizontal)
 			{
-				if (scrollbar.junction & CL_JUNCTION_BEGIN)
+				if (steppers & (CL_STEPPER_A | CL_STEPPER_B))
 				{
 					x += 2;
 					width -= 2;
 				}
-				if (scrollbar.junction & CL_JUNCTION_END)
+				if (steppers & (CL_STEPPER_C | CL_STEPPER_D))
 				{
 					width -= 2;
 				}
 			}
 			else
 			{
-				if (scrollbar.junction & CL_JUNCTION_END)
+				if (steppers & (CL_STEPPER_A | CL_STEPPER_B))
 				{
 					y += 2;
 					height -= 2;
 				}
-				if (scrollbar.junction & CL_JUNCTION_END)
+				if (steppers & (CL_STEPPER_C | CL_STEPPER_D))
 				{
 					height -= 2;
 				}
