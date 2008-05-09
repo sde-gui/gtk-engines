@@ -1951,7 +1951,6 @@ clearlooks_draw_handle (cairo_t *cr,
 {
 	const CairoColor *fill  = &colors->bg[params->state_type];
 	int num_bars = 6; /* shut up gcc warnings */
-	int bar_spacing;
 
 	cairo_save (cr);
 
@@ -1959,11 +1958,9 @@ clearlooks_draw_handle (cairo_t *cr,
 	{
 		case CL_HANDLE_TOOLBAR:
 			num_bars    = 6;
-			bar_spacing = 3;
 		break;
 		case CL_HANDLE_SPLITTER:
 			num_bars    = 16;
-			bar_spacing = 3;
 		break;
 	}
 

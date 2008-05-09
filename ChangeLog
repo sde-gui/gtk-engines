@@ -1,6 +1,12 @@
 2008-05-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_handle):
+	Remove unused variable.
+
+2008-05-09  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_gripdots):
 	Fix gripdot placement.
 
