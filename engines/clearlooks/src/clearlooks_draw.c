@@ -240,20 +240,25 @@ clearlooks_draw_gripdots (cairo_t *cr, const ClearlooksColors *colors, int x, in
 	CairoColor hilight;
 	int i, j;
 	int xoff, yoff;
+	int x_start, y_start;
 
 	ge_shade_color (dark, 1.5, &hilight);
-
+	
+	/* The "- 1" is because there is no space in front of the first dot. */
+	x_start = x + width / 2 - ((xr * 3 - 1) / 2);
+	y_start = y + height / 2 - ((yr * 3 - 1) / 2);
+	
 	for ( i = 0; i < xr; i++ )
 	{
 		for ( j = 0; j < yr; j++ )
 		{
-			xoff = x -(xr * 3 / 2) + 3 * i;
-			yoff = y -(yr * 3 / 2) + 3 * j;
+			xoff = 3 * i;
+			yoff = 3 * j;
 
-			cairo_rectangle (cr, width/2+xoff, height/2+yoff, 2, 2);
+			cairo_rectangle (cr, x_start + xoff, y_start + yoff, 2, 2);
 			cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.8+contrast);
 			cairo_fill (cr);
-			cairo_rectangle (cr, width/2+xoff, height/2+yoff, 1, 1);
+			cairo_rectangle (cr, x_start + xoff, y_start + yoff, 1, 1);
 			cairo_set_source_rgba (cr, dark->r, dark->g, dark->b, 0.8+contrast);
 			cairo_fill (cr);
 		}
