@@ -1783,13 +1783,13 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 
 	clearlooks_style_class->style_functions[CL_STYLE_INVERTED] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
 	clearlooks_style_class->style_constants[CL_STYLE_INVERTED] = clearlooks_style_class->style_constants[CL_STYLE_CLASSIC];
-	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_INVERTED],
-	                                  &clearlooks_style_class->style_constants[CL_STYLE_INVERTED]);
+	clearlooks_register_style_inverted (&clearlooks_style_class->style_functions[CL_STYLE_INVERTED],
+	                                    &clearlooks_style_class->style_constants[CL_STYLE_INVERTED]);
 
 	clearlooks_style_class->style_functions[CL_STYLE_GUMMY] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
 	clearlooks_style_class->style_constants[CL_STYLE_GUMMY] = clearlooks_style_class->style_constants[CL_STYLE_CLASSIC];
-	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_GUMMY],
-	                                  &clearlooks_style_class->style_constants[CL_STYLE_GUMMY]);
+	clearlooks_register_style_gummy (&clearlooks_style_class->style_functions[CL_STYLE_GUMMY],
+	                                 &clearlooks_style_class->style_constants[CL_STYLE_GUMMY]);
 }
 
 GType clearlooks_type_style = 0;

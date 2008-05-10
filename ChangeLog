@@ -1,5 +1,11 @@
 2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_class_init):
+	Fix the style initilization.
+
+2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/*:
 	Add "style_constants" in addition to the "style_functions". And
 	removed the duplication of the top_left_highlight function.
