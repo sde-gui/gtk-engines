@@ -1,5 +1,14 @@
 2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw_inverted.c:
+	(clearlooks_inverted_draw_button),
+	(clearlooks_inverted_draw_slider),
+	(clearlooks_inverted_draw_scrollbar_stepper),
+	(clearlooks_register_style_inverted):
+	Code cleanups, and fixes (and 0.5 translation stuff)
+
+2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_style.c:
 	(clearlooks_style_class_init):
 	Fix the style initilization.

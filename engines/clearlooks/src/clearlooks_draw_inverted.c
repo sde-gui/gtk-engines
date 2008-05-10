@@ -78,9 +78,7 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
-		cairo_translate (cr, 0.5, 0.5);
 		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
-		cairo_translate (cr, -0.5, -0.5);
 	}		
 	
 	ge_cairo_rounded_rectangle (cr, xoffset+1, yoffset+1,
@@ -162,7 +160,6 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 	/* Draw the "shadow" */
 	if (!params->active)
 	{
-		cairo_translate (cr, 0.5, 0.5);
 		/* Draw right shadow */
 		cairo_move_to (cr, width-params->xthickness, params->ythickness - 1);
 		cairo_line_to (cr, width-params->xthickness, height - params->ythickness - 1);
@@ -603,7 +600,7 @@ clearlooks_inverted_draw_slider (cairo_t *cr,
 		border = &colors->shade[6];
 
 	/* fill the widget */
-	cairo_rectangle (cr, 0.5, 0.5, width-2, height-2);
+	cairo_rectangle (cr, 1.0, 1.0, width-2, height-2);
 
 	/* Fake light */
 	if (!params->disabled)
@@ -621,20 +618,20 @@ clearlooks_inverted_draw_slider (cairo_t *cr,
 	else
 	{
 		ge_cairo_set_color (cr, fill);
-		cairo_rectangle    (cr, 0.5, 0.5, width-2, height-2);
+		cairo_rectangle    (cr, 1.0, 1.0, width-2, height-2);
 		cairo_fill         (cr);
 	}
 
 	/* Set the clip */
 	cairo_save (cr);
-	cairo_rectangle (cr, 0.5, 0.5, 6, height-2);
-	cairo_rectangle (cr, width-7.5, 0.5, 6 , height-2);
+	cairo_rectangle (cr, 1.0, 1.0, 6, height-2);
+	cairo_rectangle (cr, width-7.0, 1.0, 6, height-2);
 	cairo_clip_preserve (cr);
 
 	cairo_new_path (cr);
 
 	/* Draw the handles */
-	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, params->corners);
+	ge_cairo_rounded_rectangle (cr, 1.0, 1.0, width-1, height-1, radius, params->corners);
 	pattern = cairo_pattern_create_linear (0.5, 0.5, 0.5, 0.5+height);
 
 	if (params->prelight)
@@ -657,7 +654,7 @@ clearlooks_inverted_draw_slider (cairo_t *cr,
 	cairo_restore (cr);
 
 	/* Draw the border */
-	ge_cairo_rounded_rectangle (cr, 0, 0, width-1, height-1, radius, params->corners);
+	ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, params->corners);
 	if (params->prelight || params->disabled)
 		ge_cairo_set_color (cr, border);
 	else
@@ -667,11 +664,11 @@ clearlooks_inverted_draw_slider (cairo_t *cr,
 	/* Draw handle lines */
 	if (width > 14)
 	{
-		cairo_move_to (cr, 6, 0.5);
-		cairo_line_to (cr, 6, height-1);
+		cairo_move_to (cr, 6.5, 1.0);
+		cairo_line_to (cr, 6.5, height-1);
 	
-		cairo_move_to (cr, width-7, 0.5);
-		cairo_line_to (cr, width-7, height-1);
+		cairo_move_to (cr, width-6.5, 1.0);
+		cairo_line_to (cr, width-6.5, height-1);
 	
 		cairo_set_line_width (cr, 1.0);
 		cairo_set_source_rgba (cr, border->r,
@@ -680,27 +677,6 @@ clearlooks_inverted_draw_slider (cairo_t *cr,
 	                                   0.3);
 		cairo_stroke (cr);
 	}
-}
-
-static void
-clearlooks_inverted_draw_slider_button (cairo_t *cr,
-                               const ClearlooksColors *colors,
-                               const WidgetParameters *params,
-                               const SliderParameters *slider,
-                               int x, int y, int width, int height)
-{
-	double radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
-	cairo_set_line_width (cr, 1.0);
-	
-	if (!slider->horizontal)
-		ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
-	cairo_translate (cr, x+0.5, y+0.5);
-
-	params->style_functions->draw_shadow (cr, colors, radius, width-1, height-1);
-	params->style_functions->draw_slider (cr, colors, params, 1, 1, width-2, height-2);
-
-	if (width > 24)
-		params->style_functions->draw_gripdots (cr, colors, 0, 0, width-2, height-2, 3, 3, 0);
 }
 
 static void
@@ -783,7 +759,6 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 	CairoColor border;
 	CairoColor s1, s2, s3;
 	cairo_pattern_t *pattern;
-	ShadowParameters shadow;
 	double radius = MIN (widget->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 	
 	ge_shade_color(&colors->shade[6], 1.05, &border);
@@ -828,14 +803,6 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, corners);	
 	clearlooks_set_border_gradient (cr, &border, 1.2, (scrollbar->horizontal ? 0 : width), (scrollbar->horizontal ? height: 0)); 
 	cairo_stroke (cr);
-	
-	cairo_translate (cr, 0.5, 0.5);
-	shadow.shadow  = CL_SHADOW_OUT;
-	shadow.corners = corners;
-	/*
-	clearlooks_draw_highlight_and_shade (cr, &shadow,
-	                                     width,
-	                                     height, params->radius);*/
 }
 
 static void
@@ -1011,7 +978,6 @@ clearlooks_register_style_inverted (ClearlooksStyleFunctions *functions, Clearlo
 {
 	functions->draw_button            = clearlooks_inverted_draw_button;
 	functions->draw_slider            = clearlooks_inverted_draw_slider;
-	functions->draw_slider_button     = clearlooks_inverted_draw_slider_button;
 	functions->draw_progressbar_fill  = clearlooks_inverted_draw_progressbar_fill;
 	functions->draw_menuitem          = clearlooks_inverted_draw_menuitem;
 	functions->draw_menubaritem       = clearlooks_inverted_draw_menubaritem;
