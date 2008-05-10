@@ -118,6 +118,8 @@ clearlooks_draw_shadow (cairo_t *cr, const ClearlooksColors *colors, gfloat radi
 	cairo_restore (cr);
 }
 
+/* This is copied at least in clearlooks_draw_gummy.c.
+ * KEEP IN SYNC IF POSSIBLE! */
 static void
 clearlooks_draw_top_left_highlight (cairo_t *cr, const CairoColor *color,
                                     const WidgetParameters *params,

@@ -1,5 +1,15 @@
 2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_top_left_highlight),
+	(clearlooks_gummy_draw_button), (clearlooks_gummy_draw_slider),
+	(clearlooks_gummy_draw_slider_button),
+	(clearlooks_gummy_draw_scrollbar_stepper):
+	More 0.5 translation stuff.
+
+2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_tab), (clearlooks_glossy_draw_slider),
 	(clearlooks_glossy_draw_slider_button),
