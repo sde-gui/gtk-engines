@@ -30,29 +30,6 @@
 
 
 static void
-clearlooks_draw_top_left_highlight (cairo_t *cr,
-                                    const CairoColor *color,
-                                    const WidgetParameters *params,
-                                    int width, int height, gdouble radius)
-{
-	CairoColor hilight; 
-
-	double light_top = params->ythickness-1,
-	       light_bottom = height - params->ythickness - 1,
-	       light_left = params->xthickness-1,
-	       light_right = width - params->xthickness - 1;
-
-	ge_shade_color (color, 1.3, &hilight);
-	cairo_move_to         (cr, light_left, light_bottom - (int)radius/2);
-
-	ge_cairo_rounded_corner (cr, light_left, light_top, radius, params->corners & CR_CORNER_TOPLEFT);
-
-	cairo_line_to         (cr, light_right - (int)radius/2, light_top);
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.7);
-	cairo_stroke          (cr);
-}
-
-static void
 clearlooks_set_border_gradient (cairo_t *cr, const CairoColor *color, double hilight, int width, int height)
 {
 	cairo_pattern_t *pattern;
@@ -193,7 +170,10 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 		cairo_stroke (cr);
 		
 		/* Draw topleft shadow */
-		clearlooks_draw_top_left_highlight (cr, fill, params, width, height, radius);
+		params->style_functions->draw_top_left_highlight (cr, fill, params,
+		                                                  xoffset+1, yoffset+1,
+		                                                  width-2*(xoffset+1), height-2*(yoffset+1),
+		                                                  radius, params->corners);
 	}
 	cairo_restore (cr);
 }
@@ -843,7 +823,7 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 
-	clearlooks_draw_top_left_highlight (cr, &s1, widget, width, height, radius);
+	widget->style_functions->draw_top_left_highlight (cr, &s1, widget, 1, 1, width-2, height-2, radius, corners);
 
 	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, corners);	
 	clearlooks_set_border_gradient (cr, &border, 1.2, (scrollbar->horizontal ? 0 : width), (scrollbar->horizontal ? height: 0)); 
@@ -951,7 +931,7 @@ clearlooks_inverted_draw_scrollbar_slider (cairo_t *cr,
 		cairo_fill(cr);
 		cairo_pattern_destroy(pattern);
 		
-		clearlooks_draw_top_left_highlight (cr, &s2, widget, width, height, 0);
+		widget->style_functions->draw_top_left_highlight (cr, &s2, widget, 1, 1, width-2, height-2, 0, widget->corners);
 
 		clearlooks_set_border_gradient (cr, &border, 1.2, 0, height);
 		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
@@ -1027,7 +1007,7 @@ clearlooks_inverted_draw_selected_cell (cairo_t                  *cr,
 }
 
 void
-clearlooks_register_style_inverted (ClearlooksStyleFunctions *functions)
+clearlooks_register_style_inverted (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
 	functions->draw_button            = clearlooks_inverted_draw_button;
 	functions->draw_slider            = clearlooks_inverted_draw_slider;
@@ -1040,5 +1020,8 @@ clearlooks_register_style_inverted (ClearlooksStyleFunctions *functions)
 	functions->draw_scrollbar_stepper = clearlooks_inverted_draw_scrollbar_stepper;	
 	functions->draw_scrollbar_slider  = clearlooks_inverted_draw_scrollbar_slider;
 	functions->draw_selected_cell     = clearlooks_inverted_draw_selected_cell;
+
+	constants->topleft_highlight_shade = 1.3;
+	constants->topleft_highlight_alpha = 0.7;
 }
 

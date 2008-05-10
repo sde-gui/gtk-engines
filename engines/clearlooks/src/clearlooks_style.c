@@ -64,6 +64,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
                                   WidgetParameters     *params)
 {
 	params->style_functions = &(clearlooks_style_class->style_functions[CLEARLOOKS_STYLE (style)->style]);
+	params->style_constants = &(clearlooks_style_class->style_constants[CLEARLOOKS_STYLE (style)->style]);
 
 	params->active        = (state_type == GTK_STATE_ACTIVE);
 	params->prelight      = (state_type == GTK_STATE_PRELIGHT);
@@ -1772,13 +1773,23 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_layout      = clearlooks_style_draw_layout;
 	style_class->render_icon      = clearlooks_style_draw_render_icon;
 
-	clearlooks_register_style_classic (&clearlooks_style_class->style_functions[CL_STYLE_CLASSIC]);
+	clearlooks_register_style_classic (&clearlooks_style_class->style_functions[CL_STYLE_CLASSIC],
+	                                   &clearlooks_style_class->style_constants[CL_STYLE_CLASSIC]);
+
 	clearlooks_style_class->style_functions[CL_STYLE_GLOSSY] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
-	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_GLOSSY]);
+	clearlooks_style_class->style_constants[CL_STYLE_GLOSSY] = clearlooks_style_class->style_constants[CL_STYLE_CLASSIC];
+	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_GLOSSY],
+	                                  &clearlooks_style_class->style_constants[CL_STYLE_GLOSSY]);
+
 	clearlooks_style_class->style_functions[CL_STYLE_INVERTED] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
-	clearlooks_register_style_inverted (&clearlooks_style_class->style_functions[CL_STYLE_INVERTED]);
+	clearlooks_style_class->style_constants[CL_STYLE_INVERTED] = clearlooks_style_class->style_constants[CL_STYLE_CLASSIC];
+	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_INVERTED],
+	                                  &clearlooks_style_class->style_constants[CL_STYLE_INVERTED]);
+
 	clearlooks_style_class->style_functions[CL_STYLE_GUMMY] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
-	clearlooks_register_style_gummy (&clearlooks_style_class->style_functions[CL_STYLE_GUMMY]);
+	clearlooks_style_class->style_constants[CL_STYLE_GUMMY] = clearlooks_style_class->style_constants[CL_STYLE_CLASSIC];
+	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_GUMMY],
+	                                  &clearlooks_style_class->style_constants[CL_STYLE_GUMMY]);
 }
 
 GType clearlooks_type_style = 0;

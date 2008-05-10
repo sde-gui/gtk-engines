@@ -1443,7 +1443,7 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 }
 
 void
-clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions)
+clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
 	functions->draw_inset              = clearlooks_glossy_draw_inset;
 	functions->draw_button             = clearlooks_glossy_draw_button;

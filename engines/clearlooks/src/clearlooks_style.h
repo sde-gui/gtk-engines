@@ -68,6 +68,7 @@ struct _ClearlooksStyleClass
 	GtkStyleClass parent_class;
 
 	ClearlooksStyleFunctions style_functions[CL_NUM_STYLES];
+	ClearlooksStyleConstants style_constants[CL_NUM_STYLES];
 };
 
 GE_INTERNAL void clearlooks_style_register_type (GTypeModule *module);

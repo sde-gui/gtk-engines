@@ -1,5 +1,11 @@
 2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/*:
+	Add "style_constants" in addition to the "style_functions". And
+	removed the duplication of the top_left_highlight function.
+
+2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	(clearlooks_gummy_draw_top_left_highlight),

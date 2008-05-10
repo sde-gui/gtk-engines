@@ -6,6 +6,7 @@
 typedef unsigned char boolean;
 typedef unsigned char uint8;
 typedef struct _ClearlooksStyleFunctions ClearlooksStyleFunctions;
+typedef struct _ClearlooksStyleConstants ClearlooksStyleConstants;
 
 typedef enum
 {
@@ -174,6 +175,7 @@ typedef struct
 	CairoColor parentbg;
 
 	ClearlooksStyleFunctions *style_functions;
+	ClearlooksStyleConstants *style_constants;
 } WidgetParameters;
 
 typedef struct
@@ -287,8 +289,21 @@ typedef struct
 	boolean  topmost;
 } ToolbarParameters;
 
+struct _ClearlooksStyleConstants
+{
+	gdouble topleft_highlight_shade;
+	gdouble topleft_highlight_alpha;
+};
+
 struct _ClearlooksStyleFunctions
 {
+	void (*draw_top_left_highlight) (cairo_t *cr,
+	                               const CairoColor *color,
+	                               const WidgetParameters *params,
+                                       int x, int y, int width, int height,
+                                       gdouble radius,
+                                       CairoCorners corners);
+
 	void (*draw_button)           (cairo_t *cr,
 	                               const ClearlooksColors *colors,
 	                               const WidgetParameters *widget,

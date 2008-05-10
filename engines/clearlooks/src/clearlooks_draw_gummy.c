@@ -33,10 +33,6 @@
 #define SHADE_CENTER_TOP 1.02
 #define SHADE_BOTTOM 0.94
 
-/* Topleft highlight */
-#define TOPLEFT_HIGHLIGHT_SHADE 1.3
-#define TOPLEFT_HIGHLIGHT_ALPHA 0.4
-
 /* Listview */
 #define LISTVIEW_SHADE_TOP 1.06
 #define LISTVIEW_SHADE_CENTER_TOP 1.02
@@ -140,47 +136,6 @@ clearlooks_gummy_draw_highlight_and_shade (cairo_t                *cr,
 
 	cairo_restore (cr);
 }
-
-/* This is basically just a copy of the code from clearlooks_draw.c.
- * KEEP IN SYNC IF POSSIBLE! */
-static void
-clearlooks_gummy_draw_top_left_highlight (cairo_t *cr, const CairoColor *color,
-                                    const WidgetParameters *params,
-                                    int x, int y, int width, int height,
-                                    gdouble radius, CairoCorners corners)
-{
-	CairoColor hilight;
-
-	double line_width = cairo_get_line_width (cr);
-	double offset = line_width / 2.0;
-	double light_top, light_bottom, light_left, light_right;
-
-	cairo_save (cr);
-
-	cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
-
-	light_top = y + offset;
-	light_bottom = y + height;
-	light_left = x + offset;
-	light_right = x + width;
-	
-	if (corners & CR_CORNER_BOTTOMLEFT)
-		light_bottom -= radius;
-	if (corners & CR_CORNER_TOPRIGHT)
-		light_right -= radius;
-
-	ge_shade_color (color, TOPLEFT_HIGHLIGHT_SHADE, &hilight);
-	cairo_move_to         (cr, light_left, light_bottom);
-
-	ge_cairo_rounded_corner (cr, light_left, light_top, radius, corners & CR_CORNER_TOPLEFT);
-
-	cairo_line_to         (cr, light_right, light_top);
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, TOPLEFT_HIGHLIGHT_ALPHA);
-	cairo_stroke          (cr);
-
-	cairo_restore (cr);
-}
-
 
 static void
 clearlooks_gummy_draw_button (cairo_t                *cr,
@@ -291,9 +246,9 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 
 	if (!params->active)
 	{
-		clearlooks_gummy_draw_top_left_highlight (cr, &fill, params, 1+xoffset, 1+xoffset,
-		                                          width-(1+xoffset)*2, height-(1+xoffset)*2,
-		                                          radius, params->corners);
+		params->style_functions->draw_top_left_highlight (cr, &fill, params, 1+xoffset, 1+xoffset,
+		                                                  width-(1+xoffset)*2, height-(1+xoffset)*2,
+		                                                  radius, params->corners);
 	}
 	cairo_restore (cr);
 }
@@ -995,7 +950,7 @@ clearlooks_gummy_draw_slider (cairo_t                *cr,
 	}
 	cairo_stroke (cr);
 
-	clearlooks_gummy_draw_top_left_highlight (cr, &fill, params, 1, 1, width-2, height-2, 2.0, params->corners);
+	params->style_functions->draw_top_left_highlight (cr, &fill, params, 1, 1, width-2, height-2, 2.0, params->corners);
 }
 
 static void
@@ -1071,8 +1026,8 @@ clearlooks_gummy_draw_scrollbar_stepper (cairo_t                          *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 
-	clearlooks_gummy_draw_top_left_highlight (cr, &fill, widget, 1, 1, width - 2, height - 2,
-	                                          radius, corners);
+	widget->style_functions->draw_top_left_highlight (cr, &fill, widget, 1, 1, width - 2, height - 2,
+	                                                  radius, corners);
 
 	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, corners);
 	clearlooks_set_mixed_color (cr, border, &fill, 0.2);
@@ -1144,7 +1099,7 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
 
 	cairo_set_line_width (cr, 1);
 
-	ge_shade_color (&fill, TOPLEFT_HIGHLIGHT_SHADE, &hilight);
+	ge_shade_color (&fill, widget->style_constants->topleft_highlight_shade, &hilight);
 	ge_shade_color (&fill, SHADE_TOP, &shade1);
 	ge_shade_color (&fill, SHADE_CENTER_TOP, &shade2);
 	ge_shade_color (&fill, SHADE_BOTTOM, &shade3);
@@ -1169,7 +1124,7 @@ clearlooks_gummy_draw_scrollbar_slider (cairo_t                   *cr,
 		cairo_move_to (cr, 1.5, height-1.5);
 		cairo_line_to (cr, 1.5, 1.5);
 		cairo_line_to (cr, width-1.5, 1.5);
-		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, TOPLEFT_HIGHLIGHT_ALPHA);
+		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, widget->style_constants->topleft_highlight_alpha);
 		cairo_stroke (cr);
 	}
 
@@ -1729,7 +1684,7 @@ clearlooks_gummy_draw_focus (cairo_t                *cr,
 }
 
 void
-clearlooks_register_style_gummy (ClearlooksStyleFunctions *functions)
+clearlooks_register_style_gummy (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
 	functions->draw_button             = clearlooks_gummy_draw_button;
 	functions->draw_entry              = clearlooks_gummy_draw_entry;
@@ -1751,4 +1706,7 @@ clearlooks_register_style_gummy (ClearlooksStyleFunctions *functions)
 	functions->draw_checkbox           = clearlooks_gummy_draw_checkbox;
 	functions->draw_radiobutton        = clearlooks_gummy_draw_radiobutton;
 	functions->draw_focus              = clearlooks_gummy_draw_focus;
+
+	constants->topleft_highlight_shade = 1.3;
+	constants->topleft_highlight_alpha = 0.4;
 }

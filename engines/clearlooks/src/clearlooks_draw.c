@@ -146,13 +146,13 @@ clearlooks_draw_top_left_highlight (cairo_t *cr, const CairoColor *color,
 	if (corners & CR_CORNER_TOPRIGHT)
 		light_right -= radius;
 
-	ge_shade_color (color, 1.3, &hilight);
+	ge_shade_color (color, params->style_constants->topleft_highlight_shade, &hilight);
 	cairo_move_to         (cr, light_left, light_bottom);
 
 	ge_cairo_rounded_corner (cr, light_left, light_top, radius, corners & CR_CORNER_TOPLEFT);
 
 	cairo_line_to         (cr, light_right, light_top);
-	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
+	cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, params->style_constants->topleft_highlight_alpha);
 	cairo_stroke          (cr);
 
 	cairo_restore (cr);
@@ -398,9 +398,9 @@ clearlooks_draw_button (cairo_t *cr,
 		cairo_stroke (cr);
 
 		/* Draw topleft shadow */
-		clearlooks_draw_top_left_highlight (cr, fill, params, xoffset + 1, yoffset + 1,
-		                                    width - 2*(xoffset + 1), height - 2*(yoffset + 1),
-		                                    MAX(radius-1, 0), params->corners);
+		params->style_functions->draw_top_left_highlight (cr, fill, params, xoffset + 1, yoffset + 1,
+		                                                  width - 2*(xoffset + 1), height - 2*(yoffset + 1),
+		                                                  MAX(radius-1, 0), params->corners);
 	}
 	cairo_restore (cr);
 }
@@ -1742,7 +1742,7 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 
-	clearlooks_draw_top_left_highlight (cr, &s2, widget, 1, 1, width - 2, height - 2, MAX(radius - 1, 0), corners);
+	widget->style_functions->draw_top_left_highlight (cr, &s2, widget, 1, 1, width - 2, height - 2, MAX(radius - 1, 0), corners);
 
 	ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, corners);
 	clearlooks_set_border_gradient (cr, &border, 1.2, (scrollbar->horizontal ? 0 : width), (scrollbar->horizontal ? height: 0));
@@ -2377,10 +2377,11 @@ clearlooks_draw_focus (cairo_t *cr,
 }
 
 void
-clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
+clearlooks_register_style_classic (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
 	g_assert (functions);
 
+	functions->draw_top_left_highlight = clearlooks_draw_top_left_highlight;
 	functions->draw_button             = clearlooks_draw_button;
 	functions->draw_scale_trough       = clearlooks_draw_scale_trough;
 	functions->draw_progressbar_trough = clearlooks_draw_progressbar_trough;
@@ -2416,4 +2417,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions)
 	functions->draw_shadow             = clearlooks_draw_shadow;
 	functions->draw_slider             = clearlooks_draw_slider;
 	functions->draw_gripdots           = clearlooks_draw_gripdots;
+
+	constants->topleft_highlight_shade = 1.3;
+	constants->topleft_highlight_alpha = 0.5;
 }
