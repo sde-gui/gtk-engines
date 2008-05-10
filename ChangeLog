@@ -1,3 +1,9 @@
+2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_shadow):
+	Place the corner correctly.
+
 2008-05-09  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

@@ -111,7 +111,7 @@ clearlooks_draw_shadow (cairo_t *cr, const ClearlooksColors *colors, gfloat radi
 	cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.1);
 
 	cairo_move_to (cr, width - 0.5, radius);
-	ge_cairo_rounded_corner (cr, width, height, radius, CR_CORNER_BOTTOMRIGHT);
+	ge_cairo_rounded_corner (cr, width - 0.5, height - 0.5, radius, CR_CORNER_BOTTOMRIGHT);
 	cairo_line_to (cr, radius, height - 0.5);
 
 	cairo_stroke (cr);
