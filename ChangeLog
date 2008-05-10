@@ -1,5 +1,13 @@
 2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_tab), (clearlooks_glossy_draw_slider),
+	(clearlooks_glossy_draw_slider_button),
+	(clearlooks_glossy_draw_scrollbar_stepper):
+	Remove some 0.5 translations. The one in draw_tab is still there.
+
+2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_shadow):
 	Place the corner correctly.

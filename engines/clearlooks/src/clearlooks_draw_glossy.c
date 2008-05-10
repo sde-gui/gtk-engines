@@ -191,6 +191,7 @@ clearlooks_glossy_draw_light_inset (cairo_t          *cr,
 	cairo_stroke (cr);
 }
 
+/* This function currently assumes that the input is translated by 0.5px! */
 static void
 clearlooks_glossy_draw_highlight_and_shade (cairo_t          *cr, 
                                             const CairoColor *bg_color,
@@ -746,6 +747,8 @@ clearlooks_glossy_draw_tab (cairo_t *cr,
 		shadow.shadow  = CL_SHADOW_OUT;
 		shadow.corners = params->corners;
 		
+		/* This is the only usage of clearlooks_glossy_draw_highlight_and_shade,
+		 * the function assumes currently that the input is translated by 0.5 px. */
 		clearlooks_glossy_draw_highlight_and_shade (cr, &colors->bg[0], &shadow,
 		                                     width,
 		                                     height, radius);
@@ -871,8 +874,6 @@ clearlooks_glossy_draw_slider (cairo_t *cr,
 	cairo_set_line_width (cr, 1.0);	
 	cairo_translate      (cr, x, y);
 
-	cairo_translate (cr, -0.5, -0.5);
-
 	ge_shade_color (&colors->bg[params->state_type], 1.0, &fill);
 	if (params->prelight)
 		ge_shade_color (&fill, 1.1, &fill);
@@ -918,9 +919,8 @@ clearlooks_glossy_draw_slider_button (cairo_t *cr,
 	if (!slider->horizontal)
 		ge_cairo_exchange_axis (cr, &x, &y, &width, &height);
 
-	cairo_translate (cr, x+0.5, y+0.5);
-	
-	params->style_functions->draw_shadow (cr, colors, radius, width-1, height-1);
+	cairo_translate (cr, x, y);
+	params->style_functions->draw_shadow (cr, colors, radius, width, height);
 	params->style_functions->draw_slider (cr, colors, params, 1, 1, width-2, height-2);
 }
 
@@ -977,16 +977,12 @@ clearlooks_glossy_draw_scrollbar_stepper (cairo_t *cr,
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
 	
-	cairo_translate (cr, 0.5, 0.5);
-	cairo_translate (cr, -0.5, -0.5);
-	
-	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, corners);
+	ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, corners);
 	clearlooks_set_mixed_color (cr, border, &fill, 0.2);
 	if (widget->prelight)
 		ge_cairo_set_color (cr, &colors->spot[2]);
 	cairo_stroke (cr);
 	
-	cairo_translate (cr, 0.5, 0.5);
 	shadow.shadow  = CL_SHADOW_OUT;
 	shadow.corners = corners;
 }
