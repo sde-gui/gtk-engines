@@ -1,3 +1,9 @@
+2008-05-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_checkbox):
+	The inset was broken (ie. invisible).
+
 2008-05-11  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c

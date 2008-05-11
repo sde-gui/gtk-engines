@@ -1391,8 +1391,8 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 	
 	if (widget->xthickness > 2 && widget->ythickness > 2)
 	{
-		widget->style_functions->draw_inset (cr, &widget->parentbg, 0.5, 0.5, 
-                                           width-1, height-1, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
+		widget->style_functions->draw_inset (cr, &widget->parentbg, 0, 0, 
+                                           width, height, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
 		
 		/* Draw the rectangle for the checkbox itself */
 		ge_cairo_rounded_rectangle (cr, 1.5, 1.5, 
