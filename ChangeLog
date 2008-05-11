@@ -1,6 +1,12 @@
 2008-05-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button):
+	Remove bogus debug code.
+
+2008-05-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:
 	* engines/clearlooks/src/clearlooks_draw_inverted.c:
