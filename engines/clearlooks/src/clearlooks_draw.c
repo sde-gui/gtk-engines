@@ -335,6 +335,11 @@ clearlooks_draw_button (cairo_t *cr,
 		ge_cairo_set_color (cr, &bottom_shade);
 		cairo_stroke (cr);
 
+		/* Draw topleft shadow */
+		params->style_functions->draw_top_left_highlight (cr, fill, params, xoffset + 1, yoffset + 1,
+		                                                  width - 2*(xoffset + 1), height - 2*(yoffset + 1),
+		                                                  MAX(radius-1, 0), params->corners);
+
 		cairo_restore (cr);
 	}
 	else
@@ -398,20 +403,6 @@ clearlooks_draw_button (cairo_t *cr,
 
 	cairo_stroke (cr);
 
-	/* Draw the "shadow" */
-	if (!params->active)
-	{
-		/* Draw right shadow */
-		cairo_move_to (cr, width - xoffset - 1.5, MAX(radius, 1));
-		cairo_line_to (cr, width - xoffset - 1.5, height - MAX(radius, 1));
-		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.1);
-		cairo_stroke (cr);
-
-		/* Draw topleft shadow */
-		params->style_functions->draw_top_left_highlight (cr, fill, params, xoffset + 1, yoffset + 1,
-		                                                  width - 2*(xoffset + 1), height - 2*(yoffset + 1),
-		                                                  MAX(radius-1, 0), params->corners);
-	}
 	cairo_restore (cr);
 }
 
