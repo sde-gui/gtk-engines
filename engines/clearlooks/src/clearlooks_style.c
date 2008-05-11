@@ -215,7 +215,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 	}
 	else if (DETAIL ("scrolled_window") || DETAIL ("viewport") || detail == NULL)
 	{
-		CairoColor *border = (CairoColor*)&colors->shade[5];
+		CairoColor *border = (CairoColor*)&colors->shade[CLEARLOOKS_STYLE (style)->style == CL_STYLE_CLASSIC ? 3 : 5];
 		cairo_rectangle (cr, x+0.5, y+0.5, width-1, height-1);
 		ge_cairo_set_color (cr, border);
 		cairo_set_line_width (cr, 1);

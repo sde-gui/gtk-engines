@@ -1415,13 +1415,12 @@ clearlooks_draw_list_view_header (cairo_t *cr,
                                   const ListViewHeaderParameters  *header,
                                   int x, int y, int width, int height)
 {
-	const CairoColor *border = &colors->shade[5];
-	cairo_pattern_t *pattern;
+	const CairoColor *border = &colors->shade[4];
 	CairoColor hilight;
-	CairoColor shadow;
 
- 	ge_shade_color (border, 1.5, &hilight);
-	ge_shade_color (border, 0.925, &shadow);
+	ge_shade_color (&colors->bg[params->state_type],
+	                params->style_constants->topleft_highlight_shade, &hilight);
+	hilight.a = params->style_constants->topleft_highlight_alpha;
 
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
@@ -1445,16 +1444,6 @@ clearlooks_draw_list_view_header (cairo_t *cr,
 	cairo_line_to (cr, width, height-0.5);
 	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
-
-	/* Draw bottom shade */
-	pattern = cairo_pattern_create_linear (0.0, height-5.0, 0.0, height-1.0);
-	cairo_pattern_add_color_stop_rgba     (pattern, 0.0, shadow.r, shadow.g, shadow.b, 0.0);
-	cairo_pattern_add_color_stop_rgba     (pattern, 1.0, shadow.r, shadow.g, shadow.b, 0.2);
-
-	cairo_rectangle       (cr, 0.0, height-5.0, width, 4.0);
-	cairo_set_source      (cr, pattern);
-	cairo_fill            (cr);
-	cairo_pattern_destroy (pattern);
 
 	/* Draw resize grip */
 	if ((params->ltr && header->order != CL_ORDER_LAST) ||
