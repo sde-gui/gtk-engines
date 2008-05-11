@@ -608,7 +608,7 @@ clearlooks_glossy_scale_draw_gradient (cairo_t *cr,
 {
 	cairo_pattern_t *pattern;
 
-	pattern = cairo_pattern_create_linear (0, 0, horizontal ? 0 :  width, horizontal ? height : 0);
+	pattern = cairo_pattern_create_linear (0.5, 0.5, horizontal ? 0.5 :  width + 1, horizontal ? height + 1 : 0.5);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.0, c1->r, c1->g, c1->b);
 	cairo_pattern_add_color_stop_rgb (pattern, 1.0, c2->r, c2->g, c2->b);
 

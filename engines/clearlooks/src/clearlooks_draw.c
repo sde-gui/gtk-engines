@@ -405,6 +405,7 @@ clearlooks_draw_button (cairo_t *cr,
 		cairo_move_to (cr, width - xoffset - 1.5, MAX(radius, 1));
 		cairo_line_to (cr, width - xoffset - 1.5, height - MAX(radius, 1));
 		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.1);
+		cairo_set_source_rgb (cr, 1.0, 0, 0);
 		cairo_stroke (cr);
 
 		/* Draw topleft shadow */
@@ -460,9 +461,10 @@ clearlooks_draw_entry (cairo_t *cr,
 
 		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, params->disabled ? 0.05 : 0.1);
 
-		cairo_move_to (cr, 2.5, height-2-radius);
+		cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
+		cairo_move_to (cr, 2.5, height-radius);
 		cairo_arc (cr, 2.5+MAX(0, radius-1), 2.5+MAX(0, radius-1), MAX(0, radius-1), G_PI, 270*(G_PI/180));
-		cairo_line_to (cr, width-2-radius, 2.5);
+		cairo_line_to (cr, width-radius, 2.5);
 		cairo_stroke (cr);
 	}
 

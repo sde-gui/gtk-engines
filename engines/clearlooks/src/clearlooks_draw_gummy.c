@@ -298,9 +298,10 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 
 		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, params->disabled ? 0.09 : 0.18);
 
-		cairo_move_to (cr, 2, height-2-radius);
-		cairo_arc (cr, 2+MAX(0, radius-1), 2+MAX(0, radius-1), MAX(0, radius-1), G_PI, 270*(G_PI/180));
-		cairo_line_to (cr, width-2-radius, 2);
+		cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
+		cairo_move_to (cr, 2.5, height-radius);
+		cairo_arc (cr, 2.5+MAX(0, radius-1), 2.5+MAX(0, radius-1), MAX(0, radius-1), G_PI, 270*(G_PI/180));
+		cairo_line_to (cr, width-radius, 2.5);
 		cairo_stroke (cr);
 	}
 
@@ -540,7 +541,7 @@ clearlooks_gummy_scale_draw_gradient (cairo_t          *cr,
 	ge_shade_color (fill, in? 0.95 : 1.1, &f1);
 	ge_shade_color (fill, in? 1.05 : 0.9, &f2);
 
-	pattern = cairo_pattern_create_linear (0, 0, horizontal ? 0 :  width, horizontal ? height : 0);
+	pattern = cairo_pattern_create_linear (0.5, 0.5, horizontal ? 0.5 :  width + 1.0, horizontal ? height + 1.0 : 0.5);
 	cairo_pattern_add_color_stop_rgba (pattern, 0.0, f1.r, f1.g, f1.b, f1.a);
 	cairo_pattern_add_color_stop_rgba (pattern, 1.0, f2.r, f2.g, f2.b, f2.a);
 

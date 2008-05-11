@@ -78,7 +78,7 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 
 	if (params->xthickness == 3 || params->ythickness == 3)
 	{
-		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, radius+1, params->corners);
+		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width, height, radius+1, params->corners);
 	}		
 	
 	ge_cairo_rounded_rectangle (cr, xoffset+1, yoffset+1,
@@ -161,8 +161,8 @@ clearlooks_inverted_draw_button (cairo_t *cr,
 	if (!params->active)
 	{
 		/* Draw right shadow */
-		cairo_move_to (cr, width-params->xthickness, params->ythickness - 1);
-		cairo_line_to (cr, width-params->xthickness, height - params->ythickness - 1);
+		cairo_move_to (cr, width-xoffset-1.5, yoffset + radius);
+		cairo_line_to (cr, width-xoffset-1.5, height - yoffset - radius);
 		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.1);
 		cairo_stroke (cr);
 		
