@@ -1,3 +1,13 @@
+2008-05-11  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_highlight_and_shade), (clearlooks_draw_button),
+	(clearlooks_draw_entry), (clearlooks_draw_spinbutton_down),
+	(clearlooks_draw_scale_trough), (clearlooks_draw_frame),
+	(clearlooks_draw_separator), (clearlooks_draw_list_view_header),
+	(clearlooks_draw_toolbar):
+	More work to make Classic look as the old non-cairo version.
+
 2008-05-10  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw_inverted.c:
