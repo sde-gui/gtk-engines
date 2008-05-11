@@ -1,6 +1,12 @@
 2008-05-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_button):
+	Fix button inset.
+
+2008-05-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
 	(clearlooks_glossy_draw_checkbox):
 	The inset was broken (ie. invisible).
 

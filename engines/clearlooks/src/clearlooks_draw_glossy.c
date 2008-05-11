@@ -298,10 +298,10 @@ clearlooks_glossy_draw_button (cairo_t *cr,
 		else
 		{
 			if (!(params->disabled))
-				params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
+				params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width, height, params->radius+1, params->corners);
 			else
 				/*Draw a lighter inset */
-				clearlooks_glossy_draw_light_inset (cr, &params->parentbg, 0, 0, width-1, height-1, params->radius+1, params->corners);
+				clearlooks_glossy_draw_light_inset (cr, &params->parentbg, 0, 0, width, height, params->radius+1, params->corners);
 		}
 	}
 
