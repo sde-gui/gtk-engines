@@ -402,8 +402,8 @@ clearlooks_draw_button (cairo_t *cr,
 	if (!params->active)
 	{
 		/* Draw right shadow */
-		cairo_move_to (cr, width - 1.5, MAX(radius, 1));
-		cairo_line_to (cr, width - 1.5, height - MAX(radius, 1));
+		cairo_move_to (cr, width - xoffset - 1.5, MAX(radius, 1));
+		cairo_line_to (cr, width - xoffset - 1.5, height - MAX(radius, 1));
 		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, 0.1);
 		cairo_stroke (cr);
 
@@ -460,9 +460,9 @@ clearlooks_draw_entry (cairo_t *cr,
 
 		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, params->disabled ? 0.05 : 0.1);
 
-		cairo_move_to (cr, 2, height-2-radius);
-		cairo_arc (cr, 2+MAX(0, radius-1), 2+MAX(0, radius-1), MAX(0, radius-1), G_PI, 270*(G_PI/180));
-		cairo_line_to (cr, width-2-radius, 2);
+		cairo_move_to (cr, 2.5, height-2-radius);
+		cairo_arc (cr, 2.5+MAX(0, radius-1), 2.5+MAX(0, radius-1), MAX(0, radius-1), G_PI, 270*(G_PI/180));
+		cairo_line_to (cr, width-2-radius, 2.5);
 		cairo_stroke (cr);
 	}
 
@@ -541,7 +541,7 @@ clearlooks_scale_draw_gradient (cairo_t *cr,
 {
 	cairo_pattern_t *pattern;
 
-	pattern = cairo_pattern_create_linear (0, 0, horizontal ? 0 :  width, horizontal ? height : 0);
+	pattern = cairo_pattern_create_linear (0.5, 0.5, horizontal ? 0.5 :  width + 1, horizontal ? height + 1: 0.5);
 	cairo_pattern_add_color_stop_rgb (pattern, 0.0, c1->r, c1->g, c1->b);
 	cairo_pattern_add_color_stop_rgb (pattern, 1.0, c2->r, c2->g, c2->b);
 
@@ -650,7 +650,7 @@ clearlooks_draw_slider (cairo_t *cr,
 	/* Set the clip */
 	cairo_save (cr);
 	cairo_rectangle (cr, 1.0, 1.0, 6, height-2);
-	cairo_rectangle (cr, width-8.0, 1.0, 6, height-2);
+	cairo_rectangle (cr, width-7.0, 1.0, 6, height-2);
 	cairo_clip_preserve (cr);
 
 	cairo_new_path (cr);
@@ -694,8 +694,8 @@ clearlooks_draw_slider (cairo_t *cr,
 		cairo_move_to (cr, 6.5, 1.0);
 		cairo_line_to (cr, 6.5, height-1);
 
-		cairo_move_to (cr, width-7.5, 1.0);
-		cairo_line_to (cr, width-7.5, height-0.5);
+		cairo_move_to (cr, width-6.5, 1.0);
+		cairo_line_to (cr, width-6.5, height-1);
 
 		cairo_set_line_width (cr, 1.0);
 		cairo_set_source_rgba (cr, border->r,

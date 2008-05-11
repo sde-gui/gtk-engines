@@ -1,3 +1,11 @@
+2008-05-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_button), (clearlooks_draw_entry),
+	(clearlooks_scale_draw_gradient), (clearlooks_draw_slider):
+	Fix some bugs I introduced earlier. (This is not 100% everywhere,
+	but should be close enough.)
+
 2008-05-11  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
