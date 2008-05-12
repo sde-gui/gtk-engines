@@ -1,6 +1,17 @@
 2008-05-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c
+	(clearlooks_draw_button):
+	Changed look of default, get rid of the ugly rectangle.
+	Maybe I should add a little shadow.
+
+	* engines/clearlooks/src/clearlooks_style.c
+	(clearlooks_style_draw_shadow):
+	Changed border for scrolled_window
+
+2008-05-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c
 	(clearlooks_draw_slider):
 	This one compiles :)
 

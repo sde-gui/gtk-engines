@@ -381,13 +381,7 @@ clearlooks_draw_button (cairo_t *cr,
 	/* Drawing the border */
 	if (!params->active && params->is_default)
 	{
-		const CairoColor *l = &colors->shade[4];
-		const CairoColor *d = &colors->shade[4];
-		ge_cairo_set_color (cr, l);
-		ge_cairo_stroke_rectangle (cr, 2.5, 2.5, width-5, height-5);
-
-		ge_cairo_set_color (cr, d);
-		ge_cairo_stroke_rectangle (cr, 3.5, 3.5, width-7, height-7);
+		ge_shade_color (&border_normal, 0.74, &border_normal);
 	}
 
 	ge_cairo_inner_rounded_rectangle (cr, xoffset, yoffset, width-(xoffset*2), height-(yoffset*2), radius, params->corners);
@@ -399,7 +393,8 @@ clearlooks_draw_button (cairo_t *cr,
 	else
 	{
 		if (!params->active)
-			clearlooks_set_border_gradient (cr, &border_normal, 1.3, 0, height);
+			clearlooks_set_border_gradient (cr, &border_normal,
+			                                params->is_default ? 1.1 : 1.3, 0, height);
 		else
 		{
 			ge_shade_color (&border_normal, 1.08, &border_normal);
