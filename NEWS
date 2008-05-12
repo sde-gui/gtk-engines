@@ -1,3 +1,20 @@
+Overview of Changes in 2.15.1 (since 2.15.0)
+============================================
+
+Changes in this release:
+ - A lot of internal changes in the Clearlooks engine
+ - Modifications to the "classic" style to be more like the pre cairo
+   versions of the engine.
+
+GNOME Bugs fixed in this release:
+ 531633 – Scrollbars trough is drawn smaller even when no stepper is present
+
+New and udpated translations:
+ Yavor Doganov (bg)
+ Massimo Furlani (fur
+ Eskild Hustvedt (nn)
+
+
 Overview of Changes in 2.15.0 (since 2.14.1)
 ============================================
 
