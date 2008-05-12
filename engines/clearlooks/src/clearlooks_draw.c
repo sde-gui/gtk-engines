@@ -479,17 +479,18 @@ clearlooks_draw_spinbutton (cairo_t *cr,
 
 	params->style_functions->draw_button (cr, colors, params, x, y, width, height);
 
-	ge_shade_color (border, 1.5, &hilight);
+	ge_shade_color (&colors->bg[0], params->style_constants->topleft_highlight_shade, &hilight);
+	hilight.a = params->style_constants->topleft_highlight_alpha;
 
 	cairo_translate (cr, x, y);
 
-	cairo_move_to (cr, params->xthickness + 0.5,       (height/2) + 0.5);
-	cairo_line_to (cr, width-params->xthickness - 0.5, (height/2) + 0.5);
+	cairo_move_to (cr, params->xthickness - 0.5,       (height/2) + 0.5);
+	cairo_line_to (cr, width-params->xthickness + 0.5, (height/2) + 0.5);
 	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 
-	cairo_move_to (cr, params->xthickness + 0.5,       (height/2)+1.5);
-	cairo_line_to (cr, width-params->xthickness - 0.5, (height/2)+1.5);
+	cairo_move_to (cr, params->xthickness - 0.5,       (height/2)+1.5);
+	cairo_line_to (cr, width-params->xthickness + 0.5, (height/2)+1.5);
 	ge_cairo_set_color (cr, &hilight);
 	cairo_stroke (cr);
 }
@@ -1696,15 +1697,15 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 	else
 		pattern = cairo_pattern_create_linear (0, 0, width, 0);
 
-	s2 = colors->bg[widget->state_type];
-	ge_shade_color(&s2, 1.06, &s1);
-	ge_shade_color(&s2, 0.98, &s3);
-	ge_shade_color(&s2, 0.94, &s4);
+	ge_shade_color (&colors->bg[widget->state_type], 1.055, &s1);
+	ge_shade_color (&colors->bg[widget->state_type], 1.01, &s2);
+	ge_shade_color (&colors->bg[widget->state_type], 0.98, &s3);
+	ge_shade_color (&colors->bg[widget->state_type], 0.91, &s4);
 
-	cairo_pattern_add_color_stop_rgb(pattern, 0,    s1.r, s1.g, s1.b);
-	cairo_pattern_add_color_stop_rgb(pattern, 0.5,	s2.r, s2.g, s2.b);
-	cairo_pattern_add_color_stop_rgb(pattern, 0.7,	s3.r, s3.g, s3.b);
-	cairo_pattern_add_color_stop_rgb(pattern, 1.0,  s4.r, s4.g, s4.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 0,   s1.r, s1.g, s1.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 0.3, s2.r, s2.g, s2.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 0.7, s3.r, s3.g, s3.b);
+	cairo_pattern_add_color_stop_rgb(pattern, 1.0, s4.r, s4.g, s4.b);
 	cairo_set_source (cr, pattern);
 	cairo_fill (cr);
 	cairo_pattern_destroy (pattern);
@@ -1712,7 +1713,7 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 	widget->style_functions->draw_top_left_highlight (cr, &s2, widget, 1, 1, width - 2, height - 2, MAX(radius - 1, 0), corners);
 
 	ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, corners);
-	clearlooks_set_border_gradient (cr, &border, 1.2, (scrollbar->horizontal ? 0 : width), (scrollbar->horizontal ? height: 0));
+	clearlooks_set_border_gradient (cr, &border, 1.1, (scrollbar->horizontal ? 0 : width), (scrollbar->horizontal ? height: 0));
 	cairo_stroke (cr);
 }
 
@@ -1794,16 +1795,15 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_pattern_t *pattern;
 		int bar_x, i;
 
-		ge_shade_color(&colors->shade[6], 1.05, &border);
-
-		s2 = colors->bg[widget->state_type];
-		ge_shade_color(&s2, 1.06, &s1);
-		ge_shade_color(&s2, 0.98, &s3);
-		ge_shade_color(&s2, 0.94, &s4);
+		ge_shade_color (&colors->shade[6], 1.05, &border);
+		ge_shade_color (&colors->bg[widget->state_type], 1.055, &s1);
+		ge_shade_color (&colors->bg[widget->state_type], 1.01, &s2);
+		ge_shade_color (&colors->bg[widget->state_type], 0.98, &s3);
+		ge_shade_color (&colors->bg[widget->state_type], 0.91, &s4);
 
 		pattern = cairo_pattern_create_linear(1, 1, 1, height-1);
 		cairo_pattern_add_color_stop_rgb(pattern, 0,   s1.r, s1.g, s1.b);
-		cairo_pattern_add_color_stop_rgb(pattern, 0.5, s2.r, s2.g, s2.b);
+		cairo_pattern_add_color_stop_rgb(pattern, 0.3, s2.r, s2.g, s2.b);
 		cairo_pattern_add_color_stop_rgb(pattern, 0.7, s3.r, s3.g, s3.b);
 		cairo_pattern_add_color_stop_rgb(pattern, 1.0, s4.r, s4.g, s4.b);
 
@@ -1812,14 +1812,15 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_fill(cr);
 		cairo_pattern_destroy(pattern);
 
-		clearlooks_set_border_gradient (cr, &border, 1.2, 0, height);
+		clearlooks_set_border_gradient (cr, &border, 1.1, 0, height);
 		ge_cairo_stroke_rectangle (cr, 0.5, 0.5, width-1, height-1);
 
 		cairo_move_to (cr, 1.5, height-1.5);
 		cairo_line_to (cr, 1.5, 1.5);
 		cairo_line_to (cr, width-1.5, 1.5);
-		ge_shade_color (&s2, 1.3, &s5);
-		cairo_set_source_rgba (cr, s5.r, s5.g, s5.b, 0.5);
+		ge_shade_color (&s2, widget->style_constants->topleft_highlight_shade, &s5);
+		s5.a = widget->style_constants->topleft_highlight_alpha;
+		ge_cairo_set_color (cr, &s5);
 		cairo_stroke(cr);
 
 		/* draw handles */
