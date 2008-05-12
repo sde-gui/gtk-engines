@@ -1,15 +1,16 @@
 # Bulgarian translation of gtk-engines po-file.
-# Copyright (C) 2007 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gtk-engines package.
 # Alexander Shopov <ash@contact.bg>, 2007.
+# Yavor Doganov <yavor@gnu.org>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-21 06:49+0200\n"
-"PO-Revision-Date: 2007-03-21 07:30+0200\n"
-"Last-Translator: Alexander Shopov <ash@contact.bg>\n"
+"POT-Creation-Date: 2008-05-12 21:16+0300\n"
+"PO-Revision-Date: 2008-05-09 16:54+0300\n"
+"Last-Translator: Yavor Doganov <yavor@gnu.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,41 +29,91 @@ msgstr "тримерна (преливка)"
 msgid "Animations"
 msgstr "Анимации"
 
-#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Класическа"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Оцветяване на лентите за прелистване"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Контраст"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "Включване на анимациите в лентите за прогреса, радио бутоните и бутоните за отметка"
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Enable Animations on Progressbars"
+msgstr "Включване на анимациите в лентите за прогреса"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "Плосък"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr "Гланц"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr "Смола"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inset"
+msgstr "Добавка"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inverted"
+msgstr "Обърната"
+
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Menubar Style"
 msgstr "Стил на лентите за менюта"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Radius"
+msgstr "Радиус"
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Relief Style"
+msgstr "Стил на релефа"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Requires style Glossy or Gummy"
+msgstr "Изисква стил „Гланц“ или „Смола“"
+
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
 msgstr "Цвят на лентите за прелистване"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Sets the Color of Scrollbars"
 msgstr "Задава цвета на лентите за прелистване"
 
-#: ../schema/hc.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Shadow"
+msgstr "Сянка"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Style"
+msgstr "Стил"
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "Toolbar Style"
+msgstr "Стил на лентите за инструменти"
+
+#: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
 msgstr "Размер на индикатора за клетка"
 
-#: ../schema/hc.xml.in.in.h:2
+#: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
 msgstr "Дебелина на ръба"
 
-#: ../schema/hc.xml.in.in.h:3
+#: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr "Размер на бутоните за отметка и радио бутоните в дървовидните изгледи. (доклад за грешка #351764)"
+msgstr ""
+"Размер на бутоните за отметка и радио бутоните в дървовидните изгледи. "
+"(доклад за грешка #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
@@ -106,7 +157,8 @@ msgstr "Видът на знака за бутоните за прелиства
 
 #: ../schema/thinice.xml.in.in.h:9
 msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
-msgstr "Видът на знака в дръжките на лентите за прелистване, кутиите за работа и т.н."
+msgstr ""
+"Видът на знака в дръжките на лентите за прелистване, кутиите за работа и т.н."
 
 #: ../schema/thinice.xml.in.in.h:10
 msgid "None"
