@@ -1,6 +1,12 @@
 2008-05-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c
+	(clearlooks_draw_selected_cell):
+	Removed top & bottom borders.
+
+2008-05-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c
 	(clearlooks_draw_button):
 	Changed look of default, get rid of the ugly rectangle.
 	Maybe I should add a little shadow.

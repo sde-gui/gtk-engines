@@ -1573,7 +1573,6 @@ clearlooks_draw_selected_cell (cairo_t                  *cr,
 {
 	CairoColor upper_color;
 	CairoColor lower_color;
-	CairoColor border;
 	cairo_pattern_t *pattern;
 	cairo_save (cr);
 
@@ -1599,16 +1598,6 @@ clearlooks_draw_selected_cell (cairo_t                  *cr,
 	cairo_fill       (cr);
 
 	cairo_pattern_destroy (pattern);
-
-	ge_shade_color(&upper_color, 0.8, &border);
-
-	cairo_move_to  (cr, 0, 0.5);
-	cairo_rel_line_to (cr, width, 0);
-	cairo_move_to  (cr, 0, height-0.5);
-	cairo_rel_line_to (cr, width, 0);
-
-	ge_cairo_set_color (cr, &border);
-	cairo_stroke (cr);
 
 	cairo_restore (cr);
 }
