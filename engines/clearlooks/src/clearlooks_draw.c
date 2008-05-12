@@ -31,6 +31,12 @@
 
 #include <cairo.h>
 
+/* Normal shadings */
+#define SHADE_TOP 1.055
+#define SHADE_CENTER_TOP 1.01
+#define SHADE_CENTER_BOTTOM 0.98
+#define SHADE_BOTTOM 0.91
+
 typedef void (*menubar_draw_proto) (cairo_t *cr,
                                     const ClearlooksColors *colors,
                                     const WidgetParameters *params,
@@ -313,10 +319,10 @@ clearlooks_draw_button (cairo_t *cr,
 		cairo_pattern_t *pattern;
 		CairoColor top_shade, topmiddle_shade, bottom_shade, middle_shade;
 
-		ge_shade_color (fill, 1.055, &top_shade);
-		ge_shade_color (fill, 1.01, &topmiddle_shade);
-		ge_shade_color (fill, 0.98, &middle_shade);
-		ge_shade_color (fill, 0.91, &bottom_shade);
+		ge_shade_color (fill, SHADE_TOP, &top_shade);
+		ge_shade_color (fill, SHADE_CENTER_TOP, &topmiddle_shade);
+		ge_shade_color (fill, SHADE_CENTER_BOTTOM, &middle_shade);
+		ge_shade_color (fill, SHADE_BOTTOM, &bottom_shade);
 
 		cairo_save (cr);
 		cairo_clip_preserve (cr);
@@ -1705,10 +1711,10 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 	else
 		pattern = cairo_pattern_create_linear (0, 0, width, 0);
 
-	ge_shade_color (&colors->bg[widget->state_type], 1.055, &s1);
-	ge_shade_color (&colors->bg[widget->state_type], 1.01, &s2);
-	ge_shade_color (&colors->bg[widget->state_type], 0.98, &s3);
-	ge_shade_color (&colors->bg[widget->state_type], 0.91, &s4);
+	ge_shade_color (&colors->bg[widget->state_type], SHADE_TOP, &s1);
+	ge_shade_color (&colors->bg[widget->state_type], SHADE_CENTER_TOP, &s2);
+	ge_shade_color (&colors->bg[widget->state_type], SHADE_CENTER_BOTTOM, &s3);
+	ge_shade_color (&colors->bg[widget->state_type], SHADE_BOTTOM, &s4);
 
 	cairo_pattern_add_color_stop_rgb(pattern, 0,   s1.r, s1.g, s1.b);
 	cairo_pattern_add_color_stop_rgb(pattern, 0.3, s2.r, s2.g, s2.b);
@@ -1804,10 +1810,10 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		int bar_x, i;
 
 		ge_shade_color (&colors->shade[6], 1.05, &border);
-		ge_shade_color (&colors->bg[widget->state_type], 1.055, &s1);
-		ge_shade_color (&colors->bg[widget->state_type], 1.01, &s2);
-		ge_shade_color (&colors->bg[widget->state_type], 0.98, &s3);
-		ge_shade_color (&colors->bg[widget->state_type], 0.91, &s4);
+		ge_shade_color (&colors->bg[widget->state_type], SHADE_TOP, &s1);
+		ge_shade_color (&colors->bg[widget->state_type], SHADE_CENTER_TOP, &s2);
+		ge_shade_color (&colors->bg[widget->state_type], SHADE_CENTER_BOTTOM, &s3);
+		ge_shade_color (&colors->bg[widget->state_type], SHADE_BOTTOM, &s4);
 
 		pattern = cairo_pattern_create_linear(1, 1, 1, height-1);
 		cairo_pattern_add_color_stop_rgb(pattern, 0,   s1.r, s1.g, s1.b);

@@ -1,6 +1,13 @@
 2008-05-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c
+	(clearlooks_draw_button), (clearlooks_draw_scrollbar_stepper),
+	(clearlooks_draw_scrollbar_slider):
+	Use some constants
+
+2008-05-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c
 	(clearlooks_draw_scale_trough), (clearlooks_draw_slider),
 	(clearlooks_draw_progressbar_fill):
 	Better scale trough.
