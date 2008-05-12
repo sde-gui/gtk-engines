@@ -585,17 +585,27 @@ clearlooks_draw_scale_trough (cairo_t *cr,
 		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, trough_width, trough_height, 0, 0);
 	
 	if (!slider->lower && !slider->fill_level)
-		clearlooks_scale_draw_gradient (cr, &colors->shade[3], /* top */
+	{
+		CairoColor shadow;
+		ge_shade_color (&colors->shade[2], 0.96, &shadow);
+
+		clearlooks_scale_draw_gradient (cr, &shadow, /* top */
 		                                &colors->shade[2], /* bottom */
 		                                &colors->shade[4], /* border */
 		                                1.0, 1.0, trough_width - 2, trough_height - 2,
 		                                slider->horizontal);
+	}
 	else
+	{
+		CairoColor border = colors->spot[2];
+		border.a = 0.64;
+
 		clearlooks_scale_draw_gradient (cr, &colors->spot[1], /* top */
 		                                &colors->spot[0], /* bottom */
-		                                &colors->spot[2], /* border */
+		                                &border, /* border */
 		                                1.0, 1.0, trough_width - 2, trough_height - 2,
 		                                slider->horizontal);
+	}
 	cairo_restore (cr);
 }
 
@@ -655,7 +665,7 @@ clearlooks_draw_slider (cairo_t *cr,
 	if (params->prelight)
 	{
 		CairoColor highlight;
-		ge_shade_color (spot, 1.5, &highlight);
+		ge_shade_color (spot, 1.3, &highlight);
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0, highlight.r, highlight.g, highlight.b);
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0, spot->r, spot->g, spot->b);
 		cairo_set_source (cr, pattern);
@@ -663,7 +673,7 @@ clearlooks_draw_slider (cairo_t *cr,
 	else
 	{
 		CairoColor hilight;
-		ge_shade_color (fill, 1.5, &hilight);
+		ge_shade_color (fill, 1.3, &hilight);
 		cairo_set_source_rgba (cr, hilight.r, hilight.g, hilight.b, 0.5);
 	}
 
@@ -691,10 +701,8 @@ clearlooks_draw_slider (cairo_t *cr,
 		cairo_line_to (cr, width-6.5, height-1);
 
 		cairo_set_line_width (cr, 1.0);
-		cairo_set_source_rgba (cr, border->r,
-		                           border->g,
-		                           border->b,
-	                                   0.3);
+		border.a = params->disabled ? 0.6 : 0.3;
+		ge_cairo_set_color (cr, border);
 		cairo_stroke (cr);
 	}
 }
@@ -899,7 +907,7 @@ clearlooks_draw_progressbar_fill (cairo_t *cr,
 /*	ge_cairo_rounded_rectangle (cr, 1.5,1.5, width-2, height-2, radius, CR_CORNER_ALL);*/
 /*	cairo_set_source_rgba (cr, colors->spot[0].r, colors->spot[0].g, colors->spot[0].b, 1);*/
 /*	cairo_stroke (cr);*/
-	/* Draw topleft shadow */
+
 	params->style_functions->draw_top_left_highlight (cr, &colors->spot[1], params, 1.5, 1.5,
 	                                                  width - 1, height - 1,
 	                                                  radius, params->corners);
