@@ -1,6 +1,16 @@
 2008-05-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c
+	(clearlooks_draw_button), (clearlooks_draw_tab),
+	(clearlooks_draw_scrollbar_stepper),
+	(clearlooks_draw_scrollbar_slider),
+	(clearlooks_register_style_classic):
+	Fixed tab stripe and different shadings from the original clearlooks.
+	I think maybe they look better (smoother).
+
+2008-05-12  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c
 	(clearlooks_draw_selected_cell):
 	Removed top & bottom borders.
 

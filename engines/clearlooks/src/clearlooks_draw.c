@@ -35,7 +35,7 @@
 #define SHADE_TOP 1.055
 #define SHADE_CENTER_TOP 1.01
 #define SHADE_CENTER_BOTTOM 0.98
-#define SHADE_BOTTOM 0.91
+#define SHADE_BOTTOM 0.90
 
 typedef void (*menubar_draw_proto) (cairo_t *cr,
                                     const ClearlooksColors *colors,
@@ -286,6 +286,7 @@ clearlooks_draw_button (cairo_t *cr,
 	CairoColor border_disabled = colors->shade[4];
 
 	CairoColor shadow;
+	ge_shade_color (&border_normal, 1.04, &border_normal);
 	ge_shade_color (&border_normal, 0.94, &shadow);
 	ge_shade_color (&border_disabled, 1.08, &border_disabled);
 
@@ -1190,18 +1191,19 @@ clearlooks_draw_tab (cairo_t *cr,
                      const TabParameters    *tab,
                      int x, int y, int width, int height)
 {
-	const CairoColor    *border1       = &colors->shade[6];
-	const CairoColor    *border2       = &colors->shade[5];
-	const CairoColor    *stripe_fill   = &colors->spot[1];
-	const CairoColor    *stripe_border = &colors->spot[2];
-	const CairoColor    *fill;
-	CairoColor           hilight;
+	const CairoColor *border1       = &colors->shade[6];
+	const CairoColor *border2       = &colors->shade[5];
+	const CairoColor *stripe_fill   = &colors->spot[1];
+	const CairoColor *stripe_border = &colors->spot[2];
+	const CairoColor *fill;
+	CairoColor        hilight;
 
-	cairo_pattern_t     *pattern;
+	cairo_pattern_t  *pattern;
 
-	double               radius;
-	double               strip_size;
-	double               length;
+	double            radius;
+	double            stripe_size = 2.0;
+	double            stripe_fill_size;
+	double            length;
 
 	radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 
@@ -1223,7 +1225,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	{
 		height += 3.0;
 		length = height;
-	 	strip_size = 2.0/height; /* 2 pixel high strip */
+		stripe_fill_size = (tab->gap_side == CL_GAP_TOP ? stripe_size/height : stripe_size/(height-2));
 
 		if (tab->gap_side == CL_GAP_TOP)
 			cairo_translate (cr, 0.0, -3.0); /* gap at the other side */
@@ -1232,7 +1234,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	{
 		width += 3.0;
 		length = width;
-	 	strip_size = 2.0/width;
+		stripe_fill_size = (tab->gap_side == CL_GAP_LEFT ? stripe_size/width : stripe_size/(width-2));
 
 		if (tab->gap_side == CL_GAP_LEFT)
 			cairo_translate (cr, -3.0, 0.0); /* gap at the other side */
@@ -1323,8 +1325,8 @@ clearlooks_draw_tab (cairo_t *cr,
 		ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, params->corners);
 
 		cairo_pattern_add_color_stop_rgb  (pattern, 0.0,        stripe_fill->r, stripe_fill->g, stripe_fill->b);
-		cairo_pattern_add_color_stop_rgb  (pattern, strip_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
-		cairo_pattern_add_color_stop_rgba (pattern, strip_size, hilight.r, hilight.g, hilight.b, 0.5);
+		cairo_pattern_add_color_stop_rgb  (pattern, stripe_fill_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
+		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, hilight.r, hilight.g, hilight.b, 0.5);
 		cairo_pattern_add_color_stop_rgba (pattern, 0.8,        hilight.r, hilight.g, hilight.b, 0.0);
 		cairo_set_source (cr, pattern);
 		cairo_fill (cr);
@@ -1359,8 +1361,8 @@ clearlooks_draw_tab (cairo_t *cr,
 		}
 
 		cairo_pattern_add_color_stop_rgb (pattern, 0.0,        stripe_border->r, stripe_border->g, stripe_border->b);
-		cairo_pattern_add_color_stop_rgb (pattern, strip_size, stripe_border->r, stripe_border->g, stripe_border->b);
-		cairo_pattern_add_color_stop_rgb (pattern, strip_size, border1->r,       border1->g,       border1->b);
+		cairo_pattern_add_color_stop_rgb (pattern, stripe_fill_size, stripe_border->r, stripe_border->g, stripe_border->b);
+		cairo_pattern_add_color_stop_rgb (pattern, stripe_fill_size, border1->r,       border1->g,       border1->b);
 		cairo_pattern_add_color_stop_rgb (pattern, 1.0,        border2->r,       border2->g,       border2->b);
 		cairo_set_source (cr, pattern);
 		cairo_stroke (cr);
@@ -1668,7 +1670,7 @@ clearlooks_draw_scrollbar_stepper (cairo_t *cr,
 	cairo_pattern_t *pattern;
 	double radius = MIN (widget->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
 
-	ge_shade_color(&colors->shade[6], 1.05, &border);
+	ge_shade_color(&colors->shade[6], 1.08, &border);
 
 	if (scrollbar->horizontal)
 	{
@@ -1793,7 +1795,7 @@ clearlooks_draw_scrollbar_slider (cairo_t *cr,
 		cairo_pattern_t *pattern;
 		int bar_x, i;
 
-		ge_shade_color (&colors->shade[6], 1.05, &border);
+		ge_shade_color (&colors->shade[6], 1.08, &border);
 		ge_shade_color (&colors->bg[widget->state_type], SHADE_TOP, &s1);
 		ge_shade_color (&colors->bg[widget->state_type], SHADE_CENTER_TOP, &s2);
 		ge_shade_color (&colors->bg[widget->state_type], SHADE_CENTER_BOTTOM, &s3);
@@ -2347,43 +2349,43 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions, Clearloo
 {
 	g_assert (functions);
 
-	functions->draw_top_left_highlight = clearlooks_draw_top_left_highlight;
-	functions->draw_button             = clearlooks_draw_button;
-	functions->draw_scale_trough       = clearlooks_draw_scale_trough;
-	functions->draw_progressbar_trough = clearlooks_draw_progressbar_trough;
-	functions->draw_progressbar_fill   = clearlooks_draw_progressbar_fill;
-	functions->draw_slider_button      = clearlooks_draw_slider_button;
-	functions->draw_entry              = clearlooks_draw_entry;
-	functions->draw_spinbutton         = clearlooks_draw_spinbutton;
-	functions->draw_spinbutton_down    = clearlooks_draw_spinbutton_down;
-	functions->draw_optionmenu         = clearlooks_draw_optionmenu;
-	functions->draw_inset              = clearlooks_draw_inset;
-	functions->draw_menubar	           = clearlooks_draw_menubar;
-	functions->draw_tab                = clearlooks_draw_tab;
-	functions->draw_frame              = clearlooks_draw_frame;
-	functions->draw_separator          = clearlooks_draw_separator;
+	functions->draw_top_left_highlight  = clearlooks_draw_top_left_highlight;
+	functions->draw_button              = clearlooks_draw_button;
+	functions->draw_scale_trough        = clearlooks_draw_scale_trough;
+	functions->draw_progressbar_trough  = clearlooks_draw_progressbar_trough;
+	functions->draw_progressbar_fill    = clearlooks_draw_progressbar_fill;
+	functions->draw_slider_button       = clearlooks_draw_slider_button;
+	functions->draw_entry               = clearlooks_draw_entry;
+	functions->draw_spinbutton          = clearlooks_draw_spinbutton;
+	functions->draw_spinbutton_down     = clearlooks_draw_spinbutton_down;
+	functions->draw_optionmenu          = clearlooks_draw_optionmenu;
+	functions->draw_inset               = clearlooks_draw_inset;
+	functions->draw_menubar	            = clearlooks_draw_menubar;
+	functions->draw_tab                 = clearlooks_draw_tab;
+	functions->draw_frame               = clearlooks_draw_frame;
+	functions->draw_separator           = clearlooks_draw_separator;
 	functions->draw_menu_item_separator = clearlooks_draw_menu_item_separator;
-	functions->draw_list_view_header   = clearlooks_draw_list_view_header;
-	functions->draw_toolbar            = clearlooks_draw_toolbar;
-	functions->draw_menuitem           = clearlooks_draw_menuitem;
-	functions->draw_menubaritem        = clearlooks_draw_menubaritem;
-	functions->draw_selected_cell      = clearlooks_draw_selected_cell;
-	functions->draw_scrollbar_stepper  = clearlooks_draw_scrollbar_stepper;
-	functions->draw_scrollbar_slider   = clearlooks_draw_scrollbar_slider;
-	functions->draw_scrollbar_trough   = clearlooks_draw_scrollbar_trough;
-	functions->draw_statusbar          = clearlooks_draw_statusbar;
-	functions->draw_menu_frame         = clearlooks_draw_menu_frame;
-	functions->draw_tooltip            = clearlooks_draw_tooltip;
-	functions->draw_handle             = clearlooks_draw_handle;
-	functions->draw_resize_grip        = clearlooks_draw_resize_grip;
-	functions->draw_arrow              = clearlooks_draw_arrow;
-	functions->draw_focus              = clearlooks_draw_focus;
-	functions->draw_checkbox           = clearlooks_draw_checkbox;
-	functions->draw_radiobutton        = clearlooks_draw_radiobutton;
-	functions->draw_shadow             = clearlooks_draw_shadow;
-	functions->draw_slider             = clearlooks_draw_slider;
-	functions->draw_gripdots           = clearlooks_draw_gripdots;
+	functions->draw_list_view_header    = clearlooks_draw_list_view_header;
+	functions->draw_toolbar             = clearlooks_draw_toolbar;
+	functions->draw_menuitem            = clearlooks_draw_menuitem;
+	functions->draw_menubaritem         = clearlooks_draw_menubaritem;
+	functions->draw_selected_cell       = clearlooks_draw_selected_cell;
+	functions->draw_scrollbar_stepper   = clearlooks_draw_scrollbar_stepper;
+	functions->draw_scrollbar_slider    = clearlooks_draw_scrollbar_slider;
+	functions->draw_scrollbar_trough    = clearlooks_draw_scrollbar_trough;
+	functions->draw_statusbar           = clearlooks_draw_statusbar;
+	functions->draw_menu_frame          = clearlooks_draw_menu_frame;
+	functions->draw_tooltip             = clearlooks_draw_tooltip;
+	functions->draw_handle              = clearlooks_draw_handle;
+	functions->draw_resize_grip         = clearlooks_draw_resize_grip;
+	functions->draw_arrow               = clearlooks_draw_arrow;
+	functions->draw_focus                = clearlooks_draw_focus;
+	functions->draw_checkbox            = clearlooks_draw_checkbox;
+	functions->draw_radiobutton         = clearlooks_draw_radiobutton;
+	functions->draw_shadow              = clearlooks_draw_shadow;
+	functions->draw_slider              = clearlooks_draw_slider;
+	functions->draw_gripdots            = clearlooks_draw_gripdots;
 
-	constants->topleft_highlight_shade = 1.3;
-	constants->topleft_highlight_alpha = 0.5;
+	constants->topleft_highlight_shade  = 1.3;
+	constants->topleft_highlight_alpha  = 0.6;
 }
