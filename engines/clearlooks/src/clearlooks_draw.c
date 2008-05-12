@@ -621,9 +621,9 @@ clearlooks_draw_slider (cairo_t *cr,
                         const WidgetParameters *params,
                         int x, int y, int width, int height)
 {
-	const CairoColor *border = &colors->shade[params->disabled ? 4 : 6];
 	const CairoColor *spot   = &colors->spot[1];
 	const CairoColor *fill   = &colors->shade[2];
+	CairoColor border = colors->shade[params->disabled ? 4 : 6];
 	double radius = MIN (params->radius, MIN ((width - 1.0) / 2.0, (height - 1.0) / 2.0));
 
 	cairo_pattern_t *pattern;
@@ -632,7 +632,7 @@ clearlooks_draw_slider (cairo_t *cr,
 	cairo_translate      (cr, x, y);
 
 	if (params->prelight)
-		border = &colors->spot[2];
+		border = colors->spot[2];
 
 	/* fill the widget */
 	ge_cairo_rounded_rectangle (cr, 1.0, 1.0, width-2, height-2, radius, params->corners);
@@ -692,9 +692,9 @@ clearlooks_draw_slider (cairo_t *cr,
 	ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, params->corners);
 
 	if (params->prelight || params->disabled)
-		ge_cairo_set_color (cr, border);
+		ge_cairo_set_color (cr, &border);
 	else
-		clearlooks_set_border_gradient (cr, border, 1.2, 0, height);
+		clearlooks_set_border_gradient (cr, &border, 1.2, 0, height);
 	cairo_stroke (cr);
 
 	/* Draw handle lines */
@@ -708,7 +708,7 @@ clearlooks_draw_slider (cairo_t *cr,
 
 		cairo_set_line_width (cr, 1.0);
 		border.a = params->disabled ? 0.6 : 0.3;
-		ge_cairo_set_color (cr, border);
+		ge_cairo_set_color (cr, &border);
 		cairo_stroke (cr);
 	}
 }
