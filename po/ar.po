@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome 2-18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-31 08:08+0000\n"
+"POT-Creation-Date: 2008-02-26 16:13+0000\n"
 "PO-Revision-Date: 2008-02-26 11:07+0100\n"
 "Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team: Arabeyes <doc@arabeyes.org>\n"
@@ -36,8 +36,7 @@ msgstr "كلاسيّ"
 msgid "Colorize Scrollbar"
 msgstr "لوّن شريط التمرير"
 
-#: ../schema/clearlooks.xml.in.in.h:6
-#: ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "تباين"
 
@@ -196,4 +195,3 @@ msgstr "قطع"
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
 msgstr "بعض"
-
