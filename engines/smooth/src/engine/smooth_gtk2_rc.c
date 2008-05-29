@@ -247,8 +247,8 @@ smooth_gtkrc_parse(GScanner   *Scanner,
 
 		/* backward compatibility for <=0.5.4 */
 		case TOKEN_DEPRECATED_TABSTYLE:
-			Token = smooth_rc_parse_custom_enum(Scanner, TOKEN_DEPRECATED_TABSTYLE, SmoothTranslateTabStyleName, DEFAULT_TABSTYLE, 
-							&THEME_PART(&SMOOTH_RC_DATA(Style)->tabs)->style);
+			Token = smooth_rc_parse_custom_enum(Scanner, TOKEN_DEPRECATED_TABSTYLE, SmoothTranslateTabStyleName, DEFAULT_TABSTYLE,
+			        &THEME_PART(&SMOOTH_RC_DATA(Style)->tabs)->style);
 		break;
 
 		/* backward compatibility for <=0.5.0 */

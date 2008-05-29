@@ -144,7 +144,7 @@ style "clearlooks-separator-menu-item"
 	# There is no other way to get the odd height ...
 	GtkWidget::wide-separators = 1
 	GtkWidget::separator-width = 1
-	GtkWidget::separator-height = 5
+	GtkWidget::separator-height = 7
 	xthickness = 1
 	ythickness = 0
 }
@@ -300,6 +300,7 @@ class "GtkToolbar"   style "clearlooks-default"
 class "GtkRange"     style "clearlooks-wide"
 class "GtkFrame"     style "clearlooks-wide"
 class "GtkSeparator" style "clearlooks-wide"
+class "GtkCalendar"  style "clearlooks-wide"
 class "GtkEntry"     style "clearlooks-wider"
 
 class "GtkSpinButton"  style "clearlooks-spinbutton"

@@ -198,7 +198,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 			STYLE_FUNCTION (draw_statusbar) (cr, colors, &params,
 			                                 x, y, width, height);
 	}
-	else if (DETAIL ("frame"))
+	else if (DETAIL ("frame") || DETAIL ("calendar"))
 	{
 		WidgetParameters params;
 		FrameParameters  frame;
