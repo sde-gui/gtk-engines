@@ -208,10 +208,9 @@ clearlooks_draw_highlight_and_shade (cairo_t *cr, const ClearlooksColors *colors
 	cairo_stroke (cr);
 
 	/* Bottom/Right highlight -- this includes the corners */
-	cairo_move_to (cr, x+width-radius, y); /* topright and by radius to the left */
-	ge_cairo_rounded_corner (cr, x+width - 0.5, y, radius, corners & CR_CORNER_TOPRIGHT);
+	cairo_arc (cr, x + width - 0.5 - radius, y + radius, radius, G_PI * (3/2.0+1/4.0), G_PI * 2);
 	ge_cairo_rounded_corner (cr, x+width - 0.5, y+height - 0.5, radius, corners & CR_CORNER_BOTTOMRIGHT);
-	ge_cairo_rounded_corner (cr, x, y+height - 0.5, radius, corners & CR_CORNER_BOTTOMLEFT);
+	cairo_arc (cr, x + radius, y + height - 0.5 - radius, radius, G_PI * 1/2, G_PI * 3/4);
 
 	if (params->shadow & CL_SHADOW_OUT)
 		ge_cairo_set_color (cr, &shadow);
