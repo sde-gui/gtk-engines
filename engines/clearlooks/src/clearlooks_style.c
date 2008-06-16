@@ -494,7 +494,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		gint columns, column_index;
 		gboolean resizable = TRUE;
 
-		/* XXX: This makes unknown treeview header CL_ORDER_MIDDLE, in need for something nicer */
+		/* XXX: This makes unknown treeview header "middle", in need for something nicer */
 		columns = 3;
 		column_index = 1;
 
@@ -516,12 +516,11 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		header.resizable = resizable;
 
+		header.order = 0;
 		if (column_index == 0)
-			header.order = params.ltr ? CL_ORDER_FIRST : CL_ORDER_LAST;
-		else if (column_index == columns-1)
-			header.order = params.ltr ? CL_ORDER_LAST : CL_ORDER_FIRST;
-		else
-			header.order = CL_ORDER_MIDDLE;
+			header.order |= params.ltr ? CL_ORDER_FIRST : CL_ORDER_LAST;
+		if (column_index == columns-1)
+			header.order |= params.ltr ? CL_ORDER_LAST : CL_ORDER_FIRST;
 
 		gtk_style_apply_default_background (style, window, FALSE, state_type, area, x, y, width, height);
 

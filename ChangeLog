@@ -1,3 +1,13 @@
+2008-06-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw*.c:
+	(*_draw_list_view_header):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	* engines/clearlooks/src/clearlooks_types.h:
+	Change the header button position enum to be a bitfield.
+	(Bug #511958, Marcus Brinkmann)
+
 2008-06-06  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

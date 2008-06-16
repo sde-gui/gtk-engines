@@ -43,9 +43,8 @@ typedef enum
 
 typedef enum
 {
-	CL_ORDER_FIRST,
-	CL_ORDER_MIDDLE,
-	CL_ORDER_LAST
+	CL_ORDER_FIRST    = 1 << 0,
+	CL_ORDER_LAST     = 1 << 1,
 } ClearlooksOrder;
 
 typedef enum

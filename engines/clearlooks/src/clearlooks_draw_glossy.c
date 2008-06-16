@@ -1097,7 +1097,7 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 	
 	/* Draw highlight */
-	if (header->order == CL_ORDER_FIRST)
+	if (header->order & CL_ORDER_FIRST)
 	{
 		cairo_move_to (cr, 0.5, height-1);
 		cairo_line_to (cr, 0.5, 0.5);
@@ -1111,8 +1111,8 @@ clearlooks_glossy_draw_list_view_header (cairo_t *cr,
 	cairo_stroke (cr);
 	
 	/* Draw resize grip */
-	if ((params->ltr && header->order != CL_ORDER_LAST) ||
-	    (!params->ltr && header->order != CL_ORDER_FIRST) || header->resizable)
+	if ((params->ltr && !(header->order & CL_ORDER_LAST)) ||
+	    (!params->ltr && !(header->order & CL_ORDER_FIRST)) || header->resizable)
 	{
 		SeparatorParameters separator;
 		separator.horizontal = FALSE;
