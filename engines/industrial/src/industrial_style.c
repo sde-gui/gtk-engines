@@ -1127,7 +1127,6 @@ real_draw_box_gap (GtkStyle       *style,
 	/* clip the gap area */
 	cairo_save (cr);
 	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
-	cairo_rectangle (cr, x, y, width, height);
 
 	switch (gap_side) {
 	case GTK_POS_TOP:
@@ -1147,6 +1146,8 @@ real_draw_box_gap (GtkStyle       *style,
 	ge_cairo_set_color (cr, &bg);
 	if (fill)
 		cairo_fill_preserve (cr);
+
+	cairo_rectangle (cr, x, y, width, height);
 	cairo_clip (cr);
 
 	/* reset fill rule */
