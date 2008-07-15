@@ -1,5 +1,11 @@
 2008-07-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Industrial/gtk-2.0/gtkrc:
+	Move the progress bar match in the style. This fixes the
+	network-manager applet.
+
+2008-07-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/industrial/src/industrial_style.c: (real_draw_box_gap):
 	Fill the gap in notebook correctly (bug #542625).
 

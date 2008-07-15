@@ -217,7 +217,6 @@ class "GtkEntry"      style "industrial-wide"
 
 class "GtkEntry"      style "industrial-exterior-focus"
 class "GtkSpinButton" style "industrial-spinbutton"
-class "GtkProgress"   style "industrial-progress"
 class "GtkScale"      style "industrial-scale"
 
 class "GtkVScrollbar" style "industrial-arrows"
@@ -235,6 +234,8 @@ widget_class "*.<ETable>.*"              style "industrial-tree-header"
 
 # menuitems and interior
 widget_class "*<GtkMenuItem>*" style "industrial-menuitem"
+
+widget_class "*.<GtkProgress>"   style "industrial-progress"
 
 # druide
 widget_class "*GnomeDruidPage*" style "industrial-druid"
