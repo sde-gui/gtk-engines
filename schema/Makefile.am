@@ -6,7 +6,6 @@ EXTRA_DIST= \
 	redmond95.xml.in.in	\
 	crux-engine.xml.in.in	\
 	industrial.xml.in.in	\
-	smooth.xml.in.in	\
 	glide.xml.in.in		\
 	mist.xml.in.in		\
 	thinice.xml.in.in

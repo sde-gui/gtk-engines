@@ -1,5 +1,11 @@
 2008-07-25  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* schema/Makefile.am:
+	* schema/smooth.xml.in.in:
+	Forgot to remove the schema.
+
+2008-07-25  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* COPYING:
 	* configure.ac:
 	* engines/Makefile.am:
