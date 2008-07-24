@@ -15,7 +15,6 @@ GTKRCS =				\
 	gtkrcs/industrial		\
 	gtkrcs/mist			\
 	gtkrcs/redmond			\
-	gtkrcs/smooth			\
 	gtkrcs/thinice
 
 EXTRA_DIST = exported torture runinx valgrind-suppressions $(GTKRCS)
@@ -64,7 +63,6 @@ SUPPORTED_TORTURE_TEST_ENGINES = \
 	industrial	\
 	mist		\
 	redmond		\
-	smooth		\
 	thinice
 
 # Filter engines that are not build from the set of engines
@@ -78,8 +76,7 @@ TESTS += $(TORTURE_TEST_TESTS)
 # Possible other tests:
 #  - An extensive theme switch tests that loads/unloads the engine
 #    multiple times. A requirement here is that multiple rc styles need
-#    to be merged. (ie. the test should find the recently fixed smooth
-#    memory corruption)
+#    to be merged.
 #  - RC style merging? Don't think there is a way to do that.
 #  - Maybe a visual test that looks for visible changes? That way one can
 #    check that a modification does not break anything. (eg. when doing

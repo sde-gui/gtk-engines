@@ -1,3 +1,13 @@
+2008-07-25  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* COPYING:
+	* configure.ac:
+	* engines/Makefile.am:
+	* engines/smooth/*:
+	* test/Makefile.am:
+	* test/gtkrcs/smooth:
+	Removed the smooth engine from gtk-engines.
+
 2008-07-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Industrial/gtk-2.0/gtkrc:

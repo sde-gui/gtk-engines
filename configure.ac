@@ -32,7 +32,6 @@ AC_ARG_ENABLE(hc,		[  --disable-hc            skip HC(high contrast) engine], 	[
 AC_ARG_ENABLE(industrial, 	[  --disable-industrial    skip Industrial engine/theme], 	[industrial=$enableval], 	[industrial="$defaultval"])
 AC_ARG_ENABLE(mist, 		[  --disable-mist          skip Mist engine/theme], 		[mist=$enableval], 		[mist="$defaultval"])
 AC_ARG_ENABLE(redmond,		[  --disable-redmond       skip Redmond engine/theme], 		[redmond=$enableval], 		[redmond="$defaultval"])
-AC_ARG_ENABLE(smooth, 		[  --disable-smooth        skip Smooth engine], 		[smooth=$enableval], 		[smooth="$defaultval"])
 AC_ARG_ENABLE(glide,		[  --disable-glide         skip Glide engine],			[glide=$enableval],		[glide="$defaultval"])
 AC_ARG_ENABLE(thinice,		[  --disable-thinice       skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice="$defaultval"])
 AC_ARG_ENABLE(lua,			[  --enable-lua            enable Lua engine], 			[lua=$enableval], 			[lua="no"])
@@ -106,13 +105,6 @@ if test $glide = "yes"; then
 	fi
 fi
 
-if test $smooth = "yes"; then
-        BUILD_ENGINES="$BUILD_ENGINES smooth"
-        if test $schemas = "yes"; then
-	        BUILD_SCHEMAS="$BUILD_SCHEMAS smooth.xml"
-	fi
-fi
-
 if test $thinice = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES thinice"
 	BUILD_THEMES="$BUILD_THEMES ThinIce"
@@ -176,7 +168,6 @@ engines/industrial/Makefile
 engines/mist/Makefile
 engines/redmond/Makefile
 engines/glide/Makefile
-engines/smooth/Makefile
 engines/thinice/Makefile
 engines/lua/Makefile
 themes/Makefile
@@ -203,7 +194,6 @@ schema/hcengine.xml.in
 schema/industrial.xml.in
 schema/mist.xml.in
 schema/redmond95.xml.in
-schema/smooth.xml.in
 schema/thinice.xml.in
 ]) 
 
@@ -307,13 +297,6 @@ if test "$glide" = "yes"; then
         echo "Including"
 else
         echo "Skipping"
-fi
-
-echo -n "      Smooth - "
-if test "$smooth" = "yes"; then
-	echo "Including"
-else
-	echo "Skipping"
 fi
 
 echo -n "      ThinIce - "
