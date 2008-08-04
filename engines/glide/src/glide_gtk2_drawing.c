@@ -213,8 +213,6 @@ glide_draw_option (GtkStyle * style,
              gint height)
 {
 	GlideCheckState check_state;
-	gboolean observe_shadow;
-	gboolean draw_check;
 
 	GlideStyle *glide_style;
  
@@ -263,8 +261,6 @@ glide_draw_option (GtkStyle * style,
 	/***********************************************/
 	/* Appearance                                  */
 	/***********************************************/
-	observe_shadow = FALSE;
-	draw_check = !observe_shadow;
 
 
 		/***********************************************/
@@ -281,54 +277,12 @@ glide_draw_option (GtkStyle * style,
 			check_color = &glide_style->color_cube.dark[state];	
 		}
 
-		if (observe_shadow)
-		{
-			fill_color = &glide_style->color_cube.bg[state];
-		}
-
 
 		/***********************************************/
 		/* Style                                       */
 		/***********************************************/
 		bevel_style = GLIDE_BEVEL_STYLE_SMOOTHER;
 		border_type = GLIDE_BORDER_TYPE_IN;
-
-		if (observe_shadow)
-		{
-			/*border_type = glide_gtk_shadow(shadow);*/
-
-			/***********************************************/
-			/* Convert Shadow Type To Border Type          */
-			/***********************************************/
-			switch (shadow)
-			{
-				case GTK_SHADOW_ETCHED_IN:
-					border_type = GLIDE_BORDER_TYPE_ETCHED;
-				break;
-
-				case GTK_SHADOW_ETCHED_OUT:
-					border_type = GLIDE_BORDER_TYPE_ENGRAVED;
-				break;
-
-				case GTK_SHADOW_IN:
-					border_type = GLIDE_BORDER_TYPE_IN;
-				break;
-
-				case GTK_SHADOW_OUT:
-					border_type = GLIDE_BORDER_TYPE_OUT;
-				break;
-
-				default:
-					border_type = GLIDE_BORDER_TYPE_NONE;
-				break;
-			}
-
-			if (!draw_check)
-			{
-				check_state = GLIDE_CHECK_OFF;
-			}
-		}
-
 
 	/***********************************************/
 	/* Draw Option                                 */

@@ -1,3 +1,8 @@
+2008-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_option):
+	Remove dead code found by coverity (bug #501734, Kjartan Maraas)
+
 2008-07-25  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* schema/Makefile.am:
