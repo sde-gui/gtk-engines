@@ -26,6 +26,7 @@
 #include <ge-support.h>
 #include <cairo.h>
 #include <math.h>
+#include <stdio.h>
 
 #define LINE_OPACITY 0.4
 #define HANDLE_OPACITY 0.38
