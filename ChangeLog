@@ -1,5 +1,10 @@
 2008-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* README:
+	Removed the smooth engine from the README.
+
+2008-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/industrial/src/industrial_style.c:
 	Include stdio.h. (bug #543608, Rodrigo Moya)
 
