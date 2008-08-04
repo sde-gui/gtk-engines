@@ -220,7 +220,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		if (CLEARLOOKS_STYLE (style)->style == CL_STYLE_CLASSIC)
 			ge_shade_color ((CairoColor*)&colors->bg[0], 0.78, &border);
 		else
-			border = (CairoColor)colors->shade[5];
+			border = colors->shade[5];
 
 		cairo_rectangle (cr, x+0.5, y+0.5, width-1, height-1);
 		ge_cairo_set_color (cr, &border);

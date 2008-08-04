@@ -1,5 +1,12 @@
 2008-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_shadow):
+	Removes unnecessary CairoColor cast to fix build on solaris.
+	(bug #535456, patch by Damien Carbery)
+
+2008-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/glide/src/glide_gtk2_drawing.c: (glide_draw_option):
 	Remove dead code found by coverity (bug #501734, Kjartan Maraas)
 
