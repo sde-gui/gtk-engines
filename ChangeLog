@@ -1,5 +1,11 @@
 2008-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	* configure.ac:
+	Update for 2.15.2 release.
+
+2008-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* README:
 	Removed the smooth engine from the README.
 

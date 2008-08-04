@@ -1,3 +1,28 @@
+Overview of Changes in 2.15.2 (since 2.15.1)
+============================================
+
+The most important change in this release is that the smooth GTK+ engine has
+been removed. This engine has long lost its popularity and it had a huge
+codebase that has not been properly maintained for years now.
+
+Changes in this release:
+ - Larger menuitem separators in the Clearlooks theme
+ - Frame drawing fixes in the Clearlooks engine
+ - Padding of progress bars inside menus is fixed in the Industrial theme
+
+GNOME Bugs fixed in this release:
+ 511958 – List store tree view contains superfluous border (clearlooks)
+ 542625 – 1px gap between notebook at extension (industrial)
+ 501734 – Dead code in glide_gtk2_drawing.c
+ 535456 – Unnecessary cast breaks build on Solaris
+ 543608 – Fix for Fortify detected problem
+
+New and udpated translations:
+ Djihed Afifi (ar)
+ Clytie Siddall (vi)
+ Yavor Doganov (bg)
+
+
 Overview of Changes in 2.15.1 (since 2.15.0)
 ============================================
 
