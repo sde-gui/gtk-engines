@@ -1,3 +1,13 @@
+2008-08-10  David Zeuthen  <davidz@redhat.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_radiobutton):
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	(clearlooks_glossy_draw_radiobutton):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_radiobutton):
+	Avoid hardcoding the radio button size (#547024)
+
 2008-08-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:

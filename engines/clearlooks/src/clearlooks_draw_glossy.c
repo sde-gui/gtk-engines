@@ -1280,6 +1280,13 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 	cairo_pattern_t *pt;
 	gboolean inconsistent;
 	gboolean draw_bullet = (checkbox->shadow_type == GTK_SHADOW_IN);
+	gdouble w, h, cx, cy, radius;
+
+	w = (gdouble) width;
+	h = (gdouble) height;
+	cx = width / 2.0;
+	cy = height / 2.0;
+	radius = MIN (width, height) / 2.0;
 
 	inconsistent = (checkbox->shadow_type == GTK_SHADOW_ETCHED_IN);
 	draw_bullet |= inconsistent;
@@ -1301,7 +1308,7 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 	ge_shade_color (&widget->parentbg, 0.9, &shadow);
 	ge_shade_color (&widget->parentbg, 1.1, &highlight);
 
-	pt = cairo_pattern_create_linear (0, 0, 13, 13);
+	pt = cairo_pattern_create_linear (0, 0, radius * 2.0, radius * 2.0);
 	cairo_pattern_add_color_stop_rgb (pt, 0.0, shadow.r, shadow.b, shadow.g);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, shadow.r, shadow.b, shadow.g, 0.5);
 	cairo_pattern_add_color_stop_rgba (pt, 0.5, highlight.r, highlight.g, highlight.b, 0.5);
@@ -1309,15 +1316,15 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 	
 	cairo_translate (cr, x, y);
 	
-	cairo_set_line_width (cr, 2);
-	cairo_arc       (cr, 7, 7, 6, 0, G_PI*2);
+	cairo_set_line_width (cr, MAX (1.0, floor (radius/3)));
+	cairo_arc (cr, ceil (cx), ceil (cy), floor (radius - 0.1), 0, G_PI*2);
 	cairo_set_source (cr, pt);
 	cairo_stroke (cr);
 	cairo_pattern_destroy (pt);
 
-	cairo_set_line_width (cr, 1);
+	cairo_set_line_width (cr, MAX (1.0, floor (radius/6)));
 
-	cairo_arc       (cr, 7, 7, 5.5, 0, G_PI*2);
+	cairo_arc (cr, ceil (cx), ceil (cy), MAX (1.0, ceil (radius) - 1.5), 0, G_PI*2);
 	
 	if (!widget->disabled)
 	{
@@ -1336,21 +1343,21 @@ clearlooks_glossy_draw_radiobutton (cairo_t *cr,
 		if (inconsistent)
 		{
 			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-			cairo_set_line_width (cr, 4);
+			cairo_set_line_width (cr, ceil (radius * 2 / 3));
 
-			cairo_move_to(cr, 5, 7);
-			cairo_line_to(cr, 9, 7);
+			cairo_move_to (cr, ceil (cx - radius/3.0), ceil (cy));
+			cairo_line_to (cr, ceil (cx + radius/3.0), ceil (cy));
 
 			ge_cairo_set_color (cr, dot);
 			cairo_stroke (cr);
 		}
 		else
 		{
-			cairo_arc (cr, 7, 7, 3, 0, G_PI*2);
+			cairo_arc (cr, ceil (cx), ceil (cy), floor (radius/2.0), 0, G_PI*2);
 			ge_cairo_set_color (cr, dot);
 			cairo_fill (cr);
 		
-			cairo_arc (cr, 6, 6, 1, 0, G_PI*2);
+			cairo_arc (cr, floor (cx - radius/10.0), floor (cy - radius/10.0), floor (radius/6.0), 0, G_PI*2);
 			cairo_set_source_rgba (cr, highlight.r, highlight.g, highlight.b, 0.5);
 			cairo_fill (cr);
 		}
