@@ -425,13 +425,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 
-	/* Fill the background as it is initilized to base[NORMAL].
-	 * Relevant GTK+ bug: http://bugzilla.gnome.org/show_bug.cgi?id=513471 */
-	cairo_rectangle (cr, 0, 0, width, height);
-	ge_cairo_set_color (cr, &params->parentbg);
-	cairo_fill (cr);
-
-	/* Now fill the area we want to be base[NORMAL] again. */
+	/* Now fill the area we want to be base[NORMAL]. */
 	ge_cairo_rounded_rectangle (cr, 2, 2, width-4, height-4, MAX(0, radius-1), params->corners);
 	ge_cairo_set_color (cr, base);
 	cairo_fill (cr);
@@ -747,12 +741,6 @@ clearlooks_draw_progressbar_trough (cairo_t *cr,
 	cairo_save (cr);
 
 	cairo_set_line_width (cr, 1.0);
-
-	/* Fill with bg color */
-	ge_cairo_set_color (cr, &colors->bg[params->state_type]);
-
-	cairo_rectangle (cr, x, y, width, height);
-	cairo_fill (cr);
 
 	/* Create trough box */
 	ge_cairo_rounded_rectangle (cr, x+1, y+1, width-2, height-2, radius, params->corners);

@@ -395,12 +395,6 @@ clearlooks_glossy_draw_progressbar_trough (cairo_t *cr,
 
 	cairo_set_line_width (cr, 1.0);
 	
-	/* Fill with bg color */
-	ge_cairo_set_color (cr, &colors->bg[params->state_type]);
-	
-	cairo_rectangle (cr, x, y, width, height);
-	cairo_fill (cr);
-
 	/* Create trough box */
 	ge_cairo_rounded_rectangle (cr, x+1, y+1, width-2, height-2, radius, params->corners);
 	ge_cairo_set_color (cr, &colors->shade[2]);
