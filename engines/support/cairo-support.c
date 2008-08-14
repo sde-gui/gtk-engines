@@ -635,9 +635,10 @@ ge_cairo_pattern_fill(cairo_t *canvas,
 	cairo_matrix_t original_matrix, current_matrix;
 
 	if (pattern->operator == CAIRO_OPERATOR_DEST)
-	{
 		return;
-	}
+	
+	if (width <= 0 || height <= 0)
+		return;
 
 	cairo_pattern_get_matrix(pattern->handle, &original_matrix);
 	current_matrix = original_matrix;
