@@ -1,5 +1,11 @@
 2008-08-15  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	* themes/Industrial/gtk-2.0/gtkrc:
+	Add gecko's entry workaround style property to the gtkrcs.
+
+2008-08-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/industrial/src/industrial_style.c: (real_draw_box):
 	Fill in the entries background. However, only fill it if the
 	transparent-bg-hint has not been set.
