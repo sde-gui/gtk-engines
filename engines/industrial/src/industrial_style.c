@@ -929,17 +929,41 @@ real_draw_box (GtkStyle      *style,
 		else
 			draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
 					   &bevel, NULL, CR_CORNER_ALL);
-	} else {
-		CairoColor bevel, bg;
+	} else if (CHECK_DETAIL (detail, "entry")) {
 		CairoCorners corners = CR_CORNER_ALL;
+		CairoColor bevel, bg, base;
 
-		if ((CHECK_DETAIL (detail, "entry") && ge_check_hint (GE_HINT_SPINBUTTON, GET_HINT (style), widget)) ||
+		ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg);
+		ge_gdk_color_to_cairo (&style->base[state_type], &base);
+
+		/* Fill the background as it is initilized to base[NORMAL].
+		 * Relevant GTK+ bug: http://bugzilla.gnome.org/show_bug.cgi?id=513471
+		 * The fill only happens if no hint has been added by some application
+		 * that is faking GTK+ widgets. */
+		if (!widget || !g_object_get_data(G_OBJECT (widget), "transparent-bg-hint"))
+		{
+			cairo_rectangle (cr, x, y, width, height);
+			ge_cairo_set_color (cr, &bg);
+			cairo_fill (cr);
+		}
+		
+		if (ge_check_hint (GE_HINT_SPINBUTTON, GET_HINT (style), widget) ||
 		    ge_check_hint (GE_HINT_COMBOBOX_ENTRY, GET_HINT (style), widget)) {
 			/* effectively cut one side off. */
 			width += 2;
 			if (!ge_widget_is_ltr (widget))
 				x -= 2;
 		}
+		
+		
+		ge_gdk_color_to_cairo (&style->fg[state_type], &bevel);
+		bevel.a = GET_REAL_OPACITY (style, STANDARD_BORDER_OPACITY);
+
+		draw_rounded_rect (cr, x, y, width, height, IF_ROUNDED (style, 1.5, 0),
+				   &bevel, &base, corners);
+	} else {
+		CairoColor bevel, bg;
+		CairoCorners corners = CR_CORNER_ALL;
 		
 		if (CHECK_DETAIL (detail, "spinbutton")) {
 			if (ge_widget_is_ltr (widget))
