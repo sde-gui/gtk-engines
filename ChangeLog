@@ -1,3 +1,8 @@
+2008-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* configure.ac:
+	Remove useless AM_PROG_CC_STDC. Thanks for Werner Pantke.
+
 2008-08-18  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* configure.ac:
