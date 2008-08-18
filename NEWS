@@ -1,3 +1,19 @@
+Overview of Changes in 2.15.3 (since 2.15.2)
+============================================
+
+Changes in this release:
+ - A problem in the glide engine where the drawing of some widgets could
+   suddenly disappear forever was fixed.
+
+GNOME Bugs fixed in this release:
+ 546839 – Add special case for transparent entries (for gecko and others)
+ 547024 – size of radio button hardcoded
+
+New and udpated translations:
+ Djihed Afifi (ar)
+ Sweta Kothari (gu)
+
+
 Overview of Changes in 2.15.2 (since 2.15.1)
 ============================================
 
