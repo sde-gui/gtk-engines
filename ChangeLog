@@ -1,3 +1,8 @@
+2008-08-20  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Inreased menuitem separator spacing from 5 to 7
+
 2008-08-20  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
