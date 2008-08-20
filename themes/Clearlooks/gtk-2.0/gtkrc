@@ -218,7 +218,7 @@ style "separator_menu_item" {
 	GtkSeparatorMenuItem::horizontal-padding = 0
 	GtkWidget::wide-separators = 1
 	GtkWidget::separator-width = 1
-	GtkWidget::separator-height = 1
+	GtkWidget::separator-height = 5
 }
 
 style "frame_title" {

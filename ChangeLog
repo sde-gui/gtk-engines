@@ -1,3 +1,8 @@
+2008-08-20  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix the separator height, which was broken by the last commit.
+
 2008-08-19  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* themes/Clearlooks/gtk-2.0/gtkrc:
