@@ -27,12 +27,13 @@
 #include <gtk/gtkrc.h>
 #include "clearlooks_types.h"
 
+#ifndef CLEARLOOKS_RC_STYLE_H
+#define CLEARLOOKS_RC_STYLE_H
+
 typedef struct _ClearlooksRcStyle ClearlooksRcStyle;
 typedef struct _ClearlooksRcStyleClass ClearlooksRcStyleClass;
 
-GE_INTERNAL extern GType clearlooks_type_rc_style;
-
-#define CLEARLOOKS_TYPE_RC_STYLE              clearlooks_type_rc_style
+#define CLEARLOOKS_TYPE_RC_STYLE              (clearlooks_rc_style_get_type ())
 #define CLEARLOOKS_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), CLEARLOOKS_TYPE_RC_STYLE, ClearlooksRcStyle))
 #define CLEARLOOKS_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLEARLOOKS_TYPE_RC_STYLE, ClearlooksRcStyleClass))
 #define CLEARLOOKS_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), CLEARLOOKS_TYPE_RC_STYLE))
@@ -80,4 +81,7 @@ struct _ClearlooksRcStyleClass
 	GtkRcStyleClass parent_class;
 };
 
-GE_INTERNAL void clearlooks_rc_style_register_type (GTypeModule *module);
+GE_INTERNAL void  clearlooks_rc_style_register_types (GTypeModule *module);
+GE_INTERNAL GType clearlooks_rc_style_get_type       (void);
+
+#endif /* CLEARLOOKS_RC_STYLE_H */

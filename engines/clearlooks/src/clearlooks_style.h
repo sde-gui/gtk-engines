@@ -34,9 +34,7 @@
 typedef struct _ClearlooksStyle ClearlooksStyle;
 typedef struct _ClearlooksStyleClass ClearlooksStyleClass;
 
-GE_INTERNAL extern GType clearlooks_type_style;
-
-#define CLEARLOOKS_TYPE_STYLE              clearlooks_type_style
+#define CLEARLOOKS_TYPE_STYLE              (clearlooks_style_get_type ())
 #define CLEARLOOKS_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), CLEARLOOKS_TYPE_STYLE, ClearlooksStyle))
 #define CLEARLOOKS_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLEARLOOKS_TYPE_STYLE, ClearlooksStyleClass))
 #define CLEARLOOKS_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), CLEARLOOKS_TYPE_STYLE))
@@ -71,6 +69,7 @@ struct _ClearlooksStyleClass
 	ClearlooksStyleConstants style_constants[CL_NUM_STYLES];
 };
 
-GE_INTERNAL void clearlooks_style_register_type (GTypeModule *module);
+GE_INTERNAL void  clearlooks_style_register_types (GTypeModule *module);
+GE_INTERNAL GType clearlooks_style_get_type       (void);
 
 #endif /* CLEARLOOKS_STYLE_H */

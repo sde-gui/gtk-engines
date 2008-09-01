@@ -52,10 +52,9 @@
 #include "animation.h"
 #endif
 
-#define STYLE_FUNCTION(function) (clearlooks_style_class->style_functions[CLEARLOOKS_STYLE (style)->style].function)
+#define STYLE_FUNCTION(function) (CLEARLOOKS_STYLE_GET_CLASS (style)->style_functions[CLEARLOOKS_STYLE (style)->style].function)
 
-static ClearlooksStyleClass *clearlooks_style_class;
-static GtkStyleClass *clearlooks_parent_class;
+G_DEFINE_DYNAMIC_TYPE (ClearlooksStyle, clearlooks_style, GTK_TYPE_STYLE)
 
 static void
 clearlooks_set_widget_parameters (const GtkWidget      *widget,
@@ -63,8 +62,8 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
                                   GtkStateType          state_type,
                                   WidgetParameters     *params)
 {
-	params->style_functions = &(clearlooks_style_class->style_functions[CLEARLOOKS_STYLE (style)->style]);
-	params->style_constants = &(clearlooks_style_class->style_constants[CLEARLOOKS_STYLE (style)->style]);
+	params->style_functions = &(CLEARLOOKS_STYLE_GET_CLASS (style)->style_functions[CLEARLOOKS_STYLE (style)->style]);
+	params->style_constants = &(CLEARLOOKS_STYLE_GET_CLASS (style)->style_constants[CLEARLOOKS_STYLE (style)->style]);
 
 	params->active        = (state_type == GTK_STATE_ACTIVE);
 	params->prelight      = (state_type == GTK_STATE_PRELIGHT);
@@ -141,7 +140,7 @@ clearlooks_style_draw_flat_box (DRAW_ARGS)
 	}
 	else
 	{
-		clearlooks_parent_class->draw_flat_box (style, window, state_type,
+		GTK_STYLE_CLASS (clearlooks_style_parent_class)->draw_flat_box (style, window, state_type,
 		                                        shadow_type,
 		                                        area, widget, detail,
 		                                        x, y, width, height);
@@ -345,7 +344,7 @@ clearlooks_style_draw_box_gap (DRAW_ARGS,
 	}
 	else
 	{
-		clearlooks_parent_class->draw_box_gap (style, window, state_type, shadow_type,
+		GTK_STYLE_CLASS (clearlooks_style_parent_class)->draw_box_gap (style, window, state_type, shadow_type,
 		                                       area, widget, detail,
 		                                       x, y, width, height,
 		                                       gap_side, gap_x, gap_width);
@@ -408,7 +407,7 @@ clearlooks_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 	}
 	else
 	{
-		clearlooks_parent_class->draw_extension (style, window, state_type, shadow_type, area,
+		GTK_STYLE_CLASS (clearlooks_style_parent_class)->draw_extension (style, window, state_type, shadow_type, area,
 		                                         widget, detail, x, y, width, height,
 		                                         gap_side);
 	}
@@ -949,7 +948,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else
 	{
-		clearlooks_parent_class->draw_box (style, window, state_type, shadow_type, area,
+		GTK_STYLE_CLASS (clearlooks_style_parent_class)->draw_box (style, window, state_type, shadow_type, area,
 		                                   widget, detail, x, y, width, height);
 	}
 
@@ -1021,7 +1020,7 @@ clearlooks_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 	}
 	else
 	{
-		clearlooks_parent_class->draw_slider (style, window, state_type, shadow_type, area,
+		GTK_STYLE_CLASS (clearlooks_style_parent_class)->draw_slider (style, window, state_type, shadow_type, area,
 		                                      widget, detail, x, y, width, height, orientation);
 	}
 
@@ -1181,7 +1180,7 @@ clearlooks_style_draw_shadow_gap (DRAW_ARGS,
 	}
 	else
 	{
-		clearlooks_parent_class->draw_shadow_gap (style, window, state_type, shadow_type, area,
+		GTK_STYLE_CLASS (clearlooks_style_parent_class)->draw_shadow_gap (style, window, state_type, shadow_type, area,
 		                                          widget, detail, x, y, width, height,
 		                                          gap_side, gap_x, gap_width);
 	}
@@ -1309,7 +1308,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 {
 	ClearlooksStyle *clearlooks_style = CLEARLOOKS_STYLE (style);
 
-	clearlooks_parent_class->init_from_rc (style, rc_style);
+	GTK_STYLE_CLASS (clearlooks_style_parent_class)->init_from_rc (style, rc_style);
 
 	g_assert ((CLEARLOOKS_RC_STYLE (rc_style)->style >= 0) && (CLEARLOOKS_RC_STYLE (rc_style)->style < CL_NUM_STYLES));
 	clearlooks_style->style               = CLEARLOOKS_RC_STYLE (rc_style)->style;
@@ -1339,7 +1338,7 @@ clearlooks_style_realize (GtkStyle * style)
 	double contrast;
 	int i;
 
-	clearlooks_parent_class->realize (style);
+	GTK_STYLE_CLASS (clearlooks_style_parent_class)->realize (style);
 
 	contrast = CLEARLOOKS_RC_STYLE (style->rc_style)->contrast;
 
@@ -1565,13 +1564,13 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	cl_style->radius              = cl_src->radius;
 	cl_style->style               = cl_src->style;
 
-	clearlooks_parent_class->copy (style, src);
+	GTK_STYLE_CLASS (clearlooks_style_parent_class)->copy (style, src);
 }
 
 static void
 clearlooks_style_unrealize (GtkStyle * style)
 {
-	clearlooks_parent_class->unrealize (style);
+	GTK_STYLE_CLASS (clearlooks_style_parent_class)->unrealize (style);
 }
 
 static GdkPixbuf *
@@ -1763,6 +1762,12 @@ clearlooks_style_draw_render_icon (GtkStyle            *style,
 	return stated;
 }
 
+void
+clearlooks_style_register_types (GTypeModule *module)
+{
+  clearlooks_style_register_type (module);
+}
+
 static void
 clearlooks_style_init (ClearlooksStyle * style)
 {
@@ -1772,9 +1777,6 @@ static void
 clearlooks_style_class_init (ClearlooksStyleClass * klass)
 {
 	GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
-
-	clearlooks_style_class = CLEARLOOKS_STYLE_CLASS (klass);
-	clearlooks_parent_class = g_type_class_peek_parent (klass);
 
 	style_class->copy             = clearlooks_style_copy;
 	style_class->realize          = clearlooks_style_realize;
@@ -1799,46 +1801,26 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	style_class->draw_layout      = clearlooks_style_draw_layout;
 	style_class->render_icon      = clearlooks_style_draw_render_icon;
 
-	clearlooks_register_style_classic (&clearlooks_style_class->style_functions[CL_STYLE_CLASSIC],
-	                                   &clearlooks_style_class->style_constants[CL_STYLE_CLASSIC]);
+	clearlooks_register_style_classic (&klass->style_functions[CL_STYLE_CLASSIC],
+	                                   &klass->style_constants[CL_STYLE_CLASSIC]);
 
-	clearlooks_style_class->style_functions[CL_STYLE_GLOSSY] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
-	clearlooks_style_class->style_constants[CL_STYLE_GLOSSY] = clearlooks_style_class->style_constants[CL_STYLE_CLASSIC];
-	clearlooks_register_style_glossy (&clearlooks_style_class->style_functions[CL_STYLE_GLOSSY],
-	                                  &clearlooks_style_class->style_constants[CL_STYLE_GLOSSY]);
+	klass->style_functions[CL_STYLE_GLOSSY] = klass->style_functions[CL_STYLE_CLASSIC];
+	klass->style_constants[CL_STYLE_GLOSSY] = klass->style_constants[CL_STYLE_CLASSIC];
+	clearlooks_register_style_glossy (&klass->style_functions[CL_STYLE_GLOSSY],
+	                                  &klass->style_constants[CL_STYLE_GLOSSY]);
 
-	clearlooks_style_class->style_functions[CL_STYLE_INVERTED] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
-	clearlooks_style_class->style_constants[CL_STYLE_INVERTED] = clearlooks_style_class->style_constants[CL_STYLE_CLASSIC];
-	clearlooks_register_style_inverted (&clearlooks_style_class->style_functions[CL_STYLE_INVERTED],
-	                                    &clearlooks_style_class->style_constants[CL_STYLE_INVERTED]);
+	klass->style_functions[CL_STYLE_INVERTED] = klass->style_functions[CL_STYLE_CLASSIC];
+	klass->style_constants[CL_STYLE_INVERTED] = klass->style_constants[CL_STYLE_CLASSIC];
+	clearlooks_register_style_inverted (&klass->style_functions[CL_STYLE_INVERTED],
+	                                    &klass->style_constants[CL_STYLE_INVERTED]);
 
-	clearlooks_style_class->style_functions[CL_STYLE_GUMMY] = clearlooks_style_class->style_functions[CL_STYLE_CLASSIC];
-	clearlooks_style_class->style_constants[CL_STYLE_GUMMY] = clearlooks_style_class->style_constants[CL_STYLE_CLASSIC];
-	clearlooks_register_style_gummy (&clearlooks_style_class->style_functions[CL_STYLE_GUMMY],
-	                                 &clearlooks_style_class->style_constants[CL_STYLE_GUMMY]);
+	klass->style_functions[CL_STYLE_GUMMY] = klass->style_functions[CL_STYLE_CLASSIC];
+	klass->style_constants[CL_STYLE_GUMMY] = klass->style_constants[CL_STYLE_CLASSIC];
+	clearlooks_register_style_gummy (&klass->style_functions[CL_STYLE_GUMMY],
+	                                 &klass->style_constants[CL_STYLE_GUMMY]);
 }
 
-GType clearlooks_type_style = 0;
-
-void
-clearlooks_style_register_type (GTypeModule * module)
+static void
+clearlooks_style_class_finalize (ClearlooksStyleClass *klass)
 {
-	static const GTypeInfo object_info =
-	{
-		sizeof (ClearlooksStyleClass),
-		(GBaseInitFunc) NULL,
-		(GBaseFinalizeFunc) NULL,
-		(GClassInitFunc) clearlooks_style_class_init,
-		NULL,         /* class_finalize */
-		NULL,         /* class_data */
-		sizeof (ClearlooksStyle),
-		0,            /* n_preallocs */
-		(GInstanceInitFunc) clearlooks_style_init,
-		NULL
-	};
-
-	clearlooks_type_style = g_type_module_register_type (module,
-	                                                     GTK_TYPE_STYLE,
-	                                                     "ClearlooksStyle",
-	                                                     &object_info, 0);
 }

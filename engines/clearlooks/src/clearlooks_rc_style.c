@@ -31,22 +31,15 @@
 
 #include "animation.h"
 
-static void      clearlooks_rc_style_init         (ClearlooksRcStyle      *style);
 #ifdef HAVE_ANIMATION
 static void      clearlooks_rc_style_finalize     (GObject                *object);
 #endif
-static void      clearlooks_rc_style_class_init   (ClearlooksRcStyleClass *klass);
 static GtkStyle *clearlooks_rc_style_create_style (GtkRcStyle             *rc_style);
 static guint     clearlooks_rc_style_parse        (GtkRcStyle             *rc_style,
                                                    GtkSettings            *settings,
                                                    GScanner               *scanner);
 static void      clearlooks_rc_style_merge        (GtkRcStyle             *dest,
                                                    GtkRcStyle             *src);
-
-
-static GtkRcStyleClass *clearlooks_parent_rc_class;
-
-GType clearlooks_type_rc_style = 0;
 
 enum
 {
@@ -102,27 +95,12 @@ static gchar* clearlooks_rc_symbols =
 	"TRUE\0"
 	"FALSE\0";
 
-void
-clearlooks_rc_style_register_type (GTypeModule *module)
-{
-	static const GTypeInfo object_info =
-	{
-		sizeof (ClearlooksRcStyleClass),
-		(GBaseInitFunc) NULL,
-		(GBaseFinalizeFunc) NULL,
-		(GClassInitFunc) clearlooks_rc_style_class_init,
-		NULL,           /* class_finalize */
-		NULL,           /* class_data */
-		sizeof (ClearlooksRcStyle),
-		0,              /* n_preallocs */
-		(GInstanceInitFunc) clearlooks_rc_style_init,
-		NULL
-	};
+G_DEFINE_DYNAMIC_TYPE (ClearlooksRcStyle, clearlooks_rc_style, GTK_TYPE_RC_STYLE)
 
-	clearlooks_type_rc_style = g_type_module_register_type (module,
-	                                                        GTK_TYPE_RC_STYLE,
-	                                                        "ClearlooksRcStyle",
-	                                                        &object_info, 0);
+void
+clearlooks_rc_style_register_types (GTypeModule *module)
+{
+  clearlooks_rc_style_register_type (module);
 }
 
 static void
@@ -149,8 +127,8 @@ clearlooks_rc_style_finalize (GObject *object)
 	/* cleanup all the animation stuff */
 	clearlooks_animation_cleanup ();
 
-	if (G_OBJECT_CLASS (clearlooks_parent_rc_class)->finalize != NULL)
-		G_OBJECT_CLASS (clearlooks_parent_rc_class)->finalize(object);
+	if (G_OBJECT_CLASS (clearlooks_rc_style_parent_class)->finalize != NULL)
+		G_OBJECT_CLASS (clearlooks_rc_style_parent_class)->finalize (object);
 }
 #endif
 
@@ -163,8 +141,6 @@ clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
 	GObjectClass    *g_object_class = G_OBJECT_CLASS (klass);
 #endif
 
-	clearlooks_parent_rc_class = g_type_class_peek_parent (klass);
-
 	rc_style_class->parse = clearlooks_rc_style_parse;
 	rc_style_class->create_style = clearlooks_rc_style_create_style;
 	rc_style_class->merge = clearlooks_rc_style_merge;
@@ -172,6 +148,11 @@ clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
 #ifdef HAVE_ANIMATION
 	g_object_class->finalize = clearlooks_rc_style_finalize;
 #endif
+}
+
+static void
+clearlooks_rc_style_class_finalize (ClearlooksRcStyleClass *klass)
+{
 }
 
 static guint
@@ -455,7 +436,7 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 	ClearlooksRcStyle *dest_w, *src_w;
 	ClearlooksRcFlags flags;
 
-	clearlooks_parent_rc_class->merge (dest, src);
+	GTK_RC_STYLE_CLASS (clearlooks_rc_style_parent_class)->merge (dest, src);
 
 	if (!CLEARLOOKS_IS_RC_STYLE (src))
 		return;
