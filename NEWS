@@ -1,3 +1,19 @@
+Overview of Changes in 2.15.4 (since 2.15.3)
+============================================
+
+Changes in this release:
+ - Reworked Clearlooks gtkrc.
+
+GNOME Bugs fixed in this release:
+  549830 – Use G_DEFINE_DYNAMIC_TYPE in theme engines (only in Clearlooks)
+
+New and udpated translations:
+ Hari Vishnu (ml)
+ Krishna Babu K (te)
+ Goran Rakić (sr@latin)
+ Djihed Afifi (ar)
+
+
 Overview of Changes in 2.15.3 (since 2.15.2)
 ============================================
 
