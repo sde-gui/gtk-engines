@@ -479,13 +479,13 @@ clearlooks_draw_spinbutton (cairo_t *cr,
 
 	cairo_translate (cr, x, y);
 
-	cairo_move_to (cr, params->xthickness - 0.5,       (height/2) + 0.5);
-	cairo_line_to (cr, width-params->xthickness + 0.5, (height/2) + 0.5);
+	cairo_move_to (cr, params->xthickness + 0.5,       (height/2) + 0.5);
+	cairo_line_to (cr, width-params->xthickness - 0.5, (height/2) + 0.5);
 	ge_cairo_set_color (cr, border);
 	cairo_stroke (cr);
 
-	cairo_move_to (cr, params->xthickness - 0.5,       (height/2)+1.5);
-	cairo_line_to (cr, width-params->xthickness + 0.5, (height/2)+1.5);
+	cairo_move_to (cr, params->xthickness + 0.5,       (height/2)+1.5);
+	cairo_line_to (cr, width-params->xthickness - 0.5, (height/2)+1.5);
 	ge_cairo_set_color (cr, &hilight);
 	cairo_stroke (cr);
 }
