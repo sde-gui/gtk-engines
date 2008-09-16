@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gtk-engines HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-01-28 19:42+0000\n"
-"PO-Revision-Date: 2008-03-07 15:48+0200\n"
+"PO-Revision-Date: 2008-09-15 18:52+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -76,7 +76,7 @@ msgstr "Raadius"
 
 #: ../schema/clearlooks.xml.in.in.h:15
 msgid "Relief Style"
-msgstr ""
+msgstr "Reljeefi laad"
 
 #: ../schema/clearlooks.xml.in.in.h:16
 msgid "Requires style Glossy or Gummy"
@@ -132,7 +132,7 @@ msgstr "Punkt"
 
 #: ../schema/thinice.xml.in.in.h:3
 msgid "Full"
-msgstr ""
+msgstr "Täielik"
 
 #: ../schema/thinice.xml.in.in.h:4
 msgid "Handlebox Marks"
@@ -196,4 +196,4 @@ msgstr ""
 
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
-msgstr ""
+msgstr "Osaline"
