@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-12 04:43+0200\n"
-"PO-Revision-Date: 2006-03-11 17:15+0100\n"
+"POT-Creation-Date: 2008-09-20 03:55+0200\n"
+"PO-Revision-Date: 2008-09-20 03:57+0100\n"
 "Last-Translator: Goran Rakić <grakic@devbase.net>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,29 +28,78 @@ msgstr "3d (gradijent)"
 msgid "Animations"
 msgstr "Animacije"
 
-#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "klasična"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Oboji trake za pomeranje"
+
+#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "Omogući animirane pokazatelje napretka, radio i dugmad za potvrdu"
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Enable Animations on Progressbars"
+msgstr "Omogući animirane pokazatelje napretka"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "Ravno"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr "staklasta"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr "gumena"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inset"
+msgstr "Umetak"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inverted"
+msgstr "Obrnuto"
+
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Menubar Style"
 msgstr "Stil linije menija"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Radius"
+msgstr "Prečnik"
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Relief Style"
+msgstr "Stil reljefa"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Requires style Glossy or Gummy"
+msgstr "Zahteva stil „Staklasta“ ili „Gumena“"
+
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
 msgstr "Boja traka za pomeranje"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Sets the Color of Scrollbars"
 msgstr "Postavlja boju traka za pomeranje"
+
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Shadow"
+msgstr "Senka"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Style"
+msgstr "Stil"
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "Toolbar Style"
+msgstr "Stil trake alatki"
 
 #: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
@@ -147,3 +196,4 @@ msgstr "Kosa crta"
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
 msgstr "Neki"
+
