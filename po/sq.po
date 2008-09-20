@@ -1,16 +1,16 @@
 # Përkthimi i mesazheve të gtk-engines në shqip.
-# Copyright (C) 2007 gtk-engines'S COPYRIGHT HOLDER
+# Copyright (C) 2007-2008, gtk-engines'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gtk-engines package.
 #
-# Laurent Dhima <laurenti@alblinux.net>, 2007.
+# Laurent Dhima <laurenti@alblinux.net>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 11:59+0200\n"
-"PO-Revision-Date: 2007-06-09 12:16+0200\n"
+"POT-Creation-Date: 2008-01-28 19:42+0000\n"
+"PO-Revision-Date: 2008-09-20 19:18+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
-"Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
+"Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,49 +18,97 @@ msgstr ""
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
-msgstr "3D (pulsant)"
+msgstr "Tredimensional (buton)"
 
 #: ../schema/clearlooks.xml.in.in.h:2
 msgid "3d-ish (gradient)"
-msgstr "3D (shkallëzim)"
+msgstr "Tredimensional (gradient)"
 
 #: ../schema/clearlooks.xml.in.in.h:3
 msgid "Animations"
-msgstr "Animime"
+msgstr "Animacione"
 
-#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Klasik"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Ngjyros shtyllën e rrëshqitjes"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Kontrasti"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "Aktivon animimet në shtyllën e ecurisë, pulsantët radio dhe pulsantët e zgjedhjes"
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Enable Animations on Progressbars"
+msgstr "Aktivizon animimet në shtyllën e ecurisë"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Flat"
 msgstr "E shtrirë"
 
-#: ../schema/clearlooks.xml.in.in.h:7
-msgid "Menubar Style"
-msgstr "Stili i shtyllës së menusë"
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Glossy"
+msgstr "Glossy"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Gummy"
+msgstr "Gummy"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Inset"
+msgstr "Futur"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inverted"
+msgstr "Invertuar"
+
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Menubar Style"
+msgstr "Stili i shtyllës së menu-së"
+
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Radius"
+msgstr "Rreze"
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Relief Style"
+msgstr "Stili i rilievit"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Requires style Glossy or Gummy"
+msgstr "Kërkon stilin Glossy ose Gummy"
+
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Scrollbar Color"
 msgstr "Ngjyra e shtyllës së rrëshqitjes"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Sets the Color of Scrollbars"
 msgstr "Përcakton ngjyrën e shtyllës së rrëshqitjes"
 
-#: ../schema/hc.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Shadow"
+msgstr "Hija"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Style"
+msgstr "Stili"
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "Toolbar Style"
+msgstr "Stili i panelit të instrumentëve"
+
+#: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
 msgstr "Treguesi i madhësisë së qelisë"
 
-#: ../schema/hc.xml.in.in.h:2
+#: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
 msgstr "Trashësia e bordit"
 
-#: ../schema/hc.xml.in.in.h:3
+#: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr "Madhësia e pulsantëve radio dhe të zgjedhjes tek paraqitja e degëzuar."
 
@@ -106,7 +154,9 @@ msgstr "Lloji i shenjës për pulsantët e shtyllës së rrëshqitjes"
 
 #: ../schema/thinice.xml.in.in.h:9
 msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
-msgstr "Lloji i shënimit për dorezat e shtyllës së rrështijes, kutive të manipolimit, etj."
+msgstr ""
+"Lloji i shënimit për dorezat e shtyllës së rrështijes, kutive të "
+"manipolimit, etj."
 
 #: ../schema/thinice.xml.in.in.h:10
 msgid "None"
