@@ -1,3 +1,19 @@
+Overview of Changes in 2.16.0 (since 2.15.4)
+============================================
+
+Changes in this release:
+ - Small fix in Clearlooks spinbutton drawing.
+
+New and udpated translations:
+ Laurent Dhima (sq)
+ Горан Ракић (sr)
+ Goran Rakić (sr@latin)
+ Djihed Afifi (ar)
+ I. Felix (ta)
+ Ivar Smolin (et)
+ Hari Vishnu (ml)
+
+
 Overview of Changes in 2.15.4 (since 2.15.3)
 ============================================
 
