@@ -1,3 +1,8 @@
+2008-09-27  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* test/torturetest.c:
+	Add the new icon view detail strings to the torture tester.
+
 2008-09-27  Denis Washington  <denisw@svn.gnome.org>
 
 	* engines/clearlooks/src/clearlooks_draw.c:
