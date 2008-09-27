@@ -1443,6 +1443,26 @@ clearlooks_glossy_draw_checkbox (cairo_t *cr,
 	}
 }
 
+static void
+clearlooks_glossy_draw_icon_view_item (cairo_t                *cr,
+	                                   const ClearlooksColors *colors,
+	                                   const WidgetParameters *params,
+	                                   int x, int y, int width, int height)
+{
+	CairoColor color;
+	gfloat radius;
+
+	if (params->focus)
+		color = colors->base[params->state_type];
+	else
+		color = colors->base[GTK_STATE_ACTIVE];
+
+	radius = MIN (width / 2, params->radius);
+	radius = MIN (height / 2, radius);
+
+	clearlooks_draw_glossy_gradient (cr, x, y, width, height, &color, params->disabled, params->radius, CR_CORNER_ALL);
+}
+
 void
 clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
@@ -1463,4 +1483,5 @@ clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions, Clearlook
 	functions->draw_selected_cell      = clearlooks_glossy_draw_selected_cell;
 	functions->draw_checkbox           = clearlooks_glossy_draw_checkbox;
 	functions->draw_radiobutton        = clearlooks_glossy_draw_radiobutton;
+	functions->draw_icon_view_item     = clearlooks_glossy_draw_icon_view_item;
 }

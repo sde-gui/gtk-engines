@@ -104,6 +104,7 @@ typedef enum
 	CL_FOCUS_TAB,
 	CL_FOCUS_COLOR_WHEEL_DARK,
 	CL_FOCUS_COLOR_WHEEL_LIGHT,
+	CL_FOCUS_ICONVIEW,
 	CL_FOCUS_UNKNOWN
 } ClearlooksFocusType;
 
@@ -482,6 +483,11 @@ struct _ClearlooksStyleFunctions
 	                               const ClearlooksColors *colors,
 	                               const WidgetParameters *widget,
 	                               const CheckboxParameters	*checkbox,
+	                               int x, int y, int width, int height);
+
+	void (*draw_icon_view_item)   (cairo_t *cr,
+	                               const ClearlooksColors *colors,
+	                               const WidgetParameters *widget,
 	                               int x, int y, int width, int height);
 
 	/* Style internal functions */

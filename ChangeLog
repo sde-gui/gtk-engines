@@ -1,3 +1,14 @@
+2008-09-27  Denis Washington  <denisw@svn.gnome.org>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	* engines/clearlooks/src/clearlooks_style.c:
+	* engines/clearlooks/src/clearlooks_types.h:
+	Customize drawing of the selection rectangles around GtkIconView
+	items introduced in GTK+ trunk. (Bug #553575)
+
+
 2008-09-22  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* NEWS:

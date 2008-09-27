@@ -1900,6 +1900,43 @@ clearlooks_draw_tooltip (cairo_t *cr,
 }
 
 static void
+clearlooks_draw_icon_view_item (cairo_t                  *cr,
+	                        const ClearlooksColors   *colors,
+	                        const WidgetParameters   *params,
+	                        int x, int y, int width, int height)
+{
+	CairoColor upper_color;
+	CairoColor lower_color;
+	cairo_pattern_t *pattern;
+	cairo_save (cr);
+
+	cairo_translate (cr, x, y);
+
+	if (params->focus)
+		upper_color = colors->base[params->state_type];
+	else
+		upper_color = colors->base[GTK_STATE_ACTIVE];
+
+	ge_shade_color(&upper_color, 0.92, &lower_color);
+
+	pattern = cairo_pattern_create_linear (0, 0, 0, height);
+	cairo_pattern_add_color_stop_rgb (pattern, 0.0, upper_color.r,
+	                                                upper_color.g,
+	                                                upper_color.b);
+	cairo_pattern_add_color_stop_rgb (pattern, 1.0, lower_color.r,
+	                                                lower_color.g,
+	                                                lower_color.b);
+
+	cairo_set_source (cr, pattern);
+	ge_cairo_rounded_rectangle  (cr, 0, 0, width, height, params->radius, CR_CORNER_ALL);
+	cairo_fill       (cr);
+
+	cairo_pattern_destroy (pattern);
+
+	cairo_restore (cr);
+}
+
+static void
 clearlooks_draw_handle (cairo_t *cr,
                         const ClearlooksColors          *colors,
                         const WidgetParameters          *params,
@@ -2370,6 +2407,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions, Clearloo
 	functions->draw_statusbar           = clearlooks_draw_statusbar;
 	functions->draw_menu_frame          = clearlooks_draw_menu_frame;
 	functions->draw_tooltip             = clearlooks_draw_tooltip;
+	functions->draw_icon_view_item      = clearlooks_draw_icon_view_item;
 	functions->draw_handle              = clearlooks_draw_handle;
 	functions->draw_resize_grip         = clearlooks_draw_resize_grip;
 	functions->draw_arrow               = clearlooks_draw_arrow;

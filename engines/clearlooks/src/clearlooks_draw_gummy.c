@@ -1550,6 +1550,26 @@ clearlooks_gummy_draw_checkbox (cairo_t                  *cr,
 }
 
 static void
+clearlooks_gummy_draw_icon_view_item (cairo_t                *cr,
+	                                  const ClearlooksColors *colors,
+	                                  const WidgetParameters *params,
+	                                  int x, int y, int width, int height)
+{
+	CairoColor color;
+	gfloat radius;
+
+	if (params->focus)
+		color = colors->base[params->state_type];
+	else
+		color = colors->base[GTK_STATE_ACTIVE];
+
+	radius = MIN (width / 2, params->radius);
+	radius = MIN (height / 2, radius);
+
+	clearlooks_draw_gummy_gradient (cr, x, y, width, height, &color, params->disabled, params->radius, CR_CORNER_ALL);
+}
+
+static void
 clearlooks_gummy_draw_focus (cairo_t                *cr,
                              const ClearlooksColors *colors,
                              const WidgetParameters *widget,
@@ -1634,6 +1654,8 @@ clearlooks_gummy_draw_focus (cairo_t                *cr,
 			break;
 		case CL_FOCUS_SCALE:
 			break;
+		case CL_FOCUS_ICONVIEW:
+			break;
 		case CL_FOCUS_UNKNOWN:
 			/* Fallback to classic function, dots */
 			clearlooks_draw_focus (cr, colors, widget, focus, x, y, width, height);
@@ -1701,6 +1723,7 @@ clearlooks_register_style_gummy (ClearlooksStyleFunctions *functions, Clearlooks
 	functions->draw_statusbar          = clearlooks_gummy_draw_statusbar;
 	functions->draw_checkbox           = clearlooks_gummy_draw_checkbox;
 	functions->draw_radiobutton        = clearlooks_gummy_draw_radiobutton;
+	functions->draw_icon_view_item     = clearlooks_gummy_draw_icon_view_item;
 	functions->draw_focus              = clearlooks_gummy_draw_focus;
 
 	constants->topleft_highlight_shade = 1.3;
