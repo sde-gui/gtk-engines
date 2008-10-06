@@ -1336,6 +1336,36 @@ mist_style_render_icon (GtkStyle            *style,
   return stated;
 }
 
+void
+mist_style_draw_focus (GtkStyle *style,
+		       GdkWindow *window,
+		       GtkStateType state_type,
+		       GdkRectangle *area,
+		       GtkWidget *widget,
+		       const gchar *detail,
+		       gint x,
+		       gint y,
+		       gint width,
+		       gint height)
+{
+	MistStyle *mist_style = MIST_STYLE (style);
+	CairoColor *dark;
+	cairo_t *cr;
+
+	CHECK_ARGS
+	SANITIZE_SIZE
+
+	cr = ge_gdk_drawable_to_cairo (window, area);
+	cairo_translate (cr, 0.5, 0.5);
+	width--; height--;
+
+	dark = &mist_style->color_cube.dark[state_type];
+	ge_cairo_set_color (cr, dark);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_stroke (cr);
+	cairo_destroy (cr);
+}
+
 GType mist_type_style = 0;
 
 void
@@ -1400,4 +1430,5 @@ mist_style_class_init (MistStyleClass *klass)
 	style_class->draw_string = mist_style_draw_string;
 	style_class->draw_layout = mist_style_draw_layout;
 	style_class->render_icon = mist_style_render_icon;
+	style_class->draw_focus = mist_style_draw_focus;
 }
