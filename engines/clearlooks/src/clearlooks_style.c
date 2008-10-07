@@ -71,7 +71,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->state_type    = (ClearlooksStateType)state_type;
 	params->corners       = CR_CORNER_ALL;
 	params->ltr           = ge_widget_is_ltr ((GtkWidget*)widget);
-	params->focus         = widget && GTK_WIDGET_HAS_FOCUS (widget);
+	params->focus         = !CLEARLOOKS_STYLE (style)->disable_focus && widget && GTK_WIDGET_HAS_FOCUS (widget);
 	params->is_default    = widget && GE_WIDGET_HAS_DEFAULT (widget);
 	params->enable_shadow = FALSE;
 	params->radius        = CLEARLOOKS_STYLE (style)->radius;
@@ -1340,6 +1340,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->colorize_scrollbar  = CLEARLOOKS_RC_STYLE (rc_style)->colorize_scrollbar;
 	clearlooks_style->animation           = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	clearlooks_style->radius              = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
+	clearlooks_style->disable_focus       = CLEARLOOKS_RC_STYLE (rc_style)->disable_focus;
 
 	if (clearlooks_style->has_focus_color)
 		clearlooks_style->focus_color     = CLEARLOOKS_RC_STYLE (rc_style)->focus_color;
@@ -1411,6 +1412,10 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 
 	CHECK_ARGS
 	SANITIZE_SIZE
+
+	/* Just return if focus drawing is disabled. */
+	if (clearlooks_style->disable_focus)
+		return;
 
 	cr = gdk_cairo_create (window);
 
@@ -1586,6 +1591,7 @@ clearlooks_style_copy (GtkStyle * style, GtkStyle * src)
 	cl_style->animation           = cl_src->animation;
 	cl_style->radius              = cl_src->radius;
 	cl_style->style               = cl_src->style;
+	cl_style->disable_focus       = cl_src->disable_focus;
 
 	GTK_STYLE_CLASS (clearlooks_style_parent_class)->copy (style, src);
 }

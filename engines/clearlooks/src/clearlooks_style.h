@@ -59,6 +59,7 @@ struct _ClearlooksStyle
 	gboolean has_scrollbar_color;
 	gboolean animation;
 	gfloat   radius;
+	gboolean disable_focus;
 };
 
 struct _ClearlooksStyleClass

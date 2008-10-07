@@ -88,6 +88,11 @@
     <_long_name>Animations</_long_name>
     <_description>Enable Animations on Progressbars</_description>
   </option>
+
+  <option name="disable_focus" type="boolean" default="FALSE">
+    <_long_name>Disable focus drawing</_long_name>
+    <_description>This option allows to disable the focus drawing. The primary purpose is to create screenshots for documentation.</_description>
+  </option>
   
   <option name="contrast" type="real" default="1.0">
     <minimum>0</minimum>

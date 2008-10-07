@@ -1,3 +1,17 @@
+2008-10-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_rc_style.c:
+	(clearlooks_rc_style_init), (clearlooks_rc_style_parse),
+	(clearlooks_rc_style_merge):
+	* engines/clearlooks/src/clearlooks_rc_style.h:
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_set_widget_parameters),
+	(clearlooks_style_init_from_rc), (clearlooks_style_draw_focus),
+	(clearlooks_style_copy):
+	* engines/clearlooks/src/clearlooks_style.h:
+	* schema/clearlooks.xml.in.in:
+	Added a disable_focus option for documentation purpose.
+
 2008-10-06  Thomas Wood  <thos@gnome.org>
 
 	* engines/mist/src/mist-style.c: (mist_style_draw_focus),
