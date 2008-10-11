@@ -1254,7 +1254,6 @@ clearlooks_draw_tab (cairo_t *cr,
 		                                     height, radius);
 	}
 
-
 	if (params->active)
 	{
 		CairoColor shadow;

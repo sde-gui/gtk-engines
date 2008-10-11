@@ -558,6 +558,13 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	}
 	else if (DETAIL ("button") || DETAIL ("buttondefault"))
 	{
+		/* We are already checking the default button with the
+		 * "clearlooks_set_widget_parameters" function, so we may occur
+		 * in drawing the button two times. Let's return then.
+		 */
+		if (DETAIL ("buttondefault"))
+			return;
+	
 		WidgetParameters params;
 		ShadowParameters shadow = { CR_CORNER_ALL, CL_SHADOW_NONE } ;
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
