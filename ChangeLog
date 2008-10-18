@@ -1,3 +1,8 @@
+2008-10-18  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/mist/src/mist-style.c:
+	Make mist_style_draw_focus static.
+
 2008-10-11  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c

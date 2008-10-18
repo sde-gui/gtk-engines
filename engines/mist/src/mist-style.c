@@ -1336,7 +1336,7 @@ mist_style_render_icon (GtkStyle            *style,
   return stated;
 }
 
-void
+static void
 mist_style_draw_focus (GtkStyle *style,
 		       GdkWindow *window,
 		       GtkStateType state_type,
