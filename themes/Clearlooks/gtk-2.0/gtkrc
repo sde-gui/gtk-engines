@@ -343,6 +343,8 @@ widget_class "*<GtkNotebook>" style "notebook_bg"
 widget_class "*<GtkNotebook>*<GtkEventBox>" style "notebook_bg"
 widget_class "*<GtkNotebook>*<GtkDrawingArea>" style "notebook_bg"
 widget_class "*<GtkNotebook>*<GtkLayout>" style "notebook_bg"
+widget_class "*<GtkNotebook>*<GtkViewport>" style "notebook_bg"
+widget_class "*<GtkNotebook>*<GtkScrolledWindow>" style "notebook_bg"
 
 widget_class "*<GtkButton>" style "button"
 widget_class "*<GtkNotebook>" style "notebook"

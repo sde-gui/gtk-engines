@@ -1,3 +1,8 @@
+2008-11-03  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix the bg color of GtkViewport and GtkScrolledWindow in notebooks.
+
 2008-10-18  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/mist/src/mist-style.c:
