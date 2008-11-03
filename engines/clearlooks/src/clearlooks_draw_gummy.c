@@ -181,7 +181,7 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 			cairo_stroke (cr);
 		}
 
-		if (params->is_default)
+		if (params->is_default && !params->disabled)
 		{
 			CairoColor shadow = colors->spot[1];
 
