@@ -1,3 +1,17 @@
+Overview of Changes in 2.17.0 (since 2.16.0)
+============================================
+
+Changes in this release:
+ - Focus indicator drawing in Mist
+ - Clearlooks now has a disable_focus option to do screenshots for
+   documentation
+ - Fixed the background color of viewports in notebooks in Clearlooks.
+
+GNOME Bugs fixed in this release:
+ 553575 – [PATCH] Only draw focus when navigating with the keyboard
+ 555890 – Button rendering bug
+
+
 Overview of Changes in 2.16.0 (since 2.15.4)
 ============================================
 
