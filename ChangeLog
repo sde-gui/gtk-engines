@@ -1,5 +1,11 @@
 2008-11-28  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/industrial/src/parse_rc_style.h:
+	Remove the usage of deprecated glib symbols.
+	Bug #560443, patch by Travis Veralrud
+
+2008-11-28  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/*/Makefile.am:
 	Change the oder of the -I flags, so the locale ones are in front of
 	the global flags. Bug #560042.
