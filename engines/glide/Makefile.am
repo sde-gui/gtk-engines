@@ -1,5 +1,5 @@
-INCLUDES = $(GTK_CFLAGS)  $(DEVELOPMENT_CFLAGS) \
-           -I$(top_srcdir)/engines/support
+INCLUDES = -I$(top_srcdir)/engines/support \
+           $(GTK_CFLAGS)  $(DEVELOPMENT_CFLAGS)
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
 

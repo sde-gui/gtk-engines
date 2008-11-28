@@ -1,3 +1,9 @@
+2008-11-28  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/*/Makefile.am:
+	Change the oder of the -I flags, so the locale ones are in front of
+	the global flags. Bug #560042.
+
 2008-11-03  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* configure.ac:
