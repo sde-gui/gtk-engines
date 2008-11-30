@@ -29,7 +29,7 @@
                      gint            width, \
                      gint            height
 
-static GtkStyleClass *parent_class;
+G_DEFINE_DYNAMIC_TYPE (LuaStyle, lua_style, GTK_TYPE_STYLE)
 
 static gchar *
 get_name_for_state (gint state)
@@ -258,7 +258,7 @@ lua_style_close_cairo (LuaStyle *style)
 static void
 lua_style_draw_flat_box (DRAW_ARGS)
 {
-	parent_class->draw_flat_box (style, window, state_type,
+	GTK_STYLE_CLASS (lua_style_parent_class)->draw_flat_box (style, window, state_type,
 	                             shadow_type,
 	                             area, widget, detail,
 	                             x, y, width, height);
@@ -304,7 +304,7 @@ lua_style_draw_box_gap (DRAW_ARGS,
 	                    gint            gap_x,
 	                    gint            gap_width)
 {
-	parent_class->draw_box_gap (style, window, state_type, shadow_type,
+	GTK_STYLE_CLASS (lua_style_parent_class)->draw_box_gap (style, window, state_type, shadow_type,
 	                            area, widget, detail,
 	                            x, y, width, height,
 	                            gap_side, gap_x, gap_width);
@@ -313,7 +313,7 @@ lua_style_draw_box_gap (DRAW_ARGS,
 static void
 lua_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 {
-	parent_class->draw_extension (style, window, state_type, shadow_type, area,
+	GTK_STYLE_CLASS (lua_style_parent_class)->draw_extension (style, window, state_type, shadow_type, area,
 	                              widget, detail, x, y, width, height,
 	                              gap_side);
 }
@@ -321,7 +321,7 @@ lua_style_draw_extension (DRAW_ARGS, GtkPositionType gap_side)
 static void 
 lua_style_draw_handle (DRAW_ARGS, GtkOrientation orientation)
 {
-	parent_class->draw_handle (style, window, state_type, shadow_type, area,
+	GTK_STYLE_CLASS (lua_style_parent_class)->draw_handle (style, window, state_type, shadow_type, area,
 	                               widget, detail, x, y, width, height,
 	                               orientation);
 }
@@ -491,7 +491,7 @@ lua_style_draw_box (DRAW_ARGS)
 	{
 		//g_printf ("DRAW BOX: Unrecognized detail string: %s\n", detail);
 		lua_style_close_cairo (lua_style);
-		parent_class->draw_box (style, window, state_type, shadow_type, area,
+		GTK_STYLE_CLASS (lua_style_parent_class)->draw_box (style, window, state_type, shadow_type, area,
 		                        widget, detail, x, y, width, height);
 	}
     
@@ -501,7 +501,7 @@ lua_style_draw_box (DRAW_ARGS)
 static void
 lua_style_draw_slider (DRAW_ARGS, GtkOrientation orientation)
 {
-	parent_class->draw_slider (style, window, state_type, shadow_type, area,
+	GTK_STYLE_CLASS (lua_style_parent_class)->draw_slider (style, window, state_type, shadow_type, area,
 	                           widget, detail, x, y, width, height, orientation);
 }
 
@@ -632,7 +632,7 @@ lua_style_draw_shadow_gap (DRAW_ARGS,
                            gint            gap_x,
                            gint            gap_width)
 {
-	parent_class->draw_shadow_gap (style, window, state_type, shadow_type, area,
+	GTK_STYLE_CLASS (lua_style_parent_class)->draw_shadow_gap (style, window, state_type, shadow_type, area,
 	                               widget, detail, x, y, width, height,
 	                               gap_side, gap_x, gap_width);
 }
@@ -667,7 +667,7 @@ lua_style_draw_arrow (GtkStyle  *style,
                       gint           width,
                       gint           height)
 {
-	parent_class->draw_arrow (style, window, state_type, shadow, area,
+	GTK_STYLE_CLASS (lua_style_parent_class)->draw_arrow (style, window, state_type, shadow, area,
 	                          widget, detail, arrow_type, fill,
 	                          x, y, width, height);
 }
@@ -678,7 +678,7 @@ lua_style_init_from_rc (GtkStyle   *style,
 {
 	LuaStyle *lua_style = LUA_STYLE (style);
 
-	parent_class->init_from_rc (style, rc_style);
+	GTK_STYLE_CLASS (lua_style_parent_class)->init_from_rc (style, rc_style);
 	
 	lua_style->theme = LUA_RC_STYLE (rc_style)->theme;
 }
@@ -693,7 +693,7 @@ lua_style_realize (GtkStyle *style)
 	double contrast;
 	int i;
 	
-	parent_class->realize (style);
+	GTK_STYLE_CLASS (lua_style_parent_class)->realize (style);
 	
 	/* Lighter to darker */
 	ge_gdk_color_to_cairo (&style->bg[GTK_STATE_NORMAL], &bg_normal);
@@ -730,7 +730,7 @@ lua_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType state_typ
 static void
 lua_style_copy (GtkStyle *style, GtkStyle *src)
 {
-	parent_class->copy (style, src);
+	GTK_STYLE_CLASS (lua_style_parent_class)->copy (style, src);
 }
 
 static void
@@ -738,7 +738,7 @@ lua_style_unrealize (GtkStyle *style)
 {
 	LuaStyle *lua_style = LUA_STYLE (style);
 	
-	parent_class->unrealize (style);
+	GTK_STYLE_CLASS (lua_style_parent_class)->unrealize (style);
 	
 	if (lua_style->L)
 		lua_close (lua_style->L);
@@ -754,8 +754,6 @@ lua_style_class_init (LuaStyleClass *klass)
 {
 	GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
 	
-	parent_class = g_type_class_peek_parent (klass);
-
 	style_class->copy             = lua_style_copy;
 	style_class->realize          = lua_style_realize;
 	style_class->unrealize        = lua_style_unrealize;
@@ -780,27 +778,14 @@ lua_style_class_init (LuaStyleClass *klass)
 	/*style_class->render_icon      = lua_style_draw_render_icon;*/
 }
 
-GType type_lua_style = 0;
+static void
+lua_style_class_finalize (LuaStyleClass *klass)
+{
+}
 
 void
-lua_style_register_type (GTypeModule *module)
+lua_style_register_types (GTypeModule *module)
 {
-	static const GTypeInfo object_info =
-	{
-		sizeof (LuaStyleClass),
-		(GBaseInitFunc) NULL,
-		(GBaseFinalizeFunc) NULL,
-		(GClassInitFunc) lua_style_class_init,
-		NULL,         /* class_finalize */
-		NULL,         /* class_data */
-		sizeof (LuaStyle),
-		0,            /* n_preallocs */
-		(GInstanceInitFunc) lua_style_init,
-		NULL
-	};
-
-	type_lua_style = g_type_module_register_type (module,
-	                                              GTK_TYPE_STYLE,
-	                                              "LuaStyle",
-	                                              &object_info, 0);
+	lua_style_register_type (module);
 }
+

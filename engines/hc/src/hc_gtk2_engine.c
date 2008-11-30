@@ -152,8 +152,9 @@ hc_rc_style_parse (GtkRcStyle  *rc_style,
 /**********************************/ 
 /* Register & Initialize RC Style */ 
 /**********************************/ 
-GType hc_type_rc_style = 0;
-static GtkRcStyleClass *hc_parent_rc_class = NULL;
+
+
+G_DEFINE_DYNAMIC_TYPE (HcRcStyle, hc_rc_style, GTK_TYPE_RC_STYLE)
 
 /* Create an empty style suitable to this RC style */ 
 static GtkStyle *
@@ -169,7 +170,7 @@ hc_rc_style_merge (GtkRcStyle *dest,
 	HcRcFlags flags;
 	HcRcStyle *dest_w, *src_w;
 
-	hc_parent_rc_class->merge (dest, src);
+	GTK_RC_STYLE_CLASS (hc_rc_style_parent_class)->merge (dest, src);
 
 	if (!HC_IS_RC_STYLE (src))
 		return;
@@ -187,12 +188,9 @@ hc_rc_style_merge (GtkRcStyle *dest,
 	dest_w->flags = dest_w->flags | src_w->flags;
 }
 
-
 static void hc_rc_style_class_init (HcRcStyleClass *klass)
 {
   GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
-
-  hc_parent_rc_class = g_type_class_peek_parent (klass);
 
   rc_style_class->create_style = hc_rc_style_create_style;
   rc_style_class->parse = hc_rc_style_parse;
@@ -207,32 +205,16 @@ hc_rc_style_init (HcRcStyle *hc_rc_style)
 	hc_rc_style->cell_indicator_size = -1;
 }
 
-static void hc_rc_style_register_type (GTypeModule *module)
+static void
+hc_rc_style_class_finalize (HcRcStyleClass *klass)
 {
-  static const GTypeInfo object_info =
-  {
-    sizeof (HcRcStyleClass),
-    (GBaseInitFunc) NULL,
-    (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) hc_rc_style_class_init,
-    NULL,           /* class_finalize */
-    NULL,           /* class_data */
-    sizeof (HcRcStyle),
-    0,              /* n_preallocs */
-    (GInstanceInitFunc) hc_rc_style_init,
-  };
-  
-  hc_type_rc_style = g_type_module_register_type (module,
-							      GTK_TYPE_RC_STYLE,
-							      "HcRcStyle",
-							      &object_info, 0);
 }
 
 /***************************************/ 
 /* Register & Initialize Drawing Style */ 
 /***************************************/ 
-GtkStyleClass *hc_parent_class = NULL;
 
+G_DEFINE_DYNAMIC_TYPE (HcStyle, hc_style, GTK_TYPE_STYLE)
 
 static void
 hc_style_realize (GtkStyle *style)
@@ -345,7 +327,7 @@ hc_style_copy (GtkStyle * style, GtkStyle * src)
 	hc_style->edge_thickness = hc_src->edge_thickness;
 	hc_style->cell_indicator_size = hc_src->cell_indicator_size;
 
-	hc_parent_class->copy (style, src);
+	GTK_STYLE_CLASS (hc_style_parent_class)->copy (style, src);
 }
 
 static void
@@ -353,7 +335,7 @@ hc_style_init_from_rc (GtkStyle * style, GtkRcStyle * rc_style)
 {
 	HcStyle *hc_style = HC_STYLE (style);
 
-	hc_parent_class->init_from_rc (style, rc_style);
+	GTK_STYLE_CLASS (hc_style_parent_class)->init_from_rc (style, rc_style);
 
 	if (HC_RC_STYLE (rc_style)->edge_thickness > 0)
 	{
@@ -371,8 +353,6 @@ hc_style_class_init (HcStyleClass *klass)
 {
   GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
 
-  hc_parent_class = g_type_class_peek_parent (klass);
- 
   style_class->realize = hc_style_realize;
   style_class->copy = hc_style_copy;
   style_class->init_from_rc = hc_style_init_from_rc;
@@ -405,28 +385,9 @@ hc_style_init (HcStyle * style)
 	style->cell_indicator_size = 12;
 }
 
-GType hc_type_style = 0;
-
 static void
-hc_style_register_type (GTypeModule *module)
+hc_style_class_finalize (HcStyleClass *klass)
 {
-  static const GTypeInfo object_info =
-  {
-    sizeof (HcStyleClass),
-    (GBaseInitFunc) NULL,
-    (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) hc_style_class_init,
-    NULL,           /* class_finalize */
-    NULL,           /* class_data */
-    sizeof (HcStyle),
-    0,              /* n_preallocs */
-    (GInstanceInitFunc) hc_style_init,
-  };
-  
-  hc_type_style = g_type_module_register_type (module,
-							   GTK_TYPE_STYLE,
-							   "HcStyle",
-							   &object_info, 0);
 }
 
 /****************/ 

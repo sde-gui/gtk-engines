@@ -5,8 +5,8 @@
 GE_EXPORT void
 theme_init (GTypeModule *module)
 {
-  thinice_rc_style_register_type (module);
-  thinice_style_register_type (module);
+  thinice_rc_style_register_types (module);
+  thinice_style_register_types (module);
 }
 
 GE_EXPORT void

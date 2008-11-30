@@ -7,8 +7,8 @@
 GE_EXPORT void
 theme_init (GTypeModule * module)
 {
-	industrial_rc_style_register_type (module);
-	industrial_style_register_type (module);
+	industrial_rc_style_register_types (module);
+	industrial_style_register_types (module);
 }
 
 GE_EXPORT void
@@ -21,3 +21,4 @@ theme_create_rc_style (void)
 {
 	return GTK_RC_STYLE (g_object_new (INDUSTRIAL_TYPE_RC_STYLE, NULL));
 }
+

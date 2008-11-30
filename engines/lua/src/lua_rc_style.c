@@ -1,8 +1,8 @@
 #include "lua_style.h"
 #include "lua_rc_style.h"
 
-static void      lua_rc_style_init         (LuaRcStyle      *style);
-static void      lua_rc_style_class_init   (LuaRcStyleClass *klass);
+G_DEFINE_DYNAMIC_TYPE (LuaRcStyle, lua_rc_style, GTK_TYPE_RC_STYLE)
+
 static GtkStyle *lua_rc_style_create_style (GtkRcStyle             *rc_style);
 static guint     lua_rc_style_parse        (GtkRcStyle             *rc_style,
                                             GtkSettings            *settings,
@@ -10,10 +10,6 @@ static guint     lua_rc_style_parse        (GtkRcStyle             *rc_style,
 static void      lua_rc_style_merge        (GtkRcStyle             *dest,
                                             GtkRcStyle             *src);
 
-
-static GtkRcStyleClass *parent_class;
-
-GType type_lua_rc_style = 0;
 
 enum
 {
@@ -34,33 +30,17 @@ gtk2_rc_symbols[] =
 	{ "FALSE",	TOKEN_FALSE }
 };
 
-
 void
-lua_rc_style_register_type (GTypeModule *module)
+lua_rc_style_register_types (GTypeModule *module)
 {
-	static const GTypeInfo object_info =
-	{
-		sizeof (LuaRcStyleClass),
-		(GBaseInitFunc) NULL,
-		(GBaseFinalizeFunc) NULL,
-		(GClassInitFunc) lua_rc_style_class_init,
-		NULL,           /* class_finalize */
-		NULL,           /* class_data */
-		sizeof (LuaRcStyle),
-		0,              /* n_preallocs */
-		(GInstanceInitFunc) lua_rc_style_init,
-		NULL
-	};
-
-	type_lua_rc_style = g_type_module_register_type (module,
-	                                                 GTK_TYPE_RC_STYLE,
-	                                                 "LuaRcStyle",
-	                                                 &object_info, 0);
+	lua_rc_style_register_type (module);
 }
 
 static void
 lua_rc_style_init (LuaRcStyle *lua_rc)
 {
+	/* FIXME: Uhm, this is BROKEN, at least at a later point a
+	 *        non static string is assigned, and will NOT be freed. */
 	lua_rc->theme = "";
 }
 
@@ -69,11 +49,14 @@ lua_rc_style_class_init (LuaRcStyleClass *klass)
 {
 	GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
 
-	parent_class = g_type_class_peek_parent (klass);
-
 	rc_style_class->parse = lua_rc_style_parse;
 	rc_style_class->create_style = lua_rc_style_create_style;
 	rc_style_class->merge = lua_rc_style_merge;
+}
+
+static void
+lua_rc_style_class_finalize (LuaRcStyleClass *klass)
+{
 }
 
 static guint
@@ -254,7 +237,7 @@ lua_rc_style_merge (GtkRcStyle *dest,
 {
 	LuaRcStyle *dest_w, *src_w;
 	
-	parent_class->merge (dest, src);
+	GTK_RC_STYLE_CLASS (lua_rc_style_parent_class)->merge (dest, src);
 	
 	if (!IS_LUA_RC_STYLE (src))
 		return;

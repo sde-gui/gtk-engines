@@ -27,9 +27,13 @@
 #include "industrial_style.h"
 #include "industrial_rc_style.h"
 
-static GtkRcStyleClass *parent_class;
+G_DEFINE_DYNAMIC_TYPE (IndustrialRcStyle, industrial_rc_style, GTK_TYPE_RC_STYLE)
 
-GType industrial_type_rc_style = 0;
+void
+industrial_rc_style_register_types (GTypeModule *module)
+{
+	industrial_rc_style_register_type (module);
+}
 
 static void
 industrial_rc_style_init (IndustrialRcStyle *industrial_rc)
@@ -66,7 +70,7 @@ industrial_rc_style_merge (GtkRcStyle *dest,
 	IndustrialRcStyle *dest_w, *src_w;
 	IndustrialFields fields;
 
-	parent_class->merge (dest, src);
+	GTK_RC_STYLE_CLASS (industrial_rc_style_parent_class)->merge (dest, src);
 
 	if (!INDUSTRIAL_IS_RC_STYLE (src))
 		return;
@@ -91,31 +95,13 @@ industrial_rc_style_class_init (IndustrialRcStyleClass * klass)
 {
 	GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
 
-	parent_class = g_type_class_peek_parent (klass);
-
 	rc_style_class->create_style = industrial_rc_style_create_style;
 	rc_style_class->parse = industrial_rc_style_parse;
 	rc_style_class->merge = industrial_rc_style_merge;
 }
 
-void
-industrial_rc_style_register_type (GTypeModule * module)
+static void
+industrial_rc_style_class_finalize (IndustrialRcStyleClass *klass)
 {
-	static const GTypeInfo object_info = {
-		sizeof (IndustrialRcStyleClass),
-		(GBaseInitFunc) NULL,
-		(GBaseFinalizeFunc) NULL,
-		(GClassInitFunc) industrial_rc_style_class_init,
-		NULL,		/* class_finalize */
-		NULL,		/* class_data */
-		sizeof (IndustrialRcStyle),
-		0,		/* n_preallocs */
-		(GInstanceInitFunc) industrial_rc_style_init,
-		NULL
-	};
-
-	industrial_type_rc_style = g_type_module_register_type (module,
-								GTK_TYPE_RC_STYLE,
-								"IndustrialRcStyle",
-								&object_info, 0);
 }
+

@@ -1,8 +1,9 @@
 #include "thinice_rc_style.h"
 #include "thinice_style.h"
 
-static void      thinice_rc_style_init         (ThiniceRcStyle      *style);
-static void      thinice_rc_style_class_init   (ThiniceRcStyleClass *klass);
+G_DEFINE_DYNAMIC_TYPE (ThiniceRcStyle, thinice_rc_style, GTK_TYPE_RC_STYLE)
+
+
 static guint     thinice_rc_style_parse        (GtkRcStyle          *rc_style,
 					       GtkSettings          *settings,
 					       GScanner             *scanner);
@@ -45,30 +46,10 @@ thinice_rc_symbols[] =
 
 static guint n_thinice_rc_symbols = sizeof(thinice_rc_symbols) / sizeof(thinice_rc_symbols[0]);
 
-static GtkRcStyleClass *thinice_parent_rc_style_class;
-
-GType thinice_type_rc_style = 0;
-
 void
-thinice_rc_style_register_type (GTypeModule *module)
+thinice_rc_style_register_types (GTypeModule *module)
 {
-  static const GTypeInfo object_info =
-  {
-    sizeof (ThiniceRcStyleClass),
-    (GBaseInitFunc) NULL,
-    (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) thinice_rc_style_class_init,
-    NULL,           /* class_finalize */
-    NULL,           /* class_data */
-    sizeof (ThiniceRcStyle),
-    0,              /* n_preallocs */
-    (GInstanceInitFunc) thinice_rc_style_init,
-  };
-  
-  thinice_type_rc_style = g_type_module_register_type (module,
-						      GTK_TYPE_RC_STYLE,
-						      "ThiniceRcStyle",
-						      &object_info, 0);
+	thinice_rc_style_register_type (module);
 }
 
 static void
@@ -82,11 +63,14 @@ thinice_rc_style_class_init (ThiniceRcStyleClass *klass)
 {
   GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
 
-  thinice_parent_rc_style_class = g_type_class_peek_parent (klass);
-
   rc_style_class->parse = thinice_rc_style_parse;
   rc_style_class->merge = thinice_rc_style_merge;
   rc_style_class->create_style = thinice_rc_style_create_style;
+}
+
+static void
+thinice_rc_style_class_finalize (ThiniceRcStyleClass *klass)
+{
 }
 
 #if 0
@@ -400,7 +384,7 @@ thinice_rc_style_merge (GtkRcStyle * dest,
     dest_data->flags = dest_data->flags | src_data->flags;
   }
   
-  thinice_parent_rc_style_class->merge (dest, src);
+  GTK_RC_STYLE_CLASS (thinice_rc_style_parent_class)->merge (dest, src);
 }
 
 /* Create an empty style suitable to this RC style

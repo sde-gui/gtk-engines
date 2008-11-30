@@ -1535,8 +1535,12 @@ glide_draw_flat_box (GtkStyle * style,
 		cairo_destroy(canvas);
 	}
 	else
+	{
+		GtkStyleClass *glide_parent_class;
+		glide_parent_class = GTK_STYLE_CLASS (g_type_class_peek_parent (G_OBJECT_GET_CLASS(style)));
 		glide_parent_class->draw_flat_box (style, window, state_type, shadow_type, area,
 							widget, detail, x, y, width, height);
+	}
 }
 
 /***********************************************
@@ -2210,6 +2214,8 @@ glide_draw_focus(GtkStyle *style,
 
 	if (interior_focus)
 	{
+		GtkStyleClass *glide_parent_class;
+		glide_parent_class = GTK_STYLE_CLASS (g_type_class_peek_parent (G_OBJECT_GET_CLASS(style)));
 		glide_parent_class->draw_focus(style, window, state_type, area, widget, detail, x, y, width, height);
 	}
 	else

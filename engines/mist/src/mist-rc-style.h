@@ -4,9 +4,7 @@
 typedef struct _MistRcStyle MistRcStyle;
 typedef struct _MistRcStyleClass MistRcStyleClass;
 
-GE_INTERNAL extern GType mist_type_rc_style;
-
-#define MIST_TYPE_RC_STYLE              mist_type_rc_style
+#define MIST_TYPE_RC_STYLE              (mist_rc_style_get_type ())
 #define MIST_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), MIST_TYPE_RC_STYLE, MistRcStyle))
 #define MIST_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), MIST_TYPE_RC_STYLE, MistRcStyleClass))
 #define MIST_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), MIST_TYPE_RC_STYLE))
@@ -21,4 +19,6 @@ struct _MistRcStyleClass {
 	GtkRcStyleClass parent_class;
 };
 
-GE_INTERNAL void mist_rc_style_register_type (GTypeModule *module);
+GE_INTERNAL void  mist_rc_style_register_types (GTypeModule *module);
+GE_INTERNAL GType mist_rc_style_get_type       (void);
+

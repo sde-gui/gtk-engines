@@ -1,8 +1,8 @@
 #include "mist-rc-style.h"
 #include "mist-style.h"
 
-static void      mist_rc_style_init         (MistRcStyle      *style);
-static void      mist_rc_style_class_init   (MistRcStyleClass *klass);
+G_DEFINE_DYNAMIC_TYPE (MistRcStyle, mist_rc_style, GTK_TYPE_RC_STYLE)
+
 static guint     mist_rc_style_parse        (GtkRcStyle       *rc_style,
 					     GtkSettings      *settings,
 					     GScanner         *scanner);
@@ -10,30 +10,10 @@ static void      mist_rc_style_merge        (GtkRcStyle       *dest,
 					     GtkRcStyle       *src);
 static GtkStyle *mist_rc_style_create_style (GtkRcStyle       *rc_style);
 
-static GtkRcStyleClass *mist_parent_rc_style_class;
-
-GType mist_type_rc_style = 0;
-
 void
-mist_rc_style_register_type (GTypeModule *module)
+mist_rc_style_register_types (GTypeModule *module)
 {
-	static const GTypeInfo object_info =
-		{
-			sizeof (MistRcStyleClass),
-			(GBaseInitFunc) NULL,
-			(GBaseFinalizeFunc) NULL,
-			(GClassInitFunc) mist_rc_style_class_init,
-			NULL,           /* class_finalize */
-			NULL,           /* class_data */
-			sizeof (MistRcStyle),
-			0,              /* n_preallocs */
-			(GInstanceInitFunc) mist_rc_style_init,
-		};
-	
-	mist_type_rc_style = g_type_module_register_type (module,
-							  GTK_TYPE_RC_STYLE,
-							  "MistRcStyle",
-							  &object_info, 0);
+	mist_rc_style_register_type (module);
 }
 
 static void
@@ -45,11 +25,15 @@ static void
 mist_rc_style_class_init (MistRcStyleClass *klass)
 {
 	GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
-	mist_parent_rc_style_class = g_type_class_peek_parent (klass);
 	
 	rc_style_class->parse = mist_rc_style_parse;
 	rc_style_class->merge = mist_rc_style_merge;
 	rc_style_class->create_style = mist_rc_style_create_style;
+}
+
+static void
+mist_rc_style_class_finalize (MistRcStyleClass *klass)
+{
 }
 
 static guint
@@ -96,7 +80,7 @@ static void
 mist_rc_style_merge (GtkRcStyle * dest,
 		     GtkRcStyle * src)
 {
-	mist_parent_rc_style_class->merge (dest, src);
+	GTK_RC_STYLE_CLASS (mist_rc_style_parent_class)->merge (dest, src);
 }
 
 /* Create an empty style suitable to this RC style

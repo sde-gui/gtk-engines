@@ -13,7 +13,6 @@ libindustrial_la_SOURCES = \
 	./src/industrial_theme_main.c
 
 EXTRA_DIST = \
-	./src/industrial_style_versioned_code.h		\
 	./src/parse_rc_style.h				\
 	./AUTHORS
 

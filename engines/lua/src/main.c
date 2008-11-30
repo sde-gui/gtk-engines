@@ -7,8 +7,8 @@
 GE_EXPORT void
 theme_init (GTypeModule *module)
 {
-	lua_rc_style_register_type (module);
-	lua_style_register_type (module);
+	lua_rc_style_register_types (module);
+	lua_style_register_types (module);
 }
 
 GE_EXPORT void

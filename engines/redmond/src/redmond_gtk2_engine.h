@@ -31,9 +31,8 @@
 /*****************************/
 /* RC Style Declaration      */
 /*****************************/
-GE_INTERNAL extern GType redmond_type_rc_style;
- 
-#define REDMOND_TYPE_RC_STYLE              redmond_type_rc_style
+
+#define REDMOND_TYPE_RC_STYLE              (redmond_rc_style_get_type ())
 #define REDMOND_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), REDMOND_TYPE_RC_STYLE, RedmondRcStyle))
 #define REDMOND_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), REDMOND_TYPE_RC_STYLE, RedmondRcStyleClass))
 #define REDMOND_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), REDMOND_TYPE_RC_STYLE))
@@ -49,13 +48,14 @@ typedef struct
 {
   GtkRcStyleClass parent_class;
 } RedmondRcStyleClass;
+
+GE_INTERNAL GType redmond_rc_style_get_type (void);
  
 /*****************************/
 /* Drawing Style Declaration */
 /*****************************/
-GE_INTERNAL extern GType redmond_type_style;
  
-#define REDMOND_TYPE_STYLE              redmond_type_style
+#define REDMOND_TYPE_STYLE              (redmond_style_get_type ())
 #define REDMOND_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), REDMOND_TYPE_STYLE, RedmondStyle))
 #define REDMOND_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), REDMOND_TYPE_STYLE, RedmondStyleClass))
 #define REDMOND_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), REDMOND_TYPE_STYLE))
@@ -78,3 +78,6 @@ typedef struct
 {
   GtkStyleClass parent_class;
 } RedmondStyleClass;
+
+GE_INTERNAL GType redmond_style_get_type (void);
+

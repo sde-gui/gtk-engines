@@ -32,9 +32,8 @@
 /*****************************/
 /* RC Style Declaration      */
 /*****************************/
-GE_INTERNAL extern GType glide_type_rc_style;
  
-#define GLIDE_TYPE_RC_STYLE              glide_type_rc_style
+#define GLIDE_TYPE_RC_STYLE              (glide_rc_style_get_type ())
 #define GLIDE_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GLIDE_TYPE_RC_STYLE, GlideRcStyle))
 #define GLIDE_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLIDE_TYPE_RC_STYLE, GlideRcStyleClass))
 #define GLIDE_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GLIDE_TYPE_RC_STYLE))
@@ -50,14 +49,14 @@ typedef struct
 {
   GtkRcStyleClass parent_class;
 } GlideRcStyleClass;
+
+GE_INTERNAL GType glide_rc_style_get_type (void);
  
 /*****************************/
 /* Drawing Style Declaration */
 /*****************************/
-GE_INTERNAL extern GType glide_type_style;
-GE_INTERNAL extern GtkStyleClass *glide_parent_class;
  
-#define GLIDE_TYPE_STYLE              glide_type_style
+#define GLIDE_TYPE_STYLE              (glide_style_get_type ())
 #define GLIDE_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GLIDE_TYPE_STYLE, GlideStyle))
 #define GLIDE_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GLIDE_TYPE_STYLE, GlideStyleClass))
 #define GLIDE_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GLIDE_TYPE_STYLE))
@@ -82,3 +81,7 @@ typedef struct
 {
   GtkStyleClass parent_class;
 } GlideStyleClass;
+
+GE_INTERNAL GType glide_style_get_type (void);
+
+

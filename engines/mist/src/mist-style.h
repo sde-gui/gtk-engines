@@ -4,9 +4,7 @@
 typedef struct _MistStyle MistStyle;
 typedef struct _MistStyleClass MistStyleClass;
 
-GE_INTERNAL extern GType mist_type_style;
-
-#define MIST_TYPE_STYLE              mist_type_style
+#define MIST_TYPE_STYLE              (mist_style_get_type ())
 #define MIST_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), MIST_TYPE_STYLE, MistStyle))
 #define MIST_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), MIST_TYPE_STYLE, MistStyleClass))
 #define MIST_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), MIST_TYPE_STYLE))
@@ -25,5 +23,6 @@ struct _MistStyleClass
   GtkStyleClass parent_class;
 };
 
-GE_INTERNAL void mist_style_register_type (GTypeModule *module);
+GE_INTERNAL void  mist_style_register_types (GTypeModule *module);
+GE_INTERNAL GType mist_style_get_type       (void);
 

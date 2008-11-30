@@ -12,8 +12,8 @@
 GE_EXPORT void
 theme_init (GTypeModule *module)
 {
-  crux_rc_style_register_type (module);
-  crux_style_register_type (module);
+  crux_rc_style_register_types (module);
+  crux_style_register_types (module);
 }
 
 GE_EXPORT void

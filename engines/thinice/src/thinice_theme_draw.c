@@ -26,10 +26,13 @@ Tomas Ögren <stric@ing.umu.se>
 
 #define DRAW_VARS    style, window, state_type, shadow_type, area, widget, detail, x, y, width, height
 
-static void thinice_style_init       (ThiniceStyle      *style);
-static void thinice_style_class_init (ThiniceStyleClass *klass);
+G_DEFINE_DYNAMIC_TYPE (ThiniceStyle, thinice_style, GTK_TYPE_STYLE)
 
-static GtkStyleClass *thinice_parent_style_class = NULL;
+void
+thinice_style_register_types (GTypeModule *module)
+{
+	thinice_style_register_type (module);
+}
 
 static void
 thinice_style_draw_hline(GtkStyle * style,
@@ -1325,30 +1328,6 @@ thinice_style_draw_handle(GtkStyle * style,
     cairo_destroy(cr);
 }
 
-GType thinice_type_style = 0;
-
-void
-thinice_style_register_type (GTypeModule *module)
-{
-  static const GTypeInfo object_info =
-  {
-    sizeof (ThiniceStyleClass),
-    (GBaseInitFunc) NULL,
-    (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) thinice_style_class_init,
-    NULL,           /* class_finalize */
-    NULL,           /* class_data */
-    sizeof (ThiniceStyle),
-    0,              /* n_preallocs */
-    (GInstanceInitFunc) thinice_style_init,
-  };
-  
-  thinice_type_style = g_type_module_register_type (module,
-						    GTK_TYPE_STYLE,
-						    "ThiniceStyle",
-						    &object_info, 0);
-}
-
 static void
 thinice_style_init (ThiniceStyle *style)
 {
@@ -1359,7 +1338,7 @@ thinice_style_realize (GtkStyle * style)
 {
   ThiniceStyle *thinice_style = THINICE_STYLE (style);
  
-  thinice_parent_style_class->realize (style);
+  GTK_STYLE_CLASS (thinice_style_parent_class)->realize (style);
  
   ge_gtk_style_to_cairo_color_cube (style, &thinice_style->color_cube);
 }
@@ -1368,8 +1347,6 @@ static void
 thinice_style_class_init (ThiniceStyleClass *klass)
 {
   GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
-
-  thinice_parent_style_class = g_type_class_peek_parent (klass);
 
   style_class->realize = thinice_style_realize;
 
@@ -1391,6 +1368,10 @@ thinice_style_class_init (ThiniceStyleClass *klass)
   style_class->draw_handle = thinice_style_draw_handle;
 }
 
+static void
+thinice_style_class_finalize (ThiniceStyleClass *klass)
+{
+}
 
 /*
 FIXME: file/font selector background OK

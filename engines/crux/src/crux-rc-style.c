@@ -6,9 +6,16 @@
 #include <stdio.h>
 #include <string.h>
 
-GType crux_type_rc_style = 0;
 
 static GtkStyle *crux_rc_style_create_style (GtkRcStyle *rc_style);
+
+G_DEFINE_DYNAMIC_TYPE (CruxRcStyle, crux_rc_style, GTK_TYPE_RC_STYLE)
+
+void
+crux_rc_style_register_types (GTypeModule *module)
+{
+	crux_rc_style_register_type (module);
+}
 
 static void
 crux_rc_style_class_init (CruxRcStyleClass *klass)
@@ -17,30 +24,19 @@ crux_rc_style_class_init (CruxRcStyleClass *klass)
 	rc_style_class->create_style = crux_rc_style_create_style;
 }
 
-void
-crux_rc_style_register_type (GTypeModule *module)
-{
-  static const GTypeInfo object_info =
-  {
-    sizeof (CruxRcStyleClass),
-    (GBaseInitFunc) NULL,
-    (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) crux_rc_style_class_init,
-    NULL,           /* class_finalize */
-    NULL,           /* class_data */
-    sizeof (CruxRcStyle),
-    0,              /* n_preallocs */
-    (GInstanceInitFunc) NULL,
-  };
-
-  crux_type_rc_style = g_type_module_register_type (module,
-                                                      GTK_TYPE_RC_STYLE,
-                                                      "CruxRcStyle",
-                                                      &object_info, 0);
-}
-
 static GtkStyle *
 crux_rc_style_create_style (GtkRcStyle *rc_style)
 {
-  return GTK_STYLE (g_object_new (CRUX_TYPE_STYLE, NULL));
+	return GTK_STYLE (g_object_new (CRUX_TYPE_STYLE, NULL));
 }
+
+static void
+crux_rc_style_init (CruxRcStyle *rc_style)
+{
+}
+
+static void
+crux_rc_style_class_finalize (CruxRcStyleClass *klass)
+{
+}
+

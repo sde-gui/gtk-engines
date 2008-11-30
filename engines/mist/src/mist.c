@@ -6,8 +6,8 @@
 GE_EXPORT void
 theme_init (GTypeModule *module)
 {
-	mist_rc_style_register_type (module);
-	mist_style_register_type (module);
+	mist_rc_style_register_types (module);
+	mist_style_register_types (module);
 }
 
 GE_EXPORT void

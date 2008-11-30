@@ -43,7 +43,6 @@ theme_symbols[] =
 /**********************************/ 
 /* Register & Initialize RC Style */ 
 /**********************************/ 
-GType glide_type_rc_style = 0;
  
 /* Create an empty style suitable to this RC style */ 
 static GtkStyle *
@@ -60,32 +59,23 @@ glide_rc_style_class_init (GlideRcStyleClass * klass)
   rc_style_class->create_style = glide_rc_style_create_style;
 }
  
+G_DEFINE_DYNAMIC_TYPE (GlideRcStyle, glide_rc_style, GTK_TYPE_RC_STYLE)
+
 static void
-glide_rc_style_register_type (GTypeModule * module)
+glide_rc_style_class_finalize (GlideRcStyleClass *klass)
 {
-  static const GTypeInfo object_info = {
-    sizeof (GlideRcStyleClass),
-    (GBaseInitFunc) NULL,
-    (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) glide_rc_style_class_init,
-    NULL,			/* class_finalize */
-    NULL,			/* class_data */
-    sizeof (GlideRcStyle),
-    0,				/* n_preallocs */
-    (GInstanceInitFunc) NULL,
-  };
- 
-  glide_type_rc_style = g_type_module_register_type (module,
-						       GTK_TYPE_RC_STYLE,
-						       "GlideRcStyle",
-						       &object_info, 0);
 }
- 
+
+static void
+glide_rc_style_init (GlideRcStyle *self)
+{
+}
+
 /***************************************/ 
 /* Register & Initialize Drawing Style */ 
 /***************************************/ 
-GType glide_type_style = 0;
-GtkStyleClass *glide_parent_class;
+
+G_DEFINE_DYNAMIC_TYPE (GlideStyle, glide_style, GTK_TYPE_STYLE)
 
 static void
 glide_linear_overlay_pattern(gboolean vertical, gboolean EVIL_OVERLAY, CairoPattern *pattern)
@@ -139,7 +129,7 @@ glide_style_realize (GtkStyle * style)
 	GlideStyle *glide_style = GLIDE_STYLE (style);
 	int i;
  
-	glide_parent_class->realize (style);
+	GTK_STYLE_CLASS (glide_style_parent_class)->realize (style);
  
 	ge_gtk_style_to_cairo_color_cube (style, &glide_style->color_cube);
 
@@ -202,15 +192,13 @@ glide_style_unrealize (GtkStyle * style)
 		ge_cairo_pattern_destroy(glide_style->active_tab_gradient[GTK_POS_BOTTOM][i]);
 	}
  
-	glide_parent_class->unrealize (style);
+	GTK_STYLE_CLASS (glide_style_parent_class)->unrealize (style);
 }
  
 static void
 glide_style_class_init (GlideStyleClass * klass)
 {
   GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
- 
-  glide_parent_class = g_type_class_peek_parent (klass);
  
   style_class->realize = glide_style_realize;
   style_class->unrealize = glide_style_unrealize;
@@ -234,26 +222,15 @@ glide_style_class_init (GlideStyleClass * klass)
 }
   
 static void
-glide_style_register_type (GTypeModule * module)
+glide_style_class_finalize (GlideStyleClass *klass)
 {
-  static const GTypeInfo object_info = {
-    sizeof (GlideStyleClass),
-    (GBaseInitFunc) NULL,
-    (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) glide_style_class_init,
-    NULL,			/* class_finalize */
-    NULL,			/* class_data */
-    sizeof (GlideStyle),
-    0,				/* n_preallocs */
-    (GInstanceInitFunc) NULL,
-  };
- 
-  glide_type_style = g_type_module_register_type (module,
-						    GTK_TYPE_STYLE,
-						    "GlideStyle",
-						    &object_info, 0);
 }
- 
+
+static void
+glide_style_init (GlideStyle *self)
+{
+}
+
 /****************/ 
 /* Engine Hooks */ 
 /****************/ 

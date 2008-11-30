@@ -7,9 +7,7 @@
 typedef struct _LuaStyle LuaStyle;
 typedef struct _LuaStyleClass LuaStyleClass;
 
-GE_INTERNAL extern GType type_lua_style;
-
-#define TYPE_LUA_STYLE              type_lua_style
+#define TYPE_LUA_STYLE              (lua_style_get_type ())
 #define LUA_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), TYPE_LUA_STYLE, LuaStyle))
 #define LUA_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_LUA_STYLE, LuaStyleClass))
 #define LUA_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), TYPE_LUA_STYLE))
@@ -42,4 +40,6 @@ struct _LuaStyleClass
 };
 
 
-GE_INTERNAL void lua_style_register_type (GTypeModule *module);
+GE_INTERNAL void  lua_style_register_types (GTypeModule *module);
+GE_INTERNAL GType lua_style_get_type (void);
+

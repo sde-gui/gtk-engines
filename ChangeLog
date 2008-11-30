@@ -1,5 +1,10 @@
 2008-11-30  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* engines/*:
+	Use G_DEFINE_DYNAMIC_TYPE everywhere. Bug #549830.
+
+2008-11-30  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_draw_radiobutton):
 	* engines/clearlooks/src/clearlooks_draw_gummy.c:

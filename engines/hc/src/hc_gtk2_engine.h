@@ -27,10 +27,8 @@
 /*****************************/
 /* RC Style Declaration      */
 /*****************************/
-GE_INTERNAL extern GType hc_type_rc_style;
-GE_INTERNAL extern GtkStyleClass *hc_parent_class;
  
-#define HC_TYPE_RC_STYLE              hc_type_rc_style
+#define HC_TYPE_RC_STYLE              (hc_rc_style_get_type ())
 #define HC_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), HC_TYPE_RC_STYLE, HcRcStyle))
 #define HC_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), HC_TYPE_RC_STYLE, HcRcStyleClass))
 #define HC_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), HC_TYPE_RC_STYLE))
@@ -57,13 +55,14 @@ typedef struct
 {
   GtkRcStyleClass parent_class;
 } HcRcStyleClass;
+
+GE_INTERNAL GType hc_rc_style_get_type (void);
  
 /*****************************/
 /* Drawing Style Declaration */
 /*****************************/
-GE_INTERNAL extern GType hc_type_style;
  
-#define HC_TYPE_STYLE              hc_type_style
+#define HC_TYPE_STYLE              (hc_style_get_type ())
 #define HC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), HC_TYPE_STYLE, HcStyle))
 #define HC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), HC_TYPE_STYLE, HcStyleClass))
 #define HC_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), HC_TYPE_STYLE))
@@ -84,3 +83,6 @@ typedef struct
 {
   GtkStyleClass parent_class;
 } HcStyleClass;
+
+GE_INTERNAL GType hc_style_get_type (void);
+

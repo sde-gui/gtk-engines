@@ -379,11 +379,17 @@ hc_draw_flat_box (GtkStyle	*style,
                   gint		 height)
 {
 	if (detail && !strcmp ("tooltip", detail))
+	{
 		hc_draw_box (style, window, state_type, shadow_type, area,
 				widget, detail, x, y, width, height);
+	}
 	else
+	{
+		GtkStyleClass *hc_parent_class;
+		hc_parent_class = GTK_STYLE_CLASS (g_type_class_peek_parent (G_OBJECT_GET_CLASS(style)));
 		hc_parent_class->draw_flat_box (style, window, state_type, shadow_type, area,
 							widget, detail, x, y, width, height);
+	}
 }
 
 

@@ -17,10 +17,16 @@ Thinice Authors: Tim Gerla <timg@rrv.net>
 #define YTHICKNESS(style) (style->ythickness)
 #define XTHICKNESS(style) (style->xthickness)
 
-static GtkStyleClass *mist_parent_style_class = NULL;
+G_DEFINE_DYNAMIC_TYPE (MistStyle, mist_style, GTK_TYPE_STYLE)
 
 static void mist_style_init       (MistStyle      *style);
 static void mist_style_class_init (MistStyleClass *klass);
+
+void
+mist_style_register_types (GTypeModule *module)
+{
+	mist_style_register_type (module);
+}
 
 static GtkShadowType
 mist_get_shadow_type (GtkStyle *style, const char *detail, GtkShadowType requested)
@@ -1366,29 +1372,6 @@ mist_style_draw_focus (GtkStyle *style,
 	cairo_destroy (cr);
 }
 
-GType mist_type_style = 0;
-
-void
-mist_style_register_type (GTypeModule *module)
-{
-	static const GTypeInfo object_info = {
-		sizeof (MistStyleClass),
-		(GBaseInitFunc) NULL,
-		(GBaseFinalizeFunc) NULL,
-		(GClassInitFunc) mist_style_class_init,
-		NULL,           /* class_finalize */
-		NULL,           /* class_data */
-		sizeof (MistStyle),
-		0,              /* n_preallocs */
-		(GInstanceInitFunc) mist_style_init,
-	};
-	
-	mist_type_style = g_type_module_register_type (module,
-						       GTK_TYPE_STYLE,
-						       "MistStyle",
-						       &object_info, 0);
-}
-
 static void
 mist_style_init (MistStyle *style)
 {
@@ -1399,7 +1382,7 @@ mist_style_realize (GtkStyle * style)
 {
   MistStyle *mist_style = MIST_STYLE (style);
  
-  mist_parent_style_class->realize (style);
+  GTK_STYLE_CLASS (mist_style_parent_class)->realize (style);
  
   ge_gtk_style_to_cairo_color_cube (style, &mist_style->color_cube);
 }
@@ -1408,8 +1391,6 @@ static void
 mist_style_class_init (MistStyleClass *klass)
 {
 	GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
-	
-	mist_parent_style_class = g_type_class_peek_parent (klass);
 	
 	style_class->realize = mist_style_realize;
 
@@ -1431,4 +1412,9 @@ mist_style_class_init (MistStyleClass *klass)
 	style_class->draw_layout = mist_style_draw_layout;
 	style_class->render_icon = mist_style_render_icon;
 	style_class->draw_focus = mist_style_draw_focus;
+}
+
+static void
+mist_style_class_finalize (MistStyleClass *klass)
+{
 }

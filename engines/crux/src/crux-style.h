@@ -10,7 +10,7 @@ G_BEGIN_DECLS
 
 GE_INTERNAL extern GType crux_type_style;
 
-#define CRUX_TYPE_STYLE              crux_type_style
+#define CRUX_TYPE_STYLE              (crux_style_get_type ())
 #define CRUX_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), CRUX_TYPE_STYLE, CruxStyle))
 #define CRUX_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CRUX_TYPE_STYLE, CruxStyleClass))
 #define CRUX_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), CRUX_TYPE_STYLE))
@@ -31,7 +31,8 @@ struct _CruxStyleClass
 
 };
 
-GE_INTERNAL void crux_style_register_type (GTypeModule *module);
+GE_INTERNAL void  crux_style_register_types (GTypeModule *module);
+GE_INTERNAL GType crux_style_get_type       (void);
 
 G_END_DECLS
 
