@@ -2120,11 +2120,13 @@ clearlooks_draw_radiobutton (cairo_t *cr,
 	{
 		if (inconsistent)
 		{
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-			cairo_set_line_width (cr, ceil (radius * 2 / 3));
+			gdouble line_width = floor (radius * 2 / 3);
 
-			cairo_move_to (cr, ceil (cx - radius/3.0), ceil (cy));
-			cairo_line_to (cr, ceil (cx + radius/3.0), ceil (cy));
+			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+			cairo_set_line_width (cr, line_width);
+
+			cairo_move_to (cr, ceil (cx - radius/3.0 - line_width) + line_width, ceil (cy - line_width) + line_width);
+			cairo_line_to (cr, floor (cx + radius/3.0 + line_width) - line_width, ceil (cy - line_width) + line_width);
 
 			ge_cairo_set_color (cr, dot);
 			cairo_stroke (cr);

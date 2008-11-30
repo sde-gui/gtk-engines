@@ -1,3 +1,11 @@
+2008-11-30  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_radiobutton):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c:
+	(clearlooks_gummy_draw_radiobutton):
+	Fix inconsistent radio button drawing.
+
 2008-11-30  Paolo Borelli  <pborelli@katamail.com>
 
 	* engines/clearlooks/src/clearlooks_style.c
