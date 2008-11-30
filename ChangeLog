@@ -1,3 +1,10 @@
+2008-11-30  Paolo Borelli  <pborelli@katamail.com>
+
+	* engines/clearlooks/src/clearlooks_style.c
+	(clearlooks_style_draw_box):
+	Make sure cairo_destroy is called when detail is buttondefault.
+	Reviewed by Andrea Cimitan.
+
 2008-11-28  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/industrial/src/parse_rc_style.h:
