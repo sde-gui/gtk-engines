@@ -1,5 +1,10 @@
 2008-12-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* configure.ac:
+	Post release bumb to 2.17.2.
+
+2008-12-01  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* NEWS:
 	2.17.1 release.
 
