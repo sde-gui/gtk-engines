@@ -1,3 +1,21 @@
+Overview of Changes in 2.17.1 (since 2.17.0)
+============================================
+
+Changes in this release:
+ - A leak in Clearlooks that happened for default buttons was fixed.
+ - The Clearlooks inconsistent radio indicator drawing was fixed.
+
+GNOME Bugs fixed in this release:
+ 560042 – Sub-optimal -I flag ordering
+ 560443 – GNOME Goal: Remove deprecated GLib symbols
+ 549830 – Use G_DEFINE_DYNAMIC_TYPE in theme engines
+
+New and udpated translations:
+ Daniel Nylander (sv)
+ Jorge González (es)
+ Laurent Dhima (sq)
+
+
 Overview of Changes in 2.17.0 (since 2.16.0)
 ============================================
 
