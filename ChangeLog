@@ -1,5 +1,10 @@
 2008-12-07  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* NEWS:
+	2.17.2 release (for the build fix)
+
+2008-12-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* engines/industrial/src/industrial_style.c:
 	(industrial_style_class_finalize):
 	Add industrial_style_class_finalize. Bug #563256.
