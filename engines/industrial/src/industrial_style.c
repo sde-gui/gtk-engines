@@ -1722,4 +1722,7 @@ industrial_style_class_init (IndustrialStyleClass * klass)
 	style_class->render_icon = render_icon;
 }
 
-
+static void
+industrial_style_class_finalize (IndustrialStyleClass *klass)
+{
+}

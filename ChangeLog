@@ -1,3 +1,9 @@
+2008-12-07  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/industrial/src/industrial_style.c:
+	(industrial_style_class_finalize):
+	Add industrial_style_class_finalize. Bug #563256.
+
 2008-12-01  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* configure.ac:
