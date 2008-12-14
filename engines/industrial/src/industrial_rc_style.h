@@ -24,7 +24,7 @@
  * modified by Benjamin Berg <benjamin@sipsolutions.net>
  **/
 
-#include <gtk/gtkrc.h>
+#include <gtk/gtk.h>
 
 typedef struct _IndustrialRcStyle IndustrialRcStyle;
 typedef struct _IndustrialRcStyleClass IndustrialRcStyleClass;

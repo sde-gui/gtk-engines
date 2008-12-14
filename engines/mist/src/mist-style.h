@@ -1,4 +1,4 @@
-#include <gtk/gtkstyle.h>
+#include <gtk/gtk.h>
 #include "ge-support.h"
 
 typedef struct _MistStyle MistStyle;

@@ -23,7 +23,7 @@
  * modified by Christopher Lahey <clahey@ximian.com>
  * modified by Benjamin Berg <benjamin@sipsolutions.net>
  */
-#include <gtk/gtkstyle.h>
+#include <gtk/gtk.h>
 
 #include "ge-support.h"
 

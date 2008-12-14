@@ -23,7 +23,7 @@
  * Modified by Richard Stellingwerff <remenic@gmail.com>
  */
  
-#include <gtk/gtkstyle.h>
+#include <gtk/gtk.h>
 
 #ifndef CLEARLOOKS_STYLE_H
 #define CLEARLOOKS_STYLE_H

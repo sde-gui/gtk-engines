@@ -24,7 +24,7 @@
  * Modified by Kulyk Nazar <schamane@myeburg.net>
  */
 
-#include <gtk/gtkrc.h>
+#include <gtk/gtk.h>
 #include "clearlooks_types.h"
 
 #ifndef CLEARLOOKS_RC_STYLE_H

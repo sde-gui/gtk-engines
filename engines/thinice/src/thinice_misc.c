@@ -1,6 +1,6 @@
 #include <math.h>
 #include <string.h>
-#include <gtk/gtknotebook.h>
+#include <gtk/gtk.h>
 
 #include "thinice_style.h"
 #include "thinice_rc_style.h"

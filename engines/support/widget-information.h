@@ -4,7 +4,7 @@
 
 #include "general-support.h"
 #include <glib.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 
 typedef enum {
 	GE_HINT_TREEVIEW,
