@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines 2.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-22 17:28-0300\n"
-"PO-Revision-Date: 2008-02-22 17:27-0300\n"
-"Last-Translator: Jonh Wendell <wendell@bani.com.br>\n"
+"POT-Creation-Date: 2009-01-26 11:17-0300\n"
+"PO-Revision-Date: 2009-01-26 09:36-0300\n"
+"Last-Translator: Krix Apolinário <krixapolinario@gmail.com>\n"
 "Language-Team: Portuguese/Brazil <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,62 +43,74 @@ msgid "Contrast"
 msgstr "Contraste"
 
 #: ../schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "Desabilitar o desenho do foco"
+
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Enable Animations on Progressbars"
 msgstr "Ativar Animações em Barras de Progresso"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
 msgstr "Plano"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:10
 msgid "Glossy"
 msgstr "Glossy"
 
-#: ../schema/clearlooks.xml.in.in.h:10
+#: ../schema/clearlooks.xml.in.in.h:11
 msgid "Gummy"
 msgstr "Gummy"
 
-#: ../schema/clearlooks.xml.in.in.h:11
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Inset"
 msgstr "Baixo Relevo"
 
-#: ../schema/clearlooks.xml.in.in.h:12
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Inverted"
 msgstr "Invertido"
 
-#: ../schema/clearlooks.xml.in.in.h:13
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
 msgstr "Estilo da Barra de Menu"
 
-#: ../schema/clearlooks.xml.in.in.h:14
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Radius"
 msgstr "Raio"
 
-#: ../schema/clearlooks.xml.in.in.h:15
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Relief Style"
 msgstr "Estilo do Relevo"
 
-#: ../schema/clearlooks.xml.in.in.h:16
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Requires style Glossy or Gummy"
 msgstr "Requer o estilo Glossy ou Gummy"
 
-#: ../schema/clearlooks.xml.in.in.h:17
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
 msgstr "Cor da Barra de Rolagem"
 
-#: ../schema/clearlooks.xml.in.in.h:18
+#: ../schema/clearlooks.xml.in.in.h:19
 msgid "Sets the Color of Scrollbars"
 msgstr "Define a Cor da Barra de Rolagem"
 
-#: ../schema/clearlooks.xml.in.in.h:19
+#: ../schema/clearlooks.xml.in.in.h:20
 msgid "Shadow"
 msgstr "Com Sombras"
 
-#: ../schema/clearlooks.xml.in.in.h:20
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Style"
 msgstr "Estilo"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr ""
+"Esta opção permite desabilitar o desenho do foco. O objetivo principal é o "
+"de criar capturas de tela para documentação."
+
+#: ../schema/clearlooks.xml.in.in.h:23
 msgid "Toolbar Style"
 msgstr "Estilo da Barra de Ferramentas"
 
