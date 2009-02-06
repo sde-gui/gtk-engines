@@ -1,14 +1,14 @@
 # Thai translation of gtk-engines.
-# Copyright (C) 2007-2008 Free Software Foundation, Inc.
+# Copyright (C) 2007-2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gtk-engines package.
-# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2007-2008.
+# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2007-2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines 2.11.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-09 14:55+0700\n"
-"PO-Revision-Date: 2008-02-09 15:41+0700\n"
+"POT-Creation-Date: 2009-02-06 21:31+0700\n"
+"PO-Revision-Date: 2009-02-06 21:54+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -40,62 +40,74 @@ msgid "Contrast"
 msgstr "ความต่างระดับสี"
 
 #: schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "ปิดการวาดโฟกัส"
+
+#: schema/clearlooks.xml.in.in.h:8
 msgid "Enable Animations on Progressbars"
 msgstr "ใช้ภาพเคลื่อนไหวในแถบความคืบหน้า"
 
-#: schema/clearlooks.xml.in.in.h:8
+#: schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
 msgstr "แบน"
 
-#: schema/clearlooks.xml.in.in.h:9
+#: schema/clearlooks.xml.in.in.h:10
 msgid "Glossy"
 msgstr "มันวาว"
 
-#: schema/clearlooks.xml.in.in.h:10
+#: schema/clearlooks.xml.in.in.h:11
 msgid "Gummy"
 msgstr "หนึบหนับ"
 
-#: schema/clearlooks.xml.in.in.h:11
+#: schema/clearlooks.xml.in.in.h:12
 msgid "Inset"
 msgstr "ผลุบเข้า"
 
-#: schema/clearlooks.xml.in.in.h:12
+#: schema/clearlooks.xml.in.in.h:13
 msgid "Inverted"
 msgstr "กลับทาง"
 
-#: schema/clearlooks.xml.in.in.h:13
+#: schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
 msgstr "รูปแบบแถบเมนู"
 
-#: schema/clearlooks.xml.in.in.h:14
+#: schema/clearlooks.xml.in.in.h:15
 msgid "Radius"
 msgstr "รัศมี"
 
-#: schema/clearlooks.xml.in.in.h:15
+#: schema/clearlooks.xml.in.in.h:16
 msgid "Relief Style"
 msgstr "รูปแบบแสงเงา"
 
-#: schema/clearlooks.xml.in.in.h:16
+#: schema/clearlooks.xml.in.in.h:17
 msgid "Requires style Glossy or Gummy"
 msgstr "ต้องใช้สไตล์มันวาวหรือหนึบหนับ"
 
-#: schema/clearlooks.xml.in.in.h:17
+#: schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
 msgstr "สีแถบเลื่อน"
 
-#: schema/clearlooks.xml.in.in.h:18
+#: schema/clearlooks.xml.in.in.h:19
 msgid "Sets the Color of Scrollbars"
 msgstr "กำหนดสีของแถบเลื่อน"
 
-#: schema/clearlooks.xml.in.in.h:19
+#: schema/clearlooks.xml.in.in.h:20
 msgid "Shadow"
 msgstr "เงาตกกระทบ"
 
-#: schema/clearlooks.xml.in.in.h:20
+#: schema/clearlooks.xml.in.in.h:21
 msgid "Style"
 msgstr "สไตล์"
 
-#: schema/clearlooks.xml.in.in.h:21
+#: schema/clearlooks.xml.in.in.h:22
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr ""
+"ตัวเลือกนี้สามารถใช้ปิดการวาดโฟกัสได้ "
+"จุดประสงค์หลักคือใช้ในการจับภาพหน้าจอเพื่อใช้ประกอบในเอกสาร"
+
+#: schema/clearlooks.xml.in.in.h:23
 msgid "Toolbar Style"
 msgstr "รูปแบบแถบเครื่องมือ"
 
