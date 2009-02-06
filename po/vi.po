@@ -1,20 +1,20 @@
 # Vietnamese translation for GTK Engines.
-# Copyright © 2008 Gnome i18n Project for Vietnamese.
-# Clytie Siddall <clytie@riverland.net.au>, 2007-2008.
-# 
+# Copyright © 2009 GNOME i18n Project for Vietnamese.
+# Clytie Siddall <clytie@riverland.net.au>, 2007-2009.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: gtk-engines\n"
+"Project-Id-Version: gtk-engines TRUNK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-28 19:42+0000\n"
-"PO-Revision-Date: 2008-05-31 23:23+0930\n"
+"POT-Creation-Date: 2008-11-07 14:19+0100\n"
+"PO-Revision-Date: 2009-02-06 23:58+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: LocFactoryEditor 1.7b3\n"
+"X-Generator: LocFactoryEditor 1.8\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
@@ -36,67 +36,76 @@ msgstr "Cổ điển"
 msgid "Colorize Scrollbar"
 msgstr "Đặt màu của thanh cuộn"
 
-#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Tương phản"
 
 #: ../schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "Tắt chức năng vẽ tiêu điểm"
+
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Enable Animations on Progressbars"
 msgstr "Bật hoạt ảnh trên các thanh tiến hành"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
 msgstr "Phẳng"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:10
 msgid "Glossy"
 msgstr "Bóng loáng"
 
-#: ../schema/clearlooks.xml.in.in.h:10
+#: ../schema/clearlooks.xml.in.in.h:11
 msgid "Gummy"
 msgstr "Dính"
 
-#: ../schema/clearlooks.xml.in.in.h:11
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Inset"
 msgstr "Dát"
 
-#: ../schema/clearlooks.xml.in.in.h:12
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Inverted"
 msgstr "Đảo"
 
-#: ../schema/clearlooks.xml.in.in.h:13
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
 msgstr "Kiểu thanh trình đơn"
 
-#: ../schema/clearlooks.xml.in.in.h:14
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Radius"
 msgstr "Bán kính"
 
-#: ../schema/clearlooks.xml.in.in.h:15
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Relief Style"
 msgstr "Kiểu dáng đắp"
 
-#: ../schema/clearlooks.xml.in.in.h:16
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Requires style Glossy or Gummy"
 msgstr "Yêu cầu kiểu dáng Bóng loáng hay Dính"
 
-#: ../schema/clearlooks.xml.in.in.h:17
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
 msgstr "Màu thanh cuộn"
 
-#: ../schema/clearlooks.xml.in.in.h:18
+#: ../schema/clearlooks.xml.in.in.h:19
 msgid "Sets the Color of Scrollbars"
 msgstr "Đặt màu của thanh cuộn"
 
-#: ../schema/clearlooks.xml.in.in.h:19
+#: ../schema/clearlooks.xml.in.in.h:20
 msgid "Shadow"
 msgstr "Bóng"
 
-#: ../schema/clearlooks.xml.in.in.h:20
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Style"
 msgstr "Kiểu dáng"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid "This option allows to disable the focus drawing. The primary purpose is to create screenshots for documentation."
+msgstr "Tùy chọn này cho phép người dùng tắt chức năng vẽ tiêu điểm. Mục đích chính là tạo ảnh chụp màn hình cho tài liệu hướng dẫn."
+
+#: ../schema/clearlooks.xml.in.in.h:23
 msgid "Toolbar Style"
 msgstr "Kiểu thanh công cụ"
 
@@ -110,9 +119,7 @@ msgstr "Độ dày cạnh"
 
 #: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr ""
-"Kích cỡ của các cái nút chọn một và cái nút kiểm bên trong ô xem cây. (Lỗi "
-"#351764)"
+msgstr "Kích cỡ của các cái nút chọn một và cái nút kiểm bên trong ô xem cây. (Lỗi #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
@@ -197,3 +204,4 @@ msgstr "Xuyệc"
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
 msgstr "Một số"
+
