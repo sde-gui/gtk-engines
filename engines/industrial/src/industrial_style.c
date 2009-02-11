@@ -1,22 +1,32 @@
-/**************************************************************************
-* GTK Industrial Theme
-* Designed by Tigert and Jimmac
-* Implemented by Christopher James Lahey
-*
-* Based on GTK Bluecurve Theme
-* Designed by Garrett LeSage
-* Implemented by Alexander Larsson
-*
-* Parts of the code based on Metal theme, Copyright:
-* Randy Gordon, randy@integrand.com
-* Owen Taylor <otaylor@redhat.com>
-*
-* Ported to cairo by:
-* Benjamin Berg <benjamin@sipsolutions.net>
-*
-* License: GPL (Gnu Public License)
-*
-**************************************************************************/
+/* Industrial - a cairo based GTK+ engine
+ * Copyright (C) 2001 Red Hat, Inc.
+ * Copyright (C) 2002 Ximian, Inc.
+ * Copyright (C) 2006-2007 Benjamin Berg <benjamin@sipsolutions.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Project contact: <gnome-themes-list@gnome.org>
+ *
+ *
+ * Written by Owen Taylor <otaylor@redhat.com>
+ * modified by Alexander Larsson <alexl@redhat.com>
+ * modified by Christopher James Lahey <clahey@ximian.com>
+ * modified by Benjamin Berg <benjamin@sipsolutions.net>
+ *
+ */
+
 
 #include "industrial_style.h"
 #include "industrial_rc_style.h"

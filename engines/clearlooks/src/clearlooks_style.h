@@ -1,26 +1,29 @@
-/* Clearlooks theme engine
- * Copyright (C) 2005 Richard Stellingwerff.
- * Copyright (C) 2007 Benjamin Berg
- * Copyright (C) 2007 Andrea Cimitan
+/* Clearlooks - a cairo based GTK+ engine
+ * Copyright (C) 2005 Richard Stellingwerff <remenic@gmail.com>
+ * Copyright (C) 2007 Benjamin Berg <benjamin@sipsolutions.net>
+ * Copyright (C) 2007-2008 Andrea Cimitan <andrea.cimitan@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Project contact: <gnome-themes-list@gnome.org>
  *
- * Written by Owen Taylor <otaylor@redhat.com>
- * and by Alexander Larsson <alexl@redhat.com>
+ *
+ * Originally written by Owen Taylor <otaylor@redhat.com>
+ *                and by Alexander Larsson <alexl@redhat.com>
  * Modified by Richard Stellingwerff <remenic@gmail.com>
+ *
  */
  
 #include <gtk/gtk.h>
