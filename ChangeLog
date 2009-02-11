@@ -1,5 +1,10 @@
 2009-02-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* MAINTAINERS:
+	Remove Andrew and add Andrea. Also removed some old entries.
+
+2009-02-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	Move gtk-engines completely to LGPL-2.1 or any later version. To my
 	knowledge everyone has given their permission to do this change.
 
