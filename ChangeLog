@@ -1,3 +1,9 @@
+2009-02-15  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_focus):
+	Draw a "label" focus for expanders. (bug #571835, Till Berger)
+
 2009-02-11  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* MAINTAINERS:

@@ -1550,7 +1550,7 @@ clearlooks_style_draw_focus (GtkStyle *style, GdkWindow *window, GtkStateType st
 		else
 			focus.type = CL_FOCUS_COLOR_WHEEL_LIGHT;
 	}
-	else if (DETAIL("checkbutton") || DETAIL("radiobutton"))
+	else if (DETAIL("checkbutton") || DETAIL("radiobutton") || DETAIL("expander"))
 	{
 		focus.type = CL_FOCUS_LABEL; /* Let's call it "LABEL" :) */
 	}
