@@ -1,3 +1,31 @@
+Overview of Changes in 2.17.3 (since 2.17.2)
+============================================
+
+This release of gtk-engines is now solely LGPL 2.1 or any later version.
+
+GNOME Bugs fixed in this release:
+ 563787 – GNOME Goal: Clean up GLib and GTK+ includes
+ 571835 – Focus inconsistent between expander and other widgets in Clearlooks
+
+New and udpated translations:
+ Wouter Bolsterlee (nl)
+ Lucas Lommer (cs)
+ Tomasz Dominikowski (pl)
+ Gabor Kelemen (hu)
+ Iñaki Larrañaga Murgoitio (eu)
+ Gil Forcada (ca)
+ Yavor Doganov (bg)
+ Chao-Hsiung Liao (zh_HK)
+ Chao-Hsiung Liao (zh_TW)
+ Takeshi AIHANA (ja)
+ Theppitak Karoonboonyanan (th)
+ Clytie Siddall (vi)
+ Changwoo Ryu (ko)
+ Ilkka Tuohela (fi)
+ Kjartan Maraas (nb)
+ Daniel Nylander (sv)
+
+
 Overview of Changes in 2.17.2 (since 2.17.1)
 ============================================
 
