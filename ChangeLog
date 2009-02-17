@@ -1,5 +1,10 @@
 2009-02-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* Makefile.am:
+	Fix distcheck for 2.17.3.
+
+2009-02-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* NEWS:
 	Update for 2.17.3 release.
 

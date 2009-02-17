@@ -3,8 +3,6 @@ DIST_SUBDIRS = $(SUBDIRS) po
 
 EXTRA_DIST = \
 	autogen.sh	\
-	COPYING.GPL	\
-	COPYING.LGPL	\
 	gtk-engines-2.pc.in \
 	gtk-engines.spec.in \
 	gtk-engines.spec \
