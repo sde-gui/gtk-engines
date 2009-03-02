@@ -106,6 +106,9 @@ style "entry"
   xthickness = 3
   ythickness = 3
 
+  # Slightly lighter so that the selection will be visible properly
+  bg[SELECTED] = mix(0.85, @selected_bg_color, @base_color)
+
   engine "crux-engine"
   {
     thickness = 3

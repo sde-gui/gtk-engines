@@ -107,3 +107,11 @@ style "standard-progressbar" {
   fg[PRELIGHT] = { 1.0, 1.0, 1.0 }
 } 
 class "GtkProgressBar" style "standard-progressbar"
+
+
+style "standard-entry"
+{
+  bg[SELECTED] = "#1C40A8"
+  fg[SELECTED] = { 1.0, 1.0, 1.0 }
+}
+class "GtkEntry" style "standard-entry"

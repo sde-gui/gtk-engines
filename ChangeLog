@@ -1,3 +1,16 @@
+2009-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/crux/src/crux-draw.c: (paint_progress_bar), (draw_box):
+	* engines/thinice/src/thinice_theme_draw.c:
+	(thinice_style_draw_box):
+	* themes/Crux/gtk-2.0/gtkrc:
+	* themes/Industrial/gtk-2.0/gtkrc:
+	* themes/Mist/gtk-2.0/gtkrc:
+	* themes/Redmond/gtk-2.0/gtkrc:
+	* themes/ThinIce/gtk-2.0/gtkrc:
+	Some improvements for the progressbar in entries. Things could
+	certainly be better, but at least this should make it more usable.
+
 2009-02-17  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* configure.ac:

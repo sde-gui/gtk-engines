@@ -626,7 +626,7 @@ paint_scale_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOr
 
 static void
 paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkProgressBarOrientation orientation,
-		    gdouble x, gdouble y, gdouble width, gdouble height, gdouble fraction)
+		    gdouble x, gdouble y, gdouble width, gdouble height, gdouble fraction, CairoColor *base_color)
 {
 	cairo_pattern_t *crp;
 	CairoColor c1, c2;
@@ -634,8 +634,8 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	cairo_rectangle (cr, x, y, width, height);
 
 	ge_gdk_color_to_cairo (&style->base[GTK_STATE_SELECTED], &c1);
-	CRUX_DARK(c1, c2);
-	CRUX_LIGHT(c1, c1);
+	CRUX_DARK(*base_color, c2);
+	CRUX_LIGHT(*base_color, c1);
 	if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT || orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
 		crp = cairo_pattern_create_linear (x, y, x, y + height);
 	else
@@ -1020,9 +1020,10 @@ draw_box (GtkStyle *style,
 		cairo_line_to (cr, cx, cy + ch);
 		cairo_stroke (cr);
 	}
-	else if (DETAIL ("bar"))
+	else if (DETAIL ("bar") || DETAIL ("entry-progress"))
 	{
 		GtkProgressBarOrientation orientation;
+		CairoColor base_color;
 		gdouble fraction = 0;
 		if (widget && GE_IS_PROGRESS_BAR (widget))
 		{
@@ -1031,7 +1032,13 @@ draw_box (GtkStyle *style,
 		}
 		else
 			orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
-		paint_progress_bar (cr, style, state_type, orientation, x, y, width, height, fraction);
+
+		if (DETAIL ("bar"))
+			ge_gdk_color_to_cairo (&style->base[GTK_STATE_SELECTED], &base_color);
+		else
+			ge_gdk_color_to_cairo (&style->bg[state_type], &base_color);
+
+		paint_progress_bar (cr, style, state_type, orientation, x, y, width, height, fraction, &base_color);
 	}
 	else if (DETAIL ("trough") && GE_IS_SCALE (widget))
 	{

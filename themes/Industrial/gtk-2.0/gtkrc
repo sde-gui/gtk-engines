@@ -29,6 +29,8 @@ style "industrial-default"
   GtkButton::child_displacement_x = 0
   GtkButton::child_displacement_y = 1
 
+  GtkEntry::progress-border = { 0, 0, 0, 0 }
+
   GtkMenuItem::selected_shadow_type = GTK_SHADOW_IN
 
   GtkRange::activate-slider = 1
@@ -99,6 +101,16 @@ style "industrial-exterior-focus"
 style "industrial-scale"
 {
 	GtkRange::trough-side-details = 1
+}
+
+# Style for the entry progress bar -- ie. change the colors
+style "industrial-entry"
+{
+  xthickness = 2
+  ythickness = 2
+
+  bg[SELECTED] = mix (0.4, @selected_bg_color, @base_color)
+  fg[SELECTED] = @text_color
 }
 
 # generic squared buttons style, used for the tasklist (treeview is in the extra treeview style)
@@ -218,7 +230,7 @@ class "GtkRange"      style "industrial-wide"
 class "GtkMenu"       style "industrial-wide"
 class "GtkFrame"      style "industrial-wide"
 class "GtkStatusbar"  style "industrial-wide"
-class "GtkEntry"      style "industrial-wide"
+class "GtkEntry"      style "industrial-entry"
 
 class "GtkEntry"      style "industrial-exterior-focus"
 class "GtkSpinButton" style "industrial-spinbutton"

@@ -557,6 +557,10 @@ thinice_style_draw_box(GtkStyle * style,
 	{
 		draw_border=FALSE;
 	}
+	else if (CHECK_DETAIL (detail, "entry-progress"))
+	{
+        	draw_border=FALSE;
+	}
 
 
 	/***********************************************/
