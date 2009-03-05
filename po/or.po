@@ -3,24 +3,26 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Subhransu Behera <arya_subhransu@yahoo.co.in>, 2007.
+# Manoj Kumar Giri <mgiri@redhat.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-10 03:39+0100\n"
-"PO-Revision-Date: 2007-05-11 11:57+0530\n"
-"Last-Translator: Subhransu Behera <arya_subhransu@yahoo.co.in>\n"
-"Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
+"POT-Creation-Date: 2008-11-07 14:19+0100\n"
+"PO-Revision-Date: 2009-03-05 13:10+0530\n"
+"Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
+"Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms:  nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
-msgstr "ଥ୍ରୀ.ଡି. (ବଟନ)"
+msgstr "3d-ish (ବଟନ)"
 
 #: ../schema/clearlooks.xml.in.in.h:2
 msgid "3d-ish (gradient)"
@@ -30,39 +32,99 @@ msgstr "ଥ୍ରୀ.ଡି. (ଅନୁପାତ)"
 msgid "Animations"
 msgstr "ଜୀବନାୟନ"
 
-#: ../schema/clearlooks.xml.in.in.h:4 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "ଚିରପ୍ରତିଷ୍ଠିତ"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "ଦୃଶ୍ଯବଦଳା ପଟି ମାନଙ୍କର ରଙ୍ଗ ବିନ୍ଯାସ କରନ୍ତୁ"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "ଆଲୋକ ପ୍ରଦର୍ଶନର ପ୍ରଭେଦ ମାତ୍ରା"
 
-#: ../schema/clearlooks.xml.in.in.h:5
-msgid "Enable Animations on Progressbars, Radio-, and CheckButtons"
-msgstr "ଅବସ୍ଥିତି ପଟି, ରେଡିଓ -, ଏବଂ ଚିହ୍ନିତ ବଟନ ମାନଙ୍କରେ ଜୀବନାୟନକୁ ସକ୍ରିୟ କରନ୍ତୁ"
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "ଲକ୍ଷ୍ୟସ୍ଥଳ ଅଙ୍କନକୁ ନିଷ୍କ୍ରିୟ କରନ୍ତୁ"
 
-#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Enable Animations on Progressbars"
+msgstr "ଅବସ୍ଥିତି ପଟିରେ ଜୀବନାୟନକୁ ସକ୍ରିୟ କରନ୍ତୁ"
+
+#: ../schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
 msgstr "ସମତଳ"
 
-#: ../schema/clearlooks.xml.in.in.h:7
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Glossy"
+msgstr "ଚମକଦାର"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Gummy"
+msgstr "ଚିପଚିପା"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inset"
+msgstr "ଭର୍ତ୍ତିକରନ୍ତୁ"
+
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Inverted"
+msgstr "ଓଲଟା ବିନ୍ଦୁ"
+
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
 msgstr "ତାଲିକା ପଟି ଶୈଳୀ"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Radius"
+msgstr "ବ୍ୟାସାର୍ଦ୍ଧ"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Relief Style"
+msgstr "ମୁକ୍ତ ଶୈଳୀ"
+
+#: ../schema/clearlooks.xml.in.in.h:17
+msgid "Requires style Glossy or Gummy"
+msgstr "ଚମକଦାର କିମ୍ବା ଚିପଚିପା ଶୈଳୀ ଆବଶ୍ୟକ"
+
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
 msgstr "ଦୃଶ୍ଯବଦଳା ପଟି ରଙ୍ଗ"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:19
 msgid "Sets the Color of Scrollbars"
 msgstr "ଦୃଶ୍ଯବଦଳା ପଟି ମାନଙ୍କର ରଙ୍ଗ ବିନ୍ଯାସ କରନ୍ତୁ"
 
-#: ../schema/hc.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shadow"
+msgstr "ଛାୟା"
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "Style"
+msgstr "ଶୈଳୀ"
+
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr ""
+"ଏହି ବିକଳ୍ପ ଲକ୍ଷ୍ୟସ୍ଥଳ ଅଙ୍କନକୁ ନିଷ୍କ୍ରିୟ କରିବାକୁ ଅନୁମତି ଦେଇଥାଏ। ପ୍ରାଥମିକ ଉଦ୍ଦେଶ୍ୟଟି ହେଉଛି "
+"ଦଲିଲିକରଣ ପାଇଁ ପରଦା ପ୍ରତିଛବି ନିର୍ମାଣ କରନ୍ତୁ।"
+
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid "Toolbar Style"
+msgstr "ସାଧନପଟି ଶୈଳୀ"
+
+#: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
 msgstr "କୋଷ ସୂଚକ ଆକାର"
 
-#: ../schema/hc.xml.in.in.h:2
+#: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
 msgstr "ଧାର ମୋଟାଇ"
 
-#: ../schema/hc.xml.in.in.h:3
+#: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr "ବୃକ୍ଷ ପ୍ରଦର୍ଶନ ମାନଙ୍କ ମଧ୍ଯରେ ଚିହ୍ନିତ- ଏବଂ ରେଡିଓ ବଟନ ମାନଙ୍କର ଆକାର। (ତୃଟି #351764)"
 
