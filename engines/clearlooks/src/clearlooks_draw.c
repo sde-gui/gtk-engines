@@ -466,6 +466,74 @@ clearlooks_draw_entry (cairo_t *cr,
 }
 
 static void
+clearlooks_draw_entry_progress (cairo_t *cr,
+                                const ClearlooksColors *colors,
+                                const WidgetParameters *params,
+                                const EntryProgressParameters *progress,
+                                int x, int y, int width, int height)
+{
+	CairoColor border;
+	CairoColor fill;
+	gint entry_width, entry_height;
+	double entry_radius;
+	double radius;
+
+	cairo_save (cr);
+
+	fill = colors->bg[params->state_type];
+	ge_shade_color (&fill, 0.9, &border);
+
+	if (progress->max_size_known) {
+		entry_width = progress->max_size.width + progress->border.left + progress->border.right;
+		entry_height = progress->max_size.height + progress->border.top + progress->border.bottom;
+		entry_radius = MIN (params->radius, MIN ((entry_width - 4.0) / 2.0, (entry_height - 4.0) / 2.0));
+	} else {
+		entry_radius = params->radius;
+	}
+
+	radius = MAX (0, entry_radius - MAX (MAX (progress->border.left, progress->border.right),
+	                                     MAX (progress->border.top, progress->border.bottom)));
+
+	if (progress->max_size_known) {
+		/* Clip to the max size, and then draw a (larger) rectangle ... */
+		ge_cairo_rounded_rectangle (cr, progress->max_size.x,
+		                                progress->max_size.y,
+		                                progress->max_size.width,
+		                                progress->max_size.height,
+		                                radius,
+		                                CR_CORNER_ALL);
+		cairo_clip (cr);
+
+		/* We just draw wider by one pixel ... */
+		ge_cairo_set_color (cr, &fill);
+		cairo_rectangle (cr, x, y + 1, width, height - 2);
+		cairo_fill (cr);
+
+		cairo_set_line_width (cr, 1.0);
+		ge_cairo_set_color (cr, &border);
+		ge_cairo_inner_rectangle (cr, x - 1, y, width + 2, height);
+		cairo_stroke (cr);
+	} else {
+		ge_cairo_rounded_rectangle (cr, x, y, width + 10, height + 10, radius, CR_CORNER_ALL);
+		cairo_clip (cr);
+		ge_cairo_rounded_rectangle (cr, x - 10, y - 10, width + 10, height + 10, radius, CR_CORNER_ALL);
+		cairo_clip (cr);
+
+
+		ge_cairo_set_color (cr, &fill);
+		ge_cairo_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, radius, CR_CORNER_ALL);
+		cairo_fill (cr);
+
+		cairo_set_line_width (cr, 1.0);
+		ge_cairo_set_color (cr, &border);
+		ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1.0, height - 1.0, radius, CR_CORNER_ALL);
+		cairo_stroke (cr);
+	}
+
+	cairo_restore (cr);
+}
+
+static void
 clearlooks_draw_spinbutton (cairo_t *cr,
                             const ClearlooksColors *colors,
                             const WidgetParameters *params,
@@ -2390,6 +2458,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions, Clearloo
 	functions->draw_progressbar_fill    = clearlooks_draw_progressbar_fill;
 	functions->draw_slider_button       = clearlooks_draw_slider_button;
 	functions->draw_entry               = clearlooks_draw_entry;
+	functions->draw_entry_progress      = clearlooks_draw_entry_progress;
 	functions->draw_spinbutton          = clearlooks_draw_spinbutton;
 	functions->draw_spinbutton_down     = clearlooks_draw_spinbutton_down;
 	functions->draw_optionmenu          = clearlooks_draw_optionmenu;
@@ -2414,7 +2483,7 @@ clearlooks_register_style_classic (ClearlooksStyleFunctions *functions, Clearloo
 	functions->draw_handle              = clearlooks_draw_handle;
 	functions->draw_resize_grip         = clearlooks_draw_resize_grip;
 	functions->draw_arrow               = clearlooks_draw_arrow;
-	functions->draw_focus                = clearlooks_draw_focus;
+	functions->draw_focus               = clearlooks_draw_focus;
 	functions->draw_checkbox            = clearlooks_draw_checkbox;
 	functions->draw_radiobutton         = clearlooks_draw_radiobutton;
 	functions->draw_shadow              = clearlooks_draw_shadow;

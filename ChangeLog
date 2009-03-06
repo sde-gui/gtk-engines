@@ -1,3 +1,13 @@
+2009-03-06  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_entry_progress),
+	(clearlooks_register_style_classic):
+	* engines/clearlooks/src/clearlooks_style.c:
+	(clearlooks_style_draw_box):
+	* engines/clearlooks/src/clearlooks_types.h:
+	Support for entry progress drawing.
+
 2009-03-02  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* configure.ac:
