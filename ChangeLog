@@ -1,3 +1,11 @@
+2009-03-08  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_draw_entry_progress):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fix the radius of the clearlooks entry progress drawing and do the
+	necessary changes in the theme.
+
 2009-03-06  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/clearlooks/src/clearlooks_draw.c:

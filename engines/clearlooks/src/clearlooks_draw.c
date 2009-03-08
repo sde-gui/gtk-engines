@@ -491,8 +491,8 @@ clearlooks_draw_entry_progress (cairo_t *cr,
 		entry_radius = params->radius;
 	}
 
-	radius = MAX (0, entry_radius - MAX (MAX (progress->border.left, progress->border.right),
-	                                     MAX (progress->border.top, progress->border.bottom)));
+	radius = MAX (0, entry_radius + 1.0 - MAX (MAX (progress->border.left, progress->border.right),
+	                                           MAX (progress->border.top, progress->border.bottom)));
 
 	if (progress->max_size_known) {
 		/* Clip to the max size, and then draw a (larger) rectangle ... */
