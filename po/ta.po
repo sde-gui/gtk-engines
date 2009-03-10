@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Dr.T.Vasudevan <agnihot3@gmail.com>, 2007.
-# I. Felix <ifelix@redhat.com>, 2008.
+# I. Felix <ifelix@redhat.com>, 2008, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines.HEAD.ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-28 19:42+0000\n"
-"PO-Revision-Date: 2008-09-17 13:51+0530\n"
+"POT-Creation-Date: 2008-11-07 14:19+0100\n"
+"PO-Revision-Date: 2009-03-10 16:26+0530\n"
 "Last-Translator: I. Felix <ifelix@redhat.com>\n"
 "Language-Team: Tamil <fedora-trans-ta@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
+"\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
@@ -43,62 +44,72 @@ msgid "Contrast"
 msgstr "வேறுபாடு"
 
 #: ../schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "ஃபோகஸ் வரைதலை செயல்நீக்கு"
+
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Enable Animations on Progressbars"
 msgstr "முன்னேற்ற பட்டைகளில் அசைவூட்டத்தை செயல்படுத்தவும்"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
 msgstr "தட்டை"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:10
 msgid "Glossy"
 msgstr "கிளாசி"
 
-#: ../schema/clearlooks.xml.in.in.h:10
+#: ../schema/clearlooks.xml.in.in.h:11
 msgid "Gummy"
 msgstr "கம்மி"
 
-#: ../schema/clearlooks.xml.in.in.h:11
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Inset"
 msgstr "இன்செட்"
 
-#: ../schema/clearlooks.xml.in.in.h:12
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Inverted"
 msgstr "தலைகீழானது"
 
-#: ../schema/clearlooks.xml.in.in.h:13
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
 msgstr "பட்டியல்பட்டையின் பாங்கு"
 
-#: ../schema/clearlooks.xml.in.in.h:14
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Radius"
 msgstr "ரேடியஸ்"
 
-#: ../schema/clearlooks.xml.in.in.h:15
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Relief Style"
 msgstr "ரிலீஃப் தோற்றம்"
 
-#: ../schema/clearlooks.xml.in.in.h:16
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Requires style Glossy or Gummy"
 msgstr "ஸ்டைல் கிளாசி அல்லது கம்மி தேவைப்படுகிறது"
 
-#: ../schema/clearlooks.xml.in.in.h:17
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
 msgstr "உருளைப்பட்டை நிறம்"
 
-#: ../schema/clearlooks.xml.in.in.h:18
+#: ../schema/clearlooks.xml.in.in.h:19
 msgid "Sets the Color of Scrollbars"
 msgstr "உருளைப்பட்டைகளின் நிறத்தை அமைக்கிறது"
 
-#: ../schema/clearlooks.xml.in.in.h:19
+#: ../schema/clearlooks.xml.in.in.h:20
 msgid "Shadow"
 msgstr "நிழல்"
 
-#: ../schema/clearlooks.xml.in.in.h:20
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Style"
 msgstr "தோற்றம்"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr "இந்த விருப்பம் ஃபோகஸ் வரைதலை செயல்நீக்க அனுமதிக்கிறது. முதன்மை நோக்கம் ஆவணத்தின் திரைப்பிடிப்புகளை உருவாக்குவதாகும்."
+
+#: ../schema/clearlooks.xml.in.in.h:23
 msgid "Toolbar Style"
 msgstr "கருவிப்பட்டை தோற்றம்"
 
