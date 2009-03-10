@@ -1,4 +1,4 @@
-2009-03-10  Andrea Cimitan  <andrea.cimitan@gmail.com
+2009-03-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c
 	(clearlooks_draw_entry_progress):
@@ -6,7 +6,7 @@
 	(clearlooks_style_draw_box):
 	Coding style.
 
-2009-03-10  Andrea Cimitan  <andrea.cimitan@gmail.com
+2009-03-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c (clearlooks_draw_entry):
 	* engines/clearlooks/src/clearlooks_draw_gummy.c
