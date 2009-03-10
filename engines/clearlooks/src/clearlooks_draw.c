@@ -413,6 +413,7 @@ static void
 clearlooks_draw_entry (cairo_t *cr,
                        const ClearlooksColors *colors,
                        const WidgetParameters *params,
+                       const FocusParameters  *focus,
                        int x, int y, int width, int height)
 {
 	const CairoColor *base = &colors->base[params->state_type];
@@ -420,7 +421,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	double radius = MIN (params->radius, MIN ((width - 4.0) / 2.0, (height - 4.0) / 2.0));
 
 	if (params->focus)
-		border = colors->spot[2];
+		border = focus->color;
 
 	cairo_save (cr);
 
@@ -437,6 +438,7 @@ clearlooks_draw_entry (cairo_t *cr,
 	/* Draw the inner shadow */
 	if (params->focus)
 	{
+		/* XXX Fix this with focus->has_color */
 		ge_cairo_set_color (cr, &colors->spot[0]);
 		ge_cairo_inner_rounded_rectangle (cr, 2, 2, width-4, height-4, MAX(0, radius-1), params->corners);
 		cairo_stroke (cr);

@@ -370,6 +370,7 @@ struct _ClearlooksStyleFunctions
 	void (*draw_entry)            (cairo_t *cr,
 	                               const ClearlooksColors *colors,
 	                               const WidgetParameters *widget,
+	                               const FocusParameters  *focus,
 	                               int x, int y, int width, int height);
 
 	void (*draw_entry_progress)   (cairo_t *cr,

@@ -100,6 +100,10 @@ style "entry" {
 
 	bg[SELECTED] = mix (0.4, @selected_bg_color, @base_color)
 	fg[SELECTED] = @text_color
+
+	engine "clearlooks" {
+		focus_color = shade (0.896, @selected_bg_color)
+	}
 }
 
 style "spinbutton" {

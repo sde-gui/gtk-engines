@@ -183,6 +183,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 	    (DETAIL ("frame") && CHECK_HINT (GE_HINT_COMBOBOX_ENTRY)))
 	{
 		WidgetParameters params;
+		FocusParameters  focus;
 
 		/* Override the entries state type, because we are too lame to handle this via
 		 * the focus ring, and GtkEntry doesn't even set the INSENSITIVE state ... */
@@ -214,7 +215,16 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 			cairo_fill (cr);
 		}
 
-		STYLE_FUNCTION (draw_entry) (cr, &clearlooks_style->colors, &params,
+		/* Focus color */
+		if (clearlooks_style->has_focus_color)
+		{
+			ge_gdk_color_to_cairo (&clearlooks_style->focus_color, &focus.color);
+			focus.has_color = TRUE;
+		}
+		else
+			focus.color = colors->spot[2];
+
+		STYLE_FUNCTION (draw_entry) (cr, &clearlooks_style->colors, &params, &focus,
 		                             x, y, width, height);
 	}
 	else if (DETAIL ("frame") && CHECK_HINT (GE_HINT_STATUSBAR))
