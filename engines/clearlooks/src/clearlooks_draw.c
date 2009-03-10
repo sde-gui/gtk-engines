@@ -485,18 +485,22 @@ clearlooks_draw_entry_progress (cairo_t *cr,
 	fill = colors->bg[params->state_type];
 	ge_shade_color (&fill, 0.9, &border);
 
-	if (progress->max_size_known) {
+	if (progress->max_size_known)
+	{
 		entry_width = progress->max_size.width + progress->border.left + progress->border.right;
 		entry_height = progress->max_size.height + progress->border.top + progress->border.bottom;
 		entry_radius = MIN (params->radius, MIN ((entry_width - 4.0) / 2.0, (entry_height - 4.0) / 2.0));
-	} else {
+	}
+	else
+	{
 		entry_radius = params->radius;
 	}
 
 	radius = MAX (0, entry_radius + 1.0 - MAX (MAX (progress->border.left, progress->border.right),
 	                                           MAX (progress->border.top, progress->border.bottom)));
 
-	if (progress->max_size_known) {
+	if (progress->max_size_known)
+	{
 		/* Clip to the max size, and then draw a (larger) rectangle ... */
 		ge_cairo_rounded_rectangle (cr, progress->max_size.x,
 		                                progress->max_size.y,
@@ -515,12 +519,13 @@ clearlooks_draw_entry_progress (cairo_t *cr,
 		ge_cairo_set_color (cr, &border);
 		ge_cairo_inner_rectangle (cr, x - 1, y, width + 2, height);
 		cairo_stroke (cr);
-	} else {
+	}
+	else
+	{
 		ge_cairo_rounded_rectangle (cr, x, y, width + 10, height + 10, radius, CR_CORNER_ALL);
 		cairo_clip (cr);
 		ge_cairo_rounded_rectangle (cr, x - 10, y - 10, width + 10, height + 10, radius, CR_CORNER_ALL);
 		cairo_clip (cr);
-
 
 		ge_cairo_set_color (cr, &fill);
 		ge_cairo_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, radius, CR_CORNER_ALL);

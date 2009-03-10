@@ -875,14 +875,16 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		progress.border.top = style->ythickness;
 		progress.border.bottom = style->ythickness;
 
-		if (GE_IS_ENTRY (widget)) {
+		if (GE_IS_ENTRY (widget))
+		{
 			GtkBorder *border;
 			/* Try to retrieve the style property. */
 			gtk_widget_style_get (widget,
 			                      "progress-border", &border,
 			                      NULL);
 
-			if (border) {
+			if (border)
+			{
 				progress.border = *border;
 				gtk_border_free (border);
 			}
@@ -892,7 +894,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			 * Also, we need to be drawing on a window obviously ... */
 			if (GTK_WIDGET_REALIZED (widget) &&
 			    GDK_IS_WINDOW (window) &&
-			    gdk_window_is_visible (widget->window)) {
+			    gdk_window_is_visible (widget->window))
+			{
 				/* Assumptions done by this code:
 				 *  - GtkEntry has some nested windows.
 				 *  - widget->window is the entries window
@@ -902,16 +905,20 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				 * These should be true with any GTK+ 2.x version.
 				 */
 
-				if (widget->window == window) {
+				if (widget->window == window)
+				{
 					progress.max_size_known = TRUE;
 					gdk_drawable_get_size (widget->window,
 					                       &progress.max_size.width,
 					                       &progress.max_size.height);
 
-				} else {
+				}
+				else
+				{
 					GdkWindow *parent;
 					parent = gdk_window_get_parent (window);
-					if (widget->window == parent) {
+					if (widget->window == parent)
+					{
 						gint pos_x, pos_y;
 						/* widget->window is the parent window
 						 * of the current one. This means we can
@@ -929,7 +936,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 				/* Now, one more thing needs to be done. If interior-focus
 				 * is off, then the entry may be a bit smaller. */
-				if (progress.max_size_known && GTK_WIDGET_HAS_FOCUS (widget)) {
+				if (progress.max_size_known && GTK_WIDGET_HAS_FOCUS (widget))
+				{
 					gboolean interior_focus = TRUE;
 					gint focus_line_width = 1;
 
@@ -938,7 +946,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 					                      "focus-line-width", &focus_line_width,
 					                      NULL);
 
-					if (!interior_focus) {
+					if (!interior_focus)
+					{
 						progress.max_size.x += focus_line_width;
 						progress.max_size.y += focus_line_width;
 						progress.max_size.width -= 2*focus_line_width;
@@ -946,7 +955,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 					}
 				}
 				
-				if (progress.max_size_known) {
+				if (progress.max_size_known)
+				{
 					progress.max_size.x += progress.border.left;
 					progress.max_size.y += progress.border.top;
 					progress.max_size.width -= progress.border.left + progress.border.right;
@@ -955,7 +965,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 					/* Now test that max_size.height == height, if that
 					 * fails, something has gone wrong ... so then throw away
 					 * the max_size information. */
-					if (progress.max_size.height != height) {
+					if (progress.max_size.height != height)
+					{
 						progress.max_size_known = FALSE;
 						progress.max_size.x = 0;
 						progress.max_size.y = 0;
