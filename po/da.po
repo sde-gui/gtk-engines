@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-09 23:10+0100\n"
-"PO-Revision-Date: 2008-03-09 22:04+0100\n"
+"POT-Creation-Date: 2009-03-14 04:58+0100\n"
+"PO-Revision-Date: 2009-03-13 22:43+0100\n"
 "Last-Translator: Kenneth Nielsen <k.nielsen81@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -41,62 +41,74 @@ msgid "Contrast"
 msgstr "Kontrast"
 
 #: ../schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "Deaktivér fokusoptegning"
+
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Enable Animations on Progressbars"
 msgstr "Aktivér animation af statusbjælker"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
 msgstr "Flad"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:10
 msgid "Glossy"
 msgstr "Blank"
 
-#: ../schema/clearlooks.xml.in.in.h:10
+#: ../schema/clearlooks.xml.in.in.h:11
 msgid "Gummy"
 msgstr "Tyggegummi"
 
-#: ../schema/clearlooks.xml.in.in.h:11
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Inset"
 msgstr "Indlagt"
 
-#: ../schema/clearlooks.xml.in.in.h:12
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Inverted"
 msgstr "Omvendt"
 
-#: ../schema/clearlooks.xml.in.in.h:13
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
 msgstr "Menubjælkestil"
 
-#: ../schema/clearlooks.xml.in.in.h:14
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Radius"
 msgstr "Radius"
 
-#: ../schema/clearlooks.xml.in.in.h:15
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Relief Style"
 msgstr "Relief-stil"
 
-#: ../schema/clearlooks.xml.in.in.h:16
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Requires style Glossy or Gummy"
 msgstr "Kræver enten blank eller tyggegummi-stil"
 
-#: ../schema/clearlooks.xml.in.in.h:17
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
 msgstr "Rullebjælkefarve"
 
-#: ../schema/clearlooks.xml.in.in.h:18
+#: ../schema/clearlooks.xml.in.in.h:19
 msgid "Sets the Color of Scrollbars"
 msgstr "Indstiller farven af rullebjælker"
 
-#: ../schema/clearlooks.xml.in.in.h:19
+#: ../schema/clearlooks.xml.in.in.h:20
 msgid "Shadow"
 msgstr "Skygge"
 
-#: ../schema/clearlooks.xml.in.in.h:20
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Style"
 msgstr "Stil"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr ""
+"Dette valg deaktiverer fokusoptegning. Det primære formål er at oprette "
+"skærmbilleder til dokumentation."
+
+#: ../schema/clearlooks.xml.in.in.h:23
 msgid "Toolbar Style"
 msgstr "Værktøjsbjælke-stil"
 
