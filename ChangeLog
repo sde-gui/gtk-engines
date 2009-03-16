@@ -1,5 +1,10 @@
 2009-03-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* configure.ac:
+	Post release version bump.
+
+2009-03-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* NEWS:
 	* configure.ac:
 	Update for 2.18.0.
