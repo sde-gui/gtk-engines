@@ -4,18 +4,20 @@
 #
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
 # Ignacio Casal Quinteiro <icq@svn.gnome.org>, 2007, 2008.
+# Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-02 20:17+0100\n"
-"PO-Revision-Date: 2008-02-02 20:18+0100\n"
-"Last-Translator: Ignacio Casal Quinteiro <icq@svn.gnome.org>\n"
+"POT-Creation-Date: 2009-03-16 13:19+0100\n"
+"PO-Revision-Date: 2009-03-10 20:17+0000\n"
+"Last-Translator: Suso Baleato <suso.baleato@xunta.es>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"Language: gl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
@@ -42,62 +44,74 @@ msgid "Contrast"
 msgstr "Contraste"
 
 #: ../schema/clearlooks.xml.in.in.h:7
-msgid "Enable Animations on Progressbars"
-msgstr "Activar animacións en barras de progreso"
+msgid "Disable focus drawing"
+msgstr "Desactivar o debuxo do foco"
 
 #: ../schema/clearlooks.xml.in.in.h:8
+msgid "Enable Animations on Progressbars"
+msgstr "Activar animacións nas barras de progreso"
+
+#: ../schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
 msgstr "Plano"
 
-#: ../schema/clearlooks.xml.in.in.h:9
-msgid "Glossy"
-msgstr "Pulido"
-
 #: ../schema/clearlooks.xml.in.in.h:10
+msgid "Glossy"
+msgstr "Brillante"
+
+#: ../schema/clearlooks.xml.in.in.h:11
 msgid "Gummy"
 msgstr "Pegañento"
 
-#: ../schema/clearlooks.xml.in.in.h:11
-msgid "Inset"
-msgstr "Inserir"
-
 #: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inset"
+msgstr "Baixorrelevo"
+
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Inverted"
 msgstr "Invertido"
 
-#: ../schema/clearlooks.xml.in.in.h:13
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
 msgstr "Estilo da barra de menú"
 
-#: ../schema/clearlooks.xml.in.in.h:14
-msgid "Radius"
-msgstr "Radio"
-
 #: ../schema/clearlooks.xml.in.in.h:15
-msgid "Relief Style"
-msgstr "Estilo do relieve"
+msgid "Radius"
+msgstr "Raio"
 
 #: ../schema/clearlooks.xml.in.in.h:16
-msgid "Requires style Glossy or Gummy"
-msgstr "Necesita estilo Pulido ou Pegañento"
+msgid "Relief Style"
+msgstr "Estilo relevo"
 
 #: ../schema/clearlooks.xml.in.in.h:17
+msgid "Requires style Glossy or Gummy"
+msgstr "Necesita o estilo Pulido ou Pegañento"
+
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
 msgstr "Cor da barra de desprazamento"
 
-#: ../schema/clearlooks.xml.in.in.h:18
-msgid "Sets the Color of Scrollbars"
-msgstr "Establece a cor das barras de desprazamento"
-
 #: ../schema/clearlooks.xml.in.in.h:19
+msgid "Sets the Color of Scrollbars"
+msgstr "Define a cor das barras de desprazamento"
+
+#: ../schema/clearlooks.xml.in.in.h:20
 msgid "Shadow"
 msgstr "Sombra"
 
-#: ../schema/clearlooks.xml.in.in.h:20
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Style"
 msgstr "Estilo"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr ""
+"Esta opción permite desactivar o debuxo do foco. O propósito primario é "
+"crear capturas de pantalla para a documentación."
+
+#: ../schema/clearlooks.xml.in.in.h:23
 msgid "Toolbar Style"
 msgstr "Estilo da barra de ferramentas"
 
@@ -111,7 +125,9 @@ msgstr "Grosor do bordo"
 
 #: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr "Tamaño dos botóns de caixa e botóns de radio dentro das vistas de árbore."
+msgstr ""
+"Tamaño dos botóns de caixa de verificación e de opción dentro das "
+"visualizacións en árbore. (Bug #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
@@ -151,13 +167,13 @@ msgstr "Tipo de marca 1"
 
 #: ../schema/thinice.xml.in.in.h:8
 msgid "Mark Type for Scrollbar Buttons"
-msgstr "Tpo de marca para os botóns da barra de desprazamento"
+msgstr "Tipo de marca para os botóns da barra de desprazamento"
 
 #: ../schema/thinice.xml.in.in.h:9
 msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
 msgstr ""
-"Tipo de marca para os manexadores da barra de desprazamento, caixas "
-"manipuladoras, etc"
+"Tipo de marca para os manexadores da barra de desprazamento, as caixas "
+"manipuladoras etc."
 
 #: ../schema/thinice.xml.in.in.h:10
 msgid "None"
@@ -169,7 +185,7 @@ msgstr "Nada"
 
 #: ../schema/thinice.xml.in.in.h:12
 msgid "Paned Dots"
-msgstr "Puntos de panel"
+msgstr "Puntos espazados"
 
 #: ../schema/thinice.xml.in.in.h:13
 msgid "Rectangle"
@@ -189,7 +205,7 @@ msgstr "Marcas do botón de desprazamento"
 
 #: ../schema/thinice.xml.in.in.h:17
 msgid "Shaped"
-msgstr "Contorna"
+msgstr "Con forma"
 
 #: ../schema/thinice.xml.in.in.h:18
 msgid "Slash"
@@ -197,5 +213,4 @@ msgstr "Barra"
 
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
-msgstr "Algún"
-
+msgstr "Algunhas"
