@@ -1,5 +1,5 @@
 
-AC_INIT([gtk-engines], [2.17.5])
+AC_INIT([gtk-engines], [2.18.0])
 AC_CONFIG_SRCDIR([README])
 
 AM_INIT_AUTOMAKE
