@@ -1,3 +1,8 @@
+2009-03-16  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* test/torturetest.c:
+	Also test the new "entry_progress" detail string.
+
 2009-03-10  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c

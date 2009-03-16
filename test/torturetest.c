@@ -147,7 +147,7 @@ typedef struct {
 #define CHECK_AND_RADIO_DETAILS "NULL:cellcheck:cellradio:check:checkbutton:radiobutton"
 #define EXPANDER_DETAILS "NULL:expander" /* also in common details list ... */
 #define ARROW_DETAILS "NULL:arrow:tab:optionmenutab"
-#define COMMON_DETAILS "NULL:arrow:bar:base:button:buttondefault:combo_entry_button:dockitem:dockitem_bin:entry:entry_bg:frame:handle:handlebox:handlebox_bin:hpaned:hruler:hscale:hscrollbar:hseparator:label:menu:menubar:menuitem:metacity:notebook:option:optionmenu:optionmenutab:paned:scrolled_window:slider:spinbutton:spinbutton_arrow:spinbutton_down:spinbutton_up:stepper:tab:text:togglebutton:togglebuttondefault:toolbar:tooltip:treeitem:treeview:trough:viewport:viewportbin:vpaned:vruler:vscale:vscrollbar:vseparator:expander:iconview-drop-indicator:icon_view_item:icon_view"
+#define COMMON_DETAILS "NULL:arrow:bar:base:button:buttondefault:combo_entry_button:dockitem:dockitem_bin:entry:entry_bg:frame:handle:handlebox:handlebox_bin:hpaned:hruler:hscale:hscrollbar:hseparator:label:menu:menubar:menuitem:metacity:notebook:option:optionmenu:optionmenutab:paned:scrolled_window:slider:spinbutton:spinbutton_arrow:spinbutton_down:spinbutton_up:stepper:tab:text:togglebutton:togglebuttondefault:toolbar:tooltip:treeitem:treeview:trough:viewport:viewportbin:vpaned:vruler:vscale:vscrollbar:vseparator:expander:iconview-drop-indicator:icon_view_item:icon_view:entry-progress"
 
 /* The following explicitly does not test EVERY combination, as that would be
  * overkill, and would take a lot longer. */
