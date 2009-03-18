@@ -286,8 +286,10 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 	/* Draw the inner shadow */
 	if (params->focus)
 	{
-		/* XXX Fix this with focus->has_color */
-		clearlooks_set_mixed_color (cr, base, &colors->spot[1], 0.5);
+		CairoColor focus_shadow;
+		ge_shade_color (&border, 1.61, &focus_shadow);
+		
+		clearlooks_set_mixed_color (cr, base, &focus_shadow, 0.5);
 		ge_cairo_inner_rounded_rectangle (cr, 2, 2, width-4, height-4, MAX(0, radius-1), params->corners);
 		cairo_stroke (cr);
 	}

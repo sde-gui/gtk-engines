@@ -911,7 +911,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 					gdk_drawable_get_size (widget->window,
 					                       &progress.max_size.width,
 					                       &progress.max_size.height);
-
 				}
 				else
 				{

@@ -1,3 +1,15 @@
+2009-03-18  Andrea Cimitan  <andrea.cimitan@gmail.com>
+
+	* engines/clearlooks/src/clearlooks_draw.c (clearlooks_draw_entry):
+	* engines/clearlooks/src/clearlooks_draw_gummy.c
+	(clearlooks_gummy_draw_entry):
+	* engines/clearlooks/src/clearlooks_style.c
+	(clearlooks_style_draw_box):
+	* themes/Clearlooks/gtk-2.0/gtkrc:
+	Fixed the focus inner shadow in draw_entry.
+	Fixed the focus_color in the gtkrc, needs to be backported in
+	gnome-themes.
+
 2009-03-16  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* configure.ac:
