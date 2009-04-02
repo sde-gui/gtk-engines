@@ -44,4 +44,9 @@ GE_INTERNAL void clearlooks_draw_focus (cairo_t *cr,
                                         const FocusParameters  *focus,
                                         int x, int y, int width, int height);
 
+GE_INTERNAL void clearlooks_set_mixed_color (cairo_t          *cr,
+                                             const CairoColor *color1,
+                                             const CairoColor *color2,
+                                             gdouble mix_factor);
+
 #endif /* CLEARLOOKS_DRAW_H */

@@ -76,18 +76,6 @@ clearlooks_draw_gummy_gradient (cairo_t          *cr,
 }
 
 static void
-clearlooks_set_mixed_color (cairo_t          *cr,
-                            const CairoColor *color1,
-                            const CairoColor *color2,
-                            gdouble mix_factor)
-{
-	CairoColor composite;
-
-	ge_mix_color (color1, color2, mix_factor, &composite);
-	ge_cairo_set_color (cr, &composite);
-}
-
-static void
 clearlooks_gummy_draw_highlight_and_shade (cairo_t                *cr,
                                            const CairoColor       *bg_color,
                                            const ShadowParameters *params,

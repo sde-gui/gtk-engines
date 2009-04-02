@@ -1,3 +1,12 @@
+2009-04-02  Christian Persch  <chpe@gnome.org>
+
+	* engines/clearlooks/src/clearlooks_draw.c:
+	(clearlooks_set_mixed_color):
+	* engines/clearlooks/src/clearlooks_draw.h:
+	* engines/clearlooks/src/clearlooks_draw_glossy.c:
+	* engines/clearlooks/src/clearlooks_draw_gummy.c: Fix unresolved
+	symbol error. Bug #576786.
+
 2009-03-18  Andrea Cimitan  <andrea.cimitan@gmail.com>
 
 	* engines/clearlooks/src/clearlooks_draw.c (clearlooks_draw_entry):
