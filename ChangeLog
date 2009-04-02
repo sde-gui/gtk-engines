@@ -1,5 +1,20 @@
 2009-04-02  Christian Persch  <chpe@gnome.org>
 
+	* engines/clearlooks/Makefile.am:
+	* engines/crux/Makefile.am:
+	* engines/engine.symbols:
+	* engines/glide/Makefile.am:
+	* engines/hc/Makefile.am:
+	* engines/industrial/Makefile.am:
+	* engines/lua/Makefile.am:
+	* engines/mist/Makefile.am:
+	* engines/redmond/Makefile.am:
+	* engines/support/Makefile.am:
+	* engines/thinice/Makefile.am: Only export the necessary symbols. Bug
+	#576787.
+
+2009-04-02  Christian Persch  <chpe@gnome.org>
+
 	* engines/clearlooks/src/clearlooks_draw.c:
 	(clearlooks_set_mixed_color):
 	* engines/clearlooks/src/clearlooks_draw.h:

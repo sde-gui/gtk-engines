@@ -38,6 +38,5 @@ EXTRA_DIST = \
 	./src/parse_rc_style.h				\
 	./AUTHORS
 
-libindustrial_la_LDFLAGS = -module -avoid-version -no-undefined
-libindustrial_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
-
+libindustrial_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
+libindustrial_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)

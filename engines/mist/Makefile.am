@@ -15,6 +15,5 @@ libmist_la_SOURCES = \
 	./src/mist-style.h	\
 	./src/mist.c
 
-libmist_la_LDFLAGS = -module -avoid-version -no-undefined
-libmist_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
-
+libmist_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
+libmist_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)

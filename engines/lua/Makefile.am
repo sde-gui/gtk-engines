@@ -98,8 +98,5 @@ libluaengine_la_SOURCES = \
 	./src/liblua/linit.c \
 	$(NULL)
 
-libluaengine_la_LDFLAGS = -module -avoid-version -no-undefined
-libluaengine_la_LIBADD = \
-	$(GTK_LIBS) \
-	$(top_builddir)/engines/support/libsupport.la \
-	$(NULL)
+libluaengine_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
+libluaengine_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)

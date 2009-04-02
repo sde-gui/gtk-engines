@@ -18,6 +18,5 @@ libcrux_engine_la_SOURCES = \
 	./src/crux-rc-style.c            \
 	./src/crux-rc-style.h
 
-libcrux_engine_la_LDFLAGS = -module -avoid-version -no-undefined
-libcrux_engine_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
-
+libcrux_engine_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
+libcrux_engine_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)

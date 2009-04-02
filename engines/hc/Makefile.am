@@ -37,6 +37,5 @@ libhcengine_la_SOURCES = \
         ./src/hc_gtk2_drawing.h  \
 	./src/hc-style.c
 
-libhcengine_la_LDFLAGS = -module -avoid-version -no-undefined
-libhcengine_la_LIBADD = $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
-
+libhcengine_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
+libhcengine_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)

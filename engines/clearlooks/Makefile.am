@@ -42,6 +42,6 @@ libclearlooks_la_SOURCES =		\
 	./src/clearlooks_draw.h		\
 	./src/clearlooks_types.h
 
-libclearlooks_la_LDFLAGS = -module -avoid-version -no-undefined
-libclearlooks_la_LIBADD =  $(GTK_LIBS) $(top_builddir)/engines/support/libsupport.la
+libclearlooks_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
+libclearlooks_la_LIBADD =  $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)
 
