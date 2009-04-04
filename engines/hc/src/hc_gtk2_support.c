@@ -429,25 +429,25 @@ hc_gtk2_engine_hack_menu_shell_setup_signals(GtkWidget *widget)
       if (!g_object_get_data(G_OBJECT(widget), "HC_MENU_SHELL_HACK_SET"))
       {
         id = g_signal_connect(G_OBJECT(widget), "motion-notify-event",
-                                             (GtkSignalFunc)hc_gtk2_engine_hack_menu_shell_motion,
+                                             (GCallback)hc_gtk2_engine_hack_menu_shell_motion,
                                              NULL);
                                   
         g_object_set_data(G_OBJECT(widget), "HC_MENU_SHELL_MOTION_ID", (gpointer)id);
         
         id = g_signal_connect(G_OBJECT(widget), "leave-notify-event",
-                                             (GtkSignalFunc)hc_gtk2_engine_hack_menu_shell_leave,
+                                             (GCallback)hc_gtk2_engine_hack_menu_shell_leave,
                                              NULL);
         g_object_set_data(G_OBJECT(widget), "HC_MENU_SHELL_LEAVE_ID", (gpointer)id);
                                              
         id = g_signal_connect(G_OBJECT(widget), "destroy-event",
-                                             (GtkSignalFunc)hc_gtk2_engine_hack_menu_shell_destroy,
+                                             (GCallback)hc_gtk2_engine_hack_menu_shell_destroy,
                                              NULL);
         g_object_set_data(G_OBJECT(widget), "HC_MENU_SHELL_DESTROY_ID", (gpointer)id);
  
         g_object_set_data(G_OBJECT(widget), "HC_MENU_SHELL_HACK_SET", (gpointer)1);
         
         id = g_signal_connect(G_OBJECT(widget), "style-set",
-                                             (GtkSignalFunc)hc_gtk2_engine_hack_menu_shell_style_set,
+                                             (GCallback)hc_gtk2_engine_hack_menu_shell_style_set,
                                              NULL);
         g_object_set_data(G_OBJECT(widget), "HC_MENU_SHELL_STYLE_SET_ID", (gpointer)id);
       }

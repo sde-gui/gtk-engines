@@ -1,3 +1,13 @@
+2009-04-04  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/glide/src/glide_gtk2_support.c:
+	(glide_gtk2_engine_hack_menu_shell_setup):
+	* engines/hc/src/hc_gtk2_support.c:
+	(hc_gtk2_engine_hack_menu_shell_setup_signals):
+	* engines/redmond/src/redmond_gtk2_misc.c:
+	(redmond_gtk2_engine_hack_menu_shell_setup_signals):
+	Remove some usage of deprecated definitions. Bug #572178
+
 2009-04-03  Christian Persch  <chpe@gnome.org>
 
 	* engines/Makefile.am: Also dist the symbols file. Bug ##576787
