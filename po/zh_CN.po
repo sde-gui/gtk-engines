@@ -2,16 +2,18 @@
 # gtk-engines 软件包的简体中文翻译.
 # Copyright (C) 2007 THE GTK-ENGINES'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gtk-engines package.
-# Deng Xiyue <manphiz@gmail.com>, 2007, 2008.
+# Deng Xiyue <manphiz@gmail.com>, 2007, 2008, 2009.
+#
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gtk-engines\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-04 10:35+0000\n"
-"PO-Revision-Date: 2008-02-04 20:49+0800\n"
-"Last-Translator: Deng Xiyue <manphiz@gmail.com>\n"
-"Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
+"Project-Id-Version: gtk-engines HEAD\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
+"engines&component=general\n"
+"POT-Creation-Date: 2009-04-04 13:18+0000\n"
+"PO-Revision-Date: 2009-04-09 15:08+0800\n"
+"Last-Translator: Ray Wang <wanglei1123@gmail.com>\n"
+"Language-Team: Chinese/Simplified <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -41,62 +43,72 @@ msgid "Contrast"
 msgstr "对比度"
 
 #: ../schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "禁止绘画焦点"
+
+#: ../schema/clearlooks.xml.in.in.h:8
 msgid "Enable Animations on Progressbars"
 msgstr "开启进度条的动画效果"
 
-#: ../schema/clearlooks.xml.in.in.h:8
+#: ../schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
 msgstr "平坦"
 
-#: ../schema/clearlooks.xml.in.in.h:9
+#: ../schema/clearlooks.xml.in.in.h:10
 msgid "Glossy"
 msgstr "光泽"
 
-#: ../schema/clearlooks.xml.in.in.h:10
+#: ../schema/clearlooks.xml.in.in.h:11
 msgid "Gummy"
 msgstr "黏性"
 
-#: ../schema/clearlooks.xml.in.in.h:11
+#: ../schema/clearlooks.xml.in.in.h:12
 msgid "Inset"
 msgstr "插图"
 
-#: ../schema/clearlooks.xml.in.in.h:12
+#: ../schema/clearlooks.xml.in.in.h:13
 msgid "Inverted"
 msgstr "反转"
 
-#: ../schema/clearlooks.xml.in.in.h:13
+#: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
 msgstr "菜单栏风格"
 
-#: ../schema/clearlooks.xml.in.in.h:14
+#: ../schema/clearlooks.xml.in.in.h:15
 msgid "Radius"
 msgstr "半径"
 
-#: ../schema/clearlooks.xml.in.in.h:15
+#: ../schema/clearlooks.xml.in.in.h:16
 msgid "Relief Style"
 msgstr "放松风格"
 
-#: ../schema/clearlooks.xml.in.in.h:16
+#: ../schema/clearlooks.xml.in.in.h:17
 msgid "Requires style Glossy or Gummy"
 msgstr "要求光泽或者黏性风格"
 
-#: ../schema/clearlooks.xml.in.in.h:17
+#: ../schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
 msgstr "滚动条颜色"
 
-#: ../schema/clearlooks.xml.in.in.h:18
+#: ../schema/clearlooks.xml.in.in.h:19
 msgid "Sets the Color of Scrollbars"
 msgstr "设定滚动条的颜色"
 
-#: ../schema/clearlooks.xml.in.in.h:19
+#: ../schema/clearlooks.xml.in.in.h:20
 msgid "Shadow"
 msgstr "阴影"
 
-#: ../schema/clearlooks.xml.in.in.h:20
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Style"
 msgstr "风格"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr "此选项允许禁止绘画焦点。它的主要目的是创建文档的屏幕截图。"
+
+#: ../schema/clearlooks.xml.in.in.h:23
 msgid "Toolbar Style"
 msgstr "工具栏风格"
 
