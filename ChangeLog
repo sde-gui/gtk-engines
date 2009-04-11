@@ -1,3 +1,10 @@
+2009-04-11  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* engines/clearlooks/src/clearlooks_draw*.c:
+	(clearlooks_*_draw_scrollbar_stepper):
+	Remove the steppers line, so that there is only one pixel if two
+	steppers are next to each other.
+
 2009-04-04  Benjamin Berg  <benjamin@sipsolutions.net>
 
 	* engines/glide/src/glide_gtk2_support.c:

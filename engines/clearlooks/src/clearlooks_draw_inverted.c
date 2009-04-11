@@ -772,6 +772,16 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 			corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
 		else if (stepper->stepper == CL_STEPPER_D)
 			corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
+
+		if (stepper->stepper == CL_STEPPER_B)
+		{
+			x -= 1;
+			width += 1;
+		}
+		else if (stepper->stepper == CL_STEPPER_C)
+		{
+			width += 1;
+		}
 	}
 	else
 	{
@@ -779,6 +789,16 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 			corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
 		else if (stepper->stepper == CL_STEPPER_D)
 			corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_BOTTOMRIGHT;
+
+		if (stepper->stepper == CL_STEPPER_B)
+		{
+			y -= 1;
+			height += 1;
+		}
+		else if (stepper->stepper == CL_STEPPER_C)
+		{
+			height += 1;
+		}
 	}
 	
 	cairo_translate (cr, x, y);
