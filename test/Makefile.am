@@ -66,9 +66,6 @@ VALGRIND_ENV=G_SLICE=always-malloc G_DEBUG=gc-friendly,resident-modules
 # Prefix with exported_
 EXPORTED_SYMBOLS_TESTS = $(patsubst %,exported_%,$(BUILD_ENGINES))
 
-# The whole lua crap gets exported ... so right now it has to fail
-XFAIL_TESTS += exported_lua
-
 TESTS += $(EXPORTED_SYMBOLS_TESTS)
 
 

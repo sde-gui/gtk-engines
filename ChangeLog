@@ -1,5 +1,12 @@
 2009-04-13  Benjamin Berg  <benjamin@sipsolutions.net>
 
+	* test/Makefile.am:
+	There are no failures in the exported test, as the functions do not
+	need to be marked as internal with the patch from bug #576787.
+	Fixes bug #578882.
+
+2009-04-13  Benjamin Berg  <benjamin@sipsolutions.net>
+
 	* NEWS:
 	Corrected the version numbers.
 
