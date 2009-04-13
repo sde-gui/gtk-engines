@@ -2,6 +2,25 @@ Overview of Changes in 2.18.0 (since 2.17.4)
 ============================================
 
 Changes in this release:
+ - Clearlooks draws the focus line of entries now correct.
+ - Clearlooks now only draws a one pixel line between two adjacent steppers.
+
+GNOME bugs fixed in this release:
+ 576786 – clearlooks is broken on trunk
+ 576787 – export hygiene
+ 572178 – Remove deprecated GTK+ symbols
+
+New and updated translations:
+ Ray Wang (zh_CN)
+ Shankar Prasad (kn)
+ Djihed Afifi (ar)
+ Suso Baleato (gl)
+
+
+Overview of Changes in 2.18.0 (since 2.17.4)
+============================================
+
+Changes in this release:
  - Improved entry progress drawing in Clearlooks.
 
 New and updated translations:
