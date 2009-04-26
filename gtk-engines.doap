@@ -8,25 +8,26 @@
   <shortdesc xml:lang="en">GTK+ Theme Engines</shortdesc>
   <homepage rdf:resource="http://art.gnome.org/" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-themes-list" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
 
   <maintainer>
     <foaf:Person>
       <foaf:name>Andrea Cimitan</foaf:name>
-      <foaf:mbox rdf:resource="andrea.cimitan@gmail.com" />
+      <foaf:mbox rdf:resource="mailto:andrea.cimitan@gmail.com" />
       <gnome:userid>acimitan</gnome:userid>
     </foaf:Person>
   </maintainer>
   <maintainer>
     <foaf:Person>
       <foaf:name>Benjamin Berg</foaf:name>
-      <foaf:mbox rdf:resource="benjamin@sipsolutions.net" />
+      <foaf:mbox rdf:resource="mailto:benjamin@sipsolutions.net" />
       <gnome:userid>bberg</gnome:userid>
     </foaf:Person>
   </maintainer>
   <maintainer>
     <foaf:Person>
       <foaf:name>Thomas Wood</foaf:name>
-      <foaf:mbox rdf:resource="thos@gnome.org" />
+      <foaf:mbox rdf:resource="mailto:thos@gnome.org" />
       <gnome:userid>thos</gnome:userid>
     </foaf:Person>
   </maintainer>
