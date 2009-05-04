@@ -38,3 +38,6 @@ libredmond95_la_SOURCES = \
 
 libredmond95_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
 libredmond95_la_LIBADD =  $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)
+
+-include $(top_srcdir)/git.mk
+

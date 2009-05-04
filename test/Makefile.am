@@ -148,3 +148,6 @@ test:
 	@$(MAKE) $(AM_MAKEFLAGS) check
 
 .PHONY: engines valgrind-logs
+
+-include $(top_srcdir)/git.mk
+

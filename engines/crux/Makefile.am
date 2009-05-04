@@ -20,3 +20,6 @@ libcrux_engine_la_SOURCES = \
 
 libcrux_engine_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
 libcrux_engine_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)
+
+-include $(top_srcdir)/git.mk
+

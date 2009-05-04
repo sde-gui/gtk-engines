@@ -12,3 +12,6 @@ libsupport_la_SOURCES = \
 	./widget-information.h	\
 	./ge-support.h		\
 	./config.h
+
+-include $(top_srcdir)/git.mk
+
