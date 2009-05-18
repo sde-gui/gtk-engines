@@ -1,3 +1,16 @@
+Overview of Changes in 2.18.2 (since 2.18.1)
+============================================
+
+Changes in this release:
+ - Changes for the git migration (doap file, ChangeLog)
+
+GNOME bugs fixed in this release:
+ 578882 – gtk-engines-2.18.1 doesn't pass tests due to exported_lua
+
+New and updated translations:
+ Krishna Babu K (te)
+
+
 Overview of Changes in 2.18.1 (since 2.18.0)
 ============================================
 
