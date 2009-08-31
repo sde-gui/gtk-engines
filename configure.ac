@@ -45,6 +45,9 @@ AC_ARG_ENABLE(paranoia, 	[  --enable-paranoia       use wall, werror, ansi, peda
 AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated functions in gtk et al],	[deprecated=$enableval],		[deprecated="no"])
 
 AC_ARG_ENABLE(schemas,		[  --disable-schema        disable engine schemas],	[schemas=$enableval],	[schemas="yes"])
+AC_ARG_WITH(system-lua,	[  --with-system-lua        link with system Lua library], 		[system_lua=$enableval], 	[system_lua="no"])
+
+AM_CONDITIONAL([SYSTEM_LUA], [test x$system_lua = xtrue])
 
 BUILD_ENGINES=""
 BUILD_THEMES=""
@@ -125,6 +128,13 @@ AC_SUBST(GTK_LIBS)
 
 GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-2.0`
 AC_SUBST(GTK_VERSION)
+
+if test $system_lua = "yes"; then
+	PKG_CHECK_MODULES(LUA, lua,,
+                  AC_MSG_ERROR([--with-system-lua specified but no system liblua found]))
+	AC_SUBST(LUA_CFLAGS)
+	AC_SUBST(LUA_LIBS)
+fi
 
 AC_SUBST(BUILD_ENGINES)
 AC_SUBST(BUILD_THEMES)

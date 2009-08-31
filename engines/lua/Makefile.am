@@ -21,10 +21,69 @@
 
 NULL =
 
+if SYSTEM_LUA
+	LIBLUA_SOURCES =
+	LIBLUA_CFLAGS = $(LUA_CFLAGS)
+else
+	LIBLUA_CFLAGS = -I$(top_srcdir)/engines/lua/src/liblua
+	LIBLUA_SOURCES = \
+		./src/liblua/lapi.h \
+		./src/liblua/lauxlib.h \
+		./src/liblua/lcode.h \
+		./src/liblua/ldebug.h \
+		./src/liblua/ldo.h \
+		./src/liblua/lfunc.h \
+		./src/liblua/lgc.h \
+		./src/liblua/llex.h \
+		./src/liblua/llimits.h \
+		./src/liblua/lmem.h \
+		./src/liblua/lobject.h \
+		./src/liblua/lopcodes.h \
+		./src/liblua/lparser.h \
+		./src/liblua/lstate.h \
+		./src/liblua/lstring.h \
+		./src/liblua/ltable.h \
+		./src/liblua/ltm.h \
+		./src/liblua/lua.h \
+		./src/liblua/luaconf.h \
+		./src/liblua/lualib.h \
+		./src/liblua/lundump.h \
+		./src/liblua/lvm.h \
+		./src/liblua/lzio.h \
+		./src/liblua/lapi.c \
+		./src/liblua/lcode.c \
+		./src/liblua/ldebug.c \
+		./src/liblua/ldo.c \
+		./src/liblua/ldump.c \
+		./src/liblua/lfunc.c \
+		./src/liblua/lgc.c \
+		./src/liblua/liolib.c \
+		./src/liblua/llex.c \
+		./src/liblua/lmem.c \
+		./src/liblua/lobject.c \
+		./src/liblua/lopcodes.c \
+		./src/liblua/loslib.c \
+		./src/liblua/lparser.c \
+		./src/liblua/lstate.c \
+		./src/liblua/lstring.c \
+		./src/liblua/lstrlib.c \
+		./src/liblua/ltable.c \
+		./src/liblua/ltablib.c \
+		./src/liblua/ltm.c \
+		./src/liblua/lundump.c \
+		./src/liblua/lvm.c \
+		./src/liblua/lzio.c \
+		./src/liblua/lauxlib.c \
+		./src/liblua/lbaselib.c \
+		./src/liblua/ldblib.c \
+		./src/liblua/lmathlib.c \
+		./src/liblua/loadlib.c \
+		./src/liblua/linit.c
+endif
+
 INCLUDES = \
 	-I$(top_srcdir)/engines/support \
-	-I$(top_srcdir)/engines/lua/src/liblua \
-	$(GTK_CFLAGS) $(DEVELOPMENT_CFLAGS) \
+	$(LIBLUA_CFLAGS) $(GTK_CFLAGS) $(DEVELOPMENT_CFLAGS) \
 	$(NULL)
 
 enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
@@ -44,62 +103,11 @@ libluaengine_la_SOURCES = \
 	./src/main.c \
 	./src/misc_utils.c \
 	./src/misc_utils.h \
-	./src/liblua/lapi.h \
-	./src/liblua/lauxlib.h \
-	./src/liblua/lcode.h \
-	./src/liblua/ldebug.h \
-	./src/liblua/ldo.h \
-	./src/liblua/lfunc.h \
-	./src/liblua/lgc.h \
-	./src/liblua/llex.h \
-	./src/liblua/llimits.h \
-	./src/liblua/lmem.h \
-	./src/liblua/lobject.h \
-	./src/liblua/lopcodes.h \
-	./src/liblua/lparser.h \
-	./src/liblua/lstate.h \
-	./src/liblua/lstring.h \
-	./src/liblua/ltable.h \
-	./src/liblua/ltm.h \
-	./src/liblua/lua.h \
-	./src/liblua/luaconf.h \
-	./src/liblua/lualib.h \
-	./src/liblua/lundump.h \
-	./src/liblua/lvm.h \
-	./src/liblua/lzio.h \
-	./src/liblua/lapi.c \
-	./src/liblua/lcode.c \
-	./src/liblua/ldebug.c \
-	./src/liblua/ldo.c \
-	./src/liblua/ldump.c \
-	./src/liblua/lfunc.c \
-	./src/liblua/lgc.c \
-	./src/liblua/liolib.c \
-	./src/liblua/llex.c \
-	./src/liblua/lmem.c \
-	./src/liblua/lobject.c \
-	./src/liblua/lopcodes.c \
-	./src/liblua/loslib.c \
-	./src/liblua/lparser.c \
-	./src/liblua/lstate.c \
-	./src/liblua/lstring.c \
-	./src/liblua/lstrlib.c \
-	./src/liblua/ltable.c \
-	./src/liblua/ltablib.c \
-	./src/liblua/ltm.c \
-	./src/liblua/lundump.c \
-	./src/liblua/lvm.c \
-	./src/liblua/lzio.c \
-	./src/liblua/lauxlib.c \
-	./src/liblua/lbaselib.c \
-	./src/liblua/ldblib.c \
-	./src/liblua/lmathlib.c \
-	./src/liblua/loadlib.c \
-	./src/liblua/linit.c \
+	$(LIBLUA_SOURCES) \
 	$(NULL)
 
 libluaengine_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
-libluaengine_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)
+libluaengine_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS) $(LUA_LIBS)
 
 -include $(top_srcdir)/git.mk
 
