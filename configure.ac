@@ -45,7 +45,7 @@ AC_ARG_ENABLE(paranoia, 	[  --enable-paranoia       use wall, werror, ansi, peda
 AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated functions in gtk et al],	[deprecated=$enableval],		[deprecated="no"])
 
 AC_ARG_ENABLE(schemas,		[  --disable-schema        disable engine schemas],	[schemas=$enableval],	[schemas="yes"])
-AC_ARG_WITH(system-lua,	[  --with-system-lua        link with system Lua library], 		[system_lua=$enableval], 	[system_lua="no"])
+AC_ARG_WITH(system-lua,	[  --with-system-lua        link with system Lua library], 		[system_lua=$withval], 	[system_lua="no"])
 
 AM_CONDITIONAL([SYSTEM_LUA], [test x$system_lua = xtrue])
 
