@@ -50,7 +50,7 @@ AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated function
 AC_ARG_ENABLE(schemas,		[  --disable-schema        disable engine schemas],	[schemas=$enableval],	[schemas="yes"])
 AC_ARG_WITH(system-lua,	[  --with-system-lua        link with system Lua library], 		[system_lua=$withval], 	[system_lua="no"])
 
-AM_CONDITIONAL([SYSTEM_LUA], [test x$system_lua = xtrue])
+AM_CONDITIONAL([SYSTEM_LUA], [test x$system_lua = xyes])
 
 BUILD_ENGINES=""
 BUILD_THEMES=""
