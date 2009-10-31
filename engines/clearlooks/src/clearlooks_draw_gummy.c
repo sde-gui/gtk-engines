@@ -412,7 +412,7 @@ clearlooks_gummy_draw_progressbar_fill (cairo_t                     *cr,
 	cairo_pattern_destroy (pattern);
 
 	/* Draw the strokes */
-	while (tile_pos <= width+x_step)
+	while (stroke_width > 0 && tile_pos <= width+x_step)
 	{
 		cairo_move_to (cr, stroke_width/2-x_step, 0);
 		cairo_line_to (cr, stroke_width-x_step,   0);
