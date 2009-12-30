@@ -55,3 +55,101 @@
    fun:FcConfigValues*
    fun:FcConfigSubstituteWithPat
 }
+{
+   Some GLib leak that valgrind reports
+   Memcheck:Leak
+   ...
+   fun:type_iface_vtable_base_init_Wm
+}
+{
+   Some GLib leak that valgrind reports
+   Memcheck:Leak
+   ...
+   fun:type_data_make_W
+   fun:g_type_init_with_debug_flags
+}
+{
+   More GLib stuff
+   Memcheck:Leak
+   ...
+   fun:type_node_any_new_W
+   fun:g_type_register_*
+}
+{
+   More GLib stuff
+   Memcheck:Leak
+   ...
+   fun:type_add_flags_W
+   fun:g_type_register_*
+}
+{
+   More GLib stuff
+   Memcheck:Leak
+   ...
+   fun:g_*alloc*
+   fun:type_data_make_W
+   fun:g_type_register_*
+}
+{
+   This is getting ridiculus
+   Memcheck:Leak
+   ...
+   fun:g_type_add_interface_*
+}
+{
+   Leak in gdk_display_open/XInitExtension.
+   Memcheck:Leak
+   fun:malloc
+   fun:XInitExtension
+   fun:XkbUseExtension
+   fun:XOpenDisplay
+   fun:gdk_display_open
+}
+{
+   gtk_widget_class_init leak
+   Memcheck:Leak
+   fun:calloc
+   fun:g_malloc0
+   ...
+   fun:g_param_spec_*
+   fun:gtk_widget_class_init
+}
+{
+   More pango leaks reported by valgrind
+   Memcheck:Leak
+   fun:calloc
+   fun:g_malloc0
+   fun:pango_language_from_string
+   fun:pango_language_get_default
+   fun:pango_context_init
+}
+{
+   And more GType object leakage when creating parent classes
+   Memcheck:Leak
+   fun:calloc
+   fun:g_malloc0
+   fun:g_type_class_ref
+   fun:g_type_class_ref
+   fun:g_type_create_instance
+}
+{
+   More pango leaks
+   Memcheck:Leak
+   fun:malloc
+   fun:g_malloc
+   fun:g_slice_alloc
+   fun:g_array_sized_new
+   fun:pango_ot_ruleset_init
+   ...
+   fun:basic_engine_shape
+}
+{
+   leak
+   Memcheck:Leak
+   fun:malloc
+   fun:getdelim
+   ...
+   fun:call_init
+   fun:_dl_init
+   fun:_start
+}
