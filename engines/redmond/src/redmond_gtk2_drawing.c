@@ -678,6 +678,7 @@ redmond_draw_combobox_button (GtkStyle * style,
           gtk_paint_shadow (style, window, state_type, GTK_SHADOW_IN,
   		            area, widget, "entry", x - 2, y, width, height);
         }
+#ifndef GTK_DISABLE_DEPRECATED
       else if (ge_is_combo(widget))
         {
           GtkWidget *entry = widget;
@@ -690,7 +691,8 @@ redmond_draw_combobox_button (GtkStyle * style,
                parent_style = entry->style;
                parent_state = entry->state;
              }
-          else if (GE_IS_WIDGET(widget->parent))
+          else
+                if (GE_IS_WIDGET(widget->parent))
             {
                entry = widget->parent;
                gtk_widget_ensure_style(entry);
@@ -723,6 +725,9 @@ redmond_draw_combobox_button (GtkStyle * style,
 	 	              &clip, entry, "entry", x - 4, y, width + 2, height);
           }
         }
+#else
+#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
+#endif
       else
         {
           GtkWidget *parent = widget;
@@ -791,6 +796,7 @@ redmond_draw_combobox_button (GtkStyle * style,
           gtk_paint_shadow (style, window, state_type, GTK_SHADOW_IN,
 	  		    area, widget, "entry", x + 2, y, width, height);
         }
+#ifndef GTK_DISABLE_DEPRECATED
       else if (ge_is_combo(widget))
         {
           GtkWidget *entry = widget;
@@ -821,6 +827,9 @@ redmond_draw_combobox_button (GtkStyle * style,
            gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
 			     area, entry, "entry", x + 2, y, width, height);
         }
+#else
+#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
+#endif /* GTK_DISABLE_DEPRECATED */
       else
         {
           GtkWidget *parent = widget;

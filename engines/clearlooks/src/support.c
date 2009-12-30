@@ -46,6 +46,7 @@ void clearlooks_treeview_get_header_index (GtkTreeView *tv, GtkWidget *header,
 	g_list_free (list_start);
 }
 
+#ifndef GTK_DISABLE_DEPRECATED
 void clearlooks_clist_get_header_index (GtkCList *clist, GtkWidget *button,
                                  gint *column_index, gint *columns)
 {
@@ -61,6 +62,9 @@ void clearlooks_clist_get_header_index (GtkCList *clist, GtkWidget *button,
 		}
 	}
 }
+#else
+#warning Disabling special CList support of clearlooks as GTK_DISABLE_DEPRECATED is enabled.
+#endif
 
 void
 clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)

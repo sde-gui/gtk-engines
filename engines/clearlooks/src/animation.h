@@ -24,6 +24,10 @@
 #include <config.h>
 
 #ifdef HAVE_ANIMATION
+#ifndef GTK_DISABLE_DEPRECATED
+
+#define HAVE_WORKING_ANIMATION 1
+
 #include <gtk/gtk.h>
 #include <ge-support.h>
 
@@ -36,4 +40,6 @@ GE_INTERNAL void     clearlooks_animation_connect_checkbox (GtkWidget *widget);
 GE_INTERNAL gboolean clearlooks_animation_is_animated (GtkWidget *widget);
 GE_INTERNAL gdouble  clearlooks_animation_elapsed (gpointer data);
 GE_INTERNAL void     clearlooks_animation_cleanup ();
+#endif /* GTK_DISABLE_DEPRECATED */
 #endif /* HAVE_ANIMATION */
+

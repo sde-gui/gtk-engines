@@ -549,11 +549,13 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			                                      widget, &column_index, &columns,
 			                                      &resizable);
 		}
+#ifndef GTK_DISABLE_DEPRECATED
 		else if (GE_IS_CLIST (widget->parent))
 		{
 			clearlooks_clist_get_header_index (GTK_CLIST(widget->parent),
 			                                   widget, &column_index, &columns);
 		}
+#endif
 
 		header.resizable = resizable;
 
@@ -778,7 +780,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		ProgressBarParameters progressbar;
 		gdouble               elapsed = 0.0;
 
-#ifdef HAVE_ANIMATION
+#ifdef HAVE_WORKING_ANIMATION
 		if(clearlooks_style->animation && CL_IS_PROGRESS_BAR (widget))
 		{
 			gboolean activity_mode = GTK_PROGRESS (widget)->activity_mode;
@@ -796,7 +798,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		{
 			progressbar.orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
 			progressbar.value = gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(widget));
+#ifndef GTK_DISABLE_DEPRECATED
 			progressbar.pulsing = GTK_PROGRESS (widget)->activity_mode;
+#else
+#warning Assuming non-pulsing progress bars because GTK_DISABLE_DEPRECATED is enabled.
+			progressbar.pulsing = FALSE;
+#endif
 		}
 		else
 		{

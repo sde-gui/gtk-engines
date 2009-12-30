@@ -35,7 +35,7 @@
 
 #include "animation.h"
 
-#ifdef HAVE_ANIMATION
+#ifdef HAVE_WORKING_ANIMATION
 static void      clearlooks_rc_style_finalize     (GObject                *object);
 #endif
 static GtkStyle *clearlooks_rc_style_create_style (GtkRcStyle             *rc_style);
@@ -127,7 +127,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
 	clearlooks_rc->disable_focus = FALSE;
 }
 
-#ifdef HAVE_ANIMATION
+#ifdef HAVE_WORKING_ANIMATION
 static void
 clearlooks_rc_style_finalize (GObject *object)
 {
@@ -144,7 +144,7 @@ static void
 clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
 {
 	GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
-#ifdef HAVE_ANIMATION
+#ifdef HAVE_WORKING_ANIMATION
 	GObjectClass    *g_object_class = G_OBJECT_CLASS (klass);
 #endif
 
@@ -152,7 +152,7 @@ clearlooks_rc_style_class_init (ClearlooksRcStyleClass *klass)
 	rc_style_class->create_style = clearlooks_rc_style_create_style;
 	rc_style_class->merge = clearlooks_rc_style_merge;
 
-#ifdef HAVE_ANIMATION
+#ifdef HAVE_WORKING_ANIMATION
 	g_object_class->finalize = clearlooks_rc_style_finalize;
 #endif
 }

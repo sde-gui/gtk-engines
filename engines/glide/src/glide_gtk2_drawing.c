@@ -681,6 +681,7 @@ glide_draw_combobox_button (GtkStyle * style,
   		            area, widget, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
+#ifndef GTK_DISABLE_DEPRECATED
       else if (ge_is_combo(widget))
         {
           GtkWidget *entry = widget;
@@ -727,6 +728,9 @@ glide_draw_combobox_button (GtkStyle * style,
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
           }
         }
+#else
+#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
+#endif /* GTK_DISABLE_DEPRECATED */
       else
         {
           GtkWidget *parent = widget;
@@ -819,6 +823,7 @@ glide_draw_combobox_button (GtkStyle * style,
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
         }
+#ifndef GTK_DISABLE_DEPRECATED
       else if (ge_is_combo(widget))
         {
           GtkWidget *entry = widget;
@@ -852,6 +857,9 @@ glide_draw_combobox_button (GtkStyle * style,
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
         }
+#else
+#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
+#endif /* GTK_DISABLE_DEPRECATED */
       else
         {
           GtkWidget *parent = widget;

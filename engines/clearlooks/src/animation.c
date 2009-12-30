@@ -27,7 +27,7 @@
 
 #include "animation.h"
 
-#ifdef HAVE_ANIMATION
+#ifdef HAVE_WORKING_ANIMATION
 #include <glib/gtimer.h>
 
 struct _AnimationInfo {
@@ -330,9 +330,12 @@ clearlooks_animation_cleanup ()
 	
 	stop_timer ();
 }
-#else /* !HAVE_ANIMATION */
+#else /* !HAVE_WORKING_ANIMATION */
+/* Warn here so the message is only displayed once. */
+#warning Disabling animation support as it currently needs deprecated symbols and GTK_DISABLE_DEPRECATED is enabled.
+
 static void clearlooks_animation_dummy_function_so_wall_shuts_up_when_animations_is_disabled()
 {
 	clearlooks_animation_dummy_function_so_wall_shuts_up_when_animations_is_disabled();
 }
-#endif /* HAVE_ANIMATION */
+#endif /* HAVE_WORKING_ANIMATION */

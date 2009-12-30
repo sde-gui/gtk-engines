@@ -1161,6 +1161,14 @@ mist_style_draw_resize_grip(GtkStyle *style,
 	cairo_destroy(cr);
 }
 
+#ifndef GTK_DISABLE_DEPRECATED
+#ifndef GDK_DISABLE_DEPRECATED
+#define DISABLE_CUSTOM_STRING_DRAWING
+#warning Disabling custom string drawing so that no deprecated API is used.
+#endif /* GDK_DISABLE_DEPRECATED */
+#endif /* GTK_DISABLE_DEPRECATED */
+
+#ifndef DISABLE_CUSTOM_STRING_DRAWING
 static void
 mist_style_draw_string (GtkStyle      *style,
 	     GdkWindow     *window,
@@ -1186,6 +1194,8 @@ mist_style_draw_string (GtkStyle      *style,
 		gdk_gc_set_clip_rectangle (style->fg_gc[state_type], NULL);
 	}
 }
+#endif /* DISABLE_CUSTOM_STRING_DRAWING */
+
 
 static void
 mist_style_draw_layout (GtkStyle        *style,
@@ -1408,7 +1418,9 @@ mist_style_class_init (MistStyleClass *klass)
 	style_class->draw_extension = mist_style_draw_extension;
 	style_class->draw_handle = mist_style_draw_handle;
 	style_class->draw_resize_grip = mist_style_draw_resize_grip;
+#ifndef DISABLE_CUSTOM_STRING_DRAWING
 	style_class->draw_string = mist_style_draw_string;
+#endif
 	style_class->draw_layout = mist_style_draw_layout;
 	style_class->render_icon = mist_style_render_icon;
 	style_class->draw_focus = mist_style_draw_focus;
