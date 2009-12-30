@@ -33,11 +33,15 @@ for RC_FILE in $srcdir/gtkrcs/$ENGINE*; do
 	export GTK2_RC_FILES=$RC_FILE
 	RC_FILE_BASENAME="`basename $RC_FILE`"
 	MY_EXEC_WRAPPER="`echo "$EXEC_WRAPPER" | sed s/THEME/$RC_FILE_BASENAME/`"
-	
+
 	$srcdir/runinx $MY_EXEC_WRAPPER ./torturetest 2>/dev/null >/dev/null
+	
 
 	if [ "$?" != "0" ]; then
 		FAILED=1;
+		if [ "x$DEBUG_ON_FAILURE" != "x" ] && [ "x$DEBUG_COMMAND" != "x" ]; then
+			$srcdir/runinx $DEBUG_COMMAND $MY_EXEC_WRAPPER ./torturetest
+		fi
 	fi
 done
 
