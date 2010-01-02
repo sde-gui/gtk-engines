@@ -581,7 +581,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	{
 	
 		WidgetParameters params;
-		ShadowParameters shadow = { CR_CORNER_ALL, CL_SHADOW_NONE } ;
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.active = shadow_type == GTK_SHADOW_IN;
 
@@ -591,8 +590,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				params.corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 			else
 				params.corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
-
-			shadow.shadow = CL_SHADOW_IN;
 
 			if (params.xthickness > 2)
 			{
@@ -608,8 +605,38 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				params.enable_shadow = TRUE;
 		}
 
-		STYLE_FUNCTION(draw_button) (cr, &clearlooks_style->colors, &params,
-		                             x, y, width, height);
+		if (shadow_type != GTK_SHADOW_ETCHED_IN)
+		{
+			STYLE_FUNCTION(draw_button) (cr, &clearlooks_style->colors, &params,
+			                             x, y, width, height);
+		}
+		else
+		{
+			g_print ("ETCHED IN\n");
+			cairo_save (cr);
+			cairo_move_to (cr, x, y);
+			cairo_line_to (cr, x + width, y);
+			cairo_line_to (cr, x, y + height);
+			cairo_close_path (cr);
+			cairo_clip (cr);
+			params.active = TRUE;
+			params.state_type = GTK_STATE_ACTIVE;
+			STYLE_FUNCTION(draw_button) (cr, &clearlooks_style->colors, &params,
+			                             x, y, width, height);
+			cairo_restore (cr);
+
+			cairo_save (cr);
+			cairo_move_to (cr, x + width, y);
+			cairo_line_to (cr, x + width, y + height);
+			cairo_line_to (cr, x, y + height);
+			cairo_close_path (cr);
+			cairo_clip (cr);
+			params.active = FALSE;
+			params.state_type = GTK_STATE_NORMAL;
+			STYLE_FUNCTION(draw_button) (cr, &clearlooks_style->colors, &params,
+			                             x, y, width, height);
+			cairo_restore (cr);
+		}
 	}
 	else if (DETAIL ("spinbutton_up") || DETAIL ("spinbutton_down"))
 	{
