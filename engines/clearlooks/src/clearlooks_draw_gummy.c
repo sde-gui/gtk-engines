@@ -147,14 +147,15 @@ clearlooks_gummy_draw_button (cairo_t                *cr,
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 
-	if (params->xthickness == 3)
+	if (params->xthickness >= 3)
+	{
 		xoffset = 1;
-	if (params->ythickness == 3)
 		yoffset = 1;
+	}
 
 	radius = MIN (params->radius, MIN ((width - 2.0 - 2*xoffset) / 2.0, (height - 2.0 - 2*yoffset) / 2.0));
 
-	if (params->xthickness == 3 || params->ythickness == 3)
+	if (params->xthickness >= 3 || params->ythickness >= 3)
 	{
 		if (params->enable_shadow && !params->active && !params->disabled && !params->is_default)
 		{
@@ -255,6 +256,7 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 	const CairoColor *base = &colors->base[params->state_type];
 	CairoColor border = colors->shade[params->disabled ? 4 : 6];
 	double radius = MIN (params->radius, MIN ((width - 4.0) / 2.0, (height - 4.0) / 2.0));
+	int xoffset, yoffset;
 
 	if (params->focus)
 		border = focus->color;
@@ -264,12 +266,24 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 
+	if (params->xthickness >= 3 && params->ythickness != 3)
+	{
+		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width, height, radius+1, params->corners);
+		xoffset = 1;
+		yoffset = 1;
+	}
+	else
+	{
+		xoffset = 0;
+		yoffset = 0;
+	}
+
 	/* Now fill the area we want to be base[NORMAL]. */
-	ge_cairo_rounded_rectangle (cr, 2, 2, width-4, height-4, MAX(0, radius-1), params->corners);
+	ge_cairo_rounded_rectangle (cr, xoffset + 1, yoffset + 1,
+	                            width-2*(xoffset + 1), height-2*(yoffset + 1),
+	                            MAX(0, radius-1), params->corners);
 	ge_cairo_set_color (cr, base);
 	cairo_fill (cr);
-
-	params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width, height, radius+1, params->corners);
 
 	/* Draw the inner shadow */
 	if (params->focus)
@@ -278,7 +292,9 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 		ge_shade_color (&border, 1.61, &focus_shadow);
 		
 		clearlooks_set_mixed_color (cr, base, &focus_shadow, 0.5);
-		ge_cairo_inner_rounded_rectangle (cr, 2, 2, width-4, height-4, MAX(0, radius-1), params->corners);
+		ge_cairo_inner_rounded_rectangle (cr, xoffset + 1, yoffset + 1,
+		                                  width-2*(xoffset + 1), height-2*(yoffset + 1),
+		                                  MAX(0, radius-1), params->corners);
 		cairo_stroke (cr);
 	}
 	else
@@ -289,13 +305,14 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 		cairo_set_source_rgba (cr, shadow.r, shadow.g, shadow.b, params->disabled ? 0.09 : 0.18);
 
 		cairo_set_line_cap (cr, CAIRO_LINE_CAP_BUTT);
-		cairo_move_to (cr, 2.5, height-radius);
-		cairo_arc (cr, 2.5+MAX(0, radius-1), 2.5+MAX(0, radius-1), MAX(0, radius-1), G_PI, 270*(G_PI/180));
-		cairo_line_to (cr, width-radius, 2.5);
+		cairo_move_to (cr, xoffset + 1.5, height-radius);
+		cairo_arc (cr, xoffset + 1.5 + MAX(0, radius-1), yoffset + 1.5 + MAX(0, radius-1),
+		           MAX(0, radius-1), G_PI, 270*(G_PI/180));
+		cairo_line_to (cr, width-radius, yoffset + 1.5);
 		cairo_stroke (cr);
 	}
 
-	ge_cairo_inner_rounded_rectangle (cr, 1, 1, width-2, height-2, radius, params->corners);
+	ge_cairo_inner_rounded_rectangle (cr, xoffset, yoffset, width-2*xoffset, height-2*yoffset, radius, params->corners);
 	ge_cairo_set_color (cr, &border);
 	cairo_stroke (cr);
 
@@ -1515,7 +1532,7 @@ clearlooks_gummy_draw_checkbox (cairo_t                  *cr,
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1);
 
-	if (widget->xthickness > 2 && widget->ythickness > 2)
+	if (widget->xthickness >= 3 && widget->ythickness >= 3)
 	{
 		widget->style_functions->draw_inset (cr, &widget->parentbg, 0, 0,
 		                                     width, height, (widget->radius > 0)? 1 : 0, CR_CORNER_ALL);
