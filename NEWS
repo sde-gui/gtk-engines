@@ -1,3 +1,35 @@
+Overview of Changes in 2.19.0 (since 2.18.2)
+============================================
+
+Changes in this release:
+ - Option to use the systems version of liblua
+ - Removal of a potential endless loop in different Clearlooks styles
+ - Support for Automake 1.11.
+ - Improvements for bug #525065 (small Clearlooks themes)
+
+GNOME bugs fixed in this release:
+ 594014 - gtk-engines: system-lua check is buggy
+ 572178 - Remove deprecated GTK+ symbols
+ 500952 - check/radio buttons have no insensitive states (mist)
+ 502165 - Inconsistent toggle buttons are drawn unselected
+ 
+New and updated translations:
+ Gil Forcada (ca@valencia)
+ Goran Rakić (sr@latin)
+ Israt Jahan (bn)
+ Khaled Hosny (ar)
+ Krix Apolinário (pt_BR)
+ Lucian Adrian Grijincu (ro)
+ Rajesh Ranjan (hi)
+ Runa Bhattacharjee (bn_IN)
+ Sangeeta Kumari (mai)
+ Seán de Búrca (ga)
+ Thomas Thurman (en@shaw)
+ wanderlust (uk)
+ Yavor Doganov (bg)
+ Горан Ракић (sr)
+
+
 Overview of Changes in 2.18.2 (since 2.18.1)
 ============================================
 
