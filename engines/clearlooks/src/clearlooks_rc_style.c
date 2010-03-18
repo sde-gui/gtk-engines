@@ -68,6 +68,7 @@ enum
 	TOKEN_GLOSSY,
 	TOKEN_INVERTED,
 	TOKEN_GUMMY,
+	TOKEN_GNOME3,
 
 	TOKEN_TRUE,
 	TOKEN_FALSE,
@@ -97,6 +98,7 @@ static gchar* clearlooks_rc_symbols =
 	"GLOSSY\0"
 	"INVERTED\0"
 	"GUMMY\0"
+	"GNOME3\0"
 
 	"TRUE\0"
 	"FALSE\0";
@@ -256,7 +258,7 @@ clearlooks_gtk2_rc_parse_style (GtkSettings      *settings,
 {
 	guint token;
 
-	g_assert (CL_NUM_STYLES == CL_STYLE_GUMMY + 1); /* so that people don't forget ;-) */
+	g_assert (CL_NUM_STYLES == CL_STYLE_GNOME3 + 1); /* so that people don't forget ;-) */
 
 	/* Skip 'style' */
 	token = g_scanner_get_next_token (scanner);
@@ -280,6 +282,9 @@ clearlooks_gtk2_rc_parse_style (GtkSettings      *settings,
 		   break;
 		case TOKEN_GUMMY:
 		   *style = CL_STYLE_GUMMY;
+		   break;
+		case TOKEN_GNOME3:
+		   *style = CL_STYLE_GNOME3;
 		   break;
 		default:
 		   return TOKEN_CLASSIC;

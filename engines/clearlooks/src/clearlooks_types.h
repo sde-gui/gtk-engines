@@ -37,7 +37,8 @@ typedef enum
 	CL_STYLE_GLOSSY = 1,
 	CL_STYLE_INVERTED = 2,
 	CL_STYLE_GUMMY = 3,
-	CL_NUM_STYLES = 4
+	CL_STYLE_GNOME3 = 4,
+	CL_NUM_STYLES = 5
 } ClearlooksStyles;
 
 typedef enum

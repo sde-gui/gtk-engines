@@ -2022,6 +2022,11 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	klass->style_constants[CL_STYLE_GUMMY] = klass->style_constants[CL_STYLE_CLASSIC];
 	clearlooks_register_style_gummy (&klass->style_functions[CL_STYLE_GUMMY],
 	                                 &klass->style_constants[CL_STYLE_GUMMY]);
+
+	klass->style_functions[CL_STYLE_GNOME3] = klass->style_functions[CL_STYLE_CLASSIC];
+	klass->style_constants[CL_STYLE_GNOME3] = klass->style_constants[CL_STYLE_CLASSIC];
+	clearlooks_register_style_gnome3 (&klass->style_functions[CL_STYLE_GNOME3],
+	                                  &klass->style_constants[CL_STYLE_GNOME3]);
 }
 
 static void

@@ -58,7 +58,7 @@ BUILD_SCHEMAS=""
 
 if test $clearlooks = "yes"; then
 	BUILD_ENGINES="$BUILD_ENGINES clearlooks"
-	BUILD_THEMES="$BUILD_THEMES Clearlooks"
+	BUILD_THEMES="$BUILD_THEMES Clearlooks GNOME3"
 	if test $schemas = "yes"; then
 		BUILD_SCHEMAS="$BUILD_SCHEMAS clearlooks.xml"
 	fi
@@ -185,6 +185,8 @@ engines/lua/Makefile
 themes/Makefile
 themes/Clearlooks/Makefile
 themes/Clearlooks/gtk-2.0/Makefile
+themes/GNOME3/Makefile
+themes/GNOME3/gtk-2.0/Makefile
 themes/Crux/Makefile
 themes/Crux/gtk-2.0/Makefile
 themes/Industrial/Makefile

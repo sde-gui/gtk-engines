@@ -36,6 +36,7 @@ GE_INTERNAL void clearlooks_register_style_classic (ClearlooksStyleFunctions *fu
 GE_INTERNAL void clearlooks_register_style_glossy (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants);
 GE_INTERNAL void clearlooks_register_style_gummy (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants);
 GE_INTERNAL void clearlooks_register_style_inverted (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants);
+GE_INTERNAL void clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants);
 
 /* Fallback focus function */
 GE_INTERNAL void clearlooks_draw_focus (cairo_t *cr,
