@@ -21,64 +21,68 @@
 
 NULL =
 
+LIBLUA_FILES = \
+	./src/liblua/lapi.h \
+	./src/liblua/lauxlib.h \
+	./src/liblua/lcode.h \
+	./src/liblua/ldebug.h \
+	./src/liblua/ldo.h \
+	./src/liblua/lfunc.h \
+	./src/liblua/lgc.h \
+	./src/liblua/llex.h \
+	./src/liblua/llimits.h \
+	./src/liblua/lmem.h \
+	./src/liblua/lobject.h \
+	./src/liblua/lopcodes.h \
+	./src/liblua/lparser.h \
+	./src/liblua/lstate.h \
+	./src/liblua/lstring.h \
+	./src/liblua/ltable.h \
+	./src/liblua/ltm.h \
+	./src/liblua/lua.h \
+	./src/liblua/luaconf.h \
+	./src/liblua/lualib.h \
+	./src/liblua/lundump.h \
+	./src/liblua/lvm.h \
+	./src/liblua/lzio.h \
+	./src/liblua/lapi.c \
+	./src/liblua/lcode.c \
+	./src/liblua/ldebug.c \
+	./src/liblua/ldo.c \
+	./src/liblua/ldump.c \
+	./src/liblua/lfunc.c \
+	./src/liblua/lgc.c \
+	./src/liblua/liolib.c \
+	./src/liblua/llex.c \
+	./src/liblua/lmem.c \
+	./src/liblua/lobject.c \
+	./src/liblua/lopcodes.c \
+	./src/liblua/loslib.c \
+	./src/liblua/lparser.c \
+	./src/liblua/lstate.c \
+	./src/liblua/lstring.c \
+	./src/liblua/lstrlib.c \
+	./src/liblua/ltable.c \
+	./src/liblua/ltablib.c \
+	./src/liblua/ltm.c \
+	./src/liblua/lundump.c \
+	./src/liblua/lvm.c \
+	./src/liblua/lzio.c \
+	./src/liblua/lauxlib.c \
+	./src/liblua/lbaselib.c \
+	./src/liblua/ldblib.c \
+	./src/liblua/lmathlib.c \
+	./src/liblua/loadlib.c \
+	./src/liblua/linit.c
+
 if SYSTEM_LUA
-	LIBLUA_SOURCES =
-	LIBLUA_CFLAGS = $(LUA_CFLAGS)
+LIBLUA_SOURCES =
+LIBLUA_CFLAGS = $(LUA_CFLAGS)
+EXTRA_DIST = $(LIBLUA_FILES)
 else
-	LIBLUA_CFLAGS = -I$(top_srcdir)/engines/lua/src/liblua
-	LIBLUA_SOURCES = \
-		./src/liblua/lapi.h \
-		./src/liblua/lauxlib.h \
-		./src/liblua/lcode.h \
-		./src/liblua/ldebug.h \
-		./src/liblua/ldo.h \
-		./src/liblua/lfunc.h \
-		./src/liblua/lgc.h \
-		./src/liblua/llex.h \
-		./src/liblua/llimits.h \
-		./src/liblua/lmem.h \
-		./src/liblua/lobject.h \
-		./src/liblua/lopcodes.h \
-		./src/liblua/lparser.h \
-		./src/liblua/lstate.h \
-		./src/liblua/lstring.h \
-		./src/liblua/ltable.h \
-		./src/liblua/ltm.h \
-		./src/liblua/lua.h \
-		./src/liblua/luaconf.h \
-		./src/liblua/lualib.h \
-		./src/liblua/lundump.h \
-		./src/liblua/lvm.h \
-		./src/liblua/lzio.h \
-		./src/liblua/lapi.c \
-		./src/liblua/lcode.c \
-		./src/liblua/ldebug.c \
-		./src/liblua/ldo.c \
-		./src/liblua/ldump.c \
-		./src/liblua/lfunc.c \
-		./src/liblua/lgc.c \
-		./src/liblua/liolib.c \
-		./src/liblua/llex.c \
-		./src/liblua/lmem.c \
-		./src/liblua/lobject.c \
-		./src/liblua/lopcodes.c \
-		./src/liblua/loslib.c \
-		./src/liblua/lparser.c \
-		./src/liblua/lstate.c \
-		./src/liblua/lstring.c \
-		./src/liblua/lstrlib.c \
-		./src/liblua/ltable.c \
-		./src/liblua/ltablib.c \
-		./src/liblua/ltm.c \
-		./src/liblua/lundump.c \
-		./src/liblua/lvm.c \
-		./src/liblua/lzio.c \
-		./src/liblua/lauxlib.c \
-		./src/liblua/lbaselib.c \
-		./src/liblua/ldblib.c \
-		./src/liblua/lmathlib.c \
-		./src/liblua/loadlib.c \
-		./src/liblua/linit.c
+LIBLUA_CFLAGS = -I$(top_srcdir)/engines/lua/src/liblua
+LIBLUA_SOURCES = $(LIBLUA_FILES)
+EXTRA_DIST = 
 endif
 
 INCLUDES = \
