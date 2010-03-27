@@ -5,15 +5,15 @@
 # Runa Bhattacharjee <runabh@gmail.com>, 2007.
 # Runa Bhattacharjee <runab@fedoraproject.org>, 2008.
 # Runa Bhattacharjee <runab@redhat.com>, 2009.
-# Israt Jahan <israt@ankur.org.bd>, 2009.
+# Israt Jahan <israt@ankur.org.bd>, 2009-2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: bn\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
 "engines&component=general\n"
-"POT-Creation-Date: 2009-08-31 19:14+0000\n"
-"PO-Revision-Date: 2009-09-03 16:22+0700\n"
+"POT-Creation-Date: 2009-12-14 22:09+0000\n"
+"PO-Revision-Date: 2010-03-24 16:22+0600\n"
 "Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
 "Language-Team: Bengali <ankur-bd-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,7 @@ msgstr "প্রান্তের প্রস্থ"
 
 #: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr "ট্রি-ভিউয়ের অধীন চেক- এবং রেডিও বোতামের মাপ। (বাগ নম্বর #৩৫১৭৬৪)"
+msgstr "ট্রি-ভিউয়ের অধীন চেক- এবং রেডিও বোতামের মাপ। (বাগ নম্বর #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
@@ -184,7 +184,7 @@ msgstr "কিছু নয়"
 
 #: ../schema/thinice.xml.in.in.h:12
 msgid "Paned Dots"
-msgstr "পেনের বিন্দু"
+msgstr "প্যানের বিন্দু"
 
 #: ../schema/thinice.xml.in.in.h:13
 msgid "Rectangle"
