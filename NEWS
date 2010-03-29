@@ -1,3 +1,19 @@
+Overview of Changes in 2.20.0 (since 2.19.0)
+============================================
+
+Changes in this release:
+ - Increased spacing between icons and labels in Clearlooks
+
+GNOME bugs fixed in this release:
+ 594014 - gtk-engines: system-lua check is buggy
+
+New and updated translations:
+ F Wolff (af)
+ Israt Jahan (bn)
+ Suso Baleato (gl)
+ Xandru Armesto (ast)
+
+
 Overview of Changes in 2.19.0 (since 2.18.2)
 ============================================
 
