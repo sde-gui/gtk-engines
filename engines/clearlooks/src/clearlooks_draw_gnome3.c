@@ -53,7 +53,7 @@ clearlooks_gnome3_draw_entry (cairo_t *cr,
 
 	cairo_set_line_width (cr, 1.0);
 	ge_cairo_rounded_rectangle (cr, x + 0.5, y + 0.5, width - 1,
-	                            height - 1, params->radius,
+	                            height - 1, MAX(0, params->radius - 0.5),
 	                            params->corners);
 	ge_cairo_set_color (cr, bg_color);
 	cairo_fill_preserve (cr);
@@ -80,7 +80,7 @@ clearlooks_gnome3_draw_entry (cairo_t *cr,
 
 	if (!params->disabled) {
 		ge_cairo_rounded_rectangle (cr, x + 1.0, y + 1.0, width - 2,
-		                            height - 2, MAX(0, params->radius - 0.5),
+		                            height - 2, MAX(0, params->radius - 1.0),
 		                            params->corners);
 		cairo_clip (cr);
 		cairo_move_to (cr, x, y + 1.5);
@@ -89,6 +89,84 @@ clearlooks_gnome3_draw_entry (cairo_t *cr,
 		ge_cairo_set_color (cr, &top_color);
 		cairo_stroke (cr);
 	}
+
+	cairo_restore (cr);
+}
+
+static void
+clearlooks_gnome3_draw_button (cairo_t *cr,
+                        const ClearlooksColors *colors,
+                        const WidgetParameters *params,
+                        int x, int y, int width, int height)
+{
+	CairoColor bg_color = colors->bg[params->state_type];
+	CairoColor fg_color = colors->fg[params->state_type];
+	CairoColor stroke_top_color, stroke_bottom_color;
+	CairoColor fill_top_color, fill_bottom_color;
+	CairoColor border_color;
+	cairo_pattern_t *pattern;
+
+	ge_mix_color (&bg_color, &fg_color, 0.6, &border_color);
+
+	cairo_save (cr);
+
+	/* Draw two gradients, a stroke around, and an inner border */
+	stroke_top_color.r = 1;
+	stroke_top_color.g = 0;
+	stroke_top_color.b = 0;
+	stroke_top_color.a = 1;
+	stroke_bottom_color.r = 0;
+	stroke_bottom_color.g = 1;
+	stroke_bottom_color.b = 0;
+	stroke_bottom_color.a = 1;
+
+	fill_top_color.r = 1;
+	fill_top_color.g = 0;
+	fill_top_color.b = 1;
+	fill_top_color.a = 1;
+	fill_bottom_color.r = 0;
+	fill_bottom_color.g = 1;
+	fill_bottom_color.b = 1;
+	fill_bottom_color.a = 1;
+
+
+	if (params->disabled) {
+		stroke_top_color = stroke_bottom_color = bg_color;
+		fill_top_color = fill_bottom_color = bg_color;
+	} else if (params->active) {
+		ge_shade_color (&bg_color, 1.1, &stroke_bottom_color);
+		ge_shade_color (&bg_color, 0.95, &stroke_top_color);
+
+		ge_shade_color (&bg_color, 1.08, &fill_bottom_color);
+		ge_shade_color (&bg_color, 0.95, &fill_top_color);
+	} else {
+		ge_shade_color (&bg_color, 1.1, &stroke_top_color);
+		ge_shade_color (&bg_color, 0.95, &stroke_bottom_color);
+
+		ge_shade_color (&bg_color, 1.05, &fill_top_color);
+		ge_shade_color (&bg_color, 0.95, &fill_bottom_color);
+	}
+
+	/* Border around everything */	
+	ge_cairo_inner_rounded_rectangle (cr, x, y, width, height, params->radius, params->corners);
+	ge_cairo_set_color (cr, &border_color);
+	cairo_stroke (cr);
+
+	ge_cairo_inner_rounded_rectangle (cr, x + 1, y + 1, width - 2, height - 2, MAX(0, params->radius - 1), params->corners);
+	pattern = cairo_pattern_create_linear (x, y + 2, x, y + height - 4);
+	ge_cairo_pattern_add_color_stop_color (pattern, 0.0, &stroke_top_color);
+	ge_cairo_pattern_add_color_stop_color (pattern, 1.0, &stroke_bottom_color);
+	cairo_set_source (cr, pattern);
+	cairo_pattern_destroy (pattern);
+	cairo_stroke (cr);
+
+	ge_cairo_rounded_rectangle (cr, x + 2, y + 2, width - 4, height - 4, MAX(0, params->radius - 2), params->corners);
+	pattern = cairo_pattern_create_linear (x, y + 3, x, y + height - 6);
+	ge_cairo_pattern_add_color_stop_color (pattern, 0.0, &fill_top_color);
+	ge_cairo_pattern_add_color_stop_color (pattern, 1.0, &fill_bottom_color);
+	cairo_set_source (cr, pattern);
+	cairo_pattern_destroy (pattern);
+	cairo_fill (cr);
 
 	cairo_restore (cr);
 }
@@ -148,9 +226,9 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 	g_assert (functions);
 
 	functions->draw_entry               = clearlooks_gnome3_draw_entry;
+	functions->draw_button              = clearlooks_gnome3_draw_button;
 /*	functions->draw_arrow               = clearlooks_gnome3_draw_arrow;
 	functions->draw_top_left_highlight  = clearlooks_draw_top_left_highlight;
-	functions->draw_button              = clearlooks_draw_button;
 	functions->draw_scale_trough        = clearlooks_draw_scale_trough;
 	functions->draw_progressbar_trough  = clearlooks_draw_progressbar_trough;
 	functions->draw_progressbar_fill    = clearlooks_draw_progressbar_fill;
