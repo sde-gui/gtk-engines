@@ -93,7 +93,7 @@ style "default" {
 		colorize_scrollbar = FALSE	# XXX, will we support this?
 		animation = FALSE
 		radius = 3.0
-		style = GNOME3
+		# style = GNOME3"
 
 		# Set a hint to disable backward compatibility fallbacks.
 		hint = "use-hints"
@@ -216,6 +216,7 @@ style "comboboxentry" {
 
 style "menubar" {
 
+  bg [NORMAL] = "#e2e2df"
 	engine "clearlooks" {
 		hint = "menubar"
 	}
@@ -233,8 +234,8 @@ style "menu" {
 }
 
 style "menu_item" {
-	xthickness = 2
-	ythickness = 3
+	xthickness = 5
+	ythickness = 4
 
 	fg[PRELIGHT]      = @selected_fg_color
 }
