@@ -43,14 +43,6 @@ typedef enum
 
 typedef enum
 {
-	CL_STATE_NORMAL,
-	CL_STATE_ACTIVE,
-	CL_STATE_SELECTED,
-	CL_STATE_INSENSITIVE
-} ClearlooksStateType;
-
-typedef enum
-{
 	CL_JUNCTION_NONE      = 0,
 	CL_JUNCTION_BEGIN     = 1,
 	CL_JUNCTION_END       = 2
@@ -190,7 +182,7 @@ typedef struct
 
 	gfloat  radius;
 	
-	ClearlooksStateType state_type;
+	GtkStateType state_type;
 	
 	uint8 corners;
 	uint8 xthickness;
