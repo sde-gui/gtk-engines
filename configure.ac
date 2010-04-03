@@ -187,6 +187,7 @@ themes/Clearlooks/Makefile
 themes/Clearlooks/gtk-2.0/Makefile
 themes/GNOME3/Makefile
 themes/GNOME3/gtk-2.0/Makefile
+themes/GNOME3/metacity-1/Makefile
 themes/Crux/Makefile
 themes/Crux/gtk-2.0/Makefile
 themes/Industrial/Makefile
