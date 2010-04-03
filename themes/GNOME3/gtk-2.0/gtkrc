@@ -54,7 +54,7 @@ style "default" {
 	GtkScrolledWindow::scrollbar-spacing = 0
 	GtkScrolledWindow::scrollbars-within-bevel = 1
 
-	GtkStatusBar::shadow-type = GTK_SHADOW_NONE
+
 
 	GtkMenu::horizontal-padding = 0
 	GtkMenu::vertical-padding = 0
@@ -225,7 +225,8 @@ style "notebook" {
 }
 
 style "statusbar" {
-
+	ythickness = 5
+	GtkStatusBar::shadow-type = GTK_SHADOW_NONE
 	engine "clearlooks" {
 		hint = "statusbar"
 	}
