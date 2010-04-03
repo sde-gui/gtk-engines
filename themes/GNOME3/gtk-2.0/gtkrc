@@ -1,8 +1,7 @@
 
 # Please keep this gtkrc in sync with the other ones from Clearlooks based themes.
 
-gtk-color-scheme = "base_color:#ffffff\nbg_color:#e4e4e4\ntooltip_bg_color:#343434\nselected_bg_color:#4a90d9\ntext_color:#2e3436\nfg_color:#2e3436\ntooltip_fg_color:#ffffff\nselected_fg_color:#ffffff\nlink_color:#4a90d9\nframe_color:#e4e4e4\ninactive_frame_color:#e4e4e4"
-# frame_color and inactive_frame_color are for Google Chrome.
+gtk-color-scheme = "base_color:#ffffff\nbg_color:#e4e4e4\ntooltip_bg_color:#343434\nselected_bg_color:#4a90d9\ntext_color:#2e3436\nfg_color:#2e3436\ntooltip_fg_color:#ffffff\nselected_fg_color:#ffffff\nlink_color:#4a90d9"
 
 gtk-auto-mnemonics = 1
 gtk-cursor-blink = 0
@@ -106,6 +105,10 @@ style "default" {
 	base[SELECTED]    = shade(1.07, @selected_bg_color)
 	base[INSENSITIVE] = shade (1.07, @bg_color)
 	base[ACTIVE]      = shade (0.9, @selected_bg_color)
+
+	# These are for Google Chrome
+	color['frame_color'] = 	@bg_color
+	color['inactive_frame_color']  = @bg_color
 
 	engine "clearlooks" {
 		colorize_scrollbar = FALSE	# XXX, will we support this?
