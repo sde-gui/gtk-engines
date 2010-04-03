@@ -367,6 +367,32 @@ clearlooks_gnome3_draw_slider_button (cairo_t *cr,
 	cairo_restore (cr);
 }
 
+/* We can't draw transparent things here, since it will be called on the same
+ * surface multiple times, when placed on a handlebox_bin or dockitem_bin */
+static void
+clearlooks_gnome3_draw_toolbar (cairo_t *cr,
+                         const ClearlooksColors          *colors,
+                         const WidgetParameters          *widget,
+                         const ToolbarParameters         *toolbar,
+                         int x, int y, int width, int height)
+{
+	CairoColor top_bg = colors->bg[GTK_STATE_ACTIVE];
+	CairoColor bottom_bg = colors->bg[GTK_STATE_NORMAL];
+	cairo_pattern_t *pattern;
+
+	pattern = cairo_pattern_create_linear (x, y, x, y + height * 0.75);
+
+	ge_mix_color (&bottom_bg, &top_bg, 0.31, &bottom_bg);
+	ge_cairo_pattern_add_color_stop_color (pattern, 0.0, &top_bg);
+	ge_cairo_pattern_add_color_stop_color (pattern, 1.0, &bottom_bg);
+
+	cairo_set_source (cr, pattern);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_fill (cr);
+
+	cairo_pattern_destroy (pattern);
+}
+
 void
 clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
@@ -379,6 +405,7 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 	functions->draw_scrollbar_slider    = clearlooks_gnome3_draw_scrollbar_slider;
 	functions->draw_scrollbar_trough    = clearlooks_gnome3_draw_scrollbar_trough;
 	functions->draw_slider_button       = clearlooks_gnome3_draw_slider_button;
+	functions->draw_toolbar             = clearlooks_gnome3_draw_toolbar;
 /*	functions->draw_arrow               = clearlooks_gnome3_draw_arrow;
 	functions->draw_top_left_highlight  = clearlooks_draw_top_left_highlight;
 	functions->draw_scale_trough        = clearlooks_draw_scale_trough;
@@ -394,7 +421,6 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 	functions->draw_separator           = clearlooks_draw_separator;
 	functions->draw_menu_item_separator = clearlooks_draw_menu_item_separator;
 	functions->draw_list_view_header    = clearlooks_draw_list_view_header;
-	functions->draw_toolbar             = clearlooks_draw_toolbar;
 	functions->draw_menuitem            = clearlooks_draw_menuitem;
 	functions->draw_menubaritem         = clearlooks_draw_menubaritem;
 	functions->draw_selected_cell       = clearlooks_draw_selected_cell;

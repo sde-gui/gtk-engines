@@ -333,8 +333,7 @@ style "tooltips" {
 }
 
 style "toolbar" {
-	bg [NORMAL] = "#8a9580"
-	bg [ACTIVE] = "#c7ccc1" # second gradient color
+	bg [ACTIVE] = "#8a9580"
 }
 
 style "separator" = "wide" {
