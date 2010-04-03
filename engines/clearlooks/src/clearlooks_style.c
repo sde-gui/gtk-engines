@@ -1516,6 +1516,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->animation           = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	clearlooks_style->radius              = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
 	clearlooks_style->disable_focus       = CLEARLOOKS_RC_STYLE (rc_style)->disable_focus;
+	clearlooks_style->accel_label_shade   = CLEARLOOKS_RC_STYLE (rc_style)->accel_label_shade;
 
 	if (clearlooks_style->has_focus_color)
 		clearlooks_style->focus_color     = CLEARLOOKS_RC_STYLE (rc_style)->focus_color;
@@ -1846,6 +1847,32 @@ clearlooks_style_draw_layout (GtkStyle * style,
 	g_return_if_fail (window != NULL);
 
 	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
+	g_object_ref (gc);
+
+	if (state_type == GTK_STATE_NORMAL && DETAIL("accellabel")) {
+		ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
+		ClearlooksColors *colors = &clearlooks_style->colors;
+		GdkColor gdk_color;
+		GdkGC *old_gc = gc;
+		CairoColor color;
+
+		g_object_unref (gc);
+		gc = gdk_gc_new (window);
+		gdk_gc_copy (gc, old_gc);
+
+		ge_mix_color (use_text ? &colors->base[state_type] : &colors->bg[state_type],
+		              use_text ? &colors->text[state_type] : &colors->fg[state_type],
+		              clearlooks_style->accel_label_shade,
+		              &color);
+
+		gdk_color.red = color.r * 65535;
+		gdk_color.green = color.g * 65535;
+		gdk_color.blue = color.b * 65535;
+
+		gdk_gc_set_rgb_fg_color (gc, &gdk_color);
+	}
+
+
 
 	if (area)
 		gdk_gc_set_clip_rectangle (gc, area);
@@ -1878,6 +1905,7 @@ clearlooks_style_draw_layout (GtkStyle * style,
 
 	if (area)
 		gdk_gc_set_clip_rectangle (gc, NULL);
+	g_object_unref (gc);
 }
 
 static GdkPixbuf *

@@ -63,6 +63,7 @@ struct _ClearlooksStyle
 	gboolean animation;
 	gfloat   radius;
 	gboolean disable_focus;
+	gdouble  accel_label_shade;
 };
 
 struct _ClearlooksStyleClass

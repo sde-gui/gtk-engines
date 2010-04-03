@@ -119,6 +119,7 @@ style "default" {
 		animation = FALSE
 		radius = 3.0
 		style = GNOME3
+		accel_label_shade = 1.0
 
 		# Set a hint to disable backward compatibility fallbacks.
 		hint = "use-hints"

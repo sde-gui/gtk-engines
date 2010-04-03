@@ -63,6 +63,7 @@ enum
 	TOKEN_RADIUS,
 	TOKEN_HINT,
 	TOKEN_DISABLE_FOCUS,
+	TOKEN_ACCEL_LABEL_SHADE,
 
 	TOKEN_CLASSIC,
 	TOKEN_GLOSSY,
@@ -93,6 +94,7 @@ static gchar* clearlooks_rc_symbols =
 	"radius\0"
 	"hint\0"
 	"disable_focus\0"
+	"accel_label_shade\0"
 
 	"CLASSIC\0"
 	"GLOSSY\0"
@@ -127,6 +129,7 @@ clearlooks_rc_style_init (ClearlooksRcStyle *clearlooks_rc)
 	clearlooks_rc->radius = 3.0;
 	clearlooks_rc->hint = 0;
 	clearlooks_rc->disable_focus = FALSE;
+	clearlooks_rc->accel_label_shade = 1.0;
 }
 
 #ifdef HAVE_WORKING_ANIMATION
@@ -411,6 +414,10 @@ clearlooks_rc_style_parse (GtkRcStyle *rc_style,
 				token = clearlooks_gtk2_rc_parse_boolean (settings, scanner, &clearlooks_style->disable_focus);
 				clearlooks_style->flags |= CL_FLAG_DISABLE_FOCUS;
 				break;
+			case TOKEN_ACCEL_LABEL_SHADE:
+				token = clearlooks_gtk2_rc_parse_double (settings, scanner, &clearlooks_style->accel_label_shade);
+				clearlooks_style->flags |= CL_FLAG_ACCEL_LABEL_SHADE;
+				break;
 
 			/* stuff to ignore */
 			case TOKEN_SUNKENMENU:
@@ -486,6 +493,8 @@ clearlooks_rc_style_merge (GtkRcStyle *dest,
 		dest_w->hint = src_w->hint;
 	if (flags & CL_FLAG_DISABLE_FOCUS)
 		dest_w->disable_focus = src_w->disable_focus;
+	if (flags & CL_FLAG_ACCEL_LABEL_SHADE)
+		dest_w->accel_label_shade = src_w->accel_label_shade;
 
 	dest_w->flags |= src_w->flags;
 }
