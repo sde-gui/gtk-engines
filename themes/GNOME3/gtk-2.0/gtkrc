@@ -253,10 +253,10 @@ style "menu" {
 	xthickness = 0
 	ythickness = 4
 
-  GtkMenu::vertical-offset = 0
-  GtkMenu::horizontal-offset = -1
+	GtkMenu::vertical-offset = 0
+	GtkMenu::horizontal-offset = -1
 
-	bg[NORMAL]        = shade (1.08, @bg_color)
+	bg[NORMAL]        = @base_color
 
 	engine "clearlooks" {
 		radius = 0.0
