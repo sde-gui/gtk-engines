@@ -62,8 +62,8 @@
   <!-- Title -->
 
   <draw_ops name="title_all">
-     <title x="((3 `max` (width)) / 2)+1" y="(((height - title_height) / 2) `max` 0)+1" color="#ffffff"/>
-     <title x="((3 `max` (width)) / 2)" y="((height - title_height) / 2) `max` 0" color="#2e3436"/>
+     <title x="11" y="(((height - title_height) / 2) `max` 0)+1" color="#ffffff"/>
+     <title x="10" y="((height - title_height) / 2) `max` 0" color="#2e3436"/>
      <image filename="left_button_edge.png"
 			  alpha="1"
 			  x="width-6"
@@ -73,8 +73,8 @@
   </draw_ops>
 
   <draw_ops name="title_all_unfocused">
-     <title x="((3 `max` (width)) / 2)+1" y="(((height - title_height) / 2) `max` 0)+1" color="#ffffff"/>
-     <title x="((3 `max` (width)) / 2)" y="((height - title_height) / 2) `max` 0" color="#8d908f"/>
+     <title x="11" y="(((height - title_height) / 2) `max` 0)+1" color="#ffffff"/>
+     <title x="10" y="((height - title_height) / 2) `max` 0" color="#8d908f"/>
      <image filename="left_button_edge.png"
 			  alpha="1"
 			  x="width-6"

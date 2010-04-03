@@ -393,6 +393,191 @@ clearlooks_gnome3_draw_toolbar (cairo_t *cr,
 	cairo_pattern_destroy (pattern);
 }
 
+static void
+clearlooks_gnome3_draw_tab (cairo_t *cr,
+                     const ClearlooksColors *colors,
+                     const WidgetParameters *params,
+                     const TabParameters    *tab,
+                     int x, int y, int width, int height)
+{
+	const CairoColor *border1       = &colors->shade[6];
+	const CairoColor *border2       = &colors->shade[5];
+	const CairoColor *stripe_fill   = &colors->spot[1];
+	const CairoColor *stripe_border = &colors->spot[2];
+	const CairoColor *fill;
+	CairoColor        hilight;
+
+	cairo_pattern_t  *pattern;
+
+	double            radius;
+	double            stripe_size = 2.0;
+	double            stripe_fill_size;
+	double            length;
+
+	radius = MIN (params->radius, MIN ((width - 2.0) / 2.0, (height - 2.0) / 2.0));
+
+	cairo_save (cr);
+
+	/* Set clip */
+	cairo_rectangle      (cr, x, y, width, height);
+	cairo_clip           (cr);
+	cairo_new_path       (cr);
+
+	/* Translate and set line width */
+	cairo_set_line_width (cr, 1.0);
+	cairo_translate      (cr, x, y);
+
+
+	/* Make the tabs slightly bigger than they should be, to create a gap */
+	/* And calculate the strip size too, while you're at it */
+	if (tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM)
+	{
+		height += 2.0;
+		length = height;
+		stripe_fill_size = (tab->gap_side == CL_GAP_TOP ? stripe_size/height : stripe_size/(height-2));
+
+		if (tab->gap_side == CL_GAP_TOP)
+			cairo_translate (cr, 0.0, -3.0); /* gap at the other side */
+	}
+	else
+	{
+		width += 3.0;
+		length = width;
+		stripe_fill_size = (tab->gap_side == CL_GAP_LEFT ? stripe_size/width : stripe_size/(width-2));
+
+		if (tab->gap_side == CL_GAP_LEFT)
+			cairo_translate (cr, -3.0, 0.0); /* gap at the other side */
+	}
+
+	/* Set the fill color */
+	fill = &colors->bg[params->state_type];
+
+	/* Set tab shape */
+	ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1,
+	                            radius, params->corners);
+
+	/* Draw fill */
+	ge_cairo_set_color (cr, fill);
+	cairo_fill   (cr);
+
+
+	ge_shade_color (fill, 1.3, &hilight);
+
+	/* Draw highlight */
+	if (!params->active)
+	{
+		ShadowParameters shadow;
+
+		shadow.shadow  = CL_SHADOW_OUT;
+		shadow.corners = params->corners;
+
+	}
+
+	if (params->active)
+	{
+		CairoColor shadow;
+		switch (tab->gap_side)
+		{
+			case CL_GAP_TOP:
+				pattern = cairo_pattern_create_linear (0.5, height-1.5, 0.5, 0.5);
+				break;
+			case CL_GAP_BOTTOM:
+				pattern = cairo_pattern_create_linear (0.5, 1.5, 0.5, height+0.5);
+				break;
+			case CL_GAP_LEFT:
+				pattern = cairo_pattern_create_linear (width-1.5, 0.5, 1.5, 0.5);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (1.5, 0.5, width-1.5, 0.5);
+				break;
+			default:
+				pattern = NULL;
+		}
+
+		ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, params->corners);
+
+		ge_shade_color (fill, 0.92, &shadow);
+
+		cairo_pattern_add_color_stop_rgba  (pattern, 0.0,        hilight.r, hilight.g, hilight.b, 0.4);
+		cairo_pattern_add_color_stop_rgba  (pattern, 1.0/length, hilight.r, hilight.g, hilight.b, 0.4);
+		cairo_pattern_add_color_stop_rgb   (pattern, 1.0/length, fill->r,fill->g,fill->b);
+		cairo_pattern_add_color_stop_rgb   (pattern, 1.0,        shadow.r,shadow.g,shadow.b);
+		cairo_set_source (cr, pattern);
+		cairo_fill (cr);
+		cairo_pattern_destroy (pattern);
+	}
+	else
+	{
+		/* Draw shade */
+		switch (tab->gap_side)
+		{
+			case CL_GAP_TOP:
+				pattern = cairo_pattern_create_linear (0.5, height-1.5, 0.5, 0.5);
+				break;
+			case CL_GAP_BOTTOM:
+				pattern = cairo_pattern_create_linear (0.5, 0.5, 0.5, height+0.5);
+				break;
+			case CL_GAP_LEFT:
+				pattern = cairo_pattern_create_linear (width-1.5, 0.5, 0.5, 0.5);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (0.5, 0.5, width+0.5, 0.5);
+				break;
+			default:
+				pattern = NULL;
+		}
+
+		ge_cairo_rounded_rectangle (cr, 0.5, 0.5, width-1, height-1, radius, params->corners);
+
+		cairo_pattern_add_color_stop_rgb  (pattern, 0.0,        stripe_fill->r, stripe_fill->g, stripe_fill->b);
+		cairo_pattern_add_color_stop_rgb  (pattern, stripe_fill_size, stripe_fill->r, stripe_fill->g, stripe_fill->b);
+		cairo_pattern_add_color_stop_rgba (pattern, stripe_fill_size, hilight.r, hilight.g, hilight.b, 0.5);
+		cairo_pattern_add_color_stop_rgba (pattern, 0.8,        hilight.r, hilight.g, hilight.b, 0.0);
+		cairo_set_source (cr, pattern);
+		cairo_fill (cr);
+		cairo_pattern_destroy (pattern);
+	}
+
+	ge_cairo_inner_rounded_rectangle (cr, 0, 0, width, height, radius, params->corners);
+
+	if (params->active)
+	{
+		ge_cairo_set_color (cr, border2);
+		cairo_stroke (cr);
+	}
+	else
+	{
+		switch (tab->gap_side)
+		{
+			case CL_GAP_TOP:
+				pattern = cairo_pattern_create_linear (2.5, height-1.5, 2.5, 2.5);
+				break;
+			case CL_GAP_BOTTOM:
+				pattern = cairo_pattern_create_linear (2.5, 2.5, 2.5, height+0.5);
+				break;
+			case CL_GAP_LEFT:
+				pattern = cairo_pattern_create_linear (width-1.5, 2.5, 2.5, 2.5);
+				break;
+			case CL_GAP_RIGHT:
+				pattern = cairo_pattern_create_linear (2.5, 2.5, width+0.5, 2.5);
+				break;
+			default:
+				pattern = NULL;
+		}
+
+		cairo_pattern_add_color_stop_rgb (pattern, 0.0,        stripe_border->r, stripe_border->g, stripe_border->b);
+		cairo_pattern_add_color_stop_rgb (pattern, stripe_fill_size, stripe_border->r, stripe_border->g, stripe_border->b);
+		cairo_pattern_add_color_stop_rgb (pattern, stripe_fill_size, border1->r,       border1->g,       border1->b);
+		cairo_pattern_add_color_stop_rgb (pattern, 1.0,        border2->r,       border2->g,       border2->b);
+		cairo_set_source (cr, pattern);
+		cairo_stroke (cr);
+		cairo_pattern_destroy (pattern);
+	}
+
+	cairo_restore (cr);
+}
+
+
 void
 clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
@@ -406,6 +591,7 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 	functions->draw_scrollbar_trough    = clearlooks_gnome3_draw_scrollbar_trough;
 	functions->draw_slider_button       = clearlooks_gnome3_draw_slider_button;
 	functions->draw_toolbar             = clearlooks_gnome3_draw_toolbar;
+	functions->draw_tab                 = clearlooks_gnome3_draw_tab;
 /*	functions->draw_arrow               = clearlooks_gnome3_draw_arrow;
 	functions->draw_top_left_highlight  = clearlooks_draw_top_left_highlight;
 	functions->draw_scale_trough        = clearlooks_draw_scale_trough;
@@ -416,7 +602,7 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 	functions->draw_spinbutton_down     = clearlooks_draw_spinbutton_down;
 	functions->draw_optionmenu          = clearlooks_draw_optionmenu;
 	functions->draw_inset               = clearlooks_draw_inset;
-	functions->draw_tab                 = clearlooks_draw_tab;
+
 	functions->draw_frame               = clearlooks_draw_frame;
 	functions->draw_separator           = clearlooks_draw_separator;
 	functions->draw_menu_item_separator = clearlooks_draw_menu_item_separator;
