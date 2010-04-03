@@ -110,40 +110,20 @@ clearlooks_gnome3_draw_button (cairo_t *cr,
 
 	cairo_save (cr);
 
-	/* Draw two gradients, a stroke around, and an inner border */
-	stroke_top_color.r = 1;
-	stroke_top_color.g = 0;
-	stroke_top_color.b = 0;
-	stroke_top_color.a = 1;
-	stroke_bottom_color.r = 0;
-	stroke_bottom_color.g = 1;
-	stroke_bottom_color.b = 0;
-	stroke_bottom_color.a = 1;
-
-	fill_top_color.r = 1;
-	fill_top_color.g = 0;
-	fill_top_color.b = 1;
-	fill_top_color.a = 1;
-	fill_bottom_color.r = 0;
-	fill_bottom_color.g = 1;
-	fill_bottom_color.b = 1;
-	fill_bottom_color.a = 1;
-
-
 	if (params->disabled) {
 		stroke_top_color = stroke_bottom_color = bg_color;
 		fill_top_color = fill_bottom_color = bg_color;
 	} else if (params->active) {
-		ge_shade_color (&bg_color, 1.1, &stroke_bottom_color);
-		ge_shade_color (&bg_color, 0.95, &stroke_top_color);
+		ge_shade_color (&bg_color, 0.93, &stroke_top_color);
+		ge_shade_color (&bg_color, 1.12, &stroke_bottom_color);
 
-		ge_shade_color (&bg_color, 1.08, &fill_bottom_color);
-		ge_shade_color (&bg_color, 0.95, &fill_top_color);
+		ge_shade_color (&bg_color, 0.98, &fill_top_color);
+		ge_shade_color (&bg_color, 1.09, &fill_bottom_color);
 	} else {
-		ge_shade_color (&bg_color, 1.1, &stroke_top_color);
+		ge_shade_color (&bg_color, 1.09, &stroke_top_color);
 		ge_shade_color (&bg_color, 0.95, &stroke_bottom_color);
 
-		ge_shade_color (&bg_color, 1.05, &fill_top_color);
+		ge_shade_color (&bg_color, 1.04, &fill_top_color);
 		ge_shade_color (&bg_color, 0.95, &fill_bottom_color);
 	}
 
