@@ -19,15 +19,15 @@ style "default" {
 	GtkButton::child-displacement-x = 1
 	GtkButton::child-displacement-y = 1
 	GtkButton::default-border = { 0, 0, 0, 0 }
-  GtkButton::image-spacing = 4
-  GtkToolButton::icon-spacing = 4
+	GtkButton::image-spacing = 4
+	GtkToolButton::icon-spacing = 4
 
 	GtkWidget::cursor-color = shade(1.07, @selected_bg_color)
 	GtkWidget::secondary-cursor-color = @selected_bg_color
 
 	GtkCheckButton::indicator-size = 14
 	
-  GtkTextView::error-underline-color = "#cc0000"
+	GtkTextView::error-underline-color = "#cc0000"
   
 	GtkPaned::handle-size = 6
 
@@ -50,7 +50,7 @@ style "default" {
 	GtkTreeView::expander-size = 14		# ???
 	GtkTreeView::vertical-separator = 0	# ???
 
-  GtkScrolledWindow::scrollbars-within-bevel = 1
+	GtkScrolledWindow::scrollbars-within-bevel = 1
 
 	GtkStatusBar::shadow-type = GTK_SHADOW_NONE
 
@@ -67,12 +67,12 @@ style "default" {
 	# Without this, gecko will fill in the background of the entry.
 	GtkEntry::honors-transparent-bg-hint = 1
 
-  NautilusIconContainer::selection_box_color = @selected_bg_color
-  NautilusIconContainer::dark_info_color = shade (0.6, @selected_bg_color)
-  NautilusIconContainer::light_info_color = shade (0.6, @selected_fg_color)
-  NautilusIconContainer::prelight_icon_color = "#ffffff"
-  NautilusIconContainer::prelight_icon_brightness = 255
-  NautilusIconContainer::selection_box_alpha = 0x20
+	NautilusIconContainer::selection_box_color = @selected_bg_color
+	NautilusIconContainer::dark_info_color = shade (0.6, @selected_bg_color)
+	NautilusIconContainer::light_info_color = shade (0.6, @selected_fg_color)
+	NautilusIconContainer::prelight_icon_color = "#ffffff"
+	NautilusIconContainer::prelight_icon_brightness = 255
+	NautilusIconContainer::selection_box_alpha = 0x20
 
 	GtkEntry::inner-border = { 3, 3, 3, 3 }
 	GtkEntry::progress-border = { 0, 0, 0, 0 }
