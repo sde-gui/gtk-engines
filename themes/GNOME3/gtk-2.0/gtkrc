@@ -86,8 +86,8 @@ style "default" {
 	bg[NORMAL]        = @bg_color
 	bg[PRELIGHT]      = shade (1.02, @bg_color)
 	bg[SELECTED]      = @selected_bg_color
-	bg[INSENSITIVE]   = @bg_color
-	bg[ACTIVE]        = shade (0.87, @bg_color)
+	bg[INSENSITIVE]   = shade (1.07, @bg_color)
+	bg[ACTIVE]        = shade (0.915, @bg_color)
 
 	fg[NORMAL]        = @fg_color
 	fg[PRELIGHT]      = @fg_color
@@ -104,7 +104,7 @@ style "default" {
 	base[NORMAL]      = @base_color
 	base[PRELIGHT]    = shade (0.95, @bg_color)
 	base[SELECTED]    = shade(1.07, @selected_bg_color)
-	base[INSENSITIVE] = shade (1.08, @bg_color)
+	base[INSENSITIVE] = shade (1.07, @bg_color)
 	base[ACTIVE]      = shade (0.9, @selected_bg_color)
 
 	engine "clearlooks" {
@@ -112,6 +112,7 @@ style "default" {
 		animation = FALSE
 		radius = 3.0
 		style = GNOME3
+
 		# Set a hint to disable backward compatibility fallbacks.
 		hint = "use-hints"
 	}
@@ -202,9 +203,9 @@ style "button" {
 	xthickness = 3
 	ythickness = 3
 
-	bg[NORMAL]        = shade (1.04, @bg_color)
-	bg[PRELIGHT]      = shade (1.06, @bg_color)
-	bg[ACTIVE]        = shade (0.85, @bg_color)
+#	bg[NORMAL]        = shade (1.04, @bg_color)
+#	bg[PRELIGHT]      = shade (1.06, @bg_color)
+#	bg[ACTIVE]        = shade (0.85, @bg_color)
 }
 
 # The color is changed by the notebook_bg style, this style
