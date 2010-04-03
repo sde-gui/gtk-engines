@@ -17,6 +17,8 @@ style "default" {
 	GtkButton::child-displacement-x = 1
 	GtkButton::child-displacement-y = 1
 	GtkButton::default-border = { 0, 0, 0, 0 }
+  GtkButton::image-spacing = 4
+  GtkToolButton::icon-spacing = 4
 
 	GtkWidget::cursor-color = shade(1.07, @selected_bg_color)
 	GtkWidget::secondary-cursor-color = @selected_bg_color
