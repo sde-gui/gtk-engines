@@ -21,7 +21,9 @@ style "default" {
 	GtkWidget::secondary-cursor-color = @selected_bg_color
 
 	GtkCheckButton::indicator-size = 14
-
+	
+  GtkTextView::error-underline-color = "#cc0000"
+  
 	GtkPaned::handle-size = 6
 
 	# The size for scrollbars. The slider is 2px smaller, but we keep it
@@ -93,8 +95,7 @@ style "default" {
 		colorize_scrollbar = FALSE	# XXX, will we support this?
 		animation = FALSE
 		radius = 3.0
-		# style = GNOME3"
-
+		style = GNOME3
 		# Set a hint to disable backward compatibility fallbacks.
 		hint = "use-hints"
 	}
