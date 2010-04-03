@@ -765,7 +765,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			                      "trough-under-steppers", &trough_under_steppers,
 			                      NULL);
 
-		if (trough_under_steppers)
+		if (trough_under_steppers && clearlooks_style->style != CL_STYLE_GNOME3)
 		{
 			/* If trough under steppers is set, then we decrease the size
 			 * slightly. The size is decreased so that the trough is not

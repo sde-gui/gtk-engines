@@ -200,6 +200,68 @@ clearlooks_gnome3_draw_arrow (cairo_t *cr,
 	cairo_restore (cr);
 }
 
+static void
+clearlooks_gnome3_draw_scrollbar_trough (cairo_t *cr,
+                                         const ClearlooksColors           *colors,
+                                         const WidgetParameters           *widget,
+                                         const ScrollBarParameters        *scrollbar,
+                                         int x, int y, int width, int height)
+{
+	const CairoColor *bg_color = &colors->bg[GTK_STATE_ACTIVE];
+	cairo_save (cr);
+
+	ge_cairo_set_color (cr, bg_color);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_fill (cr);
+
+	cairo_restore (cr);
+}
+
+static void
+clearlooks_gnome3_draw_scrollbar_button (cairo_t *cr,
+                                         const ClearlooksColors           *colors,
+                                         const WidgetParameters           *params,
+                                         const ScrollBarParameters        *scrollbar,
+                                         int x, int y,
+                                         int width, int height)
+{
+	const CairoColor *bg_color = &colors->bg[params->state_type];
+	const CairoColor *fg_color = &colors->fg[params->state_type];
+
+	cairo_save (cr);
+	ge_cairo_inner_rounded_rectangle (cr, x, y, width, height, params->radius, CR_CORNER_ALL);
+	ge_cairo_set_color (cr, bg_color);
+	cairo_fill_preserve (cr);
+	ge_cairo_set_color (cr, fg_color);
+	cairo_stroke (cr);
+	cairo_restore (cr);
+}
+
+static void
+clearlooks_gnome3_draw_scrollbar_stepper (cairo_t *cr,
+                                          const ClearlooksColors           *colors,
+                                          const WidgetParameters           *params,
+                                          const ScrollBarParameters        *scrollbar,
+                                          const ScrollBarStepperParameters *stepper,
+                                          int x, int y, int width, int height)
+{
+	clearlooks_gnome3_draw_scrollbar_button (cr, colors, params, scrollbar, x + 1, y + 1, width - 2, height - 2);
+}
+
+static void
+clearlooks_gnome3_draw_scrollbar_slider (cairo_t *cr,
+                                         const ClearlooksColors          *colors,
+                                         const WidgetParameters          *params,
+                                         const ScrollBarParameters       *scrollbar,
+                                         int x, int y, int width, int height)
+{
+	if (scrollbar->horizontal) {
+		clearlooks_gnome3_draw_scrollbar_button (cr, colors, params, scrollbar, x, y + 1, width, height - 2);
+	} else {
+		clearlooks_gnome3_draw_scrollbar_button (cr, colors, params, scrollbar, x + 1, y, width - 2, height);
+	}
+}
+
 void
 clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
@@ -207,6 +269,9 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 
 	functions->draw_entry               = clearlooks_gnome3_draw_entry;
 	functions->draw_button              = clearlooks_gnome3_draw_button;
+	functions->draw_scrollbar_stepper   = clearlooks_gnome3_draw_scrollbar_stepper;
+	functions->draw_scrollbar_slider    = clearlooks_gnome3_draw_scrollbar_slider;
+	functions->draw_scrollbar_trough    = clearlooks_gnome3_draw_scrollbar_trough;
 /*	functions->draw_arrow               = clearlooks_gnome3_draw_arrow;
 	functions->draw_top_left_highlight  = clearlooks_draw_top_left_highlight;
 	functions->draw_scale_trough        = clearlooks_draw_scale_trough;
@@ -228,9 +293,6 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 	functions->draw_menuitem            = clearlooks_draw_menuitem;
 	functions->draw_menubaritem         = clearlooks_draw_menubaritem;
 	functions->draw_selected_cell       = clearlooks_draw_selected_cell;
-	functions->draw_scrollbar_stepper   = clearlooks_draw_scrollbar_stepper;
-	functions->draw_scrollbar_slider    = clearlooks_draw_scrollbar_slider;
-	functions->draw_scrollbar_trough    = clearlooks_draw_scrollbar_trough;
 	functions->draw_statusbar           = clearlooks_draw_statusbar;
 	functions->draw_menu_frame          = clearlooks_draw_menu_frame;
 	functions->draw_tooltip             = clearlooks_draw_tooltip;

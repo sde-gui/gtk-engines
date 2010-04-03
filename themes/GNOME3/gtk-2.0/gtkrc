@@ -49,6 +49,7 @@ style "default" {
 	GtkTreeView::expander-size = 14		# ???
 	GtkTreeView::vertical-separator = 0	# ???
 
+	GtkScrolledWindow::scrollbar-spacing = 0
 	GtkScrolledWindow::scrollbars-within-bevel = 1
 
 	GtkStatusBar::shadow-type = GTK_SHADOW_NONE
@@ -177,7 +178,9 @@ style "scrollbar" {
 	xthickness = 2
 	ythickness = 2
 
-	bg[NORMAL] = shade(0.91, @bg_color)
+	# Similar to buttons ...
+	bg[NORMAL] = shade(1.09, @bg_color)
+	fg[NORMAL] = mix (0.6, @bg_color, @fg_color)
 
 	engine "clearlooks" {
 		hint = "scrollbar"
