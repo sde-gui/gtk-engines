@@ -1,7 +1,7 @@
 
 # Please keep this gtkrc in sync with the other ones from Clearlooks based themes.
 
-gtk-color-scheme = "base_color:#ffffff\nbg_color:#e2e2df\ntooltip_bg_color:#343434\nselected_bg_color:#4a90d9\ntext_color:#2e3436\nfg_color:#2e3436\ntooltip_fg_color:#ffffff\nselected_fg_color:#ffffff\nlink_color:#4a90d9"
+gtk-color-scheme = "base_color:#ffffff\nbg_color:#ededed\ntooltip_bg_color:#343434\nselected_bg_color:#4a90d9\ntext_color:#2e3436\nfg_color:#2e3436\ntooltip_fg_color:#ffffff\nselected_fg_color:#ffffff\nlink_color:#4a90d9"
 
 gtk-auto-mnemonics = 1
 gtk-cursor-blink = 0
@@ -217,6 +217,14 @@ style "button" {
 #	bg[PRELIGHT]      = shade (1.06, @bg_color)
 #	bg[ACTIVE]        = shade (0.85, @bg_color)
 }
+
+style "dialogbutton" = "button" {
+	bg[NORMAL]        = @selected_bg_color
+	bg[PRELIGHT]      = "green"
+	bg[ACTIVE]        = "blue"
+	fg[NORMAL]        = @selected_fg_color
+}
+widget "GtkDialog.*Box*.GtkHButtonBox.*Button*" style "dialogbutton"
 
 # The color is changed by the notebook_bg style, this style
 # changes the x/ythickness
