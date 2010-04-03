@@ -262,6 +262,83 @@ clearlooks_gnome3_draw_scrollbar_slider (cairo_t *cr,
 	}
 }
 
+static void
+clearlooks_gnome3_draw_slider_button (cairo_t *cr,
+                                      const ClearlooksColors *colors,
+                                      const WidgetParameters *params,
+                                      const SliderParameters *slider,
+                                      int x, int y, int width, int height)
+{
+	CairoColor bg_color = colors->bg[params->state_type];
+	CairoColor fg_color = colors->fg[params->state_type];
+	CairoColor border_color, tmp_color;
+	cairo_matrix_t matrix;
+	double radius = MIN (params->radius - 0.5, MIN ((width - 1.0) / 2.0, (height - 1.0) / 2.0));
+	double trough_width = 4;
+	cairo_pattern_t *fill_pattern, *stroke_pattern;
+	int tmp;
+
+	cairo_save (cr);
+
+	cairo_get_matrix (cr, &matrix);
+	ge_mix_color (&bg_color, &fg_color, 0.6, &border_color);
+
+	if (slider->horizontal) {
+		fill_pattern = cairo_pattern_create_linear (x, y + 0.5 * height, x, y + 0.8 * height);
+		stroke_pattern = cairo_pattern_create_linear (x, y + 0.2 * height, x, y + 0.8 * height);
+	} else {
+		fill_pattern = cairo_pattern_create_linear (x, y + 0.2 * height, x, y + 0.75 * height);
+		stroke_pattern = cairo_pattern_create_linear (x + 0.5 * width + 1.5, y + 1.5, x + 0.8 * width, y + 0.8 * height);
+	}
+
+	ge_shade_color (&border_color, 1.12, &tmp_color);
+	ge_cairo_pattern_add_color_stop_color (stroke_pattern, 0.0, &tmp_color);
+	ge_shade_color (&border_color, 0.9, &tmp_color);
+	ge_cairo_pattern_add_color_stop_color (stroke_pattern, 1.0, &tmp_color);
+
+	ge_shade_color (&bg_color, 1.1, &tmp_color);
+	ge_cairo_pattern_add_color_stop_color (fill_pattern, 0.0, &tmp_color);
+	ge_shade_color (&bg_color, 0.9, &tmp_color);
+	ge_cairo_pattern_add_color_stop_color (fill_pattern, 1.0, &tmp_color);
+
+	cairo_translate (cr, x + width / 2.0, y + height / 2.0);
+	if (!slider->horizontal) {
+		cairo_rotate (cr, -G_PI * 0.5);
+		tmp = height;
+		height = width;
+		width = tmp;
+	}
+	/* move back to the "top/left" */
+	cairo_translate (cr, -width / 2.0, -height / 2.0);
+
+	cairo_set_line_width (cr, 1.0);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
+	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
+
+	/* the first move_to and line_to could be removed, at least with new enough cairo versions. */
+	cairo_move_to (cr, 0.5, height - radius - 0.5);
+	cairo_arc_negative (cr, radius + 0.5, height - radius - 0.5, radius, G_PI, G_PI * 0.5);
+	cairo_line_to (cr, width - 0.5 - radius, height - 0.5);
+	cairo_arc_negative (cr, width - radius - 0.5, height - radius - 0.5, radius, G_PI * 0.5, 0.0);
+	cairo_line_to (cr, width - 0.5, (height - trough_width - 1.0) / 2.0);
+	cairo_line_to (cr, width / 2.0 + 0.5, 0.5);
+	cairo_line_to (cr, width / 2.0 - 0.5, 0.5);
+	cairo_line_to (cr, 0.5, (height - trough_width - 1.0) / 2.0);
+	cairo_close_path (cr);
+
+	/* Reset matrix, so that the patterns are aligned correctly. */
+	cairo_set_matrix (cr, &matrix);
+
+	cairo_set_source (cr, fill_pattern);
+	cairo_fill_preserve (cr);
+	cairo_set_source (cr, stroke_pattern);
+	cairo_stroke (cr);
+
+	cairo_pattern_destroy (fill_pattern);
+	cairo_pattern_destroy (stroke_pattern);
+	cairo_restore (cr);
+}
+
 void
 clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, ClearlooksStyleConstants *constants)
 {
@@ -272,12 +349,12 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 	functions->draw_scrollbar_stepper   = clearlooks_gnome3_draw_scrollbar_stepper;
 	functions->draw_scrollbar_slider    = clearlooks_gnome3_draw_scrollbar_slider;
 	functions->draw_scrollbar_trough    = clearlooks_gnome3_draw_scrollbar_trough;
+	functions->draw_slider_button       = clearlooks_gnome3_draw_slider_button;
 /*	functions->draw_arrow               = clearlooks_gnome3_draw_arrow;
 	functions->draw_top_left_highlight  = clearlooks_draw_top_left_highlight;
 	functions->draw_scale_trough        = clearlooks_draw_scale_trough;
 	functions->draw_progressbar_trough  = clearlooks_draw_progressbar_trough;
 	functions->draw_progressbar_fill    = clearlooks_draw_progressbar_fill;
-	functions->draw_slider_button       = clearlooks_draw_slider_button;
 	functions->draw_entry_progress      = clearlooks_draw_entry_progress;
 	functions->draw_spinbutton          = clearlooks_draw_spinbutton;
 	functions->draw_spinbutton_down     = clearlooks_draw_spinbutton_down;
