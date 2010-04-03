@@ -201,6 +201,34 @@ clearlooks_gnome3_draw_arrow (cairo_t *cr,
 }
 
 static void
+clearlooks_gnome3_draw_menubar (cairo_t *cr,
+                                const ClearlooksColors *colors,
+                                const WidgetParameters *params,
+                                const MenuBarParameters *menubar,
+                                int x, int y, int width, int height)
+{
+	CairoColor bg_top;
+	CairoColor bg_bottom;
+	cairo_pattern_t *pattern;
+
+	cairo_save (cr);
+	bg_bottom = colors->bg[GTK_STATE_NORMAL];
+	ge_shade_color (&colors->bg[GTK_STATE_NORMAL], 0.973, &bg_top);
+	pattern = cairo_pattern_create_linear (x, y + height * 0.2, x, y + height - 1.0);
+
+	ge_cairo_pattern_add_color_stop_color (pattern, 0.0, &bg_top);
+	ge_cairo_pattern_add_color_stop_color (pattern, 1.0, &bg_bottom);
+
+	cairo_set_source (cr, pattern);
+	cairo_pattern_destroy (pattern);
+
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_fill (cr);
+
+	cairo_restore (cr);
+}
+
+static void
 clearlooks_gnome3_draw_scrollbar_trough (cairo_t *cr,
                                          const ClearlooksColors           *colors,
                                          const WidgetParameters           *widget,
@@ -346,6 +374,7 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 
 	functions->draw_entry               = clearlooks_gnome3_draw_entry;
 	functions->draw_button              = clearlooks_gnome3_draw_button;
+	functions->draw_menubar	            = clearlooks_gnome3_draw_menubar;
 	functions->draw_scrollbar_stepper   = clearlooks_gnome3_draw_scrollbar_stepper;
 	functions->draw_scrollbar_slider    = clearlooks_gnome3_draw_scrollbar_slider;
 	functions->draw_scrollbar_trough    = clearlooks_gnome3_draw_scrollbar_trough;
@@ -360,7 +389,6 @@ clearlooks_register_style_gnome3 (ClearlooksStyleFunctions *functions, Clearlook
 	functions->draw_spinbutton_down     = clearlooks_draw_spinbutton_down;
 	functions->draw_optionmenu          = clearlooks_draw_optionmenu;
 	functions->draw_inset               = clearlooks_draw_inset;
-	functions->draw_menubar	            = clearlooks_draw_menubar;
 	functions->draw_tab                 = clearlooks_draw_tab;
 	functions->draw_frame               = clearlooks_draw_frame;
 	functions->draw_separator           = clearlooks_draw_separator;
