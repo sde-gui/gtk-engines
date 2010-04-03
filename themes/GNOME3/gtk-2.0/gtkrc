@@ -10,7 +10,7 @@ gtk-menu-images = 0
 
 style "default" {
 
-	font_name = "Droid Sans 11" # Until we get the font upstream
+	font_name = "Droid Sans" # Until we get the font upstream
 	xthickness = 1
 	ythickness = 1
 
@@ -47,7 +47,7 @@ style "default" {
 	GtkScrollbar::min-slider-length = 30
 	GtkMenuBar::internal-padding = 0
 	GtkExpander::expander-size = 16		# ???
-	GtkToolbar::internal-padding = 1	# ???
+	GtkToolbar::internal-padding = 4	# ???
 	GtkTreeView::expander-size = 14		# ???
 	GtkTreeView::vertical-separator = 0	# ???
 
@@ -332,6 +332,14 @@ style "tooltips" {
 	fg[NORMAL]        = @tooltip_fg_color
 }
 
+style "toolbar" {
+	bg [NORMAL] = "#8a9580"
+}
+
+style "separator" = "wide" {
+	GtkSeparator::shadow-type = GTK_SHADOW_NONE
+}
+
 style "nautilus_location" {
 
 	bg[NORMAL]        = mix (0.60, shade (1.05, @bg_color), @selected_bg_color)
@@ -392,12 +400,13 @@ widget_class "*.EogScrollView" style "doka-eye-of-gnome"
 # The default style is applied to every widget
 class "GtkWidget" style "default"
 
-class "GtkSeparator" style "wide"
+class "GtkSeparator" style "separator"
 class "GtkFrame" style "wide"
 class "GtkCalendar" style "wide"
 class "GtkEntry" style "entry"
 
 class "GtkSpinButton" style "spinbutton"
+class "GtkToolbar" style "toolbar"
 class "GtkScale" style "scale"
 class "GtkVScale" style "vscale"
 class "GtkHScale" style "hscale"
