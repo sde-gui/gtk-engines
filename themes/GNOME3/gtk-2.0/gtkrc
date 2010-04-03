@@ -333,6 +333,7 @@ style "tooltips" {
 }
 
 style "toolbar" {
+	bg [NORMAL] = "#c7ccc1"
 	bg [ACTIVE] = "#8a9580"
 }
 
