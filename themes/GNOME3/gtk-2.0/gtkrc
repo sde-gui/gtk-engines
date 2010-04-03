@@ -1,7 +1,8 @@
 
 # Please keep this gtkrc in sync with the other ones from Clearlooks based themes.
 
-gtk-color-scheme = "base_color:#ffffff\nbg_color:#e4e4e4\ntooltip_bg_color:#343434\nselected_bg_color:#4a90d9\ntext_color:#2e3436\nfg_color:#2e3436\ntooltip_fg_color:#ffffff\nselected_fg_color:#ffffff\nlink_color:#4a90d9"
+gtk-color-scheme = "base_color:#ffffff\nbg_color:#e4e4e4\ntooltip_bg_color:#343434\nselected_bg_color:#4a90d9\ntext_color:#2e3436\nfg_color:#2e3436\ntooltip_fg_color:#ffffff\nselected_fg_color:#ffffff\nlink_color:#4a90d9\nframe_color:#e4e4e4\ninactive_frame_color:#e4e4e4"
+# frame_color and inactive_frame_color are for Google Chrome.
 
 gtk-auto-mnemonics = 1
 gtk-cursor-blink = 0
@@ -45,6 +46,10 @@ style "default" {
 	GtkTreeView::expander-size = 14		# ???
 	GtkTreeView::vertical-separator = 0	# ???
 
+  GtkScrolledWindow::scrollbars-within-bevel = 1
+
+	GtkStatusBar::shadow-type = GTK_SHADOW_NONE
+
 	GtkMenu::horizontal-padding = 0
 	GtkMenu::vertical-padding = 0
 
@@ -57,6 +62,13 @@ style "default" {
 	# that the entry should be drawn transparently on the canvas.
 	# Without this, gecko will fill in the background of the entry.
 	GtkEntry::honors-transparent-bg-hint = 1
+
+  NautilusIconContainer::selection_box_color = @selected_bg_color
+  NautilusIconContainer::dark_info_color = shade (0.6, @selected_bg_color)
+  NautilusIconContainer::light_info_color = shade (0.6, @selected_fg_color)
+  NautilusIconContainer::prelight_icon_color = "#ffffff"
+  NautilusIconContainer::prelight_icon_brightness = 255
+  NautilusIconContainer::selection_box_alpha = 0x20
 
 	GtkEntry::inner-border = { 3, 3, 3, 3 }
 	GtkEntry::progress-border = { 0, 0, 0, 0 }
