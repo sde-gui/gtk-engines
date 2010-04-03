@@ -9,6 +9,8 @@ gtk-button-images = 0
 gtk-menu-images = 0
 
 style "default" {
+
+	font_name = "Droid Sans 11" # Until we get the font upstream
 	xthickness = 1
 	ythickness = 1
 
@@ -72,7 +74,8 @@ style "default" {
 	NautilusIconContainer::light_info_color = shade (0.6, @selected_fg_color)
 	NautilusIconContainer::prelight_icon_color = "#ffffff"
 	NautilusIconContainer::prelight_icon_brightness = 255
-	NautilusIconContainer::selection_box_alpha = 0x20
+	NautilusIconContainer::selection_box_alpha = 0x40
+	NautilusIconContainer::selection_highlight_alpha = 0x00
 
 	GtkEntry::inner-border = { 3, 3, 3, 3 }
 	GtkEntry::progress-border = { 0, 0, 0, 0 }
