@@ -225,6 +225,7 @@ style "notebook" {
 }
 
 style "statusbar" {
+	xthickness = 5
 	ythickness = 5
 	GtkStatusBar::shadow-type = GTK_SHADOW_NONE
 	engine "clearlooks" {
