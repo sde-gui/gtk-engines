@@ -372,6 +372,12 @@ style "evo_new_button_workaround" {
 	}
 }
 
+style "doka-eye-of-gnome" {
+  bg[NORMAL]        = "#1e1a17"
+  EogScrollView::shadow-type = GTK_SHADOW_NONE
+}
+widget_class "*.EogScrollView" style "doka-eye-of-gnome"
+
 
 ###############################################################################
 # The following part of the gtkrc applies the different styles to the widgets.
