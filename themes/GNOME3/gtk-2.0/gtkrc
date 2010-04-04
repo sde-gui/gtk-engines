@@ -60,6 +60,7 @@ style "default" {
 	GtkMenu::vertical-padding = 0
 
 	GtkWidget::link-color = @link_color
+	GtkWidget::visited-link-color = @link_color
 	GtkIMHtml::hyperlink-color = @link_color
 	GtkHTML::link-color = @link_color
 
@@ -83,6 +84,8 @@ style "default" {
 	GtkNotebook::tab-overlay = 10
 	GtkNotebook::tab-curvature = 5
 
+	GtkSeparatorToolItem::shadow-type = GTK_SHADOW_NONE
+	
 	####################
 	# Color Definitions
 	####################
@@ -236,11 +239,24 @@ style "notebook" {
 style "statusbar" {
 	xthickness = 5
 	ythickness = 5
-	GtkStatusBar::shadow-type = GTK_SHADOW_NONE
+  fg [NORMAL] = @fg_color
+  fg [PRELIGHT] = @fg_color
+	GtkStatusbar::shadow-type = GTK_SHADOW_NONE
 	engine "clearlooks" {
 		hint = "statusbar"
 	}
 }
+
+
+style "statusbar-children" {
+	xthickness = 50
+	ythickness = 50
+	GtkStatusbar::shadow-type = GTK_SHADOW_NONE
+	engine "clearlooks" {
+		hint = "statusbar"
+	}
+}
+widget_class "<GtkStatusbar>*" style "statusbar-children"
 
 style "comboboxentry" {
 
@@ -292,6 +308,16 @@ style "separator_menu_item" {
 	GtkWidget::wide-separators = 1
 	GtkWidget::separator-width = 1
 	GtkWidget::separator-height = 7
+}
+
+style "separator_tool_item" {
+	xthickness = 0
+	ythickness = 1
+
+	GtkVSeparator::vertical-padding = 0
+	GtkWidget::wide-separators = 1
+	GtkWidget::separator-width = 7
+	GtkWidget::separator-height = 1
 }
 
 style "frame_title" {
@@ -395,11 +421,29 @@ style "evo_new_button_workaround" {
 	}
 }
 
-style "doka-eye-of-gnome" {
+style "eye-of-gnome" {
   bg[NORMAL]        = "#1e1a17"
   EogScrollView::shadow-type = GTK_SHADOW_NONE
 }
-widget_class "*.EogScrollView" style "doka-eye-of-gnome"
+widget_class "*.EogScrollView" style "eye-of-gnome"
+
+style "evince" {
+  bg[NORMAL]        = "#1e1a17"
+
+}
+widget_class "*.EvView" style "evince"
+
+style "abiword" {
+  bg[NORMAL]        = "#1e1a17"
+
+}
+widget_class "*.ApDocView" style "abiword"
+
+style "cheese-thumbs" {
+  bg[NORMAL]        = "#1e1a17"
+
+}
+widget_class "*<CheeseThumbView>*" style "cheese-thumbs"
 
 
 ###############################################################################
@@ -446,6 +490,7 @@ widget_class "*<GtkMenuBar>*" style "menubar"
 widget_class "*<GtkMenu>*" style "menu"
 widget_class "*<GtkMenuItem>*" style "menu_item"
 widget_class "*<GtkSeparatorMenuItem>*" style "separator_menu_item"
+widget_class "*<GtkSeparatorToolItem>*" style "separator_tool_item"
 
 widget_class "*.<GtkFrame>.<GtkLabel>" style "frame_title"
 widget_class "*.<GtkTreeView>*" style "treeview"
