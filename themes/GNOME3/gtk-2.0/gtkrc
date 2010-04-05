@@ -446,6 +446,21 @@ style "cheese-thumbs" {
 widget_class "*<CheeseThumbView>*" style "cheese-thumbs"
 
 
+style "dark_panel" {
+	bg[NORMAL] = "#1e1a17"
+	fg[NORMAL] = "#fff"
+}
+
+# For old gnome-panel
+widget "*PanelWidget*" 					style "dark_panel"
+widget "*PanelApplet*" 					style "dark_panel"
+widget "*fast-user-switch*"				style "dark_panel" 
+class "PanelApp*" 					style "dark_panel"
+class "PanelToplevel*" 					style "dark_panel"
+widget_class "*notif*" 					style "dark_panel"
+widget_class "*Notif*" 					style "dark_panel"
+
+
 ###############################################################################
 # The following part of the gtkrc applies the different styles to the widgets.
 ###############################################################################
