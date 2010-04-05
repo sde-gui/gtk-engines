@@ -188,6 +188,9 @@ style "scrollbar" {
 	# Similar to buttons ...
 	bg[NORMAL] = shade(1.09, @bg_color)
 	fg[NORMAL] = mix (0.6, @bg_color, @fg_color)
+	fg[PRELIGHT] = @selected_bg_color
+	bg[PRELIGHT] = "#fff"
+
 
 	engine "clearlooks" {
 		hint = "scrollbar"
