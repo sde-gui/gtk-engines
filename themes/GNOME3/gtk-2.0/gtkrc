@@ -186,13 +186,21 @@ style "scrollbar" {
 	ythickness = 2
 
 	# Similar to buttons ...
-	bg[NORMAL] = shade(1.09, @bg_color)
+	bg[NORMAL] = @base_color
+  bg[SELECTED] = @base_color
+  fg[SELECTED] = @selected_bg_color
+  
 	fg[NORMAL] = mix (0.6, @bg_color, @fg_color)
 	fg[PRELIGHT] = @selected_bg_color
-	bg[PRELIGHT] = "#fff"
+	bg[PRELIGHT] = @base_color
 
+				fg [ACTIVE] = @selected_bg_color
+				text [NORMAL] = "green"
+				text [ACTIVE] = "green"
+				text [PRELIGHT] = "green"
+				text [SELECTED] = "green"
 
-	engine "clearlooks" {
+engine "clearlooks" {
 		hint = "scrollbar"
 	}
 }
