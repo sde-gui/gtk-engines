@@ -266,7 +266,7 @@ clearlooks_gummy_draw_entry (cairo_t                *cr,
 	cairo_translate (cr, x, y);
 	cairo_set_line_width (cr, 1.0);
 
-	if (params->xthickness >= 3 && params->ythickness != 3)
+	if (params->xthickness >= 3 && params->ythickness >= 3)
 	{
 		params->style_functions->draw_inset (cr, &params->parentbg, 0, 0, width, height, radius+1, params->corners);
 		xoffset = 1;
