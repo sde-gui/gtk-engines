@@ -13,7 +13,7 @@
   <frame_geometry name="normal" rounded_top_left="true" rounded_top_right="true" title_scale="medium"> 
      <distance name="left_width" value="1"/>
      <distance name="right_width" value="1"/>
-     <distance name="bottom_height" value="1"/>
+     <distance name="bottom_height" value="4"/>
      <distance name="left_titlebar_edge" value="0"/>
      <distance name="right_titlebar_edge" value="0"/>
      <distance name="title_vertical_pad" value="0"/>
@@ -23,7 +23,7 @@
      <distance name="button_height" value="32"/>
   </frame_geometry>
 
-  <frame_geometry name="maximized" title_scale="medium" parent="normal"> 
+  <frame_geometry name="maximized" title_scale="medium" parent="normal" rounded_top_left="false" rounded_top_right="false" >
      <distance name="left_width" value="0"/>
      <distance name="right_width" value="0"/>
      <distance name="bottom_height" value="0"/>
@@ -54,16 +54,20 @@
     <rectangle color="#888a85" x="0" y="0" width="width" height="height" filled="true"/>
   </draw_ops>
 
+  <draw_ops name="lines_border_maximized_focused">
+    <rectangle color="green" x="0" y="0" width="width" height="height" filled="true"/>
+  </draw_ops>
+
   <draw_ops name="lines_border_unfocused">
-    <rectangle color="#888a85" x="0" y="0" width="width" height="height" filled="true"/>
+    <rectangle color="red" x="0" y="0" width="width" height="height" filled="true"/>
   </draw_ops>
 
 
   <!-- Title -->
 
   <draw_ops name="title_all">
-     <title x="11" y="(((height - title_height) / 2) `max` 0)+1" color="#ffffff"/>
-     <title x="10" y="((height - title_height) / 2) `max` 0" color="#2e3436"/>
+     <title x="10" y="(((height - title_height) / 2) `max` 0)+3" color="#ffffff"/>
+     <title x="10" y="(((height - title_height) / 2) `max` 0)+2" color="#2e3436"/>
      <image filename="left_button_edge.png"
 			  alpha="1"
 			  x="width-6"
@@ -73,8 +77,8 @@
   </draw_ops>
 
   <draw_ops name="title_all_unfocused">
-     <title x="11" y="(((height - title_height) / 2) `max` 0)+1" color="#ffffff"/>
-     <title x="10" y="((height - title_height) / 2) `max` 0" color="#8d908f"/>
+     <title x="10" y="(((height - title_height) / 2) `max` 0)+3" color="#ffffff"/>
+     <title x="10" y="(((height - title_height) / 2) `max` 0)+2" color="#8d908f"/>
      <image filename="left_button_edge.png"
 			  alpha="1"
 			  x="width-6"
@@ -112,7 +116,7 @@
 
   <draw_ops name="maximized_focused"> 
      <include name="bg_titlebar"/>
-     <include name="lines_border_focused"/>
+     <include name="lines_border_maximized_focused"/>
   </draw_ops>
 
   <!--maximized unfocused window-->

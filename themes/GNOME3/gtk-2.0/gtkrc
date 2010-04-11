@@ -278,7 +278,8 @@ style "comboboxentry" {
 
 style "menubar" {
 	xthickness = 0
-
+	bg [NORMAL] = "#E0E0DC"
+  bg [ACTIVE] = "#c7ccc1" # second gradient color
 	engine "clearlooks" {
 		hint = "menubar"
 	}
@@ -453,6 +454,19 @@ style "cheese-thumbs" {
 }
 widget_class "*<CheeseThumbView>*" style "cheese-thumbs"
 
+	
+style "terminal" {
+	text[NORMAL] = "#ffffff"
+	base[NORMAL] = "#1e1a17"
+	TerminalScreen::background-darkness = 0.95
+}
+class "TerminalScreen" style "terminal"
+
+style "infobar" {
+	bg[NORMAL] = "#ffffff"
+	TerminalScreen::background-darkness = 0.95
+}
+class "GtkInfobar" style "infobar"
 
 style "dark_panel" {
 	bg[NORMAL] = "#1e1a17"
