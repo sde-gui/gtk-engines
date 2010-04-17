@@ -2,6 +2,12 @@ Overview of Changes in 2.20.0 (since 2.19.0)
 ============================================
 
 Changes in this release:
+ - Fixes the shadow around entries in the Clearlooks Gummy style.
+
+Overview of Changes in 2.20.0 (since 2.19.0)
+============================================
+
+Changes in this release:
  - Increased spacing between icons and labels in Clearlooks
 
 GNOME bugs fixed in this release:
