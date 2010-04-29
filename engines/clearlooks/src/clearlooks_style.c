@@ -250,9 +250,8 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CR_CORNER_NONE;
 
-		if (widget && !g_str_equal ("XfcePanelWindow", gtk_widget_get_name (gtk_widget_get_toplevel (widget))))
-			STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
-			                            x, y, width, height);
+		STYLE_FUNCTION(draw_frame) (cr, colors, &params, &frame,
+		                            x, y, width, height);
 	}
 	else if (DETAIL ("scrolled_window") || DETAIL ("viewport") || detail == NULL)
 	{
