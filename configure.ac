@@ -123,13 +123,13 @@ if test $lua = "yes"; then
 fi
 
 # Don't forget to update the README when changing this.
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.12.0,,
-                  AC_MSG_ERROR([GTK+-2.12 is required to compile gtk-engines]))
+PKG_CHECK_MODULES(GTK, gtk+-3.0 >= 2.90.0,,
+                  AC_MSG_ERROR([GTK+-3.0 is required to compile gtk-engines]))
 
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 
-GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-2.0`
+GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-3.0`
 AC_SUBST(GTK_VERSION)
 
 if test $system_lua = "yes"; then
@@ -184,20 +184,20 @@ engines/thinice/Makefile
 engines/lua/Makefile
 themes/Makefile
 themes/Clearlooks/Makefile
-themes/Clearlooks/gtk-2.0/Makefile
+themes/Clearlooks/gtk-3.0/Makefile
 themes/GNOME3/Makefile
-themes/GNOME3/gtk-2.0/Makefile
+themes/GNOME3/gtk-3.0/Makefile
 themes/GNOME3/metacity-1/Makefile
 themes/Crux/Makefile
-themes/Crux/gtk-2.0/Makefile
+themes/Crux/gtk-3.0/Makefile
 themes/Industrial/Makefile
-themes/Industrial/gtk-2.0/Makefile
+themes/Industrial/gtk-3.0/Makefile
 themes/Mist/Makefile
-themes/Mist/gtk-2.0/Makefile
+themes/Mist/gtk-3.0/Makefile
 themes/Redmond/Makefile
-themes/Redmond/gtk-2.0/Makefile
+themes/Redmond/gtk-3.0/Makefile
 themes/ThinIce/Makefile
-themes/ThinIce/gtk-2.0/Makefile
+themes/ThinIce/gtk-3.0/Makefile
 gtk-engines-2.pc
 gtk-engines.spec
 po/Makefile.in
