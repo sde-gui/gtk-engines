@@ -681,56 +681,6 @@ glide_draw_combobox_button (GtkStyle * style,
   		            area, widget, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
-#ifndef GTK_DISABLE_DEPRECATED
-      else if (ge_is_combo(widget))
-        {
-          GtkWidget *entry = widget;
-
-	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
-            {
-               entry = GTK_COMBO (widget->parent)->entry;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-             }
-          else if (GE_IS_WIDGET(widget->parent))
-            {
-               entry = widget->parent;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-            }
- 
-            parent_state = GTK_STATE_NORMAL;
-
-          gtk_paint_flat_box (parent_style, window, parent_state,
-	 		      GTK_SHADOW_NONE, area, entry, "entry_bg", x - 2,
-			      y, width + 2, height);
-
-          {
-            GdkRectangle shadow, clip;
-          
-            shadow.x = x - 2;
-            shadow.y = y;
-            shadow.width = width + 2;
-            shadow.height = height;
-          
-/*		#warning FIXME - gdk_rectangle_intersect*/
-           if (area)
-              gdk_rectangle_intersect(area, &shadow, &clip);
-            else
-              clip = shadow;
-
-            gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
-	 	              &clip, entry, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
-				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
-          }
-        }
-#else
-#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
-#endif /* GTK_DISABLE_DEPRECATED */
       else
         {
           GtkWidget *parent = widget;
@@ -823,43 +773,6 @@ glide_draw_combobox_button (GtkStyle * style,
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
         }
-#ifndef GTK_DISABLE_DEPRECATED
-      else if (ge_is_combo(widget))
-        {
-          GtkWidget *entry = widget;
-
-	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
-            {
-               entry = GTK_COMBO (widget->parent)->entry;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-             }
-          else if (GE_IS_WIDGET(widget->parent))
-            {
-               entry = widget->parent;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-            }
-  
-           if (parent_state != GTK_STATE_INSENSITIVE)
-             parent_state = GTK_STATE_NORMAL;
-
-           gtk_paint_flat_box (parent_style, window, parent_state,
-			       GTK_SHADOW_NONE, area, entry, "entry_bg", 
-				x + focus - focus_padding, y + focus - focus_padding, 
-				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-           gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
-			     area, entry, "combo_box_entry", 
-                                x + focus - focus_padding, y + focus - focus_padding, 
-                                width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-        }
-#else
-#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
-#endif /* GTK_DISABLE_DEPRECATED */
       else
         {
           GtkWidget *parent = widget;
