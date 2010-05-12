@@ -599,7 +599,7 @@ glide_draw_combobox_button (GtkStyle * style,
 
   g_object_set_data(G_OBJECT(ge_find_combo_box_widget_parent(widget)), "button", widget);
 
-  if (GTK_WIDGET_HAS_FOCUS(widget))
+  if (gtk_widget_has_focus (widget))
   {
 	gtk_widget_style_get (widget, "focus_line_width", &focus_line_width, NULL);
 	gtk_widget_style_get (widget, "focus_padding", &focus_padding, NULL);
@@ -621,7 +621,7 @@ glide_draw_combobox_button (GtkStyle * style,
 
 		for (child = children; child; child = child->next)
 		{
-			if (GE_IS_ENTRY(child->data) && GTK_WIDGET_HAS_FOCUS(child->data))
+			if (GE_IS_ENTRY(child->data) && gtk_widget_has_focus (child->data))
 			{
 				gtk_widget_style_get (widget, "focus_line_width", &focus_line_width, NULL);
 				gtk_widget_style_get (widget, "focus_padding", &focus_padding, NULL);
@@ -953,7 +953,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
   spin_area.width = width;
   spin_area.height = height;
  
-  if (widget && GTK_WIDGET_HAS_FOCUS(widget))
+  if (widget && gtk_widget_has_focus (widget))
   {
 	gtk_widget_style_get (widget, "focus_line_width", &focus_line_width, NULL);
 	gtk_widget_style_get (widget, "focus_padding", &focus_padding, NULL);

@@ -73,7 +73,7 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->state_type    = state_type;
 	params->corners       = CR_CORNER_ALL;
 	params->ltr           = ge_widget_is_ltr ((GtkWidget*)widget);
-	params->focus         = !CLEARLOOKS_STYLE (style)->disable_focus && widget && GTK_WIDGET_HAS_FOCUS (widget);
+	params->focus         = !CLEARLOOKS_STYLE (style)->disable_focus && widget && gtk_widget_has_focus (widget);
 	params->is_default    = widget && GE_WIDGET_HAS_DEFAULT (widget);
 	params->enable_shadow = FALSE;
 	params->radius        = CLEARLOOKS_STYLE (style)->radius;
@@ -969,7 +969,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 				/* Now, one more thing needs to be done. If interior-focus
 				 * is off, then the entry may be a bit smaller. */
-				if (progress.max_size_known && GTK_WIDGET_HAS_FOCUS (widget))
+				if (progress.max_size_known && gtk_widget_has_focus (widget))
 				{
 					gboolean interior_focus = TRUE;
 					gint focus_line_width = 1;

@@ -129,7 +129,7 @@ lua_style_push_widget_params (LuaStyle *style, GtkWidget *widget, GtkStateType s
 		lua_pushboolean (style->L, state_type == GTK_STATE_ACTIVE);
 	lua_setfield (style->L, -2, "active");
 	
-	lua_pushboolean (style->L, widget && GTK_WIDGET_HAS_FOCUS (widget));
+	lua_pushboolean (style->L, widget && gtk_widget_has_focus (widget));
 	lua_setfield (style->L, -2, "has_focus");
 	
 	lua_pushnumber (style->L, (int)widget);
@@ -455,10 +455,10 @@ lua_style_draw_box (DRAW_ARGS)
 			gboolean combo_has_focus = FALSE;
 			
 			if (ge_is_combo_box_entry (widget))
-				combo_has_focus = GTK_WIDGET_HAS_FOCUS (gtk_bin_get_child (GTK_BIN (ge_find_combo_box_widget_parent (widget))));
+				combo_has_focus = gtk_widget_has_focus (gtk_bin_get_child (GTK_BIN (ge_find_combo_box_widget_parent (widget))));
 				
 			if (ge_is_combo (widget))
-				combo_has_focus = GTK_WIDGET_HAS_FOCUS (GTK_COMBO (ge_find_combo_box_widget_parent (widget))->entry);
+				combo_has_focus = gtk_widget_has_focus (GTK_COMBO (ge_find_combo_box_widget_parent (widget))->entry);
 		
 			lua_newtable (lua_style->L);
 			lua_pushboolean (lua_style->L, combo_has_focus);

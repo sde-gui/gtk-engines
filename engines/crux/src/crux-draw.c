@@ -823,7 +823,7 @@ draw_shadow (GtkStyle *style,
 	debug ("draw_shadow: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
 	        detail, state_type, shadow_type, x, y, width, height);
 
-	if (widget != NULL && GTK_WIDGET_HAS_FOCUS (widget))
+	if (widget != NULL && gtk_widget_has_focus (widget))
 		focused = TRUE;
 
 	if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
@@ -894,7 +894,7 @@ draw_box (GtkStyle *style,
 		gboolean focused = FALSE;
 		if (widget) {
 			state_type = GTK_WIDGET_STATE (widget);
-			focused = GTK_WIDGET_HAS_FOCUS (widget);
+			focused = gtk_widget_has_focus (widget);
 		}
 		width += 3;
 		if (ge_widget_is_ltr (widget))
@@ -916,7 +916,7 @@ draw_box (GtkStyle *style,
 		gboolean focused = FALSE;
 
 		if (widget)
-			focused = GTK_WIDGET_HAS_FOCUS (widget);
+			focused = gtk_widget_has_focus (widget);
 
 		if (DETAIL ("spinbutton_down") || DETAIL ("spinbutton_up"))
 		{
@@ -945,7 +945,7 @@ draw_box (GtkStyle *style,
 
 			if ((entry = g_object_get_data ((GObject*) widget->parent, "entry")))
 			{
-				entry_focused = (GTK_WIDGET_HAS_FOCUS (entry));
+				entry_focused = (gtk_widget_has_focus (entry));
 				state_type = GTK_WIDGET_STATE (entry);
 			}
 
@@ -1876,7 +1876,7 @@ draw_slider (GtkStyle *style,
 	/* dark */
 	CRUX_DARK (c2, c2);
 
-	if (widget != NULL && GTK_WIDGET_HAS_FOCUS (widget))
+	if (widget != NULL && gtk_widget_has_focus (widget))
 	{
 		ge_cairo_rounded_rectangle (cr, x+0.5, y+0.5, width-1.0, height-1.0, 2, CR_CORNER_ALL);
 	}
