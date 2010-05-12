@@ -581,7 +581,7 @@ thinice_style_draw_box(GtkStyle * style,
 	else
 	{
 		gtk_style_apply_default_background(style, window,
-				widget && !GTK_WIDGET_NO_WINDOW(widget),
+				widget && !gtk_widget_get_has_window (widget),
 				state_type, area,
 				x, y, width, height);
 	}
@@ -939,7 +939,7 @@ thinice_style_draw_box_gap(GtkStyle * style,
     SANITIZE_SIZE
 
     gtk_style_apply_default_background(style, window,
-            widget && !GTK_WIDGET_NO_WINDOW(widget),
+            widget && !gtk_widget_get_has_window (widget),
             state_type, area,
             x, y, width, height);
     thinice_style_draw_shadow_gap (style, window, state_type, shadow_type,
@@ -977,7 +977,7 @@ thinice_style_draw_extension(DRAW_ARGS, GtkPositionType gap_side)
 	else
 	{
 		gtk_style_apply_default_background(style, window,
-				widget && !GTK_WIDGET_NO_WINDOW(widget),
+				widget && !gtk_widget_get_has_window (widget),
 				state_type, area, x, y, width, height);
 	}
 

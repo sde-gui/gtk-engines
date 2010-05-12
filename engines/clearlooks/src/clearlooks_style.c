@@ -1888,7 +1888,7 @@ clearlooks_style_draw_layout (GtkStyle * style,
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		if (GTK_WIDGET_NO_WINDOW (widget))
+		if (gtk_widget_get_has_window (widget))
 			ge_shade_color (&params.parentbg, 1.2, &temp);
 		else
 			ge_shade_color (&colors->bg[widget->state], 1.2, &temp);

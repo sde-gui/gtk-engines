@@ -434,7 +434,7 @@ hc_draw_box (GtkStyle	*style,
 	/* Draw Fill                                   */
 	/***********************************************/
 	gtk_style_apply_default_background (style, window,
-        					widget && !GTK_WIDGET_NO_WINDOW (widget),
+        					widget && !gtk_widget_get_has_window (widget),
 						state_type, area, x, y, width, height);
   
 
@@ -478,7 +478,7 @@ hc_draw_box_gap (GtkStyle       *style,
 	/* Draw Fill                                   */
 	/***********************************************/
 	gtk_style_apply_default_background (style, window,
-	                                    widget && !GTK_WIDGET_NO_WINDOW (widget),
+	                                    widget && !gtk_widget_get_has_window (widget),
 	                                    state_type, area, x, y, width, height);
 
 
