@@ -188,7 +188,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		/* Override the entries state type, because we are too lame to handle this via
 		 * the focus ring, and GtkEntry doesn't even set the INSENSITIVE state ... */
 		if (state_type == GTK_STATE_NORMAL && widget && GE_IS_ENTRY (widget))
-			state_type = GTK_WIDGET_STATE (widget);
+			state_type = gtk_widget_get_state (widget);
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
@@ -678,7 +678,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		/* The "spinbutton" box is always drawn with state NORMAL, even if it is insensitive.
 		 * So work around this here. */
 		if (state_type == GTK_STATE_NORMAL && widget && GE_IS_ENTRY (widget))
-			state_type = GTK_WIDGET_STATE (widget);
+			state_type = gtk_widget_get_state (widget);
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 

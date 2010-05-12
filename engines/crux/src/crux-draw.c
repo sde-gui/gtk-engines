@@ -893,7 +893,7 @@ draw_box (GtkStyle *style,
 	{
 		gboolean focused = FALSE;
 		if (widget) {
-			state_type = GTK_WIDGET_STATE (widget);
+			state_type = gtk_widget_get_state (widget);
 			focused = gtk_widget_has_focus (widget);
 		}
 		width += 3;
@@ -946,7 +946,7 @@ draw_box (GtkStyle *style,
 			if ((entry = g_object_get_data ((GObject*) widget->parent, "entry")))
 			{
 				entry_focused = (gtk_widget_has_focus (entry));
-				state_type = GTK_WIDGET_STATE (entry);
+				state_type = gtk_widget_get_state (entry);
 			}
 
 			if (state_type == GTK_STATE_INSENSITIVE)

@@ -112,7 +112,7 @@ lua_style_push_widget_params (LuaStyle *style, GtkWidget *widget, GtkStateType s
 		lua_newtable (style->L);
 	
 	if (widget && GE_IS_ENTRY (widget))
-		state_type = GTK_WIDGET_STATE (widget);
+		state_type = gtk_widget_get_state (widget);
 
 	lua_pushstring (style->L, get_name_for_state (state_type));
 	lua_setfield (style->L, -2, "state");

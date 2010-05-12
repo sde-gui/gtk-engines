@@ -942,7 +942,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
    * more complicated because we can only do half for each stepper.
    */
  
-  GtkStateType parent_state = widget ? GTK_WIDGET_STATE(widget) : GTK_STATE_NORMAL;
+  GtkStateType parent_state = widget ? gtk_widget_get_state (widget) : GTK_STATE_NORMAL;
   gboolean entry_focused = FALSE;
   gint focus_line_width = 0, focus_padding = 0, focus = 0, thick = 2;
   gboolean interior_focus = TRUE;

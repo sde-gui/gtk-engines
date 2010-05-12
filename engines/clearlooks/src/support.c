@@ -84,7 +84,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	if (parent == NULL)
 		return;
 	
-	state_type = GTK_WIDGET_STATE (parent);
+	state_type = gtk_widget_get_state (parent);
 	
 	gcolor = &parent->style->bg[state_type];
 	

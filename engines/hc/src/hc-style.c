@@ -134,7 +134,7 @@ hc_draw_shadow(GtkStyle * style,
 		if ((widget) && (widget->parent))
 		{
 			gtk_widget_ensure_style(widget->parent);
-			ge_gdk_color_to_cairo(&widget->parent->style->fg[GTK_WIDGET_STATE(widget)], &foreground);
+			ge_gdk_color_to_cairo(&widget->parent->style->fg[gtk_widget_get_state (widget)], &foreground);
 		}
 	}
 

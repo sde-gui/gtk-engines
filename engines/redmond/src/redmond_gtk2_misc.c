@@ -451,7 +451,7 @@ redmond_gtk2_engine_hack_menu_shell_motion(GtkWidget *widget,
           for (child = g_list_first(children); child; child = g_list_next(child))
             {
 	      if ((child->data) && GE_IS_WIDGET(child->data) && 
-                  (GTK_WIDGET_STATE(GTK_WIDGET(child->data)) != GTK_STATE_INSENSITIVE))
+                  (gtk_widget_get_state (GTK_WIDGET(child->data)) != GTK_STATE_INSENSITIVE))
 	        {
 	          if ((pointer_x >= GTK_WIDGET(child->data)->allocation.x) && 
 	              (pointer_y >= GTK_WIDGET(child->data)->allocation.y) &&
@@ -499,7 +499,7 @@ redmond_gtk2_engine_hack_menu_shell_leave(GtkWidget *widget,
           for (child = g_list_first(children); child; child = g_list_next(child))
             {
 	      if ((child->data) && GE_IS_MENU_ITEM(child->data) && 
-                  (GTK_WIDGET_STATE(GTK_WIDGET(child->data)) != GTK_STATE_INSENSITIVE))
+                  (gtk_widget_get_state (GTK_WIDGET(child->data)) != GTK_STATE_INSENSITIVE))
 	        {
                   if ((!GE_IS_MENU(GTK_MENU_ITEM(child->data)->submenu)) || 
                       (!(GTK_WIDGET_REALIZED(GTK_MENU_ITEM(child->data)->submenu) && 
