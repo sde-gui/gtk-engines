@@ -64,7 +64,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	{
 		stop = FALSE;
 
-		stop |= !gtk_widget_get_has_window (parent);
+		stop |= !gtk_widget_get_has_window ((GtkWidget *) parent);
 		stop |= GTK_IS_NOTEBOOK (parent) &&
 		        gtk_notebook_get_show_tabs (GTK_NOTEBOOK (parent)) &&
 		        gtk_notebook_get_show_border (GTK_NOTEBOOK (parent));
@@ -84,7 +84,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	if (parent == NULL)
 		return;
 	
-	state_type = gtk_widget_get_state (parent);
+	state_type = gtk_widget_get_state ((GtkWidget *) parent);
 	
 	gcolor = &parent->style->bg[state_type];
 	

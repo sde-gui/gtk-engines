@@ -73,8 +73,8 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->state_type    = state_type;
 	params->corners       = CR_CORNER_ALL;
 	params->ltr           = ge_widget_is_ltr ((GtkWidget*)widget);
-	params->focus         = !CLEARLOOKS_STYLE (style)->disable_focus && widget && gtk_widget_has_focus (widget);
-	params->is_default    = widget && GE_WIDGET_HAS_DEFAULT (widget);
+	params->focus         = !CLEARLOOKS_STYLE (style)->disable_focus && widget && gtk_widget_has_focus ((GtkWidget *) widget);
+	params->is_default    = widget && GE_WIDGET_HAS_DEFAULT ((GtkWidget *) widget);
 	params->enable_shadow = FALSE;
 	params->radius        = CLEARLOOKS_STYLE (style)->radius;
 
