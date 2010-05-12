@@ -503,9 +503,9 @@ redmond_gtk2_engine_hack_menu_shell_leave(GtkWidget *widget,
 	        {
                   if ((!GE_IS_MENU(GTK_MENU_ITEM(child->data)->submenu)) || 
                       (!(GTK_WIDGET_REALIZED(GTK_MENU_ITEM(child->data)->submenu) && 
-                         GTK_WIDGET_VISIBLE(GTK_MENU_ITEM(child->data)->submenu) &&
+                         gtk_widget_get_visible (GTK_MENU_ITEM(child->data)->submenu) &&
                          GTK_WIDGET_REALIZED(GTK_MENU(GTK_MENU_ITEM(child->data)->submenu)->toplevel) &&
-                         GTK_WIDGET_VISIBLE(GTK_MENU(GTK_MENU_ITEM(child->data)->submenu)->toplevel))))
+                         gtk_widget_get_visible (GTK_MENU(GTK_MENU_ITEM(child->data)->submenu)->toplevel))))
 	          {
                     gtk_widget_set_state (GTK_WIDGET(child->data), GTK_STATE_NORMAL);
                   }

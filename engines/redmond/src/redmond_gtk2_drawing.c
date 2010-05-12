@@ -1110,7 +1110,7 @@ redmond_draw_box (GtkStyle * style,
             for (child = g_list_first(children); child; child = g_list_next(child))
               {
 	        if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
-                  has_grip = (GTK_WIDGET_VISIBLE(child->data) && 
+                  has_grip = (gtk_widget_get_visible (child->data) && 
                               GTK_WIDGET_REALIZED(child->data) && 
                               GTK_WIDGET(child->data)->allocation.width > 1) &&
                               (GTK_WIDGET(child->data)->allocation.height > 1);
@@ -1195,7 +1195,7 @@ redmond_draw_box (GtkStyle * style,
 	      break;
 	    }      
         }
-      else if (GE_IS_HANDLE_BOX_ITEM(widget) && GTK_WIDGET_REALIZED(widget->parent) && GTK_WIDGET_VISIBLE(widget->parent))
+      else if (GE_IS_HANDLE_BOX_ITEM(widget) && GTK_WIDGET_REALIZED(widget->parent) && gtk_widget_get_visible (widget->parent))
         {
 	  switch (gtk_handle_box_get_handle_position
 		  (GTK_HANDLE_BOX (widget->parent)))
@@ -1279,9 +1279,9 @@ redmond_draw_box (GtkStyle * style,
 		 			  
       if ((!GE_IS_MENU(GTK_MENU_ITEM(widget)->submenu)) || 
           (!(GTK_WIDGET_REALIZED(GTK_MENU_ITEM(widget)->submenu) && 
-             GTK_WIDGET_VISIBLE(GTK_MENU_ITEM(widget)->submenu) &&
+             gtk_widget_get_visible (GTK_MENU_ITEM(widget)->submenu) &&
              GTK_WIDGET_REALIZED(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel) &&
-             GTK_WIDGET_VISIBLE(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel))))
+             gtk_widget_get_visible (GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel))))
         {  
           top = &redmond_style->color_cube.light[state_type];
           bottom = &redmond_style->color_cube.dark[state_type];

@@ -267,7 +267,7 @@ clearlooks_get_notebook_tab_position (GtkWidget *widget,
 
 			/* Skip invisible tabs */
 			tab_label = gtk_notebook_get_tab_label (notebook, tab_child);
-			if (!tab_label || !GTK_WIDGET_VISIBLE (tab_label))
+			if (!tab_label || !gtk_widget_get_visible (tab_label))
 				continue;
 			/* This is the same what the notebook does internally. */
 			if (tab_label && !gtk_widget_get_child_visible (tab_label)) {
