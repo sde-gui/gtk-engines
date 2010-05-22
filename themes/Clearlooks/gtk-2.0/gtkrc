@@ -400,9 +400,9 @@ widget "gtk-tooltip*" style "tooltips"
 ##########################################################################
 
 # Workaround for the evolution ETable (bug #527532)
-widget_class "*.ETable.ECanvas" style "treeview_header"
+widget_class "*.<ETable>.<ECanvas>" style "treeview_header"
 # Workaround for the evolution ETree
-widget_class "*.ETree.ECanvas" style "treeview_header"
+widget_class "*.<ETree>.<ECanvas>" style "treeview_header"
 
 # Special case the nautilus-extra-view-widget
 # ToDo: A more generic approach for all applications that have a widget like this.
