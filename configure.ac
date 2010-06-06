@@ -36,7 +36,6 @@ AC_ARG_ENABLE(mist, 		[  --disable-mist          skip Mist engine/theme], 		[mis
 AC_ARG_ENABLE(redmond,		[  --disable-redmond       skip Redmond engine/theme], 		[redmond=$enableval], 		[redmond="$defaultval"])
 AC_ARG_ENABLE(glide,		[  --disable-glide         skip Glide engine],			[glide=$enableval],		[glide="$defaultval"])
 AC_ARG_ENABLE(thinice,		[  --disable-thinice       skip ThinIce engine/theme], 		[thinice=$enableval], 		[thinice="$defaultval"])
-AC_ARG_ENABLE(lua,			[  --enable-lua            enable Lua engine], 			[lua=$enableval], 			[lua="no"])
 
 AC_ARG_ENABLE(animation, 	[  --enable-animation      compile clearlooks with animation support], 	[animation=$enableval],	[animation="no"])
 AC_ARG_ENABLE(widget_checks, 	[  --disable-widget-checks disable superfluous widget checks (needs updated themes)], 	[widget_checks=$enableval],	[widget_checks="yes"])
@@ -48,9 +47,6 @@ AC_ARG_ENABLE(paranoia, 	[  --enable-paranoia       use wall, werror, ansi, peda
 AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated functions in gtk et al],	[deprecated=$enableval],		[deprecated="no"])
 
 AC_ARG_ENABLE(schemas,		[  --disable-schema        disable engine schemas],	[schemas=$enableval],	[schemas="yes"])
-AC_ARG_WITH(system-lua,	[  --with-system-lua        link with system Lua library], 		[system_lua=$withval], 	[system_lua="no"])
-
-AM_CONDITIONAL([SYSTEM_LUA], [test x$system_lua = xyes])
 
 BUILD_ENGINES=""
 BUILD_THEMES=""
@@ -118,10 +114,6 @@ if test $thinice = "yes"; then
 	fi
 fi
 
-if test $lua = "yes"; then
-	BUILD_ENGINES="$BUILD_ENGINES lua"
-fi
-
 # Don't forget to update the README when changing this.
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.12.0,,
                   AC_MSG_ERROR([GTK+-2.12 is required to compile gtk-engines]))
@@ -131,13 +123,6 @@ AC_SUBST(GTK_LIBS)
 
 GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-2.0`
 AC_SUBST(GTK_VERSION)
-
-if test $system_lua = "yes"; then
-	PKG_CHECK_MODULES(LUA, lua,,
-                  AC_MSG_ERROR([--with-system-lua specified but no system liblua found]))
-	AC_SUBST(LUA_CFLAGS)
-	AC_SUBST(LUA_LIBS)
-fi
 
 AC_SUBST(BUILD_ENGINES)
 AC_SUBST(BUILD_THEMES)
@@ -181,7 +166,6 @@ engines/mist/Makefile
 engines/redmond/Makefile
 engines/glide/Makefile
 engines/thinice/Makefile
-engines/lua/Makefile
 themes/Makefile
 themes/Clearlooks/Makefile
 themes/Clearlooks/gtk-2.0/Makefile
@@ -313,13 +297,6 @@ fi
 
 echo -n "      ThinIce - "
 if test "$thinice" = "yes"; then
-	echo "Including"
-else
-	echo "Skipping"
-fi
-
-echo -n "      Lua - "
-if test "$lua" = "yes"; then
 	echo "Including"
 else
 	echo "Skipping"
