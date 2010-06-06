@@ -729,7 +729,7 @@ glide_draw_combobox_button (GtkStyle * style,
           }
         }
 #else
-#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
+#warning Disabling GtkCombo support because GTK_DISABLE_DEPRECATED is enabled.
 #endif /* GTK_DISABLE_DEPRECATED */
       else
         {
@@ -858,7 +858,7 @@ glide_draw_combobox_button (GtkStyle * style,
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
         }
 #else
-#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
+#warning Disabling GtkCombo support because GTK_DISABLE_DEPRECATED is enabled.
 #endif /* GTK_DISABLE_DEPRECATED */
       else
         {

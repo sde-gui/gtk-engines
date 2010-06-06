@@ -726,7 +726,7 @@ redmond_draw_combobox_button (GtkStyle * style,
           }
         }
 #else
-#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
+#warning Disabling GtkCombo support because GTK_DISABLE_DEPRECATED is enabled.
 #endif
       else
         {
@@ -828,7 +828,7 @@ redmond_draw_combobox_button (GtkStyle * style,
 			     area, entry, "entry", x + 2, y, width, height);
         }
 #else
-#warning Disabling GtkCombo support because GTK_DiSABLE_DEPRECATED is enabled.
+#warning Disabling GtkCombo support because GTK_DISABLE_DEPRECATED is enabled.
 #endif /* GTK_DISABLE_DEPRECATED */
       else
         {
