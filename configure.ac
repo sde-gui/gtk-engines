@@ -182,7 +182,7 @@ themes/Redmond/Makefile
 themes/Redmond/gtk-3.0/Makefile
 themes/ThinIce/Makefile
 themes/ThinIce/gtk-3.0/Makefile
-gtk-engines-2.pc
+gtk-engines-3.pc
 gtk-engines.spec
 po/Makefile.in
 schema/Makefile
