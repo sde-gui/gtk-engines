@@ -35,9 +35,6 @@ typedef enum {
 	WIDGET_PROGRESS_BAR,
 	WIDGET_MENUBAR,
 	WIDGET_MENUBAR_ITEM,
-#ifndef GTK_DISABLE_DEPRECATED
-	WIDGET_OPTION_MENU,
-#endif /* GTK_DISABLE_DEPRECATED */
 	WIDGET_TOOLBAR,
 	WIDGET_DEFAULT_BUTTON
 } WidgetType;
@@ -62,9 +59,6 @@ widget_type_get_type (void)
 			{ WIDGET_PROGRESS_BAR, "WIDGET_PROGRESS_BAR", "GtkProgessBar" },
 			{ WIDGET_MENUBAR, "WIDGET_MENUBAR", "GtkMenubar" },
 			{ WIDGET_MENUBAR_ITEM, "WIDGET_MENUBAR_ITEM", "GtkMenubar-item" },
-#ifndef GTK_DISABLE_DEPRECATED
-			{ WIDGET_OPTION_MENU, "WIDGET_OPTION_MENU", "GtkOptionMenu" },
-#endif
 			{ WIDGET_TOOLBAR, "WIDGET_TOOLBAR", "GtkToolbar" },
 			{ WIDGET_DEFAULT_BUTTON, "WIDGET_DEFAULT_BUTTON", "GtkButton-has-default" },
 			{ 0, NULL, NULL }
@@ -383,34 +377,6 @@ static Test tests[] = {
 		GTK_EXPANDER_EXPANDED,
 		GDK_WINDOW_EDGE_SOUTH
 	},
-#ifndef GTK_DISABLE_DEPRECATED
-	{
-		FUNCTION_BOX,
-		WIDGET_OPTION_MENU,
-		"NULL:optionmenu",
-		STATE_ALL,
-		SHADOW_ALL,
-		GTK_ARROW_UP,
-		TRUE,
-		GTK_POS_TOP,
-		GTK_ORIENTATION_HORIZONTAL,
-		GTK_EXPANDER_EXPANDED,
-		GDK_WINDOW_EDGE_SOUTH
-	},
-	{
-		FUNCTION_BOX,
-		WIDGET_OPTION_MENU,
-		"NULL:optionmenu",
-		STATE_ALL,
-		SHADOW_ALL,
-		GTK_ARROW_UP,
-		TRUE,
-		GTK_POS_TOP,
-		GTK_ORIENTATION_HORIZONTAL,
-		GTK_EXPANDER_EXPANDED,
-		GDK_WINDOW_EDGE_SOUTH
-	},
-#endif /* GTK_DISABLE_DEPRECATED */
 	{
 		FUNCTION_BOX,
 		WIDGET_TOOLBAR,
@@ -657,11 +623,6 @@ create_testwidgets ()
 	widgets[WIDGET_MENUBAR] = gtk_menu_bar_new ();
 	widgets[WIDGET_MENUBAR_ITEM] = gtk_menu_item_new_with_label ("blah");
 	gtk_menu_shell_append (GTK_MENU_SHELL (widgets[WIDGET_MENUBAR]), widgets[WIDGET_MENUBAR_ITEM]);
-#ifndef GTK_DISABLE_DEPRECATED
-	widgets[WIDGET_OPTION_MENU] = gtk_option_menu_new ();
-#else
-#warning Not testing engines against GtkOptionMenu
-#endif /* GTK_DISABLE_DEPRECATED */
 	widgets[WIDGET_TOOLBAR] = gtk_toolbar_new ();
 	widgets[WIDGET_DEFAULT_BUTTON] = gtk_button_new_with_label ("blah");
 	/* nasty but *shrug* */
