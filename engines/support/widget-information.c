@@ -126,15 +126,15 @@ ge_check_hint (GEHint      hint,
 	/* Try to do something based on the passed in widget pointer. */
 	switch (hint) {
 		case GE_HINT_TREEVIEW:
-			if (widget->parent && (ge_object_is_a (G_OBJECT (widget->parent), "GtkTreeView")))
+			if (gtk_widget_get_parent (widget) && (ge_object_is_a (G_OBJECT (gtk_widget_get_parent (widget)), "GtkTreeView")))
 				return TRUE;
 		break;
 		case GE_HINT_TREEVIEW_HEADER:
-			if (ge_object_is_a (G_OBJECT (widget), "GtkButton") && widget->parent &&
-			    (ge_object_is_a (G_OBJECT (widget->parent), "GtkTreeView") || ge_object_is_a (G_OBJECT (widget->parent), "GtkCList") ||
-			     ge_object_is_a (G_OBJECT (widget->parent), "GtkCTree")))
+			if (ge_object_is_a (G_OBJECT (widget), "GtkButton") && gtk_widget_get_parent (widget) &&
+			    (ge_object_is_a (G_OBJECT (gtk_widget_get_parent (widget)), "GtkTreeView") || ge_object_is_a (G_OBJECT (gtk_widget_get_parent (widget)), "GtkCList") ||
+			     ge_object_is_a (G_OBJECT (gtk_widget_get_parent (widget)), "GtkCTree")))
 				return TRUE;
-			if (widget->parent && ge_object_is_a (G_OBJECT (widget->parent), "ETreeView"))
+			if (gtk_widget_get_parent (widget) && ge_object_is_a (G_OBJECT (gtk_widget_get_parent (widget)), "ETreeView"))
 				return TRUE;
 		break;
 		case GE_HINT_COMBOBOX_ENTRY:
@@ -146,7 +146,7 @@ ge_check_hint (GEHint      hint,
 				return TRUE;
 		break;
 		case GE_HINT_STATUSBAR:
-			if (widget->parent && ge_object_is_a (G_OBJECT (widget), "GtkStatusbar"))
+			if (gtk_widget_get_parent (widget) && ge_object_is_a (G_OBJECT (widget), "GtkStatusbar"))
 				return TRUE;
 		break;
 		case GE_HINT_SCALE:
@@ -179,7 +179,7 @@ ge_check_hint (GEHint      hint,
 		break;
 		case GE_HINT_MENUBAR:
 			if (ge_object_is_a (G_OBJECT (widget), "GtkMenuBar") ||
-			    ge_object_is_a (G_OBJECT (widget->parent), "GtkMenuBar"))
+			    ge_object_is_a (G_OBJECT (gtk_widget_get_parent (widget)), "GtkMenuBar"))
 				return TRUE;
 		break;
 
@@ -219,12 +219,12 @@ ge_is_combo_box_entry (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
-  if ((widget) && (widget->parent))
+  if ((widget) && (gtk_widget_get_parent (widget)))
     {
-      if (GE_IS_COMBO_BOX_ENTRY (widget->parent))
+      if (GE_IS_COMBO_BOX_ENTRY (gtk_widget_get_parent (widget)))
 	result = TRUE;
       else
-	result = ge_is_combo_box_entry (widget->parent);
+	result = ge_is_combo_box_entry (gtk_widget_get_parent (widget));
     }
   return result;
 }
@@ -245,17 +245,17 @@ ge_is_combo_box (GtkWidget * widget, gboolean as_list)
 {
   gboolean result = FALSE;
  
-  if ((widget) && (widget->parent))
+  if ((widget) && (gtk_widget_get_parent (widget)))
     {
-      if (GE_IS_COMBO_BOX (widget->parent))
+      if (GE_IS_COMBO_BOX (gtk_widget_get_parent (widget)))
         {
           if (as_list)
-            result = (ge_combo_box_is_using_list(widget->parent));
+            result = (ge_combo_box_is_using_list(gtk_widget_get_parent (widget)));
           else
-            result = (!ge_combo_box_is_using_list(widget->parent));
+            result = (!ge_combo_box_is_using_list(gtk_widget_get_parent (widget)));
         }
       else
-	result = ge_is_combo_box (widget->parent, as_list);
+	result = ge_is_combo_box (gtk_widget_get_parent (widget), as_list);
     }
   return result;
 }
@@ -265,12 +265,12 @@ ge_is_combo (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
-  if ((widget) && (widget->parent))
+  if ((widget) && (gtk_widget_get_parent (widget)))
     {
-      if (GE_IS_COMBO (widget->parent))
+      if (GE_IS_COMBO (gtk_widget_get_parent (widget)))
 	result = TRUE;
       else
-	result = ge_is_combo (widget->parent);
+	result = ge_is_combo (gtk_widget_get_parent (widget));
     }
   return result;
 }
@@ -286,15 +286,15 @@ ge_is_toolbar_item (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
-  if ((widget) && (widget->parent)) {
-    if ((GE_IS_BONOBO_TOOLBAR (widget->parent))
-	|| (GE_IS_BONOBO_DOCK_ITEM (widget->parent))
-	|| (GE_IS_EGG_TOOLBAR (widget->parent))
-	|| (GE_IS_TOOLBAR (widget->parent))
-	|| (GE_IS_HANDLE_BOX (widget->parent)))
+  if ((widget) && (gtk_widget_get_parent (widget))) {
+    if ((GE_IS_BONOBO_TOOLBAR (gtk_widget_get_parent (widget)))
+	|| (GE_IS_BONOBO_DOCK_ITEM (gtk_widget_get_parent (widget)))
+	|| (GE_IS_EGG_TOOLBAR (gtk_widget_get_parent (widget)))
+	|| (GE_IS_TOOLBAR (gtk_widget_get_parent (widget)))
+	|| (GE_IS_HANDLE_BOX (gtk_widget_get_parent (widget))))
       result = TRUE;
     else
-      result = ge_is_toolbar_item (widget->parent);
+      result = ge_is_toolbar_item (gtk_widget_get_parent (widget));
   }
   return result;
 }
@@ -304,12 +304,12 @@ ge_is_panel_widget_item (GtkWidget * widget)
 {
   gboolean result = FALSE;
  
-  if ((widget) && (widget->parent))
+  if ((widget) && (gtk_widget_get_parent (widget)))
     {
-      if (GE_IS_PANEL_WIDGET (widget->parent))
+      if (GE_IS_PANEL_WIDGET (gtk_widget_get_parent (widget)))
 	result = TRUE;
       else
-	result = ge_is_panel_widget_item (widget->parent);
+	result = ge_is_panel_widget_item (gtk_widget_get_parent (widget));
     }
   return result;
 }
@@ -321,11 +321,11 @@ ge_is_bonobo_dock_item (GtkWidget * widget)
  
   if ((widget))
     {
-      if (GE_IS_BONOBO_DOCK_ITEM(widget) || GE_IS_BONOBO_DOCK_ITEM (widget->parent))
+      if (GE_IS_BONOBO_DOCK_ITEM(widget) || GE_IS_BONOBO_DOCK_ITEM (gtk_widget_get_parent (widget)))
 	result = TRUE;
-      else if (GE_IS_BOX(widget) || GE_IS_BOX(widget->parent))
+      else if (GE_IS_BOX(widget) || GE_IS_BOX(gtk_widget_get_parent (widget)))
         {
-          GtkContainer *box = GE_IS_BOX(widget)?GTK_CONTAINER(widget):GTK_CONTAINER(widget->parent);
+          GtkContainer *box = GE_IS_BOX(widget)?GTK_CONTAINER(widget):GTK_CONTAINER(gtk_widget_get_parent (widget));
           GList *children = NULL, *child = NULL;
  
           children = gtk_container_get_children(box);
@@ -356,7 +356,7 @@ ge_find_combo_box_entry_widget (GtkWidget * widget)
       if (GE_IS_COMBO_BOX_ENTRY (widget))
 	result = widget;
       else
-	result = ge_find_combo_box_entry_widget (widget->parent);
+	result = ge_find_combo_box_entry_widget (gtk_widget_get_parent (widget));
     }
 
   return result;
@@ -377,7 +377,7 @@ ge_find_combo_box_widget (GtkWidget * widget, gboolean as_list)
             result = (!ge_combo_box_is_using_list(widget))?widget:NULL;
         }
       else
-	result = ge_find_combo_box_widget (widget->parent, as_list);
+	result = ge_find_combo_box_widget (gtk_widget_get_parent (widget), as_list);
     }
   return result;
 }
@@ -392,7 +392,7 @@ ge_find_combo_widget (GtkWidget * widget)
       if (GE_IS_COMBO (widget))
 	result = widget;
       else
-	result = ge_find_combo_widget(widget->parent);
+	result = ge_find_combo_widget(gtk_widget_get_parent (widget));
     }
   return result;
 }

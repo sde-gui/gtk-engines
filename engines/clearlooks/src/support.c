@@ -34,12 +34,12 @@ void clearlooks_treeview_get_header_index (GtkTreeView *tv, GtkWidget *header,
 	do
 	{
 		GtkTreeViewColumn *column = GTK_TREE_VIEW_COLUMN(list->data);
-		if ( column->button == header )
+		if ( gtk_tree_view_column_get_widget (column) == header )
 		{
 			*column_index = *columns;
-			*resizable = column->resizable;
+			*resizable = gtk_tree_view_column_get_resizable (column);
 		}
-		if ( column->visible )
+		if ( gtk_tree_view_column_get_visible (column) )
 			(*columns)++;
 	} while ((list = g_list_next(list)));
 
@@ -53,11 +53,12 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	const GtkWidget *parent;
 	GdkColor *gcolor;
 	gboolean stop;
+	GtkStyle *style;
 	
 	if (widget == NULL)
 		return;
 	
-	parent = widget->parent;
+	parent = gtk_widget_get_parent ((GtkWidget *) widget);
 	stop = FALSE;
 	
 	while (parent && !stop)
@@ -78,15 +79,16 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 		}
 
 		if (!stop)
-			parent = parent->parent;
+			parent = gtk_widget_get_parent ((GtkWidget *) parent);
 	}
 
 	if (parent == NULL)
 		return;
 	
 	state_type = gtk_widget_get_state ((GtkWidget *) parent);
-	
-	gcolor = &parent->style->bg[state_type];
+
+	style = gtk_widget_get_style ((GtkWidget *) parent);
+	gcolor = &style->bg[state_type];
 	
 	ge_gdk_color_to_cairo (gcolor, color);
 }
@@ -99,18 +101,20 @@ clearlooks_scrollbar_get_stepper (GtkWidget    *widget,
 	GdkRectangle tmp;
 	GdkRectangle check_rectangle;
 	GtkOrientation orientation;
+	GtkAllocation allocation;
 
 	if (!GE_IS_RANGE (widget))
 		return CL_STEPPER_UNKNOWN;
 
-	check_rectangle.x      = widget->allocation.x;
-	check_rectangle.y      = widget->allocation.y;
+	gtk_widget_get_allocation (widget, &allocation);
+	check_rectangle.x      = allocation.x;
+	check_rectangle.y      = allocation.y;
 	check_rectangle.width  = stepper->width;
 	check_rectangle.height = stepper->height;
 	
-	orientation = GTK_RANGE (widget)->orientation;
+	orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
 	
-	if (widget->allocation.x == -1 && widget->allocation.y == -1)
+	if (allocation.x == -1 && allocation.y == -1)
 		return CL_STEPPER_UNKNOWN;
 		
 	if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
@@ -119,9 +123,9 @@ clearlooks_scrollbar_get_stepper (GtkWidget    *widget,
 	if (value == CL_STEPPER_UNKNOWN) /* Haven't found a match */
 	{
 		if (orientation == GTK_ORIENTATION_HORIZONTAL)
-			check_rectangle.x = widget->allocation.x + stepper->width;
+			check_rectangle.x = allocation.x + stepper->width;
 		else
-			check_rectangle.y = widget->allocation.y + stepper->height;
+			check_rectangle.y = allocation.y + stepper->height;
 		
 		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
 			value = CL_STEPPER_B;
@@ -130,9 +134,9 @@ clearlooks_scrollbar_get_stepper (GtkWidget    *widget,
 	if (value == CL_STEPPER_UNKNOWN) /* Still haven't found a match */
 	{
 		if (orientation == GTK_ORIENTATION_HORIZONTAL)
-			check_rectangle.x = widget->allocation.x + widget->allocation.width - (stepper->width * 2);
+			check_rectangle.x = allocation.x + allocation.width - (stepper->width * 2);
 		else
-			check_rectangle.y = widget->allocation.y + widget->allocation.height - (stepper->height * 2);
+			check_rectangle.y = allocation.y + allocation.height - (stepper->height * 2);
 		
 		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
 			value = CL_STEPPER_C;
@@ -141,9 +145,9 @@ clearlooks_scrollbar_get_stepper (GtkWidget    *widget,
 	if (value == CL_STEPPER_UNKNOWN) /* STILL haven't found a match */
 	{
 		if (orientation == GTK_ORIENTATION_HORIZONTAL)
-			check_rectangle.x = widget->allocation.x + widget->allocation.width - stepper->width;
+			check_rectangle.x = allocation.x + allocation.width - stepper->width;
 		else
-			check_rectangle.y = widget->allocation.y + widget->allocation.height - stepper->height;
+			check_rectangle.y = allocation.y + allocation.height - stepper->height;
 		
 		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
 			value = CL_STEPPER_D;
@@ -215,10 +219,13 @@ clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar,
                                    GdkWindow *window,
                                    gint x, gint y)
 {
+	GtkAllocation allocation;
+
+	gtk_widget_get_allocation (widget, &allocation);
 	toolbar->topmost = FALSE;
 
 	if (x == 0 && y == 0) {
-		if (widget && widget->allocation.x == 0 && widget->allocation.y == 0)
+		if (widget && allocation.x == 0 && allocation.y == 0)
 		{
 			if (widget->window == window && GE_IS_TOOLBAR (widget))
 			{

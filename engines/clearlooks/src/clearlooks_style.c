@@ -542,19 +542,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		params.corners = CR_CORNER_NONE;
 
-		if (GE_IS_TREE_VIEW (widget->parent))
+		if (GE_IS_TREE_VIEW (gtk_widget_get_parent (widget)))
 		{
-			clearlooks_treeview_get_header_index (GTK_TREE_VIEW(widget->parent),
+			clearlooks_treeview_get_header_index (GTK_TREE_VIEW(gtk_widget_get_parent (widget)),
 			                                      widget, &column_index, &columns,
 			                                      &resizable);
 		}
-#ifndef GTK_DISABLE_DEPRECATED
-		else if (GE_IS_CLIST (widget->parent))
-		{
-			clearlooks_clist_get_header_index (GTK_CLIST(widget->parent),
-			                                   widget, &column_index, &columns);
-		}
-#endif
 
 		header.resizable = resizable;
 
@@ -925,23 +918,23 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			/* We got an entry, but well, we may not be drawing to
 			 * this particular widget ... it may not even be realized.
 			 * Also, we need to be drawing on a window obviously ... */
-			if (GTK_WIDGET_REALIZED (widget) &&
+			if (gtk_widget_get_realized (widget) &&
 			    GDK_IS_WINDOW (window) &&
-			    gdk_window_is_visible (widget->window))
+			    gdk_window_is_visible (gtk_widget_get_window (widget)))
 			{
 				/* Assumptions done by this code:
 				 *  - GtkEntry has some nested windows.
-				 *  - widget->window is the entries window
-				 *  - widget->window is the size of the entry part
+				 *  - gtk_widget_get_window (widget) is the entries window
+				 *  - gtk_widget_get_window (widget) is the size of the entry part
 				 *    (and not larger)
 				 *  - only one layer of subwindows
 				 * These should be true with any GTK+ 2.x version.
 				 */
 
-				if (widget->window == window)
+				if (gtk_widget_get_window (widget) == window)
 				{
 					progress.max_size_known = TRUE;
-					gdk_drawable_get_size (widget->window,
+					gdk_drawable_get_size (gtk_widget_get_window (widget),
 					                       &progress.max_size.width,
 					                       &progress.max_size.height);
 				}
@@ -949,10 +942,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				{
 					GdkWindow *parent;
 					parent = gdk_window_get_parent (window);
-					if (widget->window == parent)
+					if (gtk_widget_get_window (widget) == parent)
 					{
 						gint pos_x, pos_y;
-						/* widget->window is the parent window
+						/* gtk_widget_get_window (widget) is the parent window
 						 * of the current one. This means we can
 						 * calculate the correct offsets. */
 						gdk_window_get_position (window, &pos_x, &pos_y);
@@ -960,7 +953,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 						progress.max_size.y = -pos_y;
 
 						progress.max_size_known = TRUE;
-						gdk_drawable_get_size (widget->window,
+						gdk_drawable_get_size (gtk_widget_get_window (widget),
 						                       &progress.max_size.width,
 						                       &progress.max_size.height);
 					} /* Nothing we can do in this case ... */
@@ -1236,7 +1229,7 @@ clearlooks_style_draw_option (DRAW_ARGS)
 	colors = &clearlooks_style->colors;
 
 	checkbox.shadow_type = shadow_type;
-	checkbox.in_menu = (widget && GTK_IS_MENU(widget->parent));
+	checkbox.in_menu = (widget && GTK_IS_MENU(gtk_widget_get_parent (widget)));
 
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
@@ -1265,7 +1258,7 @@ clearlooks_style_draw_check (DRAW_ARGS)
 	checkbox.shadow_type = shadow_type;
 	checkbox.in_cell = DETAIL("cellcheck");
 
-	checkbox.in_menu = (widget && widget->parent && GTK_IS_MENU(widget->parent));
+	checkbox.in_menu = (widget && gtk_widget_get_parent (widget) && GTK_IS_MENU(gtk_widget_get_parent (widget)));
 
 	STYLE_FUNCTION(draw_checkbox) (cr, &clearlooks_style->colors, &params, &checkbox,
 	                               x, y, width, height);
@@ -1481,7 +1474,7 @@ clearlooks_style_draw_arrow (GtkStyle  *style,
 
 	/* I have no idea why, but the arrow of GtkCombo is larger than in other places.
 	 * Subtracting 3 seems to fix this. */
-	if (widget && widget->parent && GE_IS_COMBO (widget->parent->parent))
+	if (widget && gtk_widget_get_parent (widget) && GE_IS_COMBO (gtk_widget_get_parent (gtk_widget_get_parent (widget))))
 	{
 		if (params.ltr)
 			x += 1;
@@ -1890,7 +1883,7 @@ clearlooks_style_draw_layout (GtkStyle * style,
 		if (gtk_widget_get_has_window (widget))
 			ge_shade_color (&params.parentbg, 1.2, &temp);
 		else
-			ge_shade_color (&colors->bg[widget->state], 1.2, &temp);
+			ge_shade_color (&colors->bg[gtk_widget_get_state (widget)], 1.2, &temp);
 
 		etched.red = (int) (temp.r * 65535);
 		etched.green = (int) (temp.g * 65535);

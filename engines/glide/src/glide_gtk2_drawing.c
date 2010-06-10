@@ -1221,7 +1221,7 @@ glide_draw_box (GtkStyle * style,
               {
 	        if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
                   has_grip = (gtk_widget_get_visible (child->data) && 
-                              GTK_WIDGET_REALIZED(child->data) && 
+                              gtk_widget_get_realized(child->data) && 
                               GTK_WIDGET(child->data)->allocation.width > 1) &&
                               (GTK_WIDGET(child->data)->allocation.height > 1);
               }	            

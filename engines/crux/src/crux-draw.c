@@ -817,7 +817,7 @@ draw_shadow (GtkStyle *style,
 	area2.width = width;
 	area2.height = height;
 
-	if (widget != 0 && !GTK_WIDGET_IS_SENSITIVE (widget))
+	if (widget != 0 && !gtk_widget_get_sensitive (widget))
 		state_type = GTK_STATE_INSENSITIVE;
 
 	debug ("draw_shadow: detail=%s state=%d shadow=%d x=%d y=%d w=%d h=%d\n",
