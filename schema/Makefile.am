@@ -1,4 +1,4 @@
-xmldir = $(pkgdatadir)
+xmldir = $(pkgdatadir)/3.0
 
 EXTRA_DIST= \
 	clearlooks.xml.in.in	\
