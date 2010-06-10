@@ -4,7 +4,7 @@ DIST_SUBDIRS = $(SUBDIRS)
 EXTRA_DIST = \
 	gtk-engines.doap \
 	autogen.sh	\
-	gtk-engines-2.pc.in \
+	gtk-engines-3.pc.in \
 	gtk-engines.spec.in \
 	gtk-engines.spec \
 	intltool-extract.in \
@@ -43,7 +43,7 @@ MAINTAINERCLEANFILES = \
 	`find "$(srcdir)" -type f -name Makefile.in -print`
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = gtk-engines-2.pc
+pkgconfig_DATA = gtk-engines-3.pc
 
 test:	all
 	cd test && $(MAKE) $(AM_MAKEFLAGS) test
