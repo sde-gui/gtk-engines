@@ -46,26 +46,6 @@ void clearlooks_treeview_get_header_index (GtkTreeView *tv, GtkWidget *header,
 	g_list_free (list_start);
 }
 
-#ifndef GTK_DISABLE_DEPRECATED
-void clearlooks_clist_get_header_index (GtkCList *clist, GtkWidget *button,
-                                 gint *column_index, gint *columns)
-{
-	int i;
-	*columns = clist->columns;
-	
-	for (i=0; i<*columns; i++)
-	{
-		if (clist->column[i].button == button)
-		{
-			*column_index = i;
-			break;
-		}
-	}
-}
-#else
-#warning Disabling special CList support of clearlooks as GTK_DISABLE_DEPRECATED is enabled.
-#endif
-
 void
 clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 {
@@ -84,7 +64,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	{
 		stop = FALSE;
 
-		stop |= !GTK_WIDGET_NO_WINDOW (parent);
+		stop |= !gtk_widget_get_has_window ((GtkWidget *) parent);
 		stop |= GTK_IS_NOTEBOOK (parent) &&
 		        gtk_notebook_get_show_tabs (GTK_NOTEBOOK (parent)) &&
 		        gtk_notebook_get_show_border (GTK_NOTEBOOK (parent));
@@ -104,7 +84,7 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	if (parent == NULL)
 		return;
 	
-	state_type = GTK_WIDGET_STATE (parent);
+	state_type = gtk_widget_get_state ((GtkWidget *) parent);
 	
 	gcolor = &parent->style->bg[state_type];
 	
@@ -287,7 +267,7 @@ clearlooks_get_notebook_tab_position (GtkWidget *widget,
 
 			/* Skip invisible tabs */
 			tab_label = gtk_notebook_get_tab_label (notebook, tab_child);
-			if (!tab_label || !GTK_WIDGET_VISIBLE (tab_label))
+			if (!tab_label || !gtk_widget_get_visible (tab_label))
 				continue;
 			/* This is the same what the notebook does internally. */
 			if (tab_label && !gtk_widget_get_child_visible (tab_label)) {

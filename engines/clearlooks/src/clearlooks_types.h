@@ -37,16 +37,9 @@ typedef enum
 	CL_STYLE_GLOSSY = 1,
 	CL_STYLE_INVERTED = 2,
 	CL_STYLE_GUMMY = 3,
-	CL_NUM_STYLES = 4
+	CL_STYLE_GNOME3 = 4,
+	CL_NUM_STYLES = 5
 } ClearlooksStyles;
-
-typedef enum
-{
-	CL_STATE_NORMAL,
-	CL_STATE_ACTIVE,
-	CL_STATE_SELECTED,
-	CL_STATE_INSENSITIVE
-} ClearlooksStateType;
 
 typedef enum
 {
@@ -189,7 +182,7 @@ typedef struct
 
 	gfloat  radius;
 	
-	ClearlooksStateType state_type;
+	GtkStateType state_type;
 	
 	uint8 corners;
 	uint8 xthickness;

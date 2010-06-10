@@ -634,7 +634,7 @@ mist_style_draw_box(GtkStyle *style,
 		}
 		
 		gtk_style_apply_default_background(style, window,
-						   widget && !GTK_WIDGET_NO_WINDOW(widget),
+						   widget && !gtk_widget_get_has_window (widget),
 						   state_type, area,
 						   x, y, width, height);
 
@@ -879,7 +879,7 @@ mist_style_draw_box_gap(GtkStyle *style,
 	SANITIZE_SIZE
 
 	gtk_style_apply_default_background(style, window,
-					   widget && !GTK_WIDGET_NO_WINDOW(widget),
+					   widget && !gtk_widget_get_has_window (widget),
 					   state_type, area,
 					   x, y, width, height);
 
@@ -924,7 +924,7 @@ mist_style_draw_extension(GtkStyle *style,
 	} else {
 		gtk_style_apply_default_background
 			(style, window,
-			 widget && !GTK_WIDGET_NO_WINDOW(widget),
+			 widget && !gtk_widget_get_has_window (widget),
 			 state_type, area, x, y, width, height);
 	}
 	

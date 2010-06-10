@@ -134,7 +134,7 @@ hc_draw_shadow(GtkStyle * style,
 		if ((widget) && (widget->parent))
 		{
 			gtk_widget_ensure_style(widget->parent);
-			ge_gdk_color_to_cairo(&widget->parent->style->fg[GTK_WIDGET_STATE(widget)], &foreground);
+			ge_gdk_color_to_cairo(&widget->parent->style->fg[gtk_widget_get_state (widget)], &foreground);
 		}
 	}
 
@@ -434,7 +434,7 @@ hc_draw_box (GtkStyle	*style,
 	/* Draw Fill                                   */
 	/***********************************************/
 	gtk_style_apply_default_background (style, window,
-        					widget && !GTK_WIDGET_NO_WINDOW (widget),
+        					widget && !gtk_widget_get_has_window (widget),
 						state_type, area, x, y, width, height);
   
 
@@ -478,7 +478,7 @@ hc_draw_box_gap (GtkStyle       *style,
 	/* Draw Fill                                   */
 	/***********************************************/
 	gtk_style_apply_default_background (style, window,
-	                                    widget && !GTK_WIDGET_NO_WINDOW (widget),
+	                                    widget && !gtk_widget_get_has_window (widget),
 	                                    state_type, area, x, y, width, height);
 
 

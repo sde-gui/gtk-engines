@@ -599,7 +599,7 @@ glide_draw_combobox_button (GtkStyle * style,
 
   g_object_set_data(G_OBJECT(ge_find_combo_box_widget_parent(widget)), "button", widget);
 
-  if (GTK_WIDGET_HAS_FOCUS(widget))
+  if (gtk_widget_has_focus (widget))
   {
 	gtk_widget_style_get (widget, "focus_line_width", &focus_line_width, NULL);
 	gtk_widget_style_get (widget, "focus_padding", &focus_padding, NULL);
@@ -621,7 +621,7 @@ glide_draw_combobox_button (GtkStyle * style,
 
 		for (child = children; child; child = child->next)
 		{
-			if (GE_IS_ENTRY(child->data) && GTK_WIDGET_HAS_FOCUS(child->data))
+			if (GE_IS_ENTRY(child->data) && gtk_widget_has_focus (child->data))
 			{
 				gtk_widget_style_get (widget, "focus_line_width", &focus_line_width, NULL);
 				gtk_widget_style_get (widget, "focus_padding", &focus_padding, NULL);
@@ -681,56 +681,6 @@ glide_draw_combobox_button (GtkStyle * style,
   		            area, widget, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
-#ifndef GTK_DISABLE_DEPRECATED
-      else if (ge_is_combo(widget))
-        {
-          GtkWidget *entry = widget;
-
-	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
-            {
-               entry = GTK_COMBO (widget->parent)->entry;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-             }
-          else if (GE_IS_WIDGET(widget->parent))
-            {
-               entry = widget->parent;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-            }
- 
-            parent_state = GTK_STATE_NORMAL;
-
-          gtk_paint_flat_box (parent_style, window, parent_state,
-	 		      GTK_SHADOW_NONE, area, entry, "entry_bg", x - 2,
-			      y, width + 2, height);
-
-          {
-            GdkRectangle shadow, clip;
-          
-            shadow.x = x - 2;
-            shadow.y = y;
-            shadow.width = width + 2;
-            shadow.height = height;
-          
-/*		#warning FIXME - gdk_rectangle_intersect*/
-           if (area)
-              gdk_rectangle_intersect(area, &shadow, &clip);
-            else
-              clip = shadow;
-
-            gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
-	 	              &clip, entry, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
-				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
-          }
-        }
-#else
-#warning Disabling GtkCombo support because GTK_DISABLE_DEPRECATED is enabled.
-#endif /* GTK_DISABLE_DEPRECATED */
       else
         {
           GtkWidget *parent = widget;
@@ -823,43 +773,6 @@ glide_draw_combobox_button (GtkStyle * style,
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
         }
-#ifndef GTK_DISABLE_DEPRECATED
-      else if (ge_is_combo(widget))
-        {
-          GtkWidget *entry = widget;
-
-	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
-            {
-               entry = GTK_COMBO (widget->parent)->entry;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-             }
-          else if (GE_IS_WIDGET(widget->parent))
-            {
-               entry = widget->parent;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-            }
-  
-           if (parent_state != GTK_STATE_INSENSITIVE)
-             parent_state = GTK_STATE_NORMAL;
-
-           gtk_paint_flat_box (parent_style, window, parent_state,
-			       GTK_SHADOW_NONE, area, entry, "entry_bg", 
-				x + focus - focus_padding, y + focus - focus_padding, 
-				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-           gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
-			     area, entry, "combo_box_entry", 
-                                x + focus - focus_padding, y + focus - focus_padding, 
-                                width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-        }
-#else
-#warning Disabling GtkCombo support because GTK_DISABLE_DEPRECATED is enabled.
-#endif /* GTK_DISABLE_DEPRECATED */
       else
         {
           GtkWidget *parent = widget;
@@ -942,7 +855,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
    * more complicated because we can only do half for each stepper.
    */
  
-  GtkStateType parent_state = widget ? GTK_WIDGET_STATE(widget) : GTK_STATE_NORMAL;
+  GtkStateType parent_state = widget ? gtk_widget_get_state (widget) : GTK_STATE_NORMAL;
   gboolean entry_focused = FALSE;
   gint focus_line_width = 0, focus_padding = 0, focus = 0, thick = 2;
   gboolean interior_focus = TRUE;
@@ -953,7 +866,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
   spin_area.width = width;
   spin_area.height = height;
  
-  if (widget && GTK_WIDGET_HAS_FOCUS(widget))
+  if (widget && gtk_widget_has_focus (widget))
   {
 	gtk_widget_style_get (widget, "focus_line_width", &focus_line_width, NULL);
 	gtk_widget_style_get (widget, "focus_padding", &focus_padding, NULL);
@@ -1307,7 +1220,7 @@ glide_draw_box (GtkStyle * style,
             for (child = g_list_first(children); child; child = g_list_next(child))
               {
 	        if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
-                  has_grip = (GTK_WIDGET_VISIBLE(child->data) && 
+                  has_grip = (gtk_widget_get_visible (child->data) && 
                               GTK_WIDGET_REALIZED(child->data) && 
                               GTK_WIDGET(child->data)->allocation.width > 1) &&
                               (GTK_WIDGET(child->data)->allocation.height > 1);

@@ -109,5 +109,14 @@
     <_long_name>Radius</_long_name>
     <preferred_widget>slider</preferred_widget>
   </option>
+
+  <option name="accel_label_shade" type="real" default="1.0">
+    <minimum>0</minimum>
+    <maximum>1</maximum>
+    <precision>2</precision>
+    <_long_name>Shade of accelerator labels</_long_name>
+    <_description>The value used to mix the label color with the background color. The value is effectively the opacity.</_description>
+    <preferred_widget>slider</preferred_widget>
+  </option>
   
 </engine>

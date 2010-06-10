@@ -70,11 +70,11 @@ clearlooks_set_widget_parameters (const GtkWidget      *widget,
 	params->active        = (state_type == GTK_STATE_ACTIVE);
 	params->prelight      = (state_type == GTK_STATE_PRELIGHT);
 	params->disabled      = (state_type == GTK_STATE_INSENSITIVE);
-	params->state_type    = (ClearlooksStateType)state_type;
+	params->state_type    = state_type;
 	params->corners       = CR_CORNER_ALL;
 	params->ltr           = ge_widget_is_ltr ((GtkWidget*)widget);
-	params->focus         = !CLEARLOOKS_STYLE (style)->disable_focus && widget && GTK_WIDGET_HAS_FOCUS (widget);
-	params->is_default    = widget && GE_WIDGET_HAS_DEFAULT (widget);
+	params->focus         = !CLEARLOOKS_STYLE (style)->disable_focus && widget && gtk_widget_has_focus ((GtkWidget *) widget);
+	params->is_default    = widget && GE_WIDGET_HAS_DEFAULT ((GtkWidget *) widget);
 	params->enable_shadow = FALSE;
 	params->radius        = CLEARLOOKS_STYLE (style)->radius;
 
@@ -188,7 +188,7 @@ clearlooks_style_draw_shadow (DRAW_ARGS)
 		/* Override the entries state type, because we are too lame to handle this via
 		 * the focus ring, and GtkEntry doesn't even set the INSENSITIVE state ... */
 		if (state_type == GTK_STATE_NORMAL && widget && GE_IS_ENTRY (widget))
-			state_type = GTK_WIDGET_STATE (widget);
+			state_type = gtk_widget_get_state (widget);
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
@@ -677,7 +677,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		/* The "spinbutton" box is always drawn with state NORMAL, even if it is insensitive.
 		 * So work around this here. */
 		if (state_type == GTK_STATE_NORMAL && widget && GE_IS_ENTRY (widget))
-			state_type = GTK_WIDGET_STATE (widget);
+			state_type = gtk_widget_get_state (widget);
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
@@ -764,7 +764,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			                      "trough-under-steppers", &trough_under_steppers,
 			                      NULL);
 
-		if (trough_under_steppers)
+		if (trough_under_steppers && clearlooks_style->style != CL_STYLE_GNOME3)
 		{
 			/* If trough under steppers is set, then we decrease the size
 			 * slightly. The size is decreased so that the trough is not
@@ -968,7 +968,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 				/* Now, one more thing needs to be done. If interior-focus
 				 * is off, then the entry may be a bit smaller. */
-				if (progress.max_size_known && GTK_WIDGET_HAS_FOCUS (widget))
+				if (progress.max_size_known && gtk_widget_has_focus (widget))
 				{
 					gboolean interior_focus = TRUE;
 					gint focus_line_width = 1;
@@ -1515,6 +1515,7 @@ clearlooks_style_init_from_rc (GtkStyle * style,
 	clearlooks_style->animation           = CLEARLOOKS_RC_STYLE (rc_style)->animation;
 	clearlooks_style->radius              = CLAMP (CLEARLOOKS_RC_STYLE (rc_style)->radius, 0.0, 10.0);
 	clearlooks_style->disable_focus       = CLEARLOOKS_RC_STYLE (rc_style)->disable_focus;
+	clearlooks_style->accel_label_shade   = CLEARLOOKS_RC_STYLE (rc_style)->accel_label_shade;
 
 	if (clearlooks_style->has_focus_color)
 		clearlooks_style->focus_color     = CLEARLOOKS_RC_STYLE (rc_style)->focus_color;
@@ -1845,6 +1846,32 @@ clearlooks_style_draw_layout (GtkStyle * style,
 	g_return_if_fail (window != NULL);
 
 	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
+	g_object_ref (gc);
+
+	if (state_type == GTK_STATE_NORMAL && DETAIL("accellabel")) {
+		ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
+		ClearlooksColors *colors = &clearlooks_style->colors;
+		GdkColor gdk_color;
+		GdkGC *old_gc = gc;
+		CairoColor color;
+
+		g_object_unref (gc);
+		gc = gdk_gc_new (window);
+		gdk_gc_copy (gc, old_gc);
+
+		ge_mix_color (use_text ? &colors->base[state_type] : &colors->bg[state_type],
+		              use_text ? &colors->text[state_type] : &colors->fg[state_type],
+		              clearlooks_style->accel_label_shade,
+		              &color);
+
+		gdk_color.red = color.r * 65535;
+		gdk_color.green = color.g * 65535;
+		gdk_color.blue = color.b * 65535;
+
+		gdk_gc_set_rgb_fg_color (gc, &gdk_color);
+	}
+
+
 
 	if (area)
 		gdk_gc_set_clip_rectangle (gc, area);
@@ -1860,7 +1887,7 @@ clearlooks_style_draw_layout (GtkStyle * style,
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 
-		if (GTK_WIDGET_NO_WINDOW (widget))
+		if (gtk_widget_get_has_window (widget))
 			ge_shade_color (&params.parentbg, 1.2, &temp);
 		else
 			ge_shade_color (&colors->bg[widget->state], 1.2, &temp);
@@ -1877,6 +1904,7 @@ clearlooks_style_draw_layout (GtkStyle * style,
 
 	if (area)
 		gdk_gc_set_clip_rectangle (gc, NULL);
+	g_object_unref (gc);
 }
 
 static GdkPixbuf *
@@ -2021,6 +2049,11 @@ clearlooks_style_class_init (ClearlooksStyleClass * klass)
 	klass->style_constants[CL_STYLE_GUMMY] = klass->style_constants[CL_STYLE_CLASSIC];
 	clearlooks_register_style_gummy (&klass->style_functions[CL_STYLE_GUMMY],
 	                                 &klass->style_constants[CL_STYLE_GUMMY]);
+
+	klass->style_functions[CL_STYLE_GNOME3] = klass->style_functions[CL_STYLE_CLASSIC];
+	klass->style_constants[CL_STYLE_GNOME3] = klass->style_constants[CL_STYLE_CLASSIC];
+	clearlooks_register_style_gnome3 (&klass->style_functions[CL_STYLE_GNOME3],
+	                                  &klass->style_constants[CL_STYLE_GNOME3]);
 }
 
 static void

@@ -1305,7 +1305,7 @@ clearlooks_draw_tab (cairo_t *cr,
 	/* And calculate the strip size too, while you're at it */
 	if (tab->gap_side == CL_GAP_TOP || tab->gap_side == CL_GAP_BOTTOM)
 	{
-		height += 3.0;
+		height += 2.0;
 		length = height;
 		stripe_fill_size = (tab->gap_side == CL_GAP_TOP ? stripe_size/height : stripe_size/(height-2));
 

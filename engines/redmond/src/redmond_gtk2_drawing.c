@@ -678,56 +678,6 @@ redmond_draw_combobox_button (GtkStyle * style,
           gtk_paint_shadow (style, window, state_type, GTK_SHADOW_IN,
   		            area, widget, "entry", x - 2, y, width, height);
         }
-#ifndef GTK_DISABLE_DEPRECATED
-      else if (ge_is_combo(widget))
-        {
-          GtkWidget *entry = widget;
-
-	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
-            {
-               entry = GTK_COMBO (widget->parent)->entry;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-             }
-          else
-                if (GE_IS_WIDGET(widget->parent))
-            {
-               entry = widget->parent;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-            }
- 
-	  if (parent_state != GTK_STATE_INSENSITIVE)
-            parent_state = GTK_STATE_NORMAL;
-
-          gtk_paint_flat_box (parent_style, window, parent_state,
-	 		      GTK_SHADOW_NONE, area, entry, "entry_bg", x - 2,
-			      y, width + 2, height);
-
-          {
-            GdkRectangle shadow, clip;
-          
-            shadow.x = x - 2;
-            shadow.y = y;
-            shadow.width = width + 2;
-            shadow.height = height;
-          
-           if (area)
-              gdk_rectangle_intersect(area, &shadow, &clip);
-            else
-              clip = shadow;
-
-            gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
-	 	              &clip, entry, "entry", x - 4, y, width + 2, height);
-          }
-        }
-#else
-#warning Disabling GtkCombo support because GTK_DISABLE_DEPRECATED is enabled.
-#endif
       else
         {
           GtkWidget *parent = widget;
@@ -796,40 +746,6 @@ redmond_draw_combobox_button (GtkStyle * style,
           gtk_paint_shadow (style, window, state_type, GTK_SHADOW_IN,
 	  		    area, widget, "entry", x + 2, y, width, height);
         }
-#ifndef GTK_DISABLE_DEPRECATED
-      else if (ge_is_combo(widget))
-        {
-          GtkWidget *entry = widget;
-
-	  if (GE_IS_WIDGET(widget) && GE_IS_WIDGET(widget->parent) && GE_IS_ENTRY(GTK_COMBO (widget->parent)->entry))
-            {
-               entry = GTK_COMBO (widget->parent)->entry;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-             }
-          else if (GE_IS_WIDGET(widget->parent))
-            {
-               entry = widget->parent;
-               gtk_widget_ensure_style(entry);
-
-               parent_style = entry->style;
-               parent_state = entry->state;
-            }
-  
-           if (parent_state != GTK_STATE_INSENSITIVE)
-             parent_state = GTK_STATE_NORMAL;
-
-           gtk_paint_flat_box (parent_style, window, parent_state,
-			       GTK_SHADOW_NONE, area, entry, "entry_bg", x + 2,
-                               y, width + 2, height);
-           gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
-			     area, entry, "entry", x + 2, y, width, height);
-        }
-#else
-#warning Disabling GtkCombo support because GTK_DISABLE_DEPRECATED is enabled.
-#endif /* GTK_DISABLE_DEPRECATED */
       else
         {
           GtkWidget *parent = widget;
@@ -1110,7 +1026,7 @@ redmond_draw_box (GtkStyle * style,
             for (child = g_list_first(children); child; child = g_list_next(child))
               {
 	        if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
-                  has_grip = (GTK_WIDGET_VISIBLE(child->data) && 
+                  has_grip = (gtk_widget_get_visible (child->data) && 
                               GTK_WIDGET_REALIZED(child->data) && 
                               GTK_WIDGET(child->data)->allocation.width > 1) &&
                               (GTK_WIDGET(child->data)->allocation.height > 1);
@@ -1195,7 +1111,7 @@ redmond_draw_box (GtkStyle * style,
 	      break;
 	    }      
         }
-      else if (GE_IS_HANDLE_BOX_ITEM(widget) && GTK_WIDGET_REALIZED(widget->parent) && GTK_WIDGET_VISIBLE(widget->parent))
+      else if (GE_IS_HANDLE_BOX_ITEM(widget) && GTK_WIDGET_REALIZED(widget->parent) && gtk_widget_get_visible (widget->parent))
         {
 	  switch (gtk_handle_box_get_handle_position
 		  (GTK_HANDLE_BOX (widget->parent)))
@@ -1279,9 +1195,9 @@ redmond_draw_box (GtkStyle * style,
 		 			  
       if ((!GE_IS_MENU(GTK_MENU_ITEM(widget)->submenu)) || 
           (!(GTK_WIDGET_REALIZED(GTK_MENU_ITEM(widget)->submenu) && 
-             GTK_WIDGET_VISIBLE(GTK_MENU_ITEM(widget)->submenu) &&
+             gtk_widget_get_visible (GTK_MENU_ITEM(widget)->submenu) &&
              GTK_WIDGET_REALIZED(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel) &&
-             GTK_WIDGET_VISIBLE(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel))))
+             gtk_widget_get_visible (GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel))))
         {  
           top = &redmond_style->color_cube.light[state_type];
           bottom = &redmond_style->color_cube.dark[state_type];

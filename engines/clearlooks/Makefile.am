@@ -22,7 +22,7 @@
 INCLUDES = -I$(top_srcdir)/engines/support \
            $(GTK_CFLAGS) $(DEVELOPMENT_CFLAGS)
 
-enginedir = $(libdir)/gtk-2.0/$(GTK_VERSION)/engines
+enginedir = $(libdir)/gtk-3.0/$(GTK_VERSION)/engines
 engine_LTLIBRARIES = libclearlooks.la
 
 libclearlooks_la_SOURCES =		\
@@ -39,6 +39,7 @@ libclearlooks_la_SOURCES =		\
 	./src/clearlooks_draw_glossy.c	\
 	./src/clearlooks_draw_inverted.c	\
 	./src/clearlooks_draw_gummy.c	\
+	./src/clearlooks_draw_gnome3.c	\
 	./src/clearlooks_draw.h		\
 	./src/clearlooks_types.h
 
