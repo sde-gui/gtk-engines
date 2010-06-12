@@ -5,19 +5,21 @@
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
 # Ignacio Casal Quinteiro <icq@svn.gnome.org>, 2007, 2008.
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
+# Fran Diéguez <frandieguez@ubuntu.com>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-15 18:04+0100\n"
-"PO-Revision-Date: 2009-03-10 20:17+0000\n"
-"Last-Translator: Suso Baleato <suso.baleato@xunta.es>\n"
-"Language-Team: Galego <proxecto@trasno.net>\n"
+"POT-Creation-Date: 2010-06-12 17:05+0200\n"
+"PO-Revision-Date: 2010-06-12 17:05+0200\n"
+"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
+"Language-Team: Galician <gnome@g11.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: gl\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
@@ -96,14 +98,26 @@ msgid "Sets the Color of Scrollbars"
 msgstr "Define a cor das barras de desprazamento"
 
 #: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shade of accelerator labels"
+msgstr "Sombra das etiquetas do acelerador"
+
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Shadow"
 msgstr "Sombra"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
 msgid "Style"
 msgstr "Estilo"
 
-#: ../schema/clearlooks.xml.in.in.h:22
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+msgstr ""
+"O valor usado para misturar a cor da etiqueta coa cor de fondo. O valor é "
+"efectivamente a opacidade."
+
+#: ../schema/clearlooks.xml.in.in.h:24
 msgid ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
@@ -111,7 +125,7 @@ msgstr ""
 "Esta opción permite desactivar o debuxo do foco. O propósito primario é "
 "crear capturas de pantalla para a documentación."
 
-#: ../schema/clearlooks.xml.in.in.h:23
+#: ../schema/clearlooks.xml.in.in.h:25
 msgid "Toolbar Style"
 msgstr "Estilo da barra de ferramentas"
 
