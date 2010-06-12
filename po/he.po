@@ -5,10 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
-"engines&component=general\n"
-"POT-Creation-Date: 2009-03-06 17:06+0000\n"
-"PO-Revision-Date: 2009-03-08 00:24+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-12 10:32+0300\n"
+"PO-Revision-Date: 2010-06-12 10:33+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: he\n"
 "MIME-Version: 1.0\n"
@@ -92,14 +91,26 @@ msgid "Sets the Color of Scrollbars"
 msgstr "Sets the Color of Scrollbars"
 
 #: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shade of accelerator labels"
+msgstr "Shade of accelerator labels"
+
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Shadow"
 msgstr "Shadow"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
 msgid "Style"
 msgstr "Style"
 
-#: ../schema/clearlooks.xml.in.in.h:22
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+msgstr ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+
+#: ../schema/clearlooks.xml.in.in.h:24
 msgid ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
@@ -107,7 +118,7 @@ msgstr ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
 
-#: ../schema/clearlooks.xml.in.in.h:23
+#: ../schema/clearlooks.xml.in.in.h:25
 msgid "Toolbar Style"
 msgstr "Toolbar Style"
 
