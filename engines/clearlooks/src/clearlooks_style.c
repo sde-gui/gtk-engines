@@ -802,7 +802,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 #ifdef HAVE_WORKING_ANIMATION
 		if(clearlooks_style->animation && CL_IS_PROGRESS_BAR (widget))
 		{
-			gboolean activity_mode = GTK_PROGRESS (widget)->activity_mode;
+			gboolean activity_mode = GTK_PROGRESS_BAR (widget)->activity_mode;
 
 			if (!activity_mode)
 				clearlooks_animation_progressbar_add ((gpointer)widget);
@@ -817,12 +817,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		{
 			progressbar.orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
 			progressbar.value = gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(widget));
-#ifndef GTK_DISABLE_DEPRECATED
-			progressbar.pulsing = GTK_PROGRESS (widget)->activity_mode;
-#else
-#warning Assuming non-pulsing progress bars because GTK_DISABLE_DEPRECATED is enabled.
+#warning Assuming non-pulsing progress bars because there is currently no way to query them in GTK+ 3.0.
 			progressbar.pulsing = FALSE;
-#endif
 		}
 		else
 		{

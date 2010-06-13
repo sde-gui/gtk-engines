@@ -252,7 +252,7 @@ widget_class "*.<ETable>.*"              style "industrial-tree-header"
 # menuitems and interior
 widget_class "*<GtkMenuItem>*" style "industrial-menuitem"
 
-widget_class "*.<GtkProgress>"   style "industrial-progress"
+widget_class "*.<GtkProgressBar>"   style "industrial-progress"
 
 # druide
 widget_class "*GnomeDruidPage*" style "industrial-druid"
