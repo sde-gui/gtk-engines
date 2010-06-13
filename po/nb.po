@@ -1,14 +1,14 @@
 # Norwegian bokmål translation of gtk-engines.
 # Copyright (C) 2007
 # This file is distributed under the same license as the gtk-engines package.
-# Kjartan Maraas <kmaraas@gnome.org>, 2007-2008.
+# Kjartan Maraas <kmaraas@gnome.org>, 2007-2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gtk-engines 2.21.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 15:46+0100\n"
-"PO-Revision-Date: 2009-01-05 15:48+0100\n"
+"Project-Id-Version: gtk-engines 2.31.x\n"
+"Report-Msgid-Bugs-To:\n"
+"POT-Creation-Date: 2010-06-14 01:05+0200\n"
+"PO-Revision-Date: 2010-06-14 01:06+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -92,20 +92,32 @@ msgid "Sets the Color of Scrollbars"
 msgstr "Setter farge på rullefeltene"
 
 #: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shade of accelerator labels"
+msgstr "Skygge på akselleratoretiketter"
+
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Shadow"
 msgstr "Skygge"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
 msgid "Style"
 msgstr "Stil"
 
-#: ../schema/clearlooks.xml.in.in.h:22
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+msgstr "Verdi som brukes til å blande fargen på etiketten med bakgrunnsfargen. Verdien styrer i praksis ugjennomsiktigheten."
+
+#: ../schema/clearlooks.xml.in.in.h:24
 msgid ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
-msgstr "Dette valget lar deg slå av tegning av fokus. Formålet med å tegne fokus er at det hjelper for skjermdump som brukes i dokumentasjon."
+msgstr ""
+"Dette valget lar deg slå av tegning av fokus. Formålet med å tegne fokus er "
+"at det hjelper for skjermdump som brukes i dokumentasjon."
 
-#: ../schema/clearlooks.xml.in.in.h:23
+#: ../schema/clearlooks.xml.in.in.h:25
 msgid "Toolbar Style"
 msgstr "Stil for verktøylinje"
 
