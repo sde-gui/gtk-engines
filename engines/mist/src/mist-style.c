@@ -1161,9 +1161,9 @@ mist_style_draw_resize_grip(GtkStyle *style,
 	cairo_destroy(cr);
 }
 
-#ifndef GTK_DISABLE_DEPRECATED
-#ifndef GDK_DISABLE_DEPRECATED
-#define DISABLE_CUSTOM_STRING_DRAWING
+#ifdef GTK_DISABLE_DEPRECATED
+#ifdef GDK_DISABLE_DEPRECATED
+#define DISABLE_CUSTOM_STRING_DRAWING 1
 #warning Disabling custom string drawing so that no deprecated API is used.
 #endif /* GDK_DISABLE_DEPRECATED */
 #endif /* GTK_DISABLE_DEPRECATED */
