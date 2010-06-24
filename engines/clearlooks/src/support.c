@@ -285,10 +285,10 @@ clearlooks_get_notebook_tab_position (GtkWidget *widget,
 				return;
 			}
 
-			gtk_notebook_query_tab_label_packing (notebook, tab_child,
-			                                      &expand,
-			                                      NULL, /* don't need fill */
-			                                      &pack_type);
+                        gtk_container_child_get (GTK_CONTAINER (notebook), tab_child,
+                                                 "expand", &expand,
+                                                 "pack-type", &pack_type,
+                                                 NULL);
 
 			if (!found_tabs) {
 				found_tabs = TRUE;
