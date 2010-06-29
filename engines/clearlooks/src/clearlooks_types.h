@@ -50,10 +50,11 @@ typedef enum
 
 typedef enum
 {
-	CL_STEPPER_UNKNOWN    = 0,
-	CL_STEPPER_START      = 1,
-	CL_STEPPER_MIDDLE     = 2,
-	CL_STEPPER_END        = 4,
+	CL_STEPPER_UNKNOWN,
+	CL_STEPPER_START,
+	CL_STEPPER_START_INNER,
+	CL_STEPPER_END,
+	CL_STEPPER_END_INNER,
 } ClearlooksStepper;
 
 typedef enum

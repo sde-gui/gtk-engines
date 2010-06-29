@@ -933,15 +933,15 @@ clearlooks_glossy_draw_scrollbar_stepper (cairo_t *cr,
 		else if (stepper->stepper == CL_STEPPER_END)
 			corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 
-/*		if (stepper->stepper == CL_STEPPER_B)
+		if (stepper->stepper == CL_STEPPER_START_INNER)
 		{
 			x -= 1;
 			width += 1;
 		}
-		else if (stepper->stepper == CL_STEPPER_C)
+		else if (stepper->stepper == CL_STEPPER_END_INNER)
 		{
 			width += 1;
-		}*/
+		}
 	}
 	else
 	{
@@ -950,15 +950,15 @@ clearlooks_glossy_draw_scrollbar_stepper (cairo_t *cr,
 		else if (stepper->stepper == CL_STEPPER_END)
 			corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_BOTTOMRIGHT;
 
-/*		if (stepper->stepper == CL_STEPPER_B)
+		if (stepper->stepper == CL_STEPPER_START_INNER)
 		{
 			y -= 1;
 			height += 1;
 		}
-		else if (stepper->stepper == CL_STEPPER_C)
+		else if (stepper->stepper == CL_STEPPER_END_INNER)
 		{
 			height += 1;
-		}*/
+		}
 	}
 	
 	cairo_translate (cr, x, y);

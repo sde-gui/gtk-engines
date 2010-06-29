@@ -1027,8 +1027,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			stepper.stepper = CL_STEPPER_START;
 		else if (g_str_equal(detail + 10, "_end"))
 			stepper.stepper = CL_STEPPER_END;
-		else if (g_str_equal(detail + 10, "_middle"))
-			stepper.stepper = CL_STEPPER_MIDDLE;
+		else if (g_str_equal(detail + 10, "_start_inner"))
+			stepper.stepper = CL_STEPPER_START_INNER;
+		else if (g_str_equal(detail + 10, "_end_inner"))
+			stepper.stepper = CL_STEPPER_END_INNER;
 		else
 			stepper.stepper = CL_STEPPER_UNKNOWN;
 

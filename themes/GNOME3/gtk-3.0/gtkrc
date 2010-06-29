@@ -36,6 +36,7 @@ style "default" {
 	# up so that the whole area is sensitive to button presses for the
 	# slider. The stepper button is larger in both directions, the slider
 	# only in the width
+	GtkRange::stepper-position-details = 1
 	GtkRange::trough-border = 0
 	GtkRange::slider-width = 20
 	GtkRange::stepper-size = 20

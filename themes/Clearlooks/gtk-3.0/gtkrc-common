@@ -16,6 +16,7 @@ style "default" {
 
 	GtkPaned::handle-size = 6
 
+	GtkRange::stepper-position-details = 1
 	GtkRange::trough-under-steppers = 0
 	GtkRange::trough-border = 0
 	GtkRange::slider-width = 15
