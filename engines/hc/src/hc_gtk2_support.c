@@ -335,7 +335,7 @@ hc_gtk2_engine_hack_menu_shell_motion(GtkWidget *widget,
       GdkModifierType pointer_mask;
       GList *children = NULL, *child = NULL;
      
-      gdk_window_get_pointer(widget->window, &pointer_x, &pointer_y, &pointer_mask);
+      gdk_window_get_pointer(gtk_widget_get_window(widget), &pointer_x, &pointer_y, &pointer_mask);
 	    
       if (GE_IS_CONTAINER(widget))
         {
@@ -346,12 +346,15 @@ hc_gtk2_engine_hack_menu_shell_motion(GtkWidget *widget,
 	      if ((child->data) && GE_IS_WIDGET(child->data) && 
                   (gtk_widget_get_state (GTK_WIDGET(child->data)) != GTK_STATE_INSENSITIVE))
 	        {
-	          if ((pointer_x >= GTK_WIDGET(child->data)->allocation.x) && 
-	              (pointer_y >= GTK_WIDGET(child->data)->allocation.y) &&
-	              (pointer_x < (GTK_WIDGET(child->data)->allocation.x + 
-	                              GTK_WIDGET(child->data)->allocation.width)) && 
-	              (pointer_y < (GTK_WIDGET(child->data)->allocation.y +
-	                              GTK_WIDGET(child->data)->allocation.height)))
+	          GtkAllocation allocation;
+	          gtk_widget_get_allocation(GTK_WIDGET(child->data), &allocation);
+
+	          if ((pointer_x >= allocation.x) && 
+	              (pointer_y >= allocation.y) &&
+	              (pointer_x < (allocation.x + 
+	                              allocation.width)) && 
+	              (pointer_y < (allocation.y +
+	                              allocation.height)))
 	            {
                       gtk_widget_set_state (GTK_WIDGET(child->data), GTK_STATE_PRELIGHT);
 	            }
@@ -394,11 +397,10 @@ hc_gtk2_engine_hack_menu_shell_leave(GtkWidget *widget,
 	      if ((child->data) && GE_IS_MENU_ITEM(child->data) && 
                   (gtk_widget_get_state (GTK_WIDGET(child->data)) != GTK_STATE_INSENSITIVE))
 	        {
-                  if ((!GE_IS_MENU(GTK_MENU_ITEM(child->data)->submenu)) || 
-                      (!(gtk_widget_get_realized(GTK_MENU_ITEM(child->data)->submenu) && 
-                         gtk_widget_get_visible (GTK_MENU_ITEM(child->data)->submenu) &&
-                         gtk_widget_get_realized(GTK_MENU(GTK_MENU_ITEM(child->data)->submenu)->toplevel) &&
-                         gtk_widget_get_visible (GTK_MENU(GTK_MENU_ITEM(child->data)->submenu)->toplevel))))
+	          GtkWidget* submenu = gtk_menu_item_get_submenu(GTK_MENU_ITEM(child->data));
+                  if ((!GE_IS_MENU(submenu)) || 
+                      (!(gtk_widget_get_realized(submenu) && 
+                         gtk_widget_get_visible (submenu))))
 	          {
                     gtk_widget_set_state (GTK_WIDGET(child->data), GTK_STATE_NORMAL);
                   }

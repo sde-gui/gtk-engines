@@ -103,7 +103,7 @@ hc_draw_shadow(GtkStyle * style,
 		/* Force Border To Use Foreground Widget State */
 		if (widget)
 		{
-			foreground = HC_STYLE(style)->color_cube.fg[widget->state];
+			foreground = HC_STYLE(style)->color_cube.fg[gtk_widget_get_state(widget)];
 		}
 	}
 
@@ -111,7 +111,7 @@ hc_draw_shadow(GtkStyle * style,
 	/* Entry - Force Border To Use Foreground Matching Widget State */
 	if (CHECK_DETAIL(detail, "entry") && !ge_is_combo(widget))
 	{
-		foreground = HC_STYLE(style)->color_cube.fg[widget ? widget->state : GTK_STATE_NORMAL];
+		foreground = HC_STYLE(style)->color_cube.fg[widget ? gtk_widget_get_state(widget) : GTK_STATE_NORMAL];
 	}
 
 
@@ -131,10 +131,10 @@ hc_draw_shadow(GtkStyle * style,
 
 
 		/* Force Border To Use Foreground Matching Parent State */
-		if ((widget) && (widget->parent))
+		if ((widget) && (gtk_widget_get_parent(widget)))
 		{
-			gtk_widget_ensure_style(widget->parent);
-			ge_gdk_color_to_cairo(&widget->parent->style->fg[gtk_widget_get_state (widget)], &foreground);
+			gtk_widget_ensure_style(gtk_widget_get_parent(widget));
+			ge_gdk_color_to_cairo(&gtk_widget_get_style(gtk_widget_get_parent(widget))->fg[gtk_widget_get_state (widget)], &foreground);
 		}
 	}
 
@@ -281,10 +281,12 @@ hc_draw_extension (GtkStyle       *style,
 	 */
 	if (widget && (GE_IS_NOTEBOOK (widget)))
 	{
-		widget_x = (widget->allocation.x + GTK_CONTAINER (widget)->border_width);
-		widget_y = (widget->allocation.y + GTK_CONTAINER (widget)->border_width);
-		widget_width = (widget->allocation.width - 2*GTK_CONTAINER (widget)->border_width);
-		widget_height = (widget->allocation.height - 2*GTK_CONTAINER (widget)->border_width);
+		GtkAllocation allocation;
+		gtk_widget_get_allocation (widget, &allocation);
+		widget_x = (allocation.x + gtk_container_get_border_width (GTK_CONTAINER (widget)));
+		widget_y = (allocation.y + gtk_container_get_border_width (GTK_CONTAINER (widget)));
+		widget_width = (allocation.width - 2*gtk_container_get_border_width (GTK_CONTAINER (widget)));
+		widget_height = (allocation.height - 2*gtk_container_get_border_width (GTK_CONTAINER (widget)));
 	}
 
 	switch (gap_side)

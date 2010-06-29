@@ -734,8 +734,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 	{
 		WidgetParameters params;
 		ScrollBarParameters scrollbar;
-		gboolean trough_under_steppers = TRUE;
-		ClearlooksStepper steppers;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
 		params.corners = CR_CORNER_ALL;
@@ -743,52 +741,12 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		scrollbar.horizontal = TRUE;
 		scrollbar.junction   = clearlooks_scrollbar_get_junction (widget);
 		
-		steppers = clearlooks_scrollbar_visible_steppers (widget);
-
 		if (CHECK_HINT (GE_HINT_HSCROLLBAR))
 			scrollbar.horizontal = TRUE;
 		else if (CHECK_HINT (GE_HINT_VSCROLLBAR))
 			scrollbar.horizontal = FALSE;
 		else /* Fallback based on the size  ... */
 			scrollbar.horizontal = width >= height;
-
-		if (widget)
-			gtk_widget_style_get (widget,
-			                      "trough-under-steppers", &trough_under_steppers,
-			                      NULL);
-
-		if (trough_under_steppers && clearlooks_style->style != CL_STYLE_GNOME3)
-		{
-			/* If trough under steppers is set, then we decrease the size
-			 * slightly. The size is decreased so that the trough is not
-			 * visible underneath the steppers. This is not really needed
-			 * as one can use the trough-under-steppers style property,
-			 * but it needs to exist for backward compatibility. */
-			if (scrollbar.horizontal)
-			{
-				if (steppers & (CL_STEPPER_A | CL_STEPPER_B))
-				{
-					x += 2;
-					width -= 2;
-				}
-				if (steppers & (CL_STEPPER_C | CL_STEPPER_D))
-				{
-					width -= 2;
-				}
-			}
-			else
-			{
-				if (steppers & (CL_STEPPER_A | CL_STEPPER_B))
-				{
-					y += 2;
-					height -= 2;
-				}
-				if (steppers & (CL_STEPPER_C | CL_STEPPER_D))
-				{
-					height -= 2;
-				}
-			}
-		}
 
 		STYLE_FUNCTION(draw_scrollbar_trough) (cr, colors, &params, &scrollbar,
 		                                       x, y, width, height);
@@ -1041,7 +999,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			STYLE_FUNCTION(draw_menuitem) (cr, colors, &params, x, y, width, height);
 		}
 	}
-	else if (DETAIL ("hscrollbar") || DETAIL ("vscrollbar")) /* This can't be "stepper" for scrollbars ... */
+	else if (detail && (g_str_has_prefix (detail, "hscrollbar") || g_str_has_prefix (detail, "vscrollbar"))) /* This can't be "stepper" for scrollbars ... */
 	{
 		WidgetParameters    params;
 		ScrollBarParameters scrollbar;
@@ -1063,9 +1021,16 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		if (clearlooks_style->colorize_scrollbar || clearlooks_style->has_scrollbar_color)
 			scrollbar.has_color = TRUE;
 
-		scrollbar.horizontal = DETAIL ("hscrollbar");
+		scrollbar.horizontal = g_str_has_prefix (detail, "hscrollbar");
 
-		stepper.stepper = clearlooks_scrollbar_get_stepper (widget, &this_rectangle);
+		if (g_str_equal(detail + 10, "_start"))
+			stepper.stepper = CL_STEPPER_START;
+		else if (g_str_equal(detail + 10, "_end"))
+			stepper.stepper = CL_STEPPER_END;
+		else if (g_str_equal(detail + 10, "_middle"))
+			stepper.stepper = CL_STEPPER_MIDDLE;
+		else
+			stepper.stepper = CL_STEPPER_UNKNOWN;
 
 		STYLE_FUNCTION(draw_scrollbar_stepper) (cr, colors, &params, &scrollbar, &stepper,
 		                                        x, y, width, height);

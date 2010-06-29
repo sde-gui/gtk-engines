@@ -526,17 +526,18 @@ draw_slider (GtkStyle      *style,
 	
 	/* This makes the slider overlay the stepper buttons at the sides. XXX */
 	if (widget && GE_IS_SCROLLBAR (widget)) {
-		GtkAdjustment *adjustment = GTK_RANGE (widget)->adjustment;
+		GtkAdjustment *adjustment = gtk_range_get_adjustment (GTK_RANGE (widget));
 
 		/* If all of these values are 0, don't do anything.  This fixes mozilla/galeon scrollbars. */
-		if (adjustment->value ||
-		    adjustment->lower ||
-		    adjustment->upper ||
-		    adjustment->step_increment ||
-		    adjustment->page_increment ||
-		    adjustment->page_size) {
-			if ((adjustment->value <= adjustment->lower) &&
-			    (GTK_RANGE (widget)->has_stepper_a || GTK_RANGE (widget)->has_stepper_b)) {
+		if (gtk_adjustment_get_value (adjustment) ||
+		    gtk_adjustment_get_lower (adjustment) ||
+		    gtk_adjustment_get_upper (adjustment) ||
+		    gtk_adjustment_get_step_increment (adjustment) ||
+		    gtk_adjustment_get_page_increment (adjustment) ||
+		    gtk_adjustment_get_page_size (adjustment)) {
+			/* XXX: Need a way to check whether there are any steppers at the top/bottom. */
+			if ((gtk_adjustment_get_value (adjustment) <= gtk_adjustment_get_lower (adjustment)) /*&&
+			    (GTK_RANGE (widget)->has_stepper_a || GTK_RANGE (widget)->has_stepper_b)*/) {
 				if (orientation == GTK_ORIENTATION_VERTICAL) {
 					if (!gtk_range_get_inverted (GTK_RANGE (widget)))
 						y--;
@@ -547,8 +548,8 @@ draw_slider (GtkStyle      *style,
 					width++;
 				}
 			}
-			if ((adjustment->value >= adjustment->upper - adjustment->page_size) &&
-			    (GTK_RANGE (widget)->has_stepper_a || GTK_RANGE (widget)->has_stepper_b)) {
+			if ((gtk_adjustment_get_value (adjustment) >= gtk_adjustment_get_upper (adjustment) - gtk_adjustment_get_page_size (adjustment)) /*&&
+			    (GTK_RANGE (widget)->has_stepper_a || GTK_RANGE (widget)->has_stepper_b)*/) {
 				if (orientation == GTK_ORIENTATION_VERTICAL) {
 					if (gtk_range_get_inverted (GTK_RANGE (widget)))
 						y--;

@@ -768,12 +768,12 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 
 	if (scrollbar->horizontal)
 	{
-		if (stepper->stepper == CL_STEPPER_A)
+		if (stepper->stepper == CL_STEPPER_START)
 			corners = CR_CORNER_TOPLEFT | CR_CORNER_BOTTOMLEFT;
-		else if (stepper->stepper == CL_STEPPER_D)
+		else if (stepper->stepper == CL_STEPPER_END)
 			corners = CR_CORNER_TOPRIGHT | CR_CORNER_BOTTOMRIGHT;
 
-		if (stepper->stepper == CL_STEPPER_B)
+/*		if (stepper->stepper == CL_STEPPER_B)
 		{
 			x -= 1;
 			width += 1;
@@ -781,16 +781,16 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 		else if (stepper->stepper == CL_STEPPER_C)
 		{
 			width += 1;
-		}
+		}*/
 	}
 	else
 	{
-		if (stepper->stepper == CL_STEPPER_A)
+		if (stepper->stepper == CL_STEPPER_START)
 			corners = CR_CORNER_TOPLEFT | CR_CORNER_TOPRIGHT;
-		else if (stepper->stepper == CL_STEPPER_D)
+		else if (stepper->stepper == CL_STEPPER_END)
 			corners = CR_CORNER_BOTTOMLEFT | CR_CORNER_BOTTOMRIGHT;
 
-		if (stepper->stepper == CL_STEPPER_B)
+/*		if (stepper->stepper == CL_STEPPER_B)
 		{
 			y -= 1;
 			height += 1;
@@ -798,7 +798,7 @@ clearlooks_inverted_draw_scrollbar_stepper (cairo_t *cr,
 		else if (stepper->stepper == CL_STEPPER_C)
 		{
 			height += 1;
-		}
+		}*/
 	}
 	
 	cairo_translate (cr, x, y);

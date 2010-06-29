@@ -654,12 +654,12 @@ redmond_draw_combobox_button (GtkStyle * style,
         {
           if (!ge_is_combo_box_entry (widget))
             {
-              if ((widget->parent))
+              if ((gtk_widget_get_parent (widget)))
                 {
-                  gtk_widget_ensure_style(widget->parent);
+                  gtk_widget_ensure_style(gtk_widget_get_parent (widget));
 
-                  parent_style = widget->parent->style;
-                  parent_state = widget->parent->state;
+                  parent_style = gtk_widget_get_style (gtk_widget_get_parent (widget));
+                  parent_state = gtk_widget_get_state (gtk_widget_get_parent (widget));
                 }
 
 	      if (parent_state != GTK_STATE_INSENSITIVE)
@@ -682,15 +682,15 @@ redmond_draw_combobox_button (GtkStyle * style,
         {
           GtkWidget *parent = widget;
       
-          if (widget->parent)
-            parent = widget->parent;
+          if (gtk_widget_get_parent (widget))
+            parent = gtk_widget_get_parent (widget);
         
           if ((parent))
             {
               gtk_widget_ensure_style(parent);
 
-              parent_style = parent->style;
-              parent_state = parent->state;
+              parent_style = gtk_widget_get_style (parent);
+              parent_state = gtk_widget_get_state (parent);
             }
 
           if (parent_state != GTK_STATE_INSENSITIVE)
@@ -723,12 +723,12 @@ redmond_draw_combobox_button (GtkStyle * style,
         {
           if (!ge_is_combo_box_entry (widget))
             {
-              if ((widget->parent))
+              if ((gtk_widget_get_parent (widget)))
                 {
-                  gtk_widget_ensure_style(widget->parent);
+                  gtk_widget_ensure_style(gtk_widget_get_parent (widget));
 
-                  parent_style = widget->parent->style;
-                  parent_state = widget->parent->state;
+                  parent_style = gtk_widget_get_style (gtk_widget_get_parent (widget));
+                  parent_state = gtk_widget_get_state (gtk_widget_get_parent (widget));
                 }
 
               if (parent_state != GTK_STATE_INSENSITIVE)
@@ -750,15 +750,15 @@ redmond_draw_combobox_button (GtkStyle * style,
         {
           GtkWidget *parent = widget;
       
-          if (widget->parent)
-            parent = widget->parent;
+          if (gtk_widget_get_parent (widget))
+            parent = gtk_widget_get_parent (widget);
         
           if ((parent))
             {
               gtk_widget_ensure_style(parent);
 
-              parent_style = parent->style;
-              parent_state = parent->state;
+              parent_style = gtk_widget_get_style (parent);
+              parent_state = gtk_widget_get_state (parent);
             }
 
           if (parent_state != GTK_STATE_INSENSITIVE)
@@ -1004,14 +1004,14 @@ redmond_draw_box (GtkStyle * style,
  
       if (((CHECK_DETAIL (detail, "dockitem_bin")) && 
            (GE_IS_BONOBO_DOCK_ITEM(widget))) || 
-          ((widget) && (ge_is_bonobo_dock_item(widget->parent))))
+          ((widget) && (ge_is_bonobo_dock_item(gtk_widget_get_parent (widget)))))
 	{	  
 	  GList *children = NULL, *child = NULL;
 	  GtkWidget *dockitem = widget;
 	  gboolean has_grip = FALSE, ltr = TRUE;
 	  
 	  if ((!GE_IS_BONOBO_DOCK_ITEM(widget)) && (!GE_IS_BOX(widget)))
-	    dockitem = widget->parent;
+	    dockitem = gtk_widget_get_parent (widget);
 	    
 	  has_grip = GE_IS_CONTAINER(dockitem);
 	  
@@ -1026,10 +1026,14 @@ redmond_draw_box (GtkStyle * style,
             for (child = g_list_first(children); child; child = g_list_next(child))
               {
 	        if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
-                  has_grip = (gtk_widget_get_visible (child->data) && 
-                              gtk_widget_get_realized(child->data) && 
-                              GTK_WIDGET(child->data)->allocation.width > 1) &&
-                              (GTK_WIDGET(child->data)->allocation.height > 1);
+	          {
+	            GtkAllocation allocation;
+	            gtk_widget_get_allocation (GTK_WIDGET (child->data), &allocation);
+                    has_grip = (gtk_widget_get_visible (child->data) && 
+                                gtk_widget_get_realized(child->data) && 
+                                allocation.width > 1) &&
+                                (allocation.height > 1);
+                  }
               }	            
  
             if (children)   
@@ -1111,18 +1115,18 @@ redmond_draw_box (GtkStyle * style,
 	      break;
 	    }      
         }
-      else if (GE_IS_HANDLE_BOX_ITEM(widget) && GTK_WIDGET_REALIZED(widget->parent) && gtk_widget_get_visible (widget->parent))
+      else if (GE_IS_HANDLE_BOX_ITEM(widget) && gtk_widget_get_realized(gtk_widget_get_parent (widget)) && gtk_widget_get_visible (gtk_widget_get_parent (widget)))
         {
 	  switch (gtk_handle_box_get_handle_position
-		  (GTK_HANDLE_BOX (widget->parent)))
+		  (GTK_HANDLE_BOX (gtk_widget_get_parent (widget))))
 	    {
 	      case GTK_POS_LEFT:
-                left_cutoff = (!widget) || (gtk_widget_get_direction (widget->parent) == GTK_TEXT_DIR_LTR);
+                left_cutoff = (!widget) || (gtk_widget_get_direction (gtk_widget_get_parent (widget)) == GTK_TEXT_DIR_LTR);
                 right_cutoff= !left_cutoff;		
               break;
  
 	      case GTK_POS_RIGHT:
-                left_cutoff = (widget) && (gtk_widget_get_direction (widget->parent) == GTK_TEXT_DIR_RTL);
+                left_cutoff = (widget) && (gtk_widget_get_direction (gtk_widget_get_parent (widget)) == GTK_TEXT_DIR_RTL);
 	        right_cutoff = !left_cutoff;
 	      break;
  
@@ -1156,7 +1160,7 @@ redmond_draw_box (GtkStyle * style,
       /* If this is a menu embedded in the gnome-panel, we don't
        *  draw a border since it looks cleaner without one.
        */
-      if ((widget) && (widget->parent) &&
+      if ((widget) && (gtk_widget_get_parent (widget)) &&
 	  ((!((CHECK_DETAIL (detail, "menubar")) && 
 	  ge_is_panel_widget_item (widget)))))
         {
@@ -1176,14 +1180,15 @@ redmond_draw_box (GtkStyle * style,
         }
       cairo_destroy(cr);
     }
-  else if ((CHECK_DETAIL (detail, "menuitem")) && widget && widget->parent
-	   && GE_IS_MENU_BAR (widget->parent))
+  else if ((CHECK_DETAIL (detail, "menuitem")) && widget && gtk_widget_get_parent (widget)
+	   && GE_IS_MENU_BAR (gtk_widget_get_parent (widget)))
     {
       /* Primary Menu Items on Menu bars are drawn with 
        * a thin inset border on select/active,
        * and a thin outset border on prelight
        */
       CairoColor *top, *bottom;
+      GtkWidget *submenu = NULL;
  
       if (state_type != GTK_STATE_INSENSITIVE)
 	state_type = GTK_STATE_NORMAL;
@@ -1192,12 +1197,12 @@ redmond_draw_box (GtkStyle * style,
 
       ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 					  x, y, width, height);
-		 			  
-      if ((!GE_IS_MENU(GTK_MENU_ITEM(widget)->submenu)) || 
-          (!(GTK_WIDGET_REALIZED(GTK_MENU_ITEM(widget)->submenu) && 
-             gtk_widget_get_visible (GTK_MENU_ITEM(widget)->submenu) &&
-             GTK_WIDGET_REALIZED(GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel) &&
-             gtk_widget_get_visible (GTK_MENU(GTK_MENU_ITEM(widget)->submenu)->toplevel))))
+
+      if (GTK_IS_MENU_ITEM (widget))
+        submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
+      if ((!GE_IS_MENU(submenu)) || 
+          (!(gtk_widget_get_realized (submenu) && 
+             gtk_widget_get_visible (submenu))))
         {  
           top = &redmond_style->color_cube.light[state_type];
           bottom = &redmond_style->color_cube.dark[state_type];
@@ -1251,16 +1256,18 @@ redmond_draw_box (GtkStyle * style,
     {
       gint pointer_x, pointer_y;
       GdkModifierType pointer_mask;
+      GtkAllocation allocation;
+      gtk_widget_get_allocation (widget, &allocation);
 
-      gdk_window_get_pointer(widget->window, &pointer_x, &pointer_y, &pointer_mask);
+      gdk_window_get_pointer(gtk_widget_get_window (widget), &pointer_x, &pointer_y, &pointer_mask);
 	    
       cr = ge_gdk_drawable_to_cairo (window, area);
-      if ((pointer_x >= widget->allocation.x) && 
-	  (pointer_y >= widget->allocation.y) &&
-	  (pointer_x < (widget->allocation.x + 
-	                widget->allocation.width)) && 
-	  (pointer_y < (widget->allocation.y +
-	                widget->allocation.height)))
+      if ((pointer_x >= allocation.x) && 
+	  (pointer_y >= allocation.y) &&
+	  (pointer_x < (allocation.x + 
+	                allocation.width)) && 
+	  (pointer_y < (allocation.y +
+	                allocation.height)))
         {
           ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
                                         x, y, width, height);
@@ -1603,12 +1610,16 @@ redmond_draw_handle (GtkStyle * style,
   if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
      (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) && 
      (orientation == (GTK_ORIENTATION_HORIZONTAL)) &&
-     (widget->parent != NULL))
+     (gtk_widget_get_parent (widget) != NULL))
   {
-    x = widget->parent->allocation.width - widget->allocation.width;
-    y = widget->parent->allocation.height - widget->allocation.height;
-    width = widget->allocation.width;
-    height = widget->allocation.height;
+    GtkAllocation allocation, parent_allocation;
+    gtk_widget_get_allocation (widget, &allocation);
+    gtk_widget_get_allocation (gtk_widget_get_parent (widget), &parent_allocation);
+
+    x = parent_allocation.width - allocation.width;
+    y = parent_allocation.height - allocation.height;
+    width = allocation.width;
+    height = allocation.height;
     
     area = NULL;
   }
@@ -1732,11 +1743,11 @@ redmond_draw_handle (GtkStyle * style,
  
           if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget))
             {
-              if GE_IS_BOX(widget->parent)
+              if GE_IS_BOX(gtk_widget_get_parent (widget))
                 {
                   GList *children = NULL, *child = NULL;
  
-                  children = gtk_container_get_children(GTK_CONTAINER(widget->parent));
+                  children = gtk_container_get_children(GTK_CONTAINER(gtk_widget_get_parent (widget)));
               
                   for (child = g_list_first(children); child; child = g_list_next(child))
                     {

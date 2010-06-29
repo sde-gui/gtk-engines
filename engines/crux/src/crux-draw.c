@@ -826,7 +826,7 @@ draw_shadow (GtkStyle *style,
 	if (widget != NULL && gtk_widget_has_focus (widget))
 		focused = TRUE;
 
-	if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
+	if (widget && (GE_IS_COMBO (gtk_widget_get_parent (widget)) || GE_IS_COMBO_BOX_ENTRY (gtk_widget_get_parent (widget))))
 	{
 		GtkWidget *button;
 		if (ge_widget_is_ltr (widget))
@@ -839,10 +839,10 @@ draw_shadow (GtkStyle *style,
 
 		if (area == NULL)
 			area = &area2;
-		g_object_set_data ((GObject*) widget->parent, "entry", widget);
-		button = g_object_get_data ((GObject*) widget->parent, "button");
+		g_object_set_data ((GObject*) gtk_widget_get_parent (widget), "entry", widget);
+		button = g_object_get_data ((GObject*) gtk_widget_get_parent (widget), "button");
 		if (GE_IS_WIDGET (button))
-			gtk_widget_queue_draw_area (button,  button->allocation.x, button->allocation.y, button->allocation.width,button->allocation.height);
+			gtk_widget_queue_draw (button);
 	}
 
 	if (widget && GTK_IS_SPIN_BUTTON (widget))
@@ -937,13 +937,13 @@ draw_box (GtkStyle *style,
 			extra_shadow = FALSE;
 		}
 
-		if (widget && (GE_IS_COMBO (widget->parent) || GE_IS_COMBO_BOX_ENTRY (widget->parent)))
+		if (widget && (GE_IS_COMBO (gtk_widget_get_parent (widget)) || GE_IS_COMBO_BOX_ENTRY (gtk_widget_get_parent (widget))))
 		{
 			/* Combobox buttons */
 			GtkWidget *entry;
 			gboolean entry_focused = FALSE;
 
-			if ((entry = g_object_get_data ((GObject*) widget->parent, "entry")))
+			if ((entry = g_object_get_data ((GObject*) gtk_widget_get_parent (widget), "entry")))
 			{
 				entry_focused = (gtk_widget_has_focus (entry));
 				state_type = gtk_widget_get_state (entry);
@@ -956,7 +956,7 @@ draw_box (GtkStyle *style,
 			cairo_rectangle (cr, x, y, width, height);
 			cairo_fill (cr);
 
-			g_object_set_data ((GObject*) widget->parent, "button", widget);
+			g_object_set_data ((GObject*) gtk_widget_get_parent (widget), "button", widget);
 
 			if (ge_widget_is_ltr (widget))
 				paint_entry_shadow (cr, style, state_type, entry_focused, x - 4, y, width + 4, height);
@@ -967,7 +967,7 @@ draw_box (GtkStyle *style,
 			width -= 6; height -= 6;
 			extra_shadow = FALSE;
 		}
-		if (widget && (GE_IS_TREE_VIEW (widget->parent)))
+		if (widget && (GE_IS_TREE_VIEW (gtk_widget_get_parent (widget))))
 		{
 			/* Add some extra padding for treeview column buttons */
 			if (state_type == GTK_STATE_INSENSITIVE)
@@ -1072,11 +1072,11 @@ draw_box (GtkStyle *style,
 			|| DETAIL ("handlebox_bin") || DETAIL ("dockitem"))
 		{
 			/* make the handle and child widget appear as one */
-			if (widget && widget->parent && GTK_IS_HANDLE_BOX (widget->parent))
+			if (widget && gtk_widget_get_parent (widget) && GTK_IS_HANDLE_BOX (gtk_widget_get_parent (widget)))
 			{
 				GtkPositionType position;
-				position = gtk_handle_box_get_handle_position (GTK_HANDLE_BOX (widget->parent));
-				if (!ge_widget_is_ltr (widget->parent))
+				position = gtk_handle_box_get_handle_position (GTK_HANDLE_BOX (gtk_widget_get_parent (widget)));
+				if (!ge_widget_is_ltr (gtk_widget_get_parent (widget)))
 				{
 					if (position == GTK_POS_TOP) position = GTK_POS_BOTTOM;
 					else if (position == GTK_POS_BOTTOM) position = GTK_POS_TOP;

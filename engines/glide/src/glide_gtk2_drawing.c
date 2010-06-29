@@ -489,8 +489,10 @@ glide_draw_shadow (GtkStyle * style,
 
 		if (GE_IS_WIDGET(button))
 		{
-			gtk_widget_queue_draw_area(button, button->allocation.x, button->allocation.y, 
-							button->allocation.width, button->allocation.height);
+			GtkAllocation allocation;
+			gtk_widget_get_allocation (button, &allocation);
+			gtk_widget_queue_draw_area(button, allocation.x, allocation.y, 
+							allocation.width, allocation.height);
 		}
 
 		g_object_set_data(combo_parent, "entry", widget);
@@ -617,7 +619,7 @@ glide_draw_combobox_button (GtkStyle * style,
   }
   else
   {
-		GList *child=NULL,*children = gtk_container_get_children (GTK_CONTAINER(widget->parent));
+		GList *child=NULL,*children = gtk_container_get_children (GTK_CONTAINER(gtk_widget_get_parent (widget)));
 
 		for (child = children; child; child = child->next)
 		{
@@ -652,12 +654,12 @@ glide_draw_combobox_button (GtkStyle * style,
         {
           if (!ge_is_combo_box_entry (widget))
             {
-              if ((widget->parent))
+              if ((gtk_widget_get_parent (widget)))
                 {
-                  gtk_widget_ensure_style(widget->parent);
+                  gtk_widget_ensure_style(gtk_widget_get_parent (widget));
 
-                  parent_style = widget->parent->style;
-                  parent_state = widget->parent->state;
+                  parent_style = gtk_widget_get_style (gtk_widget_get_parent (widget));
+                  parent_state = gtk_widget_get_state (gtk_widget_get_parent (widget));
                 }
 
 	      if (parent_state != GTK_STATE_INSENSITIVE)
@@ -685,15 +687,15 @@ glide_draw_combobox_button (GtkStyle * style,
         {
           GtkWidget *parent = widget;
       
-          if (widget->parent)
-            parent = widget->parent;
+          if (gtk_widget_get_parent (widget))
+            parent = gtk_widget_get_parent (widget);
         
           if ((parent))
             {
               gtk_widget_ensure_style(parent);
 
-              parent_style = parent->style;
-              parent_state = parent->state;
+              parent_style = gtk_widget_get_style (parent);
+              parent_state = gtk_widget_get_state (parent);
             }
 
           if (parent_state != GTK_STATE_INSENSITIVE)
@@ -738,12 +740,12 @@ glide_draw_combobox_button (GtkStyle * style,
         {
           if (!ge_is_combo_box_entry (widget))
             {
-              if ((widget->parent))
+              if ((gtk_widget_get_parent (widget)))
                 {
-                  gtk_widget_ensure_style(widget->parent);
+                  gtk_widget_ensure_style(gtk_widget_get_parent (widget));
 
-                  parent_style = widget->parent->style;
-                  parent_state = widget->parent->state;
+                  parent_style = gtk_widget_get_style (gtk_widget_get_parent (widget));
+                  parent_state = gtk_widget_get_state (gtk_widget_get_parent (widget));
                 }
 
               if (parent_state != GTK_STATE_INSENSITIVE)
@@ -777,15 +779,15 @@ glide_draw_combobox_button (GtkStyle * style,
         {
           GtkWidget *parent = widget;
       
-          if (widget->parent)
-            parent = widget->parent;
+          if (gtk_widget_get_parent (widget))
+            parent = gtk_widget_get_parent (widget);
         
           if ((parent))
             {
               gtk_widget_ensure_style(parent);
 
-              parent_style = parent->style;
-              parent_state = parent->state;
+              parent_style = gtk_widget_get_style (parent);
+              parent_state = gtk_widget_get_state (parent);
             }
 
           if (parent_state != GTK_STATE_INSENSITIVE)
@@ -890,6 +892,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 
   if ((!(widget)) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
    {
+      GtkRequisition requisition;
       if (CHECK_DETAIL (detail, "spinbutton_up"))
 	{
 	  glide_draw_flat_box (style, window, parent_state,
@@ -914,7 +917,12 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
                                 x, y + thick + focus, width - thick - focus, height - thick - focus);
 
-	if (!widget || (widget->requisition.height / 2) != (widget->requisition.height + 1) / 2)
+	if (widget)
+	{
+		gtk_widget_get_requisition (widget, &requisition);
+	}
+
+	if (!widget || (requisition.height / 2) != (requisition.height + 1) / 2)
 	{
 		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
 					x + thick/2, y + thick + 1, width - thick*2, height - thick*2 + 1);
@@ -955,7 +963,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
 			    x, y , width - thick - focus, height - thick - focus);
 
-	if (!widget || (widget->requisition.height / 2) != (widget->requisition.height + 1) / 2)
+	if (!widget || (requisition.height / 2) != (requisition.height + 1) / 2)
 	{
 		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
 					x + thick/2, y + thick/2 + 1 - focus, width - thick*2, height - thick*2 - 2);
@@ -977,6 +985,9 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
     }
   else
     {
+      GtkRequisition requisition;
+      gtk_widget_get_requisition (widget, &requisition);
+
       if (CHECK_DETAIL (detail, "spinbutton_up"))
 	{
 	  glide_draw_flat_box (style, window, parent_state,
@@ -998,7 +1009,9 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail, 
 				x + thick + focus, y + thick + focus , width - thick - focus, height - thick - focus);
 
-	if ((widget->requisition.height / 2) != (widget->requisition.height + 1) / 2)
+
+
+	if ((requisition.height / 2) != (requisition.height + 1) / 2)
 	{
 		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
 					x + thick + focus, y + thick - 1 + focus, width - thick, height - thick + 1);
@@ -1036,7 +1049,7 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
                                 x + thick + focus, y, width - thick - focus, height - thick - focus);
 
 
-	if ((widget->requisition.height / 2) != (widget->requisition.height + 1) / 2)
+	if ((requisition.height / 2) != (requisition.height + 1) / 2)
 	{
 		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
 					x + thick + focus, y + 1 - focus, width - thick, height - thick - 2);
@@ -1198,14 +1211,14 @@ glide_draw_box (GtkStyle * style,
     {
       if (((CHECK_DETAIL (detail, "dockitem_bin")) && 
            (GE_IS_BONOBO_DOCK_ITEM(widget))) || 
-          ((widget) && (ge_is_bonobo_dock_item(widget->parent))))
+          ((widget) && (ge_is_bonobo_dock_item(gtk_widget_get_parent (widget)))))
 	{	  
 	  GList *children = NULL, *child = NULL;
 	  GtkWidget *dockitem = widget;
 	  gboolean has_grip = FALSE, ltr = TRUE;
 	  
 	  if ((!GE_IS_BONOBO_DOCK_ITEM(widget)) && (!GE_IS_BOX(widget)))
-	    dockitem = widget->parent;
+	    dockitem = gtk_widget_get_parent (widget);
 	    
 	  has_grip = GE_IS_CONTAINER(dockitem);
 	  
@@ -1219,11 +1232,13 @@ glide_draw_box (GtkStyle * style,
                           
             for (child = g_list_first(children); child; child = g_list_next(child))
               {
+                GtkAllocation allocation;
+                gtk_widget_get_allocation (GTK_WIDGET(child->data), &allocation);
 	        if (GE_IS_BONOBO_DOCK_ITEM_GRIP(child->data))
                   has_grip = (gtk_widget_get_visible (child->data) && 
                               gtk_widget_get_realized(child->data) && 
-                              GTK_WIDGET(child->data)->allocation.width > 1) &&
-                              (GTK_WIDGET(child->data)->allocation.height > 1);
+                              allocation.width > 1) &&
+                              (allocation.height > 1);
               }	            
  
             if (children)   
@@ -1273,7 +1288,7 @@ glide_draw_box (GtkStyle * style,
       /* If this is a menu embedded in the gnome-panel, we don't
        *  draw a border since it looks cleaner without one.
        */
-      if ((shadow_type != GTK_SHADOW_NONE) && (widget) && (widget->parent) &&
+      if ((shadow_type != GTK_SHADOW_NONE) && (widget) && (gtk_widget_get_parent (widget)) &&
 	  ((!((CHECK_DETAIL (detail, "menubar")) && 
 	  ge_is_panel_widget_item (widget)))))
         {
@@ -1304,7 +1319,7 @@ glide_draw_box (GtkStyle * style,
 	   && (widget && GE_IS_PROGRESS_BAR (widget)))
     { 
 gboolean vertical = TRUE;
-			switch (GTK_PROGRESS_BAR(widget)->orientation) 
+			switch (gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR(widget))) 
 			{
 				case GTK_PROGRESS_LEFT_TO_RIGHT:
 				case GTK_PROGRESS_RIGHT_TO_LEFT:
@@ -1772,10 +1787,13 @@ glide_draw_extension (GtkStyle * style,
 
 	if (widget && (GE_IS_NOTEBOOK (widget)))
 	{
-		widget_x = (widget->allocation.x + GTK_CONTAINER (widget)->border_width);
-		widget_y = (widget->allocation.y + GTK_CONTAINER (widget)->border_width);
-		widget_width = (widget->allocation.width - 2*GTK_CONTAINER (widget)->border_width);
-		widget_height = (widget->allocation.height - 2*GTK_CONTAINER (widget)->border_width);
+		GtkAllocation allocation;
+		gtk_widget_get_allocation (widget, &allocation);
+
+		widget_x = (allocation.x + gtk_container_get_border_width (GTK_CONTAINER (widget)));
+		widget_y = (allocation.y + gtk_container_get_border_width (GTK_CONTAINER (widget)));
+		widget_width = (allocation.width - 2*gtk_container_get_border_width (GTK_CONTAINER (widget)));
+		widget_height = (allocation.height - 2*gtk_container_get_border_width (GTK_CONTAINER (widget)));
 	}
 
 	pattern = glide_style->bg_solid[state_type];
@@ -1959,10 +1977,14 @@ glide_draw_handle (GtkStyle * style,
      (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) && 
       orientation == (GTK_ORIENTATION_HORIZONTAL))
   {
-    x = widget->parent->allocation.width - widget->allocation.width;
-    y = widget->parent->allocation.height - widget->allocation.height;
-    width = widget->allocation.width;
-    height = widget->allocation.height;
+    GtkAllocation allocation, parent_allocation;
+    gtk_widget_get_allocation (widget, &allocation);
+    gtk_widget_get_allocation (gtk_widget_get_parent (widget), &parent_allocation);
+    
+    x = parent_allocation.width - allocation.width;
+    y = parent_allocation.height - allocation.height;
+    width = allocation.width;
+    height = allocation.height;
     
     area = NULL;
   }
@@ -2073,11 +2095,11 @@ glide_draw_handle (GtkStyle * style,
 
           if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget))
             {
-              if GE_IS_BOX(widget->parent)
+              if GE_IS_BOX(gtk_widget_get_parent (widget))
                 {
                   GList *children = NULL, *child = NULL;
  
-                  children = gtk_container_get_children(GTK_CONTAINER(widget->parent));
+                  children = gtk_container_get_children(GTK_CONTAINER(gtk_widget_get_parent (widget)));
               
                   for (child = g_list_first(children); child; child = g_list_next(child))
                     {
@@ -2181,8 +2203,10 @@ glide_draw_focus(GtkStyle *style,
 
 			if (GE_IS_WIDGET(button))
 			{
-				gtk_widget_queue_draw_area(button, button->allocation.x, button->allocation.y, 
-								button->allocation.width, button->allocation.height);
+				GtkAllocation allocation;
+				gtk_widget_get_allocation (button, &allocation);
+				gtk_widget_queue_draw_area(button, allocation.x, allocation.y, 
+								allocation.width, allocation.height);
 			}
 
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))

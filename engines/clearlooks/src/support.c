@@ -93,94 +93,6 @@ clearlooks_get_parent_bg (const GtkWidget *widget, CairoColor *color)
 	ge_gdk_color_to_cairo (gcolor, color);
 }
 
-ClearlooksStepper
-clearlooks_scrollbar_get_stepper (GtkWidget    *widget,
-                       GdkRectangle *stepper)
-{
-	ClearlooksStepper value = CL_STEPPER_UNKNOWN;
-	GdkRectangle tmp;
-	GdkRectangle check_rectangle;
-	GtkOrientation orientation;
-	GtkAllocation allocation;
-
-	if (!GE_IS_RANGE (widget))
-		return CL_STEPPER_UNKNOWN;
-
-	gtk_widget_get_allocation (widget, &allocation);
-	check_rectangle.x      = allocation.x;
-	check_rectangle.y      = allocation.y;
-	check_rectangle.width  = stepper->width;
-	check_rectangle.height = stepper->height;
-	
-	orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
-	
-	if (allocation.x == -1 && allocation.y == -1)
-		return CL_STEPPER_UNKNOWN;
-		
-	if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
-		value = CL_STEPPER_A;
-
-	if (value == CL_STEPPER_UNKNOWN) /* Haven't found a match */
-	{
-		if (orientation == GTK_ORIENTATION_HORIZONTAL)
-			check_rectangle.x = allocation.x + stepper->width;
-		else
-			check_rectangle.y = allocation.y + stepper->height;
-		
-		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
-			value = CL_STEPPER_B;
-	}
-
-	if (value == CL_STEPPER_UNKNOWN) /* Still haven't found a match */
-	{
-		if (orientation == GTK_ORIENTATION_HORIZONTAL)
-			check_rectangle.x = allocation.x + allocation.width - (stepper->width * 2);
-		else
-			check_rectangle.y = allocation.y + allocation.height - (stepper->height * 2);
-		
-		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
-			value = CL_STEPPER_C;
-	}
-
-	if (value == CL_STEPPER_UNKNOWN) /* STILL haven't found a match */
-	{
-		if (orientation == GTK_ORIENTATION_HORIZONTAL)
-			check_rectangle.x = allocation.x + allocation.width - stepper->width;
-		else
-			check_rectangle.y = allocation.y + allocation.height - stepper->height;
-		
-		if (gdk_rectangle_intersect (stepper, &check_rectangle, &tmp))
-			value = CL_STEPPER_D;
-	}
-	
-	return value;
-}
-
-ClearlooksStepper
-clearlooks_scrollbar_visible_steppers (GtkWidget *widget)
-{
-	ClearlooksStepper steppers = 0;
-	
-	/* If this is not a range widget, assume that the primary steppers
-	 * are present. */
-	if (!GE_IS_RANGE (widget))
-		return CL_STEPPER_A | CL_STEPPER_D;
-	
-	if (GTK_RANGE (widget)->has_stepper_a)
-		steppers |= CL_STEPPER_A;
-	
-	if (GTK_RANGE (widget)->has_stepper_b)
-		steppers |= CL_STEPPER_B;
-
-	if (GTK_RANGE (widget)->has_stepper_c)
-		steppers |= CL_STEPPER_C;
-
-	if (GTK_RANGE (widget)->has_stepper_d)
-		steppers |= CL_STEPPER_D;
-
-	return steppers;
-}
-
 ClearlooksJunction
 clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 {	
@@ -190,10 +102,11 @@ clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 	if (!GE_IS_RANGE (widget))
 		return CL_JUNCTION_NONE;
 
-	adj = GTK_RANGE (widget)->adjustment;
-	
-	if (adj->value <= adj->lower &&
-		(GTK_RANGE (widget)->has_stepper_a || GTK_RANGE (widget)->has_stepper_b))
+	adj = gtk_range_get_adjustment(GTK_RANGE (widget));
+
+	/* XXX: fix the stepper detection, possibly by reading out the scrollbars style properties */
+	if (gtk_adjustment_get_value(adj) <= gtk_adjustment_get_lower(adj) /*&&
+		(GTK_RANGE (widget)->has_stepper_a || GTK_RANGE (widget)->has_stepper_b)*/)
 	{
 		if (!gtk_range_get_inverted (GTK_RANGE (widget)))
 			junction |= CL_JUNCTION_BEGIN;
@@ -201,8 +114,8 @@ clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 			junction |= CL_JUNCTION_END;
 	}
 	
-	if (adj->value >= adj->upper - adj->page_size &&
-		(GTK_RANGE (widget)->has_stepper_c || GTK_RANGE (widget)->has_stepper_d))
+	if (gtk_adjustment_get_value(adj) >= gtk_adjustment_get_upper(adj) - gtk_adjustment_get_page_size(adj) /*&&
+		(GTK_RANGE (widget)->has_stepper_c || GTK_RANGE (widget)->has_stepper_d)*/)
 	{
 		if (!gtk_range_get_inverted (GTK_RANGE (widget)))
 			junction |= CL_JUNCTION_END;
@@ -227,7 +140,7 @@ clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar,
 	if (x == 0 && y == 0) {
 		if (widget && allocation.x == 0 && allocation.y == 0)
 		{
-			if (widget->window == window && GE_IS_TOOLBAR (widget))
+			if (gtk_widget_get_window(widget) == window && GE_IS_TOOLBAR (widget))
 			{
 				toolbar->topmost = TRUE;
 			}

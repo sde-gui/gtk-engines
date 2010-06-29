@@ -284,7 +284,7 @@ mist_style_draw_shadow(GtkStyle *style,
 		shadow_type = GTK_SHADOW_ETCHED_IN;
 	}
 	
-	if (CHECK_DETAIL(detail, "frame") && widget && widget->parent && GE_IS_STATUSBAR (widget->parent)) {
+	if (CHECK_DETAIL(detail, "frame") && widget && gtk_widget_get_parent (widget) && GE_IS_STATUSBAR (gtk_widget_get_parent (widget))) {
 		ge_cairo_set_color(cr, &mist_style->color_cube.dark[GTK_STATE_NORMAL]);	
 
 		cairo_move_to (cr, x + 0.5, y + 0.5);
@@ -603,10 +603,11 @@ mist_style_draw_box(GtkStyle *style,
 		/* Make sure stepper and slider outlines "overlap" - taken from
 		 * bluecurve */
 		if (CHECK_DETAIL(detail, "slider") && widget && GE_IS_RANGE (widget)) {
-			GtkAdjustment *adj = GTK_RANGE (widget)->adjustment;
-			if (adj->value <= adj->lower &&
+			GtkAdjustment *adj = gtk_range_get_adjustment (GTK_RANGE (widget));
+			/* XXX: Need a way to get figure out where steppers are for this hack to work properly. */
+			if (gtk_adjustment_get_value (adj) <= gtk_adjustment_get_lower (adj) /*&&
 			    (GTK_RANGE (widget)->has_stepper_a ||
-			     GTK_RANGE (widget)->has_stepper_b)) {
+			     GTK_RANGE (widget)->has_stepper_b)*/) {
 				if (GE_IS_VSCROLLBAR (widget)) {
 					height += 1;
 					if (!gtk_range_get_inverted (GTK_RANGE (widget)))
@@ -618,9 +619,9 @@ mist_style_draw_box(GtkStyle *style,
 				}
 			}
 			
-			if (adj->value >= adj->upper - adj->page_size &&
+			if (gtk_adjustment_get_value (adj) >= gtk_adjustment_get_upper (adj) - gtk_adjustment_get_page_size (adj) /*&&
 			    (GTK_RANGE (widget)->has_stepper_c ||
-			     GTK_RANGE (widget)->has_stepper_d)) {
+			     GTK_RANGE (widget)->has_stepper_d)*/) {
 				if (GE_IS_VSCROLLBAR (widget)) {
 					height += 1;
 					if (gtk_range_get_inverted (GTK_RANGE (widget)))

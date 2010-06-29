@@ -71,7 +71,7 @@ typedef enum {
 #define GE_IS_HSEPARATOR(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkHSeparator"))
  
 #define GE_IS_HANDLE_BOX(object) ((object) && ge_object_is_a ((GObject*)(object), "GtkHandleBox"))
-#define GE_IS_HANDLE_BOX_ITEM(object) ((object) && GE_IS_HANDLE_BOX(object->parent))
+#define GE_IS_HANDLE_BOX_ITEM(object) ((object) && GE_IS_HANDLE_BOX(gtk_widget_get_parent (object)))
 #define GE_IS_BONOBO_DOCK_ITEM(object) ((object) && ge_object_is_a ((GObject*)(object), "BonoboDockItem"))
 #define GE_IS_BONOBO_DOCK_ITEM_GRIP(object) ((object) && ge_object_is_a ((GObject*)(object), "BonoboDockItemGrip"))
 #define GE_IS_BONOBO_TOOLBAR(object) ((object) && ge_object_is_a ((GObject*)(object), "BonoboUIToolbar"))
