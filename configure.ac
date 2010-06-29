@@ -44,7 +44,7 @@ AC_ARG_ENABLE(development, 	[  --enable-development    Enable any development wa
 
 AC_ARG_ENABLE(paranoia, 	[  --enable-paranoia       use wall, werror, ansi, pedantic compiler flags],	[paranoia=$enableval],	[paranoia="no"])
 
-AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated functions in gtk et al],	[deprecated=$enableval],		[deprecated="no"])
+AC_ARG_ENABLE(deprecated,	[  --disable-deprecated    disable deprecated functions in gtk et al],	[enable_deprecated=$enableval],		[enable_deprecated="yes"])
 
 AC_ARG_ENABLE(schemas,		[  --disable-schema        disable engine schemas],	[schemas=$enableval],	[schemas="yes"])
 
@@ -145,8 +145,8 @@ if test $paranoia = "yes"; then
 	DEVELOPMENT_CFLAGS+=" -Wall -Werror -ansi -pedantic"
 fi
 
-if test $deprecated = "yes"; then
-	DEVELOPMENT_CFLAGS+=" -DG_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED"
+if test $enable_deprecated = "no"; then
+	DEVELOPMENT_CFLAGS+=" -DG_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGSEAL_ENABLE"
 fi
 
 AC_SUBST(DEVELOPMENT_CFLAGS)
@@ -219,7 +219,7 @@ fi
 
 echo -n "      Disable Deprecated - "
 
-if test "$deprecated" = "yes"; then
+if test "$enable_deprecated" = "no"; then
 	echo "Enabled"
 else
 	echo "Disabled"
