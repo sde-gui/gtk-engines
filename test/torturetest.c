@@ -511,12 +511,12 @@ end:
 static void
 run_functions (Test *test)
 {
-	GtkStyle *style = window->style;
-	GdkWindow *mywindow = window->window;
+	GtkStyle *style = gtk_widget_get_style (window);
+	GdkWindow *mywindow = gtk_widget_get_window (window);
 	
 	if (widgets[test->widget]) {
-		style = widgets[test->widget]->style;
-		mywindow = widgets[test->widget]->window;
+		style = gtk_widget_get_style (widgets[test->widget]);
+		mywindow = gtk_widget_get_window (widgets[test->widget]);
 	}
 	
 	if (test->function & FUNCTION_ARROW)
@@ -614,8 +614,7 @@ create_testwidgets ()
 	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (store));
 
 	widgets[WIDGET_TREE_VIEW] = treeview;
-	/* lets abuse the private API ... */
-	widgets[WIDGET_TREE_VIEW_HEADER] = gtk_tree_view_get_column (GTK_TREE_VIEW (treeview), 0)->button;
+	widgets[WIDGET_TREE_VIEW_HEADER] = gtk_widget_get_parent (gtk_widget_get_parent (gtk_tree_view_column_get_widget (gtk_tree_view_get_column (GTK_TREE_VIEW (treeview), 0))));
 	
 	
 	widgets[WIDGET_SCALE] = gtk_hscale_new_with_range (0, 1, 0.1);
@@ -626,8 +625,9 @@ create_testwidgets ()
 	widgets[WIDGET_TOOLBAR] = gtk_toolbar_new ();
 	widgets[WIDGET_DEFAULT_BUTTON] = gtk_button_new_with_label ("blah");
 	/* nasty but *shrug* */
-	GTK_WIDGET_SET_FLAGS(widgets[WIDGET_DEFAULT_BUTTON], GTK_CAN_DEFAULT);
-	GTK_WIDGET_SET_FLAGS(widgets[WIDGET_DEFAULT_BUTTON], GTK_HAS_DEFAULT);
+	gtk_widget_set_can_default (widgets[WIDGET_DEFAULT_BUTTON], TRUE);
+	/* XXX: How to do this without the API? Is it even possible? */
+	/*gtk_widget_set_has_default (widgets[WIDGET_DEFAULT_BUTTON], TRUE);*/
 }
 
 int
@@ -650,7 +650,7 @@ main (int argc, char **argv)
 	gtk_container_add ((GtkContainer*)window, box);
 	
 	for (i = 0; i < WIDGET_COUNT; i++) {
-		if (widgets[i] && !widgets[i]->parent)
+		if (widgets[i] && !gtk_widget_get_parent (widgets[i]))
 			gtk_box_pack_end (GTK_BOX (box), widgets[i], FALSE, FALSE, 0);
 	}
 
