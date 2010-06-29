@@ -1,3 +1,23 @@
+Overview of Changes in 2.90.3 (since 2.20.1)
+============================================
+
+Changes in this release:
+ - Named colors for symbolic icons
+ - Two color schemes for clearlooks
+ - Port to GTK+ 2.90 (thanks to Bastien Nocera and others)
+ - Evolution treeview header fix
+ - Lua engine has been removed
+
+New and updated translations:
+ Anita Reitere (lv)
+ Fran Diéguez (gl)
+ Jorge González (es)
+ Kjartan Maraas (nb)
+ Matej Urbančič (sl)
+ Thomas Thurman (en@shaw)
+ Yaron Shahrabani (he)
+
+
 Overview of Changes in 2.20.0 (since 2.19.0)
 ============================================
 
