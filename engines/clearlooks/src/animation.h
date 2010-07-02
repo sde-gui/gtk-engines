@@ -24,22 +24,20 @@
 #include <config.h>
 
 #ifdef HAVE_ANIMATION
-#ifndef GTK_DISABLE_DEPRECATED
 
 #define HAVE_WORKING_ANIMATION 1
 
 #include <gtk/gtk.h>
 #include <ge-support.h>
 
-#define CL_IS_PROGRESS_BAR(widget) GE_IS_PROGRESS_BAR(widget) && widget->allocation.x != -1 && widget->allocation.y != -1
 #define ANIMATION_DELAY 100
 #define CHECK_ANIMATION_TIME 0.5
 
+GE_INTERNAL gboolean clearlooks_animation_is_progressbar (GtkWidget *widget);
 GE_INTERNAL void     clearlooks_animation_progressbar_add (GtkWidget *progressbar);
 GE_INTERNAL void     clearlooks_animation_connect_checkbox (GtkWidget *widget);
 GE_INTERNAL gboolean clearlooks_animation_is_animated (GtkWidget *widget);
 GE_INTERNAL gdouble  clearlooks_animation_elapsed (gpointer data);
 GE_INTERNAL void     clearlooks_animation_cleanup ();
-#endif /* GTK_DISABLE_DEPRECATED */
 #endif /* HAVE_ANIMATION */
 

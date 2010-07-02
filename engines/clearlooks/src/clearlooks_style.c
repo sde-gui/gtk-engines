@@ -604,7 +604,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		}
 		else
 		{
-			g_print ("ETCHED IN\n");
 			cairo_save (cr);
 			cairo_move_to (cr, x, y);
 			cairo_line_to (cr, x + width, y);
@@ -758,12 +757,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		gdouble               elapsed = 0.0;
 
 #ifdef HAVE_WORKING_ANIMATION
-		if(clearlooks_style->animation && CL_IS_PROGRESS_BAR (widget))
+		if(clearlooks_style->animation && clearlooks_animation_is_progressbar (widget))
 		{
-			gboolean activity_mode = GTK_PROGRESS_BAR (widget)->activity_mode;
-
-			if (!activity_mode)
-				clearlooks_animation_progressbar_add ((gpointer)widget);
+#warning Assuming non-pulsing progress bars because there is currently no way to query them in GTK+ 3.0.
+			clearlooks_animation_progressbar_add ((gpointer)widget);
 		}
 
 		elapsed = clearlooks_animation_elapsed (widget);

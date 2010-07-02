@@ -166,7 +166,7 @@ update_animation_info (gpointer key, gpointer value, gpointer user_data)
 	g_assert ((widget != NULL) && (animation_info != NULL));
 	
 	/* remove the widget from the hash table if it is not drawable */
-	if (!GTK_WIDGET_DRAWABLE (widget))
+	if (!gtk_widget_is_drawable (widget))
 	{
 		return TRUE;
 	}
@@ -267,6 +267,20 @@ find_signal_info (gconstpointer signal_info, gconstpointer widget)
 
 /* external interface */
 
+#define CL_IS_PROGRESS_BAR(widget) GE_IS_PROGRESS_BAR(widget) && widget->allocation.x != -1 && widget->allocation.y != -1
+gboolean
+clearlooks_animation_is_progressbar (GtkWidget *widget)
+{
+	GtkAllocation allocation;
+	if (!GE_IS_PROGRESS_BAR (widget))
+		return FALSE;
+	gtk_widget_get_allocation (widget, &allocation);
+	if ((allocation.x < 0) || (allocation.y < 0))
+		return FALSE;
+	return TRUE;
+}
+
+
 /* adds a progress bar */
 void
 clearlooks_animation_progressbar_add (GtkWidget *progressbar)
@@ -331,8 +345,6 @@ clearlooks_animation_cleanup ()
 	stop_timer ();
 }
 #else /* !HAVE_WORKING_ANIMATION */
-/* Warn here so the message is only displayed once. */
-#warning Disabling animation support as it currently needs deprecated symbols and GTK_DISABLE_DEPRECATED is enabled.
 
 static void clearlooks_animation_dummy_function_so_wall_shuts_up_when_animations_is_disabled()
 {
