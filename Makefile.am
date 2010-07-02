@@ -5,8 +5,6 @@ EXTRA_DIST = \
 	gtk-engines.doap \
 	autogen.sh	\
 	gtk-engines-3.pc.in \
-	gtk-engines.spec.in \
-	gtk-engines.spec \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in
