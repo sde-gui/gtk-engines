@@ -286,8 +286,8 @@ clearlooks_get_notebook_tab_position (GtkWidget *widget,
 			}
 
                         gtk_container_child_get (GTK_CONTAINER (notebook), tab_child,
-                                                 "expand", &expand,
-                                                 "pack-type", &pack_type,
+                                                 "tab-expand", &expand,
+                                                 "tab-pack", &pack_type,
                                                  NULL);
 
 			if (!found_tabs) {
