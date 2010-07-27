@@ -161,6 +161,21 @@
 		<tint color="#000000" x="width - 1" y="1" width="1" height="height - 2" alpha="0.1"/>
 	</draw_ops>
 
+	<draw_ops name="button_bg_pressed">
+		<gradient type="vertical" x="0" y="1" width="width" height="height - 2"> 
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.4"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.05"/>
+		</gradient>
+		<tint color="#000000" x="0" y="height - 2" width="width" height="1" alpha="0.1"/>
+		<tint color="#ffffff" x="0" y="height - 1" width="width" height="1" alpha="0.9"/>
+		<tint color="#ffffff" x="0" y="1" width="1" height="height - 2" alpha="0.05"/>
+		<gradient type="vertical" x="width - 1" y="1" width="1" height="height - 2"> 
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.6"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.25"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.05"/>
+		</gradient>
+	</draw_ops>
+
   <!-- on unfocused window -->
 
 
@@ -192,7 +207,8 @@
   </draw_ops>
 
   <draw_ops name="button_close_pressed"> 
-     <include name="button_close_prelight"/>
+		<include name="button_bg_pressed" />
+		<include name="icon_close" />
   </draw_ops>
 
   <draw_ops name="button_close_unfocused">
@@ -235,7 +251,8 @@
   </draw_ops>
 
   <draw_ops name="button_maximize_pressed"> 
-     <include name="button_maximize_prelight"/>
+		<include name="button_bg_pressed" />
+		<include name="icon_maximize" />
   </draw_ops>
 
   <draw_ops name="button_maximize_unfocused">
@@ -267,7 +284,8 @@
   </draw_ops>
 
   <draw_ops name="button_minimize_pressed"> 
-     <include name="button_minimize_prelight"/>
+		<include name="button_bg_pressed"/>
+		<include name="icon_minimize" />
   </draw_ops>
 
   <draw_ops name="button_minimize_unfocused">
