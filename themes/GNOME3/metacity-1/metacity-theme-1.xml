@@ -35,6 +35,9 @@
   <frame_geometry name="border" has_title="false" parent="normal">
   </frame_geometry>
 
+	<!-- Constants -->
+	<constant name="ButtonPad" value="12"/>
+
   <!-- Draw Operations -->
 
   <!-- Background Fill -->
@@ -159,6 +162,23 @@
 
   <draw_ops name="button_close_normal"> 
 		<include name="button_bg_focused" />
+		<!--<rectangle color="#ff0000" x="ButtonPad" y="ButtonPad" width="width- ButtonPad * 2" height="height - ButtonPad * 2 + 1" filled="true"/>
+		blend/gtk:bg[NORMAL]/#000000/0.3-->
+
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad+1" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 2" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="ButtonPad + 2" x2="width-ButtonPad - 1" y2="height - ButtonPad + 2" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="height - ButtonPad + 1" x2="width-ButtonPad - 1" y2="ButtonPad + 1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="height - ButtonPad + 2" x2="width-ButtonPad" y2="ButtonPad + 1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad+1" y1="height - ButtonPad + 2" x2="width-ButtonPad" y2="ButtonPad + 2" />
+		
+		<line color="#ffffff" x1="ButtonPad+1" y1="ButtonPad" x2="width-ButtonPad" y2="height - ButtonPad" />
+		<line color="#ffffff" x1="ButtonPad" y1="ButtonPad" x2="width-ButtonPad" y2="height - ButtonPad + 1" />
+		<line color="#ffffff" x1="ButtonPad" y1="ButtonPad+1" x2="width-ButtonPad - 1" y2="height - ButtonPad + 1" />
+		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad" x2="width-ButtonPad - 1" y2="ButtonPad" />
+		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad" />
+		<line color="#ffffff" x1="ButtonPad+1" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad+1" />
+
   </draw_ops>
 
   <draw_ops name="button_close_prelight">
@@ -183,6 +203,16 @@
 
   <draw_ops name="button_maximize_normal">
 		<include name="button_bg_focused" />
+
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="ButtonPad + 1" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - ButtonPad - 1" y="ButtonPad + 1" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="ButtonPad + 1" width="width- ButtonPad * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="height - ButtonPad + 1" width="width - ButtonPad * 2" height="2" filled="true"/>
+
+		<rectangle color="#ffffff" x="ButtonPad" y="ButtonPad" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
+		<rectangle color="#ffffff" x="width - ButtonPad - 1" y="ButtonPad" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
+		<rectangle color="#ffffff" x="ButtonPad" y="ButtonPad" width="width- ButtonPad * 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="ButtonPad" y="height - ButtonPad" width="width - ButtonPad * 2" height="2" filled="true"/>
   </draw_ops>
 
   <draw_ops name="button_maximize_prelight">
@@ -207,6 +237,8 @@
 
   <draw_ops name="button_minimize_normal">
 		<include name="button_bg_focused" />
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="height - ButtonPad + 1" width="width - ButtonPad * 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="ButtonPad" y="height - ButtonPad" width="width - ButtonPad * 2" height="2" filled="true"/>
   </draw_ops>
 
   <draw_ops name="button_minimize_prelight">
