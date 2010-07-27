@@ -39,12 +39,12 @@
 
   <!-- Background Fill -->
   <draw_ops name="bg_titlebar">
-     <gradient type="vertical" x="1" y="1" width="width-1" height="height"> 
-         <color value="#ededed"/>
-         <color value="#ddddd9"/>
-     </gradient>
-     <line color="#ffffff" x1="1" y1="1" x2="width-1" y2="1" dash_off_length="0" dash_on_length="3"/>
-
+		<gradient type="vertical" x="1" y="1" width="width-1" height="height"> 
+			<color value="#ededed"/>
+			<color value="#ddddd9"/>
+		</gradient>
+		<tint color="#ffffff" x="1" y="1" width="width-1" height="1" alpha="0.8" />
+		
   </draw_ops>
 
 
@@ -68,12 +68,8 @@
   <draw_ops name="title_all">
      <title x="10" y="(((height - title_height) / 2) `max` 0)+3" color="#ffffff"/>
      <title x="10" y="(((height - title_height) / 2) `max` 0)+2" color="#2e3436"/>
-     <image filename="left_button_edge.png"
-			  alpha="1"
-			  x="width-6"
-			  y="0"
-			  width="6"
-			  height="32"/>
+     <tint color="#000000" alpha="0.2" x="width - 1" y="1" width="1" height="height-3" />
+     <tint color="#ffffff" alpha="0.4" x="width - 2" y="1" width="1" height="height-3" />
   </draw_ops>
 
   <draw_ops name="title_all_unfocused">
@@ -142,6 +138,19 @@
 
   <!-- button backgounds -->
   <!-- on focused window -->
+	<draw_ops name="button_bg_focused">
+		<gradient type="vertical" x="0" y="1" width="width" height="height - 2"> 
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.1"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.14"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.17"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.05"/>
+		</gradient>
+		<tint color="#000000" x="0" y="height - 2" width="width" height="1" alpha="0.1"/>
+		<tint color="#ffffff" x="0" y="height - 1" width="width" height="1" alpha="0.9"/>
+		<tint color="#ffffff" x="0" y="1" width="1" height="height - 2" alpha="0.2"/>
+		<tint color="#000000" x="width - 1" y="1" width="1" height="height - 2" alpha="0.1"/>
+	</draw_ops>
+
 
   <!-- on unfocused window -->
 
@@ -149,12 +158,7 @@
   <!-- Close Buttons -->
 
   <draw_ops name="button_close_normal"> 
-     <image filename="button_close.png"
-			  alpha="1"
-			  x="0"
-			  y="0"
-			  width="33"
-			  height="32"/>
+		<include name="button_bg_focused" />
   </draw_ops>
 
   <draw_ops name="button_close_prelight">
@@ -177,13 +181,8 @@
 
   <!-- Maximize Buttons -->
 
-  <draw_ops name="button_maximize_normal"> 
-     <image filename="button_maximize.png"
-			  alpha="1"
-			  x="0"
-			  y="0"
-			  width="33"
-			  height="32"/>
+  <draw_ops name="button_maximize_normal">
+		<include name="button_bg_focused" />
   </draw_ops>
 
   <draw_ops name="button_maximize_prelight">
@@ -206,13 +205,8 @@
 
   <!-- Minimize Buttons -->
 
-  <draw_ops name="button_minimize_normal"> 
-     <image filename="button_minimize.png"
-			  alpha="1"
-			  x="0"
-			  y="0"
-			  width="33"
-			  height="32"/>
+  <draw_ops name="button_minimize_normal">
+		<include name="button_bg_focused" />
   </draw_ops>
 
   <draw_ops name="button_minimize_prelight">
