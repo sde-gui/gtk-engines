@@ -11,8 +11,8 @@
   <!-- Frames Geometries -->
 
   <frame_geometry name="normal" rounded_top_left="true" rounded_top_right="true" title_scale="medium"> 
-     <distance name="left_width" value="1"/>
-     <distance name="right_width" value="1"/>
+     <distance name="left_width" value="2"/>
+     <distance name="right_width" value="2"/>
      <distance name="bottom_height" value="2"/>
      <distance name="left_titlebar_edge" value="0"/>
      <distance name="right_titlebar_edge" value="0"/>
@@ -42,19 +42,29 @@
 
   <!-- Background Fill -->
   <draw_ops name="bg_titlebar">
-		<gradient type="vertical" x="1" y="1" width="width-1" height="height"> 
-			<color value="#ededed"/>
-			<color value="#ddddd9"/>
-		</gradient>
-		<tint color="#ffffff" x="1" y="1" width="width-1" height="1" alpha="0.8" />
-		
+	<gradient type="vertical" x="1" y="1" width="width-1" height="height"> 
+		<color value="#ededed"/>
+		<color value="#ddddd9"/>
+	</gradient>
+	<!-- top -->
+	<tint color="#ffffff" x="1" y="1" width="width-1" height="1" alpha="0.8" />
+	<!-- aa -->
+	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="3" y1="1" x2="4" y2="1" />
+	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="2" y1="2" x2="2" y2="2" />
+	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="1" y1="3" x2="1" y2="4" />
+
+
+
   </draw_ops>
 
 
   <!-- Lines -->
 
   <draw_ops name="lines_border_focused">
-    <rectangle color="#888a85" x="0" y="0" width="width" height="height" filled="true"/>
+	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="0" y1="0" x2="width" y2="0"/>
+	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="0" y1="height-1" x2="width" y2="height-1"/>
+	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="0" y1="0" x2="0" y2="height-1"/>
+	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width-1" y1="0" x2="width-1" y2="height-1"/>
   </draw_ops>
 
   <draw_ops name="lines_border_maximized_focused">
@@ -193,6 +203,12 @@
 		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad" x2="width-ButtonPad - 1" y2="ButtonPad" />
 		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad" />
 		<line color="#ffffff" x1="ButtonPad+1" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad+1" />
+
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 5" y1="1" x2="width - 3" y2="1" />
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 3" y1="2" x2="width - 2" y2="2" />
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 2" y1="3" x2="width - 2" y2="4" />
+		
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 1" y1="3" x2="width - 1" y2="height" />
 	</draw_ops>
 
   <draw_ops name="button_close_normal"> 
