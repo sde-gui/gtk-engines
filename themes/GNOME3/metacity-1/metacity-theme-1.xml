@@ -3,8 +3,8 @@
   <info>
     <name>GNOME 3</name>
     <author>GNOME Art Team &lt;art.gnome.org&gt;</author>
-    <copyright>&#194; Intel</copyright>
-    <date>December 2009</date>
+    <copyright>&#194; Intel, &#194; Red Hat</copyright>
+    <date>2010</date>
     <description>Default GNOME 3 window theme</description>
   </info>
 
@@ -70,15 +70,14 @@
   <!-- Title -->
 
   <draw_ops name="title_all">
-     <title x="10" y="(((height - title_height) / 2) `max` 0)+3" color="#ffffff"/>
-     <title x="10" y="(((height - title_height) / 2) `max` 0)+2" color="#2e3436"/>
+     <title x="15" y="(((height - title_height) / 2) `max` 0)+2" color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.3"/>
      <tint color="#000000" alpha="0.2" x="width - 1" y="1" width="1" height="height-3" />
      <tint color="#ffffff" alpha="0.4" x="width - 2" y="1" width="1" height="height-3" />
   </draw_ops>
 
   <draw_ops name="title_all_unfocused">
-     <title x="10" y="(((height - title_height) / 2) `max` 0)+3" color="#ffffff"/>
-     <title x="10" y="(((height - title_height) / 2) `max` 0)+2" color="#8d908f"/>
+     <title x="15" y="(((height - title_height) / 2) `max` 0)+3" color="#ffffff"/>
+     <title x="15" y="(((height - title_height) / 2) `max` 0)+2" color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.8"/>
   </draw_ops>
 
   <!-- Normal, focused window -->
