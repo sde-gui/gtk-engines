@@ -148,17 +148,24 @@
 		<tint color="#000000" x="width - 1" y="1" width="1" height="height - 2" alpha="0.1"/>
 	</draw_ops>
 
+	<draw_ops name="button_bg_prelight">
+		<gradient type="vertical" x="0" y="1" width="width" height="height - 2"> 
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.05"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.10"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.12"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.03"/>
+		</gradient>
+		<tint color="#000000" x="0" y="height - 2" width="width" height="1" alpha="0.1"/>
+		<tint color="#ffffff" x="0" y="height - 1" width="width" height="1" alpha="0.9"/>
+		<tint color="#ffffff" x="0" y="1" width="1" height="height - 2" alpha="0.2"/>
+		<tint color="#000000" x="width - 1" y="1" width="1" height="height - 2" alpha="0.1"/>
+	</draw_ops>
 
   <!-- on unfocused window -->
 
 
   <!-- Close Buttons -->
-
-  <draw_ops name="button_close_normal"> 
-		<include name="button_bg_focused" />
-		<!--<rectangle color="#ff0000" x="ButtonPad" y="ButtonPad" width="width- ButtonPad * 2" height="height - ButtonPad * 2 + 1" filled="true"/>
-		blend/gtk:bg[NORMAL]/#000000/0.3-->
-
+	<draw_ops name="icon_close">	
 		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad+1" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 1" />
 		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 2" />
 		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="ButtonPad + 2" x2="width-ButtonPad - 1" y2="height - ButtonPad + 2" />
@@ -172,12 +179,16 @@
 		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad" x2="width-ButtonPad - 1" y2="ButtonPad" />
 		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad" />
 		<line color="#ffffff" x1="ButtonPad+1" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad+1" />
+	</draw_ops>
 
+  <draw_ops name="button_close_normal"> 
+		<include name="button_bg_focused" />
+		<include name="icon_close" />
   </draw_ops>
 
   <draw_ops name="button_close_prelight">
-     <image filename="menu_button_bg_prelight.png" x="0" y="0" width="24" height="24"/>
-     <include name="button_close_normal"/>
+		<include name="button_bg_prelight" />
+		<include name="icon_close" />
   </draw_ops>
 
   <draw_ops name="button_close_pressed"> 
@@ -201,10 +212,7 @@
   </draw_ops>
 
   <!-- Maximize Buttons -->
-
-  <draw_ops name="button_maximize_normal">
-		<include name="button_bg_focused" />
-
+  <draw_ops name="icon_maximize">
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="ButtonPad + 1" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - ButtonPad - 1" y="ButtonPad + 1" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="ButtonPad + 1" width="width- ButtonPad * 2" height="2" filled="true"/>
@@ -214,11 +222,16 @@
 		<rectangle color="#ffffff" x="width - ButtonPad - 1" y="ButtonPad" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
 		<rectangle color="#ffffff" x="ButtonPad" y="ButtonPad" width="width- ButtonPad * 2" height="2" filled="true"/>
 		<rectangle color="#ffffff" x="ButtonPad" y="height - ButtonPad" width="width - ButtonPad * 2" height="2" filled="true"/>
+	</draw_ops>
+
+  <draw_ops name="button_maximize_normal">
+		<include name="button_bg_focused" />
+		<include name="icon_maximize" />
   </draw_ops>
 
   <draw_ops name="button_maximize_prelight">
-     <image filename="menu_button_bg_prelight.png" x="0" y="0" width="24" height="24"/>
-     <include name="button_maximize_normal"/>
+		<include name="button_bg_prelight" />
+		<include name="icon_maximize" />
   </draw_ops>
 
   <draw_ops name="button_maximize_pressed"> 
@@ -238,16 +251,19 @@
   </draw_ops>
 
   <!-- Minimize Buttons -->
-
-  <draw_ops name="button_minimize_normal">
-		<include name="button_bg_focused" />
+  <draw_ops name="icon_minimize">
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="height - ButtonPad + 1" width="width - ButtonPad * 2" height="2" filled="true"/>
 		<rectangle color="#ffffff" x="ButtonPad" y="height - ButtonPad" width="width - ButtonPad * 2" height="2" filled="true"/>
   </draw_ops>
 
+  <draw_ops name="button_minimize_normal">
+		<include name="button_bg_focused" />
+		<include name="icon_minimize" />
+  </draw_ops>
+
   <draw_ops name="button_minimize_prelight">
-     <image filename="menu_button_bg_prelight.png" x="0" y="0" width="24" height="24"/>
-     <include name="button_minimize_normal"/>
+		<include name="button_bg_prelight" />
+		<include name="icon_minimize" />
   </draw_ops>
 
   <draw_ops name="button_minimize_pressed"> 
