@@ -13,7 +13,7 @@
   <frame_geometry name="normal" rounded_top_left="true" rounded_top_right="true" title_scale="medium"> 
      <distance name="left_width" value="1"/>
      <distance name="right_width" value="1"/>
-     <distance name="bottom_height" value="4"/>
+     <distance name="bottom_height" value="2"/>
      <distance name="left_titlebar_edge" value="0"/>
      <distance name="right_titlebar_edge" value="0"/>
      <distance name="title_vertical_pad" value="0"/>
@@ -62,7 +62,8 @@
   </draw_ops>
 
   <draw_ops name="lines_border_unfocused">
-    <rectangle color="red" x="0" y="0" width="width" height="height" filled="true"/>
+		<!--FIXME: make this just borders -->
+    <rectangle color="gtk:bg[NORMAL]" x="0" y="0" width="width" height="height" filled="true"/>
   </draw_ops>
 
 
@@ -78,12 +79,6 @@
   <draw_ops name="title_all_unfocused">
      <title x="10" y="(((height - title_height) / 2) `max` 0)+3" color="#ffffff"/>
      <title x="10" y="(((height - title_height) / 2) `max` 0)+2" color="#8d908f"/>
-     <image filename="left_button_edge.png"
-			  alpha="1"
-			  x="width-6"
-			  y="0"
-			  width="6"
-			  height="32"/>
   </draw_ops>
 
   <!-- Normal, focused window -->
@@ -104,7 +99,6 @@
   </draw_ops>
 
   <draw_ops name="normal_unfocused"> 
-     <include name="bg_titlebar"/>
      <include name="lines_border_unfocused"/>
   </draw_ops>
 
@@ -190,13 +184,7 @@
      <include name="button_close_prelight"/>
   </draw_ops>
 
-  <draw_ops name="button_close_unfocused"> 
-     <image filename="button_close.png"
-			  alpha="1"
-			  x="0"
-			  y="0"
-			  width="33"
-			  height="32"/>
+  <draw_ops name="button_close_unfocused">
   </draw_ops>
 
   <!-- Maximize Buttons -->
@@ -225,12 +213,6 @@
   </draw_ops>
 
   <draw_ops name="button_maximize_unfocused"> 
-     <image filename="button_maximize.png"
-			  alpha="1"
-			  x="0"
-			  y="0"
-			  width="33"
-			  height="32"/>
   </draw_ops>
 
   <!-- Minimize Buttons -->
@@ -251,12 +233,6 @@
   </draw_ops>
 
   <draw_ops name="button_minimize_unfocused"> 
-     <image filename="button_minimize.png"
-			  alpha="1"
-			  x="0"
-			  y="0"
-			  width="33"
-			  height="32"/>
   </draw_ops>
 
   <draw_ops name="button_menu_normal">
