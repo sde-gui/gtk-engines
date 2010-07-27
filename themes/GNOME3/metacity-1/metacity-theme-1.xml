@@ -7,21 +7,21 @@
     <date>2010</date>
     <description>Default GNOME 3 window theme</description>
   </info>
+	<!-- Constants -->
+	<constant name="ButtonPad" value="12"/>
 
   <!-- Frames Geometries -->
-
-  <frame_geometry name="normal" rounded_top_left="true" rounded_top_right="true" title_scale="medium"> 
-     <distance name="left_width" value="2"/>
-     <distance name="right_width" value="2"/>
-     <distance name="bottom_height" value="2"/>
-     <distance name="left_titlebar_edge" value="0"/>
-     <distance name="right_titlebar_edge" value="0"/>
-     <distance name="title_vertical_pad" value="0"/>
-     <border name="title_border" left="0" right="0" top="0" bottom="0"/>
-     <border name="button_border" left="0" right="0" top="0" bottom="0"/>
-     <distance name="button_width" value="33"/>
-     <distance name="button_height" value="32"/>
-  </frame_geometry>
+	<frame_geometry name="normal" rounded_top_left="true" rounded_top_right="true" title_scale="medium"> 
+		<distance name="left_width" value="2"/>
+		<distance name="right_width" value="2"/>
+		<distance name="bottom_height" value="2"/>
+		<distance name="left_titlebar_edge" value="0"/>
+		<distance name="right_titlebar_edge" value="0"/>
+		<distance name="title_vertical_pad" value="0"/>
+		<border name="title_border" left="0" right="0" top="6" bottom="6"/>
+		<border name="button_border" left="0" right="0" top="0" bottom="0"/>
+		<aspect_ratio name="button" value="0.95"/>
+	</frame_geometry>
 
   <frame_geometry name="maximized" title_scale="medium" parent="normal" rounded_top_left="false" rounded_top_right="false" >
      <distance name="left_width" value="0"/>
@@ -35,16 +35,15 @@
   <frame_geometry name="border" has_title="false" parent="normal">
   </frame_geometry>
 
-	<!-- Constants -->
-	<constant name="ButtonPad" value="12"/>
+
 
   <!-- Draw Operations -->
 
   <!-- Background Fill -->
   <draw_ops name="bg_titlebar">
 	<gradient type="vertical" x="1" y="1" width="width-1" height="height"> 
-		<color value="#ededed"/>
-		<color value="#ddddd9"/>
+		<color value="gtk:bg[NORMAL]"/>
+		<color value="blend/gtk:bg[NORMAL]/#000000/0.06"/>
 	</gradient>
 	<!-- top -->
 	<tint color="#ffffff" x="1" y="1" width="width-1" height="1" alpha="0.8" />
@@ -79,8 +78,8 @@
 
   <draw_ops name="title_all">
      <title x="15" y="(((height - title_height) / 2) `max` 0)+2" color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.3"/>
-     <tint color="#000000" alpha="0.2" x="width - 1" y="1" width="1" height="height-3" />
-     <tint color="#ffffff" alpha="0.4" x="width - 2" y="1" width="1" height="height-3" />
+     <tint color="#000000" alpha="0.2" x="width - 1" y="0" width="1" height="height" />
+     <tint color="#ffffff" alpha="0.4" x="width - 2" y="0" width="1" height="height" />
   </draw_ops>
 
   <draw_ops name="title_all_unfocused">
@@ -140,8 +139,11 @@
      <include name="lines_border_unfocused"/>
   </draw_ops>
 
+  <!-- rounded corner on the leftmost button -->
+	<draw_ops name="left_corner">
+		<line color="red" x1="0" y1="height-6" x2="0" y2="height-3" /> 
+	</draw_ops>
   <!-- button backgounds -->
-  <!-- on focused window -->
 	<draw_ops name="button_bg_focused">
 		<gradient type="vertical" x="0" y="1" width="width" height="height - 2"> 
 			<color value="blend/gtk:bg[NORMAL]/#000000/0.1"/>
@@ -295,16 +297,19 @@
   <draw_ops name="button_minimize_normal">
 		<include name="button_bg_focused" />
 		<include name="icon_minimize" />
+		<include name="left_corner" />
   </draw_ops>
 
   <draw_ops name="button_minimize_prelight">
 		<include name="button_bg_prelight" />
 		<include name="icon_minimize" />
+		<include name="left_corner" />
   </draw_ops>
 
   <draw_ops name="button_minimize_pressed"> 
 		<include name="button_bg_pressed"/>
 		<include name="icon_minimize" />
+		<include name="left_corner" />
   </draw_ops>
 
   <draw_ops name="button_minimize_unfocused">
