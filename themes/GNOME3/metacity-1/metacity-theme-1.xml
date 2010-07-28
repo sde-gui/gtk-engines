@@ -7,8 +7,6 @@
     <date>2010</date>
     <description>Default GNOME 3 window theme</description>
   </info>
-	<!-- Constants -->
-	<constant name="ButtonPad" value="10"/>
 
   <!-- Frames Geometries -->
 	<frame_geometry name="normal" rounded_top_left="true" rounded_top_right="true" title_scale="medium"> 
@@ -190,19 +188,19 @@
   <!-- FIXME: replace ButtonPad with height/3 -->
   <!-- Close Buttons -->
 	<draw_ops name="icon_close">	
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad+1" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 2" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="ButtonPad + 2" x2="width-ButtonPad - 1" y2="height - ButtonPad + 2" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="height - ButtonPad + 1" x2="width-ButtonPad - 1" y2="ButtonPad + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="height - ButtonPad + 2" x2="width-ButtonPad" y2="ButtonPad + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad+1" y1="height - ButtonPad + 2" x2="width-ButtonPad" y2="ButtonPad + 2" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)+1" y1="(width/2.7) + 1" x2="width-(width/2.7)" y2="height - (width/2.7) + 1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="(width/2.7) + 1" x2="width-(width/2.7)" y2="height - (width/2.7) + 2" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="(width/2.7) + 2" x2="width-(width/2.7) - 1" y2="height - (width/2.7) + 2" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="height - (width/2.7) + 1" x2="width-(width/2.7) - 1" y2="(width/2.7) + 1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="height - (width/2.7) + 2" x2="width-(width/2.7)" y2="(width/2.7) + 1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)+1" y1="height - (width/2.7) + 2" x2="width-(width/2.7)" y2="(width/2.7) + 2" />
 		
-		<line color="#ffffff" x1="ButtonPad+1" y1="ButtonPad" x2="width-ButtonPad" y2="height - ButtonPad" />
-		<line color="#ffffff" x1="ButtonPad" y1="ButtonPad" x2="width-ButtonPad" y2="height - ButtonPad + 1" />
-		<line color="#ffffff" x1="ButtonPad" y1="ButtonPad+1" x2="width-ButtonPad - 1" y2="height - ButtonPad + 1" />
-		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad" x2="width-ButtonPad - 1" y2="ButtonPad" />
-		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad" />
-		<line color="#ffffff" x1="ButtonPad+1" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad+1" />
+		<line color="#ffffff" x1="(width/2.7)+1" y1="(width/2.7)" x2="width-(width/2.7)" y2="height - (width/2.7)" />
+		<line color="#ffffff" x1="(width/2.7)" y1="(width/2.7)" x2="width-(width/2.7)" y2="height - (width/2.7) + 1" />
+		<line color="#ffffff" x1="(width/2.7)" y1="(width/2.7)+1" x2="width-(width/2.7) - 1" y2="height - (width/2.7) + 1" />
+		<line color="#ffffff" x1="(width/2.7)" y1="height - (width/2.7)" x2="width-(width/2.7) - 1" y2="(width/2.7)" />
+		<line color="#ffffff" x1="(width/2.7)" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)" />
+		<line color="#ffffff" x1="(width/2.7)+1" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)+1" />
 
 		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 5" y1="1" x2="width - 3" y2="1" />
 		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 3" y1="2" x2="width - 2" y2="2" />
@@ -227,19 +225,19 @@
   </draw_ops>
 
   <draw_ops name="button_close_unfocused">
-		<line color="#ffffff" x1="ButtonPad+1" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 1" />
-		<line color="#ffffff" x1="ButtonPad" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 2" />
-		<line color="#ffffff" x1="ButtonPad" y1="ButtonPad + 2" x2="width-ButtonPad - 1" y2="height - ButtonPad + 2" />
-		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad + 1" x2="width-ButtonPad - 1" y2="ButtonPad + 1" />
-		<line color="#ffffff" x1="ButtonPad" y1="height - ButtonPad + 2" x2="width-ButtonPad" y2="ButtonPad + 1" />
-		<line color="#ffffff" x1="ButtonPad+1" y1="height - ButtonPad + 2" x2="width-ButtonPad" y2="ButtonPad + 2" />
+		<line color="#ffffff" x1="(width/2.7)+1" y1="(width/2.7) + 1" x2="width-(width/2.7)" y2="height - (width/2.7) + 1" />
+		<line color="#ffffff" x1="(width/2.7)" y1="(width/2.7) + 1" x2="width-(width/2.7)" y2="height - (width/2.7) + 2" />
+		<line color="#ffffff" x1="(width/2.7)" y1="(width/2.7) + 2" x2="width-(width/2.7) - 1" y2="height - (width/2.7) + 2" />
+		<line color="#ffffff" x1="(width/2.7)" y1="height - (width/2.7) + 1" x2="width-(width/2.7) - 1" y2="(width/2.7) + 1" />
+		<line color="#ffffff" x1="(width/2.7)" y1="height - (width/2.7) + 2" x2="width-(width/2.7)" y2="(width/2.7) + 1" />
+		<line color="#ffffff" x1="(width/2.7)+1" y1="height - (width/2.7) + 2" x2="width-(width/2.7)" y2="(width/2.7) + 2" />
 
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad+1" y1="ButtonPad" x2="width-ButtonPad" y2="height - ButtonPad" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="ButtonPad" x2="width-ButtonPad" y2="height - ButtonPad + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="ButtonPad+1" x2="width-ButtonPad - 1" y2="height - ButtonPad + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="height - ButtonPad" x2="width-ButtonPad - 1" y2="ButtonPad" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad+1" y1="height - ButtonPad + 1" x2="width-ButtonPad" y2="ButtonPad+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)+1" y1="(width/2.7)" x2="width-(width/2.7)" y2="height - (width/2.7)" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="(width/2.7)" x2="width-(width/2.7)" y2="height - (width/2.7) + 1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="(width/2.7)+1" x2="width-(width/2.7) - 1" y2="height - (width/2.7) + 1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="height - (width/2.7)" x2="width-(width/2.7) - 1" y2="(width/2.7)" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)+1" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)+1" />
 
 		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.8" x1="width - 5" y1="1" x2="width - 3" y2="1" />
 		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.8" x1="width - 3" y1="2" x2="width - 2" y2="2" />
@@ -250,15 +248,15 @@
 
   <!-- Maximize Buttons -->
   <draw_ops name="icon_maximize">
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="ButtonPad + 1" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - ButtonPad - 1" y="ButtonPad + 1" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="ButtonPad + 1" width="width- ButtonPad * 2" height="2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="height - ButtonPad + 1" width="width - ButtonPad * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - (width/2.7) - 1" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7) + 1" width="width- (width/2.7) * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2 + 2" height="2" filled="true"/>
 
-		<rectangle color="#ffffff" x="ButtonPad" y="ButtonPad" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
-		<rectangle color="#ffffff" x="width - ButtonPad - 1" y="ButtonPad" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
-		<rectangle color="#ffffff" x="ButtonPad" y="ButtonPad" width="width- ButtonPad * 2" height="2" filled="true"/>
-		<rectangle color="#ffffff" x="ButtonPad" y="height - ButtonPad" width="width - ButtonPad * 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="#ffffff" x="width - (width/2.7) - 1" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7)" width="width- (width/2.7) * 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2 + 2" height="2" filled="true"/>
 	</draw_ops>
 
   <draw_ops name="button_maximize_normal">
@@ -277,21 +275,21 @@
   </draw_ops>
 
   <draw_ops name="button_maximize_unfocused">
-		<rectangle color="#ffffff" x="ButtonPad" y="ButtonPad + 1" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
-		<rectangle color="#ffffff" x="width - ButtonPad - 1" y="ButtonPad + 1" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
-		<rectangle color="#ffffff" x="ButtonPad" y="ButtonPad + 1" width="width- ButtonPad * 2" height="2" filled="true"/>
-		<rectangle color="#ffffff" x="ButtonPad" y="height - ButtonPad + 1" width="width - ButtonPad * 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="#ffffff" x="width - (width/2.7) - 1" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7) + 1" width="width- (width/2.7) * 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2 + 2" height="2" filled="true"/>
 
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="ButtonPad" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - ButtonPad - 1" y="ButtonPad" width="2" height="height - ButtonPad * 2 + 2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="ButtonPad" width="width- ButtonPad * 2" height="2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="height - ButtonPad" width="width - ButtonPad * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - (width/2.7) - 1" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7)" width="width- (width/2.7) * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2 + 2" height="2" filled="true"/>
   </draw_ops>
 
   <!-- Minimize Buttons -->
   <draw_ops name="icon_minimize">
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="height - ButtonPad + 1" width="width - ButtonPad * 2" height="2" filled="true"/>
-		<rectangle color="#ffffff" x="ButtonPad" y="height - ButtonPad" width="width - ButtonPad * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2" height="2" filled="true"/>
   </draw_ops>
 
   <draw_ops name="button_minimize_normal">
@@ -313,8 +311,8 @@
   </draw_ops>
 
   <draw_ops name="button_minimize_unfocused">
-	<rectangle color="#ffffff" x="ButtonPad" y="height - ButtonPad + 1" width="width - ButtonPad * 2" height="2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="ButtonPad" y="height - ButtonPad" width="width - ButtonPad * 2" height="2" filled="true"/>
+	<rectangle color="#ffffff" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2" height="2" filled="true"/>
   </draw_ops>
 
   <draw_ops name="button_menu_normal">
