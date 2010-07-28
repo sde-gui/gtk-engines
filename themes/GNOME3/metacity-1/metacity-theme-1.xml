@@ -8,7 +8,7 @@
     <description>Default GNOME 3 window theme</description>
   </info>
 	<!-- Constants -->
-	<constant name="ButtonPad" value="12"/>
+	<constant name="ButtonPad" value="10"/>
 
   <!-- Frames Geometries -->
 	<frame_geometry name="normal" rounded_top_left="true" rounded_top_right="true" title_scale="medium"> 
@@ -20,7 +20,7 @@
 		<distance name="title_vertical_pad" value="0"/>
 		<border name="title_border" left="0" right="0" top="6" bottom="6"/>
 		<border name="button_border" left="0" right="0" top="0" bottom="0"/>
-		<aspect_ratio name="button" value="0.95"/>
+		<aspect_ratio name="button" value="0.96"/>
 	</frame_geometry>
 
   <frame_geometry name="maximized" title_scale="medium" parent="normal" rounded_top_left="false" rounded_top_right="false" >
@@ -187,7 +187,7 @@
 
   <!-- on unfocused window -->
 
-
+  <!-- FIXME: replace ButtonPad with height/3 -->
   <!-- Close Buttons -->
 	<draw_ops name="icon_close">	
 		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="ButtonPad+1" y1="ButtonPad + 1" x2="width-ButtonPad" y2="height - ButtonPad + 1" />
