@@ -15,8 +15,8 @@
 		<distance name="bottom_height" value="2"/>
 		<distance name="left_titlebar_edge" value="0"/>
 		<distance name="right_titlebar_edge" value="0"/>
-		<distance name="title_vertical_pad" value="0"/>
-		<border name="title_border" left="0" right="0" top="6" bottom="6"/>
+		<distance name="title_vertical_pad" value="10"/>
+		<border name="title_border" left="0" right="0" top="0" bottom="0"/>
 		<border name="button_border" left="0" right="0" top="0" bottom="0"/>
 		<aspect_ratio name="button" value="0.96"/>
 	</frame_geometry>
@@ -76,6 +76,8 @@
 
   <draw_ops name="title_all">
      <title x="15" y="(((height - title_height) / 2) `max` 0)+2" color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.3"/>
+		<tint color="#000000" alpha="0.2" x="width - 1" y="0" width="2" height="height-2" />
+		<tint color="#ffffff" alpha="0.4" x="width" y="0" width="2" height="height-2" />
   </draw_ops>
 
   <draw_ops name="title_all_unfocused">
@@ -137,8 +139,6 @@
 
   <!-- rounded corner on the leftmost button -->
 	<draw_ops name="left_corner">
-		<tint color="#000000" alpha="0.2" x="0" y="0" width="2" height="height-2" />
-		<tint color="#ffffff" alpha="0.4" x="1" y="0" width="2" height="height-2" />
 		<!--<line color="red" x1="2" y1="height-6" x2="2" y2="height-3" />-->
 	</draw_ops>
   <!-- button backgounds -->
@@ -249,14 +249,14 @@
   <!-- Maximize Buttons -->
   <draw_ops name="icon_maximize">
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - (width/2.7) - 1" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - (width/2.7)" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7) + 1" width="width- (width/2.7) * 2" height="2" filled="true"/>
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2 + 2" height="2" filled="true"/>
 
 		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
-		<rectangle color="#ffffff" x="width - (width/2.7) - 1" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
-		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7)" width="width- (width/2.7) * 2" height="2" filled="true"/>
-		<rectangle color="#ffffff" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2 + 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="width - (width/2.7)" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7)" width="width- (width/2.7) * 2 + 2" height="2" filled="true"/>
+		<rectangle color="#ffffff" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2" height="2" filled="true"/>
 	</draw_ops>
 
   <draw_ops name="button_maximize_normal">
@@ -276,12 +276,12 @@
 
   <draw_ops name="button_maximize_unfocused">
 		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
-		<rectangle color="#ffffff" x="width - (width/2.7) - 1" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="#ffffff" x="width - (width/2.7)" y="(width/2.7) + 1" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
 		<rectangle color="#ffffff" x="(width/2.7)" y="(width/2.7) + 1" width="width- (width/2.7) * 2" height="2" filled="true"/>
 		<rectangle color="#ffffff" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2 + 2" height="2" filled="true"/>
 
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - (width/2.7) - 1" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="width - (width/2.7)" y="(width/2.7)" width="2" height="height - (width/2.7) * 2 + 2" filled="true"/>
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7)" width="width- (width/2.7) * 2" height="2" filled="true"/>
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2 + 2" height="2" filled="true"/>
   </draw_ops>
