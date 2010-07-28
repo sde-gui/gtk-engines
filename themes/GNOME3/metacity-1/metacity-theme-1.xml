@@ -25,6 +25,7 @@
      <distance name="left_width" value="0"/>
      <distance name="right_width" value="0"/>
      <distance name="bottom_height" value="0"/>
+		 <distance name="title_vertical_pad" value="4"/>
   </frame_geometry>
 
   <frame_geometry name="utility" title_scale="medium" parent="normal"> 
@@ -37,25 +38,33 @@
 
   <!-- Draw Operations -->
 
-  <!-- Background Fill -->
+  <!-- Titlebar Background -->
+  <draw_ops name="bg_titlebar_maximized">	
+		<gradient type="vertical" x="1" y="1" width="width-1" height="height"> 
+			<color value="gtk:bg[NORMAL]"/>
+			<color value="blend/gtk:bg[NORMAL]/#000000/0.06"/>
+		</gradient>
+		<!-- top -->
+		<tint color="#ffffff" x="1" y="1" width="width-1" height="1" alpha="0.8" />
+
+	</draw_ops>
+
+	<draw_ops name="bg_titlebar_unfocused">
+		<!-- aa -->
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.8" x1="3" y1="1" x2="4" y2="1" />
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.8" x1="2" y1="2" x2="2" y2="2" />
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.8" x1="1" y1="3" x2="1" y2="4" />
+	</draw_ops>
+
   <draw_ops name="bg_titlebar">
-	<gradient type="vertical" x="1" y="1" width="width-1" height="height"> 
-		<color value="gtk:bg[NORMAL]"/>
-		<color value="blend/gtk:bg[NORMAL]/#000000/0.06"/>
-	</gradient>
-	<!-- top -->
-	<tint color="#ffffff" x="1" y="1" width="width-1" height="1" alpha="0.8" />
-	<!-- aa -->
-	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="3" y1="1" x2="4" y2="1" />
-	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="2" y1="2" x2="2" y2="2" />
-	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="1" y1="3" x2="1" y2="4" />
-  </draw_ops>
-  <draw_ops name="bg_titlebar_unfocused">
-	<!-- aa -->
-	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.9" x1="3" y1="1" x2="4" y2="1" />
-	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.9" x1="2" y1="2" x2="2" y2="2" />
-	<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.9" x1="1" y1="3" x2="1" y2="4" />
-  </draw_ops>
+		<include name="bg_titlebar_maximized"/>
+		<!-- left upper rounded corner -->
+		<!-- aa -->
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="3" y1="1" x2="4" y2="1" />
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="2" y1="2" x2="2" y2="2" />
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="1" y1="3" x2="1" y2="4" />
+	</draw_ops>
+
 
   <!-- Window Borders -->
 
@@ -64,7 +73,6 @@
   </draw_ops>
 
   <draw_ops name="lines_border_maximized_focused">
-    <rectangle color="green" x="0" y="0" width="width" height="height" filled="true"/>
   </draw_ops>
 
   <draw_ops name="lines_border_unfocused">
@@ -75,7 +83,7 @@
   <!-- Title -->
 
   <draw_ops name="title_all">
-     <title x="15" y="(((height - title_height) / 2) `max` 0)+2" color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.3"/>
+    <title x="15" y="(((height - title_height) / 2) `max` 0)+2" color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.3"/>
 		<tint color="#000000" alpha="0.2" x="width - 1" y="0" width="2" height="height-2" />
 		<tint color="#ffffff" alpha="0.4" x="width" y="0" width="2" height="height-2" />
   </draw_ops>
@@ -92,7 +100,6 @@
   </draw_ops>
 
   <draw_ops name="normal_focused"> 
-     <include name="bg_titlebar"/>
      <include name="lines_border_focused"/>
   </draw_ops>
 
@@ -108,11 +115,10 @@
 
   <!--maximized focused window-->
   <draw_ops name="titlebar_maximized_focused"> 
-     <include name="bg_titlebar"/>
+     <include name="bg_titlebar_maximized"/>
   </draw_ops>
 
   <draw_ops name="maximized_focused"> 
-     <include name="bg_titlebar"/>
      <include name="lines_border_maximized_focused"/>
   </draw_ops>
 
@@ -122,7 +128,6 @@
   </draw_ops>
 
   <draw_ops name="maximized_unfocused"> 
-     <include name="bg_titlebar"/>
      <include name="lines_border_unfocused"/>
   </draw_ops>
 
@@ -201,25 +206,44 @@
 		<line color="#ffffff" x1="(width/2.7)" y1="height - (width/2.7)" x2="width-(width/2.7) - 1" y2="(width/2.7)" />
 		<line color="#ffffff" x1="(width/2.7)" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)" />
 		<line color="#ffffff" x1="(width/2.7)+1" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)+1" />
+	</draw_ops>
 
+	<draw_ops name="rounded_outer_border">
 		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 5" y1="1" x2="width - 3" y2="1" />
 		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 3" y1="2" x2="width - 2" y2="2" />
-		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 2" y1="3" x2="width - 2" y2="4" />
-		
+		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 2" y1="3" x2="width - 2" y2="4" />		
 		<line color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.6" x1="width - 1" y1="3" x2="width - 1" y2="height" />
 	</draw_ops>
 
   <draw_ops name="button_close_normal"> 
 		<include name="button_bg_focused" />
 		<include name="icon_close" />
+		<include name="rounded_outer_border" />
   </draw_ops>
 
   <draw_ops name="button_close_prelight">
 		<include name="button_bg_prelight" />
 		<include name="icon_close" />
+		<include name="rounded_outer_border" />
   </draw_ops>
 
   <draw_ops name="button_close_pressed"> 
+		<include name="button_bg_pressed" />
+		<include name="icon_close" />
+		<include name="rounded_outer_border" />
+  </draw_ops>
+
+  <draw_ops name="button_close_normal_maximized"> 
+		<include name="button_bg_focused" />
+		<include name="icon_close" />
+  </draw_ops>
+
+  <draw_ops name="button_close_prelight_maximized">
+		<include name="button_bg_prelight" />
+		<include name="icon_close" />
+  </draw_ops>
+
+  <draw_ops name="button_close_pressed_maximized"> 
 		<include name="button_bg_pressed" />
 		<include name="icon_close" />
   </draw_ops>
@@ -387,9 +411,9 @@
      <piece position="titlebar" draw_ops="titlebar_maximized_focused"/>
      <piece position="title" draw_ops="title_all"/>
 
-     <button function="close" state="normal" draw_ops="button_close_normal"/>
-     <button function="close" state="prelight" draw_ops="button_close_prelight"/>
-     <button function="close" state="pressed" draw_ops="button_close_pressed"/>
+     <button function="close" state="normal" draw_ops="button_close_normal_maximized"/>
+     <button function="close" state="prelight" draw_ops="button_close_prelight_maximized"/>
+     <button function="close" state="pressed" draw_ops="button_close_pressed_maximized"/>
      <button function="maximize" state="normal" draw_ops="button_maximize_normal"/>
      <button function="maximize" state="prelight" draw_ops="button_maximize_prelight"/>
      <button function="maximize" state="pressed" draw_ops="button_maximize_pressed"/>
