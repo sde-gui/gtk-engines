@@ -76,8 +76,6 @@
 
   <draw_ops name="title_all">
      <title x="15" y="(((height - title_height) / 2) `max` 0)+2" color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.3"/>
-     <tint color="#000000" alpha="0.2" x="width - 1" y="0" width="1" height="height" />
-     <tint color="#ffffff" alpha="0.4" x="width - 2" y="0" width="1" height="height" />
   </draw_ops>
 
   <draw_ops name="title_all_unfocused">
@@ -139,7 +137,9 @@
 
   <!-- rounded corner on the leftmost button -->
 	<draw_ops name="left_corner">
-		<line color="red" x1="0" y1="height-6" x2="0" y2="height-3" /> 
+		<tint color="#000000" alpha="0.2" x="0" y="0" width="2" height="height-2" />
+		<tint color="#ffffff" alpha="0.4" x="1" y="0" width="2" height="height-2" />
+		<!--<line color="red" x1="2" y1="height-6" x2="2" y2="height-3" />-->
 	</draw_ops>
   <!-- button backgounds -->
 	<draw_ops name="button_bg_focused">
