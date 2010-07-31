@@ -1793,41 +1793,36 @@ clearlooks_style_draw_layout (GtkStyle * style,
                               GtkWidget * widget,
                               const gchar * detail, gint x, gint y, PangoLayout * layout)
 {
-	GdkGC *gc;
+        cairo_t *cr;
 
 	g_return_if_fail (GTK_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
 
-	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
-	g_object_ref (gc);
+        cr = gdk_cairo_create (window);
+
+	if (area)
+        {
+                gdk_cairo_rectangle (cr, area);
+                cairo_clip (cr);
+        }
+
+        ge_cairo_transform_for_layout (cr, layout, x, y);
+
+	gdk_cairo_set_source_color (cr, use_text ? &style->text[state_type] : &style->fg[state_type]);
 
 	if (state_type == GTK_STATE_NORMAL && DETAIL("accellabel")) {
 		ClearlooksStyle  *clearlooks_style = CLEARLOOKS_STYLE (style);
 		ClearlooksColors *colors = &clearlooks_style->colors;
-		GdkColor gdk_color;
-		GdkGC *old_gc = gc;
 		CairoColor color;
-
-		g_object_unref (gc);
-		gc = gdk_gc_new (window);
-		gdk_gc_copy (gc, old_gc);
 
 		ge_mix_color (use_text ? &colors->base[state_type] : &colors->bg[state_type],
 		              use_text ? &colors->text[state_type] : &colors->fg[state_type],
 		              clearlooks_style->accel_label_shade,
 		              &color);
 
-		gdk_color.red = color.r * 65535;
-		gdk_color.green = color.g * 65535;
-		gdk_color.blue = color.b * 65535;
-
-		gdk_gc_set_rgb_fg_color (gc, &gdk_color);
+                ge_cairo_set_color (cr, &color);
 	}
 
-
-
-	if (area)
-		gdk_gc_set_clip_rectangle (gc, area);
 
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
@@ -1835,7 +1830,6 @@ clearlooks_style_draw_layout (GtkStyle * style,
 		ClearlooksColors *colors = &clearlooks_style->colors;
 
 		WidgetParameters params;
-		GdkColor etched;
 		CairoColor temp;
 
 		clearlooks_set_widget_parameters (widget, style, state_type, &params);
@@ -1845,19 +1839,18 @@ clearlooks_style_draw_layout (GtkStyle * style,
 		else
 			ge_shade_color (&colors->bg[gtk_widget_get_state (widget)], 1.2, &temp);
 
-		etched.red = (int) (temp.r * 65535);
-		etched.green = (int) (temp.g * 65535);
-		etched.blue = (int) (temp.b * 65535);
+                cairo_save (cr);
 
-		gdk_draw_layout_with_colors (window, gc, x + 1, y + 1, layout, &etched, NULL);
-		gdk_draw_layout (window, gc, x, y, layout);
+                ge_cairo_set_color (cr, &temp);
+                cairo_move_to (cr, 1, 1);
+                pango_cairo_show_layout (cr, layout);
+
+                cairo_restore (cr);
 	}
-	else
-		gdk_draw_layout (window, gc, x, y, layout);
 
-	if (area)
-		gdk_gc_set_clip_rectangle (gc, NULL);
-	g_object_unref (gc);
+        pango_cairo_show_layout (cr, layout);
+
+        cairo_destroy (cr);
 }
 
 static GdkPixbuf *
