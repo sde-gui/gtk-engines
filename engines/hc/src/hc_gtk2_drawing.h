@@ -258,15 +258,3 @@ hc_draw_diamond (GtkStyle      *style,
 		 gint           width,
 		 gint           height);
 
-GE_INTERNAL void
-hc_draw_polygon (GtkStyle      *style,
-		 GdkWindow     *window,
-		 GtkStateType   state_type,
-		 GtkShadowType  shadow_type,
-		 GdkRectangle  *area,
-		 GtkWidget     *widget,
-		 const gchar   *detail,
-		 GdkPoint      *points,
-		 gint           npoints,
-		 gboolean       fill);
-

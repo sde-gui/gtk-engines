@@ -888,19 +888,21 @@ hc_draw_layout (GtkStyle        *style,
 		gint             y,
 		PangoLayout     *layout)
 {
-	GdkGC *gc;
+	cairo_t *cr;
 
 	CHECK_ARGS
 
-	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
-	if (area)
-		gdk_gc_set_clip_rectangle (gc, area);
+	if (use_text)
+		gdk_cairo_set_source_color (cr, &style->text[state_type]);
+	else
+		gdk_cairo_set_source_color (cr, &style->fg[state_type]);
 
-	gdk_draw_layout (window, gc, x, y, layout);
+	ge_cairo_transform_for_layout (cr, layout, x, y);
+	pango_cairo_show_layout (cr, layout);
 
-	if (area)
-		gdk_gc_set_clip_rectangle (gc, NULL);
+	cairo_destroy (cr);
 }
 
 void
@@ -1282,123 +1284,6 @@ hc_draw_diamond (GtkStyle      *style,
 		break;
 	default:
 		break;
-	}
-
-	cairo_destroy(cr);
-}
-
-void
-hc_draw_polygon (GtkStyle      *style,
-		 GdkWindow     *window,
-		 GtkStateType   state_type,
-		 GtkShadowType  shadow_type,
-		 GdkRectangle  *area,
-		 GtkWidget     *widget,
-		 const gchar   *detail,
-		 GdkPoint      *points,
-		 gint           npoints,
-		 gboolean       fill)
-{
-	HcStyle *hc_style = HC_STYLE (style);
-
-	static const gdouble pi_over_4 = G_PI_4;
-	static const gdouble pi_3_over_4 = G_PI_4 * 3;
-	
-	CairoColor           *color1;
-	CairoColor           *color2;
-	CairoColor           *color3;
-	CairoColor           *color4;
-	gdouble            angle;
-	int                xadjust;
-	int                yadjust;
-	int                i;
-	cairo_t           *cr;
-
-	g_return_if_fail(style != NULL);
-	g_return_if_fail(window != NULL);
-	g_return_if_fail(points != NULL);
-	
-	switch (shadow_type) {
-	case GTK_SHADOW_IN:
-		color1 = &hc_style->color_cube.light[state_type];
-		color2 = &hc_style->color_cube.dark[state_type];
-		color3 = &hc_style->color_cube.light[state_type];
-		color4 = &hc_style->color_cube.dark[state_type];
-		break;
-	case GTK_SHADOW_ETCHED_IN:
-		color1 = &hc_style->color_cube.light[state_type];
-		color2 = &hc_style->color_cube.dark[state_type];
-		color3 = &hc_style->color_cube.dark[state_type];
-		color4 = &hc_style->color_cube.light[state_type];
-		break;
-	case GTK_SHADOW_OUT:
-		color1 = &hc_style->color_cube.dark[state_type];
-		color2 = &hc_style->color_cube.light[state_type];
-		color3 = &hc_style->color_cube.dark[state_type];
-		color4 = &hc_style->color_cube.light[state_type];
-		break;
-	case GTK_SHADOW_ETCHED_OUT:
-		color1 = &hc_style->color_cube.dark[state_type];
-		color2 = &hc_style->color_cube.light[state_type];
-		color3 = &hc_style->color_cube.light[state_type];
-		color4 = &hc_style->color_cube.dark[state_type];
-		break;
-	default:
-		return;
-	}
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
-	
-	if (fill)
-		ge_cairo_polygon(cr, &hc_style->color_cube.bg[state_type], points, npoints);
-	
-	npoints--;
-	
-	for (i = 0; i < npoints; i++) {
-		if ((points[i].x == points[i + 1].x) &&
-		    (points[i].y == points[i + 1].y)) {
-			angle = 0;
-		} else {
-			angle = atan2(points[i + 1].y - points[i].y,
-				      points[i + 1].x - points[i].x);
-		}
-		
-		if ((angle > -pi_3_over_4) && (angle < pi_over_4)) {
-			if (angle > -pi_over_4) {
-				xadjust = 0;
-				yadjust = 1;
-			} else {
-				xadjust = 1;
-				yadjust = 0;
-			}
-
-			ge_cairo_line(cr, color1,
-				      points[i].x - xadjust, 
-				      points[i].y - yadjust,
-				      points[i + 1].x - xadjust, 
-				      points[i + 1].y - yadjust);
-			ge_cairo_line(cr, color3,
-				      points[i].x, points[i].y,
-				      points[i + 1].x, points[i + 1].y);
-		}
-		else {
-			if ((angle < -pi_3_over_4) || (angle > pi_3_over_4)) {
-				xadjust = 0;
-				yadjust = 1;
-			} else {
-				xadjust = 1;
-				yadjust = 0;
-			}
-			
-			ge_cairo_line(cr, color4,
-				      points[i].x + xadjust, 
-				      points[i].y + yadjust,
-				      points[i + 1].x + xadjust, 
-				      points[i + 1].y + yadjust);
-			ge_cairo_line(cr, color2,
-				      points[i].x, points[i].y,
-				      points[i + 1].x, points[i + 1].y);
-		}
 	}
 
 	cairo_destroy(cr);

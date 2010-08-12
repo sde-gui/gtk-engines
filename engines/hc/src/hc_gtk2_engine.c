@@ -222,10 +222,6 @@ static void
 hc_style_realize (GtkStyle *style)
 {
   HcStyle *hc_style = HC_STYLE (style);
-
-  GdkGCValues gc_values;
-  GdkGCValuesMask gc_values_mask;
-  
   gint i;
 
   for (i = 0; i < 5; i++)
@@ -257,14 +253,6 @@ hc_style_realize (GtkStyle *style)
   style->white.blue = 0xffff;
   gdk_colormap_alloc_color (style->colormap, &style->white, FALSE, TRUE);
 
-  gc_values_mask = GDK_GC_FOREGROUND;
-  
-  gc_values.foreground = style->black;
-  style->black_gc = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-  
-  gc_values.foreground = style->white;
-  style->white_gc = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-  
   for (i = 0; i < 5; i++)
     {
       if (!gdk_colormap_alloc_color (style->colormap, &style->fg[i], FALSE, TRUE))
@@ -291,30 +279,6 @@ hc_style_realize (GtkStyle *style)
       if (!gdk_colormap_alloc_color (style->colormap, &style->text_aa[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->text_aa[i].red, style->text_aa[i].green, style->text_aa[i].blue);
-      
-      gc_values.foreground = style->fg[i];
-      style->fg_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-      
-      gc_values.foreground = style->bg[i];
-      style->bg_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-      
-      gc_values.foreground = style->light[i];
-      style->light_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-      
-      gc_values.foreground = style->dark[i];
-      style->dark_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-      
-      gc_values.foreground = style->mid[i];
-      style->mid_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-      
-      gc_values.foreground = style->text[i];
-      style->text_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-      
-      gc_values.foreground = style->base[i];
-      style->base_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
-
-      gc_values.foreground = style->text_aa[i];
-      style->text_aa_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
     }
 
   ge_gtk_style_to_cairo_color_cube (style, &hc_style->color_cube);
@@ -377,7 +341,6 @@ hc_style_class_init (HcStyleClass *klass)
   style_class->draw_vline = hc_draw_vline; 
   style_class->draw_expander = hc_draw_expander;
   style_class->draw_diamond = hc_draw_diamond;
-  style_class->draw_polygon = hc_draw_polygon;
 }
 
 static void
