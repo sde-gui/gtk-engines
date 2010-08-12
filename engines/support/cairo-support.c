@@ -875,6 +875,38 @@ ge_cairo_pattern_destroy(CairoPattern *pattern)
 	}
 }
 
+void
+ge_cairo_transform_for_layout (cairo_t *cr,
+                               PangoLayout *layout,
+                               int x,
+                               int y)
+{
+        const PangoMatrix *matrix;
+
+        matrix = pango_context_get_matrix (pango_layout_get_context (layout));
+        if (matrix)
+        {
+                cairo_matrix_t cairo_matrix;
+                PangoRectangle rect;
+                
+                cairo_matrix_init (&cairo_matrix,
+                                   matrix->xx, matrix->yx,
+                                   matrix->xy, matrix->yy,
+                                   matrix->x0, matrix->y0);
+
+                pango_layout_get_extents (layout, NULL, &rect);
+                pango_matrix_transform_rectangle (matrix, &rect);
+                pango_extents_to_pixels (&rect, NULL);
+                                                    
+                cairo_matrix.x0 += x - rect.x;
+                cairo_matrix.y0 += y - rect.y;
+
+                cairo_set_matrix (cr, &cairo_matrix);
+        }
+        else
+                cairo_translate (cr, x, y);
+}
+
 /* 
  * The following function will be called by GTK+ when the module
  * is loaded and checks to see if we are compatible with the
