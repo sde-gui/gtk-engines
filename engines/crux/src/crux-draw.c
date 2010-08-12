@@ -1935,8 +1935,8 @@ draw_handle (GtkStyle *style,
 {
     gint i, yy, xx;
     gint xthick, ythick;
-    GdkGC *light_gc, *dark_gc;
     GdkRectangle dest;
+    cairo_t *cr;
 
     CHECK_ARGS
     SANITIZE_SIZE
@@ -1948,9 +1948,6 @@ draw_handle (GtkStyle *style,
 	state_type = GTK_STATE_ACTIVE;
 
 
-    light_gc = style->light_gc[state_type];
-    dark_gc = style->dark_gc[state_type];
-
     xthick = style->xthickness + 1;
     ythick = style->ythickness + 1;
 
@@ -1959,8 +1956,13 @@ draw_handle (GtkStyle *style,
     dest.width = width - (xthick * 2);
     dest.height = height - (ythick * 2);
 
-    gdk_gc_set_clip_rectangle (light_gc, &dest);
-    gdk_gc_set_clip_rectangle (dark_gc, &dest);
+    cr = gdk_cairo_create (window);
+    gdk_cairo_rectangle (cr, &dest);
+    cairo_clip (cr);
+
+    cairo_set_line_width (cr, 1.0);
+    /* trick so we don't have to add 0.5 to all the line calls below */
+    cairo_translate (cr, 0.5, 0.5);
 
     /* ORIENTATION parameters is unreliable */
     if (height > width)
@@ -1968,10 +1970,15 @@ draw_handle (GtkStyle *style,
 	yy = y + height / 2 - 4;
 	for (i = 0; i < 8; i += 2)
 	{
-	    gdk_draw_line (window, dark_gc, xthick, yy + i,
-			   x + width - xthick, yy + i);
-	    gdk_draw_line (window, light_gc, xthick, yy + i + 1,
-			   x + width - xthick, yy + i + 1);
+            gdk_cairo_set_source_color (cr, &style->dark[state_type]);
+            cairo_move_to (cr, xthick, yy + i);
+            cairo_line_to (cr, x + width - xthick, yy + i);
+            cairo_stroke (cr);
+
+            gdk_cairo_set_source_color (cr, &style->light[state_type]);
+            cairo_move_to (cr, xthick, yy + i + 1);
+            cairo_line_to (cr, x + width - xthick, yy + i + 1);
+            cairo_stroke (cr);
 	}
     }
     else
@@ -1979,15 +1986,19 @@ draw_handle (GtkStyle *style,
 	xx = x + width / 2 - 4;
 	for (i = 0; i < 8; i += 2)
 	{
-	    gdk_draw_line (window, dark_gc, xx + i, ythick,
-			   xx + i, y + height - ythick);
-	    gdk_draw_line (window, light_gc, xx + i + 1, ythick,
-			   xx + i + 1, y + height - ythick);
+            gdk_cairo_set_source_color (cr, &style->dark[state_type]);
+            cairo_move_to (cr, xx + i, ythick);
+            cairo_line_to (cr, xx + i, y + height - ythick);
+            cairo_stroke (cr);
+
+            gdk_cairo_set_source_color (cr, &style->light[state_type]);
+            cairo_move_to (cr, xx + i + 1, ythick);
+            cairo_line_to (cr, xx + i + 1, y + height - ythick);
+            cairo_stroke (cr);
 	}
     }
 
-    gdk_gc_set_clip_rectangle (light_gc, NULL);
-    gdk_gc_set_clip_rectangle (dark_gc, NULL);
+    cairo_destroy (cr);
 }
 
 static void
@@ -2002,22 +2013,27 @@ draw_layout (GtkStyle        *style,
 	     int              y,
 	     PangoLayout      *layout)
 {
-	GdkGC *gc;
+	cairo_t *cr;
 	
 	g_return_if_fail (GTK_IS_STYLE (style));
 	g_return_if_fail (window != NULL);
-	
-	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
+
+	cr = gdk_cairo_create (window);
+
+	if (use_text)
+		gdk_cairo_set_source_color (cr, &style->text[state_type]);
+	else
+		gdk_cairo_set_source_color (cr, &style->fg[state_type]);
 	
 	if (area) {
-		gdk_gc_set_clip_rectangle (gc, area);
+		gdk_cairo_rectangle (cr, area);
+		cairo_clip (cr);
 	}
-	
-	gdk_draw_layout (window, gc, x, y, layout);
-	
-	if (area) {
-		gdk_gc_set_clip_rectangle (gc, NULL);
-	}
+
+	ge_cairo_transform_for_layout (cr, layout, x, y);
+	pango_cairo_show_layout (cr, layout);
+
+	cairo_destroy (cr);
 }
 
 
