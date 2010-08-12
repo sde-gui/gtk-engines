@@ -299,122 +299,6 @@ mist_style_draw_shadow(GtkStyle *style,
 }
 
 static void
-mist_style_draw_polygon(GtkStyle *style,
-             GdkWindow *window,
-             GtkStateType state_type,
-             GtkShadowType shadow_type,
-             GdkRectangle *area,
-             GtkWidget *widget,
-             const char *detail,
-             GdkPoint *points,
-             int npoints,
-             int fill)
-{
-	MistStyle *mist_style = MIST_STYLE (style);
-
-	static const gdouble pi_over_4 = G_PI_4;
-	static const gdouble pi_3_over_4 = G_PI_4 * 3;
-	
-	CairoColor           *color1;
-	CairoColor           *color2;
-	CairoColor           *color3;
-	CairoColor           *color4;
-	gdouble            angle;
-	int                xadjust;
-	int                yadjust;
-	int                i;
-	cairo_t           *cr;
-
-	CHECK_ARGS
-	g_return_if_fail(points != NULL);
-	
-	switch (shadow_type) {
-	case GTK_SHADOW_IN:
-		color1 = &mist_style->color_cube.light[state_type];
-		color2 = &mist_style->color_cube.dark[state_type];
-		color3 = &mist_style->color_cube.light[state_type];
-		color4 = &mist_style->color_cube.dark[state_type];
-		break;
-	case GTK_SHADOW_ETCHED_IN:
-		color1 = &mist_style->color_cube.light[state_type];
-		color2 = &mist_style->color_cube.dark[state_type];
-		color3 = &mist_style->color_cube.dark[state_type];
-		color4 = &mist_style->color_cube.light[state_type];
-		break;
-	case GTK_SHADOW_OUT:
-		color1 = &mist_style->color_cube.dark[state_type];
-		color2 = &mist_style->color_cube.light[state_type];
-		color3 = &mist_style->color_cube.dark[state_type];
-		color4 = &mist_style->color_cube.light[state_type];
-		break;
-	case GTK_SHADOW_ETCHED_OUT:
-		color1 = &mist_style->color_cube.dark[state_type];
-		color2 = &mist_style->color_cube.light[state_type];
-		color3 = &mist_style->color_cube.light[state_type];
-		color4 = &mist_style->color_cube.dark[state_type];
-		break;
-	default:
-		return;
-	}
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
-	
-	if (fill)
-		ge_cairo_polygon(cr, &mist_style->color_cube.bg[state_type], points, npoints);
-	
-	npoints--;
-	
-	for (i = 0; i < npoints; i++) {
-		if ((points[i].x == points[i + 1].x) &&
-		    (points[i].y == points[i + 1].y)) {
-			angle = 0;
-		} else {
-			angle = atan2(points[i + 1].y - points[i].y,
-				      points[i + 1].x - points[i].x);
-		}
-		
-		if ((angle > -pi_3_over_4) && (angle < pi_over_4)) {
-			if (angle > -pi_over_4) {
-				xadjust = 0;
-				yadjust = 1;
-			} else {
-				xadjust = 1;
-				yadjust = 0;
-			}
-
-			ge_cairo_line(cr, color1,
-				      points[i].x - xadjust, 
-				      points[i].y - yadjust,
-				      points[i + 1].x - xadjust, 
-				      points[i + 1].y - yadjust);
-			ge_cairo_line(cr, color3,
-				      points[i].x, points[i].y,
-				      points[i + 1].x, points[i + 1].y);
-		}
-		else {
-			if ((angle < -pi_3_over_4) || (angle > pi_3_over_4)) {
-				xadjust = 0;
-				yadjust = 1;
-			} else {
-				xadjust = 1;
-				yadjust = 0;
-			}
-			
-			ge_cairo_line(cr, color4,
-				      points[i].x + xadjust, 
-				      points[i].y + yadjust,
-				      points[i + 1].x + xadjust, 
-				      points[i + 1].y + yadjust);
-			ge_cairo_line(cr, color2,
-				      points[i].x, points[i].y,
-				      points[i + 1].x, points[i + 1].y);
-		}
-	}
-
-	cairo_destroy(cr);
-}
-
-static void
 mist_style_draw_diamond(GtkStyle * style,
              GdkWindow * window,
              GtkStateType state_type,
@@ -691,28 +575,38 @@ mist_style_draw_check(GtkStyle *style,
 	} else if (shadow_type == GTK_SHADOW_ETCHED_IN) { /* inconsistent */
 #define gray50_width 2
 #define gray50_height 2
-		GdkBitmap *stipple;
-		GdkGC *gc = style->base_gc[GTK_STATE_SELECTED];
-		static const char gray50_bits[] = {
-			0x02, 0x01
+		cairo_surface_t *surface;
+		cairo_pattern_t *pattern;
+		static guchar gray50_bits[] = {
+			/* pixman expects strides to be multiples of 4 */
+			0x02, 0x01, 0x00, 0x00,
+			0x02, 0x01, 0x00, 0x00
 		};
 
-		stipple = gdk_bitmap_create_from_data (window,
-						       gray50_bits, 
-						       gray50_width,
-						       gray50_height);
-  
-		if (area)
-			gdk_gc_set_clip_rectangle (gc, area);
+		surface = cairo_image_surface_create_for_data (gray50_bits,
+		                                               CAIRO_FORMAT_A8,
+		                                               gray50_width,
+		                                               gray50_height,
+		                                               4);
+		pattern = cairo_pattern_create_for_surface (surface);
 
-		gdk_gc_set_fill (gc, GDK_STIPPLED);
-		gdk_gc_set_stipple (gc, stipple);
-		gdk_draw_rectangle(window, gc,
-				   TRUE, x + 2, y + 2, width - 5, height - 5);
-		gdk_gc_set_fill (gc, GDK_SOLID);
+		cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
+		cairo_pattern_set_filter (pattern, CAIRO_FILTER_NEAREST);
 
-		if (area)
-			gdk_gc_set_clip_rectangle (gc, NULL);
+		gdk_cairo_set_source_color (cr,
+		                            &style->base[GTK_STATE_SELECTED]);
+
+		if (area) {
+			gdk_cairo_rectangle (cr, area);
+			cairo_clip (cr);
+		}
+
+		cairo_mask (cr, pattern);
+		cairo_rectangle (cr, x + 2, y + 2, width - 5, height - 5);
+		cairo_fill (cr);
+
+		cairo_surface_destroy (surface);
+		cairo_pattern_destroy (pattern);
 #undef gray50_width
 #undef gray50_height 
 	}
@@ -1174,21 +1068,26 @@ mist_style_draw_layout (GtkStyle        *style,
 	     int              y,
 	     PangoLayout      *layout)
 {
-	GdkGC *gc;
+	cairo_t *cr;
 	
 	CHECK_ARGS
-	
-	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
+
+	cr = gdk_cairo_create (window);
+
+	if (use_text)
+		gdk_cairo_set_source_color (cr, &style->text[state_type]);
+	else
+		gdk_cairo_set_source_color (cr, &style->fg[state_type]);
 	
 	if (area) {
-		gdk_gc_set_clip_rectangle (gc, area);
+		gdk_cairo_rectangle (cr, area);
+		cairo_clip (cr);
 	}
-	
-	gdk_draw_layout (window, gc, x, y, layout);
-	
-	if (area) {
-		gdk_gc_set_clip_rectangle (gc, NULL);
-	}
+
+	ge_cairo_transform_for_layout (cr, layout, x, y);
+	pango_cairo_show_layout (cr, layout);
+
+	cairo_destroy (cr);
 }
 
 static GdkPixbuf *
@@ -1372,7 +1271,6 @@ mist_style_class_init (MistStyleClass *klass)
 	style_class->draw_hline = mist_style_draw_hline;
 	style_class->draw_vline = mist_style_draw_vline;
 	style_class->draw_shadow = mist_style_draw_shadow;
-	style_class->draw_polygon = mist_style_draw_polygon;
 	style_class->draw_diamond = mist_style_draw_diamond;
 	style_class->draw_box = mist_style_draw_box;
 	style_class->draw_tab = mist_style_draw_box;
