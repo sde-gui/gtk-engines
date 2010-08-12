@@ -665,11 +665,12 @@ glide_draw_combobox_button (GtkStyle * style,
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-/*#warning FIXME - gdk_draw_rectangle*/
-	      gdk_draw_rectangle (window,
-	      	                  parent_style->base_gc[parent_state],
-			          TRUE, x - 2, y, width + 2, height);
-
+	      canvas = gdk_cairo_create (window);
+	      gdk_cairo_set_source_color (canvas,
+	                                  &parent_style->base[parent_state]);
+              cairo_rectangle (canvas, x - 2, y, width + 2, height);
+              cairo_fill (canvas);
+              cairo_destroy (canvas);
             }
           else
             glide_draw_flat_box(style, window, parent_state,
@@ -751,10 +752,16 @@ glide_draw_combobox_button (GtkStyle * style,
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-/*#warning FIXME - gdk_draw_rectangle*/
-	      gdk_draw_rectangle (window, parent_style->base_gc[parent_state],
-			          TRUE, x + focus - focus_padding, y + focus - focus_padding, 
-                                        width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
+	      canvas = gdk_cairo_create (window);
+	      gdk_cairo_set_source_color (canvas,
+	                                  &parent_style->base[parent_state]);
+	      cairo_rectangle (canvas,
+	                       x + focus - focus_padding,
+	                       y + focus - focus_padding,
+	                       width + thick*2 - focus + focus_padding*2,
+	                       height - focus*2 + focus_padding*2);
+	      cairo_fill (canvas);
+	      cairo_destroy (canvas);
             }
           else
             {
@@ -2284,32 +2291,34 @@ glide_draw_layout (GtkStyle        *style,
 	     int              y,
 	     PangoLayout      *layout)
 {
-	GdkGC *gc;
+	cairo_t *cr;
 
 	CHECK_ARGS
 	use_text &= !ge_is_combo_box(widget, FALSE);
 
-/*	#warning FIXME - gdk gdk gdk*/
+	cr = ge_gdk_drawable_to_cairo (window, area);
 
-	gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
-	
-	if (area) 
-	{
-		gdk_gc_set_clip_rectangle (gc, area);
-	}
+	if (use_text)
+		gdk_cairo_set_source_color (cr, &style->text[state_type]);
+	else
+		gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+
+	ge_cairo_transform_for_layout (cr, layout, x, y);
 
 	if ((state_type==GTK_STATE_INSENSITIVE) && !use_text)
 	{
-		gdk_draw_layout_with_colors(window, gc, x+1, y+1, layout, &style->light[state_type], NULL);
-		gdk_draw_layout_with_colors(window, gc, x, y, layout, &style->dark[state_type], NULL);	
-	}
-	else
-	{	
-		gdk_draw_layout (window, gc, x, y, layout);
+                cairo_save (cr);
+
+		gdk_cairo_set_source_color (cr, &style->light[state_type]);
+                cairo_translate (cr, 1, 1);
+		pango_cairo_show_layout (cr, layout);
+
+                cairo_restore (cr);
+
+		gdk_cairo_set_source_color (cr, &style->dark[state_type]);
 	}
 
-	if (area) 
-	{
-		gdk_gc_set_clip_rectangle (gc, NULL);
-	}
+	pango_cairo_show_layout (cr, layout);
+
+	cairo_destroy (cr);
 }
