@@ -665,10 +665,12 @@ redmond_draw_combobox_button (GtkStyle * style,
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-	      gdk_draw_rectangle (window,
-	      	                  parent_style->base_gc[parent_state],
-			          TRUE, x - 2, y, width + 2, height);
-
+              cr = gdk_cairo_create (window);
+              gdk_cairo_set_source_color (cr,
+                                          &parent_style->base[parent_state]);
+              cairo_rectangle (cr, x - 2, y, width + 2, height);
+              cairo_fill (cr);
+              cairo_destroy (cr);
             }
           else
             gtk_paint_flat_box (style, window, state_type,
@@ -707,14 +709,18 @@ redmond_draw_combobox_button (GtkStyle * style,
  
         ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 				          x, y + 2, width - 2, height - 4);
-      cairo_destroy(cr);
 
       if (shadow_type == GTK_SHADOW_IN)
-        gdk_draw_rectangle (window, style->dark_gc[state_type], FALSE, x,
-	   		    y + 2, width - 3, height - 5);
+        {
+          gdk_cairo_set_source_color (cr, &style->dark[state_type]);
+          ge_cairo_inner_rectangle (cr, x, y + 2, width - 3, height - 5);
+          cairo_stroke (cr);
+        }
       else
         gtk_paint_shadow (style, window, state_type, shadow_type, area,
 		          widget, detail, x, y + 2, width - 2, height - 4);
+
+      cairo_destroy (cr);
     } 
   else
     {
@@ -734,9 +740,12 @@ redmond_draw_combobox_button (GtkStyle * style,
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-	      gdk_draw_rectangle (window,
-		  	          parent_style->base_gc[parent_state],
-			          TRUE, x + 2, y, width + 2, height);
+              cr = gdk_cairo_create (window);
+              gdk_cairo_set_source_color (cr,
+                                          &parent_style->base[parent_state]);
+              cairo_rectangle (cr, x + 2, y, width + 2, height);
+              cairo_fill (cr);
+              cairo_destroy (cr);
             }
           else
             gtk_paint_flat_box (style, window, state_type,
@@ -775,15 +784,18 @@ redmond_draw_combobox_button (GtkStyle * style,
 
       ge_cairo_pattern_fill (cr, DEFAULT_BACKGROUND_PATTERN(redmond_style, state_type),
 				          x + 2, y + 2, width - 2, height - 4);
-
-      cairo_destroy(cr);
  
       if (shadow_type == GTK_SHADOW_IN)
-        gdk_draw_rectangle (window, style->dark_gc[state_type], FALSE, x + 2,
-			    y + 2, width - 3, height - 5);
+        {
+          gdk_cairo_set_source_color (cr, &style->dark[state_type]);
+          ge_cairo_inner_rectangle (cr, x + 2, y + 2, width - 3, height - 5);
+          cairo_stroke (cr);
+        }
       else
         gtk_paint_shadow (style, window, state_type, shadow_type, area,
 		          widget, detail, x + 2, y + 2, width - 2, height - 4);
+
+      cairo_destroy(cr);
     }
 }
  
