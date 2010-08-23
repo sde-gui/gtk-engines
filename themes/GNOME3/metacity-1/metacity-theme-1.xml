@@ -10,8 +10,8 @@
 
   <!-- Frames Geometries -->
 	<frame_geometry name="normal" rounded_top_left="true" rounded_top_right="true" title_scale="medium"> 
-		<distance name="left_width" value="2"/>
-		<distance name="right_width" value="2"/>
+		<distance name="left_width" value="1"/>
+		<distance name="right_width" value="1"/>
 		<distance name="bottom_height" value="2"/>
 		<distance name="left_titlebar_edge" value="0"/>
 		<distance name="right_titlebar_edge" value="0"/>
@@ -25,7 +25,7 @@
      <distance name="left_width" value="0"/>
      <distance name="right_width" value="0"/>
      <distance name="bottom_height" value="0"/>
-		 <distance name="title_vertical_pad" value="4"/>
+		 <distance name="title_vertical_pad" value="10"/>
   </frame_geometry>
 
   <frame_geometry name="utility" title_scale="medium" parent="normal"> 
