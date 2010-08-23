@@ -77,7 +77,7 @@
   </draw_ops>
 
   <draw_ops name="lines_border_unfocused">
-    <rectangle color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.8" x="0" y="0" width="width-1" height="height-1" filled="false"/>
+    <rectangle color="blend/#000000/gtk:bg[NORMAL]/0.8" x="0" y="0" width="width-1" height="height-1" filled="false"/>
   </draw_ops>
 
 
