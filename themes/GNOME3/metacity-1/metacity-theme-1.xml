@@ -155,12 +155,20 @@
 			<color value="blend/gtk:bg[NORMAL]/#000000/0.17"/>
 			<color value="blend/gtk:bg[NORMAL]/#000000/0.05"/>
 		</gradient>
+<!--
+		<tint color="blue" x="0" y="0" width="1" height="height" alpha="1"/>
+		<tint color="blue" x="width-1" y="0" width="1" height="height" alpha="1"/>
+-->
 		<!-- horziontal highlight on the bottom -->
+
 		<tint color="#000000" x="0" y="height - 2" width="width" height="1" alpha="0.1"/>
 		<tint color="blend/#ffffff/gtk:bg[NORMAL]/0.5" x="0" y="height - 1" width="width" height="1" alpha="0.9"/>
+
 		<!-- vertical separator stripes -->
+
 		<tint color="blend/#ffffff/gtk:bg[NORMAL]/0.5" x="0" y="1" width="1" height="height - 2" alpha="0.2"/>
-		<tint color="#000000" x="width - 1" y="1" width="1" height="height - 2" alpha="0.1"/>
+		<tint color="#000000" x="width - 1" y="1" width="1" height="height - 2" alpha="0.1"/> 
+
 	</draw_ops>
 
 	<draw_ops name="button_bg_prelight">
@@ -200,21 +208,25 @@
 
   <!-- FIXME: replace ButtonPad with height/3 -->
   <!-- Close Buttons -->
-	<draw_ops name="icon_close">	
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="(width/2.7) + 1" x2="width-(width/2.7)" y2="height - (width/2.7) + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7) - 1" y1="(width/2.7) + 1" x2="width-(width/2.7)" y2="height - (width/2.7) + 2" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7) - 1" y1="(width/2.7) + 2" x2="width-(width/2.7) - 1" y2="height - (width/2.7) + 2" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7) - 1" y1="height - (width/2.7) + 1" x2="width-(width/2.7) - 1" y2="(width/2.7) + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7) - 1" y1="height - (width/2.7) + 2" x2="width-(width/2.7)" y2="(width/2.7) + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="height - (width/2.7) + 2" x2="width-(width/2.7)" y2="(width/2.7) + 2" />
-		
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width/2.7)" y1="(width/2.7)" x2="width-(width/2.7)" y2="height - (width/2.7)" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width/2.7)-1" y1="(width/2.7)" x2="width-(width/2.7)" y2="height - (width/2.7) + 1" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width/2.7)-1" y1="(width/2.7)+1" x2="width-(width/2.7) - 1" y2="height - (width/2.7) + 1" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width/2.7)-1" y1="height - (width/2.7)" x2="width-(width/2.7) - 1" y2="(width/2.7)" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width/2.7)-1" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width/2.7)" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)+1" />
+	<draw_ops name="icon_close">
+		<!-- <rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x="(width-width%3)/3" y="(height-height%3)/3+1" width="width-2*((width-width%3)/3)-2" height="height-2*((height-height%3)/3)-2"/> -->
+		<!-- shadow -->
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width-width%3)/3+1" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1+1" x2="width-((width-width%3)/3)-2-1" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="width-((width-width%3)/3)-2-1" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1-1+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1+1" x2="(width-width%3)/3+1" y2="height-((height-height%3)/3)-2+1+1" />
+
+		<!-- glyph -->
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width-width%3)/3" y1="(height-height%3)/3+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width-width%3)/3+1" y1="(height-height%3)/3+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2-1" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="width-((width-width%3)/3)-2-1" y1="(height-height%3)/3+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1-1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3+1" y2="height-((height-height%3)/3)-2+1" />
 	</draw_ops>
+
 
 	<draw_ops name="rounded_outer_border">
 		<line color="blend/#000000/gtk:bg[NORMAL]/0.6" x1="width - 5" y1="1" x2="width - 3" y2="1" />
@@ -257,19 +269,21 @@
   </draw_ops>
 
   <draw_ops name="button_close_unfocused">
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width/2.7)" y1="(width/2.7) + 1" x2="width-(width/2.7)" y2="height - (width/2.7) + 1" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width/2.7)-1" y1="(width/2.7) + 1" x2="width-(width/2.7)" y2="height - (width/2.7) + 2" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width/2.7)-1" y1="(width/2.7) + 2" x2="width-(width/2.7)-1" y2="height - (width/2.7) + 2" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width/2.7)-1" y1="height - (width/2.7) + 1" x2="width-(width/2.7)-1" y2="(width/2.7) + 1" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width/2.7)-1" y1="height - (width/2.7) + 2" x2="width-(width/2.7)" y2="(width/2.7) + 1" />
-		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width/2.7)" y1="height - (width/2.7) + 2" x2="width-(width/2.7)" y2="(width/2.7) + 2" />
+		<!-- hilight -->
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3+1" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1+1" x2="width-((width-width%3)/3)-2-1" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2-1" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1-1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1+1" x2="(width-width%3)/3+1" y2="height-((height-height%3)/3)-2+1+1" />
 
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="(width/2.7)" x2="width-(width/2.7)" y2="height - (width/2.7)" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)-1" y1="(width/2.7)" x2="width-(width/2.7)" y2="height - (width/2.7) + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)-1" y1="(width/2.7)+1" x2="width-(width/2.7)-1" y2="height - (width/2.7) + 1" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)-1" y1="height - (width/2.7)" x2="width-(width/2.7)-1" y2="(width/2.7)" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)-1" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)" />
-		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width/2.7)" y1="height - (width/2.7) + 1" x2="width-(width/2.7)" y2="(width/2.7)+1" />
+		<!-- glyph -->
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width-width%3)/3" y1="(height-height%3)/3+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width-width%3)/3+1" y1="(height-height%3)/3+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2-1" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="width-((width-width%3)/3)-2-1" y1="(height-height%3)/3+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1-1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.3" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3+1" y2="height-((height-height%3)/3)-2+1" />
 
 		<!-- rounded corner on top -->
 		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 5" y1="1" x2="width - 3" y2="1" />
@@ -279,16 +293,73 @@
 		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 1" y1="3" x2="width - 1" y2="height" />
   </draw_ops>
 
-  <!-- Maximize Buttons -->
-  <draw_ops name="icon_maximize">
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7)+1" width="width - (2 * width/2.7)" height="height - (2 * width/2.7)" filled="false"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)+1" y="(width/2.7)+2" width="width - (2 * width/2.7)" height="height - (2 * width/2.7)" filled="false"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7)+1" width="width - (2 * width/2.7)+1" height="height - (2 * width/2.7)+1" filled="false"/>
+  <draw_ops name="button_close_unfocused_prelight">
+		<!-- hilight -->
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3+1" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1+1" x2="width-((width-width%3)/3)-2-1" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2-1" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1-1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1+1" x2="(width-width%3)/3+1" y2="height-((height-height%3)/3)-2+1+1" />
 
-		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x="(width/2.7)" y="(width/2.7)" width="width - (2 * width/2.7)" height="height - (2 * width/2.7)" filled="false"/>
-		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x="(width/2.7)+1" y="(width/2.7)+1" width="width - (2 * width/2.7)" height="height - (2 * width/2.7)" filled="false"/>
-		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x="(width/2.7)" y="(width/2.7)" width="width - (2 * width/2.7)+1" height="height - (2 * width/2.7)+1" filled="false"/>
+		<!-- glyph -->
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.2" x1="(width-width%3)/3" y1="(height-height%3)/3+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.2" x1="(width-width%3)/3+1" y1="(height-height%3)/3+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.2" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2-1" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.2" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.2" x1="width-((width-width%3)/3)-2-1" y1="(height-height%3)/3+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1-1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.2" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3+1" y2="height-((height-height%3)/3)-2+1" />
+
+		<!-- rounded corner on top -->
+		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 5" y1="1" x2="width - 3" y2="1" />
+		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 3" y1="2" x2="width - 2" y2="2" />
+		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 2" y1="3" x2="width - 2" y2="4" />
+		
+		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 1" y1="3" x2="width - 1" y2="height" />
+  </draw_ops>
+
+  <draw_ops name="button_close_unfocused_pressed">
+		<!-- hilight -->
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3+1" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1+1" x2="width-((width-width%3)/3)-2-1" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2-1" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1-1+1" />
+		<line color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1+1" x2="(width-width%3)/3+1" y2="height-((height-height%3)/3)-2+1+1" />
+
+		<!-- glyph -->
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.4" x1="(width-width%3)/3" y1="(height-height%3)/3+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.4" x1="(width-width%3)/3+1" y1="(height-height%3)/3+1" x2="width-((width-width%3)/3)-2" y2="height-((height-height%3)/3)-2" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.4" x1="(width-width%3)/3" y1="(height-height%3)/3+1+1" x2="width-((width-width%3)/3)-2-1" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.4" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.4" x1="width-((width-width%3)/3)-2-1" y1="(height-height%3)/3+1" x2="(width-width%3)/3" y2="height-((height-height%3)/3)-2+1-1" />
+		<line color="blend/gtk:bg[NORMAL]/#000000/0.4" x1="width-((width-width%3)/3)-2" y1="(height-height%3)/3+1+1" x2="(width-width%3)/3+1" y2="height-((height-height%3)/3)-2+1" />
+
+		<!-- rounded corner on top -->
+		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 5" y1="1" x2="width - 3" y2="1" />
+		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 3" y1="2" x2="width - 2" y2="2" />
+		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 2" y1="3" x2="width - 2" y2="4" />
+		
+		<line color="blend/#000000/gtk:bg[NORMAL]/0.8" x1="width - 1" y1="3" x2="width - 1" y2="height" />
+  </draw_ops>
+
+
+  <!-- Maximize Buttons -->
+	<!-- !!!metacity actually draws rectagles 1px bigger then what is set!!! (that's the cause of the "-1"s in dimensions) -->
+	<draw_ops name="icon_maximize">
+		<!-- 
+			I want my rectangle nicelly centered so I won't let metacity do the roundings
+			hence why I use (width-width%3)/3, it's like doing an integer division.
+		-->
+	
+		<!-- shadow -->
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width-width%3)/3+1" y="(height-height%3)/3+1+1" width="width-2*((width-width%3)/3)-1-2" height="height-2*((height-height%3)/3)-1-2"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width-width%3)/3+2" y="(height-height%3)/3+2+1" width="width-2*((width-width%3)/3)-1-4" height="height-2*((height-height%3)/3)-1-4"/>
+		<!-- glyph -->
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x="(width-width%3)/3+1" y="(height-height%3)/3+1" width="width-2*((width-width%3)/3)-1-2" height="height-2*((height-height%3)/3)-1-2"/>
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x="(width-width%3)/3+2" y="(height-height%3)/3+2" width="width-2*((width-width%3)/3)-1-4" height="height-2*((height-height%3)/3)-1-4"/>
 	</draw_ops>
+
 
   <draw_ops name="button_maximize_normal">
 		<include name="button_bg_focused" />
@@ -306,19 +377,39 @@
   </draw_ops>
 
   <draw_ops name="button_maximize_unfocused">
-		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width/2.7)" y="(width/2.7)+1" width="width - (2 * width/2.7)" height="height - (2 * width/2.7)" filled="false"/>
-		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width/2.7)+1" y="(width/2.7)+2" width="width - (2 * width/2.7)" height="height - (2 * width/2.7)" filled="false"/>
-		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width/2.7)" y="(width/2.7)+1" width="width - (2 * width/2.7)+1" height="height - (2 * width/2.7)+1" filled="false"/>
-
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7)" width="width - (2 * width/2.7)" height="height - (2 * width/2.7)" filled="false"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)+1" y="(width/2.7)+1" width="width - (2 * width/2.7)" height="height - (2 * width/2.7)" filled="false"/>
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="(width/2.7)" width="width - (2 * width/2.7)+1" height="height - (2 * width/2.7)+1" filled="false"/>
+		<!-- hiligth -->
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width-width%3)/3+1" y="(height-height%3)/3+1+1" width="width-2*((width-width%3)/3)-1-2" height="height-2*((height-height%3)/3)-1-2"/>
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width-width%3)/3+2" y="(height-height%3)/3+2+1" width="width-2*((width-width%3)/3)-1-4" height="height-2*((height-height%3)/3)-1-4"/>
+		<!-- glyph -->
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width-width%3)/3+1" y="(height-height%3)/3+1" width="width-2*((width-width%3)/3)-1-2" height="height-2*((height-height%3)/3)-1-2"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width-width%3)/3+2" y="(height-height%3)/3+2" width="width-2*((width-width%3)/3)-1-4" height="height-2*((height-height%3)/3)-1-4"/>
   </draw_ops>
+
+  <draw_ops name="button_maximize_unfocused_prelight">
+		<!-- hiligth -->
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width-width%3)/3+1" y="(height-height%3)/3+1+1" width="width-2*((width-width%3)/3)-1-2" height="height-2*((height-height%3)/3)-1-2"/>
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width-width%3)/3+2" y="(height-height%3)/3+2+1" width="width-2*((width-width%3)/3)-1-4" height="height-2*((height-height%3)/3)-1-4"/>
+		<!-- glyph -->
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.2" x="(width-width%3)/3+1" y="(height-height%3)/3+1" width="width-2*((width-width%3)/3)-1-2" height="height-2*((height-height%3)/3)-1-2"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.2" x="(width-width%3)/3+2" y="(height-height%3)/3+2" width="width-2*((width-width%3)/3)-1-4" height="height-2*((height-height%3)/3)-1-4"/>
+  </draw_ops>
+
+  <draw_ops name="button_maximize_unfocused_pressed">
+		<!-- hiligth -->
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width-width%3)/3+1" y="(height-height%3)/3+1+1" width="width-2*((width-width%3)/3)-1-2" height="height-2*((height-height%3)/3)-1-2"/>
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width-width%3)/3+2" y="(height-height%3)/3+2+1" width="width-2*((width-width%3)/3)-1-4" height="height-2*((height-height%3)/3)-1-4"/>
+		<!-- glyph -->
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.4" x="(width-width%3)/3+1" y="(height-height%3)/3+1" width="width-2*((width-width%3)/3)-1-2" height="height-2*((height-height%3)/3)-1-2"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.4" x="(width-width%3)/3+2" y="(height-height%3)/3+2" width="width-2*((width-width%3)/3)-1-4" height="height-2*((height-height%3)/3)-1-4"/>
+  </draw_ops>
+
 
   <!-- Minimize Buttons -->
   <draw_ops name="icon_minimize">
-		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2" height="2" filled="true"/>
-		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2" height="2" filled="true"/>
+		<!-- shadow -->
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width-width%3)/3+2" y="height-((height-height%3)/3+1+1)+1" width="width-2*((width-width%3)/3)-1-4" height="1"/>
+		<!-- glyph -->
+		<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.3" x="(width-width%3)/3+2" y="height-((height-height%3)/3+1+1)" width="width-2*((width-width%3)/3)-1-4" height="1"/>
   </draw_ops>
 
   <draw_ops name="button_minimize_normal">
@@ -342,6 +433,16 @@
   <draw_ops name="button_minimize_unfocused">
 	<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2" height="2" filled="true"/>
 		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.3" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2" height="2" filled="true"/>
+  </draw_ops>
+
+  <draw_ops name="button_minimize_unfocused_prelight">
+	<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.2" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2" height="2" filled="true"/>
+  </draw_ops>
+
+  <draw_ops name="button_minimize_unfocused_pressed">
+	<rectangle color="blend/#ffffff/gtk:bg[NORMAL]/0.6" x="(width/2.7)" y="height - (width/2.7) + 1" width="width - (width/2.7) * 2" height="2" filled="true"/>
+		<rectangle color="blend/gtk:bg[NORMAL]/#000000/0.4" x="(width/2.7)" y="height - (width/2.7)" width="width - (width/2.7) * 2" height="2" filled="true"/>
   </draw_ops>
 
   <draw_ops name="button_menu_normal">
@@ -375,7 +476,6 @@
      <piece position="titlebar" draw_ops="titlebar_normal_focused"/>
      <piece position="title" draw_ops="title_all"/>
 
-
      <button function="close" state="normal" draw_ops="button_close_normal"/>
      <button function="close" state="prelight" draw_ops="button_close_prelight"/>
      <button function="close" state="pressed" draw_ops="button_close_pressed"/>
@@ -397,14 +497,14 @@
      <piece position="title" draw_ops="title_all_unfocused"/>
 
      <button function="close" state="normal" draw_ops="button_close_unfocused"/>
-     <button function="close" state="prelight" draw_ops="button_close_prelight"/>
-     <button function="close" state="pressed" draw_ops="button_close_pressed"/>
+     <button function="close" state="prelight" draw_ops="button_close_unfocused_prelight"/>
+     <button function="close" state="pressed" draw_ops="button_close_unfocused_pressed"/>
      <button function="maximize" state="normal" draw_ops="button_maximize_unfocused"/>
-     <button function="maximize" state="prelight" draw_ops="button_maximize_prelight"/>
-     <button function="maximize" state="pressed" draw_ops="button_maximize_pressed"/>
+     <button function="maximize" state="prelight" draw_ops="button_maximize_unfocused_prelight"/>
+     <button function="maximize" state="pressed" draw_ops="button_maximize_unfocused_pressed"/>
      <button function="minimize" state="normal" draw_ops="button_minimize_unfocused"/>
-     <button function="minimize" state="prelight" draw_ops="button_minimize_prelight"/>
-     <button function="minimize" state="pressed" draw_ops="button_minimize_pressed"/>
+     <button function="minimize" state="prelight" draw_ops="button_minimize_unfocused_prelight"/>
+     <button function="minimize" state="pressed" draw_ops="button_minimize_unfocused_pressed"/>
      <button function="menu" state="normal" draw_ops="button_menu_unfocused"/>
      <button function="menu" state="prelight" draw_ops="button_menu_unfocused_prelight"/>
      <button function="menu" state="pressed" draw_ops="button_menu_unfocused_pressed"/>
@@ -437,14 +537,14 @@
      <piece position="title" draw_ops="title_all_unfocused"/>
 
      <button function="close" state="normal" draw_ops="button_close_unfocused"/>
-     <button function="close" state="prelight" draw_ops="button_close_prelight"/>
-     <button function="close" state="pressed" draw_ops="button_close_pressed"/>
+     <button function="close" state="prelight" draw_ops="button_close_unfocused_prelight"/>
+     <button function="close" state="pressed" draw_ops="button_close_unfocused_pressed"/>
      <button function="maximize" state="normal" draw_ops="button_maximize_unfocused"/>
-     <button function="maximize" state="prelight" draw_ops="button_maximize_prelight"/>
-     <button function="maximize" state="pressed" draw_ops="button_maximize_pressed"/>
+     <button function="maximize" state="prelight" draw_ops="button_maximize_unfocused_prelight"/>
+     <button function="maximize" state="pressed" draw_ops="button_maximize_unfocused_pressed"/>
      <button function="minimize" state="normal" draw_ops="button_minimize_unfocused"/>
-     <button function="minimize" state="prelight" draw_ops="button_minimize_prelight"/>
-     <button function="minimize" state="pressed" draw_ops="button_minimize_pressed"/>
+     <button function="minimize" state="prelight" draw_ops="button_minimize_unfocused_prelight"/>
+     <button function="minimize" state="pressed" draw_ops="button_minimize_unfocused_pressed"/>
      <button function="menu" state="normal" draw_ops="button_menu_unfocused"/>
      <button function="menu" state="prelight" draw_ops="button_menu_unfocused_prelight"/>
      <button function="menu" state="pressed" draw_ops="button_menu_unfocused_pressed"/>
@@ -473,14 +573,14 @@
      <piece position="entire_background" draw_ops="border_unfocused"/>
 
      <button function="close" state="normal" draw_ops="button_close_unfocused"/>
-     <button function="close" state="prelight" draw_ops="button_close_prelight"/>
-     <button function="close" state="pressed" draw_ops="button_close_pressed"/>
+     <button function="close" state="prelight" draw_ops="button_close_unfocused_prelight"/>
+     <button function="close" state="pressed" draw_ops="button_close_unfocused_pressed"/>
      <button function="maximize" state="normal" draw_ops="button_maximize_unfocused"/>
-     <button function="maximize" state="prelight" draw_ops="button_maximize_prelight"/>
-     <button function="maximize" state="pressed" draw_ops="button_maximize_pressed"/>
+     <button function="maximize" state="prelight" draw_ops="button_maximize_unfocused_prelight"/>
+     <button function="maximize" state="pressed" draw_ops="button_maximize_unfocused_pressed"/>
      <button function="minimize" state="normal" draw_ops="button_minimize_unfocused"/>
-     <button function="minimize" state="prelight" draw_ops="button_minimize_prelight"/>
-     <button function="minimize" state="pressed" draw_ops="button_minimize_pressed"/>
+     <button function="minimize" state="prelight" draw_ops="button_minimize_unfocused_prelight"/>
+     <button function="minimize" state="pressed" draw_ops="button_minimize_unfocused_pressed"/>
      <button function="menu" state="normal" draw_ops="button_menu_normal"/>
      <button function="menu" state="prelight" draw_ops="button_menu_unfocused_prelight"/>
      <button function="menu" state="pressed" draw_ops="button_menu_unfocused_pressed"/>
@@ -513,14 +613,14 @@
      <piece position="title" draw_ops="title_all"/>
 
      <button function="close" state="normal" draw_ops="button_close_unfocused"/>
-     <button function="close" state="prelight" draw_ops="button_close_prelight"/>
-     <button function="close" state="pressed" draw_ops="button_close_pressed"/>
+     <button function="close" state="prelight" draw_ops="button_close_unfocused_prelight"/>
+     <button function="close" state="pressed" draw_ops="button_close_unfocused_pressed"/>
      <button function="maximize" state="normal" draw_ops="button_maximize_unfocused"/>
-     <button function="maximize" state="prelight" draw_ops="button_maximize_prelight"/>
-     <button function="maximize" state="pressed" draw_ops="button_maximize_pressed"/>
+     <button function="maximize" state="prelight" draw_ops="button_maximize_unfocused_prelight"/>
+     <button function="maximize" state="pressed" draw_ops="button_maximize_unfocused_pressed"/>
      <button function="minimize" state="normal" draw_ops="button_minimize_unfocused"/>
-     <button function="minimize" state="prelight" draw_ops="button_minimize_prelight"/>
-     <button function="minimize" state="pressed" draw_ops="button_minimize_pressed"/>
+     <button function="minimize" state="prelight" draw_ops="button_minimize_unfocused_prelight"/>
+     <button function="minimize" state="pressed" draw_ops="button_minimize_unfocused_pressed"/>
      <button function="menu" state="normal" draw_ops="button_menu_unfocused"/>
      <button function="menu" state="prelight" draw_ops="button_menu_unfocused_prelight"/>
      <button function="menu" state="pressed" draw_ops="button_menu_unfocused_pressed"/>
