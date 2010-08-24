@@ -1,17 +1,18 @@
 # Bulgarian translation of gtk-engines po-file.
-# Copyright (C) 2007, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gtk-engines package.
-# Alexander Shopov <ash@contact.bg>, 2007, 2009.
+# Alexander Shopov <ashkambanaria.org>, 2007, 2009, 2010.
 # Yavor Doganov <yavor@gnu.org>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-22 18:27+0300\n"
-"PO-Revision-Date: 2009-02-10 07:33+0200\n"
+"POT-Creation-Date: 2010-08-24 15:35+0300\n"
+"PO-Revision-Date: 2010-08-24 15:35+0300\n"
 "Last-Translator: Yavor Doganov <yavor@gnu.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
+"Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -94,14 +95,26 @@ msgid "Sets the Color of Scrollbars"
 msgstr "Задава цвета на лентите за придвижване"
 
 #: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shade of accelerator labels"
+msgstr "Непрозрачност на етикетите за клавишните комбинации"
+
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Shadow"
 msgstr "Сянка"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
 msgid "Style"
 msgstr "Стил"
 
-#: ../schema/clearlooks.xml.in.in.h:22
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+msgstr ""
+"Коефициент на смесване на цвета на етикетите с фоновия цвят. На практика "
+"това е непрозрачността."
+
+#: ../schema/clearlooks.xml.in.in.h:24
 msgid ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
@@ -109,7 +122,7 @@ msgstr ""
 "Това позволява изключването на изчертаването на фокуса. Ползва се основно за "
 "правенето на снимки на екрана за документация."
 
-#: ../schema/clearlooks.xml.in.in.h:23
+#: ../schema/clearlooks.xml.in.in.h:25
 msgid "Toolbar Style"
 msgstr "Стил на лентите за инструменти"
 
