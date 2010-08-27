@@ -9,8 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines fr\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-28 18:59+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
+"engines&component=general\n"
+"POT-Creation-Date: 2010-06-10 18:36+0000\n"
 "PO-Revision-Date: 2009-02-28 19:49+0100\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -95,22 +96,35 @@ msgid "Sets the Color of Scrollbars"
 msgstr "Définit la couleur des barres de défilement"
 
 #: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shade of accelerator labels"
+msgstr "Ombrer les étiquettes des accélérateurs"
+
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Shadow"
 msgstr "Ombre"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
 msgid "Style"
 msgstr "Style"
 
-#: ../schema/clearlooks.xml.in.in.h:22
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+msgstr ""
+"La valeur utilisée pour mélanger la couleur de l'étiquette avec "
+"la couleur de l'arrière-plan. La valeur est en fait l'opacité."
+
+#: ../schema/clearlooks.xml.in.in.h:24
 msgid ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
 msgstr ""
-"Cette option permet de désactiver les marques dessinées par le focus. L'utilité "
-"principale est la création des captures d'écran pour la documentation."
+"Cette option permet de désactiver les marques dessinées par le focus. "
+"L'utilité principale est la création des captures d'écran pour la "
+"documentation."
 
-#: ../schema/clearlooks.xml.in.in.h:23
+#: ../schema/clearlooks.xml.in.in.h:25
 msgid "Toolbar Style"
 msgstr "Style de la barre d'outils"
 
