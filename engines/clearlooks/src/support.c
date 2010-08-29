@@ -129,7 +129,6 @@ clearlooks_scrollbar_get_junction (GtkWidget    *widget)
 void
 clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar,
                                    GtkWidget *widget,
-                                   GdkWindow *window,
                                    gint x, gint y)
 {
 	GtkAllocation allocation;
@@ -140,7 +139,7 @@ clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar,
 	if (x == 0 && y == 0) {
 		if (widget && allocation.x == 0 && allocation.y == 0)
 		{
-			if (gtk_widget_get_window(widget) == window && GE_IS_TOOLBAR (widget))
+			if (GE_IS_TOOLBAR (widget))
 			{
 				toolbar->topmost = TRUE;
 			}

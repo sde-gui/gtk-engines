@@ -51,7 +51,7 @@ GE_INTERNAL ClearlooksStepper clearlooks_scrollbar_get_stepper         (GtkWidge
 GE_INTERNAL ClearlooksStepper clearlooks_scrollbar_visible_steppers    (GtkWidget       *widget);
 GE_INTERNAL ClearlooksJunction clearlooks_scrollbar_get_junction       (GtkWidget    *widget);
 
-GE_INTERNAL void clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar, GtkWidget *widget, GdkWindow *window, gint x, gint y);
+GE_INTERNAL void clearlooks_set_toolbar_parameters (ToolbarParameters *toolbar, GtkWidget *widget, gint x, gint y);
 GE_INTERNAL void clearlooks_get_notebook_tab_position (GtkWidget *widget, gboolean *start, gboolean *end);
 
 #endif /* SUPPORT_H */
