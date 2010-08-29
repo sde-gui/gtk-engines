@@ -1,0 +1,230 @@
+# Slovak translation for gtk-engines.
+# Copyright (C) 2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gtk-engines package.
+# Roman Mátyus <romanmatyus@gmail.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gtk-engines\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
+"engines&component=general\n"
+"POT-Creation-Date: 2010-08-28 14:58+0000\n"
+"PO-Revision-Date: 2010-08-29 18:08+0200\n"
+"Last-Translator: Roman Mátyus <romanmatyus@gmail.com>\n"
+"Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
+
+#: ../schema/clearlooks.xml.in.in.h:1
+msgid "3d-ish (button)"
+msgstr "3D efekt (tlačidlo)"
+
+#: ../schema/clearlooks.xml.in.in.h:2
+msgid "3d-ish (gradient)"
+msgstr "3D efekt (prechod)"
+
+#: ../schema/clearlooks.xml.in.in.h:3
+msgid "Animations"
+msgstr "Animácie"
+
+# ROMAN: Kontroloval som to v programe. Týka sa to štýlu.
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Klasický"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Zafarbiť rolovací pruh"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
+msgid "Contrast"
+msgstr "Kontrast"
+
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "Zakázat vykresľovanie ohniska"
+
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Enable Animations on Progressbars"
+msgstr "Povoliť animácie ukazovateľov priebehu"
+
+# ROMAN: Kontroloval som to v programe. Týka sa to štýlu.
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Flat"
+msgstr "Plochý"
+
+# ROMAN: Kontroloval som to v programe. Týka sa to štýlu.
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Glossy"
+msgstr "Lesklý"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Gummy"
+msgstr "Matný"
+
+# ROMAN: Kontroloval som to v programe. Týka sa to štýlu.
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inset"
+msgstr "Vložený"
+
+# ROMAN: Kontroloval som to v programe. Týka sa to štýlu.
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Inverted"
+msgstr "Invertovaný"
+
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Menubar Style"
+msgstr "Štýl ponuky"
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Radius"
+msgstr "Polomer"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Relief Style"
+msgstr "Štýl reliéfu"
+
+#: ../schema/clearlooks.xml.in.in.h:17
+msgid "Requires style Glossy or Gummy"
+msgstr "Vyžaduje lesklý alebo matný štýl"
+
+#: ../schema/clearlooks.xml.in.in.h:18
+msgid "Scrollbar Color"
+msgstr "Farba rolovacieho pruhu"
+
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Sets the Color of Scrollbars"
+msgstr "Nastavuje farbu rolovacích pruhov"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shade of accelerator labels"
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "Shadow"
+msgstr "Tieň"
+
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid "Style"
+msgstr "Štýl"
+
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+msgstr ""
+
+#: ../schema/clearlooks.xml.in.in.h:24
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr ""
+"Táto voľba umožní zakázať vykresľovanie ohniska. Primárne je funkcia určená "
+"na vytváranie snímok obrazoviek pre dokumentáciu."
+
+#: ../schema/clearlooks.xml.in.in.h:25
+msgid "Toolbar Style"
+msgstr "Štýl panelu nástrojov"
+
+#: ../schema/hcengine.xml.in.in.h:1
+msgid "Cell Indicator Size"
+msgstr "Veľkosť bunky ukazovateľa"
+
+#: ../schema/hcengine.xml.in.in.h:2
+msgid "Edge Thickness"
+msgstr "Hrúbka hrany"
+
+#: ../schema/hcengine.xml.in.in.h:3
+msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
+msgstr "Veľkosť zaškrtávacích polí a prepínačov v strome. (Chyba č. 351764)"
+
+#: ../schema/industrial.xml.in.in.h:2
+msgid "If set, button corners are rounded"
+msgstr "Ak je nastavené, rohy tlačidiel sú zaguľatené"
+
+#: ../schema/industrial.xml.in.in.h:3
+msgid "Rounded Buttons"
+msgstr "Zaguľatené tlačidlá"
+
+#: ../schema/thinice.xml.in.in.h:1
+msgid "Arrow"
+msgstr "Šípka"
+
+#: ../schema/thinice.xml.in.in.h:2
+msgid "Dot"
+msgstr "Bodka"
+
+# týka sa to Paned Dots, takže Bodkovej výplne
+#: ../schema/thinice.xml.in.in.h:3
+msgid "Full"
+msgstr "Úplná"
+
+# čo je "Handlebox"?
+# ROMAN: http://mail.gnome.org/archives/gnome-sk-list/2010-March/msg00313.html
+#: ../schema/thinice.xml.in.in.h:4
+msgid "Handlebox Marks"
+msgstr "Značky úchytu"
+
+#: ../schema/thinice.xml.in.in.h:5
+msgid "Inverted Dot"
+msgstr "Invertovaná bodka"
+
+#: ../schema/thinice.xml.in.in.h:6
+msgid "Inverted Slash"
+msgstr "Invertovaná lomka"
+
+#: ../schema/thinice.xml.in.in.h:7
+msgid "Mark Type 1"
+msgstr "Značka typu 1"
+
+#: ../schema/thinice.xml.in.in.h:8
+msgid "Mark Type for Scrollbar Buttons"
+msgstr "Typ značky pre tlačidlá rolovacieho pruhu"
+
+#: ../schema/thinice.xml.in.in.h:9
+msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
+msgstr "Značka typu pre rolovací pruh, úchyty, atď."
+
+# týka sa to Paned Dots, takže Bodkovej výplne
+#: ../schema/thinice.xml.in.in.h:10
+msgid "None"
+msgstr "Žiadna"
+
+#: ../schema/thinice.xml.in.in.h:11
+msgid "Nothing"
+msgstr "Nič"
+
+#: ../schema/thinice.xml.in.in.h:12
+msgid "Paned Dots"
+msgstr "Bodková výplň"
+
+#: ../schema/thinice.xml.in.in.h:13
+msgid "Rectangle"
+msgstr "Obdĺžnik"
+
+#: ../schema/thinice.xml.in.in.h:14
+msgid "Scrollbar Marks"
+msgstr "Značky rolovacieho pruhu"
+
+#: ../schema/thinice.xml.in.in.h:15
+msgid "Scrollbar Type"
+msgstr "Typ rolovacieho pruhu"
+
+#: ../schema/thinice.xml.in.in.h:16
+msgid "Scrollbutton Marks"
+msgstr "Značky tlačidiel rolovacieho pruhu"
+
+#: ../schema/thinice.xml.in.in.h:17
+msgid "Shaped"
+msgstr "Tvarovaný"
+
+#: ../schema/thinice.xml.in.in.h:18
+msgid "Slash"
+msgstr "Lomka"
+
+# týka sa to Paned Dots, takže Bodkovej výplne
+#: ../schema/thinice.xml.in.in.h:19
+msgid "Some"
+msgstr "Nejaká"
