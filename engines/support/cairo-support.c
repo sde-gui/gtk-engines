@@ -760,18 +760,12 @@ ge_cairo_color_pattern(CairoColor *base)
 CairoPattern*
 ge_cairo_pixbuf_pattern(GdkPixbuf *pixbuf)
 {
-	CairoPattern * result = g_new0(CairoPattern, 1);
+	CairoPattern * result;
+        cairo_pattern_t *pattern;
 
 	cairo_t *canvas;
 	cairo_surface_t * surface;
 	gint width, height;
-
-	#if ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-		result->type = CAIRO_PATTERN_TYPE_SURFACE;
-	#endif
-
-	result->scale = GE_DIRECTION_NONE;
-	result->translate = GE_DIRECTION_BOTH;
 
 	width = gdk_pixbuf_get_width(pixbuf);
 	height = gdk_pixbuf_get_height(pixbuf);
@@ -785,38 +779,30 @@ ge_cairo_pixbuf_pattern(GdkPixbuf *pixbuf)
 	cairo_fill (canvas);
 	cairo_destroy(canvas);
 
-	result->handle = cairo_pattern_create_for_surface (surface);
+	pattern = cairo_pattern_create_for_surface (surface);
 	cairo_surface_destroy(surface);
 
-	cairo_pattern_set_extend (result->handle, CAIRO_EXTEND_REPEAT);
+	cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
 
-	result->operator = CAIRO_OPERATOR_SOURCE;
+        result = ge_cairo_pattern_pattern (pattern);
+        cairo_pattern_destroy (pattern);
 
 	return result;
 }
 
-/***********************************************
- * ge_cairo_pixmap_pattern -
- *  
- *   Create A Tiled Pixmap Pattern
- ***********************************************/
 CairoPattern*
-ge_cairo_pixmap_pattern(GdkPixmap *pixmap)
-{	
-	CairoPattern * result = NULL;
+ge_cairo_pattern_pattern(cairo_pattern_t *pattern)
+{
+	CairoPattern * result = g_new0(CairoPattern, 1);
 
-	GdkPixbuf * pixbuf;
-	gint width, height;
+	#if ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
+		result->type = CAIRO_PATTERN_TYPE_SURFACE;
+	#endif
 
-	gdk_drawable_get_size (GDK_DRAWABLE (pixmap), &width, &height);
-
-	pixbuf = gdk_pixbuf_get_from_drawable(NULL, GDK_DRAWABLE (pixmap), 
-	         gdk_drawable_get_colormap(GDK_DRAWABLE (pixmap)), 
-	         0, 0, 0, 0, width, height);
-
-	result = ge_cairo_pixbuf_pattern(pixbuf);
-	
-	g_object_unref (pixbuf);
+	result->scale = GE_DIRECTION_NONE;
+	result->translate = GE_DIRECTION_BOTH;
+        result->handle = cairo_pattern_reference (pattern);
+	result->operator = CAIRO_OPERATOR_SOURCE;
 
 	return result;
 }

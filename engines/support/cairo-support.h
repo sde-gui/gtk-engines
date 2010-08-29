@@ -144,7 +144,7 @@ GE_INTERNAL void ge_cairo_pattern_fill(cairo_t *canvas, CairoPattern *pattern, g
 
 GE_INTERNAL CairoPattern *ge_cairo_color_pattern(CairoColor *base);
 GE_INTERNAL CairoPattern *ge_cairo_pixbuf_pattern(GdkPixbuf *pixbuf);
-GE_INTERNAL CairoPattern *ge_cairo_pixmap_pattern(GdkPixmap *pixmap);
+GE_INTERNAL CairoPattern *ge_cairo_pattern_pattern(cairo_pattern_t *pattern);
 GE_INTERNAL CairoPattern *ge_cairo_linear_shade_gradient_pattern(CairoColor *base, gdouble shade1, gdouble shade2, gboolean vertical);
 GE_INTERNAL void ge_cairo_pattern_destroy(CairoPattern *pattern);
 

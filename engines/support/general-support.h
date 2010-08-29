@@ -36,8 +36,11 @@
 #define CHECK_DETAIL(detail, value) ((detail) && (!strcmp(value, detail)))
 
 #define CHECK_ARGS					\
-  g_return_if_fail (window != NULL);			\
-  g_return_if_fail (style != NULL);
+  g_return_if_fail (cr != NULL);			\
+  g_return_if_fail (style != NULL);                     \
+  cairo_set_line_width (cr, 1.0);                       \
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);       \
+  cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);      \
 
 #define SANITIZE_SIZE					\
   g_return_if_fail (width  >= -1);			\
