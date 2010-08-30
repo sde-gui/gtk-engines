@@ -224,62 +224,7 @@ hc_style_realize (GtkStyle *style)
   HcStyle *hc_style = HC_STYLE (style);
   gint i;
 
-  for (i = 0; i < 5; i++)
-    {
-      style->light[i].red = MIN (65535, style->bg[i].red + 0.5 * 65535);
-      style->light[i].green = MIN (65535, style->bg[i].green + 0.5 * 65535);
-      style->light[i].blue = MIN (65535, style->bg[i].blue + 0.5 * 65535);
-
-      style->dark[i].red = MAX (0, style->bg[i].red - 0.5 * 65535);
-      style->dark[i].green = MAX (0, style->bg[i].green - 0.5 * 65535);
-      style->dark[i].blue = MAX (0, style->bg[i].blue - 0.5 * 65535);
-
-      style->mid[i].red = (style->light[i].red + style->dark[i].red) / 2;
-      style->mid[i].green = (style->light[i].green + style->dark[i].green) / 2;
-      style->mid[i].blue = (style->light[i].blue + style->dark[i].blue) / 2;
-
-      style->text_aa[i].red = (style->text[i].red + style->base[i].red) / 2;
-      style->text_aa[i].green = (style->text[i].green + style->base[i].green) / 2;
-      style->text_aa[i].blue = (style->text[i].blue + style->base[i].blue) / 2;
-    }
-
-  style->black.red = 0x0000;
-  style->black.green = 0x0000;
-  style->black.blue = 0x0000;
-  gdk_colormap_alloc_color (style->colormap, &style->black, FALSE, TRUE);
-
-  style->white.red = 0xffff;
-  style->white.green = 0xffff;
-  style->white.blue = 0xffff;
-  gdk_colormap_alloc_color (style->colormap, &style->white, FALSE, TRUE);
-
-  for (i = 0; i < 5; i++)
-    {
-      if (!gdk_colormap_alloc_color (style->colormap, &style->fg[i], FALSE, TRUE))
-        g_warning ("unable to allocate color: ( %d %d %d )",
-                   style->fg[i].red, style->fg[i].green, style->fg[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->bg[i], FALSE, TRUE))
-        g_warning ("unable to allocate color: ( %d %d %d )",
-                   style->bg[i].red, style->bg[i].green, style->bg[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->light[i], FALSE, TRUE))
-        g_warning ("unable to allocate color: ( %d %d %d )",
-                   style->light[i].red, style->light[i].green, style->light[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->dark[i], FALSE, TRUE))
-        g_warning ("unable to allocate color: ( %d %d %d )",
-                   style->dark[i].red, style->dark[i].green, style->dark[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->mid[i], FALSE, TRUE))
-        g_warning ("unable to allocate color: ( %d %d %d )",
-                   style->mid[i].red, style->mid[i].green, style->mid[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->text[i], FALSE, TRUE))
-        g_warning ("unable to allocate color: ( %d %d %d )",
-                   style->text[i].red, style->text[i].green, style->text[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->base[i], FALSE, TRUE))
-        g_warning ("unable to allocate color: ( %d %d %d )",
-                   style->base[i].red, style->base[i].green, style->base[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->text_aa[i], FALSE, TRUE))
-        g_warning ("unable to allocate color: ( %d %d %d )",
-                   style->text_aa[i].red, style->text_aa[i].green, style->text_aa[i].blue);
-    }
+  GTK_STYLE_CLASS (hc_style_parent_class)->realize (style);
 
   ge_gtk_style_to_cairo_color_cube (style, &hc_style->color_cube);
 }
