@@ -118,9 +118,10 @@ redmond_style_realize (GtkStyle * style)
 
       redmond_style->bg_image[i] = NULL;
 
-      if ((style->bg_pixmap[i]) && (style->bg_pixmap[i] != (GdkPixmap*) GDK_PARENT_RELATIVE))
+      if (style->rc_style->bg_pixmap_name[i] && 
+          style->background[i] != NULL)
       {
-        redmond_style->bg_image[i] = ge_cairo_pixmap_pattern(style->bg_pixmap[i]);
+        redmond_style->bg_image[i] = ge_cairo_pattern_pattern(style->background[i]);
       }
     }
 }

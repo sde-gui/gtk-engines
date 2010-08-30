@@ -355,7 +355,6 @@ void
 do_redmond_draw_line(cairo_t *cr,
              CairoColor * dark,
              CairoColor * light,
-             GdkRectangle * area,
              gint start,
              gint end,
              gint base,
