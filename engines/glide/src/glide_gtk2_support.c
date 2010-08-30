@@ -933,7 +933,6 @@ void
 do_glide_draw_line(cairo_t *canvas,
              CairoColor * dark,
              CairoColor * light,
-             GdkRectangle * area,
              gint start,
              gint end,
              gint base,

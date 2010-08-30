@@ -33,9 +33,8 @@
  ***********************************************/
 void
 glide_draw_hline (GtkStyle * style,
-	    GdkWindow * window,
+	    cairo_t * cr,
 	    GtkStateType state_type,
-	    GdkRectangle * area,
 	    GtkWidget * widget,
 	    const gchar * detail, 
             gint x1,
@@ -43,20 +42,14 @@ glide_draw_hline (GtkStyle * style,
             gint y)
 {
   GlideStyle *glide_style = GLIDE_STYLE (style);
-  cairo_t *canvas;
 
   CHECK_ARGS
  
-  canvas = ge_gdk_drawable_to_cairo (window, area);
-
-  do_glide_draw_line(canvas, 
+  do_glide_draw_line(cr, 
                        &glide_style->color_cube.dark[state_type], 
                        &glide_style->color_cube.light[state_type], 
-                       area, 
                        x1, x2, y, 
                        TRUE);
-
-  cairo_destroy(canvas);
 }
  
 /***********************************************
@@ -66,9 +59,8 @@ glide_draw_hline (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_vline (GtkStyle * style,
-	    GdkWindow * window,
+	    cairo_t * cr,
 	    GtkStateType state_type,
-	    GdkRectangle * area,
 	    GtkWidget * widget,
 	    const gchar * detail, 
             gint y1, 
@@ -76,23 +68,17 @@ glide_draw_vline (GtkStyle * style,
             gint x)
 {
   GlideStyle *glide_style = GLIDE_STYLE (style);
-  cairo_t *canvas;
 
   if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
     return;
  
   CHECK_ARGS
  
-  canvas = ge_gdk_drawable_to_cairo (window, area);
-
-  do_glide_draw_line(canvas, 
+  do_glide_draw_line(cr, 
                        &glide_style->color_cube.dark[state_type], 
                        &glide_style->color_cube.light[state_type], 
-                       area, 
                        y1, y2, x, 
                        FALSE);
-
-  cairo_destroy(canvas);
 }
   
 /***********************************************
@@ -102,10 +88,9 @@ glide_draw_vline (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_check (GtkStyle * style,
-	    GdkWindow * window,
+	    cairo_t * cr,
 	    GtkStateType state,
 	    GtkShadowType shadow,
-	    GdkRectangle * area,
 	    GtkWidget * widget,
 	    const gchar * detail, 
             gint x, 
@@ -114,11 +99,9 @@ glide_draw_check (GtkStyle * style,
             gint height)
 {
 	GlideStyle *glide_style = GLIDE_STYLE (style);
-	cairo_t *canvas;
 	gboolean inconsistent;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	if (GE_IS_CHECK_MENU_ITEM(widget)) 
 	{
@@ -136,13 +119,11 @@ glide_draw_check (GtkStyle * style,
 	}
 
  
-	canvas = ge_gdk_drawable_to_cairo (window, area);
+	ge_cairo_set_color(cr, &glide_style->color_cube.base[state]);
 
-	ge_cairo_set_color(canvas, &glide_style->color_cube.base[state]);
+	cairo_rectangle(cr, x, y, width - 1, height - 1);
 
-	cairo_rectangle(canvas, x, y, width - 1, height - 1);
-
-	cairo_fill(canvas);
+	cairo_fill(cr);
 
 	inconsistent = shadow == GTK_SHADOW_ETCHED_IN;
 
@@ -153,33 +134,33 @@ glide_draw_check (GtkStyle * style,
 			gdouble radius = (MIN(width, height)/2) - 2;
 			gdouble line_width = (radius/2.0);
 
-			cairo_set_line_cap(canvas, CAIRO_LINE_CAP_SQUARE);
-			cairo_set_line_width (canvas, floor(line_width));
+			cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE);
+			cairo_set_line_width (cr, floor(line_width));
 
-			cairo_move_to(canvas, x + floor(width/2 - radius + line_width), y + floor(height/2.0));
-			cairo_line_to(canvas, x + ceil(width/2 + radius - line_width), y + floor(height/2.0));
+			cairo_move_to(cr, x + floor(width/2 - radius + line_width), y + floor(height/2.0));
+			cairo_line_to(cr, x + ceil(width/2 + radius - line_width), y + floor(height/2.0));
 
 			if (state==GTK_STATE_INSENSITIVE)
 			{
-				ge_cairo_set_color(canvas, &glide_style->color_cube.dark[state]);	
+				ge_cairo_set_color(cr, &glide_style->color_cube.dark[state]);	
 			}
 			else
 			{
-				ge_cairo_set_color(canvas, &glide_style->color_cube.text[state]);	
+				ge_cairo_set_color(cr, &glide_style->color_cube.text[state]);	
 			}
 
-			cairo_stroke (canvas);
+			cairo_stroke (cr);
 		}
 		else
 		{
 			if (state==GTK_STATE_INSENSITIVE)
 			{
-				do_glide_draw_check (canvas, &glide_style->color_cube.dark[state],
+				do_glide_draw_check (cr, &glide_style->color_cube.dark[state],
 								x + 2, y + 2, width - 4, height - 4);
 			}
 			else
 			{
-				do_glide_draw_check (canvas, &glide_style->color_cube.text[state],
+				do_glide_draw_check (cr, &glide_style->color_cube.text[state],
 								x + 2, y + 2, width - 4, height - 4);
 			}
 		}
@@ -188,12 +169,9 @@ glide_draw_check (GtkStyle * style,
 	if (state!=GTK_STATE_PRELIGHT)
 		state = GTK_STATE_NORMAL;
 	
-	do_glide_draw_border(canvas, &glide_style->color_cube.bg[state],
+	do_glide_draw_border(cr, &glide_style->color_cube.bg[state],
 				GLIDE_BEVEL_STYLE_SMOOTHER, GLIDE_BORDER_TYPE_IN,
 				x, y, width, height);
-
-
-	cairo_destroy(canvas);
 }
  
 /***********************************************
@@ -203,10 +181,9 @@ glide_draw_check (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_option (GtkStyle * style,
-	     GdkWindow * window,
+	     cairo_t * cr,
 	     GtkStateType state,
 	     GtkShadowType shadow,
-	     GdkRectangle * area,
 	     GtkWidget * widget,
 	     const gchar * detail, 
              gint x,
@@ -225,13 +202,10 @@ glide_draw_option (GtkStyle * style,
 	GlideBevelStyle bevel_style;
 	GlideBorderType border_type;
 
-	cairo_t *canvas;
-
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 
 	/***********************************************/
@@ -289,13 +263,10 @@ glide_draw_option (GtkStyle * style,
 	/***********************************************/
 	/* Draw Option                                 */
 	/***********************************************/
-	canvas = ge_gdk_drawable_to_cairo (window, area);
 
-	do_glide_draw_round_option(canvas, base, fill_color, check_color, 
+	do_glide_draw_round_option(cr, base, fill_color, check_color, 
 					bevel_style, border_type, check_state,
 					x, y, width, height);
-
-	cairo_destroy(canvas);
 }
  
 /***********************************************
@@ -308,10 +279,9 @@ glide_draw_option (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_arrow (GtkStyle * style,
-	    GdkWindow * window,
+	    cairo_t * cr,
 	    GtkStateType state,
 	    GtkShadowType shadow,
-	    GdkRectangle * area,
 	    GtkWidget * widget,
 	    const gchar * detail,
 	    GtkArrowType arrow_type,
@@ -326,13 +296,10 @@ glide_draw_arrow (GtkStyle * style,
 
 	GlideStyle *glide_style;
 
-	cairo_t *canvas;
-
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	/***********************************************/
 	/* GTK Arrow Special Cases - adjust Size/Offset*/
@@ -426,19 +393,15 @@ glide_draw_arrow (GtkStyle * style,
 	/***********************************************/
 	glide_style = GLIDE_STYLE (style);
 
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
 	if (state == GTK_STATE_INSENSITIVE)
 	{
-		do_glide_draw_arrow (canvas, &glide_style->color_cube.light[state], arrow_type, TRUE, x+1, y+1, width, height);
-		do_glide_draw_arrow (canvas, &glide_style->color_cube.dark[state], arrow_type, TRUE, x, y, width, height);
+		do_glide_draw_arrow (cr, &glide_style->color_cube.light[state], arrow_type, TRUE, x+1, y+1, width, height);
+		do_glide_draw_arrow (cr, &glide_style->color_cube.dark[state], arrow_type, TRUE, x, y, width, height);
 	}
 	else
 	{
-		do_glide_draw_arrow (canvas, &glide_style->color_cube.fg[state], arrow_type, TRUE, x, y, width, height);
+		do_glide_draw_arrow (cr, &glide_style->color_cube.fg[state], arrow_type, TRUE, x, y, width, height);
 	}
-
-	cairo_destroy(canvas);
 }
  
 /***********************************************
@@ -453,10 +416,9 @@ glide_draw_arrow (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_shadow (GtkStyle * style,
-	     GdkWindow * window,
+	     cairo_t * cr,
 	     GtkStateType state_type,
 	     GtkShadowType shadow_type,
-	     GdkRectangle * area,
 	     GtkWidget * widget,
 	     const gchar * detail, 
              gint x, 
@@ -467,11 +429,9 @@ glide_draw_shadow (GtkStyle * style,
 	GlideBevelStyle bevel_style;
 	GlideBorderType border_type;
 
-	cairo_t *canvas;
  	CairoColor *background;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	/***********************************************/
 	/* GTK Special Cases - adjust Size/Type        */
@@ -555,12 +515,9 @@ glide_draw_shadow (GtkStyle * style,
 	/***********************************************/
 	/* Draw Border                                 */
 	/***********************************************/
-	canvas = ge_gdk_drawable_to_cairo (window, area);
  	background = &GLIDE_STYLE (style)->color_cube.bg[state_type];
 
-	do_glide_draw_border(canvas, background, bevel_style, border_type, x, y, width, height);
-
-	cairo_destroy(canvas);
+	do_glide_draw_border(cr, background, bevel_style, border_type, x, y, width, height);
 }
  
 /***********************************************
@@ -573,10 +530,9 @@ glide_draw_shadow (GtkStyle * style,
  ***********************************************/
 static void
 glide_draw_combobox_button (GtkStyle * style,
-		      GdkWindow * window,
+		      cairo_t * cr,
 		      GtkStateType state_type,
 		      GtkShadowType shadow_type,
-		      GdkRectangle * area,
 		      GtkWidget * widget,
 		      const gchar * detail,
 		      gint x, 
@@ -647,8 +603,6 @@ glide_draw_combobox_button (GtkStyle * style,
 
   if ((!(widget)) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
     {
-      cairo_t *canvas;
-
       if (ge_is_combo_box_entry (widget)
           || ge_is_combo_box (widget, TRUE))
         {
@@ -665,23 +619,21 @@ glide_draw_combobox_button (GtkStyle * style,
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-	      canvas = gdk_cairo_create (window);
-	      gdk_cairo_set_source_color (canvas,
+	      gdk_cairo_set_source_color (cr,
 	                                  &parent_style->base[parent_state]);
-              cairo_rectangle (canvas, x - 2, y, width + 2, height);
-              cairo_fill (canvas);
-              cairo_destroy (canvas);
+              cairo_rectangle (cr, x - 2, y, width + 2, height);
+              cairo_fill (cr);
             }
           else
-            glide_draw_flat_box(style, window, parent_state,
-			        GTK_SHADOW_NONE, area, widget, "entry_bg", x - 2,
+            glide_draw_flat_box(style, cr, parent_state,
+			        GTK_SHADOW_NONE, widget, "entry_bg", x - 2,
 			        y, width + 2, height);
  
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-          glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN,
-  		            area, widget, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
+          glide_draw_shadow (style, cr, parent_state, GTK_SHADOW_IN,
+  		            widget, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
       else
@@ -702,38 +654,32 @@ glide_draw_combobox_button (GtkStyle * style,
           if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
-          gtk_paint_flat_box (parent_style, window, parent_state,
-			      GTK_SHADOW_NONE, area, parent, "entry_bg", x - 2,
+          gtk_paint_flat_box (parent_style, cr, parent_state,
+			      GTK_SHADOW_NONE, parent, "entry_bg", x - 2,
 			      y, width + 2, height);
-          gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
-		   	    area, parent, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
+          gtk_paint_shadow (parent_style, cr, parent_state, GTK_SHADOW_IN,
+		   	    parent, "combo_box_entry", x - thick*2 - focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 + focus_padding*2, height - focus*2 + focus_padding*2);
         }
  
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x + focus, y + thick + focus,
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x + focus, y + thick + focus,
                              width - thick - focus*2, height - thick*2 - focus*2);
 
-        glide_draw_shadow (style, window, state_type, shadow_type, area,
+        glide_draw_shadow (style, cr, state_type, shadow_type,
 		          widget, detail, x + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
 #if 0
       glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "comboarrow", GTK_ARROW_DOWN, TRUE,  x + focus + 6, y + thick + focus + 5, width - thick - focus*2 - 12, height - 2*thick - focus*2 - 10);
 #endif
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
-
-      cairo_destroy(canvas);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
       if (entry_focused)
       {
-             glide_draw_focus(style, window, state_type, area, widget, "combo_entry_button", x - 2, y, width + 2, height);
+             glide_draw_focus(style, cr, state_type, widget, "combo_entry_button", x - 2, y, width + 2, height);
       }
     } 
   else
     {
-      cairo_t *canvas;
-
       focus_padding = -focus_padding;
 
       if (ge_is_combo_box_entry (widget)
@@ -752,24 +698,22 @@ glide_draw_combobox_button (GtkStyle * style,
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-	      canvas = gdk_cairo_create (window);
-	      gdk_cairo_set_source_color (canvas,
+	      gdk_cairo_set_source_color (cr,
 	                                  &parent_style->base[parent_state]);
-	      cairo_rectangle (canvas,
+	      cairo_rectangle (cr,
 	                       x + focus - focus_padding,
 	                       y + focus - focus_padding,
 	                       width + thick*2 - focus + focus_padding*2,
 	                       height - focus*2 + focus_padding*2);
-	      cairo_fill (canvas);
-	      cairo_destroy (canvas);
+	      cairo_fill (cr);
             }
           else
             {
               if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-            glide_draw_flat_box (style, window, parent_state,
-	  	                GTK_SHADOW_NONE, area, widget, "entry_bg", 
+            glide_draw_flat_box (style, cr, parent_state,
+	  	                GTK_SHADOW_NONE, widget, "entry_bg", 
 				x + focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
 	     }
@@ -777,8 +721,8 @@ glide_draw_combobox_button (GtkStyle * style,
 	      if (parent_state != GTK_STATE_INSENSITIVE)
                 parent_state = GTK_STATE_NORMAL;
 
-          glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN,
-	  		    area, widget, "combo_box_entry",
+          glide_draw_shadow (style, cr, parent_state, GTK_SHADOW_IN,
+	  		    widget, "combo_box_entry",
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
         }
@@ -800,33 +744,29 @@ glide_draw_combobox_button (GtkStyle * style,
           if (parent_state != GTK_STATE_INSENSITIVE)
             parent_state = GTK_STATE_NORMAL;
 
-          gtk_paint_flat_box (parent_style, window, parent_state,
-			      GTK_SHADOW_NONE, area, parent, "entry_bg", 
+          gtk_paint_flat_box (parent_style, cr, parent_state,
+			      GTK_SHADOW_NONE, parent, "entry_bg", 
 				x + focus - focus_padding, y + focus - focus_padding, 
 				width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
-          gtk_paint_shadow (parent_style, window, parent_state, GTK_SHADOW_IN,
-		   	    area, parent, "combo_box_entry", 
+          gtk_paint_shadow (parent_style, cr, parent_state, GTK_SHADOW_IN,
+		   	    parent, "combo_box_entry", 
                                 x + focus - focus_padding, y + focus - focus_padding, 
                                 width + thick*2 - focus + focus_padding*2, height - focus*2 + focus_padding*2);
         }
  
-	canvas = ge_gdk_drawable_to_cairo (window, area);
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
-
-        glide_draw_shadow (style, window, state_type, shadow_type, area,
+        glide_draw_shadow (style, cr, state_type, shadow_type,
 		          widget, detail, x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
 #if 0
       glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "comboarrow", GTK_ARROW_DOWN, TRUE,  x + thick + focus + 6, y + thick + focus + 5, width - thick - focus*2 - 12, height - 2*thick - focus*2 - 10);
 #endif
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
-
-	cairo_destroy(canvas);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + thick + focus, y + thick + focus, width - thick - focus*2, height - 2*thick - focus*2);
 
       if (entry_focused)
       {
-             glide_draw_focus(style, window, state_type, area, widget, "combo_entry_button", x, y, width, height);
+             glide_draw_focus(style, cr, state_type, widget, "combo_entry_button", x, y, width, height);
       }
     }
 }
@@ -841,10 +781,9 @@ glide_draw_combobox_button (GtkStyle * style,
  ***********************************************/
 static void
 glide_draw_spinbutton_stepper (GtkStyle * style,
-			 GdkWindow * window,
+			 cairo_t * cr,
 			 GtkStateType state_type,
 			 GtkShadowType shadow_type,
-			 GdkRectangle * area,
 			 GtkWidget * widget,
 			 const gchar * detail,
 			 gint x, 
@@ -868,7 +807,6 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
   gboolean entry_focused = FALSE;
   gint focus_line_width = 0, focus_padding = 0, focus = 0, thick = 2;
   gboolean interior_focus = TRUE;
-  cairo_t *canvas;
 
   spin_area.x = x;
   spin_area.y = y;
@@ -902,26 +840,29 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
       GtkRequisition requisition;
       if (CHECK_DETAIL (detail, "spinbutton_up"))
 	{
-	  glide_draw_flat_box (style, window, parent_state,
-			      GTK_SHADOW_NONE, &spin_area, widget,
+          cairo_save (cr);
+          gdk_cairo_rectangle (cr, &spin_area);
+          cairo_clip (cr);
+
+	  glide_draw_flat_box (style, cr, parent_state,
+			      GTK_SHADOW_NONE, widget,
 			      "entry_bg", 
 				x - thick, y + focus, width + thick - focus, height - focus*2);
 
-	  glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
+	  glide_draw_shadow (style, cr, parent_state, GTK_SHADOW_IN, widget, detail, 
                                 x - thick, y + focus, width + thick - focus, height + thick - focus);
 
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
+          cairo_restore (cr);
 	if (!((width + thick) % 2) && !focus)
 	{
 		x += 1;
 		width -= 1;
 	}
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x, y + thick + focus, width - thick - focus, height - thick - focus); 
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x, y + thick + focus, width - thick - focus, height - thick - focus); 
 
                                  	
-	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
+	  glide_draw_shadow (style, cr, state_type, shadow_type, widget, detail,
                                 x, y + thick + focus, width - thick - focus, height - thick - focus);
 
 	if (widget)
@@ -931,33 +872,35 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 
 	if (!widget || (requisition.height / 2) != (requisition.height + 1) / 2)
 	{
-		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
+		glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
 					x + thick/2, y + thick + 1, width - thick*2, height - thick*2 + 1);
 	}
 	else
 	{
-		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
+		glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
 					x + thick/2, y + thick + 1, width - thick*2, height - thick*2);
 	}
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y + thick + focus, width - thick - focus, height - thick - focus);
-
-	cairo_destroy(canvas);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y + thick + focus, width - thick - focus, height - thick - focus);
 
           if (entry_focused)
             {
-              glide_draw_focus(style, window, parent_state, area, widget, detail, x - thick, y, width + thick, height + thick);
+              glide_draw_focus(style, cr, parent_state, widget, detail, x - thick, y, width + thick, height + thick);
             }
 	}
       else
 	{
-	  glide_draw_flat_box (style, window, parent_state,
-			      GTK_SHADOW_NONE, &spin_area, widget,
+          cairo_save (cr);
+          gdk_cairo_rectangle (cr, &spin_area);
+          cairo_clip (cr);
+
+	  glide_draw_flat_box (style, cr, parent_state,
+			      GTK_SHADOW_NONE, widget,
 			      "entry_bg", x - thick, y, width + thick - focus, height - focus);
 
-	  glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail,  
+	  glide_draw_shadow (style, cr, parent_state, GTK_SHADOW_IN, widget, detail,  
 			    x - thick, y - thick, width + thick - focus, height + thick - focus);
 
-	canvas = ge_gdk_drawable_to_cairo (window, area);
+          cairo_restore (cr);
 
 	if (!((width + thick) % 2) && !focus)
 	{
@@ -965,28 +908,27 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 		width -= 1;
 	}
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x, y + thick, width - thick - focus, height - thick*2 - focus);
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x, y + thick, width - thick - focus, height - thick*2 - focus);
 
-	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail,
+	  glide_draw_shadow (style, cr, state_type, shadow_type, widget, detail,
 			    x, y , width - thick - focus, height - thick - focus);
 
 	if (!widget || (requisition.height / 2) != (requisition.height + 1) / 2)
 	{
-		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
+		glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
 					x + thick/2, y + thick/2 + 1 - focus, width - thick*2, height - thick*2 - 2);
 	}
 	else
 	{
-		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
+		glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
 					x + thick/2, y + thick/2 - focus, width - thick*2, height - thick*2);
 	}
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y , width - thick - focus, height - thick - focus);
-	cairo_destroy(canvas);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y , width - thick - focus, height - thick - focus);
 
           if (entry_focused)
             {
-              glide_draw_focus(style, window, parent_state, area, widget, detail, x - thick, y, width + thick, height);
+              glide_draw_focus(style, cr, parent_state, widget, detail, x - thick, y, width + thick, height);
             }
 	}
     }
@@ -997,84 +939,89 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
 
       if (CHECK_DETAIL (detail, "spinbutton_up"))
 	{
-	  glide_draw_flat_box (style, window, parent_state,
-			      GTK_SHADOW_NONE, &spin_area, widget,
+          cairo_save (cr);
+          gdk_cairo_rectangle (cr, &spin_area);
+          cairo_clip (cr);
+
+	  glide_draw_flat_box (style, cr, parent_state,
+			      GTK_SHADOW_NONE, widget,
 			      "entry_bg", x + focus, y + focus, width + thick*2 - focus, height - focus);
-	  glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
+	  glide_draw_shadow (style, cr, parent_state, GTK_SHADOW_IN, widget, detail, 
 				x + focus, y + focus, width + thick*2 - focus, height + thick - focus);
 
-	canvas = ge_gdk_drawable_to_cairo (window, area);
+          cairo_restore (cr);
 
 	if (!((width + thick) % 2) && !focus)
 	{
 		width -= 1;
 	}
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x + thick + focus, y + thick + focus, width - thick - focus, height - thick - focus);
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x + thick + focus, y + thick + focus, width - thick - focus, height - thick - focus);
 
 
-	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail, 
+	  glide_draw_shadow (style, cr, state_type, shadow_type, widget, detail, 
 				x + thick + focus, y + thick + focus , width - thick - focus, height - thick - focus);
 
 
 
 	if ((requisition.height / 2) != (requisition.height + 1) / 2)
 	{
-		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
+		glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
 					x + thick + focus, y + thick - 1 + focus, width - thick, height - thick + 1);
 	}
 	else
 	{
-		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
+		glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "spinbutton_arrow", GTK_ARROW_UP, TRUE,
 					x + thick + focus, y + thick, width - thick, height - thick);
 	}
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + thick + focus, y + thick + focus , width - thick - focus, height - thick - focus);
-	cairo_destroy(canvas);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + thick + focus, y + thick + focus , width - thick - focus, height - thick - focus);
           if (entry_focused)
             {
-              glide_draw_focus(style, window, parent_state, area, widget, detail, x, y, width + thick*2, height + thick);
+              glide_draw_focus(style, cr, parent_state, widget, detail, x, y, width + thick*2, height + thick);
             }
 	}
       else
 	{
-	  glide_draw_flat_box (style, window, parent_state,
-			      GTK_SHADOW_NONE, &spin_area, widget,
+          cairo_save (cr);
+          gdk_cairo_rectangle (cr, &spin_area);
+          cairo_clip (cr);
+
+	  glide_draw_flat_box (style, cr, parent_state,
+			      GTK_SHADOW_NONE, widget,
 			      "entry_bg",x + focus, y, width + thick*2 - focus, height - focus);
-	  glide_draw_shadow (style, window, parent_state, GTK_SHADOW_IN, &spin_area, widget, detail, 
+	  glide_draw_shadow (style, cr, parent_state, GTK_SHADOW_IN, widget, detail, 
 				x + focus , y - thick, width + thick*2 - focus, height + thick - focus);
-	canvas = ge_gdk_drawable_to_cairo (window, area);
+
+          cairo_restore (cr);
 
 	if (!((width + thick) % 2) && !focus)
 	{
 		width -= 1;
 	}
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x + thick + focus, y, width - thick - focus, height - thick - focus);
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x + thick + focus, y, width - thick - focus, height - thick - focus);
 
-	  glide_draw_shadow (style, window, state_type, shadow_type, area, widget, detail, 
+	  glide_draw_shadow (style, cr, state_type, shadow_type, widget, detail, 
                                 x + thick + focus, y, width - thick - focus, height - thick - focus);
 
 
 	if ((requisition.height / 2) != (requisition.height + 1) / 2)
 	{
-		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
+		glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
 					x + thick + focus, y + 1 - focus, width - thick, height - thick - 2);
 	}
 	else
 	{
-		glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
+		glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "spinbutton_arrow", GTK_ARROW_DOWN, TRUE,
 					x + thick + focus, y, width - thick, height - thick);
 	}
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + thick + focus, y, width - thick - focus, height - thick - focus);
-
-	cairo_destroy(canvas);
-
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x + thick + focus, y, width - thick - focus, height - thick - focus);
 
           if (entry_focused)
             {
-              glide_draw_focus(style, window, parent_state, area, widget, detail, x, y - thick, width + thick*2, height + thick);
+              glide_draw_focus(style, cr, parent_state, widget, detail, x, y - thick, width + thick*2, height + thick);
             }
 	}
     }
@@ -1095,10 +1042,9 @@ glide_draw_spinbutton_stepper (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_box (GtkStyle * style,
-	  GdkWindow * window,
+	  cairo_t * cr,
 	  GtkStateType state_type,
 	  GtkShadowType shadow_type,
-	  GdkRectangle * area,
 	  GtkWidget * widget,
 	  const gchar * detail, 
           gint x, 
@@ -1108,10 +1054,8 @@ glide_draw_box (GtkStyle * style,
 {
   GlideStyle *glide_style = GLIDE_STYLE (style);
   GlideBorderType border_type;
-  cairo_t *canvas;
  
   CHECK_ARGS
-  SANITIZE_SIZE
 
   if (GE_IS_MENU_SHELL(widget))
     {
@@ -1148,19 +1092,17 @@ glide_draw_box (GtkStyle * style,
 		break;
 	}
 
-  canvas = ge_gdk_drawable_to_cairo (window, area);
-
   if ((CHECK_DETAIL (detail, "vscrollbar"))  || (CHECK_DETAIL (detail, "hscrollbar")))
     {
       gboolean vertical = CHECK_DETAIL (detail, "vscrollbar");
 
-      ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[vertical][state_type]), x-1, y-1, width+1, height+1);
+      ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[vertical][state_type]), x-1, y-1, width+1, height+1);
  
-	do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
+	do_glide_draw_border(cr, &glide_style->color_cube.bg[state_type],
 				GLIDE_BEVEL_STYLE_SMOOTHER, border_type,
 				x, y, width, height);
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,vertical), x, y, width, height);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,vertical), x, y, width, height);
 
     }
   else if (detail && g_str_has_prefix (detail, "trough")) /* accept trough side details */
@@ -1181,29 +1123,29 @@ glide_draw_box (GtkStyle * style,
 			hborder = MIN(8, (width - 6) / 2);
 		}
 
-		ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, GTK_STATE_NORMAL,
+		ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, GTK_STATE_NORMAL,
 		                      glide_style->bg_solid[GTK_STATE_NORMAL]), x, y, width, height);
 
-		ge_cairo_pattern_fill(canvas, glide_style->bg_solid[GTK_STATE_ACTIVE], 
+		ge_cairo_pattern_fill(cr, glide_style->bg_solid[GTK_STATE_ACTIVE], 
 		                      x+hborder, y+vborder, width-hborder*2, height-vborder*2);
 
 		if (CHECK_DETAIL (detail, "trough-lower"))
-			ge_cairo_pattern_fill(canvas, glide_style->bg_gradient[TRUE][GTK_STATE_SELECTED], 
+			ge_cairo_pattern_fill(cr, glide_style->bg_gradient[TRUE][GTK_STATE_SELECTED], 
 			                      x + hborder, y+vborder, width - hborder*2, height-vborder*2);
 
-		ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, "menuitem",FALSE), 
+		ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, "menuitem",FALSE), 
 				      x+hborder, y+vborder, width-hborder*2, height-vborder*2);
 
-		do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_NORMAL],
+		do_glide_draw_border(cr, &glide_style->color_cube.bg[GTK_STATE_NORMAL],
 				     GLIDE_BEVEL_STYLE_SMOOTHER, GLIDE_BORDER_TYPE_IN,
 				     x+hborder, y+vborder, width-hborder*2, height-vborder*2);
 	} 
 	else 
 	{
-		ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_solid[state_type]), 
+		ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_solid[state_type]), 
 						x, y, width, height);
 
-		do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_NORMAL],
+		do_glide_draw_border(cr, &glide_style->color_cube.bg[GTK_STATE_NORMAL],
 					GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_IN,
 					x, y, width, height);
 	}
@@ -1290,7 +1232,7 @@ glide_draw_box (GtkStyle * style,
 	    }    
 	}
 
-      ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_solid[state_type]), x, y, width, height);
+      ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_solid[state_type]), x, y, width, height);
   
       /* If this is a menu embedded in the gnome-panel, we don't
        *  draw a border since it looks cleaner without one.
@@ -1299,28 +1241,28 @@ glide_draw_box (GtkStyle * style,
 	  ((!((CHECK_DETAIL (detail, "menubar")) && 
 	  ge_is_panel_widget_item (widget)))))
         {
-	  cairo_save(canvas);
-          cairo_rectangle(canvas, x, y, width, height);
-          cairo_clip(canvas);
+	  cairo_save(cr);
+          cairo_rectangle(cr, x, y, width, height);
+          cairo_clip(cr);
 
 
-	do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
+	do_glide_draw_border(cr, &glide_style->color_cube.bg[state_type],
 					GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
 					x, y,                                   
 					width, 
 					height);
-          cairo_restore(canvas);
+          cairo_restore(cr);
         }
     }
   else if ((CHECK_DETAIL (detail, "menuitem")))
     { 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x, y, width, height);
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x, y, width, height);
 
-	do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
+	do_glide_draw_border(cr, &glide_style->color_cube.bg[state_type],
 					GLIDE_BEVEL_STYLE_FLAT, GLIDE_BORDER_TYPE_IN,
 					x, y, width, height);
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y, width, height);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y, width, height);
     }
   else if ((CHECK_DETAIL (detail, "bar"))
 	   && (widget && GE_IS_PROGRESS_BAR (widget)))
@@ -1328,12 +1270,12 @@ glide_draw_box (GtkStyle * style,
 gboolean vertical;
         vertical = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget)) == GTK_ORIENTATION_VERTICAL;
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, GTK_STATE_SELECTED, glide_style->bg_gradient[!vertical][GTK_STATE_SELECTED]), x+1, y+1, width-2, height-2);
-	do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_SELECTED],
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, GTK_STATE_SELECTED, glide_style->bg_gradient[!vertical][GTK_STATE_SELECTED]), x+1, y+1, width-2, height-2);
+	do_glide_draw_border(cr, &glide_style->color_cube.bg[GTK_STATE_SELECTED],
 				GLIDE_BEVEL_STYLE_NONE, GLIDE_BORDER_TYPE_OUT,
 				x+1, y+1, width-2, height-2);
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,vertical), x+1, y+1, width-2, height-2);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,vertical), x+1, y+1, width-2, height-2);
     }
   else if ((CHECK_DETAIL (detail, "button")) && widget
 	   && ge_is_in_combo_box (widget))
@@ -1341,7 +1283,7 @@ gboolean vertical;
       /* ComboBox Buttons are an especially complex case
        * so call our special function for them.
        */
-      glide_draw_combobox_button (style, window, state_type, shadow_type, area,
+      glide_draw_combobox_button (style, cr, state_type, shadow_type,
 			    widget, detail, x, y, width, height);
     }
   else if ((CHECK_DETAIL (detail, "spinbutton_up"))
@@ -1350,47 +1292,47 @@ gboolean vertical;
       /* SpinButton Steppers are an especially complex case
        * so call our special function for them.
        */
-      glide_draw_spinbutton_stepper (style, window, state_type, shadow_type, area,
+      glide_draw_spinbutton_stepper (style, cr, state_type, shadow_type,
 			       widget, detail, x, y, width, height);
     }
   else
     {
       /* default box apearance */
-      ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x, y, width, height);
+      ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[FALSE][state_type]), x, y, width, height);
 
-      glide_draw_shadow (style, window, state_type, shadow_type, area,
+      glide_draw_shadow (style, cr, state_type, shadow_type,
 			widget, detail, x, y, width, height);
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y, width, height);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,FALSE), x, y, width, height);
     }
 
       /* Paint a triangle here instead of in "buttondefault"
          which is drawn _behind_ the current button */
       if ((CHECK_DETAIL (detail, "button")) && widget && GE_WIDGET_HAS_DEFAULT (widget))
         {
-          cairo_save(canvas);
+          cairo_save(cr);
 
-          ge_cairo_set_color(canvas, &glide_style->color_cube.bg[GTK_STATE_SELECTED]);
-          cairo_move_to(canvas, x+2.5, y+2.5);
-          cairo_line_to(canvas, x+11.5, y+2.5);
-          cairo_line_to(canvas, x+2.5, y+11.5);
-          cairo_line_to(canvas, x+2.5, y+2.5);
-	  cairo_fill(canvas);
+          ge_cairo_set_color(cr, &glide_style->color_cube.bg[GTK_STATE_SELECTED]);
+          cairo_move_to(cr, x+2.5, y+2.5);
+          cairo_line_to(cr, x+11.5, y+2.5);
+          cairo_line_to(cr, x+2.5, y+11.5);
+          cairo_line_to(cr, x+2.5, y+2.5);
+	  cairo_fill(cr);
 
-          cairo_set_line_width (canvas, 1);
+          cairo_set_line_width (cr, 1);
 
-          ge_cairo_set_color(canvas, &glide_style->color_cube.dark[state_type]);
-	  cairo_move_to(canvas, x + 2.5, y + 12);
-	  cairo_line_to(canvas, x + 2.5, y + 2.5);
-  	  cairo_line_to(canvas, x + 12, y + 2.5);
-	  cairo_stroke(canvas);
+          ge_cairo_set_color(cr, &glide_style->color_cube.dark[state_type]);
+	  cairo_move_to(cr, x + 2.5, y + 12);
+	  cairo_line_to(cr, x + 2.5, y + 2.5);
+  	  cairo_line_to(cr, x + 12, y + 2.5);
+	  cairo_stroke(cr);
 
-          ge_cairo_set_color(canvas, &glide_style->color_cube.light[state_type]);
-          cairo_move_to(canvas, x+12, y+2.5);
-          cairo_line_to(canvas, x+2.5, y+12);
-	  cairo_stroke(canvas);
+          ge_cairo_set_color(cr, &glide_style->color_cube.light[state_type]);
+          cairo_move_to(cr, x+12, y+2.5);
+          cairo_line_to(cr, x+2.5, y+12);
+	  cairo_stroke(cr);
 
-          cairo_restore(canvas);
+          cairo_restore(cr);
         }
  
   if (CHECK_DETAIL(detail, "optionmenu") ||  (CHECK_DETAIL(detail, "button") && 
@@ -1411,8 +1353,8 @@ gboolean vertical;
 	vline_x = x + width - (indicator_size.width + indicator_spacing.left + 
                                indicator_spacing.right) - style->xthickness;
 
-      do_glide_draw_line(canvas, &glide_style->color_cube.dark[state_type], &glide_style->color_cube.light[state_type], 
-                           area, y + style->ythickness + 1, y + height - style->ythickness - 2, 
+      do_glide_draw_line(cr, &glide_style->color_cube.dark[state_type], &glide_style->color_cube.light[state_type], 
+                           y + style->ythickness + 1, y + height - style->ythickness - 2, 
                            vline_x, FALSE);
  
       if ((widget) && (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL))
@@ -1425,11 +1367,9 @@ gboolean vertical;
       width = indicator_size.width;
       height = indicator_size.height;
  
-      glide_draw_arrow (style, window, state_type, shadow_type, area, NULL, "optionmenu", 
+      glide_draw_arrow (style, cr, state_type, shadow_type, NULL, "optionmenu", 
 	                      GTK_ARROW_DOWN, TRUE,  x,  y,  width,  height);
    }
-
-   cairo_destroy(canvas);
 }
  
 /* Draw Function For Boxes Traditionally Either Without Borders, 
@@ -1437,10 +1377,9 @@ gboolean vertical;
 
 void
 glide_draw_flat_box (GtkStyle * style,
-	  GdkWindow * window,
+	  cairo_t * cr,
 	  GtkStateType state_type,
 	  GtkShadowType shadow_type,
-	  GdkRectangle * area,
 	  GtkWidget * widget,
 	  const gchar * detail, 
           gint x, 
@@ -1452,27 +1391,21 @@ glide_draw_flat_box (GtkStyle * style,
 	if (CHECK_DETAIL(detail, "tooltip"))
 	{
 		GlideStyle *glide_style = GLIDE_STYLE (style);
-		cairo_t *canvas;
 
 		CHECK_ARGS
-		SANITIZE_SIZE
 
-		canvas = ge_gdk_drawable_to_cairo (window, area);
-
-		ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_solid[state_type]), 
+		ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_solid[state_type]), 
 						x, y, width, height);
 
-		do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
+		do_glide_draw_border(cr, &glide_style->color_cube.bg[state_type],
 					GLIDE_BEVEL_STYLE_FLAT, GLIDE_BORDER_TYPE_IN,
 					x, y, width, height);
-
-		cairo_destroy(canvas);
 	}
 	else
 	{
 		GtkStyleClass *glide_parent_class;
 		glide_parent_class = GTK_STYLE_CLASS (g_type_class_peek_parent (G_OBJECT_GET_CLASS(style)));
-		glide_parent_class->draw_flat_box (style, window, state_type, shadow_type, area,
+		glide_parent_class->draw_flat_box (style, cr, state_type, shadow_type,
 							widget, detail, x, y, width, height);
 	}
 }
@@ -1485,10 +1418,9 @@ glide_draw_flat_box (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_tab (GtkStyle * style,
-	  GdkWindow * window,
+	  cairo_t * cr,
 	  GtkStateType state,
 	  GtkShadowType shadow,
-	  GdkRectangle * area,
 	  GtkWidget * widget,
 	  const gchar * detail, 
           gint x, 
@@ -1505,10 +1437,9 @@ glide_draw_tab (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_slider (GtkStyle * style,
-	     GdkWindow * window,
+	     cairo_t * cr,
 	     GtkStateType state_type,
 	     GtkShadowType shadow_type,
-	     GdkRectangle * area,
 	     GtkWidget * widget,
 	     const gchar * detail,
 	     gint x,
@@ -1518,42 +1449,35 @@ glide_draw_slider (GtkStyle * style,
              GtkOrientation orientation)
 {
 	GlideStyle *glide_style = GLIDE_STYLE (style);
-	cairo_t *canvas;
  
 	CHECK_ARGS
-	SANITIZE_SIZE
  
-	canvas = ge_gdk_drawable_to_cairo (window, area);
+	ge_cairo_pattern_fill(cr,DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[orientation == GTK_ORIENTATION_VERTICAL][state_type]), x, y, width, height);
 
-	ge_cairo_pattern_fill(canvas,DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_gradient[orientation == GTK_ORIENTATION_VERTICAL][state_type]), x, y, width, height);
-
-	do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
+	do_glide_draw_border(cr, &glide_style->color_cube.bg[state_type],
 				(GE_IS_SCROLLBAR(widget))?GLIDE_BEVEL_STYLE_SMOOTHER:GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
 				x, y, width, height);
 
 	if (!GE_IS_SCALE(widget))
 	{
-		do_glide_draw_grip (canvas,
+		do_glide_draw_grip (cr,
 					&glide_style->color_cube.light[state_type],
 					&glide_style->color_cube.dark[state_type],
 					x, y, width, height, orientation == GTK_ORIENTATION_VERTICAL);
 
-		ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,orientation == GTK_ORIENTATION_VERTICAL), x, y, width, height);
+		ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,orientation == GTK_ORIENTATION_VERTICAL), x, y, width, height);
 	}
 	else
 	{
-		ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,orientation != GTK_ORIENTATION_VERTICAL), x, y, width, height);
+		ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,orientation != GTK_ORIENTATION_VERTICAL), x, y, width, height);
 	}
-
-	cairo_destroy(canvas);
 }
 
 void
 glide_draw_box_gap (GtkStyle * style, 
-                 GdkWindow * window, 
+                 cairo_t * cr, 
 		 GtkStateType state_type, 
 		 GtkShadowType shadow_type, 
-		 GdkRectangle * area, 
 		 GtkWidget * widget, 
 		 const gchar * detail, 
 		 gint x, 
@@ -1565,27 +1489,20 @@ glide_draw_box_gap (GtkStyle * style,
 		 gint gap_size)
 {
 	GlideStyle *glide_style = GLIDE_STYLE (style);
-	cairo_t *canvas;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
-	canvas = ge_gdk_drawable_to_cairo (window, area);
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_solid[state_type]), x, y, width, height);
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, glide_style->bg_solid[state_type]), x, y, width, height);
-
-	glide_draw_shadow_gap (style, window, state_type, shadow_type, area, widget, detail, 
+	glide_draw_shadow_gap (style, cr, state_type, shadow_type, widget, detail, 
 					x, y, width, height, gap_side, gap_pos, gap_size);
-
-	cairo_destroy(canvas);
 }
  
 void
 glide_draw_shadow_gap (GtkStyle * style, 
-                 GdkWindow * window, 
+                 cairo_t * cr, 
 		 GtkStateType state_type, 
 		 GtkShadowType shadow_type, 
-		 GdkRectangle * area, 
 		 GtkWidget * widget, 
 		 const gchar * detail, 
 		 gint x, 
@@ -1599,14 +1516,12 @@ glide_draw_shadow_gap (GtkStyle * style,
 	GlideSide side;
 	GlideBorderType border_type;
 	GlideBevelStyle bevel_style;
-	cairo_t *canvas;
 
 
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 	if (shadow_type == GTK_SHADOW_NONE)
 		return;
@@ -1713,15 +1628,11 @@ glide_draw_shadow_gap (GtkStyle * style,
 	/***********************************************/
 	bevel_style = GLIDE_BEVEL_STYLE_DEFAULT;
 
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
-	do_glide_draw_border_with_gap(canvas, 
+	do_glide_draw_border_with_gap(cr, 
 					&GLIDE_STYLE(style)->color_cube.bg[state_type], 
 					bevel_style, border_type, 
 					x, y, width, height, 
 					side, gap_pos, gap_size);
-
-	cairo_destroy(canvas);
 }
 
 /***********************************************
@@ -1736,10 +1647,9 @@ glide_draw_shadow_gap (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_extension (GtkStyle * style,
-		GdkWindow * window,
+		cairo_t * cr,
 		GtkStateType state_type,
 		GtkShadowType shadow_type,
-		GdkRectangle * area,
 		GtkWidget * widget,
 		const gchar * detail,
 		gint x,
@@ -1760,10 +1670,8 @@ glide_draw_extension (GtkStyle * style,
 	GlideSide side;
 	GlideBorderType border_type;
 	GlideBevelStyle bevel_style;
-	cairo_t *canvas;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	shadow.x = x;
 	shadow.y = y;
@@ -1926,21 +1834,17 @@ glide_draw_extension (GtkStyle * style,
 	/* Draw Border                                 */
 	/***********************************************/
 	bevel_style = GLIDE_BEVEL_STYLE_DEFAULT;
-	canvas = ge_gdk_drawable_to_cairo (window, area);
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, pattern), shadow.x, shadow.y, shadow.width, shadow.height);
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, pattern), shadow.x, shadow.y, shadow.width, shadow.height);
 
-	cairo_rectangle(canvas, clip.x, clip.y, clip.width, clip.height);
-	cairo_clip(canvas);
+	cairo_rectangle(cr, clip.x, clip.y, clip.width, clip.height);
+	cairo_clip(cr);
 
-	do_glide_draw_border_with_gap(canvas, 
+	do_glide_draw_border_with_gap(cr, 
 					&GLIDE_STYLE(style)->color_cube.bg[state_type], 
 					bevel_style, border_type, 
 					x, y, width, height, side, 
 					gap_pos, (((side==GLIDE_SIDE_TOP) || (side==GLIDE_SIDE_BOTTOM))?width:height)-gap_shrink);
-
-	cairo_destroy(canvas);
-
 }
  
 /***********************************************
@@ -1951,10 +1855,9 @@ glide_draw_extension (GtkStyle * style,
  ***********************************************/
 void
 glide_draw_handle (GtkStyle * style,
-	     GdkWindow * window,
+	     cairo_t * cr,
 	     GtkStateType state_type,
 	     GtkShadowType shadow_type,
-	     GdkRectangle * area,
 	     GtkWidget * widget,
 	     const gchar * detail,
 	     gint x,
@@ -1964,29 +1867,9 @@ glide_draw_handle (GtkStyle * style,
              GtkOrientation orientation)
 {
   GlideStyle *glide_style = GLIDE_STYLE (style);
-  cairo_t *canvas;
 
   CHECK_ARGS
-  SANITIZE_SIZE
   
-  if (GE_IS_BONOBO_DOCK_ITEM_GRIP(widget) && 
-     (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) && 
-      orientation == (GTK_ORIENTATION_HORIZONTAL))
-  {
-    GtkAllocation allocation, parent_allocation;
-    gtk_widget_get_allocation (widget, &allocation);
-    gtk_widget_get_allocation (gtk_widget_get_parent (widget), &parent_allocation);
-    
-    x = parent_allocation.width - allocation.width;
-    y = parent_allocation.height - allocation.height;
-    width = allocation.width;
-    height = allocation.height;
-    
-    area = NULL;
-  }
-
-      canvas = ge_gdk_drawable_to_cairo (window, area);
- 
       if (GE_IS_HANDLE_BOX (widget))
 	{
 	  /* handle box apears to be broken in that
@@ -2038,7 +1921,7 @@ glide_draw_handle (GtkStyle * style,
 	    }
 	}
 
-	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, (GE_IS_PANED(widget))?glide_style->bg_solid[state_type]: 
+	ge_cairo_pattern_fill(cr, DEFAULT_BACKGROUND_PATTERN(glide_style, state_type, (GE_IS_PANED(widget))?glide_style->bg_solid[state_type]: 
 				glide_style->bg_gradient[orientation == (GTK_ORIENTATION_VERTICAL)][state_type]), x, y, width, height);
 
       if (ge_is_panel_widget_item (widget)
@@ -2049,14 +1932,14 @@ glide_draw_handle (GtkStyle * style,
 		/* draw the drag bar */
 		if (orientation == GTK_ORIENTATION_VERTICAL)
 		{          
-			ge_cairo_simple_border (canvas, &glide_style->color_cube.light[state_type],
+			ge_cairo_simple_border (cr, &glide_style->color_cube.light[state_type],
 							&glide_style->color_cube.dark[state_type],
 							x + style->xthickness + 1, y + height / 2 - 1,
 							width - style->xthickness - 3, 3, FALSE);
 		}
 		else
 		{
-			ge_cairo_simple_border (canvas, &glide_style->color_cube.light[state_type],
+			ge_cairo_simple_border (cr, &glide_style->color_cube.light[state_type],
 							&glide_style->color_cube.dark[state_type], x + width / 2 - 1,
 							y + style->ythickness + 1, 3,
 							height - style->ythickness - 3, FALSE);
@@ -2067,16 +1950,16 @@ glide_draw_handle (GtkStyle * style,
 		*/
 		if (orientation == GTK_ORIENTATION_VERTICAL)
 		{
-			ge_cairo_line (canvas, &glide_style->color_cube.dark[state_type], x + 1, y + 0,
+			ge_cairo_line (cr, &glide_style->color_cube.dark[state_type], x + 1, y + 0,
 					x + width - 2, y + 0);
-			ge_cairo_line (canvas, &glide_style->color_cube.light[state_type], x + 1,
+			ge_cairo_line (cr, &glide_style->color_cube.light[state_type], x + 1,
 					y + 1, x + width - 2, y + 1);
 		}
 		else
 		{
-			ge_cairo_line (canvas, &glide_style->color_cube.dark[state_type], x + 0, y + 1,
+			ge_cairo_line (cr, &glide_style->color_cube.dark[state_type], x + 0, y + 1,
 					x + 0, y + height - 2);
-			ge_cairo_line (canvas, &glide_style->color_cube.light[state_type], x + 1,
+			ge_cairo_line (cr, &glide_style->color_cube.light[state_type], x + 1,
 					y + 1, x + 1, y + height - 2);
 		}
 	}
@@ -2084,7 +1967,7 @@ glide_draw_handle (GtkStyle * style,
 	{
 	  gboolean skip_shadow = FALSE;
  
-	do_glide_draw_grip (canvas,
+	do_glide_draw_grip (cr,
 			&glide_style->color_cube.light[GTK_STATE_NORMAL],
 			&glide_style->color_cube.dark[GTK_STATE_NORMAL],
 			x, y, width, height, orientation == GTK_ORIENTATION_VERTICAL);
@@ -2115,21 +1998,18 @@ glide_draw_handle (GtkStyle * style,
 
           if (!skip_shadow)
             {
-		do_glide_draw_border(canvas, &glide_style->color_cube.bg[state_type],
+		do_glide_draw_border(cr, &glide_style->color_cube.bg[state_type],
 				GLIDE_BEVEL_STYLE_DEFAULT, GLIDE_BORDER_TYPE_OUT,
 				x, y, width, height);
             }
-	ge_cairo_pattern_fill(canvas, DEFAULT_OVERLAY_PATTERN(glide_style, detail,orientation == GTK_ORIENTATION_VERTICAL), x, y, width, height);
+	ge_cairo_pattern_fill(cr, DEFAULT_OVERLAY_PATTERN(glide_style, detail,orientation == GTK_ORIENTATION_VERTICAL), x, y, width, height);
 	}
- 
-	cairo_destroy(canvas);			          
 }
 
 void
 glide_draw_focus(GtkStyle *style,
-           GdkWindow *window,
+           cairo_t *cr,
            GtkStateType state_type,
-           GdkRectangle *area,
            GtkWidget *widget,
            const gchar *detail,
            gint x,
@@ -2157,14 +2037,12 @@ glide_draw_focus(GtkStyle *style,
 	{
 		GtkStyleClass *glide_parent_class;
 		glide_parent_class = GTK_STYLE_CLASS (g_type_class_peek_parent (G_OBJECT_GET_CLASS(style)));
-		glide_parent_class->draw_focus(style, window, state_type, area, widget, detail, x, y, width, height);
+		glide_parent_class->draw_focus(style, cr, state_type, widget, detail, x, y, width, height);
 	}
 	else
 	{
-		cairo_t *canvas = ge_gdk_drawable_to_cairo (window, area);
-
-		ge_cairo_set_color(canvas, &glide_style->color_cube.bg[GTK_STATE_SELECTED]);
-		cairo_set_line_width(canvas, line_width);
+		ge_cairo_set_color(cr, &glide_style->color_cube.bg[GTK_STATE_SELECTED]);
+		cairo_set_line_width(cr, line_width);
 
 	 	if (CHECK_DETAIL(detail, "button") && (ge_is_in_combo_box (widget)))
 		{
@@ -2173,11 +2051,11 @@ glide_draw_focus(GtkStyle *style,
 
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				ge_cairo_stroke_rectangle(canvas, x - thick + line_width*2, y + thick, width - line_width*2, height - thick*2);
+				ge_cairo_stroke_rectangle(cr, x - thick + line_width*2, y + thick, width - line_width*2, height - thick*2);
 			}
 			else
 			{
-				ge_cairo_stroke_rectangle(canvas, x + thick, y + thick, width - line_width*2, height - thick*2);
+				ge_cairo_stroke_rectangle(cr, x + thick, y + thick, width - line_width*2, height - thick*2);
 			}
 
 			entry = g_object_get_data(G_OBJECT(ge_find_combo_box_widget_parent (widget)), "entry");
@@ -2186,11 +2064,11 @@ glide_draw_focus(GtkStyle *style,
 		{
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				ge_cairo_stroke_rectangle(canvas, x + 0.5, y + 0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width + line_width - 1, height - 1);
 			}
 			else
 			{
-				ge_cairo_stroke_rectangle(canvas, x - line_width + 0.5, y + 0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(cr, x - line_width + 0.5, y + 0.5, width + line_width - 1, height - 1);
 			}
 		}
  		else if (CHECK_DETAIL(detail, "entry") && (ge_is_in_combo_box (widget)))
@@ -2207,85 +2085,78 @@ glide_draw_focus(GtkStyle *style,
 
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				ge_cairo_stroke_rectangle(canvas, x + 0.5, y + 0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width + line_width - 1, height - 1);
 			}
 			else
 			{
-				ge_cairo_stroke_rectangle(canvas, x - line_width + 0.5, y + 0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(cr, x - line_width + 0.5, y + 0.5, width + line_width - 1, height - 1);
 			}
 		}
 		else if (CHECK_DETAIL(detail, "spinbutton_up"))
 		{
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				cairo_rectangle(canvas, x + line_width, y, width - line_width, height);
+				cairo_rectangle(cr, x + line_width, y, width - line_width, height);
 			}
 			else
 			{
-				cairo_rectangle(canvas, x, y, width - line_width, height);
+				cairo_rectangle(cr, x, y, width - line_width, height);
 			}
 
-			cairo_clip(canvas);
-			ge_cairo_stroke_rectangle(canvas, x + 0.5, y + 0.5, width - 1, height + line_width - 1);
+			cairo_clip(cr);
+			ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width - 1, height + line_width - 1);
 		} 
 	        else if (CHECK_DETAIL(detail, "spinbutton_down"))
 		{
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				cairo_rectangle(canvas, x + line_width, y, width - line_width, height);
+				cairo_rectangle(cr, x + line_width, y, width - line_width, height);
 			}
 			else
 			{
-				cairo_rectangle(canvas, x, y, width - line_width, height);
+				cairo_rectangle(cr, x, y, width - line_width, height);
 			}		
 
-			cairo_clip(canvas);
-			ge_cairo_stroke_rectangle(canvas, x + 0.5, y - line_width  + 0.5, width - 1, height + line_width - 1);
+			cairo_clip(cr);
+			ge_cairo_stroke_rectangle(cr, x + 0.5, y - line_width  + 0.5, width - 1, height + line_width - 1);
 		} 
 	        else if (CHECK_DETAIL(detail, "combo_entry_button"))
 		{
 			if ((!widget) || (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR))
 			{
-				cairo_rectangle(canvas, x + line_width, y, width - line_width, height + 1);
-				cairo_clip(canvas);
+				cairo_rectangle(cr, x + line_width, y, width - line_width, height + 1);
+				cairo_clip(cr);
 
-				ge_cairo_stroke_rectangle(canvas, x + 0.5, y + 0.5, width - 1, height - 1);
+				ge_cairo_stroke_rectangle(cr, x + 0.5, y + 0.5, width - 1, height - 1);
 			}
 			else
 			{
-				cairo_rectangle(canvas, x, y, width, height + 1);
-				cairo_clip(canvas);
+				cairo_rectangle(cr, x, y, width, height + 1);
+				cairo_clip(cr);
 
-				ge_cairo_stroke_rectangle(canvas, x+0.5, y+0.5, width + line_width - 1, height - 1);
+				ge_cairo_stroke_rectangle(cr, x+0.5, y+0.5, width + line_width - 1, height - 1);
 			}
 		}
 		else
 		{
-  			ge_cairo_stroke_rectangle(canvas, x+0.5, y+0.5, width-1, height-1);
+  			ge_cairo_stroke_rectangle(cr, x+0.5, y+0.5, width-1, height-1);
 		}
-
-		cairo_destroy(canvas);
 	}
 }
 
 void
 glide_draw_layout (GtkStyle        *style,
-	     GdkWindow       *window,
+	     cairo_t         *cr,
 	     GtkStateType     state_type,
 	     gboolean         use_text,
-	     GdkRectangle    *area,
 	     GtkWidget       *widget,
 	     const char      *detail,
 	     int              x,
 	     int              y,
 	     PangoLayout      *layout)
 {
-	cairo_t *cr;
-
 	CHECK_ARGS
 	use_text &= !ge_is_combo_box(widget, FALSE);
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (use_text)
 		gdk_cairo_set_source_color (cr, &style->text[state_type]);
@@ -2308,6 +2179,4 @@ glide_draw_layout (GtkStyle        *style,
 	}
 
 	pango_cairo_show_layout (cr, layout);
-
-	cairo_destroy (cr);
 }

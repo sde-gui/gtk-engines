@@ -152,9 +152,10 @@ glide_style_realize (GtkStyle * style)
 		glide_style->bg_solid[i] = ge_cairo_color_pattern(&base);
 
 		glide_style->bg_image[i] = NULL;
-		if ((style->bg_pixmap[i]) && (style->bg_pixmap[i] != (GdkPixmap*) GDK_PARENT_RELATIVE))
+                if (GTK_STYLE (style)->rc_style->bg_pixmap_name[i] && 
+                    GTK_STYLE (style)->background[i] != NULL)
 		{
-			glide_style->bg_image[i] = ge_cairo_pixmap_pattern(style->bg_pixmap[i]);
+			glide_style->bg_image[i] = ge_cairo_pattern_pattern(style->background[i]);
 		}
 
 		glide_style->bg_gradient[0][i] = ge_cairo_linear_shade_gradient_pattern(&base, 1.05, 0.95, FALSE);
