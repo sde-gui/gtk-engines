@@ -118,9 +118,8 @@ mist_draw_border (GtkStyle *style,
 
 static void
 mist_style_draw_hline(GtkStyle *style,
-           GdkWindow *window,
+           cairo_t *cr,
            GtkStateType state_type,
-           GdkRectangle *area,
            GtkWidget *widget,
            const char *detail,
            int x1,
@@ -132,12 +131,9 @@ mist_style_draw_hline(GtkStyle *style,
 	int thickness_light;
 	int thickness_dark;
 	int i;
-	cairo_t *cr;
 
 	CHECK_ARGS
 	
-	cr = ge_gdk_drawable_to_cairo (window, area);
-
 	if (CHECK_DETAIL(detail, "hseparator") 
 	    || CHECK_DETAIL(detail, "menuitem") 
 	    || CHECK_DETAIL(detail, "slider")
@@ -181,15 +177,12 @@ mist_style_draw_hline(GtkStyle *style,
 			cairo_stroke (cr);
 		}
 	}
-	
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_vline(GtkStyle *style,
-           GdkWindow *window,
+           cairo_t *cr,
            GtkStateType state_type,
-           GdkRectangle *area,
            GtkWidget *widget,
            const char *detail,
            int y1,
@@ -201,11 +194,8 @@ mist_style_draw_vline(GtkStyle *style,
 	int thickness_light;
 	int thickness_dark;
 	int i;
-	cairo_t *cr;
 
 	CHECK_ARGS
-	
-	cr = ge_gdk_drawable_to_cairo (window, area);
 	
 	if (CHECK_DETAIL(detail, "vseparator") 
 	    || CHECK_DETAIL(detail, "toolbar") 
@@ -250,16 +240,13 @@ mist_style_draw_vline(GtkStyle *style,
 			cairo_stroke (cr);
 		}
 	}
-	
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_shadow(GtkStyle *style,
-	    GdkWindow *window,
+	    cairo_t *cr,
 	    GtkStateType state_type,
 	    GtkShadowType shadow_type,
-	    GdkRectangle *area,
 	    GtkWidget *widget,
 	    const char *detail,
 	    int x,
@@ -268,17 +255,13 @@ mist_style_draw_shadow(GtkStyle *style,
 	    int height)
 {
 	MistStyle *mist_style = MIST_STYLE (style);
-	cairo_t *cr;
 
 	CHECK_ARGS	
-	SANITIZE_SIZE
 
 	shadow_type = mist_get_shadow_type (style, detail, shadow_type);
 
 	if (shadow_type == GTK_SHADOW_NONE)
 		return;
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (state_type == GTK_STATE_INSENSITIVE) {
 		shadow_type = GTK_SHADOW_ETCHED_IN;
@@ -294,16 +277,13 @@ mist_style_draw_shadow(GtkStyle *style,
 		mist_draw_border (style, cr, state_type,
 				       shadow_type,x, y, width, height);
 	}
-
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_diamond(GtkStyle * style,
-             GdkWindow * window,
+             cairo_t * cr,
              GtkStateType state_type,
              GtkShadowType shadow_type,
-             GdkRectangle * area,
              GtkWidget * widget,
              const char *detail,
              int x,
@@ -315,15 +295,11 @@ mist_style_draw_diamond(GtkStyle * style,
 
 	int half_width;
 	int half_height;
-	cairo_t *cr;
 	
 	CHECK_ARGS
-	SANITIZE_SIZE
 	
 	half_width = width / 2;
 	half_height = height / 2;
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	switch (shadow_type) {
 	case GTK_SHADOW_IN:
@@ -407,16 +383,13 @@ mist_style_draw_diamond(GtkStyle * style,
 	default:
 		break;
 	}
-
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_box(GtkStyle *style,
-         GdkWindow *window,
+         cairo_t *cr,
          GtkStateType state_type,
          GtkShadowType shadow_type,
-         GdkRectangle *area,
          GtkWidget *widget,
          const char *detail,
          int x,
@@ -427,10 +400,8 @@ mist_style_draw_box(GtkStyle *style,
 	MistStyle *mist_style = MIST_STYLE (style);
 
 	CairoColor *light, *dark;
-	cairo_t *cr;
 	
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	if (CHECK_DETAIL(detail, "menuitem") && state_type == GTK_STATE_PRELIGHT) {
 		state_type = GTK_STATE_SELECTED;
@@ -439,12 +410,10 @@ mist_style_draw_box(GtkStyle *style,
 	light = &mist_style->color_cube.light[state_type];
 	dark = &mist_style->color_cube.dark[state_type];
 
-	cr = ge_gdk_drawable_to_cairo (window, area);
-	
 	if (CHECK_DETAIL(detail, "optionmenutab")) {
 		ge_cairo_line(cr, dark, x - 5, y, x - 5, y + height);
 		
-		gtk_paint_arrow (style, window, state_type, shadow_type, area, 
+		gtk_paint_arrow (style, cr, state_type, shadow_type,
 				 widget, detail, GTK_ARROW_DOWN, TRUE,
 				 x + 1, y + 1, width - 2, height - 2);
 	} else if (CHECK_DETAIL(detail, "trough")) {
@@ -518,9 +487,9 @@ mist_style_draw_box(GtkStyle *style,
 			}
 		}
 		
-		gtk_style_apply_default_background(style, window,
-						   widget && !gtk_widget_get_has_window (widget),
-						   state_type, area,
+		gtk_style_apply_default_background(style, cr,
+						   gtk_widget_get_window (widget),
+						   state_type,
 						   x, y, width, height);
 
 		shadow_type = mist_get_shadow_type (style, detail, shadow_type);
@@ -534,16 +503,13 @@ mist_style_draw_box(GtkStyle *style,
 					       x, y, width, height);
 		}
 	}
-
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_check(GtkStyle *style,
-           GdkWindow *window,
+           cairo_t *cr,
            GtkStateType state_type,
            GtkShadowType shadow_type,
-           GdkRectangle *area,
            GtkWidget *widget,
            const char *detail,
            int x,
@@ -552,11 +518,8 @@ mist_style_draw_check(GtkStyle *style,
            int height)
 {
 	MistStyle *mist_style = MIST_STYLE (style);
-	cairo_t *cr;
 
-	SANITIZE_SIZE
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
+        CHECK_ARGS
 
 	ge_cairo_set_color(cr, &mist_style->color_cube.base[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL ]);	
 	cairo_rectangle(cr, x + 1, y + 1, width - 3, height - 3);
@@ -596,11 +559,6 @@ mist_style_draw_check(GtkStyle *style,
 		gdk_cairo_set_source_color (cr,
 		                            &style->base[GTK_STATE_SELECTED]);
 
-		if (area) {
-			gdk_cairo_rectangle (cr, area);
-			cairo_clip (cr);
-		}
-
 		cairo_mask (cr, pattern);
 		cairo_rectangle (cr, x + 2, y + 2, width - 5, height - 5);
 		cairo_fill (cr);
@@ -610,16 +568,13 @@ mist_style_draw_check(GtkStyle *style,
 #undef gray50_width
 #undef gray50_height 
 	}
-
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_option(GtkStyle *style,
-            GdkWindow *window,
+            cairo_t *cr,
             GtkStateType state_type,
             GtkShadowType shadow_type,
-            GdkRectangle *area,
             GtkWidget *widget,
             const char *detail,
             int x,
@@ -628,11 +583,8 @@ mist_style_draw_option(GtkStyle *style,
             int height)
 {
 	MistStyle *mist_style = MIST_STYLE (style);
-	cairo_t *cr;
 
-	SANITIZE_SIZE
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
+        CHECK_ARGS
 
 	cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor(width/2) - 0.5, 0 , 2 * G_PI);
 	ge_cairo_set_color(cr, &mist_style->color_cube.dark[state_type == GTK_STATE_INSENSITIVE ? GTK_STATE_INSENSITIVE : GTK_STATE_NORMAL]);	
@@ -674,16 +626,13 @@ mist_style_draw_option(GtkStyle *style,
 		cairo_arc(cr, x + floor(width/2), y + floor(height/2), floor((width - 7)/2) + 1, 0 , 2 * G_PI);
 		cairo_fill (cr);
 	}
-
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_shadow_gap(GtkStyle *style,
-                GdkWindow *window,
+                cairo_t *cr,
                 GtkStateType state_type,
                 GtkShadowType shadow_type,
-                GdkRectangle *area,
                 GtkWidget *widget,
                 const char *detail,
                 int x,
@@ -698,20 +647,14 @@ mist_style_draw_shadow_gap(GtkStyle *style,
 
 	CairoColor *color1 = NULL;
 	CairoColor *color2 = NULL;
-	cairo_t *cr;
 	gint start;
 	
-	g_return_if_fail (window != NULL);
+	CHECK_ARGS
 	
-	SANITIZE_SIZE
 	shadow_type = mist_get_shadow_type (style, detail, shadow_type);
 	
-	cr = ge_gdk_drawable_to_cairo (window, area);
-
 	switch (shadow_type) {
 	case GTK_SHADOW_NONE:
-		/* need to destroy the cairo context. */
-		cairo_destroy (cr);
 		return;
 	case GTK_SHADOW_IN:
 		color1 = &mist_style->color_cube.dark[state_type];
@@ -751,16 +694,13 @@ mist_style_draw_shadow_gap(GtkStyle *style,
 	cairo_clip (cr);
 	cairo_new_path (cr);
 	ge_cairo_simple_border (cr, color1, color2, x, y, width, height, FALSE);
-	
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_box_gap(GtkStyle *style,
-	     GdkWindow *window,
+	     cairo_t *cr,
 	     GtkStateType state_type,
 	     GtkShadowType shadow_type,
-	     GdkRectangle *area,
 	     GtkWidget *widget,
 	     const char *detail,
 	     int x,
@@ -771,24 +711,23 @@ mist_style_draw_box_gap(GtkStyle *style,
 	     int gap_x,
 	     int gap_width)
 {
-	SANITIZE_SIZE
+	CHECK_ARGS
 
-	gtk_style_apply_default_background(style, window,
-					   widget && !gtk_widget_get_has_window (widget),
-					   state_type, area,
+	gtk_style_apply_default_background(style, cr,
+					   gtk_widget_get_window (widget),
+					   state_type,
 					   x, y, width, height);
 
-	mist_style_draw_shadow_gap (style, window, state_type, shadow_type,
-			 area, widget, detail, x, y, width, height, 
+	mist_style_draw_shadow_gap (style, cr, state_type, shadow_type,
+			 widget, detail, x, y, width, height, 
 			 gap_side, gap_x, gap_width);
 }
 
 static void
 mist_style_draw_extension(GtkStyle *style,
-               GdkWindow *window,
+               cairo_t *cr,
                GtkStateType state_type,
                GtkShadowType shadow_type,
-               GdkRectangle *area,
                GtkWidget *widget,
                const char *detail,
                int x,
@@ -797,34 +736,21 @@ mist_style_draw_extension(GtkStyle *style,
                int height,
                GtkPositionType gap_side)
 {
-	cairo_t *canvas;
 	CairoColor *background, *light, *dark;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
-
 
 	background = &MIST_STYLE(style)->color_cube.bg[state_type];
 	light = &MIST_STYLE(style)->color_cube.light[state_type];
 	dark = &MIST_STYLE(style)->color_cube.dark[state_type];
 	
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
-	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window)) 
-	{
-		ge_cairo_set_color(canvas, background);	
-
-		cairo_rectangle(canvas, x, y, width, height);
-		cairo_fill(canvas);
-	} else {
-		gtk_style_apply_default_background
-			(style, window,
-			 widget && !gtk_widget_get_has_window (widget),
-			 state_type, area, x, y, width, height);
-	}
+        gtk_style_apply_default_background
+                (style, cr,
+                 gtk_widget_get_window (widget),
+                 state_type, x, y, width, height);
 	
-	cairo_rectangle (canvas, x, y, width, height);
-	cairo_clip (canvas);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_clip (cr);
 	
 	switch(gap_side) {
 	case GTK_POS_BOTTOM:
@@ -843,16 +769,14 @@ mist_style_draw_extension(GtkStyle *style,
 		break;
 	}
 
-	ge_cairo_simple_border (canvas, light, dark, x, y, width, height, FALSE);
-	cairo_destroy(canvas);
+	ge_cairo_simple_border (cr, light, dark, x, y, width, height, FALSE);
 }
 
 static void
 mist_style_draw_handle(GtkStyle *style,
-            GdkWindow *window,
+            cairo_t *cr,
             GtkStateType state_type,
             GtkShadowType shadow_type,
-            GdkRectangle *area,
             GtkWidget *widget,
             const char *detail,
             int x,
@@ -866,13 +790,11 @@ mist_style_draw_handle(GtkStyle *style,
 	CairoColor *light, *dark;
 	GdkRectangle dest;
 	int modx, mody;
-	cairo_t *cr;
 	
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	if (!ge_is_panel_widget_item (widget) && !ge_object_is_a ((GObject*)widget, "PanelToplevel"))
-		gtk_paint_box(style, window, state_type, shadow_type, area, widget,
+		gtk_paint_box(style, cr, state_type, shadow_type, widget,
 			      detail, x, y, width, height);
 	
 	light = &mist_style->color_cube.light[state_type];
@@ -895,8 +817,6 @@ mist_style_draw_handle(GtkStyle *style,
 		modx = 0; mody = 4;
 	}
 	
-	cr = ge_gdk_drawable_to_cairo (window, &dest);
-
 	mist_dot(cr,
 		 light, dark,
 		 x + width / 2 - modx,
@@ -909,15 +829,12 @@ mist_style_draw_handle(GtkStyle *style,
 		 light, dark,
 		 x + width / 2 + modx,
 		 y + height / 2 + mody);
-	
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_resize_grip(GtkStyle *style,
-		 GdkWindow *window,
+		 cairo_t *cr,
 		 GtkStateType state_type,
-		 GdkRectangle *area,
 		 GtkWidget *widget,
 		 const char *detail,
 		 GdkWindowEdge edge,
@@ -932,10 +849,8 @@ mist_style_draw_resize_grip(GtkStyle *style,
 	int xi, yi;
 	int max_x, max_y;
 	int threshold;
-	cairo_t *cr;
 	
 	CHECK_ARGS
-	SANITIZE_SIZE
 	
 	switch (edge) {
 	case GDK_WINDOW_EDGE_NORTH_WEST:
@@ -1003,8 +918,9 @@ mist_style_draw_resize_grip(GtkStyle *style,
 		g_assert_not_reached ();
 	}
 	
-	gtk_style_apply_default_background (style, window, FALSE,
-					    state_type, area,
+	gtk_style_apply_default_background (style, cr,
+                                            gtk_widget_get_window (widget),
+					    state_type,
 					    x, y, width, height);
 
 	light = &mist_style->color_cube.light[state_type];
@@ -1015,8 +931,6 @@ mist_style_draw_resize_grip(GtkStyle *style,
 	
 	threshold = max_x;
 	
-	cr = ge_gdk_drawable_to_cairo (window, area);
-
 	for (xi = 0; xi <= max_x; xi++) {
 		for (yi = 0; yi <= max_y; yi++) {
 			gboolean draw_dot;
@@ -1052,42 +966,28 @@ mist_style_draw_resize_grip(GtkStyle *style,
 			}
 		}
 	}
-
-	cairo_destroy(cr);
 }
 
 static void
 mist_style_draw_layout (GtkStyle        *style,
-	     GdkWindow       *window,
+	     cairo_t         *cr,
 	     GtkStateType     state_type,
 	     gboolean         use_text,
-	     GdkRectangle    *area,
 	     GtkWidget       *widget,
 	     const char      *detail,
 	     int              x,
 	     int              y,
 	     PangoLayout      *layout)
 {
-	cairo_t *cr;
-	
 	CHECK_ARGS
-
-	cr = gdk_cairo_create (window);
 
 	if (use_text)
 		gdk_cairo_set_source_color (cr, &style->text[state_type]);
 	else
 		gdk_cairo_set_source_color (cr, &style->fg[state_type]);
 	
-	if (area) {
-		gdk_cairo_rectangle (cr, area);
-		cairo_clip (cr);
-	}
-
 	ge_cairo_transform_for_layout (cr, layout, x, y);
 	pango_cairo_show_layout (cr, layout);
-
-	cairo_destroy (cr);
 }
 
 static GdkPixbuf *
@@ -1168,8 +1068,8 @@ mist_style_render_icon (GtkStyle            *style,
 	if (widget && gtk_widget_has_screen (widget)) {
 		screen = gtk_widget_get_screen (widget);
 		settings = gtk_settings_get_for_screen (screen);
-	} else if (style->colormap) {
-		screen = gdk_colormap_get_screen (style->colormap);
+	} else if (style->visual) {
+		screen = gdk_visual_get_screen (style->visual);
 		settings = gtk_settings_get_for_screen (screen);
 	} else {
 		settings = gtk_settings_get_default ();
@@ -1218,9 +1118,8 @@ mist_style_render_icon (GtkStyle            *style,
 
 static void
 mist_style_draw_focus (GtkStyle *style,
-		       GdkWindow *window,
+		       cairo_t *cr,
 		       GtkStateType state_type,
-		       GdkRectangle *area,
 		       GtkWidget *widget,
 		       const gchar *detail,
 		       gint x,
@@ -1230,12 +1129,9 @@ mist_style_draw_focus (GtkStyle *style,
 {
 	MistStyle *mist_style = MIST_STYLE (style);
 	CairoColor *dark;
-	cairo_t *cr;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
-	cr = ge_gdk_drawable_to_cairo (window, area);
 	cairo_translate (cr, 0.5, 0.5);
 	width--; height--;
 
@@ -1243,7 +1139,6 @@ mist_style_draw_focus (GtkStyle *style,
 	ge_cairo_set_color (cr, dark);
 	cairo_rectangle (cr, x, y, width, height);
 	cairo_stroke (cr);
-	cairo_destroy (cr);
 }
 
 static void
