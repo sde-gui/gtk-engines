@@ -38,10 +38,9 @@
 /* Standard Border Function */
 void
 hc_draw_shadow(GtkStyle * style,
-	       GdkWindow * window,
+	       cairo_t * cr,
 	       GtkStateType state_type,
 	       GtkShadowType shadow_type,
-	       GdkRectangle * area,
 	       GtkWidget * widget,
 	       const gchar * detail,
 	       gint x,
@@ -55,13 +54,10 @@ hc_draw_shadow(GtkStyle * style,
 	gint line_width;
 	gint clip_x = x, clip_y = y, clip_width = width, clip_height = height;
 
-	cairo_t *canvas;
-
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 
 	/***********************************************/
@@ -142,22 +138,18 @@ hc_draw_shadow(GtkStyle * style,
 	/***********************************************/
 	/* Draw Border                                 */
 	/***********************************************/
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
 	/* Clip Border Too Passed Size */
-	cairo_rectangle(canvas, clip_x, clip_y, clip_width, clip_height);
-	cairo_clip(canvas);
+	cairo_rectangle(cr, clip_x, clip_y, clip_width, clip_height);
+	cairo_clip(cr);
 
 	/* Set Line Style */
-	ge_cairo_set_color(canvas, &foreground);
-	cairo_set_line_cap(canvas, CAIRO_LINE_CAP_BUTT);
+	ge_cairo_set_color(cr, &foreground);
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
 
-	cairo_set_line_width (canvas, line_width);
-	ge_cairo_inner_rectangle (canvas, x, y, width, height);
+	cairo_set_line_width (cr, line_width);
+	ge_cairo_inner_rectangle (cr, x, y, width, height);
 	
-	cairo_stroke(canvas);
-
-	cairo_destroy(canvas);
+	cairo_stroke(cr);
 }
 
 
@@ -166,10 +158,9 @@ hc_draw_shadow(GtkStyle * style,
  */
 void 
 hc_draw_shadow_gap (GtkStyle       *style,
-		    GdkWindow      *window,
+		    cairo_t        *cr,
 		    GtkStateType    state_type,
 		    GtkShadowType   shadow_type,
-		    GdkRectangle   *area,
 		    GtkWidget      *widget,
 		    const gchar    *detail,
 		    gint            x,
@@ -183,13 +174,11 @@ hc_draw_shadow_gap (GtkStyle       *style,
 	/* Border Uses Foreground Color */
 	CairoColor *foreground = &HC_STYLE(style)->color_cube.fg[state_type];
 	gint line_width;
-	cairo_t *canvas;
 
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 	if (shadow_type == GTK_SHADOW_NONE)
 		return;
@@ -208,32 +197,27 @@ hc_draw_shadow_gap (GtkStyle       *style,
 	/***********************************************/
 	/* Draw Border                                 */
 	/***********************************************/
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
 	/* Create And Clip Too Path To Ignore Gap */
-	hc_simple_border_gap_clip(canvas, line_width, x, y, width, height, gap_side, gap_pos, gap_size);
+	hc_simple_border_gap_clip(cr, line_width, x, y, width, height, gap_side, gap_pos, gap_size);
 
 
 	/* Set Line Style */
-	ge_cairo_set_color(canvas, foreground);
-	cairo_set_line_cap(canvas, CAIRO_LINE_CAP_BUTT);
+	ge_cairo_set_color(cr, foreground);
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
 
-	cairo_set_line_width (canvas, line_width);
-	ge_cairo_inner_rectangle (canvas, x, y, width, height);
+	cairo_set_line_width (cr, line_width);
+	ge_cairo_inner_rectangle (cr, x, y, width, height);
 	
-	cairo_stroke(canvas);
-
-	cairo_destroy(canvas);
+	cairo_stroke(cr);
 }
 
 
 /* Border Function For Notebooks Tabs */
 void 
 hc_draw_extension (GtkStyle       *style,
-		   GdkWindow      *window,
+		   cairo_t        *cr,
 		   GtkStateType    state_type,
 		   GtkShadowType   shadow_type,
-		   GdkRectangle   *area,
 		   GtkWidget      *widget,
 		   const gchar    *detail,
 		   gint            x,
@@ -253,13 +237,10 @@ hc_draw_extension (GtkStyle       *style,
 	gint widget_x = 0, widget_y = 0, widget_width = 0, widget_height = 0;
 	gint clip_x = x, clip_y = y, clip_width = width, clip_height = height;
 
-	cairo_t *canvas;
-
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 
 	/***********************************************/
@@ -341,31 +322,28 @@ hc_draw_extension (GtkStyle       *style,
 	/***********************************************/
 	/* Draw Border                                 */
 	/***********************************************/
-	canvas = ge_gdk_drawable_to_cairo (window, area);
 
 	/* Clip Too Size */
-	cairo_rectangle(canvas, clip_x, clip_y, clip_width, clip_height);
-	cairo_clip(canvas);
+	cairo_rectangle(cr, clip_x, clip_y, clip_width, clip_height);
+	cairo_clip(cr);
 
 
 	/* Set Fill Style */
-	ge_cairo_set_color(canvas, background);
+	ge_cairo_set_color(cr, background);
 
 	/* Fill Rectangle */
-	cairo_rectangle (canvas, x, y, width, height);
-	cairo_fill(canvas);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_fill(cr);
 
 
 	/* Set Line Style */
-	ge_cairo_set_color(canvas, foreground);
-	cairo_set_line_cap(canvas, CAIRO_LINE_CAP_BUTT);
+	ge_cairo_set_color(cr, foreground);
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
 
-	cairo_set_line_width (canvas, line_width);
-	ge_cairo_inner_rectangle (canvas, x, y, width, height);
+	cairo_set_line_width (cr, line_width);
+	ge_cairo_inner_rectangle (cr, x, y, width, height);
 	
-	cairo_stroke(canvas);
-
-	cairo_destroy(canvas);
+	cairo_stroke(cr);
 }
 
 
@@ -373,10 +351,9 @@ hc_draw_extension (GtkStyle       *style,
 		or With A Single Pixel Line */
 void
 hc_draw_flat_box (GtkStyle	*style,
-                  GdkWindow	*window,
+                  cairo_t  	*cr,
                   GtkStateType	 state_type,
                   GtkShadowType	 shadow_type,
-                  GdkRectangle	*area,
                   GtkWidget	*widget,
                   const gchar	*detail,
                   gint		 x,
@@ -386,14 +363,14 @@ hc_draw_flat_box (GtkStyle	*style,
 {
 	if (detail && !strcmp ("tooltip", detail))
 	{
-		hc_draw_box (style, window, state_type, shadow_type, area,
+		hc_draw_box (style, cr, state_type, shadow_type,
 				widget, detail, x, y, width, height);
 	}
 	else
 	{
 		GtkStyleClass *hc_parent_class;
 		hc_parent_class = GTK_STYLE_CLASS (g_type_class_peek_parent (G_OBJECT_GET_CLASS(style)));
-		hc_parent_class->draw_flat_box (style, window, state_type, shadow_type, area,
+		hc_parent_class->draw_flat_box (style, cr, state_type, shadow_type,
 							widget, detail, x, y, width, height);
 	}
 }
@@ -403,10 +380,9 @@ hc_draw_flat_box (GtkStyle	*style,
 	Ensures Fill And Border */
 void
 hc_draw_box (GtkStyle	*style,
-                  GdkWindow	*window,
+                  cairo_t  	*cr,
                   GtkStateType	 state_type,
                   GtkShadowType	 shadow_type,
-                  GdkRectangle	*area,
                   GtkWidget	*widget,
                   const gchar	*detail,
                   gint		 x,
@@ -418,7 +394,6 @@ hc_draw_box (GtkStyle	*style,
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 
 	/***********************************************/
@@ -435,15 +410,15 @@ hc_draw_box (GtkStyle	*style,
 	/***********************************************/
 	/* Draw Fill                                   */
 	/***********************************************/
-	gtk_style_apply_default_background (style, window,
-        					widget && !gtk_widget_get_has_window (widget),
-						state_type, area, x, y, width, height);
+	gtk_style_apply_default_background (style, cr,
+        				    gtk_widget_get_window (widget),
+					    state_type, x, y, width, height);
   
 
 	/***********************************************/
 	/* Draw Border                                 */
 	/***********************************************/
-	hc_draw_shadow (style, window, state_type, shadow_type, area, widget, detail, 
+	hc_draw_shadow (style, cr, state_type, shadow_type, widget, detail, 
 					x, y, width, height);    
 }
 
@@ -455,10 +430,9 @@ hc_draw_box (GtkStyle	*style,
  */
 void 
 hc_draw_box_gap (GtkStyle       *style,
-		 GdkWindow      *window,
+		 cairo_t        *cr,
 		 GtkStateType    state_type,
 		 GtkShadowType   shadow_type,
-		 GdkRectangle   *area,
 		 GtkWidget      *widget,
 		 const gchar    *detail,
 		 gint            x,
@@ -473,21 +447,20 @@ hc_draw_box_gap (GtkStyle       *style,
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 
 	/***********************************************/
 	/* Draw Fill                                   */
 	/***********************************************/
-	gtk_style_apply_default_background (style, window,
-	                                    widget && !gtk_widget_get_has_window (widget),
-	                                    state_type, area, x, y, width, height);
+	gtk_style_apply_default_background (style, cr,
+	                                    gtk_widget_get_window (widget),
+	                                    state_type, x, y, width, height);
 
 
 	/***********************************************/
 	/* Draw Border                                 */
 	/***********************************************/
-	hc_draw_shadow_gap (style, window, state_type, shadow_type, area, widget, detail, 
+	hc_draw_shadow_gap (style, cr , state_type, shadow_type, widget, detail, 
 					x, y, width, height, gap_side, gap_pos, gap_size);    
 }
 
@@ -500,10 +473,9 @@ hc_draw_box_gap (GtkStyle       *style,
  */
 void 
 hc_draw_handle (GtkStyle      *style,
-		GdkWindow     *window,
+		cairo_t       *cr,
 		GtkStateType   state_type,
 		GtkShadowType  shadow_type,
-		GdkRectangle  *area,
 		GtkWidget     *widget,
 		const gchar   *detail,
 		gint           x,
@@ -518,13 +490,11 @@ hc_draw_handle (GtkStyle      *style,
 	HcStyle *hc_style;
 	gdouble xx, yy;
 	CairoColor *light, *dark;
-	cairo_t *canvas;
 
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 
 	/***********************************************/
@@ -549,7 +519,7 @@ hc_draw_handle (GtkStyle      *style,
 	/***********************************************/
 	/* Draw Box                                    */
 	/***********************************************/
-	hc_draw_box (style, window, state_type, shadow_type, area, widget, 
+	hc_draw_box (style, cr, state_type, shadow_type, widget, 
 			detail, x, y, width, height);
 
 
@@ -561,24 +531,22 @@ hc_draw_handle (GtkStyle      *style,
 	light = &hc_style->color_cube.light[state_type];
 	dark = &hc_style->color_cube.dark[state_type];
 
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
 	/* Clip Too Size */
-	cairo_rectangle(canvas, clip_x, clip_y, clip_width, clip_height);
-	cairo_clip(canvas);
+	cairo_rectangle(cr, clip_x, clip_y, clip_width, clip_height);
+	cairo_clip(cr);
 
 	if (CHECK_DETAIL (detail, "paned"))
 	{
 		if (orientation == GTK_ORIENTATION_HORIZONTAL)
 		{
 			for (xx = x + width/2.0 - 15; xx <= x + width/2.0 + 15; xx += 5)
-				do_hc_draw_dot (canvas, light, dark, xx, y + height/2.0);
+				do_hc_draw_dot (cr, light, dark, xx, y + height/2.0);
 		}
 		else
 		{
 			for (yy = y + height/2 - 15; yy <= y + height/2.0 + 15; yy += 5)
 			{
-				do_hc_draw_dot (canvas, light, dark, x + width/2.0, yy);
+				do_hc_draw_dot (cr, light, dark, x + width/2.0, yy);
 			}
 		}
 	}
@@ -587,25 +555,22 @@ hc_draw_handle (GtkStyle      *style,
 		if (orientation == GTK_ORIENTATION_HORIZONTAL)
 		{
 			for (xx = x + xthick + (width/2 - xthick) % 5; xx <= x + width - xthick*2; xx += 5)
-				do_hc_draw_dot (canvas, light, dark, xx + 2, y + height/2);
+				do_hc_draw_dot (cr, light, dark, xx + 2, y + height/2);
 		}
 		else
 		{
 			for (yy = y + ythick + (height/2 - ythick) % 5; yy <= y + height - ythick*2; yy += 5)
-				do_hc_draw_dot (canvas, light, dark, x + width/2, yy + 2);
+				do_hc_draw_dot (cr, light, dark, x + width/2, yy + 2);
 		}
 	}
-
-	cairo_destroy(canvas);
 }
 
 
 void
 hc_draw_slider (GtkStyle * style,
-	     GdkWindow * window,
+	     cairo_t * cr,
 	     GtkStateType state_type,
 	     GtkShadowType shadow_type,
-	     GdkRectangle * area,
 	     GtkWidget * widget,
 	     const gchar * detail,
 	     gint x,
@@ -614,27 +579,23 @@ hc_draw_slider (GtkStyle * style,
              gint height, 
              GtkOrientation orientation)
 {
-	cairo_t *canvas;
 	gint line_width;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
  
-	canvas = ge_gdk_drawable_to_cairo (window, area);
-
 	/***********************************************/
 	/* Draw Box                                    */
 	/***********************************************/
 	line_width = HC_STYLE(style)->edge_thickness;
 
-	hc_draw_box (style, window, state_type, shadow_type, area, widget, 
+	hc_draw_box (style, cr, state_type, shadow_type, widget, 
 			detail, x, y, width, height);
 
 	if (GE_IS_SCALE(widget))
 	{
 		if (orientation == GTK_ORIENTATION_HORIZONTAL)
 		{
-			do_hc_draw_line (canvas, &HC_STYLE(style)->color_cube.fg[state_type],
+			do_hc_draw_line (cr, &HC_STYLE(style)->color_cube.fg[state_type],
 						line_width /2, 
 						x + ceil(width/2.0) + 0.5, 
 						y + line_width, 
@@ -643,7 +604,7 @@ hc_draw_slider (GtkStyle * style,
 		}
 		else
 		{
-			do_hc_draw_line (canvas, &HC_STYLE(style)->color_cube.fg[state_type],
+			do_hc_draw_line (cr, &HC_STYLE(style)->color_cube.fg[state_type],
 						line_width /2, 
 						x + line_width, 
 						y + ceil(height/2.0) + 0.5,
@@ -651,17 +612,14 @@ hc_draw_slider (GtkStyle * style,
 						y + ceil(height/2.0) + 0.5);     
 		}
 	}
-
-	cairo_destroy(canvas);
 }
 
 /* Draw Check Buttons Check & Border */
 void 
 hc_draw_check (GtkStyle      *style,
-	       GdkWindow     *window,
+	       cairo_t       *cr,
 	       GtkStateType   state_type,
 	       GtkShadowType  shadow_type,
-	       GdkRectangle  *area,
 	       GtkWidget     *widget,
 	       const gchar   *detail,
 	       gint           x,
@@ -672,10 +630,8 @@ hc_draw_check (GtkStyle      *style,
 	HcStyle *hc_style = HC_STYLE (style);
 	gboolean inconsistent;
 	gint line_width;
-	cairo_t *cr;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	/* Bug #351764 */
 	if ((!GTK_CHECK_VERSION(2,12,0)) && 
@@ -690,7 +646,6 @@ hc_draw_check (GtkStyle      *style,
 	inconsistent = (shadow_type == GTK_SHADOW_ETCHED_IN);
 
 	line_width = ceil(HC_STYLE(style)->edge_thickness/2.0);
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	cairo_save(cr);
 
@@ -746,17 +701,14 @@ hc_draw_check (GtkStyle      *style,
 
 		cairo_restore (cr);
 	}
-
-	cairo_destroy(cr);
 }
 
 /* Draw Radio Button AKA Option Button Check & Border */
 void 
 hc_draw_option (GtkStyle      *style,
-		GdkWindow     *window,
+		cairo_t       *cr,
 		GtkStateType   state_type,
 		GtkShadowType  shadow_type,
-		GdkRectangle  *area,
 		GtkWidget     *widget,
 		const gchar   *detail,
 		gint           x,
@@ -765,7 +717,6 @@ hc_draw_option (GtkStyle      *style,
 		gint           height)
 {
 	HcStyle *hc_style = HC_STYLE (style);
-	cairo_t *cr;
 
 	gint centerX;
 	gint centerY;
@@ -773,7 +724,6 @@ hc_draw_option (GtkStyle      *style,
 	gboolean inconsistent;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	/* Bug #351764 */
 	if ((!GTK_CHECK_VERSION(2,12,0)) && 
@@ -784,8 +734,6 @@ hc_draw_option (GtkStyle      *style,
 		width = HC_STYLE(style)->cell_indicator_size;
 		height = HC_STYLE(style)->cell_indicator_size;
 	}
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	centerX = x + floor(width/2);
 	centerY = y + floor(height/2);
@@ -828,16 +776,13 @@ hc_draw_option (GtkStyle      *style,
 
 		cairo_stroke (cr);
 	}
-
-	cairo_destroy(cr);
 }
 
 void
 hc_draw_tab (GtkStyle      *style,
-	     GdkWindow     *window,
+	     cairo_t       *cr,
 	     GtkStateType   state_type,
 	     GtkShadowType  shadow_type,
-	     GdkRectangle  *area,
 	     GtkWidget     *widget,
 	     const gchar   *detail,
 	     gint           x,
@@ -849,7 +794,6 @@ hc_draw_tab (GtkStyle      *style,
 	GtkBorder indicator_spacing;
   
 	HcStyle *hc_style = HC_STYLE (style);
-	cairo_t *cr;
 
 	ge_option_menu_get_props (widget, &indicator_size, &indicator_spacing);
   
@@ -866,33 +810,23 @@ hc_draw_tab (GtkStyle      *style,
 	width = indicator_size.width;
 	height = indicator_size.height;
  
-	cr = ge_gdk_drawable_to_cairo(window, area);
-
 	do_hc_draw_arrow (cr, &hc_style->color_cube.fg[state_type],
 				GTK_ARROW_DOWN,TRUE, x, y,
 				width, height);
-
-
-	cairo_destroy(cr);
 }
 
 void
 hc_draw_layout (GtkStyle        *style,
-		GdkWindow       *window,
+		cairo_t         *cr,
 		GtkStateType     state_type,
 		gboolean         use_text,
-		GdkRectangle    *area,
 		GtkWidget       *widget,
 		const gchar     *detail,
 		gint             x,
 		gint             y,
 		PangoLayout     *layout)
 {
-	cairo_t *cr;
-
 	CHECK_ARGS
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (use_text)
 		gdk_cairo_set_source_color (cr, &style->text[state_type]);
@@ -901,16 +835,13 @@ hc_draw_layout (GtkStyle        *style,
 
 	ge_cairo_transform_for_layout (cr, layout, x, y);
 	pango_cairo_show_layout (cr, layout);
-
-	cairo_destroy (cr);
 }
 
 void
 hc_draw_arrow (GtkStyle      *style,
-	       GdkWindow     *window,
+	       cairo_t       *cr,
 	       GtkStateType   state,
 	       GtkShadowType  shadow,
-	       GdkRectangle  *area,
 	       GtkWidget     *widget,
 	       const gchar   *detail,
 	       GtkArrowType   arrow_type,
@@ -922,13 +853,11 @@ hc_draw_arrow (GtkStyle      *style,
 {
 	gint line_width;
 	HcStyle *hc_style;
-	cairo_t *cr;
 
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	/***********************************************/
 	/* GTK Arrow Special Cases - adjust Size/Offset*/
@@ -987,19 +916,15 @@ hc_draw_arrow (GtkStyle      *style,
 	/* Draw Arrow                                  */
 	/***********************************************/
 	hc_style = HC_STYLE (style);
-	cr = ge_gdk_drawable_to_cairo(window, area);
 
 	do_hc_draw_arrow (cr, &hc_style->color_cube.fg[state], arrow_type, TRUE,
 				x, y, width+1, height+1);
-
-	cairo_destroy(cr);
 }
 
 void
 hc_draw_hline (GtkStyle     *style,
-	       GdkWindow    *window,
+	       cairo_t      *cr,
 	       GtkStateType  state_type,
-	       GdkRectangle  *area,
 	       GtkWidget     *widget,
 	       const gchar   *detail,
 	       gint          x1,
@@ -1007,27 +932,21 @@ hc_draw_hline (GtkStyle     *style,
 	       gint          y)
 {
 	HcStyle *hc_style = HC_STYLE (style);
-	cairo_t *cr;
 	gint line_width;
 
 	CHECK_ARGS
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	line_width = style->ythickness/2;
 
 	do_hc_draw_line (cr, &hc_style->color_cube.fg[state_type], (CHECK_DETAIL(detail, "label"))?1:2*line_width - 1, 
 	                 x1 + line_width + 2, y + style->ythickness/2 + 0.5,
 	                 x2 - line_width - 1, y + style->ythickness/2 + 0.5);
-
-	cairo_destroy(cr);
 }
 
 void
 hc_draw_vline (GtkStyle     *style,
-	       GdkWindow    *window,
+	       cairo_t      *cr,
 	       GtkStateType  state_type,
-	       GdkRectangle  *area,
 	       GtkWidget     *widget,
 	       const gchar   *detail,
 	       gint          y1,
@@ -1035,27 +954,21 @@ hc_draw_vline (GtkStyle     *style,
 	       gint          x)
 {
 	HcStyle *hc_style = HC_STYLE (style);
-	cairo_t *cr;
 	gint line_width;
 
 	CHECK_ARGS
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	line_width = style->xthickness/2;
 
 	do_hc_draw_line (cr, &hc_style->color_cube.fg[state_type],  (CHECK_DETAIL(detail, "label"))?1:2*line_width - 1, 
 	                 x + style->xthickness/2 + 0.5, y1,
 	                 x + style->xthickness/2 + 0.5, y2);
-
-	cairo_destroy(cr);
 }
 
 void
 hc_draw_expander (GtkStyle        *style,
-                           GdkWindow       *window,
+                           cairo_t         *cr,
                            GtkStateType     state_type,
-                           GdkRectangle    *area,
                            GtkWidget       *widget,
                            const gchar     *detail,
                            gint             x,
@@ -1076,11 +989,8 @@ hc_draw_expander (GtkStyle        *style,
   double x_double_vert, y_double_vert;
   double x_double, y_double;
   gint degrees = 0;
-  cairo_t *cr;
 	
   CHECK_ARGS
-
-  cr = ge_gdk_drawable_to_cairo (window, area);
 
   if (widget &&
       gtk_widget_class_find_style_property (GTK_WIDGET_GET_CLASS (widget),
@@ -1172,16 +1082,13 @@ hc_draw_expander (GtkStyle        *style,
   
   ge_cairo_set_color (cr, &hc_style->color_cube.text[state_type]);
   cairo_stroke (cr);
-  
-  cairo_destroy (cr);
 }
 
 void
 hc_draw_diamond (GtkStyle      *style,
-		 GdkWindow     *window,
+		 cairo_t       *cr,
 		 GtkStateType   state_type,
 		 GtkShadowType  shadow_type,
-		 GdkRectangle  *area,
 		 GtkWidget     *widget,
 		 const gchar   *detail,
 		 gint           x,
@@ -1193,15 +1100,11 @@ hc_draw_diamond (GtkStyle      *style,
 
 	int half_width;
 	int half_height;
-	cairo_t *cr;
 	
 	CHECK_ARGS
-	SANITIZE_SIZE
 	
 	half_width = width / 2;
 	half_height = height / 2;
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	switch (shadow_type) {
 	case GTK_SHADOW_IN:
@@ -1285,6 +1188,4 @@ hc_draw_diamond (GtkStyle      *style,
 	default:
 		break;
 	}
-
-	cairo_destroy(cr);
 }
