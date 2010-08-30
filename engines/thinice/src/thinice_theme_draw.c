@@ -13,10 +13,9 @@ Tomas Ögren <stric@ing.umu.se>
 #include "thinice_misc.h"
 
 #define DRAW_ARGS    GtkStyle       *style, \
-                     GdkWindow      *window, \
+                     cairo_t        *cr, \
                      GtkStateType    state_type, \
                      GtkShadowType   shadow_type, \
-                     GdkRectangle   *area, \
                      GtkWidget      *widget, \
                      const gchar    *detail, \
                      gint            x, \
@@ -24,7 +23,7 @@ Tomas Ögren <stric@ing.umu.se>
                      gint            width, \
                      gint            height
 
-#define DRAW_VARS    style, window, state_type, shadow_type, area, widget, detail, x, y, width, height
+#define DRAW_VARS    style, cr, state_type, shadow_type, widget, detail, x, y, width, height
 
 G_DEFINE_DYNAMIC_TYPE (ThiniceStyle, thinice_style, GTK_TYPE_STYLE)
 
@@ -36,9 +35,8 @@ thinice_style_register_types (GTypeModule *module)
 
 static void
 thinice_style_draw_hline(GtkStyle * style,
-           GdkWindow * window,
+           cairo_t * cr,
            GtkStateType state_type,
-           GdkRectangle * area,
            GtkWidget * widget,
            const gchar *detail,
            gint x1,
@@ -48,23 +46,18 @@ thinice_style_draw_hline(GtkStyle * style,
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 	CairoColor *dark;
         CairoColor *light;
-	cairo_t *cr;
 	
 	CHECK_ARGS
 
-	cr = ge_gdk_drawable_to_cairo (window, area);
-	
 	dark = &thinice_style->color_cube.dark[state_type];
 	light = &thinice_style->color_cube.light[state_type];
 	thinice_draw_separator(cr, dark, light, TRUE, x1, y, x2-x1, 2);
-	cairo_destroy (cr);
 }
 
 static void
 thinice_style_draw_vline(GtkStyle * style,
-           GdkWindow * window,
+           cairo_t * cr,
            GtkStateType state_type,
-           GdkRectangle * area,
            GtkWidget * widget,
            const gchar *detail,
            gint y1,
@@ -74,28 +67,22 @@ thinice_style_draw_vline(GtkStyle * style,
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 	CairoColor *dark;
 	CairoColor *light;
-	cairo_t *cr;
 
 	CHECK_ARGS
 
 	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
 
-	cr = ge_gdk_drawable_to_cairo (window, area);
-	
 	dark = &thinice_style->color_cube.dark[state_type];
 	light = &thinice_style->color_cube.light[state_type];
 	thinice_draw_separator(cr, dark, light, FALSE, x, y1, 2, y2-y1);
-
-	cairo_destroy (cr);
 }
 
 static void
 thinice_style_draw_shadow(GtkStyle     *style,
-	    GdkWindow    *window,
+	    cairo_t      *cr,
 	    GtkStateType  state_type,
 	    GtkShadowType shadow_type,
-	    GdkRectangle *area,
 	    GtkWidget    *widget,
 	    const gchar  *detail,
 	    gint          x,
@@ -107,11 +94,8 @@ thinice_style_draw_shadow(GtkStyle     *style,
 
   CairoColor *color1 = NULL;
   CairoColor *color2 = NULL;
-  cairo_t *cr;
 
   CHECK_ARGS
-
-  SANITIZE_SIZE
 
   switch (shadow_type)
     {
@@ -134,8 +118,6 @@ thinice_style_draw_shadow(GtkStyle     *style,
       break;
     }
 
-  cr = ge_gdk_drawable_to_cairo (window, area);
-  
   switch (shadow_type)
     {
     case GTK_SHADOW_NONE:
@@ -155,16 +137,13 @@ thinice_style_draw_shadow(GtkStyle     *style,
 	ge_cairo_simple_border (cr, color2, color1, x, y, width, height, FALSE);
       break;
     }
-
-   cairo_destroy(cr);
 }
 
 static void
 thinice_style_draw_arrow(GtkStyle * style,
-           GdkWindow * window,
+           cairo_t * cr,
            GtkStateType state_type,
            GtkShadowType shadow_type,
-           GdkRectangle * area,
            GtkWidget * widget,
            const gchar *detail,
            GtkArrowType arrow_type,
@@ -174,14 +153,11 @@ thinice_style_draw_arrow(GtkStyle * style,
 
 	CairoColor *color1, *color2, *color3=NULL,*color4=NULL;
 	gint half_width, half_height;
-	cairo_t *cr;
 
 	CHECK_ARGS
 
 	if (ge_is_combo_box(widget, FALSE) && (!ge_is_combo_box_entry(widget)))
 		return;
-
-	SANITIZE_SIZE
 
 	half_width = width / 2;
 	half_height = height / 2;
@@ -221,8 +197,6 @@ thinice_style_draw_arrow(GtkStyle * style,
 			return;
 	}
 
-	cr = ge_gdk_drawable_to_cairo (window, area);
-
 	if (CHECK_DETAIL (detail, "vscrollbar") || CHECK_DETAIL (detail, "hscrollbar"))
 	{
 		switch (THINICE_RC_STYLE (style->rc_style)->mark_type2)
@@ -260,16 +234,13 @@ thinice_style_draw_arrow(GtkStyle * style,
 			thinice_arrow (cr, &thinice_style->color_cube.white, arrow_type, TRUE, x+1, y+1, width, height);
 		thinice_arrow (cr, &thinice_style->color_cube.fg[state_type], arrow_type, TRUE, x, y, width, height);
 	}
-
-	cairo_destroy(cr);
 }
 
 static void
 thinice_style_draw_diamond(GtkStyle * style,
-             GdkWindow * window,
+             cairo_t * cr,
              GtkStateType state_type,
              GtkShadowType shadow_type,
-             GdkRectangle * area,
              GtkWidget * widget,
              const gchar *detail,
              gint x,
@@ -280,16 +251,11 @@ thinice_style_draw_diamond(GtkStyle * style,
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
   gint                half_width;
   gint                half_height;
-  cairo_t *cr;
 
   CHECK_ARGS
 
-  SANITIZE_SIZE
-
   half_width = width / 2;
   half_height = height / 2;
-
-  cr = ge_gdk_drawable_to_cairo (window, area);
 
   switch (shadow_type)
     {
@@ -374,16 +340,13 @@ thinice_style_draw_diamond(GtkStyle * style,
     default:
       break;
     }
-
-  cairo_destroy(cr);
 }
 
 static void
 thinice_style_draw_box(GtkStyle * style,
-         GdkWindow * window,
+         cairo_t *cr,
          GtkStateType state_type,
          GtkShadowType shadow_type,
-         GdkRectangle * area,
          GtkWidget * widget,
          const gchar *detail,
          gint x,
@@ -392,14 +355,12 @@ thinice_style_draw_box(GtkStyle * style,
          gint height)
 {
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
-	cairo_t *canvas;
 	gboolean draw_border = TRUE;
 
 	/***********************************************/
 	/* GTK Sanity Checks                           */
 	/***********************************************/
 	CHECK_ARGS
-	SANITIZE_SIZE 
 
 
 	/***********************************************/
@@ -440,32 +401,17 @@ thinice_style_draw_box(GtkStyle * style,
 	/***********************************************/
 	/* Fill Box                                    */
 	/***********************************************/
-	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
-	{
-		canvas = ge_gdk_drawable_to_cairo (window, area);
-
-		ge_cairo_set_color(canvas, &thinice_style->color_cube.bg[state_type]);
-
-		cairo_rectangle(canvas, x, y, width, height);
-
-		cairo_fill(canvas);
-
-		cairo_destroy(canvas);
-	}
-	else
-	{
-		gtk_style_apply_default_background(style, window,
-				widget && !gtk_widget_get_has_window (widget),
-				state_type, area,
-				x, y, width, height);
-	}
+        gtk_style_apply_default_background(style, cr,
+                        gtk_widget_get_window (widget),
+                        state_type,
+                        x, y, width, height);
 	
 	/***********************************************/
 	/* Draw Box Border                             */
 	/***********************************************/
 	if (draw_border)
 	{
-		thinice_style_draw_shadow(style, window, state_type, shadow_type, area, widget,
+		thinice_style_draw_shadow(style, cr, state_type, shadow_type, widget,
 						detail, x, y, width, height);
 	}
 
@@ -478,28 +424,24 @@ thinice_style_draw_box(GtkStyle * style,
 			which is drawn _behind_ the current button */
 		if (widget && GE_WIDGET_HAS_DEFAULT (widget))
 		{
-			canvas = ge_gdk_drawable_to_cairo (window, area);
+			ge_cairo_set_color(cr, &thinice_style->color_cube.bg[GTK_STATE_SELECTED]);
+			cairo_move_to(cr, x+2.5, y+2.5);
+			cairo_line_to(cr, x+10.5, y+2.5);
+			cairo_line_to(cr, x+2.5, y+10.5);
+			cairo_line_to(cr, x+2.5, y+2.5);
+			cairo_fill(cr);
 
-			ge_cairo_set_color(canvas, &thinice_style->color_cube.bg[GTK_STATE_SELECTED]);
-			cairo_move_to(canvas, x+2.5, y+2.5);
-			cairo_line_to(canvas, x+10.5, y+2.5);
-			cairo_line_to(canvas, x+2.5, y+10.5);
-			cairo_line_to(canvas, x+2.5, y+2.5);
-			cairo_fill(canvas);
+			ge_cairo_set_color(cr, &thinice_style->color_cube.dark[state_type]);
+			cairo_move_to(cr, x + 2.5, y + 11);
+			cairo_line_to(cr, x + 2.5, y + 2.5);
+			cairo_line_to(cr, x + 11, y + 2.5);
+			cairo_stroke(cr);
 
-			ge_cairo_set_color(canvas, &thinice_style->color_cube.dark[state_type]);
-			cairo_move_to(canvas, x + 2.5, y + 11);
-			cairo_line_to(canvas, x + 2.5, y + 2.5);
-			cairo_line_to(canvas, x + 11, y + 2.5);
-			cairo_stroke(canvas);
-
-			cairo_set_line_width (canvas, 0.5);
-			ge_cairo_set_color(canvas, &thinice_style->color_cube.light[state_type]);
-			cairo_move_to(canvas, x+11, y+3);
-			cairo_line_to(canvas, x+3, y+11);
-			cairo_stroke(canvas);
-
-			cairo_destroy(canvas);
+			cairo_set_line_width (cr, 0.5);
+			ge_cairo_set_color(cr, &thinice_style->color_cube.light[state_type]);
+			cairo_move_to(cr, x+11, y+3);
+			cairo_line_to(cr, x+3, y+11);
+			cairo_stroke(cr);
 		}
 	}
 
@@ -524,16 +466,12 @@ thinice_style_draw_box(GtkStyle * style,
 			vline_x = x + width - (indicator_size.width + indicator_spacing.left + 
 						indicator_spacing.right) - style->xthickness;
 
-		canvas = ge_gdk_drawable_to_cairo (window, area);
-
 		dark = &thinice_style->color_cube.dark[state_type];
 		light = &thinice_style->color_cube.light[state_type];
-		thinice_draw_separator(canvas, dark, light, FALSE,
+		thinice_draw_separator(cr, dark, light, FALSE,
                                        vline_x, y + style->ythickness + 1,
                                        style->xthickness, height - 2*style->ythickness - 2);
 
-		cairo_destroy(canvas);
- 
 		if ((widget) && (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL))
 			x +=  indicator_spacing.right + style->xthickness;
 		else
@@ -544,17 +482,16 @@ thinice_style_draw_box(GtkStyle * style,
 		width = indicator_size.width;
 		height = indicator_size.height;
  
-		thinice_style_draw_arrow (style, window, state_type, shadow_type, area, NULL, "optionmenu", 
+		thinice_style_draw_arrow (style, cr, state_type, shadow_type, NULL, "optionmenu", 
 						GTK_ARROW_DOWN, TRUE,  x,  y,  width,  height);
 	}
 }
 
 static void
 thinice_style_draw_check(GtkStyle * style,
-           GdkWindow * window,
+           cairo_t * cr,
            GtkStateType state_type,
            GtkShadowType shadow_type,
-           GdkRectangle * area,
            GtkWidget * widget,
            const gchar *detail,
            gint x,
@@ -565,17 +502,13 @@ thinice_style_draw_check(GtkStyle * style,
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 
 	CairoColor              *color1 = NULL;
-	cairo_t *cr;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	if (shadow_type == GTK_SHADOW_IN)
 	{
 		color1 = &thinice_style->color_cube.bg[GTK_STATE_ACTIVE];
 	}
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	if (state_type == GTK_STATE_INSENSITIVE)
 	{
@@ -585,7 +518,7 @@ thinice_style_draw_check(GtkStyle * style,
 	}
 	else
 	{
-		thinice_style_draw_box(style, window, state_type, shadow_type, area, widget,
+		thinice_style_draw_box(style, cr, state_type, shadow_type, widget,
                 			detail, x, y, width, height);
 		if (color1)
 		{
@@ -596,18 +529,15 @@ thinice_style_draw_check(GtkStyle * style,
 		        cairo_fill(cr);
 		}
 	}
-	
-	cairo_destroy(cr);
 }
 
 
 /* Thanks to Evan Lawrence */
 static void
 thinice_style_draw_option(GtkStyle * style,
-            GdkWindow * window,
+            cairo_t * cr,
             GtkStateType state_type,
             GtkShadowType shadow_type,
-            GdkRectangle * area,
             GtkWidget * widget,
             const gchar *detail,
             gint x,
@@ -618,14 +548,12 @@ thinice_style_draw_option(GtkStyle * style,
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 
 	CairoColor              *color1 = NULL, *color2 = NULL, *color3 = NULL;
-	cairo_t *cr;
 
   gint centerX;
   gint centerY;
   gint radius;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
   if (shadow_type == GTK_SHADOW_IN ||
       shadow_type == GTK_SHADOW_ETCHED_IN)
@@ -641,7 +569,6 @@ thinice_style_draw_option(GtkStyle * style,
 			color3 = &thinice_style->color_cube.bg[state_type];
     }
 
-	cr = ge_gdk_drawable_to_cairo (window, area);
       cairo_set_line_width (cr, 0.5);
 
   centerX = x + floor(width/2);
@@ -716,16 +643,13 @@ thinice_style_draw_option(GtkStyle * style,
 
       break;
     }
-
-	cairo_destroy(cr);
 }
 
 static void
 thinice_style_draw_shadow_gap(GtkStyle * style,
-                GdkWindow * window,
+                cairo_t * cr,
                 GtkStateType state_type,
                 GtkShadowType shadow_type,
-                GdkRectangle * area,
                 GtkWidget * widget,
                 const gchar *detail,
                 gint x,
@@ -739,11 +663,9 @@ thinice_style_draw_shadow_gap(GtkStyle * style,
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 
 	CairoColor              *color1 = NULL, *color2 = NULL;
-	cairo_t *cr;
 	gint start;
 
 	CHECK_ARGS
-	SANITIZE_SIZE
 
 	shadow_type = thinice_shadow_type (style, detail, shadow_type);
 	
@@ -763,8 +685,6 @@ thinice_style_draw_shadow_gap(GtkStyle * style,
 		color1 = &thinice_style->color_cube.dark[state_type];
 		color2 = &thinice_style->color_cube.dark[state_type];
 	}
-
-	cr = ge_gdk_drawable_to_cairo (window, area);
 
 	cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
 	cairo_rectangle (cr, x, y, width, height);
@@ -790,16 +710,14 @@ thinice_style_draw_shadow_gap(GtkStyle * style,
 	cairo_clip (cr);
 	cairo_new_path (cr);
 	ge_cairo_simple_border (cr, color1, color2, x, y, width, height, FALSE);
-	cairo_destroy(cr);
 }
 
 
 static void
 thinice_style_draw_box_gap(GtkStyle * style,
-             GdkWindow * window,
+             cairo_t * cr,
              GtkStateType state_type,
              GtkShadowType shadow_type,
-             GdkRectangle * area,
              GtkWidget * widget,
              const gchar *detail,
              gint x,
@@ -810,14 +728,14 @@ thinice_style_draw_box_gap(GtkStyle * style,
              gint gap_x,
              gint gap_width)
 {
-    SANITIZE_SIZE
+    CHECK_ARGS
 
-    gtk_style_apply_default_background(style, window,
-            widget && !gtk_widget_get_has_window (widget),
-            state_type, area,
+    gtk_style_apply_default_background(style, cr,
+            gtk_widget_get_window (widget),
+            state_type,
             x, y, width, height);
-    thinice_style_draw_shadow_gap (style, window, state_type, shadow_type,
-            area, widget, detail, x, y, width, height,
+    thinice_style_draw_shadow_gap (style, cr, state_type, shadow_type,
+            widget, detail, x, y, width, height,
             gap_side, gap_x, gap_width);
 }
 
@@ -828,35 +746,19 @@ thinice_style_draw_extension(DRAW_ARGS, GtkPositionType gap_side)
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 
 	CairoColor *background, *light, *dark;
-	cairo_t *canvas;
 
 	CHECK_ARGS
-
-	SANITIZE_SIZE
 
 	background = &thinice_style->color_cube.bg[state_type];
 	light = &thinice_style->color_cube.light[state_type];
 	dark = &thinice_style->color_cube.dark[state_type];
 
-	canvas = ge_gdk_drawable_to_cairo (window, area);
+        gtk_style_apply_default_background(style, cr,
+                        gtk_widget_get_window (widget),
+                        state_type, x, y, width, height);
 
-	if ((!style->bg_pixmap[state_type]) || GDK_IS_PIXMAP(window))
-	{
-		ge_cairo_set_color(canvas, background);
-
-		cairo_rectangle(canvas, x, y, width, height);
-
-		cairo_fill(canvas);
-	}
-	else
-	{
-		gtk_style_apply_default_background(style, window,
-				widget && !gtk_widget_get_has_window (widget),
-				state_type, area, x, y, width, height);
-	}
-
-	cairo_rectangle (canvas, x, y, width, height);
-	cairo_clip (canvas);
+	cairo_rectangle (cr, x, y, width, height);
+	cairo_clip (cr);
 
 	switch(gap_side)
 	{
@@ -879,16 +781,14 @@ thinice_style_draw_extension(DRAW_ARGS, GtkPositionType gap_side)
 		break;
 	}
 
-	ge_cairo_simple_border (canvas, light, dark, x, y, width, height, FALSE);
-	cairo_destroy(canvas);
+	ge_cairo_simple_border (cr, light, dark, x, y, width, height, FALSE);
 }
 
 static void
 thinice_style_draw_slider(GtkStyle * style,
-            GdkWindow * window,
+            cairo_t * cr,
             GtkStateType state_type,
             GtkShadowType shadow_type,
-            GdkRectangle * area,
             GtkWidget * widget,
             const gchar *detail,
             gint x,
@@ -902,11 +802,8 @@ thinice_style_draw_slider(GtkStyle * style,
   GdkPoint pointsh[7];
   gint i, rect = FALSE, midlines = MARKS_SLASH;
   gint modx, mody;
-  cairo_t *cr;
 
   CHECK_ARGS
-
-  SANITIZE_SIZE
 
 #ifdef DEBUG
   printf("draw_slider(%s, %d, %d, %d)\n", detail, x, y, orientation);
@@ -959,8 +856,6 @@ thinice_style_draw_slider(GtkStyle * style,
           pointsh[6].x = x;                  pointsh[6].y = y+height-1;
         }
 
-      cr = ge_gdk_drawable_to_cairo (window, area);
-
       if (rect)
         {
            ge_cairo_set_color(cr, &thinice_style->color_cube.bg[state_type]);
@@ -969,7 +864,7 @@ thinice_style_draw_slider(GtkStyle * style,
 
            cairo_fill(cr);
 
-           thinice_style_draw_shadow(style, window, state_type, shadow_type, area,
+           thinice_style_draw_shadow(style, cr, state_type, shadow_type,
                             widget, detail, x, y, width, height);
         }
       else
@@ -1052,17 +947,13 @@ thinice_style_draw_slider(GtkStyle * style,
                             x, y, width, height);
           break;
         }
-
-	cairo_destroy(cr);
-
 }
 
 static void
 thinice_style_draw_handle(GtkStyle * style,
-            GdkWindow * window,
+            cairo_t * cr,
             GtkStateType state_type,
             GtkShadowType shadow_type,
-            GdkRectangle * area,
             GtkWidget * widget,
             const gchar *detail,
             gint x,
@@ -1073,7 +964,6 @@ thinice_style_draw_handle(GtkStyle * style,
 {
 	ThiniceStyle *thinice_style = THINICE_STYLE (style);
 
-  cairo_t *cr;
   CairoColor              *light=NULL, *dark=NULL;
   GdkRectangle        dest;
   gint                modx, mody;
@@ -1084,9 +974,6 @@ thinice_style_draw_handle(GtkStyle * style,
   printf("draw_handle(state=%d, shadow=%d, detail=%s, [%d,%d]@[%d,%d]\n",
          state_type, shadow_type, detail?detail:"nul",width,height,x,y);
 #endif
-  SANITIZE_SIZE
-
-  cr = ge_gdk_drawable_to_cairo (window, area);
 
   if (CHECK_DETAIL (detail, "paned")) 
     {
@@ -1136,12 +1023,10 @@ thinice_style_draw_handle(GtkStyle * style,
             }
         }
 
-       cairo_destroy(cr);
-
       return;
     }
 
-  thinice_style_draw_box(style, window, state_type, shadow_type, area, widget,
+  thinice_style_draw_box(style, cr, state_type, shadow_type, widget,
                 detail, x, y, width, height);
 
   ge_cairo_line(cr, &thinice_style->color_cube.light[state_type],
@@ -1202,8 +1087,6 @@ thinice_style_draw_handle(GtkStyle * style,
           break;
         }
     }
-
-    cairo_destroy(cr);
 }
 
 static void
