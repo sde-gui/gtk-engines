@@ -1325,19 +1325,8 @@ glide_draw_box (GtkStyle * style,
   else if ((CHECK_DETAIL (detail, "bar"))
 	   && (widget && GE_IS_PROGRESS_BAR (widget)))
     { 
-gboolean vertical = TRUE;
-			switch (gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR(widget))) 
-			{
-				case GTK_PROGRESS_LEFT_TO_RIGHT:
-				case GTK_PROGRESS_RIGHT_TO_LEFT:
-					vertical = FALSE;
-				break;
-	
-				case GTK_PROGRESS_BOTTOM_TO_TOP:
-				case GTK_PROGRESS_TOP_TO_BOTTOM:
-					vertical = TRUE;
-				break;
-			}   
+gboolean vertical;
+        vertical = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget)) == GTK_ORIENTATION_VERTICAL;
 
 	ge_cairo_pattern_fill(canvas, DEFAULT_BACKGROUND_PATTERN(glide_style, GTK_STATE_SELECTED, glide_style->bg_gradient[!vertical][GTK_STATE_SELECTED]), x+1, y+1, width-2, height-2);
 	do_glide_draw_border(canvas, &glide_style->color_cube.bg[GTK_STATE_SELECTED],
