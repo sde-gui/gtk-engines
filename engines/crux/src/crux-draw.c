@@ -625,7 +625,7 @@ paint_scale_trough (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOr
 }
 
 static void
-paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkProgressBarOrientation orientation,
+paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkOrientation orientation, gboolean inverted,
 		    gdouble x, gdouble y, gdouble width, gdouble height, gdouble fraction, CairoColor *base_color)
 {
 	cairo_pattern_t *crp;
@@ -636,7 +636,7 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	ge_gdk_color_to_cairo (&style->base[GTK_STATE_SELECTED], &c1);
 	CRUX_DARK(*base_color, c2);
 	CRUX_LIGHT(*base_color, c1);
-	if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT || orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
+	if (orientation == GTK_ORIENTATION_HORIZONTAL)
 		crp = cairo_pattern_create_linear (x, y, x, y + height);
 	else
 		crp = cairo_pattern_create_linear (x, y, x + width, y);
@@ -653,13 +653,22 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 
 	if (fraction < 1.0)
 	{
-		switch (orientation)
-		{
-			case GTK_PROGRESS_LEFT_TO_RIGHT: width--; break;
-			case GTK_PROGRESS_RIGHT_TO_LEFT: x++; width--; break;
-			case GTK_PROGRESS_TOP_TO_BOTTOM: height--; break;
-			case GTK_PROGRESS_BOTTOM_TO_TOP: y++; height--; break;
+		if (orientation == GTK_ORIENTATION_HORIZONTAL && !inverted)
+                {
+                        width--;
+                }
+                else if (orientation == GTK_ORIENTATION_HORIZONTAL && inverted)
+                {
+		        x++; width--;
+                }
+                else if (orientation == GTK_ORIENTATION_VERTICAL && !inverted)
+                {
+		        height--;
 		}
+                else if (orientation == GTK_ORIENTATION_VERTICAL && inverted)
+		{
+		        y++; height--;
+                }
 	}
 
 
@@ -680,24 +689,25 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	if (fraction < 1.0)
 	{
 		cairo_set_source_rgb (cr, c2.r, c2.g, c2.b);
-		switch (orientation)
-		{
-			case GTK_PROGRESS_LEFT_TO_RIGHT:
-				cairo_move_to (cr, x + width + 1.0, y);
-				cairo_line_to (cr, x + width + 1.0, y + height);
-				break;
-			case GTK_PROGRESS_RIGHT_TO_LEFT:
+                if (orientation == GTK_ORIENTATION_HORIZONTAL && !inverted)
+                {
+			cairo_move_to (cr, x + width + 1.0, y);
+			cairo_line_to (cr, x + width + 1.0, y + height);
+                }
+                else if (orientation == GTK_ORIENTATION_HORIZONTAL && inverted)
+                {
 				cairo_move_to (cr, x - 1.0, y);
 				cairo_line_to (cr, x - 1.0, y + height);
-				break;
-			case GTK_PROGRESS_TOP_TO_BOTTOM:
+                }
+                else if (orientation == GTK_ORIENTATION_VERTICAL && !inverted)
+                {
 				cairo_move_to (cr, x, y + height + 1.0);
 				cairo_line_to (cr, x + width, y + height + 1.0);
-				break;
-			case GTK_PROGRESS_BOTTOM_TO_TOP:
+                }
+                else if (orientation == GTK_ORIENTATION_VERTICAL && inverted)
+                {
 				cairo_move_to (cr, x, y - 1.0);
 				cairo_line_to (cr, x + width, y - 1.0);
-				break;
 		}
 		cairo_stroke (cr);
 	}
@@ -711,7 +721,7 @@ paint_progress_bar (cairo_t *cr, GtkStyle *style, GtkStateType state_type, GtkPr
 	 *       is already drawn by draw_box (), so the corner looks too dark
 	 */
 
-	if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
+	if (orientation == GTK_ORIENTATION_HORIZONTAL && !inverted)
 	{
 		cairo_set_source_rgba (cr, 0, 0, 0, .22);
 		cairo_move_to (cr, x + width + 2.0, y);
@@ -1022,23 +1032,25 @@ draw_box (GtkStyle *style,
 	}
 	else if (DETAIL ("bar") || DETAIL ("entry-progress"))
 	{
-		GtkProgressBarOrientation orientation;
+		GtkOrientation orientation;
+                gboolean inverted = FALSE;
 		CairoColor base_color;
 		gdouble fraction = 0;
 		if (widget && GE_IS_PROGRESS_BAR (widget))
 		{
-			orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
+			orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
+                        inverted = gtk_progress_bar_get_inverted (GTK_PROGRESS_BAR (widget));
 			fraction = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (widget));
 		}
 		else
-			orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+			orientation = GTK_ORIENTATION_HORIZONTAL;
 
 		if (DETAIL ("bar"))
 			ge_gdk_color_to_cairo (&style->base[GTK_STATE_SELECTED], &base_color);
 		else
 			ge_gdk_color_to_cairo (&style->bg[state_type], &base_color);
 
-		paint_progress_bar (cr, style, state_type, orientation, x, y, width, height, fraction, &base_color);
+		paint_progress_bar (cr, style, state_type, orientation, inverted, x, y, width, height, fraction, &base_color);
 	}
 	else if (DETAIL ("trough") && GE_IS_SCALE (widget))
 	{

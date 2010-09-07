@@ -815,7 +815,20 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		if (widget && GE_IS_PROGRESS_BAR (widget))
 		{
-			progressbar.orientation = gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (widget));
+                        if (gtk_orientable_get_orientation (GTK_ORIENTABLE (widget)))
+                        {
+                           if (gtk_progress_bar_get_inverted (GTK_PROGRESS_BAR (widget)))
+                             progressbar.orientation = CL_ORIENTATION_RIGHT_TO_LEFT;
+                           else
+                             progressbar.orientation = CL_ORIENTATION_LEFT_TO_RIGHT;
+                        }
+                        else
+                        {
+                           if (gtk_progress_bar_get_inverted (GTK_PROGRESS_BAR (widget)))
+                             progressbar.orientation = CL_ORIENTATION_BOTTOM_TO_TOP;
+                           else
+                             progressbar.orientation = CL_ORIENTATION_TOP_TO_BOTTOM;
+                        }
 			progressbar.value = gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(widget));
 #warning Assuming non-pulsing progress bars because there is currently no way to query them in GTK+ 3.0.
 			progressbar.pulsing = FALSE;
@@ -829,10 +842,10 @@ clearlooks_style_draw_box (DRAW_ARGS)
 
 		if (!params.ltr)
 		{
-			if (progressbar.orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
-				progressbar.orientation = GTK_PROGRESS_RIGHT_TO_LEFT;
-			else if (progressbar.orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
-				progressbar.orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+			if (progressbar.orientation == CL_ORIENTATION_LEFT_TO_RIGHT)
+				progressbar.orientation = CL_ORIENTATION_RIGHT_TO_LEFT;
+			else if (progressbar.orientation == CL_ORIENTATION_RIGHT_TO_LEFT)
+				progressbar.orientation = CL_ORIENTATION_LEFT_TO_RIGHT;
 		}
 
 		/* Following is a hack to have a larger clip area, the one passed in
@@ -844,22 +857,22 @@ clearlooks_style_draw_box (DRAW_ARGS)
 			{
 				switch (progressbar.orientation)
 				{
-					case GTK_PROGRESS_RIGHT_TO_LEFT:
+					case CL_ORIENTATION_RIGHT_TO_LEFT:
 						tmp.x -= 1;
-					case GTK_PROGRESS_LEFT_TO_RIGHT:
+					case CL_ORIENTATION_LEFT_TO_RIGHT:
 						tmp.width += 1;
 						break;
-					case GTK_PROGRESS_BOTTOM_TO_TOP:
+					case CL_ORIENTATION_BOTTOM_TO_TOP:
 						tmp.y -= 1;
-					case GTK_PROGRESS_TOP_TO_BOTTOM:
+					case CL_ORIENTATION_TOP_TO_BOTTOM:
 						tmp.height += 1;
 						break;
 				}
 			}
 			else
 			{
-				if (progressbar.orientation == GTK_PROGRESS_RIGHT_TO_LEFT ||
-				    progressbar.orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
+				if (progressbar.orientation == CL_ORIENTATION_RIGHT_TO_LEFT ||
+				    progressbar.orientation == CL_ORIENTATION_LEFT_TO_RIGHT)
 				{
 					tmp.x -= 1;
 					tmp.width += 2;
