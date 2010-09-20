@@ -5,9 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gtk-engines trunk\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-08 20:30+0900\n"
+"Project-Id-Version: gtk-engines gtk-engines-2-22\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
+"engines&component=general\n"
+"POT-Creation-Date: 2010-09-05 06:56+0000\n"
 "PO-Revision-Date: 2009-02-08 20:10+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -17,11 +18,11 @@ msgstr ""
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
-msgstr "３次元風のボタン"
+msgstr "3次元風のボタン"
 
 #: ../schema/clearlooks.xml.in.in.h:2
 msgid "3d-ish (gradient)"
-msgstr "３次元風のグラデーション"
+msgstr "3次元風のグラデーション"
 
 #: ../schema/clearlooks.xml.in.in.h:3
 msgid "Animations"
@@ -143,7 +144,7 @@ msgstr "ドット"
 
 #: ../schema/thinice.xml.in.in.h:3
 msgid "Full"
-msgstr "全て"
+msgstr "すべて"
 
 #: ../schema/thinice.xml.in.in.h:4
 msgid "Handlebox Marks"
@@ -159,7 +160,7 @@ msgstr "スラッシュを反転する"
 
 #: ../schema/thinice.xml.in.in.h:7
 msgid "Mark Type 1"
-msgstr "タイプ１"
+msgstr "タイプ1"
 
 #: ../schema/thinice.xml.in.in.h:8
 msgid "Mark Type for Scrollbar Buttons"
