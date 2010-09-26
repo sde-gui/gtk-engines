@@ -1393,8 +1393,6 @@ redmond_draw_extension (GtkStyle * style,
   switch (shadow_type)
     {
     case GTK_SHADOW_NONE:
-      /* need to destroy the cairo context */
-      cairo_destroy (cr);
       return;
     case GTK_SHADOW_IN:
       color1 = &redmond_style->color_cube.dark[state_type];
