@@ -1316,10 +1316,7 @@ clearlooks_style_draw_arrow (GtkStyle      *style,
 	CHECK_ARGS
 
 	if (arrow_type == GTK_ARROW_NONE)
-	{
-		cairo_destroy (cr);
-		return;
-	}
+	      return;
 
 	clearlooks_set_widget_parameters (widget, style, state_type, &params);
 	arrow.type = CL_ARROW_NORMAL;
