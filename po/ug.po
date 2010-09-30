@@ -2,11 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Sahran <sahran.ug@gmail.com>, 2010
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-engines&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
+"engines&component=general\n"
 "POT-Creation-Date: 2010-09-20 10:02+0000\n"
 "PO-Revision-Date: 2010-08-20 10:02+0000\n"
 "Last-Translator: Sahran <sahran.ug@gmail.com>\n"
@@ -103,7 +104,9 @@ msgstr "ئۇسلۇب"
 msgid ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
-msgstr "بۇ تاللانما سىزمىچىلىق فوكۇسىغا يول قويىدۇ ياكى چەكلەيدۇ. ئۇنىڭ ئاساسلىق مەقسىتى پۈتۈكنىڭ ئېكران كەسمىسى قۇرۇش."
+msgstr ""
+"بۇ تاللانما سىزمىچىلىق فوكۇسىغا يول قويىدۇ ياكى چەكلەيدۇ. ئۇنىڭ ئاساسلىق "
+"مەقسىتى پۈتۈكنىڭ ئېكران كەسمىسى قۇرۇش."
 
 #: ../schema/clearlooks.xml.in.in.h:23
 msgid "Toolbar Style"
