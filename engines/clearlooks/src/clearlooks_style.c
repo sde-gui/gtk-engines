@@ -611,7 +611,6 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		}
 		else
 		{
-			g_print ("ETCHED IN\n");
 			cairo_save (cr);
 			cairo_move_to (cr, x, y);
 			cairo_line_to (cr, x + width, y);
