@@ -707,12 +707,25 @@ main (int argc, char **argv)
 	 * and destruction of all engine objects. */
         gtk_rc_set_default_files (new_default_files);
 	gtk_rc_reparse_all_for_settings (settings, TRUE);
-	
+
+	gtk_widget_hide (window);
+	gtk_widget_unmap (window);
+
+	while (gdk_events_pending ())
+		gtk_main_iteration_do (FALSE);
+
+	gtk_widget_destroy (window);
+
 	while (gdk_events_pending ())
 		gtk_main_iteration_do (FALSE);
 
 	/* TODO: It would be really cool to check if there is no
 	 * loaded engine at this point. */
+
+	/*
+	 * HRM: Calling the follwing causes an assertion failure inside cairo here -- 01.10.2010, Benjamin
+	cairo_debug_reset_static_data ();
+	*/
 
 	return 0;
 }
