@@ -513,6 +513,7 @@ run_functions (Test *test)
 {
 	GtkStyle *style = gtk_widget_get_style (window);
 	GdkWindow *mywindow = gtk_widget_get_window (window);
+	cairo_t *cr = gdk_cairo_create (mywindow);
 	
 	if (widgets[test->widget]) {
 		style = gtk_widget_get_style (widgets[test->widget]);
@@ -520,57 +521,59 @@ run_functions (Test *test)
 	}
 	
 	if (test->function & FUNCTION_ARROW)
-		gtk_paint_arrow (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, test->arrow_type, test->fill, 0, 0, 10, 10);
+		gtk_paint_arrow (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, test->arrow_type, test->fill, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_BOX)
-		gtk_paint_box (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_box (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_SHADOW)
-		gtk_paint_shadow (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_shadow (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_BOX_GAP)
-		gtk_paint_box_gap (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side, 0, 100);
+		gtk_paint_box_gap (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side, 0, 100);
 
 	if (test->function & FUNCTION_SHADOW_GAP)
-		gtk_paint_shadow_gap (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side, 0, 100);
+		gtk_paint_shadow_gap (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side, 0, 100);
 
 
 	if (test->function & FUNCTION_CHECK)
-		gtk_paint_check (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_check (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10);
 		
 	if (test->function & FUNCTION_EXPANDER)
-		gtk_paint_expander (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, 10, 10, test->expander_style);
+		gtk_paint_expander (style, cr, test->state, widgets[test->widget], test->detail, 10, 10, test->expander_style);
 
 	if (test->function & FUNCTION_EXTENSION)
-		gtk_paint_extension (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side);
+		gtk_paint_extension (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10, test->gap_side);
 
 	if (test->function & FUNCTION_FLAT_BOX)
-		gtk_paint_flat_box (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_flat_box (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_FOCUS)
-		gtk_paint_focus (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_focus (style, cr, test->state, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_HANDLE)
-		gtk_paint_handle (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->orientation);
+		gtk_paint_handle (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10, test->orientation);
 
 	if (test->function & FUNCTION_OPTION)
-		gtk_paint_option (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_option (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_RESIZE_GRIP)
-		gtk_paint_resize_grip (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, test->edge, 0, 0, 10, 10);
+		gtk_paint_resize_grip (style, cr, test->state, widgets[test->widget], test->detail, test->edge, 0, 0, 10, 10);
 
 	if (test->function & FUNCTION_SLIDER)
-		gtk_paint_slider (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10, test->orientation);
+		gtk_paint_slider (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10, test->orientation);
 
 	if (test->function & FUNCTION_TAB)
-		gtk_paint_tab (style, mywindow, test->state, test->shadow, NULL, widgets[test->widget], test->detail, 0, 0, 10, 10);
+		gtk_paint_tab (style, cr, test->state, test->shadow, widgets[test->widget], test->detail, 0, 0, 10, 10);
 
 
 	if (test->function & FUNCTION_HLINE)
-		gtk_paint_hline (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, 1, 10, 4);
+		gtk_paint_hline (style, cr, test->state, widgets[test->widget], test->detail, 1, 10, 4);
 
 	if (test->function & FUNCTION_VLINE)
-		gtk_paint_vline (style, mywindow, test->state, NULL, widgets[test->widget], test->detail, 1, 10, 4);
+		gtk_paint_vline (style, cr, test->state, widgets[test->widget], test->detail, 1, 10, 4);
+
+	cairo_destroy (cr);
 }
 
 static void
