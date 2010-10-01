@@ -156,6 +156,24 @@
    fun:pango_context_init
    fun:g_type_create_instance
 }
+{
+   Some pango leak that happens in some engines.
+   Memcheck:Leak
+   ...
+   fun:g_strdup
+   fun:pango_find_map
+   fun:itemize_state_process_run
+   fun:pango_itemize_with_base_dir
+}
+{
+   Some pango leak that happens in some engines.
+   Memcheck:Leak
+   ...
+   fun:g_malloc
+   fun:pango_find_map
+   fun:itemize_state_process_run
+   fun:pango_itemize_with_base_dir
+}
 
 # Freetype (only happens in industrial)
 {
