@@ -1,3 +1,42 @@
+Overview of Changes in 2.91.0 (since 2.90.3.1)
+==============================================
+
+Bugs fixed in this releaes:
+ 612486 - Does not compile with -DGSEAL_ENABLED
+ 623311 - gtk-engines-3.pc: require gtk+-3.0 not 2.0 (Diego Escalante Urrelo)
+ 626678 - Error during phase build of gtk-engines-3; Compiling with jhbuild
+ 
+Changes in this release:
+ - Use tab-expand and tab-pack instead of deprecated notebook child
+   properties (Clearlooks, Carlos Garcia Campos)
+ - Adaption for GtkOrientable API (Matthias Clasen)
+ - A lot more GTK3 fixes (Benjamin Otte)
+ - Test fixes for GTK3 (Benjamin Berg)
+
+Added/updated translations:
+ - ar, courtesy of Khaled Hosny
+ - bg, courtesy of Yavor Doganov
+ - ca, courtesy of Gil Forcada
+ - en_GB, courtesy of Philip Withnall
+ - et, courtesy of Mattias Põldaru
+ - fr, courtesy of Claude Paroz
+ - gl, courtesy of Fran Diéguez
+ - hu, courtesy of Gabor Kelemen
+ - id, courtesy of Dirgita
+ - ja, courtesy of Takeshi AIHANA
+ - pa, courtesy of A S Alam
+ - sk, courtesy of Roman Mátyus
+ - sl, courtesy of Matej Urbančič
+ - sr, courtesy of Милош Поповић
+ - sr@latin, courtesy of Miloš Popović
+ - sv, courtesy of Daniel Nylander
+ - ta, courtesy of Dr.T.Vasudevan
+ - ug, courtesy of Sahran
+ - zh_CN, courtesy of Jessica Ban
+ - zh_HK, courtesy of Chao-Hsiung Liao
+ - zh_TW, courtesy of Chao-Hsiung Liao
+
+
 Overview of Changes in 2.90.3.1 (since 2.90.3)
 ============================================
 

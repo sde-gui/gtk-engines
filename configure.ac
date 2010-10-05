@@ -1,5 +1,5 @@
 
-AC_INIT([gtk-engines], [2.90.3.1])
+AC_INIT([gtk-engines], [2.91.0])
 AC_CONFIG_SRCDIR([README])
 
 AM_INIT_AUTOMAKE
@@ -115,7 +115,7 @@ if test $thinice = "yes"; then
 fi
 
 # Don't forget to update the README when changing this.
-PKG_CHECK_MODULES(GTK, gtk+-3.0 >= 2.90.0,,
+PKG_CHECK_MODULES(GTK, gtk+-3.0 >= 2.91.0,,
                   AC_MSG_ERROR([GTK+-3.0 is required to compile gtk-engines]))
 
 AC_SUBST(GTK_CFLAGS)
