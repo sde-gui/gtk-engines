@@ -32,6 +32,7 @@ typedef enum {
 	WIDGET_TREE_VIEW,
 	WIDGET_TREE_VIEW_HEADER,
 	WIDGET_SCALE,
+	WIDGET_ENTRY,
 	WIDGET_PROGRESS_BAR,
 	WIDGET_MENUBAR,
 	WIDGET_MENUBAR_ITEM,
@@ -56,6 +57,7 @@ widget_type_get_type (void)
 			{ WIDGET_TREE_VIEW, "WIDGET_TREE_VIEW", "GtkTreeView" },
 			{ WIDGET_TREE_VIEW_HEADER, "WIDGET_TREE_VIEW_HEADER", "GtkTreeView-header" },
 			{ WIDGET_SCALE, "WIDGET_SCALE", "GtkScale" },
+			{ WIDGET_ENTRY, "WIDGET_ENTRY", "GtkEntry" },
 			{ WIDGET_PROGRESS_BAR, "WIDGET_PROGRESS_BAR", "GtkProgessBar" },
 			{ WIDGET_MENUBAR, "WIDGET_MENUBAR", "GtkMenubar" },
 			{ WIDGET_MENUBAR_ITEM, "WIDGET_MENUBAR_ITEM", "GtkMenubar-item" },
@@ -329,6 +331,19 @@ static Test tests[] = {
 		FUNCTION_BOX | FUNCTION_SLIDER,
 		WIDGET_SCALE,
 		"NULL:slider:stepper:trough:hscale:vscale",
+		STATE_ALL,
+		SHADOW_ALL,
+		GTK_ARROW_UP,
+		TRUE,
+		GTK_POS_TOP,
+		GTK_ORIENTATION_HORIZONTAL,
+		GTK_EXPANDER_EXPANDED,
+		GDK_WINDOW_EDGE_SOUTH
+	},
+	{
+		FUNCTION_BOX,
+		WIDGET_ENTRY,
+		"NULL:entry:entry_bg:entry-progress",
 		STATE_ALL,
 		SHADOW_ALL,
 		GTK_ARROW_UP,
@@ -621,6 +636,7 @@ create_testwidgets ()
 	
 	
 	widgets[WIDGET_SCALE] = gtk_hscale_new_with_range (0, 1, 0.1);
+	widgets[WIDGET_ENTRY] = gtk_entry_new ();
 	widgets[WIDGET_PROGRESS_BAR] = gtk_progress_bar_new ();
 	widgets[WIDGET_MENUBAR] = gtk_menu_bar_new ();
 	widgets[WIDGET_MENUBAR_ITEM] = gtk_menu_item_new_with_label ("blah");
