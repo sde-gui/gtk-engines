@@ -46,12 +46,10 @@
   g_return_if_fail (width  >= -1);			\
   g_return_if_fail (height >= -1);			\
                                                         \
-  if ((width == -1) && (height == -1))			\
-    gdk_drawable_get_size (window, &width, &height);	\
-  else if (width == -1)					\
-    gdk_drawable_get_size (window, &width, NULL);	\
-  else if (height == -1)				\
-    gdk_drawable_get_size (window, NULL, &height);
+  if (width == -1)                                      \
+    width = gdk_window_get_width (window);              \
+  if (height == -1)                                     \
+    height = gdk_window_get_height (window);
 
 #define GE_EXPORT	G_MODULE_EXPORT
 #define GE_INTERNAL	G_GNUC_INTERNAL

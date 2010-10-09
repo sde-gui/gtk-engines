@@ -857,9 +857,8 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				 */
 
                                 progress.max_size_known = TRUE;
-                                gdk_drawable_get_size (gtk_widget_get_window (widget),
-                                                       &progress.max_size.width,
-                                                       &progress.max_size.height);
+                                progress.max_size.width = gdk_window_get_width (gtk_widget_get_window (widget));
+                                progress.max_size.height = gdk_window_get_height (gtk_widget_get_window (widget));
 
 				/* Now, one more thing needs to be done. If interior-focus
 				 * is off, then the entry may be a bit smaller. */
