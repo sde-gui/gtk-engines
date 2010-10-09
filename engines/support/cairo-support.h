@@ -84,24 +84,8 @@ typedef enum {
 	GE_DIRECTION_NONE
 } GeDirection;
 
-#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-typedef enum _cairo_pattern_type {
-    CAIRO_PATTERN_TYPE_SOLID,
-    CAIRO_PATTERN_TYPE_SURFACE,
-    CAIRO_PATTERN_TYPE_LINEAR,
-    CAIRO_PATTERN_TYPE_RADIAL
-} cairo_pattern_type_t;
-
-#	define CAIRO_PATTERN_TYPE(pattern) pattern->type;
-#else
-#	define CAIRO_PATTERN_TYPE(pattern) cairo_pattern_get_type (pattern->handle);
-#endif
-
 typedef struct
 {
-#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-	cairo_pattern_type_t type;
-#endif
 	GeDirection scale;
 	GeDirection translate;
 

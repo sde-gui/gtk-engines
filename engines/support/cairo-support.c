@@ -735,10 +735,6 @@ ge_cairo_color_pattern(CairoColor *base)
 {
 	CairoPattern * result = g_new0(CairoPattern, 1);
 
-	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-		result->type = CAIRO_PATTERN_TYPE_SOLID;
-	#endif
-
 	result->scale = GE_DIRECTION_NONE;
 	result->translate = GE_DIRECTION_NONE;
 
@@ -795,10 +791,6 @@ ge_cairo_pattern_pattern(cairo_pattern_t *pattern)
 {
 	CairoPattern * result = g_new0(CairoPattern, 1);
 
-	#if ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-		result->type = CAIRO_PATTERN_TYPE_SURFACE;
-	#endif
-
 	result->scale = GE_DIRECTION_NONE;
 	result->translate = GE_DIRECTION_BOTH;
         result->handle = cairo_pattern_reference (pattern);
@@ -822,10 +814,6 @@ ge_cairo_linear_shade_gradient_pattern(CairoColor *base,
                                        gboolean vertical)
 {
 	CairoPattern * result = g_new0(CairoPattern, 1);
-	
-	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-		result->type = CAIRO_PATTERN_TYPE_LINEAR;
-	#endif
 
 	if (vertical)
 	{

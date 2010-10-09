@@ -81,10 +81,6 @@ G_DEFINE_DYNAMIC_TYPE (GlideStyle, glide_style, GTK_TYPE_STYLE)
 static void
 glide_linear_overlay_pattern(gboolean vertical, gboolean EVIL_OVERLAY, CairoPattern *pattern)
 {
-	#if  ((CAIRO_VERSION_MAJOR < 1) || ((CAIRO_VERSION_MAJOR == 1) && (CAIRO_VERSION_MINOR < 2)))
-		pattern->type = CAIRO_PATTERN_TYPE_LINEAR;
-	#endif
-
 	if (vertical)
 	{
 		pattern->scale = GE_DIRECTION_VERTICAL;
