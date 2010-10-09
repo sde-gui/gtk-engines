@@ -104,7 +104,6 @@ GE_INTERNAL void ge_shade_color(const CairoColor *base, gdouble shade_ratio, Cai
 GE_INTERNAL void ge_saturate_color (const CairoColor * base, gdouble saturate_level, CairoColor *composite);
 GE_INTERNAL void ge_mix_color (const CairoColor *color1, const CairoColor *color2, gdouble mix_factor, CairoColor *composite);
 
-GE_INTERNAL cairo_t * ge_gdk_drawable_to_cairo (GdkDrawable  *window, GdkRectangle *area);
 GE_INTERNAL void ge_cairo_set_color (cairo_t *cr, const CairoColor *color);
 GE_INTERNAL void ge_cairo_set_gdk_color_with_alpha (cairo_t *cr, const GdkColor *color, gdouble alpha);
 GE_INTERNAL void ge_cairo_pattern_add_color_stop_color (cairo_pattern_t *pattern, gfloat offset, const CairoColor *color);
