@@ -1,3 +1,10 @@
+Overview of Changes in 2.91.1 (since 2.91.0)
+============================================
+
+Changes in this release:
+ - Fix a crash bug in clearlooks where old API was still used. (Xan Lopez)
+ - Some code cleanups
+
 Overview of Changes in 2.91.0 (since 2.90.3.1)
 ==============================================
 
