@@ -1523,20 +1523,7 @@ clearlooks_style_draw_focus (GtkStyle *style, cairo_t *cr, GtkStateType state_ty
 		}
 		else
 		{
-			/* This may either mean no continuation, or unknown ...
-			 * if it is unknown we assume it continues on both sides */
-			gboolean row_ending_details = FALSE;
-
-			/* Try to get the style property. */
-			if (widget)
-				gtk_widget_style_get (widget,
-				                      "row-ending-details", &row_ending_details,
-				                      NULL);
-
-			if (row_ending_details)
-				focus.continue_side = CL_CONT_NONE;
-			else
-				focus.continue_side = CL_CONT_LEFT | CL_CONT_RIGHT;
+			focus.continue_side = CL_CONT_NONE;
 		}
 
 	}
