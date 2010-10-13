@@ -688,7 +688,7 @@ clearlooks_style_draw_box (DRAW_ARGS)
 		STYLE_FUNCTION(draw_progressbar_trough) (cr, colors, &params,
 		                                         x, y, width, height);
 	}
-	else if (DETAIL ("trough") && CHECK_HINT (GE_HINT_SCROLLBAR))
+	else if ((DETAIL ("trough-upper") || DETAIL ("trough-lower")) && CHECK_HINT (GE_HINT_SCROLLBAR))
 	{
 		WidgetParameters params;
 		ScrollBarParameters scrollbar;
