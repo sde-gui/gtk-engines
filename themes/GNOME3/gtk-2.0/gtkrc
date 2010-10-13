@@ -207,12 +207,8 @@ style "menubar" {
 
         GtkWidget::window-dragging = 1
 
-	engine "murrine" {
-		menubarstyle = 1
-		menubaritemstyle = 0
-    gradients = TRUE
-    highlight_shade = 1.00
-		gradient_shades     = {0.94,0.95,0.96,1.0} # default: {1.1,1.0,1.0,1.1}
+	engine "clearlooks" {
+		hint = "menubar"
 	}
 }
 
