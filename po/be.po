@@ -1,0 +1,221 @@
+# Belarusian translation for gtk-engines.
+# Copyright (C) 2010 gtk-engines's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gtk-engines package.
+# Wladzimir Manulenka <vlma@tut.by>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: gtk-engines master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-10-20 01:01+0300\n"
+"PO-Revision-Date: 2010-10-19 16:11+0200\n"
+"Last-Translator: Jim <vlma@tut.by>\n"
+"Language-Team: Belarusian <i18n@mova.org>\n"
+"Language: be\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../schema/clearlooks.xml.in.in.h:1
+msgid "3d-ish (button)"
+msgstr "Трохвымярэньне (кнопка)"
+
+#: ../schema/clearlooks.xml.in.in.h:2
+msgid "3d-ish (gradient)"
+msgstr "Трохвымярэньне (градыент)"
+
+#: ../schema/clearlooks.xml.in.in.h:3
+msgid "Animations"
+msgstr "Анімацыі"
+
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Classic"
+msgstr "Клясычная"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Colorize Scrollbar"
+msgstr "Каляраваць палоску пракруткі"
+
+#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
+msgid "Contrast"
+msgstr "Кантраст"
+
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Disable focus drawing"
+msgstr "Выключыць фокуснае рысаваньне"
+
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Enable Animations on Progressbars"
+msgstr "Уключыць анімацыю ў полі прагрэсу"
+
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Flat"
+msgstr "Двухвымярэньне"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Glossy"
+msgstr "Глянец"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "Gummy"
+msgstr "Смала"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "Inset"
+msgstr "Укладка"
+
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Inverted"
+msgstr "Інвэртаваньне"
+
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Menubar Style"
+msgstr "Стыль панэлі мэню"
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Radius"
+msgstr "Радыюс"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Relief Style"
+msgstr "Стыль рэльефу"
+
+#: ../schema/clearlooks.xml.in.in.h:17
+msgid "Requires style Glossy or Gummy"
+msgstr "Патрабуе стылю Глянец ці Смала"
+
+#: ../schema/clearlooks.xml.in.in.h:18
+msgid "Scrollbar Color"
+msgstr "Колер палоскі пракруткі"
+
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Sets the Color of Scrollbars"
+msgstr "Усталёўвае колер палоскі пракруткі"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shade of accelerator labels"
+msgstr "Узровень яркасьці мецін скаротаў"
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "Shadow"
+msgstr "Цень"
+
+#: ../schema/clearlooks.xml.in.in.h:22
+msgid "Style"
+msgstr "Стыль"
+
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+msgstr ""
+"Значэньне, якое выкарыстоўваецца для аб'яднаньня колераў меціны з колерам "
+"фону. Значэньне па сутнасьці вызначае зацяненьне."
+
+#: ../schema/clearlooks.xml.in.in.h:24
+msgid ""
+"This option allows to disable the focus drawing. The primary purpose is to "
+"create screenshots for documentation."
+msgstr ""
+"Гэтая магчымасьць дазваляе выключаць фокуснае рысаваньне. У першую чаргу яна "
+"карысная для захаваньня здымкаў экрану для дакумэнтацыі."
+
+#: ../schema/clearlooks.xml.in.in.h:25
+msgid "Toolbar Style"
+msgstr "Стыль панэлі інструмэнтаў"
+
+#: ../schema/hcengine.xml.in.in.h:1
+msgid "Cell Indicator Size"
+msgstr "Памер індыкатара ячэйкі"
+
+#: ../schema/hcengine.xml.in.in.h:2
+msgid "Edge Thickness"
+msgstr "Таўшчыня мяжы"
+
+#: ../schema/hcengine.xml.in.in.h:3
+msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
+msgstr "Памер віджэтаў пазначэньня і выбару ў дрэвах прагляду. (Хіба №351764)"
+
+#: ../schema/industrial.xml.in.in.h:2
+msgid "If set, button corners are rounded"
+msgstr "Калі ўсталявана, скругляць вуглы кнопак"
+
+#: ../schema/industrial.xml.in.in.h:3
+msgid "Rounded Buttons"
+msgstr "Скругленыя вуглы кнопак"
+
+#: ../schema/thinice.xml.in.in.h:1
+msgid "Arrow"
+msgstr "Стрэлка"
+
+#: ../schema/thinice.xml.in.in.h:2
+msgid "Dot"
+msgstr "Кропка"
+
+#: ../schema/thinice.xml.in.in.h:3
+msgid "Full"
+msgstr "Поўнасьцю"
+
+#: ../schema/thinice.xml.in.in.h:4
+msgid "Handlebox Marks"
+msgstr "Знакі апрацоўванай вобласьці"
+
+#: ../schema/thinice.xml.in.in.h:5
+msgid "Inverted Dot"
+msgstr "Інвэртаваная кропка"
+
+#: ../schema/thinice.xml.in.in.h:6
+msgid "Inverted Slash"
+msgstr "Інвэртаваны скос"
+
+#: ../schema/thinice.xml.in.in.h:7
+msgid "Mark Type 1"
+msgstr "Знак першага тыпу"
+
+#: ../schema/thinice.xml.in.in.h:8
+msgid "Mark Type for Scrollbar Buttons"
+msgstr "Тып знаку для кнопак палоскі пракруткі"
+
+#: ../schema/thinice.xml.in.in.h:9
+msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
+msgstr ""
+"Тып знаку для апрацоўнікаў палоскі пракруткі, апрацоўваных поляў і г.д."
+
+#: ../schema/thinice.xml.in.in.h:10
+msgid "None"
+msgstr "Няма"
+
+#: ../schema/thinice.xml.in.in.h:11
+msgid "Nothing"
+msgstr "Нічога"
+
+#: ../schema/thinice.xml.in.in.h:12
+msgid "Paned Dots"
+msgstr "Падзеленыя кропкі"
+
+#: ../schema/thinice.xml.in.in.h:13
+msgid "Rectangle"
+msgstr "Прастакутнік"
+
+#: ../schema/thinice.xml.in.in.h:14
+msgid "Scrollbar Marks"
+msgstr "Знакі палоскі пракруткі"
+
+#: ../schema/thinice.xml.in.in.h:15
+msgid "Scrollbar Type"
+msgstr "Тып палоскі пракруткі"
+
+#: ../schema/thinice.xml.in.in.h:16
+msgid "Scrollbutton Marks"
+msgstr "Знакі кнопкі пракруткі"
+
+#: ../schema/thinice.xml.in.in.h:17
+msgid "Shaped"
+msgstr "Фігурыстасьць"
+
+#: ../schema/thinice.xml.in.in.h:18
+msgid "Slash"
+msgstr "Скос"
+
+#: ../schema/thinice.xml.in.in.h:19
+msgid "Some"
+msgstr "Некаторыя"
