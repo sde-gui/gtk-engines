@@ -1,18 +1,18 @@
-# Valencian (southern Catalan) translation of gtk-engines.
+# Catalan translation of gtk-engines.
 # Copyright © 2005, 2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gtk-engines package.
 # Gil Forcada <gilforcada@guifi.net>, 2007, 2008.
 # Sílvia Miranda Sanchez <silvia.gnome@gmail.com>, 2007.
-# Miquel Esplà <miquelespla@gmail.com>, 2009 [valencian variant adaptation].
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-25 14:06+0200\n"
+"POT-Creation-Date: 2010-10-29 01:39+0100\n"
 "PO-Revision-Date: 2009-02-09 23:26+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -115,7 +115,7 @@ msgstr "Estil de la barra d'eines"
 
 #: ../schema/hcengine.xml.in.in.h:1
 msgid "Cell Indicator Size"
-msgstr "Grandària de l'indicador de la cel·la"
+msgstr "Mida de l'indicador de la cel·la"
 
 #: ../schema/hcengine.xml.in.in.h:2
 msgid "Edge Thickness"
@@ -124,7 +124,7 @@ msgstr "Gruix de la vora"
 #: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
 msgstr ""
-"Grandària dels botons d'opció i de selecció dins de la vista d'arbre. (Bug "
+"Mida dels botons d'opció i de selecció dins de la vista d'arbre. (Bug "
 "#351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
