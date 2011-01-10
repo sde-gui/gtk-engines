@@ -1,10 +1,13 @@
 # GTK-mootorite eesti keele tõlge.
 # Estonian translation of GTK-engines.
 #
-# Copyright (C) 2007, 2008 The GNOME Project.
+# Copyright (C) 2007, 2008, 2010, 2011 The GNOME Project.
 # This file is distributed under the same license as the gtk-engines package.
 #
-# Ivar Smolin <okul@linux.ee>, 2007, 2008.
+# Ivar Smolin <okul@linux.ee>, 2007, 2008, 2011.
+# Mattias Põldaru <mahfiaz gmail com>, 2010.
+#
+# Vaata ka http://git.gnome.org/browse/gtk-engines/tree/schema
 #
 msgid ""
 msgstr ""
@@ -12,8 +15,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
 "engines&component=general\n"
 "POT-Creation-Date: 2010-12-09 13:37+0000\n"
-"PO-Revision-Date: 2010-09-19 01:10+0300\n"
-"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
+"PO-Revision-Date: 2011-01-10 16:10+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
@@ -21,10 +24,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "3d-ish (button)"
-msgstr "kolmemõõtmeline (nupp)"
+msgstr "Kolmemõõtmeline (nupuna)"
 
 msgid "3d-ish (gradient)"
-msgstr "kolmemõõtmeline (üleminekuga)"
+msgstr "Kolmemõõtmeline (üleminekuga)"
 
 msgid "Animations"
 msgstr "Animatsioonid"
@@ -33,13 +36,13 @@ msgid "Classic"
 msgstr "Klassikaline"
 
 msgid "Colorize Scrollbar"
-msgstr "Kerimisribade värvuse määramine"
+msgstr "Kerimisribade toonimine"
 
 msgid "Contrast"
 msgstr "Kontrast"
 
 msgid "Disable focus drawing"
-msgstr ""
+msgstr "Fookuse joonistamise keelamine"
 
 msgid "Enable Animations on Progressbars"
 msgstr "Animatsioonide lubamine edenemisribadel"
@@ -75,10 +78,10 @@ msgid "Scrollbar Color"
 msgstr "Kerimisriba värvus"
 
 msgid "Sets the Color of Scrollbars"
-msgstr "Kerimisribade värvuse määramine"
+msgstr "Kerimisribade värvitooni määramine"
 
 msgid "Shade of accelerator labels"
-msgstr ""
+msgstr "Kiirendusklahvide siltide vari"
 
 msgid "Shadow"
 msgstr "Vari"
@@ -90,11 +93,15 @@ msgid ""
 "The value used to mix the label color with the background color. The value "
 "is effectively the opacity."
 msgstr ""
+"Seda väärtust kasutatakse sildi värvuse segamisel taustavärvusega, "
+"tulemuseks on (osaliselt) läbipaistev värvus."
 
 msgid ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
 msgstr ""
+"Selle valikuga keelatakse fookuse joonistamine. Selle peaeesmärk on "
+"dokumentatsiooni jaoks kuvatõmmiste tegemine."
 
 msgid "Toolbar Style"
 msgstr "Tööriistariba laad"
@@ -147,9 +154,8 @@ msgstr "Puudub"
 msgid "Nothing"
 msgstr "Mitte midagi"
 
-#, fuzzy
 msgid "Paned Dots"
-msgstr "Paanidena punktid"
+msgstr "Punktipaan"
 
 msgid "Rectangle"
 msgstr "Ristkülik"
@@ -163,9 +169,8 @@ msgstr "Kerimisriba liik"
 msgid "Scrollbutton Marks"
 msgstr "Kerimisnupu märgid"
 
-#, fuzzy
 msgid "Shaped"
-msgstr "Kujundis"
+msgstr "Kujund"
 
 msgid "Slash"
 msgstr "Kaldkriips"
