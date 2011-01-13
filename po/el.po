@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-07 14:19+0100\n"
-"PO-Revision-Date: 2009-03-11 13:20+0100\n"
-"Last-Translator: Jennie Petoumenou <epetoumenou@gmail.com>\n"
+"POT-Creation-Date: 2011-01-13 11:34+0200\n"
+"PO-Revision-Date: 2011-01-13 11:36+0200\n"
+"Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,11 +23,11 @@ msgstr ""
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
-msgstr "3Δ (κουμπί)"
+msgstr "Σαν 3D (κουμπί)"
 
 #: ../schema/clearlooks.xml.in.in.h:2
 msgid "3d-ish (gradient)"
-msgstr "3Δ (απόχρωση)"
+msgstr "Σαν 3D (απόχρωση)"
 
 #: ../schema/clearlooks.xml.in.in.h:3
 msgid "Animations"
@@ -40,7 +41,8 @@ msgstr "Κλασικό"
 msgid "Colorize Scrollbar"
 msgstr "Χρωματισμός γραμμής κύλισης"
 
-#: ../schema/clearlooks.xml.in.in.h:6 ../schema/industrial.xml.in.in.h:1
+#: ../schema/clearlooks.xml.in.in.h:6
+#: ../schema/industrial.xml.in.in.h:1
 msgid "Contrast"
 msgstr "Αντίθεση"
 
@@ -74,7 +76,7 @@ msgstr "Ανεστραμμένη"
 
 #: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
-msgstr "Στυλ Μπάρας Μενού"
+msgstr "Στυλ εργαλειοθήκης μενού"
 
 #: ../schema/clearlooks.xml.in.in.h:15
 msgid "Radius"
@@ -97,23 +99,26 @@ msgid "Sets the Color of Scrollbars"
 msgstr "Καθορίζει το χρώμα των γραμμών κύλισης"
 
 #: ../schema/clearlooks.xml.in.in.h:20
+msgid "Shade of accelerator labels"
+msgstr "Σκιά των ετικετών των επιταχυντών"
+
+#: ../schema/clearlooks.xml.in.in.h:21
 msgid "Shadow"
 msgstr "Σκιά"
 
-#: ../schema/clearlooks.xml.in.in.h:21
+#: ../schema/clearlooks.xml.in.in.h:22
 msgid "Style"
 msgstr "Στυλ"
 
-#: ../schema/clearlooks.xml.in.in.h:22
-msgid ""
-"This option allows to disable the focus drawing. The primary purpose is to "
-"create screenshots for documentation."
-msgstr ""
-"Αυτή η επιλογή σας επιτρέπει να απενεργοποιήσετε τη σχεδίαση της εστίασης. "
-"Η βασική της χρησιμότητα είναι η δημιουργία στιγμιοτύπων για την "
-"τεκμηρίωση."
-
 #: ../schema/clearlooks.xml.in.in.h:23
+msgid "The value used to mix the label color with the background color. The value is effectively the opacity."
+msgstr "Η τιμή που χρησιμοποιείται για την ανάμιξη του χρώματος της ετικέτας με το χρώμα του παρασκηνίου. Η τιμή είναι στην ουσία η αδιαφάνεια."
+
+#: ../schema/clearlooks.xml.in.in.h:24
+msgid "This option allows to disable the focus drawing. The primary purpose is to create screenshots for documentation."
+msgstr "Αυτή η επιλογή σας επιτρέπει να απενεργοποιήσετε τη σχεδίαση της εστίασης. Η βασική της χρησιμότητα είναι η δημιουργία στιγμιοτύπων για την τεκμηρίωση."
+
+#: ../schema/clearlooks.xml.in.in.h:25
 msgid "Toolbar Style"
 msgstr "Στυλ εργαλειοθήκης"
 
@@ -127,13 +132,11 @@ msgstr "Πάχος των άκρων"
 
 #: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr ""
-"Μέγεθος του check- και κουμπιών αλληλοαποκλειώμενων επιλογών μέσα στις "
-"δενδρικές προβολές. (Σφάλμα #351764)"
+msgstr "Μέγεθος του check- και κουμπιών αλληλοαποκλειώμενων επιλογών μέσα στις δενδρικές προβολές. (Σφάλμα #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
-msgstr "Αν καθοριστεί, οι γωνίες των πλήκτρων στρογγυλεύουν"
+msgstr "Αν καθοριστεί, οι γωνίες των κουμπιών στρογγυλεύουν"
 
 #: ../schema/industrial.xml.in.in.h:3
 msgid "Rounded Buttons"
@@ -153,7 +156,7 @@ msgstr "Γεμάτο"
 
 #: ../schema/thinice.xml.in.in.h:4
 msgid "Handlebox Marks"
-msgstr "Σημειώσεις κουτιού διαχείρισης"
+msgstr "Σημάδια κουτιού διαχείρισης"
 
 #: ../schema/thinice.xml.in.in.h:5
 msgid "Inverted Dot"
@@ -165,17 +168,15 @@ msgstr "Ανεστραμμένη κάθετος"
 
 #: ../schema/thinice.xml.in.in.h:7
 msgid "Mark Type 1"
-msgstr "Τύπος σημείωσης 1"
+msgstr "Τύπος σημαδιού 1"
 
 #: ../schema/thinice.xml.in.in.h:8
 msgid "Mark Type for Scrollbar Buttons"
-msgstr "Τύπος σημείωσης για τα πλήκτρα της γραμμής κύλισης"
+msgstr "Τύπος σημαδιού για τα πλήκτρα της γραμμής κύλισης"
 
 #: ../schema/thinice.xml.in.in.h:9
 msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
-msgstr ""
-"Τύπος σημείωσης για τις επικεφαλίδες της γραμμής κύλισης, των κουτιών "
-"διαχείρισης, κλπ"
+msgstr "Τύπος σημαδιού για τις επικεφαλίδες της γραμμής κύλισης, των κουτιών διαχείρισης, κλπ"
 
 # #-#-#-#-#  nautilus.HEAD.el.po (el)  #-#-#-#-#
 #
@@ -192,7 +193,7 @@ msgstr "Τίποτα"
 
 #: ../schema/thinice.xml.in.in.h:12
 msgid "Paned Dots"
-msgstr "Τελείες του ταμπλό"
+msgstr "Τελείες σε ταμπλό"
 
 #: ../schema/thinice.xml.in.in.h:13
 msgid "Rectangle"
@@ -200,7 +201,7 @@ msgstr "Ορθογώνιο"
 
 #: ../schema/thinice.xml.in.in.h:14
 msgid "Scrollbar Marks"
-msgstr "Σημειώσεις γραμμής κύλισης"
+msgstr "Σημάδια γραμμής κύλισης"
 
 #: ../schema/thinice.xml.in.in.h:15
 msgid "Scrollbar Type"
@@ -208,7 +209,7 @@ msgstr "Τύπος γραμμής κύλισης"
 
 #: ../schema/thinice.xml.in.in.h:16
 msgid "Scrollbutton Marks"
-msgstr "Σημειώσεις πλήκτρων κύλισης"
+msgstr "Σημάδια πλήκτρων κύλισης"
 
 #: ../schema/thinice.xml.in.in.h:17
 msgid "Shaped"
