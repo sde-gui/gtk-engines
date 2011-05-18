@@ -64,6 +64,7 @@ if test -z "$*"; then
 fi
 
 libtoolize --force --copy
+autopoint --force
 intltoolize --force --copy --automake
 
 

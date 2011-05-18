@@ -29,10 +29,13 @@ LT_INIT([disable-static win32-dll])
 
 dnl Initialize intltool
 IT_PROG_INTLTOOL([0.40.0])
+
+AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT([external])
+
 GETTEXT_PACKAGE=gtk3-engines
 AC_SUBST([GETTEXT_PACKAGE])
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Gettext package])
-AM_GLIB_GNU_GETTEXT
 
 AC_ARG_ENABLE(all, 		[  --disable-all           skip all engines/themes by default], [defaultval=$enableval], 	[defaultval="yes"])
 AC_ARG_ENABLE(clearlooks, 	[  --disable-clearlooks    skip ClearLooks engine/theme], 	[clearlooks=$enableval], 	[clearlooks="$defaultval"])
