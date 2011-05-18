@@ -1,27 +1,34 @@
 
-AC_INIT([gtk-engines], [2.91.1])
-AC_CONFIG_SRCDIR([README])
+AC_INIT([gtk-engines],
+        [2.91.1],
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-engines],
+        [gtk-engines])
 
-AM_INIT_AUTOMAKE
+AC_CONFIG_HEADERS([engines/support/config.h])
+AC_CONFIG_SRCDIR([README])
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([build-aux])
+
+AM_INIT_AUTOMAKE([1.10])
 
 # Use AM_SILENT_RULES if present
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 dnl Initialize maintainer mode
-AM_MAINTAINER_MODE
+AM_MAINTAINER_MODE([enable])
 
+dnl Check for programs
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AM_PROG_CC_C_O
 
 dnl Initialize libtool
-AM_DISABLE_STATIC
-AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+LT_PREREQ([2.2])
+LT_INIT([disable-static win32-dll])
 
 dnl Initialize intltool
-AC_PROG_INTLTOOL([0.31.0])
+IT_PROG_INTLTOOL([0.40.0])
 GETTEXT_PACKAGE=gtk3-engines
 AC_SUBST([GETTEXT_PACKAGE])
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Gettext package])
@@ -118,9 +125,6 @@ fi
 PKG_CHECK_MODULES(GTK, gtk+-3.0 >= 2.91.0,,
                   AC_MSG_ERROR([GTK+-3.0 is required to compile gtk-engines]))
 
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(GTK_LIBS)
-
 GTK_VERSION=`$PKG_CONFIG --variable=gtk_binary_version gtk+-3.0`
 AC_SUBST(GTK_VERSION)
 
@@ -150,8 +154,6 @@ if test $enable_deprecated = "no"; then
 fi
 
 AC_SUBST(DEVELOPMENT_CFLAGS)
-
-AM_CONFIG_HEADER([engines/support/config.h])
 
 AC_CONFIG_FILES([
 Makefile
