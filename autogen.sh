@@ -13,7 +13,7 @@ if test -z $AUTORECONF; then
         exit 1
 fi
 
-mkdir -p4 m4
+mkdir -p m4
 
 autopoint --force
 AUTOPOINT='intltoolize --automake --copy' autoreconf --force --install --verbose
