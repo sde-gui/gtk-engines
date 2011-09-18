@@ -881,7 +881,9 @@ clearlooks_style_draw_box (DRAW_ARGS)
 				}
 			}
 
-			cairo_reset_clip (cr);
+			/* Recreate the cr without the "area" clip. */
+			cairo_destroy (cr);
+			cr = ge_gdk_drawable_to_cairo (window, NULL);
 			gdk_cairo_rectangle (cr, &tmp);
 			cairo_clip (cr);
 		}
