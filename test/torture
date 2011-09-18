@@ -30,7 +30,8 @@ for RC_FILE in $srcdir/gtkrcs/$ENGINE*; do
 	test -f $RC_FILE || continue
 	something_tested="1"
 	
-	export GTK2_RC_FILES=$RC_FILE
+	GTK2_RC_FILES=$RC_FILE
+	export GTK2_RC_FILES
 	RC_FILE_BASENAME="`basename $RC_FILE`"
 	MY_EXEC_WRAPPER="`echo "$EXEC_WRAPPER" | sed s/THEME/$RC_FILE_BASENAME/`"
 
