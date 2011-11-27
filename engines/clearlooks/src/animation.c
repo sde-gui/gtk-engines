@@ -28,7 +28,7 @@
 #include "animation.h"
 
 #ifdef HAVE_WORKING_ANIMATION
-#include <glib/gtimer.h>
+#include <glib.h>
 
 struct _AnimationInfo {
 	GTimer *timer;
