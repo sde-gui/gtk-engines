@@ -1,21 +1,26 @@
 # This file is distributed under the same license as the gtk-engines package.
 # Adi Roiban https://launchpad.net/~adiroiban, 2009
 # Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2009
+# Daniel Șerbănescu <cyber19rider@gmail.com>, 2010.
+# Daniel Șerbănescu <daniel@serbanescu.tk>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk-engines\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-"
-"engines&component=general\n"
-"POT-Creation-Date: 2009-09-25 04:27+0000\n"
-"PO-Revision-Date: 2009-10-11 18:15+0300\n"
-"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
-"Language-Team: Gnome Romanian Team <gnomero-list@lists.sourceforge.net>\n"
+"engines&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-08-04 17:36+0000\n"
+"PO-Revision-Date: 2012-02-11 20:05+0200\n"
+"Last-Translator: Daniel Șerbănescu <daniel@serbanescu.tk>\n"
+"Language-Team: Echipa de traducere în limba română Gnome România <gnomero-"
+"list@lists.sourceforge.net>\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);;\n"
+"X-Generator: Virtaal 0.7.0\n"
+"X-Project-Style: gnome\n"
 
 #: ../schema/clearlooks.xml.in.in.h:1
 msgid "3d-ish (button)"
@@ -47,7 +52,7 @@ msgstr "Dezactivează afișarea focalizării"
 
 #: ../schema/clearlooks.xml.in.in.h:8
 msgid "Enable Animations on Progressbars"
-msgstr "Activează animațiile în bara de progres"
+msgstr "Activează animații în bara de progres"
 
 #: ../schema/clearlooks.xml.in.in.h:9
 msgid "Flat"
@@ -71,7 +76,7 @@ msgstr "Inversat"
 
 #: ../schema/clearlooks.xml.in.in.h:14
 msgid "Menubar Style"
-msgstr "Stil bară meniu"
+msgstr "Stil bară de meniu"
 
 #: ../schema/clearlooks.xml.in.in.h:15
 msgid "Radius"
@@ -87,21 +92,33 @@ msgstr "Necesită stilul Lucios sau Lipicios"
 
 #: ../schema/clearlooks.xml.in.in.h:18
 msgid "Scrollbar Color"
-msgstr "Culoare bară de derulare"
+msgstr "Culoare barei de derulare"
 
 #: ../schema/clearlooks.xml.in.in.h:19
 msgid "Sets the Color of Scrollbars"
-msgstr "Definește culoare barelor de derulare"
+msgstr "Definește culoarea barelor de derulare"
 
 #: ../schema/clearlooks.xml.in.in.h:20
-msgid "Shadow"
-msgstr "Umbră"
+msgid "Shade of accelerator labels"
+msgstr "Umbra etichetelor acceleratorilor"
 
 #: ../schema/clearlooks.xml.in.in.h:21
+msgid "Shadow"
+msgstr "Umbrește"
+
+#: ../schema/clearlooks.xml.in.in.h:22
 msgid "Style"
 msgstr "Stil"
 
-#: ../schema/clearlooks.xml.in.in.h:22
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid ""
+"The value used to mix the label color with the background color. The value "
+"is effectively the opacity."
+msgstr ""
+"Valoarea folosită la îmbinarea culorilor etichetei cu culoarea fundalului. "
+"Valoarea reprezintă de fapt opacitatea."
+
+#: ../schema/clearlooks.xml.in.in.h:24
 msgid ""
 "This option allows to disable the focus drawing. The primary purpose is to "
 "create screenshots for documentation."
@@ -109,7 +126,7 @@ msgstr ""
 "Această opțiune permite dezactivarea afișării focalizării. Scopul principal "
 "este acela de a realiza capturi de ecran pentru documentație."
 
-#: ../schema/clearlooks.xml.in.in.h:23
+#: ../schema/clearlooks.xml.in.in.h:25
 msgid "Toolbar Style"
 msgstr "Stil bară de unelte"
 
@@ -123,8 +140,9 @@ msgstr "Grosime margini"
 
 #: ../schema/hcengine.xml.in.in.h:3
 msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
-msgstr "Dimensiunea butoanelor de bifare și a butoanelor radio în vizualizări"
-" arborescente. (Bug #351764)"
+msgstr ""
+"Dimensiunea butoanelor de bifare și a butoanelor radio în vizualizări "
+"arborescente. (Bug #351764)"
 
 #: ../schema/industrial.xml.in.in.h:2
 msgid "If set, button corners are rounded"
@@ -188,15 +206,15 @@ msgstr "Dreptunghi"
 
 #: ../schema/thinice.xml.in.in.h:14
 msgid "Scrollbar Marks"
-msgstr "Marcaje bară derulare"
+msgstr "Marcaje pentru bara de derulare"
 
 #: ../schema/thinice.xml.in.in.h:15
 msgid "Scrollbar Type"
-msgstr "Tip bară derulare"
+msgstr "Tipul barei de derulare"
 
 #: ../schema/thinice.xml.in.in.h:16
 msgid "Scrollbutton Marks"
-msgstr "Marcaje buton de derulare"
+msgstr "Marcaje pentru butoanele de derulare"
 
 #: ../schema/thinice.xml.in.in.h:17
 msgid "Shaped"
@@ -204,7 +222,7 @@ msgstr "Conturat"
 
 #: ../schema/thinice.xml.in.in.h:18
 msgid "Slash"
-msgstr "Slash"
+msgstr "Hașurat"
 
 #: ../schema/thinice.xml.in.in.h:19
 msgid "Some"
