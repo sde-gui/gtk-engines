@@ -18,7 +18,7 @@ libthinice_la_SOURCES = \
 	./src/thinice_main.c
 
 libthinice_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
-libthinice_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)
+libthinice_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS) $(LIBM)
 
 -include $(top_srcdir)/git.mk
 

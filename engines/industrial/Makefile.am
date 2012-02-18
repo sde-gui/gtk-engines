@@ -39,7 +39,7 @@ EXTRA_DIST = \
 	./AUTHORS
 
 libindustrial_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
-libindustrial_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)
+libindustrial_la_LIBADD = $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS) $(LIBM)
 
 -include $(top_srcdir)/git.mk
 

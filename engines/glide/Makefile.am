@@ -34,7 +34,7 @@ libglide_la_SOURCES = \
 	./src/glide_gtk2_engine.h
 
 libglide_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
-libglide_la_LIBADD =  $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)
+libglide_la_LIBADD =  $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS) $(LIBM)
 
 -include $(top_srcdir)/git.mk
 

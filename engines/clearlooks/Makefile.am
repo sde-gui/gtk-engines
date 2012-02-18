@@ -43,7 +43,7 @@ libclearlooks_la_SOURCES =		\
 	./src/clearlooks_types.h
 
 libclearlooks_la_LDFLAGS = -module -avoid-version -no-undefined -export-symbols $(top_srcdir)/engines/engine.symbols
-libclearlooks_la_LIBADD =  $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS)
+libclearlooks_la_LIBADD =  $(top_builddir)/engines/support/libsupport.la $(GTK_LIBS) $(LIBM)
 
 
 -include $(top_srcdir)/git.mk
