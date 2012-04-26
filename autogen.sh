@@ -39,7 +39,7 @@ else
         DIE=1
 fi
 
-(libtool --version) < /dev/null > /dev/null 2>&1 || {
+(libtoolize --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have libtool installed to compile GTK+."
 	echo "Get http://ftp.gnu.org/gnu/libtool/libtool-1.5.10.tar.gz"
