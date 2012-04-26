@@ -73,7 +73,9 @@ autoheader
 $AUTOMAKE --add-missing
 cd $THEDIR
 
-$srcdir/configure --enable-maintainer-mode "$@"
+if test -z "$NOCONFIGURE"; then
+    $srcdir/configure --enable-maintainer-mode "$@"
 
-echo 
-echo "Now type 'make' to compile themes"
+    echo 
+    echo "Now type 'make' to compile themes"
+fi
