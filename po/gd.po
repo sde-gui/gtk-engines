@@ -1,0 +1,218 @@
+# Gaelic; Scottish translation for gtk2-engines
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the gtk2-engines package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gtk2-engines\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk-engines&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-08-05 14:28+0000\n"
+"PO-Revision-Date: 2013-09-19 15:54+0100\n"
+"Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
+"Language-Team: Gaelic; Scottish <gd@li.org>\n"
+"Language: gd\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : (n > 2 && n < 20) ? 2 : 3;\n"
+"X-Launchpad-Export-Date: 2013-09-19 08:01+0000\n"
+"X-Generator: Launchpad (build 16765)\n"
+
+#: ../schema/clearlooks.xml.in.in.h:1
+msgid "Style"
+msgstr "Stoidhle"
+
+#: ../schema/clearlooks.xml.in.in.h:2
+msgid "Classic"
+msgstr "Clasaigeach"
+
+#: ../schema/clearlooks.xml.in.in.h:3
+msgid "Glossy"
+msgstr "Lìomhach"
+
+#: ../schema/clearlooks.xml.in.in.h:4
+msgid "Gummy"
+msgstr "Bìtheach"
+
+#: ../schema/clearlooks.xml.in.in.h:5
+msgid "Inverted"
+msgstr "Ais-thionndaichte"
+
+#: ../schema/clearlooks.xml.in.in.h:6
+msgid "Relief Style"
+msgstr "Stoidhle rilif"
+
+#: ../schema/clearlooks.xml.in.in.h:7
+msgid "Inset"
+msgstr "Inset"
+
+#: ../schema/clearlooks.xml.in.in.h:8
+msgid "Shadow"
+msgstr "Sgàil"
+
+#: ../schema/clearlooks.xml.in.in.h:9
+msgid "Menubar Style"
+msgstr "Stoidhle bàr a' chlàir-thaice"
+
+#: ../schema/clearlooks.xml.in.in.h:10
+msgid "Flat"
+msgstr "Còmhnard"
+
+#: ../schema/clearlooks.xml.in.in.h:11
+msgid "3d-ish (gradient)"
+msgstr "Nàdar a 3D (caisead)"
+
+#: ../schema/clearlooks.xml.in.in.h:12
+msgid "3d-ish (button)"
+msgstr "Nàdar a 3D (putan)"
+
+#: ../schema/clearlooks.xml.in.in.h:13
+msgid "Toolbar Style"
+msgstr "Stoidhle a' bhàr-inneal"
+
+#: ../schema/clearlooks.xml.in.in.h:14
+msgid "Requires style Glossy or Gummy"
+msgstr "Feumaidh seo stoidhle lìomhach no bhìtheach"
+
+#: ../schema/clearlooks.xml.in.in.h:15
+msgid "Colorize Scrollbar"
+msgstr "Cuir dath air a' bhàr-sgrolaidh"
+
+#: ../schema/clearlooks.xml.in.in.h:16
+msgid "Scrollbar Color"
+msgstr "Dath a' bhàr-sgrolaidh"
+
+#: ../schema/clearlooks.xml.in.in.h:17
+msgid "Sets the Color of Scrollbars"
+msgstr "Suidhichidh seo dath nam bàraichean-sgrolaidh"
+
+#: ../schema/clearlooks.xml.in.in.h:18
+msgid "Animations"
+msgstr "Beòthachaidhean"
+
+#: ../schema/clearlooks.xml.in.in.h:19
+msgid "Enable Animations on Progressbars"
+msgstr "Cuir an comas beòthachaidhean air bàraichean an adhartais"
+
+#: ../schema/clearlooks.xml.in.in.h:20
+msgid "Disable focus drawing"
+msgstr "Cuir à comas tarraing an fhòcais"
+
+#: ../schema/clearlooks.xml.in.in.h:21
+msgid "This option allows to disable the focus drawing. The primary purpose is to create screenshots for documentation."
+msgstr "Leigidh an roghainn seo le daoine tarraing an fhòcais a chur à comas. Cleachdar seo mar is trice airson glacaidhean-sgrìn a chruthachadh airson docamaideadh."
+
+#: ../schema/clearlooks.xml.in.in.h:22
+#: ../schema/industrial.xml.in.in.h:1
+msgid "Contrast"
+msgstr "Iomsgaradh"
+
+#: ../schema/clearlooks.xml.in.in.h:23
+msgid "Radius"
+msgstr "Rèideas"
+
+#: ../schema/clearlooks.xml.in.in.h:24
+msgid "Shade of accelerator labels"
+msgstr "An sgàileadh aig leubailean nan luathaichearan"
+
+#: ../schema/clearlooks.xml.in.in.h:25
+msgid "The value used to mix the label color with the background color. The value is effectively the opacity."
+msgstr "An luach a thèid a chleachdadh gus dath an leubail a mheasgachadh le dath a' chùlaibh. 'S e an trìd-dhoilleireachd a tha san luach seo."
+
+#: ../schema/hcengine.xml.in.in.h:1
+msgid "Edge Thickness"
+msgstr "Tiughad na h-oire"
+
+#: ../schema/hcengine.xml.in.in.h:2
+msgid "Cell Indicator Size"
+msgstr "Meud taisbeanair a' chealla"
+
+#: ../schema/hcengine.xml.in.in.h:3
+msgid "Size of check- and radiobuttons inside treeviews. (Bug #351764)"
+msgstr "Meud nan cromagan is nam putanan-rèidio ann an seallaidhean-craoibhe. (Buga #351764)"
+
+#: ../schema/industrial.xml.in.in.h:2
+msgid "Rounded Buttons"
+msgstr "Putanan cruinnte"
+
+#: ../schema/industrial.xml.in.in.h:3
+msgid "If set, button corners are rounded"
+msgstr "Ma shuidhicheas tu seo, bidh oiseanan cruinnte air na putanan"
+
+#: ../schema/thinice.xml.in.in.h:1
+msgid "Scrollbar Type"
+msgstr "Seòrsa a' bhàr-sgrolaidh"
+
+#: ../schema/thinice.xml.in.in.h:2
+msgid "Rectangle"
+msgstr "Ceart-cheàrnach"
+
+#: ../schema/thinice.xml.in.in.h:3
+msgid "Shaped"
+msgstr "Cumte"
+
+#: ../schema/thinice.xml.in.in.h:4
+msgid "Scrollbar Marks"
+msgstr "Comharran a' bhàr-sgrolaidh"
+
+#: ../schema/thinice.xml.in.in.h:5
+msgid "Scrollbutton Marks"
+msgstr "Comharran a' phutain-sgrolaidh"
+
+#: ../schema/thinice.xml.in.in.h:6
+msgid "Handlebox Marks"
+msgstr "Comharran a' bhogsa-làmhrachain"
+
+#: ../schema/thinice.xml.in.in.h:7
+msgid "Mark Type 1"
+msgstr "Comharra dhen t-seòrsa 1"
+
+#: ../schema/thinice.xml.in.in.h:8
+msgid "Mark Type for Scrollbar Handles, Handleboxes, etc"
+msgstr "Seòrsa nan comharran airson làmhrachain a' bhàr-sgrolaidh, bogsaichean-làmhrachain is msaa"
+
+#: ../schema/thinice.xml.in.in.h:9
+msgid "Nothing"
+msgstr "Chan eil gin"
+
+#: ../schema/thinice.xml.in.in.h:10
+msgid "Slash"
+msgstr "Slais"
+
+#: ../schema/thinice.xml.in.in.h:11
+msgid "Inverted Slash"
+msgstr "Slais ais-thionndaichte"
+
+#: ../schema/thinice.xml.in.in.h:12
+msgid "Dot"
+msgstr "Dotag"
+
+#: ../schema/thinice.xml.in.in.h:13
+msgid "Inverted Dot"
+msgstr "Dotag ais-thionndaichte"
+
+#: ../schema/thinice.xml.in.in.h:14
+msgid "Arrow"
+msgstr "Saighead"
+
+#: ../schema/thinice.xml.in.in.h:15
+msgid "Mark Type for Scrollbar Buttons"
+msgstr "Seòrsa nan comharran airson putanan a' bhàr-sgrolaidh"
+
+#: ../schema/thinice.xml.in.in.h:16
+msgid "Paned Dots"
+msgstr "Dotagan leòsanaichte"
+
+#: ../schema/thinice.xml.in.in.h:17
+msgid "Full"
+msgstr "Làn"
+
+#: ../schema/thinice.xml.in.in.h:18
+msgid "Some"
+msgstr "Cuid"
+
+#: ../schema/thinice.xml.in.in.h:19
+msgid "None"
+msgstr "Chan eil gin"
+
