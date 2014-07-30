@@ -8,7 +8,7 @@
   <shortdesc xml:lang="en">GTK+ Theme Engines</shortdesc>
   <homepage rdf:resource="http://art.gnome.org/" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-themes-list" />
-  <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#deprecated" />
 
   <maintainer>
     <foaf:Person>
