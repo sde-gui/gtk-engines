@@ -64,9 +64,10 @@ VALGRIND_ENV=G_SLICE=always-malloc G_DEBUG=gc-friendly,resident-modules
 # Exported Symbols Test - Tests all engines unconditionally
 #############################################################
 # Prefix with exported_
-EXPORTED_SYMBOLS_TESTS = $(patsubst %,exported_%,$(BUILD_ENGINES))
+# disabled to work around automake bug #14561
+# EXPORTED_SYMBOLS_TESTS = $(patsubst %,exported_%,$(BUILD_ENGINES))
 
-TESTS += $(EXPORTED_SYMBOLS_TESTS)
+#TESTS += $(EXPORTED_SYMBOLS_TESTS)
 
 
 #############################################################
@@ -85,10 +86,13 @@ SUPPORTED_TORTURE_TEST_ENGINES = \
 # Filter engines that are not build from the set of engines
 TORTURE_TEST_ENGINES = $(filter $(SUPPORTED_TORTURE_TEST_ENGINES),$(BUILD_ENGINES))
 # Prefix with torture_
-TORTURE_TEST_TESTS = torture_buildin $(patsubst %,torture_%,$(TORTURE_TEST_ENGINES))
+# disabled to work around automake bug #14561
+# TORTURE_TEST_TESTS = torture_buildin $(patsubst %,torture_%,$(TORTURE_TEST_ENGINES))
 
 # Add TORTURE_TEST_ENGINES to list of tests
-TESTS += $(TORTURE_TEST_TESTS)
+# disabled to work around automake bug #14561
+#TESTS += $(TORTURE_TEST_TESTS)
+TESTS += @auto_find_tests@
 
 # Possible other tests:
 #  - An extensive theme switch tests that loads/unloads the engine

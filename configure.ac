@@ -130,6 +130,8 @@ AC_SUBST(LIBM)
 AC_SUBST(BUILD_ENGINES)
 AC_SUBST(BUILD_THEMES)
 AC_SUBST(BUILD_SCHEMAS)
+AC_SUBST([auto_find_tests], ['$(patsubst %,exported_%,$(BUILD_ENGINES)) torture_buildin $(patsubst %,torture_%,$(TORTURE_TEST_ENGINES))'])
+
 
 if test $animation = "yes"; then
 	AC_DEFINE_UNQUOTED(HAVE_ANIMATION, 1, [Defines whether to compile with animation support])
